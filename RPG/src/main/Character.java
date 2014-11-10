@@ -12,8 +12,8 @@ public class Character {
 		head
 	 }
 	
-	float currentHP;
-	float maxHP;
-	float attackStrength;
+	int currentHP;
+	int maxHP;
+	int attackStrength;
 	Vector<BodyParts> bodyParts;
 }
