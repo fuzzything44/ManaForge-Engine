@@ -5,7 +5,7 @@ import java.util.Vector;
 // base character class. Can be used by either enemy or friendly
 public class Character {
 	
-	 enum BodyParts{
+	enum BodyParts{
 		torso,
 		leg,
 		arm,
@@ -16,4 +16,8 @@ public class Character {
 	int maxHP;
 	int attackStrength;
 	Vector<BodyParts> bodyParts;
+	
+	ManaPotion smashDeath = new ManaPotion("NOT DEADLY!", 1);
+	
+	
 }
