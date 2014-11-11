@@ -1,3 +1,10 @@
+/* Overview:
+ * 	
+ * 
+ * 
+ * 
+ * 
+ */
 package buffs;
 
 import main.Object;
@@ -46,8 +53,8 @@ public class Buff extends Object {
 		Game.TickingObjects.addElement(this);
 	}
 	
-	public int getBuffAmount(int baseValue, PlayerCharacter.statType statType) {
-		switch (statType) {
+	public int getBuffAmount(int baseValue, PlayerCharacter.statType statType) {	// gives how much a stat is being buffed.
+		switch (statType) {	// lets you find out what variable is buffed and returns it.
 		case health:
 			return Math.round(baseValue*(buffVals.healthBuffPercent)) + buffVals.healthBuffNumber;
 		case mana:
@@ -64,7 +71,7 @@ public class Buff extends Object {
 			return Math.round(baseValue*(buffVals.defenceBuffPercent)) + buffVals.defenceBuffNumber;
 		default:
 			return baseValue;
-		}
+		}	// end switch
 	}
 
 	public void increaseBuffLength(float timeIncrease) {

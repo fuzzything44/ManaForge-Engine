@@ -63,11 +63,11 @@ public class PlayerCharacter extends Character {
 				dexBuff = 0,
 				wisBuff = 0;
 		for (int x = 0; x < buffs.size(); x++) {	// buff loop. Gets the total stat buff for everything.
-			healthBuff += buffs.elementAt(x).getBuffAmount(baseHealth, statType.health);
-			manaBuff += buffs.elementAt(x).getBuffAmount(baseMana, statType.mana);
-			strBuff += buffs.elementAt(x).getBuffAmount(baseStr, statType.str);
-			dexBuff += buffs.elementAt(x).getBuffAmount(baseWis, statType.wis);
-			wisBuff += buffs.elementAt(x).getBuffAmount(baseDex, statType.dex);
+			healthBuff += buffs.get(x).getBuffAmount(baseHealth, statType.health);
+			manaBuff += buffs.get(x).getBuffAmount(baseMana, statType.mana);
+			strBuff += buffs.get(x).getBuffAmount(baseStr, statType.str);
+			dexBuff += buffs.get(x).getBuffAmount(baseWis, statType.wis);
+			wisBuff += buffs.get(x).getBuffAmount(baseDex, statType.dex);
 		}	// end buff loop.
 		maxHealth = healthBuff + baseHealth;	// setting buffed values to correct amounts
 		maxMana = manaBuff + baseMana;
