@@ -5,6 +5,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import java.util.Vector;
 
 public class Play extends BasicGameState {
 
@@ -36,7 +37,9 @@ public class Play extends BasicGameState {
 		
 		Game.GameTotalTime += delta;
 		
-		
+		for(int i = 0; i < Game.TickingObjects.size(); i++){
+			Game.TickingObjects
+		}
 		
 	}
 
