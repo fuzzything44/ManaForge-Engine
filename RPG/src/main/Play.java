@@ -26,7 +26,6 @@ public class Play extends BasicGameState {
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics gr)
 			throws SlickException {
-		Input i = gc.getInput();
 		
 		gr.drawString(Float.toString(Game.GameTotalTime), 100, 100);
 		
