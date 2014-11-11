@@ -13,8 +13,8 @@ public class Character extends Object {
 		head
 	 }
 	
-	int currentHP;
-	int maxHP;
+	int currentHealth;
+	int maxHealth;
 	int attack;
 	int experience;
 	int defence;

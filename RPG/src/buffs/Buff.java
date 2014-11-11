@@ -34,15 +34,15 @@ public class Buff extends Object {
 	
 	private BuffValues buffVals;
 	
-
+	private PlayerCharacter owner;
 	
 	//	Name of the buff
 	final String buffName;
 	
-	public Buff(String name, Buff.BuffValues buffValsIn) {
+	public Buff(String name, Buff.BuffValues buffValsIn, PlayerCharacter player) {
 		buffName = name;
 		buffVals = buffValsIn;
-		
+		owner = player;
 		Game.TickingObjects.addElement(this);
 	}
 	
@@ -66,7 +66,7 @@ public class Buff extends Object {
 			return baseValue;
 		}
 	}
-	
+
 	public void increaseBuffLength(float timeIncrease) {
 		buffVals.buffTimeLeft += timeIncrease;
 	}
@@ -77,7 +77,10 @@ public class Buff extends Object {
 
 	public void tick(float deltaTime) {
 		super.tick(deltaTime);
-		
+		buffVals.buffTimeLeft -=deltaTime;
+		if (buffVals.buffTimeLeft <= 0 ) {
+			owner.removeBuff(this);
+		}
 	}
 }
 
