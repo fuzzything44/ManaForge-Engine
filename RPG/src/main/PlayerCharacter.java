@@ -25,7 +25,22 @@ public class PlayerCharacter extends Character {
 	
 	int level;
 	
+//	int defence;
+//	int attack;
 	
+//	int experience;
+	
+	public enum statType {
+		health,
+		mana,
+		str,
+		dex,
+		wis,
+		exp,
+		level,
+		attack,
+		defence
+	}
 	
 	public PlayerCharacter() {
 		
