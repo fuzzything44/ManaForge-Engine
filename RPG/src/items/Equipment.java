@@ -1,9 +1,10 @@
 package items;
 
 public class Equipment {
-
-	public Equipment() {
-		// TODO Auto-generated constructor stub
+	private final String name;
+	
+	public Equipment(String EquipmentName) {
+		name = EquipmentName;
 	}
 
 }

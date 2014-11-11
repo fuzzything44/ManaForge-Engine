@@ -1,6 +1,8 @@
 package main;
 
 import buffs.*;
+import items.*;
+
 import java.util.Vector;
 
 public class PlayerCharacter extends Character {
@@ -10,23 +12,29 @@ public class PlayerCharacter extends Character {
  *	Base is the unbuffed MaxHP/MaxMP/Stat
  */
 	
-	int baseHealth;
+	Equipment hat;
+	Equipment shirt;
+	Equipment pants;
+	Equipment shoes;
+	Equipment accessory1;
+	
+	int baseHealth = 100;
 //	int maxHealth;		Already in Character
 //	int currentHealth;	Already in Character
 	
-	int currentMana;
-	int maxMana;
-	int baseMana;
+	int currentMana = 0;
+	int maxMana = 100;
+	int baseMana = 100;
 	
-	int baseStr;	// Strength
-	int baseDex;	// Dexterity
-	int baseWis;	// Wisdom
+	int baseStr = 10;	// Strength
+	int baseDex = 10;	// Dexterity
+	int baseWis = 10;	// Wisdom
 	
-	int buffedStr;	// Buffed versions. Used for most calculations
-	int buffedDex;
-	int buffedWis;
+	int buffedStr = 10;	// Buffed versions. Used for most calculations
+	int buffedDex = 10;
+	int buffedWis = 10;
 	
-	int level;		// Character Level
+	int level = 1;		// Character Level
 	
 //	int defence;
 //	int attack;
