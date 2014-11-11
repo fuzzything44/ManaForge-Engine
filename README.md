@@ -1,5 +1,16 @@
 RPG-Simulator
 =============
+Setting up the development envrionment:
+Open worspace /RPG-Simulator/ in eclipse
+Create a project called RPG -- it will recognise it and open it
+Refresh the project (F5)
+Open project properties
+Go to Java build path
+Go to libraries
+Click add Jars
+navagate to RPG/libs and add both the jars
+press OK and you are setup!!
+
 Overview:
 
 What do we want to do?
