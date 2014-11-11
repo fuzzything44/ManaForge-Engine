@@ -41,7 +41,7 @@ public class Play extends BasicGameState {
 		
 		if(i.isKeyPressed(Keyboard.KEY_E)){
 			
-			Buff.BuffValues vals = null;
+			Buff.BuffValues vals = new Buff.BuffValues();
 			
 			vals.buffTimeLeft = 2000;
 			

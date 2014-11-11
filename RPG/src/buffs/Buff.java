@@ -13,7 +13,7 @@ import main.Game;
 
 public class Buff extends Object {
 
-	public class BuffValues {
+	static public class BuffValues {
 		
 		public BuffValues() {}
 		
