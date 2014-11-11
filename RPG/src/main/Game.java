@@ -10,7 +10,7 @@ public class Game extends StateBasedGame {
 
 	static final int play = 0;
 	public static float GameTotalTime = 0;
-	
+	public static Vector<Object> TickingObjects;
 	
 	
 	public Game(String name) {

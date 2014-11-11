@@ -42,6 +42,8 @@ public class Buff extends Object {
 	public Buff(String name, Buff.BuffValues buffValsIn) {
 		buffName = name;
 		buffVals = buffValsIn;
+		
+		Game.TickingObjects.addElement(this);
 	}
 	
 	public int getBuffAmount(int baseValue, PlayerCharacter.statType statType) {
