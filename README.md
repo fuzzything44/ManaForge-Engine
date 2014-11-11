@@ -1,7 +1,7 @@
-RPG-Simulator
+RPG-Simulator 
 =============
 Setting up the development envrionment:
-Open worspace /RPG-Simulator/ in eclipse
+Open worspace /RPG-Simulator/ in eclipse 
 Create a project called RPG -- it will recognise it and open it
 Refresh the project (F5)
 Open project properties

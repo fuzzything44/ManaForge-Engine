@@ -15,3 +15,5 @@ hs_err_pid*
 
 *.classpath
 .settings/
+RPG/.classpath
+RPG/.settings/org.eclipse.jdt.core.prefs
