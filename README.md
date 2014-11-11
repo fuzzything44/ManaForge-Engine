@@ -3,9 +3,15 @@ RPG-Simulator
 Overview:
 
 What do we want to do?
+-General Game Design
+	-Theme: Do we want it to be medieval, oriental, futuristic, dystopian, or something else? 
+		-I'm thinking medieval fantasy would work best,  but I don't know for sure
+	-Arc: Will there be a storyline, or will it just be pure fighting? If there is a story, should it be happy, sad, or something else?
+	-Progression: What keeps the player hooked?
 -Character stuff:
 	Stats-what ones will we use? How are they gained?
 	Classes-what classes are there? What stats do they use?
+		-Possible Classes (Archetypes) : Warrior, Magic User, Rogue, Monk, Druid?, Barbarian, Paladin, Healer, Archer, etc.
 	Skills-what skills are there? How are they gained? What do they do?
 -Enemies:
 	What enemies are there? For that matter, what are we going to do for encounters?
