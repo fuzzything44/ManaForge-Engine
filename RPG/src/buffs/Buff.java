@@ -34,7 +34,7 @@ public class Buff extends Object {
 			defenceBuffNumber = 0;
 
 		//	How much time left until the buff runs out
-		float buffTimeLeft = 0;
+		public float buffTimeLeft = 0;
 		
 		
 	}
