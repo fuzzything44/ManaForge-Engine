@@ -1,7 +1,6 @@
-package main;
+package items;
 
 public class ManaPotion extends ConsumableItem {
-
 	public ManaPotion(String itemName, int itemAmount) {
 		super(itemName, itemAmount);
 	}

@@ -5,7 +5,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
-public class Game extends StateBasedGame{
+public class Game extends StateBasedGame {
 
 	static final int play = 0;
 
@@ -27,13 +27,13 @@ public class Game extends StateBasedGame{
 	public static void main(String args[]) {
 		AppGameContainer agc;
 		
-		try{
+		try {
 			
-			agc = new AppGameContainer(new Game("YAY"));
+			agc = new AppGameContainer(new Game("YAY") );
 			agc.setDisplayMode(640, 360, true);
 			agc.start();
 			
-		}catch(SlickException e){
+		} catch(SlickException e) {
 			e.printStackTrace();
 		}
 		

@@ -5,6 +5,7 @@ import java.util.Vector;
 // base character class. Can be used by either enemy or friendly
 public class Character {
 	
+//	Enum of all POSSIBLE body parts. Then use an array for body parts it has.	
 	enum BodyParts{
 		torso,
 		leg,
@@ -15,6 +16,8 @@ public class Character {
 	int currentHP;
 	int maxHP;
 	int attackStrength;
+	int experience;
+	int defense;
 	Vector<BodyParts> bodyParts;
 	
 	
