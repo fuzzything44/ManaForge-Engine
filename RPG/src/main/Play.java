@@ -26,13 +26,18 @@ public class Play extends BasicGameState {
 			throws SlickException {
 
 
+		gr.drawString(Float.toString(Game.GameTotalTime), 50, 50);
+		
 	}
 
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
 			throws SlickException {
 		
-
+		Game.GameTotalTime += delta;
+		
+		
+		
 	}
 
 	@Override

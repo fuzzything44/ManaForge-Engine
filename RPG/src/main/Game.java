@@ -4,11 +4,14 @@ import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
+import java.util.Vector;
 
 public class Game extends StateBasedGame {
 
 	static final int play = 0;
-
+	public static float GameTotalTime = 0;
+	
+	
 	
 	public Game(String name) {
 		super(name);
@@ -38,5 +41,7 @@ public class Game extends StateBasedGame {
 		}
 		
 	}
+	
+	
 
 }
