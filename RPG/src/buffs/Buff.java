@@ -15,6 +15,8 @@ public class Buff extends Object {
 
 	public class BuffValues {
 		
+		public BuffValues() {}
+		
 		//	Percent Buffs. Put in decimal form.
 		public float strBuffPercent = 0, 
 			dexBuffPercent = 0,
