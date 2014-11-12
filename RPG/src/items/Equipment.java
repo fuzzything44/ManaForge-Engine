@@ -1,9 +1,10 @@
 package items;
 
-public class Equipment {
-
-	public Equipment() {
-		// TODO Auto-generated constructor stub
+public class Equipment extends Item {
+	
+	public Equipment(String itemName, int itemAmount, int sellsFor) {
+		super(itemName, itemAmount, sellsFor);
 	}
-
+	
+	public void equip() {}
 }

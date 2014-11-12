@@ -1,6 +1,7 @@
 package main;
 
 import buffs.*;
+import items.*;
 
 import java.util.Vector;
 
@@ -11,23 +12,32 @@ public class PlayerCharacter extends Character {
  *	Base is the unbuffed MaxHP/MaxMP/Stat
  */
 	
-	int baseHealth;
+	Equipment hat;
+	Equipment shirt;
+	Equipment pants;
+	Equipment shoes;
+	Equipment accessory1;
+	
+	int baseHealth = 100;
 //	int maxHealth;		Already in Character
 //	int currentHealth;	Already in Character
 	
-	int currentMana;
-	int maxMana;
-	int baseMana;
+	int currentMana = 0;
+	int maxMana = 100;
+	int baseMana = 100;
 	
-	int baseStr;	// Strength
-	int baseDex;	// Dexterity
-	int baseWis;	// Wisdom
+	int baseStr = 10;	// Strength
+	int baseDex = 10;	// Dexterity
+	int baseWis = 10;	// Wisdom
 	
-	int buffedStr;	// Buffed versions. Used for most calculations
-	int buffedDex;
-	int buffedWis;
+	int buffedStr = 10;	// Buffed versions. Used for most calculations
+	int buffedDex = 10;
+	int buffedWis = 10;
 	
-	int level;		// Character Level
+	int level = 1;		// Character Level
+	
+	int buffedDefence = 1;
+	int buffedAttack = 1;
 	
 //	int defence;
 //	int attack;
@@ -64,19 +74,25 @@ public class PlayerCharacter extends Character {
 				manaBuff = 0,
 				strBuff = 0,
 				dexBuff = 0,
-				wisBuff = 0;
+				wisBuff = 0,
+				attackBuff = 0,
+				defenceBuff = 0;
 		for (int x = 0; x < buffs.size(); x++) {	// buff loop. Gets the total stat buff for everything.
 			healthBuff += buffs.get(x).getBuffAmount(baseHealth, statType.health);
 			manaBuff += buffs.get(x).getBuffAmount(baseMana, statType.mana);
 			strBuff += buffs.get(x).getBuffAmount(baseStr, statType.str);
 			dexBuff += buffs.get(x).getBuffAmount(baseWis, statType.wis);
 			wisBuff += buffs.get(x).getBuffAmount(baseDex, statType.dex);
+			attackBuff += buffs.get(x).getBuffAmount(attack, statType.attack);
+			defenceBuff += buffs.get(x).getBuffAmount(defenceBuff, statType.defence);
 		}	// end buff loop.
 		maxHealth = healthBuff + baseHealth;	// setting buffed values to correct amounts
 		maxMana = manaBuff + baseMana;
 		buffedStr = strBuff + baseStr;
 		buffedDex = dexBuff + baseDex;
 		buffedWis = wisBuff + baseWis;
+		buffedAttack = attackBuff + attack;
+		buffedDefence = defenceBuff + defence;
 		if (maxHealth <= 0) {
 			maxHealth = 1;
 		}
@@ -91,7 +107,11 @@ public class PlayerCharacter extends Character {
 		}
 		if (buffedWis <= 0) {
 			buffedWis = 1;
-		}	// making sure stats stay above 0
+		}
+		if (buffedAttack <= 0) {
+			buffedAttack = 1;
+		}	// making sure stats stay above 0. Defence can be negative.
+		
 	}		// end refreshStats
 	
 	public void addBuff(Buff buffAdded) {

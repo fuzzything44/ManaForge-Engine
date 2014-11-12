@@ -9,31 +9,12 @@
 
 package items;
 
-public class ConsumableItem /*extends Item */{
-	private int itemAmount;
-	private final String itemName;
+public class ConsumableItem extends Item {
 	
 	//	Constructor for the class. Takes name and starting amount.
-	public ConsumableItem(String nameIn, int amountIn) {
-		itemAmount = amountIn;
-		itemName = nameIn;
+	public ConsumableItem(String itemName, int itemAmount, int sellsFor) {
+		super(itemName, itemAmount, sellsFor);
 	}
-	
-	//	Lets you gain items
-	public void gainItems(int itemChange) {
-		itemAmount += itemChange;
-	}
-	
-	//	Returns amount of items you have
-	public int getItemAmount() {
-		return itemAmount;
-	}
-	
-	//	Returns the name of the item
-	public String getItemName() {
-		return itemName;
-	}
-	
 	// Uses the item. Goes to specific use method.
 	public void use() {}
 }
