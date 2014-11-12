@@ -1,10 +1,12 @@
 package items;
 
 public class Equipment extends Item {
+	// Add private buffvars variable for on equip.
 	
-	public Equipment(String itemName, int itemAmount, int sellsFor) {
-		super(itemName, itemAmount, sellsFor);
+	public Equipment(int itemAmount) {
+		super(itemAmount);
 	}
 	
 	public void equip() {}
+	public void unEquip() {}
 }
