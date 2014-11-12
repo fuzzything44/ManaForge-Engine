@@ -8,10 +8,8 @@ public class Item extends Object {
 	final String itemName;
 	private int itemAmount;
 	
-	public Item(String name, int amount, int sellsFor) {
+	public Item(int amount) {
 		itemAmount = amount;
-		itemName = name;
-		sellPrice = sellsFor;
 	}
 	
 	//	Lets you gain items
