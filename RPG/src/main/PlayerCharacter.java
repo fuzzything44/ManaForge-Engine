@@ -1,6 +1,7 @@
 package main;
 
 import buffs.*;
+
 import java.util.Vector;
 
 public class PlayerCharacter extends Character {
@@ -33,7 +34,7 @@ public class PlayerCharacter extends Character {
 	
 //	int experience;
 	
-	Vector<Buff> buffs;
+	Vector<Buff> buffs = new Vector<Buff>();
 	
 	public enum statType {
 		health,
@@ -52,7 +53,9 @@ public class PlayerCharacter extends Character {
 	}
 	
 	public void removeBuff(Buff buffRemoved) {
+
 		buffs.remove(buffRemoved);
+		
 		refreshStats();
 	}	// remove expired buffs and refreshes stats
 	
@@ -94,5 +97,8 @@ public class PlayerCharacter extends Character {
 	public void addBuff(Buff buffAdded) {
 		buffs.addElement(buffAdded);
 		refreshStats();
+	}
+	public int amountBuffs(){
+		return buffs.size();
 	}
 }

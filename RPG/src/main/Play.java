@@ -45,6 +45,8 @@ public class Play extends BasicGameState {
 			
 			vals.buffTimeLeft = 2000;
 			
+			character = new PlayerCharacter();
+			
 			buff = new Buff("Buff1", vals, character);
 		} 
 		if(buff != null){

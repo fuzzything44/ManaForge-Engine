@@ -7,6 +7,8 @@
  */
 package buffs;
 
+import java.util.Iterator;
+
 import main.Object;
 import main.PlayerCharacter;
 import main.Game;
@@ -51,7 +53,9 @@ public class Buff extends Object {
 	public Buff(String name, Buff.BuffValues buffValsIn, PlayerCharacter player) {
 		buffName = name;
 		buffVals = buffValsIn;
+		
 		owner = player;
+		owner.addBuff(this);
 		Game.TickingObjects.addElement(this);
 	}
 	
@@ -87,9 +91,12 @@ public class Buff extends Object {
 	public void tick(float deltaTime) {
 		super.tick(deltaTime);
 		buffVals.buffTimeLeft -=deltaTime;
-		if (buffVals.buffTimeLeft <= 0 ) {
+		if (buffVals.buffTimeLeft <= 0 && owner != null) {
 			owner.removeBuff(this);
+			Game.TickingObjects.remove(this);
+			
 		}
+		
 	}
 }
 
