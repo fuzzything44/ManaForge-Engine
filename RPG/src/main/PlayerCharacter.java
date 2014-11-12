@@ -36,6 +36,9 @@ public class PlayerCharacter extends Character {
 	
 	int level = 1;		// Character Level
 	
+	int buffedDefence = 1;
+	int buffedAttack = 1;
+	
 //	int defence;
 //	int attack;
 	
@@ -69,19 +72,25 @@ public class PlayerCharacter extends Character {
 				manaBuff = 0,
 				strBuff = 0,
 				dexBuff = 0,
-				wisBuff = 0;
+				wisBuff = 0,
+				attackBuff = 0,
+				defenceBuff = 0;
 		for (int x = 0; x < buffs.size(); x++) {	// buff loop. Gets the total stat buff for everything.
 			healthBuff += buffs.get(x).getBuffAmount(baseHealth, statType.health);
 			manaBuff += buffs.get(x).getBuffAmount(baseMana, statType.mana);
 			strBuff += buffs.get(x).getBuffAmount(baseStr, statType.str);
 			dexBuff += buffs.get(x).getBuffAmount(baseWis, statType.wis);
 			wisBuff += buffs.get(x).getBuffAmount(baseDex, statType.dex);
+			attackBuff += buffs.get(x).getBuffAmount(attack, statType.attack);
+			defenceBuff += buffs.get(x).getBuffAmount(defenceBuff, statType.defence);
 		}	// end buff loop.
 		maxHealth = healthBuff + baseHealth;	// setting buffed values to correct amounts
 		maxMana = manaBuff + baseMana;
 		buffedStr = strBuff + baseStr;
 		buffedDex = dexBuff + baseDex;
 		buffedWis = wisBuff + baseWis;
+		buffedAttack = attackBuff + attack;
+		buffedDefence = defenceBuff + defence;
 		if (maxHealth <= 0) {
 			maxHealth = 1;
 		}
@@ -96,7 +105,11 @@ public class PlayerCharacter extends Character {
 		}
 		if (buffedWis <= 0) {
 			buffedWis = 1;
-		}	// making sure stats stay above 0
+		}
+		if (buffedAttack <= 0) {
+			buffedAttack = 1;
+		}	// making sure stats stay above 0. Defence can be negative.
+		
 	}		// end refreshStats
 	
 	public void addBuff(Buff buffAdded) {

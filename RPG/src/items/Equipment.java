@@ -1,10 +1,10 @@
 package items;
 
-public class Equipment {
-	private final String name;
+public class Equipment extends Item {
 	
-	public Equipment(String EquipmentName) {
-		name = EquipmentName;
+	public Equipment(String itemName, int itemAmount, int sellsFor) {
+		super(itemName, itemAmount, sellsFor);
 	}
-
+	
+	public void equip() {}
 }
