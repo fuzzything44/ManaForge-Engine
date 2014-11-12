@@ -9,4 +9,8 @@ public class Hat extends Equipment {
 	public void equip () {
 		
 	}
+	
+	public void unEquip() {
+		
+	}
 }
