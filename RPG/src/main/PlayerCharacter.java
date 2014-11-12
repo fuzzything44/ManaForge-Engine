@@ -12,11 +12,14 @@ public class PlayerCharacter extends Character {
  *	Base is the unbuffed MaxHP/MaxMP/Stat
  */
 	
-	Equipment hat;
-	Equipment shirt;
-	Equipment pants;
-	Equipment shoes;
-	Equipment accessory1;
+	Hat hat = null;
+//	Shirt shirt = null;
+//	Pants pants = null;
+//	Shoes shoes = null;
+//	Necklace necklace = null;
+//	Earrings earrings = null;
+//	Ring ring1 = null;
+//	Ring ring2 = null;
 	
 	int baseHealth = 100;
 //	int maxHealth;		Already in Character
