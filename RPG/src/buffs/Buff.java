@@ -60,7 +60,9 @@ public class Buff extends Object {
 		
 		owner = player;
 		owner.addBuff(this);
-		Game.TickingObjects.addElement(this);
+		if (!isBuffPermanent) {
+			Game.TickingObjects.addElement(this);
+		}
 	}
 	
 	public int getBuffAmount(int baseValue, PlayerCharacter.statType statType) {	// gives how much a stat is being buffed.
@@ -94,13 +96,10 @@ public class Buff extends Object {
 
 	public void tick(float deltaTime) {
 		super.tick(deltaTime);
-		if (!isBuffPermanent) {
-			buffVals.buffTimeLeft -=deltaTime;
-			if (buffVals.buffTimeLeft <= 0 && owner != null) {
-				owner.removeBuff(this);
-				Game.TickingObjects.remove(this);
-			
-			}
+		buffVals.buffTimeLeft -=deltaTime;
+		if (buffVals.buffTimeLeft <= 0 && owner != null) {
+			owner.removeBuff(this);
+			Game.TickingObjects.remove(this);
 		}
 	}
 }
