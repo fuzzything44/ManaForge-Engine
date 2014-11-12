@@ -40,6 +40,10 @@ public class Buff extends Object {
 		//	How much time left until the buff runs out
 		public float buffTimeLeft = 0;
 		
+		pubilic String buffDescription = "default";
+		
+		public boolean isBuffPermanent = false;
+		
 		
 	}
 	
@@ -90,13 +94,14 @@ public class Buff extends Object {
 
 	public void tick(float deltaTime) {
 		super.tick(deltaTime);
-		buffVals.buffTimeLeft -=deltaTime;
-		if (buffVals.buffTimeLeft <= 0 && owner != null) {
-			owner.removeBuff(this);
-			Game.TickingObjects.remove(this);
+		if (!isBuffPermanent) {
+			buffVals.buffTimeLeft -=deltaTime;
+			if (buffVals.buffTimeLeft <= 0 && owner != null) {
+				owner.removeBuff(this);
+				Game.TickingObjects.remove(this);
 			
+			}
 		}
-		
 	}
 }
 
