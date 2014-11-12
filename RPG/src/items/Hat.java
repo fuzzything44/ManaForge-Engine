@@ -3,7 +3,7 @@ package items;
 public class Hat extends Equipment {
 
 	public Hat(String itemName, int itemAmount, int sellsFor) {
-		super(itemName, itemAmount, sellsFor);
+		super(itemAmount);
 	}
 	
 	public void equip () {
