@@ -8,7 +8,6 @@
 package buffs;
 
 import java.util.Iterator;
-
 import main.Object;
 import main.PlayerCharacter;
 import main.Game;
@@ -40,7 +39,7 @@ public class Buff extends Object {
 		//	How much time left until the buff runs out
 		public float buffTimeLeft = 0;
 		
-		pubilic String buffDescription = "default";
+		public String buffDescription = "default";
 		
 		public boolean isBuffPermanent = false;
 		
@@ -60,7 +59,7 @@ public class Buff extends Object {
 		
 		owner = player;
 		owner.addBuff(this);
-		if (!isBuffPermanent) {
+		if (!buffVals.isBuffPermanent) {
 			Game.TickingObjects.addElement(this);
 		}
 	}

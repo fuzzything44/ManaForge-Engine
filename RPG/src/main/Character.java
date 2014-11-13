@@ -6,7 +6,7 @@ import java.util.Vector;
 public class Character extends Object {
 	
 //	Enum of all POSSIBLE body parts. Then use an array for body parts it has.	
-	enum BodyParts{
+	enum PossibleBodyParts{
 		torso,
 		leg,
 		arm,
@@ -18,7 +18,7 @@ public class Character extends Object {
 	int attack;
 	int experience;
 	int defence;
-	Vector<BodyParts> bodyParts;
+	Vector<PossibleBodyParts> bodyParts;
 	
 	
 }

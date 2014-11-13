@@ -12,14 +12,13 @@ public class PlayerCharacter extends Character {
  *	Base is the unbuffed MaxHP/MaxMP/Stat
  */
 	
-	Hat hat = null;
-//	Shirt shirt = null;
-//	Pants pants = null;
-//	Shoes shoes = null;
-//	Necklace necklace = null;
-//	Earrings earrings = null;
-//	Ring ring1 = null;
-//	Ring ring2 = null;
+	static Hat hat = null;
+	static Shirt shirt = null;
+//	static Pants pants = null;
+//	static Shoes shoes = null;
+//	static Necklace necklace = null;
+//	static Earrings earrings = null;
+//	static Ring ring = null;
 	
 	int baseHealth = 100;
 //	int maxHealth;		Already in Character
@@ -38,16 +37,26 @@ public class PlayerCharacter extends Character {
 	int buffedWis = 10;
 	
 	int level = 1;		// Character Level
-	
+//	int experience;
+
 	int buffedDefence = 1;
 	int buffedAttack = 1;
 	
 //	int defence;
 //	int attack;
 	
-//	int experience;
-	
-	Vector<Buff> buffs = new Vector<Buff>();
+	static Vector<Buff> buffs = new Vector<Buff>();
+	static Vector<Equipment> equips = new Vector<Equipment>();
+	static Vector<ConsumableItem> consumables = new Vector<ConsumableItem>();
+	public enum equipmentTypes {
+		hat,
+		shirt,
+		pants,
+		shoes,
+		necklace,
+		earring,
+		ring
+	}
 	
 	public enum statType {
 		health,
@@ -66,9 +75,7 @@ public class PlayerCharacter extends Character {
 	}
 	
 	public void removeBuff(Buff buffRemoved) {
-
 		buffs.remove(buffRemoved);
-		
 		refreshStats();
 	}	// remove expired buffs and refreshes stats
 	
@@ -120,8 +127,20 @@ public class PlayerCharacter extends Character {
 	public void addBuff(Buff buffAdded) {
 		buffs.addElement(buffAdded);
 		refreshStats();
-	}
+	}	// Not needed to run. Just run constructor for a buff.
+	
 	public int amountBuffs(){
 		return buffs.size();
+	}	// returns how many buffs are active
+	
+	public static void equip(Equipment equippedItem) {
+		switch (equippedItem.equip) {
+		case hat:
+			hat.unEquip();
+			hat = (Hat) equippedItem;
+		case shirt:
+			shirt.unEquip();
+			shirt = (Shirt) equippedItem;	// TODO before I go farther, is this the correct thing to do?
+		}
 	}
 }

@@ -12,8 +12,8 @@ package items;
 public class ConsumableItem extends Item {
 	
 	//	Constructor for the class. Takes name and starting amount.
-	public ConsumableItem(int itemAmount) {
-		super(itemAmount);
+	public ConsumableItem(int price, String name, String description, int amount) {
+		super(price, name, description, amount);
 	}
 	// Uses the item. Goes to specific use method.
 	public void use() {}
