@@ -9,11 +9,13 @@
 
 package items;
 
+import main.PlayerCharacter;
+
 public class ConsumableItem extends Item {
 	
 	//	Constructor for the class. Takes name and starting amount.
-	public ConsumableItem(int price, String name, String description, int amount) {
-		super(price, name, description, amount);
+	public ConsumableItem(int price, String name, String description, int amount, PlayerCharacter looter) {
+		super(price, name, description, amount, looter);
 	}
 	// Uses the item. Goes to specific use method.
 	public void use() {}

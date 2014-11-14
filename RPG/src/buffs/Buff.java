@@ -7,7 +7,6 @@
  */
 package buffs;
 
-import java.util.Iterator;
 import main.Object;
 import main.PlayerCharacter;
 import main.Game;
@@ -37,10 +36,12 @@ public class Buff extends Object {
 			defenceBuffNumber = 0;
 
 		//	How much time left until the buff runs out
-		public float buffTimeLeft = 0;
+		public float buffTimeLeft = 1;
 		
+		// Description of the buff. If default, will display basic nonzero stat modifiers (dexBuffNumber, dexBuffPercent ex.)
 		public String buffDescription = "default";
 		
+		// Determines if the buff is permanent or not.
 		public boolean isBuffPermanent = false;
 		
 		

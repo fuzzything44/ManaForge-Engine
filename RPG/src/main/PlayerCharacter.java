@@ -12,42 +12,44 @@ public class PlayerCharacter extends Character {
  *	Base is the unbuffed MaxHP/MaxMP/Stat
  */
 	
-	static Hat hat = null;
-	static Shirt shirt = null;
-//	static Pants pants = null;
-//	static Shoes shoes = null;
-//	static Necklace necklace = null;
-//	static Earrings earrings = null;
-//	static Ring ring = null;
+	public Hat hat = null;
+	public Shirt shirt = null;
+//	public Pants pants = null;
+//	public Shoes shoes = null;
+//	public Necklace necklace = null;
+//	public Earrings earrings = null;
+//	public Ring ring = null;
+//	public Gloves gloves = null;
 	
-	int baseHealth = 100;
+	public int baseHealth = 100;
 //	int maxHealth;		Already in Character
 //	int currentHealth;	Already in Character
 	
-	int currentMana = 0;
-	int maxMana = 100;
-	int baseMana = 100;
+	public int currentMana = 0,
+			maxMana = 100,
+			baseMana = 100;
 	
-	int baseStr = 10;	// Strength
-	int baseDex = 10;	// Dexterity
-	int baseWis = 10;	// Wisdom
+	public int baseStr = 10,	// Strength
+		baseDex = 10,	// Dexterity
+		baseWis = 10;	// Wisdom
 	
-	int buffedStr = 10;	// Buffed versions. Used for most calculations
-	int buffedDex = 10;
-	int buffedWis = 10;
+	public int buffedStr = 10,	// Buffed versions. Used for most calculations
+		buffedDex = 10,
+		buffedWis = 10;
 	
-	int level = 1;		// Character Level
+	public int level = 1;		// Character Level
 //	int experience;
 
-	int buffedDefence = 1;
-	int buffedAttack = 1;
+	public int buffedDefence = 1,
+		buffedAttack = 1;
 	
 //	int defence;
 //	int attack;
+		
+	public Vector<Buff> buffs = new Vector<Buff>();
+	public Vector<Equipment> equips = new Vector<Equipment>();
+	public Vector<ConsumableItem> consumables = new Vector<ConsumableItem>();
 	
-	static Vector<Buff> buffs = new Vector<Buff>();
-	static Vector<Equipment> equips = new Vector<Equipment>();
-	static Vector<ConsumableItem> consumables = new Vector<ConsumableItem>();
 	public enum equipmentTypes {
 		hat,
 		shirt,
@@ -98,12 +100,12 @@ public class PlayerCharacter extends Character {
 		}	// end buff loop.
 		maxHealth = healthBuff + baseHealth;	// setting buffed values to correct amounts
 		maxMana = manaBuff + baseMana;
-		buffedStr = strBuff + baseStr;
+		buffedStr = strBuff + baseStr;			// Would it be better to just use Math.max(statBuff + baseStat, 1); here?
 		buffedDex = dexBuff + baseDex;
 		buffedWis = wisBuff + baseWis;
 		buffedAttack = attackBuff + attack;
 		buffedDefence = defenceBuff + defence;
-		if (maxHealth <= 0) {
+		if (maxHealth <= 0) {					// Using the math method gets rid of code from here...
 			maxHealth = 1;
 		}
 		if (maxMana <= 0) {
@@ -119,7 +121,7 @@ public class PlayerCharacter extends Character {
 			buffedWis = 1;
 		}
 		if (buffedAttack <= 0) {
-			buffedAttack = 1;
+			buffedAttack = 1;					// ...to here.
 		}	// making sure stats stay above 0. Defence can be negative.
 		
 	}		// end refreshStats
@@ -133,7 +135,7 @@ public class PlayerCharacter extends Character {
 		return buffs.size();
 	}	// returns how many buffs are active
 	
-	public static void equip(Equipment equippedItem) {
+	public void equip(Equipment equippedItem) {
 		switch (equippedItem.equip) {
 		case hat:
 			hat.unEquip();
@@ -141,6 +143,8 @@ public class PlayerCharacter extends Character {
 		case shirt:
 			shirt.unEquip();
 			shirt = (Shirt) equippedItem;	// TODO before I go farther, is this the correct thing to do?
+		default:
+			break;
 		}
 	}
 }
