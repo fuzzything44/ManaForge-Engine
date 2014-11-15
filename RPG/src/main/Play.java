@@ -37,11 +37,11 @@ public class Play extends BasicGameState {
 		
 		Input i = gc.getInput();
 		gr.setColor(Color.white);
-		gr.drawString(Float.toString(Game.GameTotalTime), 100, 100);
+		gr.drawString(Float.toString(Game.GameTotalTime/1000), 100, 100);
 		
 		gr.fillRect(0, 0, 640, 50);
 		gr.setColor(Color.black);
-		gr.drawString("STATS:", 10, 20);	// Yes, code here does need to be cleaned up. I have the rectangle good.
+		gr.drawString("Buff Time:", 10, 20);	// Yes, code here does need to be cleaned up. I have the rectangle good.
 		
 		
 		if(i.isKeyPressed(Keyboard.KEY_E) ) {
@@ -49,13 +49,12 @@ public class Play extends BasicGameState {
 				Buff.BuffValues vals = new Buff.BuffValues();
 				vals.buffTimeLeft = 2000;
 				buff = new Buff("Buff1", vals, character);
-				System.out.println("Buff created");
 			} else {	// If you do have a buff...
 				buff.increaseBuffLength(2000);
 			}
 		}	// What this is doing is giving you a buff when you press E, unless you already have one. 
 		for (int x = 0; x < character.buffs.size(); x++) {	// Automatically displays all buffs you have. At the same place. Whatever.
-			gr.drawString(Float.toString(character.buffs.get(x).getTimeLeft() ), 70, 20);
+			gr.drawString(Float.toString(character.buffs.get(x).getTimeLeft() /1000), 100, 20);	// Buff time left in seconds.
 		}
 		
 	}	// End render method.
