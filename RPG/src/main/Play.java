@@ -18,7 +18,16 @@ public class Play extends BasicGameState {
 	
 	public final int state;
 	public PlayerCharacter character = new PlayerCharacter();
-	
+	public enum rightPaneStates {
+		equipment,
+		consumables,
+		buffs,
+		equipmentSpecific,
+		consumableSpecific,
+		buffSpecific
+	}	// What the right pane can display. Specific is the exact buff/consumable/equipment info.
+	public int infoPaneSpecific = 1;	// What vector index the specific thing is at.
+	public rightPaneStates rightPaneState = rightPaneStates.buffs;
 	
 	public Play(int statein) {
 		state = statein;
@@ -40,10 +49,10 @@ public class Play extends BasicGameState {
 		gr.drawString(Float.toString(Game.GameTotalTime/1000), 100, 100);
 		
 		gr.fillRect(0, 0, 640, 50);				// Fills the top pane.
-		gr.fillRect(440, 50, 200, 310);			// Fills the side pane.
+		gr.fillRect(440, 50, 200, 310);			// Fills the right pane.
 
 		gr.setColor(Color.black);
-		gr.drawLine(0, 50, 640, 50);			// Separates top and side panes.
+		gr.drawLine(0, 50, 640, 50);			// Separates top and right panes.
 		gr.drawString("Buff Time:", 10, 20);	// Yes, code here does need to be cleaned up. I have the rectangle size correct.
 		
 		
@@ -56,10 +65,36 @@ public class Play extends BasicGameState {
 				buff.increaseBuffLength(2000);
 			}
 		}	// What this is doing is giving you a buff when you press E, unless you already have one. 
-		for (int x = 0; x < character.buffs.size(); x++) {	// Automatically displays all buffs you have. At the same place. Whatever.
-			gr.drawString(Float.toString(character.buffs.get(x).getTimeLeft() /1000), 100, 20);	// Buff time left in seconds.
-		}
 		
+		if (rightPaneState == rightPaneStates.buffs) {
+			for (int x = 0; x < character.buffs.size(); x++) {	// Automatically displays all buffs you have. At the same place. Whatever.
+				gr.drawString(Float.toString(character.buffs.get(x).getTimeLeft() /1000), 100, 20);	// Buff time left in seconds.
+			}	// Needs to be changed to be like consumables without "[Use]" option. Finish consumables first and copy.
+		} else if (rightPaneState == rightPaneStates.consumables) {
+			for (int x = 0; x < character.buffs.size(); x++) {
+				gr.drawString(character.consumables.get(x).getItemName(), 450, 50 + 20*x);
+				gr.drawString("[Use]", 450, 50 + 20*x);
+				gr.drawString("[Info]", 480, 50 + 20*x);
+				// Spacing here needs to change. Also "[Use]" and "[Info]" need to be clickable
+				// TODO Also we should probably have a scroll bar here. Hmm.
+			}
+		} else if (rightPaneState == rightPaneStates.equipment) {
+			// Display Equipment
+		} else if (rightPaneState == rightPaneStates.buffSpecific) {
+			gr.drawString(character.buffs.elementAt(infoPaneSpecific).getBuffName(), 450, 70);
+			if (character.buffs.elementAt(infoPaneSpecific).getBuffDescription().equals("default") ) {
+				// If description is "default", draws all stats.
+				gr.drawString("STR Buff: %haracter.buffs.elementAt(infoPaneSpecific).getBuffAmount(character.baseStr ,PlayerCharacter.statType.str)", 0, 0);
+				// Go through this for every stat. Fix placement
+			} else {
+				gr.drawString(character.buffs.elementAt(infoPaneSpecific).getBuffDescription(), 0, 0);
+				// Draws the description if not default.
+			}
+		} else if (rightPaneState == rightPaneStates.consumableSpecific) {
+			
+		} else if (rightPaneState == rightPaneStates.equipmentSpecific) {
+			
+		}
 	}	// End render method.
 
 	@Override

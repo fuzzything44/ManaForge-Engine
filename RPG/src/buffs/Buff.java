@@ -102,5 +102,13 @@ public class Buff extends Object {
 			Game.TickingObjects.remove(this);
 		}
 	}
+	
+	public String getBuffName () {
+		return buffName;
+	}
+	
+	public String getBuffDescription() {
+		return buffVals.buffDescription;
+	}
 }
 
