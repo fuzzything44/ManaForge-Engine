@@ -1,6 +1,7 @@
 package main;
 
 import org.lwjgl.input.Keyboard;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -16,17 +17,17 @@ public class Play extends BasicGameState {
 	Buff buff = null;
 	
 	public final int state;
-	public PlayerCharacter character;
+	public PlayerCharacter character = new PlayerCharacter();
 	
 	
-	public Play(int statein){
-		state=statein;
+	public Play(int statein) {
+		state = statein;
 	}
 	
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
-		
+		// What is the purpose of this method? 
 
 	}
 
@@ -35,27 +36,29 @@ public class Play extends BasicGameState {
 			throws SlickException {
 		
 		Input i = gc.getInput();
-		
+		gr.setColor(Color.white);
 		gr.drawString(Float.toString(Game.GameTotalTime), 100, 100);
 		
+		gr.fillRect(0, 0, 640, 50);
+		gr.setColor(Color.black);
+		gr.drawString("STATS:", 10, 20);	// Yes, code here does need to be cleaned up. I have the rectangle good.
 		
-		if(i.isKeyPressed(Keyboard.KEY_E)){
-			
-			Buff.BuffValues vals = new Buff.BuffValues();
-			
-			vals.buffTimeLeft = 2000;
-			
-			character = new PlayerCharacter();
-			
-			buff = new Buff("Buff1", vals, character);
-		} 
-		if(buff != null){
-			
-			gr.drawString(Float.toString(buff.getTimeLeft()), 300, 300);
-			
+		
+		if(i.isKeyPressed(Keyboard.KEY_E) ) {
+			if (character.buffs.size() == 0) {	// If you have no buffs...
+				Buff.BuffValues vals = new Buff.BuffValues();
+				vals.buffTimeLeft = 2000;
+				buff = new Buff("Buff1", vals, character);
+				System.out.println("Buff created");
+			} else {	// If you do have a buff...
+				buff.increaseBuffLength(2000);
+			}
+		}	// What this is doing is giving you a buff when you press E, unless you already have one. 
+		for (int x = 0; x < character.buffs.size(); x++) {	// Automatically displays all buffs you have. At the same place. Whatever.
+			gr.drawString(Float.toString(character.buffs.get(x).getTimeLeft() ), 70, 20);
 		}
 		
-	}
+	}	// End render method.
 
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
@@ -64,26 +67,20 @@ public class Play extends BasicGameState {
 		Game.GameTotalTime += delta;
 	
 		
-		for(int i = 0; i < Game.TickingObjects.size(); i++){
+		for (int i = 0; i < Game.TickingObjects.size(); i++) {
 			Game.TickingObjects.get(i).tick(delta);
 		}
 		
 		Input i = gc.getInput();
 		
-		if(i.isKeyPressed(Keyboard.KEY_ESCAPE)){
+		if (i.isKeyPressed(Keyboard.KEY_ESCAPE) ) {
 			sbg.enterState(Game.pause);
 		}
-		
-
-		
-	}
+			
+	}	// End update method
 
 	@Override
 	public int getID() {
-		
 		return state;
 	}
-	
-
-
 }
