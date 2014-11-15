@@ -39,9 +39,12 @@ public class Play extends BasicGameState {
 		gr.setColor(Color.white);
 		gr.drawString(Float.toString(Game.GameTotalTime/1000), 100, 100);
 		
-		gr.fillRect(0, 0, 640, 50);
+		gr.fillRect(0, 0, 640, 50);				// Fills the top pane.
+		gr.fillRect(440, 50, 200, 310);			// Fills the side pane.
+
 		gr.setColor(Color.black);
-		gr.drawString("Buff Time:", 10, 20);	// Yes, code here does need to be cleaned up. I have the rectangle good.
+		gr.drawLine(0, 50, 640, 50);			// Separates top and side panes.
+		gr.drawString("Buff Time:", 10, 20);	// Yes, code here does need to be cleaned up. I have the rectangle size correct.
 		
 		
 		if(i.isKeyPressed(Keyboard.KEY_E) ) {
