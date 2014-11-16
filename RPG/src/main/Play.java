@@ -65,7 +65,7 @@ public class Play extends BasicGameState {
 				buff.increaseBuffLength(2000);
 			}
 		}	// What this is doing is giving you a buff when you press E, unless you already have one. 
-		
+			// If you have one, it increases the time left.
 		if (rightPaneState == rightPaneStates.buffs) {
 			for (int x = 0; x < character.buffs.size(); x++) {	// Automatically displays all buffs you have. At the same place. Whatever.
 				gr.drawString(Float.toString(character.buffs.get(x).getTimeLeft() /1000), 100, 20);	// Buff time left in seconds.
@@ -84,8 +84,22 @@ public class Play extends BasicGameState {
 			gr.drawString(character.buffs.elementAt(infoPaneSpecific).getBuffName(), 450, 70);
 			if (character.buffs.elementAt(infoPaneSpecific).getBuffDescription().equals("default") ) {
 				// If description is "default", draws all stats.
-				gr.drawString("STR Buff: %haracter.buffs.elementAt(infoPaneSpecific).getBuffAmount(character.baseStr ,PlayerCharacter.statType.str)", 0, 0);
-				// Go through this for every stat. Fix placement
+				String statType = "STR";
+				int statBuff = character.buffs.elementAt(infoPaneSpecific).getBuffAmount(character.baseStr ,PlayerCharacter.statType.str);
+				
+				String buffAmount = String.format("%s Buff: %a", statType, statBuff );
+				gr.drawString(buffAmount, 0, 0);
+				// Draws "STR Buff: X" Where X is the Str. Buff. 
+				
+				statType = "DEX";
+				statBuff = character.buffs.elementAt(infoPaneSpecific).getBuffAmount(character.baseDex, PlayerCharacter.statType.dex);
+				// Draws "DEX Buff: X" Where X is the Dex. Buff.
+				
+				/* Go through this for every stat. Fix placement. Also maybe have it not display if 
+				 * the buff is zero?
+				 * Stats to display: STR, DEX, WIS, Health, Mana, Attack, Defence.
+				 * Also need time left on the buff. 
+				 * */
 			} else {
 				gr.drawString(character.buffs.elementAt(infoPaneSpecific).getBuffDescription(), 0, 0);
 				// Draws the description if not default.
