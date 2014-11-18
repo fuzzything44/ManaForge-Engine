@@ -12,7 +12,7 @@ import main.PlayerCharacter;
 import main.Game;
 
 public class Buff extends Object {
-
+	
 	static public class BuffValues {
 		
 		public BuffValues() {}
@@ -45,20 +45,65 @@ public class Buff extends Object {
 		public boolean isBuffPermanent = false;
 		
 		
-	}
+		
+	}	// End buffValues
+	
+	public class buffAmountsClass {
+			public float buffPercent;
+			public int buffAmount;
+			public String buffType;
+	}	// End buffAmountsClass
 	
 	private BuffValues buffVals;
+	// own instance of buffValues. Used for ... things
 	
 	private PlayerCharacter owner;
+	// The player. Used to remove this buff.
 	
 	//	Name of the buff
 	final String buffName;
 	
+	private buffAmountsClass[] buffAmounts = new buffAmountsClass[7];
+	// Array of values, useful for getting the description
+	
+	// Constructor for Buff
 	public Buff(String name, Buff.BuffValues buffValsIn, PlayerCharacter player) {
 		buffName = name;
 		buffVals = buffValsIn;
 		
+		buffAmounts[0].buffPercent = buffVals.strBuffPercent;
+		buffAmounts[0].buffAmount = buffVals.strBuffNumber;
+		buffAmounts[0].buffType = "STR";
+		
+		buffAmounts[1].buffPercent = buffVals.dexBuffPercent;
+		buffAmounts[1].buffAmount = buffVals.dexBuffNumber;
+		buffAmounts[1].buffType = "DEX";
+		
+		buffAmounts[2].buffPercent = buffVals.wisBuffPercent;
+		buffAmounts[2].buffAmount = buffVals.wisBuffNumber;
+		buffAmounts[2].buffType = "WIS";
+		
+		buffAmounts[3].buffPercent = buffVals.attackBuffPercent;
+		buffAmounts[3].buffAmount = buffVals.attackBuffNumber;
+		buffAmounts[3].buffType = "Attack";
+		
+		buffAmounts[4].buffPercent = buffVals.defenceBuffPercent;
+		buffAmounts[4].buffAmount = buffVals.defenceBuffNumber;
+		buffAmounts[4].buffType = "Defence";
+		
+		buffAmounts[5].buffPercent = buffVals.healthBuffPercent;
+		buffAmounts[5].buffAmount = buffVals.healthBuffNumber;
+		buffAmounts[5].buffType = "Health";
+		
+		buffAmounts[6].buffPercent = buffVals.manaBuffPercent;
+		buffAmounts[6].buffAmount = buffVals.manaBuffNumber;
+		buffAmounts[6].buffType = "Mana";
+		
 		owner = player;
+		
+		assert owner == null : "Owner is set to null. How did this happen?";
+		assert buffVals == null : "The given buff values (Buff.BuffValues) was null. Did you initialize it?";
+		
 		owner.addBuff(this);
 		if (!buffVals.isBuffPermanent) {
 			Game.TickingObjects.addElement(this);
@@ -89,11 +134,13 @@ public class Buff extends Object {
 	public void increaseBuffLength(float timeIncrease) {
 		buffVals.buffTimeLeft += timeIncrease;
 	}
+	// Increases the time left on a buff.
 	
 	public float getTimeLeft() {
 		return buffVals.buffTimeLeft;
 	}
-
+	
+	// What the buff does every tick: decrease time left and remove itself if no time is left
 	public void tick(float deltaTime) {
 		super.tick(deltaTime);
 		buffVals.buffTimeLeft -=deltaTime;
@@ -101,14 +148,31 @@ public class Buff extends Object {
 			owner.removeBuff(this);
 			Game.TickingObjects.remove(this);
 		}
-	}
+	}	// End tick
 	
 	public String getBuffName () {
 		return buffName;
-	}
+	}	// End get name
 	
 	public String getBuffDescription() {
-		return buffVals.buffDescription;
-	}
-}
+		if (buffVals.buffDescription.equals("default") ) {
+			String desc = new String();
+			for (int x =0; x < buffAmounts.length; x++) {
+				/* This loops through to get you the entire values of what a buff does.
+				 * If it gives you +5 STR, then there will be a line displaying "5 STR"
+				 * +5% STR gives you a line displaying "5% STR"
+				 */
+				if (buffAmounts[x].buffPercent != 0) {
+					desc += String.format("%f% %s \n", buffAmounts[x].buffPercent*100, buffAmounts[x].buffType);
+				}
+				if (buffAmounts[x].buffAmount != 0) {
+					desc += String.format("%i %s \n", buffAmounts[x].buffAmount, buffAmounts[x].buffType);
+				}
+			}	// End for
+			return desc;
+		} else {
+			return buffVals.buffDescription;
+		}		// End if/else
+	}	// End getBuffDescription()
+}		// End Buff class.
 

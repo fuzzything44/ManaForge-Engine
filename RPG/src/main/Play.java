@@ -1,6 +1,10 @@
 package main;
-
+/*
+ * Pretty much everything for draw needs to be changed-placements need to be fixed, things need to be added, etc.
+ * See the section for more notes on what need to be done.
+ */
 import org.lwjgl.input.Keyboard;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -16,7 +20,7 @@ public class Play extends BasicGameState {
 	Buff buff = null;
 	
 	public final int state;
-	public PlayerCharacter character;
+	public PlayerCharacter character = new PlayerCharacter();
 	public enum rightPaneStates {
 		equipment,
 		consumables,
@@ -36,17 +40,12 @@ public class Play extends BasicGameState {
 	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
 		// What is the purpose of this method? 
-		
-		Actor a = new Actor();
-		a.isRendered = true;
-		character = new PlayerCharacter();
+
 	}
 
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics gr)
 			throws SlickException {
-		
-		/*
 		
 		Input i = gc.getInput();
 		gr.setColor(Color.white);
@@ -86,28 +85,9 @@ public class Play extends BasicGameState {
 			// Display Equipment
 		} else if (rightPaneState == rightPaneStates.buffSpecific) {
 			gr.drawString(character.buffs.elementAt(infoPaneSpecific).getBuffName(), 450, 70);
-			if (character.buffs.elementAt(infoPaneSpecific).getBuffDescription().equals("default") ) {
-				// If description is "default", draws all stats.
-				String statType = "STR";
-				int statBuff = character.buffs.elementAt(infoPaneSpecific).getBuffAmount(character.baseStr ,PlayerCharacter.statType.str);
-				
-				String buffAmount = String.format("%s Buff: %a", statType, statBuff );
-				gr.drawString(buffAmount, 0, 0);
-				// Draws "STR Buff: X" Where X is the Str. Buff. 
-				
-				statType = "DEX";
-				statBuff = character.buffs.elementAt(infoPaneSpecific).getBuffAmount(character.baseDex, PlayerCharacter.statType.dex);
-				// Draws "DEX Buff: X" Where X is the Dex. Buff.
-				
-				/* Go through this for every stat. Fix placement. Also maybe have it not display if 
-				 * the buff is zero?
-				 * Stats to display: STR, DEX, WIS, Health, Mana, Attack, Defence.
-				 * Also need time left on the buff. 
-				 * */ /*
-			} else {
-				gr.drawString(character.buffs.elementAt(infoPaneSpecific).getBuffDescription(), 0, 0);
-				// Draws the description if not default.
-			}
+			gr.drawString(character.buffs.elementAt(infoPaneSpecific).getBuffDescription(), 0, 0);
+			// Draws the description if not default. Fix placement.
+			
 		} else if (rightPaneState == rightPaneStates.consumableSpecific) {
 			
 		} else if (rightPaneState == rightPaneStates.equipmentSpecific) {
@@ -148,25 +128,6 @@ public class Play extends BasicGameState {
 		
 		if (i.isKeyPressed(Keyboard.KEY_ESCAPE) ) {
 			sbg.enterState(Game.pause);
-		}
-		
-		if(i.isKeyPressed(Keyboard.KEY_W)){
-			character.Teleport(new Coordinate(character.getLocation().X, character.getLocation().Y - 1));
-		}
-		if(i.isKeyPressed(Keyboard.KEY_A)){
-			character.Teleport(new Coordinate(character.getLocation().X - 1, character.getLocation().Y));
-		}
-		if(i.isKeyPressed(Keyboard.KEY_S)){
-			character.Teleport(new Coordinate(character.getLocation().X, character.getLocation().Y + 1));
-		}
-		if(i.isKeyPressed(Keyboard.KEY_D)){
-			character.Teleport(new Coordinate(character.getLocation().X + 1, character.getLocation().Y));
-		}
-		if(i.isKeyPressed(Keyboard.KEY_Q)){
-			Game.zoom +=5;
-		}		
-		if(i.isKeyPressed(Keyboard.KEY_E)){
-			Game.zoom -=5;
 		}
 			
 	}	// End update method
