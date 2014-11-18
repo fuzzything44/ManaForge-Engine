@@ -5,12 +5,16 @@ import items.*;
 
 import java.util.Vector;
 
+import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
+
 public class PlayerCharacter extends Character {
 	
 /*	Max is the max buffed HP/MP/Stat
  *	Current is the amount of HP/MP you have left
  *	Base is the unbuffed MaxHP/MaxMP/Stat
  */
+	
 	
 	public Hat hat = null;
 	public Shirt shirt = null;
@@ -73,6 +77,13 @@ public class PlayerCharacter extends Character {
 	}
 	
 	public PlayerCharacter() {
+		super();
+		
+		try {
+			displayImage = new Image("res/Knight.png");
+		} catch (SlickException e) {
+			e.printStackTrace();
+		}
 		
 	}
 	
@@ -147,4 +158,5 @@ public class PlayerCharacter extends Character {
 			break;
 		}
 	}
+
 }

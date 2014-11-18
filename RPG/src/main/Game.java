@@ -12,6 +12,8 @@ public class Game extends StateBasedGame {
 	static final int pause = 1;
 	public static float GameTotalTime = 0;
 	public static Vector<Object> TickingObjects = new Vector<Object>();
+	public static int zoom = 20;
+	public static Vector<Actor> allActors = new Vector<Actor>();
 	
 	
 	public Game(String name) {
@@ -37,6 +39,7 @@ public class Game extends StateBasedGame {
 			agc = new AppGameContainer(new Game("YAY") );
 			agc.setDisplayMode(640, 360, false);
 			agc.start();
+			
 			
 		} catch(SlickException e) {
 			e.printStackTrace();
