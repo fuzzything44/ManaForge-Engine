@@ -120,8 +120,8 @@ public class Play extends BasicGameState {
 				Actor a = Game.allActors.get(i);
 				
 				int x, y;
-				x = (int) ((a.getLocation().X * Game.zoom) + character.getLocation().X + gc.getWidth()/2);
-				y = (int) ((a.getLocation().Y * Game.zoom) + character.getLocation().Y + gc.getHeight()/2);
+				x = (int) ((a.getLocation().X * Game.zoom) + gc.getWidth()/2);
+				y = (int) ((a.getLocation().Y * Game.zoom) + gc.getHeight()/2);
 				
 				gr.drawImage(a.displayImage, x, y,x + Game.zoom, y + Game.zoom,
 						0, 0, a.displayImage.getWidth(), a.displayImage.getHeight());
