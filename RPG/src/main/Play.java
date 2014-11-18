@@ -20,7 +20,7 @@ public class Play extends BasicGameState {
 	Buff buff = null;
 	
 	public final int state;
-	public PlayerCharacter character = new PlayerCharacter();
+	public PlayerCharacter character;
 	public enum rightPaneStates {
 		equipment,
 		consumables,
@@ -41,11 +41,15 @@ public class Play extends BasicGameState {
 			throws SlickException {
 		// What is the purpose of this method? 
 
+		character = new PlayerCharacter();
+		
 	}
 
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics gr)
 			throws SlickException {
+		
+		
 		
 		Input i = gc.getInput();
 		gr.setColor(Color.white);
@@ -93,11 +97,11 @@ public class Play extends BasicGameState {
 		} else if (rightPaneState == rightPaneStates.equipmentSpecific) {
 			
 		}
-		*/
 		
-		for(int i = 0; i < Game.allActors.size(); i++){
-			if(Game.allActors.get(i).isRendered){
-				Actor a = Game.allActors.get(i);
+		
+		for(int i1 = 0; i1 < Game.allActors.size(); i1++){
+			if(Game.allActors.get(i1).isRendered){
+				Actor a = Game.allActors.get(i1);
 				
 				int x, y;
 				x = (int) ((a.getLocation().X * Game.zoom) + gc.getWidth()/2);
@@ -129,7 +133,25 @@ public class Play extends BasicGameState {
 		if (i.isKeyPressed(Keyboard.KEY_ESCAPE) ) {
 			sbg.enterState(Game.pause);
 		}
-			
+
+		if(i.isKeyPressed(Keyboard.KEY_W)){
+			character.Teleport(new Coordinate(character.getLocation().X, character.getLocation().Y - 1));
+		}
+		if(i.isKeyPressed(Keyboard.KEY_A)){
+			character.Teleport(new Coordinate(character.getLocation().X - 1, character.getLocation().Y));
+		}
+		if(i.isKeyPressed(Keyboard.KEY_S)){
+			character.Teleport(new Coordinate(character.getLocation().X, character.getLocation().Y + 1));
+		}
+		if(i.isKeyPressed(Keyboard.KEY_D)){
+			character.Teleport(new Coordinate(character.getLocation().X + 1, character.getLocation().Y));
+		}
+		if(i.isKeyPressed(Keyboard.KEY_Q)){
+			Game.zoom +=5;
+		}		
+		if(i.isKeyPressed(Keyboard.KEY_E)){
+			Game.zoom -=5;
+		}
 	}	// End update method
 
 	@Override
