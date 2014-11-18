@@ -1,16 +1,26 @@
 package main;
 
+import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
+
+
 /* The base class for anything placeable in the world
  * 
  */
 
 
-
 public class Actor extends Object {
 	
 	
-	public Actor(){
+	public Actor() {
 		Game.allActors.addElement(this);
+	
+		try{
+			displayImage = new Image("res/Default.png");
+	
+		}catch (SlickException e){
+			e.printStackTrace();
+		}
 	}
 	
 	public  Coordinate getLocation(){
@@ -24,7 +34,9 @@ public class Actor extends Object {
 	}
 	
 	 
+	public Image displayImage;
 	
+	private Coordinate Location = new Coordinate();
 	
-	private Coordinate Location;
+	public boolean isRendered = true;
 }

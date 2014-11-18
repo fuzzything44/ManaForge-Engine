@@ -12,6 +12,7 @@ public class PlayerCharacter extends Character {
  *	Base is the unbuffed MaxHP/MaxMP/Stat
  */
 	
+	
 	public Hat hat = null;
 	public Shirt shirt = null;
 //	public Pants pants = null;
@@ -73,7 +74,7 @@ public class PlayerCharacter extends Character {
 	}
 	
 	public PlayerCharacter() {
-		
+		isRendered = false;
 	}
 	
 	public void removeBuff(Buff buffRemoved) {
@@ -147,4 +148,5 @@ public class PlayerCharacter extends Character {
 			break;
 		}
 	}
+
 }

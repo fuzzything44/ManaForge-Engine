@@ -1,7 +1,6 @@
 package main;
 
 import org.lwjgl.input.Keyboard;
-import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -17,7 +16,7 @@ public class Play extends BasicGameState {
 	Buff buff = null;
 	
 	public final int state;
-	public PlayerCharacter character = new PlayerCharacter();
+	public PlayerCharacter character;
 	public enum rightPaneStates {
 		equipment,
 		consumables,
@@ -37,12 +36,17 @@ public class Play extends BasicGameState {
 	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
 		// What is the purpose of this method? 
-
+		
+		Actor a = new Actor();
+		a.isRendered = true;
+		character = new PlayerCharacter();
 	}
 
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics gr)
 			throws SlickException {
+		
+		/*
 		
 		Input i = gc.getInput();
 		gr.setColor(Color.white);
@@ -99,7 +103,7 @@ public class Play extends BasicGameState {
 				 * the buff is zero?
 				 * Stats to display: STR, DEX, WIS, Health, Mana, Attack, Defence.
 				 * Also need time left on the buff. 
-				 * */
+				 * */ /*
 			} else {
 				gr.drawString(character.buffs.elementAt(infoPaneSpecific).getBuffDescription(), 0, 0);
 				// Draws the description if not default.
@@ -109,6 +113,24 @@ public class Play extends BasicGameState {
 		} else if (rightPaneState == rightPaneStates.equipmentSpecific) {
 			
 		}
+		*/
+		
+		for(int i = 0; i < Game.allActors.size(); i++){
+			if(Game.allActors.get(i).isRendered){
+				Actor a = Game.allActors.get(i);
+				
+				int x, y;
+				x = (int) ((a.getLocation().X * Game.zoom) + character.getLocation().X + gc.getWidth()/2);
+				y = (int) ((a.getLocation().X * Game.zoom) + character.getLocation().X + gc.getHeight()/2);
+				
+				gr.drawImage(a.displayImage, x, y,x + Game.zoom, y + Game.zoom,
+						0, 0, a.displayImage.getWidth(), a.displayImage.getHeight());
+				
+
+			}
+		}
+		
+		
 	}	// End render method.
 
 	@Override
