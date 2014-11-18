@@ -1,6 +1,6 @@
 package userInterface;
 
-public class HorizonitalDivider {
+public class HorizonitalDivider extends Divider{
 
 	
 	
