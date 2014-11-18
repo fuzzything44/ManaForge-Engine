@@ -12,6 +12,8 @@ public class Game extends StateBasedGame {
 	static final int pause = 1;
 	public static float GameTotalTime = 0;
 	public static Vector<Object> TickingObjects = new Vector<Object>();
+	public static float zoom;
+	public static Vector<Actor> allActors = new Vector<Actor>();
 	
 	
 	public Game(String name) {

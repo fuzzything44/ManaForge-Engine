@@ -8,6 +8,11 @@ package main;
 
 public class Actor extends Object {
 	
+	
+	public Actor(){
+		Game.allActors.addElement(this);
+	}
+	
 	public  Coordinate getLocation(){
 		return Location;
 	}
