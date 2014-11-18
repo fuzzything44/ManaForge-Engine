@@ -5,6 +5,9 @@ import items.*;
 
 import java.util.Vector;
 
+import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
+
 public class PlayerCharacter extends Character {
 	
 /*	Max is the max buffed HP/MP/Stat
@@ -74,7 +77,14 @@ public class PlayerCharacter extends Character {
 	}
 	
 	public PlayerCharacter() {
-		isRendered = false;
+		super();
+		
+		try {
+			displayImage = new Image("res/Knight.png");
+		} catch (SlickException e) {
+			e.printStackTrace();
+		}
+		
 	}
 	
 	public void removeBuff(Buff buffRemoved) {

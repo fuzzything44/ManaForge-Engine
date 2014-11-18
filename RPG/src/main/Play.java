@@ -121,7 +121,7 @@ public class Play extends BasicGameState {
 				
 				int x, y;
 				x = (int) ((a.getLocation().X * Game.zoom) + character.getLocation().X + gc.getWidth()/2);
-				y = (int) ((a.getLocation().X * Game.zoom) + character.getLocation().X + gc.getHeight()/2);
+				y = (int) ((a.getLocation().Y * Game.zoom) + character.getLocation().Y + gc.getHeight()/2);
 				
 				gr.drawImage(a.displayImage, x, y,x + Game.zoom, y + Game.zoom,
 						0, 0, a.displayImage.getWidth(), a.displayImage.getHeight());
@@ -148,6 +148,25 @@ public class Play extends BasicGameState {
 		
 		if (i.isKeyPressed(Keyboard.KEY_ESCAPE) ) {
 			sbg.enterState(Game.pause);
+		}
+		
+		if(i.isKeyPressed(Keyboard.KEY_W)){
+			character.Teleport(new Coordinate(character.getLocation().X, character.getLocation().Y - 1));
+		}
+		if(i.isKeyPressed(Keyboard.KEY_A)){
+			character.Teleport(new Coordinate(character.getLocation().X - 1, character.getLocation().Y));
+		}
+		if(i.isKeyPressed(Keyboard.KEY_S)){
+			character.Teleport(new Coordinate(character.getLocation().X, character.getLocation().Y + 1));
+		}
+		if(i.isKeyPressed(Keyboard.KEY_D)){
+			character.Teleport(new Coordinate(character.getLocation().X + 1, character.getLocation().Y));
+		}
+		if(i.isKeyPressed(Keyboard.KEY_Q)){
+			Game.zoom +=5;
+		}		
+		if(i.isKeyPressed(Keyboard.KEY_E)){
+			Game.zoom -=5;
 		}
 			
 	}	// End update method
