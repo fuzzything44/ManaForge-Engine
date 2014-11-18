@@ -149,7 +149,7 @@ public class Play extends BasicGameState {
 		if(i.isKeyPressed(Keyboard.KEY_Q)){
 			Game.zoom +=5;
 		}		
-		if(i.isKeyPressed(Keyboard.KEY_E)){
+		if(i.isKeyPressed(Keyboard.KEY_R)){
 			Game.zoom -=5;
 		}
 	}	// End update method
