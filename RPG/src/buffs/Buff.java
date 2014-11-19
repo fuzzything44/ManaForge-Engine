@@ -178,5 +178,14 @@ public class Buff extends Object {
 			return buffVals.buffDescription;
 		}		// End if/else
 	}	// End getBuffDescription()
+	
+	public boolean equals(Buff equalTo) {
+		if (equalTo.getBuffDescription().equals(getBuffDescription()) && equalTo.getBuffName().equals(buffName) ) {
+			return true;
+		} else {
+			return false;
+		}
+	}	// Overriding .equals method.
+		// For two buffs to be equal, they need the same generated description and name.
 }		// End Buff class.
 
