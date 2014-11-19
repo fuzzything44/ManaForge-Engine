@@ -71,6 +71,10 @@ public class Buff extends Object {
 		buffName = name;
 		buffVals = buffValsIn;
 		
+		for (int numberOfBuffTypes = 0; numberOfBuffTypes < buffAmounts.length; numberOfBuffTypes++) {
+			buffAmounts[numberOfBuffTypes] = new buffAmountsClass();
+		}
+		
 		buffAmounts[0].buffPercent = buffVals.strBuffPercent;
 		buffAmounts[0].buffAmount = buffVals.strBuffNumber;
 		buffAmounts[0].buffType = "STR";

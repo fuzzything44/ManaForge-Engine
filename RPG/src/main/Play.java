@@ -63,14 +63,16 @@ public class Play extends BasicGameState {
 		gr.drawString("Buff Time:", 10, 20);	// Yes, code here does need to be cleaned up. I have the rectangle size correct.
 		
 		
-		if(i.isKeyPressed(Keyboard.KEY_E) ) {
+		if(i.isKeyPressed(Keyboard.KEY_F) ) {
 			if (character.buffs.size() == 0) {	// If you have no buffs...
 				Buff.BuffValues vals = new Buff.BuffValues();
+				vals.attackBuffNumber = 5;
+				vals.attackBuffPercent = 0.3f;	// f says it is a float constant, not a double.
 				vals.buffTimeLeft = 2000;
 				buff = new Buff("Buff1", vals, character);
 			} else {	// If you do have a buff...
-				buff.increaseBuffLength(2000);
-			}
+				buff.increaseBuffLength(2000);	
+			}	// Should this be done in buff constructor? I think maybe. Also identify buffs by name. 
 		}	// What this is doing is giving you a buff when you press E, unless you already have one. 
 			// If you have one, it increases the time left.
 		if (rightPaneState == rightPaneStates.buffs) {
@@ -93,9 +95,9 @@ public class Play extends BasicGameState {
 			// Draws the description if not default. Fix placement.
 			
 		} else if (rightPaneState == rightPaneStates.consumableSpecific) {
-			
+			// Need to do the same as buffs with equipment.
 		} else if (rightPaneState == rightPaneStates.equipmentSpecific) {
-			
+			// Need to do the same with equipment.
 		}
 		
 		
@@ -145,12 +147,19 @@ public class Play extends BasicGameState {
 		}
 		if(i.isKeyPressed(Keyboard.KEY_D)){
 			character.Teleport(new Coordinate(character.getLocation().X + 1, character.getLocation().Y));
-		}
+		}	// For movement, we want to continually move in a direction while the key is pressed. This means 
+			// that coordinates will increase by fractional components every tick.
 		if(i.isKeyPressed(Keyboard.KEY_Q)){
 			Game.zoom +=5;
+			if (Game.zoom > 50) {
+				Game.zoom = 50;	// Max zoom level. Needs adjusting.
+			}
 		}		
-		if(i.isKeyPressed(Keyboard.KEY_R)){
+		if(i.isKeyPressed(Keyboard.KEY_E)){
 			Game.zoom -=5;
+			if (Game.zoom < 5) {
+				Game.zoom = 5;	// min zoom level. Needs adjusting
+			}
 		}
 	}	// End update method
 

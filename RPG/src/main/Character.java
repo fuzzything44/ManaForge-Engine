@@ -22,19 +22,3 @@ public class Character extends Actor {
 	
 	
 }
-/*
-Item creation:
-ManaPotion item = new ManaPotion("NOT DEADLY!", 1);
-
-public void dispInventory() {
-	for(int x = 0, x < size of item array/whatever , x++) {
-		if (itemArrayObject.getItemAmount() ) > 0 {
-			dispOnCorrectPlace(itemArrayObject.getItemName);
-			Increment dispOnCorrectPlace
-		}
-	}
-}
-
-What I want to do with items.
-
-*/
