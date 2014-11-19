@@ -167,14 +167,14 @@ public class Buff extends Object {
 				 * +5% STR gives you a line displaying "5% STR"
 				 */
 				if (buffAmounts[x].buffPercent != 0) {
-					desc += String.format("%f% %s \n", buffAmounts[x].buffPercent*100, buffAmounts[x].buffType);
+					desc += String.format("%d %s \n", Math.round(buffAmounts[x].buffPercent*100), buffAmounts[x].buffType);
 				}
 				if (buffAmounts[x].buffAmount != 0) {
-					desc += String.format("%i %s \n", buffAmounts[x].buffAmount, buffAmounts[x].buffType);
+					desc += String.format("%d %s \n", buffAmounts[x].buffAmount, buffAmounts[x].buffType);
 				}
 			}	// End for
 			return desc;
-		} else {
+		} else { 
 			return buffVals.buffDescription;
 		}		// End if/else
 	}	// End getBuffDescription()

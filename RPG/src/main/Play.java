@@ -29,7 +29,7 @@ public class Play extends BasicGameState {
 		consumableSpecific,
 		buffSpecific
 	}	// What the right pane can display. Specific is the exact buff/consumable/equipment info.
-	public int infoPaneSpecific = 1;	// What vector index the specific thing is at.
+	public int infoPaneSpecific = 0;	// What vector index the specific thing is at.
 	public rightPaneStates rightPaneState = rightPaneStates.buffs;
 	
 	public Play(int statein) {
@@ -70,6 +70,7 @@ public class Play extends BasicGameState {
 				vals.attackBuffPercent = 0.3f;	// f says it is a float constant, not a double.
 				vals.buffTimeLeft = 2000;
 				buff = new Buff("Buff1", vals, character);
+				rightPaneState = rightPaneStates.buffSpecific;
 			} else {	// If you do have a buff...
 				buff.increaseBuffLength(2000);	
 			}	// Should this be done in buff constructor? I think maybe. Also identify buffs by name. 
@@ -90,10 +91,17 @@ public class Play extends BasicGameState {
 		} else if (rightPaneState == rightPaneStates.equipment) {
 			// Display Equipment
 		} else if (rightPaneState == rightPaneStates.buffSpecific) {
-			gr.drawString(character.buffs.elementAt(infoPaneSpecific).getBuffName(), 450, 70);
-			gr.drawString(character.buffs.elementAt(infoPaneSpecific).getBuffDescription(), 0, 0);
-			// Draws the description if not default. Fix placement.
-			
+			if (character.buffs.size() > infoPaneSpecific) {
+				gr.drawString(character.buffs.elementAt(infoPaneSpecific).getBuffName(), 450, 70);
+				gr.drawString(character.buffs.elementAt(infoPaneSpecific).getBuffDescription(), 450, 90);
+				// Draws the description of what the buff does.
+				gr.drawString(Float.toString(character.buffs.get(infoPaneSpecific).getTimeLeft() /1000), 100, 20);
+				// gives time left of this specific buff.
+				// TODO fix placement of stuff.
+			} else {
+				rightPaneState = rightPaneStates.buffs;
+			}	// If/else makes sure that there is a buff at that index. If there isn't, 
+				// it returns the right pane to buffs.
 		} else if (rightPaneState == rightPaneStates.consumableSpecific) {
 			// Need to do the same as buffs with equipment.
 		} else if (rightPaneState == rightPaneStates.equipmentSpecific) {
@@ -136,20 +144,22 @@ public class Play extends BasicGameState {
 			sbg.enterState(Game.pause);
 		}
 
-		if(i.isKeyPressed(Keyboard.KEY_W)){
+		if(i.isKeyPressed(Keyboard.KEY_W) ) {
 			character.Teleport(new Coordinate(character.getLocation().X, character.getLocation().Y - 1));
 		}
-		if(i.isKeyPressed(Keyboard.KEY_A)){
+		if(i.isKeyPressed(Keyboard.KEY_A) ) {
 			character.Teleport(new Coordinate(character.getLocation().X - 1, character.getLocation().Y));
 		}
-		if(i.isKeyPressed(Keyboard.KEY_S)){
+		if(i.isKeyPressed(Keyboard.KEY_S) ) {
 			character.Teleport(new Coordinate(character.getLocation().X, character.getLocation().Y + 1));
 		}
-		if(i.isKeyPressed(Keyboard.KEY_D)){
+		if(i.isKeyPressed(Keyboard.KEY_D) ) {
 			character.Teleport(new Coordinate(character.getLocation().X + 1, character.getLocation().Y));
 		}	// For movement, we want to continually move in a direction while the key is pressed. This means 
 			// that coordinates will increase by fractional components every tick.
-		if(i.isKeyPressed(Keyboard.KEY_Q)){
+			// meaning we want i.isKeyDown(Keyboard.KEY_X); in the tick method.
+			// and then do stuff for speed. (maybe .01 units per millisecond?)
+		if(i.isKeyPressed(Keyboard.KEY_Q) ) {
 			Game.zoom +=5;
 			if (Game.zoom > 50) {
 				Game.zoom = 50;	// Max zoom level. Needs adjusting.
