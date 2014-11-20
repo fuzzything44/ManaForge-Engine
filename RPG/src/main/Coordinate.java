@@ -9,20 +9,20 @@ import java.lang.Math;
  */
 
 public class Coordinate {
-	public int X;
-	public int Y;
+	public float X;
+	public float Y;
 	
 	public Coordinate(){
 		X = 0;
 		Y = 0;
 	}
 	
-	public Coordinate(int Xin, int Yin){
+	public Coordinate(float Xin, float Yin){
 		X = Xin;
 		Y = Yin;
 	}
 	
-	public Coordinate(int in){
+	public Coordinate(float in){
 		Y = X = in;
 	}
 	
@@ -39,6 +39,14 @@ public class Coordinate {
 	
 	public Coordinate subtract(Coordinate c){
 		return new Coordinate(X - c.X, Y - c.Y);
+	}
+	
+	public Coordinate mulitply(Coordinate c){
+		return new Coordinate(X * c.X, Y * c.Y);
+	}
+	
+	public Coordinate mulitply(float f){
+		return new Coordinate(X * f, Y * f);
 	}
 	
 	public float Length(){

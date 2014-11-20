@@ -104,8 +104,8 @@ public class Play extends BasicGameState {
 				Actor a = Game.allActors.get(i1);
 				
 				int x, y;
-				x = (int) ((a.getLocation().X * Game.zoom) + gc.getWidth()/2);
-				y = (int) ((a.getLocation().Y * Game.zoom) + gc.getHeight()/2);
+				x = (int) ((a.location.X * Game.zoom) + gc.getWidth()/2);
+				y = (int) ((a.location.Y * Game.zoom) + gc.getHeight()/2);
 				
 				gr.drawImage(a.displayImage, x, y,x + Game.zoom, y + Game.zoom,
 						0, 0, a.displayImage.getWidth(), a.displayImage.getHeight());
@@ -134,24 +134,27 @@ public class Play extends BasicGameState {
 			sbg.enterState(Game.pause);
 		}
 
-		if(i.isKeyPressed(Keyboard.KEY_W)){
-			character.Teleport(new Coordinate(character.getLocation().X, character.getLocation().Y - 1));
+		character.setVelocity(new Coordinate(0));
+		
+		if(i.isKeyDown(Keyboard.KEY_W)){
+			character.setVelocity(new Coordinate(character.getVelocity().X, -character.moveSpeed));
 		}
-		if(i.isKeyPressed(Keyboard.KEY_A)){
-			character.Teleport(new Coordinate(character.getLocation().X - 1, character.getLocation().Y));
+		if(i.isKeyDown(Keyboard.KEY_A)){			
+			character.setVelocity(new Coordinate(-character.moveSpeed, character.getVelocity().Y));
 		}
-		if(i.isKeyPressed(Keyboard.KEY_S)){
-			character.Teleport(new Coordinate(character.getLocation().X, character.getLocation().Y + 1));
+		if(i.isKeyDown(Keyboard.KEY_S)){			
+			character.setVelocity(new Coordinate(character.getVelocity().X, character.moveSpeed));
 		}
-		if(i.isKeyPressed(Keyboard.KEY_D)){
-			character.Teleport(new Coordinate(character.getLocation().X + 1, character.getLocation().Y));
+		if(i.isKeyDown(Keyboard.KEY_D)){			
+			character.setVelocity(new Coordinate(character.moveSpeed, character.getVelocity().Y));
 		}
-		if(i.isKeyPressed(Keyboard.KEY_Q)){
+		if(i.isKeyDown(Keyboard.KEY_Q)){
 			Game.zoom +=5;
 		}		
-		if(i.isKeyPressed(Keyboard.KEY_R)){
+		if(i.isKeyDown(Keyboard.KEY_R)){
 			Game.zoom -=5;
 		}
+		System.out.println(gc.getFPS());
 	}	// End update method
 
 	@Override

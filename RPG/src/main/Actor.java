@@ -23,20 +23,10 @@ public class Actor extends Object {
 		}
 	}
 	
-	public  Coordinate getLocation(){
-		return Location;
-	}
-	
-	public void Teleport(Coordinate newLocation){
-		Location = newLocation;
-		
-		// TODO: Add teleport handling stuff
-	}
-	
 	 
 	public Image displayImage;
 	
-	private Coordinate Location = new Coordinate();
+	public Coordinate location = new Coordinate(0);
 	
 	public boolean isRendered = true;
 }

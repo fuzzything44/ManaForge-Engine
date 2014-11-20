@@ -14,7 +14,9 @@ public class PlayerCharacter extends Character {
  *	Current is the amount of HP/MP you have left
  *	Base is the unbuffed MaxHP/MaxMP/Stat
  */
+	public final float moveSpeed = 15f;
 	
+	private Coordinate velocity = new Coordinate(0);
 	
 	public Hat hat = null;
 	public Shirt shirt = null;
@@ -24,6 +26,14 @@ public class PlayerCharacter extends Character {
 //	public Earrings earrings = null;
 //	public Ring ring = null;
 //	public Gloves gloves = null;
+	
+	public Coordinate getVelocity(){
+		return velocity;
+	}
+	
+	public void setVelocity(Coordinate c){
+		velocity = c;
+	}
 	
 	public int baseHealth = 100;
 //	int maxHealth;		Already in Character
@@ -78,6 +88,8 @@ public class PlayerCharacter extends Character {
 	
 	public PlayerCharacter() {
 		super();
+		
+		Game.TickingObjects.addElement(this);
 		
 		try {
 			displayImage = new Image("res/Knight.png");
@@ -157,6 +169,11 @@ public class PlayerCharacter extends Character {
 		default:
 			break;
 		}
+		
+	}
+	
+	public void tick(float deltaTime){
+		location = location.add(velocity.mulitply(deltaTime/1000));
 	}
 
 }
