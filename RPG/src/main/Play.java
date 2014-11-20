@@ -148,10 +148,10 @@ public class Play extends BasicGameState {
 		if(i.isKeyDown(Keyboard.KEY_D)){			
 			character.setVelocity(new Coordinate(character.moveSpeed, character.getVelocity().Y));
 		}
-		if(i.isKeyDown(Keyboard.KEY_Q)){
+		if(i.isKeyPressed(Keyboard.KEY_Q)){
 			Game.zoom +=5;
 		}		
-		if(i.isKeyDown(Keyboard.KEY_R)){
+		if(i.isKeyPressed(Keyboard.KEY_R)){
 			Game.zoom -=5;
 		}
 		System.out.println(gc.getFPS());
