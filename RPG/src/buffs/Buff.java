@@ -167,15 +167,27 @@ public class Buff extends Object {
 				 * +5% STR gives you a line displaying "5% STR"
 				 */
 				if (buffAmounts[x].buffPercent != 0) {
-					desc += String.format("%d %s \n", Math.round(buffAmounts[x].buffPercent*100), buffAmounts[x].buffType);
+					if (buffAmounts[x].buffPercent > 0) {
+						desc += "+";
+					}
+					desc += String.format("%d%% %s \n", Math.round(buffAmounts[x].buffPercent*100), buffAmounts[x].buffType);
+					// Displays : "X% STAT" where X is the percent stat buff. If X is positive, put a plus sign in front.
 				}
 				if (buffAmounts[x].buffAmount != 0) {
+					if (buffAmounts[x].buffAmount > 0) {
+						desc += "+";
+					}
 					desc += String.format("%d %s \n", buffAmounts[x].buffAmount, buffAmounts[x].buffType);
 				}
 			}	// End for
 			return desc;
 		} else { 
-			return buffVals.buffDescription;
+			if (buffVals.buffDescription.length() < 20) {
+				return buffVals.buffDescription;
+			} else {
+				// add line breaks every 20 characters.
+				return "Description too long";
+			}
 		}		// End if/else
 	}	// End getBuffDescription()
 	

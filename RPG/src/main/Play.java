@@ -69,6 +69,9 @@ public class Play extends BasicGameState {
 				vals.attackBuffNumber = 5;
 				vals.attackBuffPercent = 0.3f;	// f says it is a float constant, not a double.
 				vals.buffTimeLeft = 2000;
+				vals.defenceBuffNumber = -5;
+//				vals.buffDescription = "aaaaaaaaaaaaaaaaaaaannnnnnnnnnnnnnnnnnnnWWWWWWWWWWWWWWWWWWWW";
+				// test line for adding line breaks.
 				buff = new Buff("Buff1", vals, character);
 				rightPaneState = rightPaneStates.buffSpecific;
 			} else {	// If you do have a buff...
@@ -78,7 +81,7 @@ public class Play extends BasicGameState {
 			// If you have one, it increases the time left.
 		if (rightPaneState == rightPaneStates.buffs) {
 			for (int x = 0; x < character.buffs.size(); x++) {	// Automatically displays all buffs you have. At the same place. Whatever.
-				gr.drawString(Float.toString(character.buffs.get(x).getTimeLeft() /1000), 100, 20);	// Buff time left in seconds.
+				gr.drawString(Integer.toString(Math.round(character.buffs.get(x).getTimeLeft()/1000 ) ), 100, 20);	// Buff time left in seconds.
 			}	// Needs to be changed to be like consumables without "[Use]" option. Finish consumables first and copy.
 		} else if (rightPaneState == rightPaneStates.consumables) {
 			for (int x = 0; x < character.buffs.size(); x++) {
