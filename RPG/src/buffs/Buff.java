@@ -71,6 +71,10 @@ public class Buff extends Object {
 		buffName = name;
 		buffVals = buffValsIn;
 		
+		for (int numberOfBuffTypes = 0; numberOfBuffTypes < buffAmounts.length; numberOfBuffTypes++) {
+			buffAmounts[numberOfBuffTypes] = new buffAmountsClass();
+		}
+		
 		buffAmounts[0].buffPercent = buffVals.strBuffPercent;
 		buffAmounts[0].buffAmount = buffVals.strBuffNumber;
 		buffAmounts[0].buffType = "STR";
@@ -163,16 +167,37 @@ public class Buff extends Object {
 				 * +5% STR gives you a line displaying "5% STR"
 				 */
 				if (buffAmounts[x].buffPercent != 0) {
-					desc += String.format("%f% %s \n", buffAmounts[x].buffPercent*100, buffAmounts[x].buffType);
+					if (buffAmounts[x].buffPercent > 0) {
+						desc += "+";
+					}
+					desc += String.format("%d%% %s \n", Math.round(buffAmounts[x].buffPercent*100), buffAmounts[x].buffType);
+					// Displays : "X% STAT" where X is the percent stat buff. If X is positive, put a plus sign in front.
 				}
 				if (buffAmounts[x].buffAmount != 0) {
-					desc += String.format("%i %s \n", buffAmounts[x].buffAmount, buffAmounts[x].buffType);
+					if (buffAmounts[x].buffAmount > 0) {
+						desc += "+";
+					}
+					desc += String.format("%d %s \n", buffAmounts[x].buffAmount, buffAmounts[x].buffType);
 				}
 			}	// End for
 			return desc;
-		} else {
-			return buffVals.buffDescription;
+		} else { 
+			if (buffVals.buffDescription.length() < 20) {
+				return buffVals.buffDescription;
+			} else {
+				// add line breaks every 20 characters.
+				return "Description too long";
+			}
 		}		// End if/else
 	}	// End getBuffDescription()
+	
+	public boolean equals(Buff equalTo) {
+		if (equalTo.getBuffDescription().equals(getBuffDescription()) && equalTo.getBuffName().equals(buffName) ) {
+			return true;
+		} else {
+			return false;
+		}
+	}	// Overriding .equals method.
+		// For two buffs to be equal, they need the same generated description and name.
 }		// End Buff class.
 
