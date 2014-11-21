@@ -42,7 +42,14 @@ public class Play extends BasicGameState {
 		if(character == null)
 			character = new PlayerCharacter();
 		
-		
+		Actor a = new Actor();
+		a.location = new Coordinate(3, 4);
+		Actor a1 = new Actor();
+		a1.location = new Coordinate(-5, -7);
+		Actor a2 = new Actor();
+		a2.location = new Coordinate(-2, 1);
+		Actor a3 = new Actor();
+		a3.location = new Coordinate(0, -8);
 		
 	}
 
@@ -105,7 +112,7 @@ public class Play extends BasicGameState {
 				Actor a = Game.allActors.get(i1);
 				int x, y;
 				x = (int) (((a.location.X - character.location.X) * Game.zoom) + gc.getWidth()/2);
-				y = (int) (((a.location.Y - character.location.Y) * Game.zoom)w + gc.getHeight()/2);
+				y = (int) (((a.location.Y - character.location.Y) * Game.zoom) + gc.getHeight()/2);
 				
 				
 				gr.drawImage(a.displayImage, x, y,x + Game.zoom, y + Game.zoom,
