@@ -4,6 +4,11 @@ package main;
  * See the section for more notes on what need to be done.
  */
 
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Vector;
+
 import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -41,33 +46,22 @@ public class Play extends BasicGameState {
 	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
 		
+		Game.textures = new HashMap<String, Image>();
+		
+		Game.textures.put("res/Default.png", new Image("res/Default.png"));
+		Game.textures.put("res/Knight.png", new Image("res/Knight.png"));
+		Game.textures.put("res/grass.png", new Image("res/grass.png"));
 		if(character == null)
 			character = new PlayerCharacter();
 		
-		Actor build;
-		
 
-		Image i = new Image("res/grass.png");
-		
-		for(int x = -50; x <= 50; x++){
-			for(int y = -50; y <= 50; y++){
-				build = new Actor();
-				build.location = new Coordinate(x, y);
-				
-				build.displayImage = i;
-					
-				
-			}
-		}
-		
-		Actor a = new Actor();
+/*		Actor a = new Actor();
 		a.location = new Coordinate(3, 4);
 		Actor a1 = new Actor();
 		a1.location = new Coordinate(-5, -7);
 		Actor a2 = new Actor();
-		a2.location = new Coordinate(-2, 1);
-		Actor a3 = new Actor();
-		a3.location = new Coordinate(0, -8);
+		a2.location = new Coordinate(-2, 1);*/
+		Actor a3 = new Actor(new Coordinate(-8, 0));
 		
 	}
 
@@ -124,8 +118,11 @@ public class Play extends BasicGameState {
 			
 		}
 		*/
-
-
+		
+		Map<String, Image> texturesScaled = new HashMap<String, Image>();
+		
+		int RenderedObjects = 0;
+		
 		for(int order = 0; order < 10; order++){
 			for(int i1 = 0; i1 < Game.allActors.size(); i1++){
 				if( Game.allActors.get(i1).isRendered && Game.allActors.get(i1).renderOrder == order){
@@ -134,17 +131,22 @@ public class Play extends BasicGameState {
 					x = (int) (((a.location.X - character.location.X) * Game.zoom) + gc.getWidth()/2);
 					y = (int) (((a.location.Y - character.location.Y) * Game.zoom) + gc.getHeight()/2);
 					
-					if(x > -Game.zoom && y > -Game.zoom && x < gc.getWidth() && y < gc.getHeight())
-						gr.drawImage(a.displayImage, x, y,x + Game.zoom, y + Game.zoom,
-								0, 0, a.displayImage.getWidth(), a.displayImage.getHeight());
-					
+					if(x > -Game.zoom && y > -Game.zoom && x < gc.getWidth() && y < gc.getHeight() && a.displayImage != null){
+						
+						if(!texturesScaled.containsKey(a.displayImage)){
+							texturesScaled.put(a.displayImage, Game.textures.get(a.displayImage).getScaledCopy(Game.zoom, Game.zoom));
+						}
+						RenderedObjects++;
+						texturesScaled.get(a.displayImage).draw(x, y);
+						
+					}
 					
 					
 				}
 			}
 		}
 
-		
+		System.out.println(RenderedObjects);
 		
 	}	// End render method.
 
@@ -180,10 +182,10 @@ public class Play extends BasicGameState {
 			character.setVelocity(new Coordinate(character.moveSpeed, character.getVelocity().Y));
 		}
 		if(i.isKeyPressed(Keyboard.KEY_Q)){
-			Game.zoom +=5;
+			Game.zoom *=1.5;
 		}		
 		if(i.isKeyPressed(Keyboard.KEY_R)){
-			Game.zoom -=5;
+			Game.zoom *=.5;
 		}
 	}	// End update method
 

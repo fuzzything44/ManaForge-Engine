@@ -13,19 +13,54 @@ public class Actor extends Object {
 	
 	
 	public Actor() {
-		Game.allActors.addElement(this);
-	
-		try{
-			displayImage = new Image("res/Default.png");
-	
-		}catch (SlickException e){
-			e.printStackTrace();
+		
+		if(!Game.allActors.contains(this)){
+		
+			Game.allActors.addElement(this);
 		}
+		displayImage = "res/Default.png";
+	
 		renderOrder = 1;
 	}
+
+	public Actor(Coordinate place) {
+		
+		if(!Game.allActors.contains(this)){
+		
+			Game.allActors.addElement(this);
+		}
+		displayImage = "res/Default.png";
 	
+		renderOrder = 1;
+		
+		location = place;
+		
+	}	
+	
+	public Actor(String image) {
+		
+		if(!Game.allActors.contains(this)){
+		
+			Game.allActors.addElement(this);
+		}
+		displayImage = image;
+	
+		renderOrder = 1;
+	}
+	public Actor(String image, Coordinate place) {
+		
+		if(!Game.allActors.contains(this)){
+		
+			Game.allActors.addElement(this);
+		}
+		displayImage = image;
+	
+		renderOrder = 1;
+		
+		location = place;
+	}
 	 
-	public Image displayImage;
+	public String displayImage;
 	
 	public Coordinate location = new Coordinate(0);
 	

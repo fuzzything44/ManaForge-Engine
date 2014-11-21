@@ -18,3 +18,4 @@ hs_err_pid*
 RPG/.classpath
 RPG/.settings/org.eclipse.jdt.core.prefs
 RPG/src/res/Thumbs.db
+*.db
