@@ -98,6 +98,8 @@ public class PlayerCharacter extends Character {
 		}
 		isRendered = true;
 		
+		renderOrder = 9;
+		
 	}
 	
 	public void removeBuff(Buff buffRemoved) {

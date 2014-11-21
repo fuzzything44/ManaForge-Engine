@@ -3,9 +3,12 @@ package main;
  * Pretty much everything for draw needs to be changed-placements need to be fixed, things need to be added, etc.
  * See the section for more notes on what need to be done.
  */
+import java.util.Vector;
+
 import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
@@ -41,6 +44,22 @@ public class Play extends BasicGameState {
 		
 		if(character == null)
 			character = new PlayerCharacter();
+		
+		Actor build;
+		
+
+		Image i = new Image("res/grass.png");
+		
+		for(int x = -10; x <= 10; x++){
+			for(int y = -10; y <= 10; y++){
+				build = new Actor();
+				build.location = new Coordinate(x, y);
+				
+				build.displayImage = i;
+					
+				
+			}
+		}
 		
 		Actor a = new Actor();
 		a.location = new Coordinate(3, 4);
@@ -107,21 +126,57 @@ public class Play extends BasicGameState {
 		}
 		*/
 		
-		for(int i1 = 0; i1 < Game.allActors.size(); i1++){
-			if(Game.allActors.get(i1).isRendered){
-				Actor a = Game.allActors.get(i1);
-				int x, y;
-				x = (int) (((a.location.X - character.location.X) * Game.zoom) + gc.getWidth()/2);
-				y = (int) (((a.location.Y - character.location.Y) * Game.zoom) + gc.getHeight()/2);
-				
-				
-				gr.drawImage(a.displayImage, x, y,x + Game.zoom, y + Game.zoom,
-						0, 0, a.displayImage.getWidth(), a.displayImage.getHeight());
-				
-				
-				
+		/*Vector<Vector<Actor> > actors = new Vector<Vector<Actor> >();
+		
+		for (int in = 0; in < 10; in++){
+			actors.add(in, new Vector<Actor>());
+		}
+		
+		for(int index = 0; index < Game.allActors.size(); index++){
+			switch(Game.allActors.get(index).renderOrder){
+			case 0:
+				actors.get(0).add(Game.allActors.get(index));
+			case 1:
+				actors.get(1).add(Game.allActors.get(index));
+			case 2:
+				actors.get(2).add(Game.allActors.get(index));
+			case 3:
+				actors.get(3).add(Game.allActors.get(index));
+			case 4:
+				actors.get(4).add(Game.allActors.get(index));
+			case 5:
+				actors.get(5).add(Game.allActors.get(index));
+			case 6:
+				actors.get(6).add(Game.allActors.get(index));
+			case 7:
+				actors.get(7).add(Game.allActors.get(index));
+			case 8:
+				actors.get(8).add(Game.allActors.get(index));
+			case 9:
+				actors.get(9).add(Game.allActors.get(index));
+			default:
+				actors.get(0).add(Game.allActors.get(index));
+			}
+		}*/
+
+		for(int order = 0; order < 10; order++){
+			for(int i1 = 0; i1 < Game.allActors.size(); i1++){
+				if( Game.allActors.get(i1).isRendered && Game.allActors.get(i1).renderOrder == order){
+					Actor a =  Game.allActors.get(i1);
+					int x, y;
+					x = (int) (((a.location.X - character.location.X) * Game.zoom) + gc.getWidth()/2);
+					y = (int) (((a.location.Y - character.location.Y) * Game.zoom) + gc.getHeight()/2);
+					
+					
+					gr.drawImage(a.displayImage, x, y,x + Game.zoom, y + Game.zoom,
+							0, 0, a.displayImage.getWidth(), a.displayImage.getHeight());
+					
+					
+					
+				}
 			}
 		}
+
 		
 		
 	}	// End render method.

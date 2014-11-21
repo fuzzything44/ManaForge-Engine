@@ -21,6 +21,7 @@ public class Actor extends Object {
 		}catch (SlickException e){
 			e.printStackTrace();
 		}
+		renderOrder = 1;
 	}
 	
 	 
@@ -29,4 +30,7 @@ public class Actor extends Object {
 	public Coordinate location = new Coordinate(0);
 	
 	public boolean isRendered = true;
+	
+	// 0 - 9
+	public int renderOrder;
 }

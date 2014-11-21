@@ -37,7 +37,7 @@ public class Game extends StateBasedGame {
 		try {
 			
 			agc = new AppGameContainer(new Game("YAY") );
-			agc.setDisplayMode(800, 600, false);
+			agc.setDisplayMode(3360, 2100, true);
 			agc.start();
 			
 			
