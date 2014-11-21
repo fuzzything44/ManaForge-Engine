@@ -3,7 +3,6 @@ package main;
  * Pretty much everything for draw needs to be changed-placements need to be fixed, things need to be added, etc.
  * See the section for more notes on what need to be done.
  */
-import java.util.Vector;
 
 import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.GameContainer;
@@ -50,8 +49,8 @@ public class Play extends BasicGameState {
 
 		Image i = new Image("res/grass.png");
 		
-		for(int x = -10; x <= 10; x++){
-			for(int y = -10; y <= 10; y++){
+		for(int x = -50; x <= 50; x++){
+			for(int y = -50; y <= 50; y++){
 				build = new Actor();
 				build.location = new Coordinate(x, y);
 				
@@ -135,9 +134,9 @@ public class Play extends BasicGameState {
 					x = (int) (((a.location.X - character.location.X) * Game.zoom) + gc.getWidth()/2);
 					y = (int) (((a.location.Y - character.location.Y) * Game.zoom) + gc.getHeight()/2);
 					
-					
-					gr.drawImage(a.displayImage, x, y,x + Game.zoom, y + Game.zoom,
-							0, 0, a.displayImage.getWidth(), a.displayImage.getHeight());
+					if(x > -Game.zoom && y > -Game.zoom && x < gc.getWidth() && y < gc.getHeight())
+						gr.drawImage(a.displayImage, x, y,x + Game.zoom, y + Game.zoom,
+								0, 0, a.displayImage.getWidth(), a.displayImage.getHeight());
 					
 					
 					
