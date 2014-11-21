@@ -125,39 +125,7 @@ public class Play extends BasicGameState {
 			
 		}
 		*/
-		
-		/*Vector<Vector<Actor> > actors = new Vector<Vector<Actor> >();
-		
-		for (int in = 0; in < 10; in++){
-			actors.add(in, new Vector<Actor>());
-		}
-		
-		for(int index = 0; index < Game.allActors.size(); index++){
-			switch(Game.allActors.get(index).renderOrder){
-			case 0:
-				actors.get(0).add(Game.allActors.get(index));
-			case 1:
-				actors.get(1).add(Game.allActors.get(index));
-			case 2:
-				actors.get(2).add(Game.allActors.get(index));
-			case 3:
-				actors.get(3).add(Game.allActors.get(index));
-			case 4:
-				actors.get(4).add(Game.allActors.get(index));
-			case 5:
-				actors.get(5).add(Game.allActors.get(index));
-			case 6:
-				actors.get(6).add(Game.allActors.get(index));
-			case 7:
-				actors.get(7).add(Game.allActors.get(index));
-			case 8:
-				actors.get(8).add(Game.allActors.get(index));
-			case 9:
-				actors.get(9).add(Game.allActors.get(index));
-			default:
-				actors.get(0).add(Game.allActors.get(index));
-			}
-		}*/
+
 
 		for(int order = 0; order < 10; order++){
 			for(int i1 = 0; i1 < Game.allActors.size(); i1++){
