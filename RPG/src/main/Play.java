@@ -4,7 +4,6 @@ package main;
  * See the section for more notes on what need to be done.
  */
 import org.lwjgl.input.Keyboard;
-import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -20,7 +19,7 @@ public class Play extends BasicGameState {
 	Buff buff = null;
 	
 	public final int state;
-	public PlayerCharacter character;
+	public PlayerCharacter character = null;
 	public enum rightPaneStates {
 		equipment,
 		consumables,
@@ -39,9 +38,11 @@ public class Play extends BasicGameState {
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
-		// What is the purpose of this method? 
-
-		character = new PlayerCharacter();
+		
+		if(character == null)
+			character = new PlayerCharacter();
+		
+		
 		
 	}
 
@@ -49,7 +50,7 @@ public class Play extends BasicGameState {
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics gr)
 			throws SlickException {
 		
-		
+		/*a
 		
 		Input i = gc.getInput();
 		gr.setColor(Color.white);
@@ -97,20 +98,21 @@ public class Play extends BasicGameState {
 		} else if (rightPaneState == rightPaneStates.equipmentSpecific) {
 			
 		}
-		
+		*/
 		
 		for(int i1 = 0; i1 < Game.allActors.size(); i1++){
 			if(Game.allActors.get(i1).isRendered){
 				Actor a = Game.allActors.get(i1);
-				
 				int x, y;
-				x = (int) ((a.location.X * Game.zoom) + gc.getWidth()/2);
-				y = (int) ((a.location.Y * Game.zoom) + gc.getHeight()/2);
+				x = (int) (((a.location.X - character.location.X) * Game.zoom) + gc.getWidth()/2);
+				y = (int) (((a.location.Y - character.location.Y) * Game.zoom)w + gc.getHeight()/2);
+				
 				
 				gr.drawImage(a.displayImage, x, y,x + Game.zoom, y + Game.zoom,
 						0, 0, a.displayImage.getWidth(), a.displayImage.getHeight());
 				
-
+				
+				
 			}
 		}
 		
@@ -154,7 +156,6 @@ public class Play extends BasicGameState {
 		if(i.isKeyPressed(Keyboard.KEY_R)){
 			Game.zoom -=5;
 		}
-		System.out.println(gc.getFPS());
 	}	// End update method
 
 	@Override

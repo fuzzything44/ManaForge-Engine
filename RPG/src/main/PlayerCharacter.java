@@ -92,10 +92,11 @@ public class PlayerCharacter extends Character {
 		Game.TickingObjects.addElement(this);
 		
 		try {
-			displayImage = new Image("res/Knight.png");
+			displayImage = new Image("res/Default.png");
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}
+		isRendered = true;
 		
 	}
 	
