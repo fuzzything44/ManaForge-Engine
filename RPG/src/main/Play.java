@@ -55,12 +55,15 @@ public class Play extends BasicGameState {
 			character = new PlayerCharacter();
 		
 
-/*		Actor a = new Actor();
-		a.location = new Coordinate(3, 4);
-		Actor a1 = new Actor();
-		a1.location = new Coordinate(-5, -7);
-		Actor a2 = new Actor();
-		a2.location = new Coordinate(-2, 1);*/
+		for (int i = -40; i < 40; i ++){
+			for (int i1 = -40; i1 < 40; i1++){
+				new Actor("res/grass.png", new Coordinate(i, i1));
+			}
+		}
+		
+		Actor a = new Actor(new Coordinate(3, 4));
+		Actor a1 = new Actor(new Coordinate(-5, -7));
+		Actor a2 = new Actor(new Coordinate(-2, 1));
 		Actor a3 = new Actor(new Coordinate(-8, 0));
 		
 	}
