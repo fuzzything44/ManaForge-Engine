@@ -5,9 +5,6 @@ import items.*;
 
 import java.util.Vector;
 
-import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
-
 public class PlayerCharacter extends Character {
 	
 /*	Max is the max buffed HP/MP/Stat
