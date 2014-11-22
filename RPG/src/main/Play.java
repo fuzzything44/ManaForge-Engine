@@ -7,8 +7,6 @@ package main;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Vector;
-
 import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -17,8 +15,6 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
-
-import sun.misc.GC;
 import buffs.Buff;
 
 public class Play extends BasicGameState {
@@ -134,8 +130,8 @@ public class Play extends BasicGameState {
 				Actor a = Game.allActors.get(i).get(i1);
 				if(a.isRendered){
 					int x, y;
-					x = (((a.location.X - character.location.X) * Game.zoom) + gc.getWidth()/2);
-					y = (((a.location.Y - character.location.Y) * Game.zoom) + gc.getHeight()/2);
+					x = (int) (((a.location.X - character.location.X) * Game.zoom) + gc.getWidth()/2);
+					y = (int) (((a.location.Y - character.location.Y) * Game.zoom) + gc.getHeight()/2);
 					
 					if (x > -Game.zoom && y > Game.zoom && x < gc.getWidth() && y < gc.getHeight() && a.displayImage != null) {
 						
