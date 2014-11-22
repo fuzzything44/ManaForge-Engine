@@ -11,23 +11,20 @@ public class DynamicActor extends Actor {
 		velocity = c;
 	}
 
-	public DynamicActor() {
-		// TODO Auto-generated constructor stub
+	public DynamicActor(int renderOrder) {
+		super(renderOrder);
 	}
 
-	public DynamicActor(Coordinate place) {
-		super(place);
-		// TODO Auto-generated constructor stub
+	public DynamicActor(Coordinate place, int renderOrder) {
+		super(place, renderOrder);
 	}
 
-	public DynamicActor(String image) {
-		super(image);
-		// TODO Auto-generated constructor stub
+	public DynamicActor(String image, int renderOrder) {
+		super(image, renderOrder);
 	}
 
-	public DynamicActor(String image, Coordinate place) {
-		super(image, place);
-		// TODO Auto-generated constructor stub
+	public DynamicActor(String image, Coordinate place, int renderOrder) {
+		super(image, place, renderOrder);
 	}
 
 }
