@@ -77,10 +77,8 @@ public class PlayerCharacter extends Character {
 		defence
 	}
 	
-	public PlayerCharacter() {
-		super();
-		
-		Game.TickingObjects.addElement(this);
+	public PlayerCharacter(boolean renderOrder) {
+		super(renderOrder);
 		
 		displayImage = "res/Knight.png";
 		

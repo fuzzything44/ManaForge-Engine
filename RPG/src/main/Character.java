@@ -13,6 +13,11 @@ public class Character extends DynamicActor {
 		head
 	 }
 	
+	public Character(boolean renderOrder){
+		Super(renderOrder)
+	}
+	
+	
 	int currentHealth;
 	int maxHealth;
 	int attack;
