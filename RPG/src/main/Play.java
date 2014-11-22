@@ -87,7 +87,7 @@ public class Play extends BasicGameState {
 					x = (int) (((a.location.X - character.location.X) * Game.zoom) + gc.getWidth()/2);
 					y = (int) (((a.location.Y - character.location.Y) * Game.zoom) + gc.getHeight()/2);
 					
-					if (x > -Game.zoom && y > Game.zoom && x < gc.getWidth() && y < gc.getHeight() && a.displayImage != null) {
+					if (x > -Game.zoom && y > -Game.zoom && x < gc.getWidth() && y < gc.getHeight() && a.displayImage != null) {
 						
 						if(!texturesScaled.containsKey(a.displayImage)){
 							texturesScaled.put(a.displayImage, Game.textures.get(a.displayImage).getScaledCopy(Game.zoom, Game.zoom) );
@@ -143,6 +143,9 @@ public class Play extends BasicGameState {
 			if (Game.zoom > minZoom) {
 				Game.zoom *= .5;
 			}
+		}
+		if(i.isKeyPressed(Keyboard.KEY_GRAVE)){
+			gc.exit();
 		}
 	}	// End update method
 
