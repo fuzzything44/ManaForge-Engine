@@ -1,5 +1,7 @@
 package userInterface;
-
+/*
+ * Start to UI system.
+ */
 import java.util.Vector;
 
 import main.Coordinate;

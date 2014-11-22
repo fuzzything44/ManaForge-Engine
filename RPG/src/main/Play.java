@@ -57,8 +57,8 @@ public class Play extends BasicGameState {
 			character = new PlayerCharacter();
 		
 
-		for (int i = -40; i < 40; i ++) {
-			for (int i1 = -40; i1 < 40; i1++) {
+		for (int i = -100; i < 100; i ++) {
+			for (int i1 = -100; i1 < 100; i1++) {
 				new Actor("res/grass.png", new Coordinate(i, i1) );
 			}
 		}
@@ -133,12 +133,12 @@ public class Play extends BasicGameState {
 				if( Game.allActors.get(i1).isRendered && Game.allActors.get(i1).renderOrder == order) {
 					Actor a =  Game.allActors.get(i1);
 					int x, y;
-					x = (int) (((a.location.X - character.location.X) * Game.zoom) + gc.getWidth()/2);
-					y = (int) (((a.location.Y - character.location.Y) * Game.zoom) + gc.getHeight()/2);
+					x = (int) ( ( (a.location.X - character.location.X) * Game.zoom) + gc.getWidth()/2);
+					y = (int) ( ( (a.location.Y - character.location.Y) * Game.zoom) + gc.getHeight()/2);
 					
-					if(x > -Game.zoom && y > -Game.zoom && x < gc.getWidth() && y < gc.getHeight() && a.displayImage != null) {
+					if (x > -Game.zoom && y > -Game.zoom && x < gc.getWidth() && y < gc.getHeight() && a.displayImage != null) {
 						
-						if(!texturesScaled.containsKey(a.displayImage) ) {
+						if (!texturesScaled.containsKey(a.displayImage) ) {
 							texturesScaled.put(a.displayImage, Game.textures.get(a.displayImage).getScaledCopy(Game.zoom, Game.zoom) );
 						}
 						RenderedObjects++;

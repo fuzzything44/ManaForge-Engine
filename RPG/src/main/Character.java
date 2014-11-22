@@ -3,7 +3,7 @@ package main;
 import java.util.Vector;
 
 // base character class. Can be used by either enemy or friendly
-public class Character extends Actor {
+public class Character extends DynamicActor {
 	
 //	Enum of all POSSIBLE body parts. Then use an array for body parts it has.	
 	enum PossibleBodyParts{

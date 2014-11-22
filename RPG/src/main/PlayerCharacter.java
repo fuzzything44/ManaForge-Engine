@@ -16,8 +16,6 @@ public class PlayerCharacter extends Character {
  */
 	public final float moveSpeed = 15f;
 	
-	private Coordinate velocity = new Coordinate(0);
-	
 	public Hat hat = null;
 	public Shirt shirt = null;
 //	public Pants pants = null;
@@ -27,13 +25,6 @@ public class PlayerCharacter extends Character {
 //	public Ring ring = null;
 //	public Gloves gloves = null;
 	
-	public Coordinate getVelocity(){
-		return velocity;
-	}
-	
-	public void setVelocity(Coordinate c){
-		velocity = c;
-	}
 	
 	public int baseHealth = 100;
 //	int maxHealth;		Already in Character
@@ -97,6 +88,7 @@ public class PlayerCharacter extends Character {
 		
 		renderOrder = 9;
 		
+		doesCollide = true;
 	}
 	
 	public void removeBuff(Buff buffRemoved) {
@@ -173,7 +165,8 @@ public class PlayerCharacter extends Character {
 	}
 	
 	public void tick(float deltaTime){
-		location = location.add(velocity.mulitply(deltaTime/1000));
+//		if (location.X >= maxX && location.X <= minX) {
+		location = location.add(velocity.mulitply(deltaTime/1000) );
 	}
 
 }

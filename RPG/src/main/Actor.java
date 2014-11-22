@@ -10,7 +10,7 @@ import org.newdawn.slick.SlickException;
 
 
 public class Actor extends Object {
-	
+	public boolean doesCollide = false;
 	
 	public Actor() {
 		
