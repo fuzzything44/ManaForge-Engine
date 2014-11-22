@@ -55,6 +55,19 @@ public class PlayerCharacter extends Character {
 	public Vector<Equipment> equips = new Vector<Equipment>();
 	public Vector<ConsumableItem> consumables = new Vector<ConsumableItem>();
 	
+	public PlayerCharacter(int renderOrder) {
+		super(renderOrder);
+	}
+	public PlayerCharacter(Coordinate place, int renderOrder) {
+		super(place, renderOrder);
+	}
+	public PlayerCharacter(String image, int renderOrder) {
+		super(image, renderOrder);
+	}
+	public PlayerCharacter(String image, Coordinate place, int renderOrder) {
+		super(image, place, renderOrder);
+	}
+	
 	public enum equipmentTypes {
 		hat,
 		shirt,
@@ -75,20 +88,6 @@ public class PlayerCharacter extends Character {
 		level,
 		attack,
 		defence
-	}
-	
-	public PlayerCharacter() {
-		super();
-		
-		Game.TickingObjects.addElement(this);
-		
-		displayImage = "res/Knight.png";
-		
-		isRendered = true;
-		
-		renderOrder = 9;
-		
-		doesCollide = true;
 	}
 	
 	public void removeBuff(Buff buffRemoved) {

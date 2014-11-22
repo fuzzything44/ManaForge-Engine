@@ -41,7 +41,7 @@ public class Actor extends Object {
 		
 		if(!Game.allActors.contains(this)){
 		
-			Game.allActors.get(renderOrder).add(this);
+			Game.allActors.get(renderOrder);/*.add(this);*/
 		}
 		displayImage = image;
 	

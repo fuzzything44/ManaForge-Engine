@@ -7,6 +7,8 @@ package main;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Vector;
+
 import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -44,15 +46,16 @@ public class Play extends BasicGameState {
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
+
 		
 		Game.textures = new HashMap<String, Image>();
 		
 		Game.textures.put("res/Default.png", new Image("res/Default.png") );
 		Game.textures.put("res/Knight.png", new Image("res/Knight.png") );
 		Game.textures.put("res/grass.png", new Image("res/grass.png") );
-		if(character == null)
-			character = new PlayerCharacter();
-		
+		if(character == null) {
+			character = new PlayerCharacter("res/Knight.png", 0);
+		}
 
 		for (int i = -100; i < 100; i ++) {
 			for (int i1 = -100; i1 < 100; i1++) {

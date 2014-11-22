@@ -18,7 +18,7 @@ public class Game extends StateBasedGame {
 	public static int zoom = 20;
 	public static int maxZoom = 55;
 	public static int minZoom = 15;
-	public static Vector<Vector<Actor> > allActors = new Vector<Vector<Actor> >(10);
+	public static Vector<Vector<Actor> > allActors = new Vector<Vector<Actor> >();
 
 	static Map<String, Image> textures;
 	
@@ -31,6 +31,10 @@ public class Game extends StateBasedGame {
 
 	@Override
 	public void initStatesList(GameContainer gc) throws SlickException {
+		for (int x = 0; x < 9; x++) {
+			allActors.add(new Vector<Actor>() );
+		}
+		System.out.println(allActors.size());
 		getState(pause).init(gc, this);
 		enterState(play);
 		
