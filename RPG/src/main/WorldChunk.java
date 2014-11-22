@@ -12,7 +12,9 @@ public class WorldChunk {
 	public WorldChunk(Coordinate location, World world){
 		world.chunks.addElement(this);
 		
-		
+		for (int i = 0; i < 10; i++){
+			actors.add(new Vector<Actor>());
+		}
 		
 	}
 }
