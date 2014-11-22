@@ -9,8 +9,10 @@ public class WorldChunk {
 	
 	public Coordinate location;
 	
-	public WorldChunk(Coordinate location, World world){
+	public WorldChunk(Coordinate locationIn, World world){
 		world.chunks.addElement(this);
+		
+		location = locationIn;
 		
 		for (int i = 0; i < 10; i++){
 			actors.add(new Vector<Actor>());
