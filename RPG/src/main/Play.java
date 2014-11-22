@@ -58,6 +58,7 @@ public class Play extends BasicGameState {
 		
 		character = new PlayerCharacter("res/Knight.png", new Coordinate(0, 0), 8);
 		
+		WorldChunk chunk1 = new WorldChunk(new Coordinate(0, 0), Game.world);
 		
 		
 	}
@@ -102,7 +103,7 @@ public class Play extends BasicGameState {
 		
 		Game.GameTotalTime += delta;
 		relevantChunks.clear();
-
+		relevantChunks.add(Game.persistentChunk);
 		for(int i = 0; i < Game.world.chunks.size(); i++){
 			if(Game.world.chunks.get(i).location.X * Game.zoom > (-Game.zoom * Game.world.ChunkRes.X) && 
 					Game.world.chunks.get(i).location.Y * Game.zoom > (-Game.zoom * Game.world.ChunkRes.Y) &&
