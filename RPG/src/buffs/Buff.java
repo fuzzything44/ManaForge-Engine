@@ -150,7 +150,7 @@ public class Buff extends Object {
 		buffVals.buffTimeLeft -=deltaTime;
 		if (buffVals.buffTimeLeft <= 0 && owner != null) {
 			owner.removeBuff(this);
-			Game.persistentChunks.tickingObjects.remove(this);
+			Game.persistentChunk.tickingObjects.remove(this);
 		}
 	}	// End tick
 	
