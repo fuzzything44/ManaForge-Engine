@@ -5,20 +5,20 @@ import java.util.Vector;
 // base character class. Can be used by either enemy or friendly
 public class Character extends DynamicActor {
 	
-	public Character(int renderOrder) {
-		super(renderOrder);
+	public Character(int renderOrder, WorldChunk chunkIn) {
+		super(renderOrder, chunkIn);
 		// TODO Auto-generated constructor stub
 	}
-	public Character(Coordinate place, int renderOrder) {
-		super(place, renderOrder);
+	public Character(Coordinate place, int renderOrder, WorldChunk chunkIn) {
+		super(place, renderOrder, chunkIn);
 		// TODO Auto-generated constructor stub
 	}
-	public Character(String image, int renderOrder) {
-		super(image, renderOrder);
+	public Character(String image, int renderOrder, WorldChunk chunkIn) {
+		super(image, renderOrder, chunkIn);
 		// TODO Auto-generated constructor stub
 	}
-	public Character(String image, Coordinate place, int renderOrder) {
-		super(image, place, renderOrder);
+	public Character(String image, Coordinate place, int renderOrder, WorldChunk chunkIn) {
+		super(image, place, renderOrder, chunkIn);
 		// TODO Auto-generated constructor stub
 	}
 
