@@ -14,11 +14,17 @@ public class Game extends StateBasedGame {
 	static final int play = 0;
 	static final int pause = 1;
 	public static float GameTotalTime = 0;
-	public static Vector<Object> TickingObjects = new Vector<Object>();
+//	public static Vector<Object> TickingObjects = new Vector<Object>();
+	
+	
+	public static World world = new World();
+	
+	public static WorldChunk persistantChunk = new WorldChunk(new Coordinate(0, 0), world);
+	
 	public static int zoom = 20;
 	public static int maxZoom = 55;
 	public static int minZoom = 15;
-	public static Vector<Vector<Actor> > allActors = new Vector<Vector<Actor> >();
+//	public static Vector<Vector<Actor> > allActors = new Vector<Vector<Actor> >();
 
 	static Map<String, Image> textures;
 	

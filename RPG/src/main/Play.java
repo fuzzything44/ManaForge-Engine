@@ -17,13 +17,14 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+
 import buffs.Buff;
 
 public class Play extends BasicGameState {
 
 	int minZoom = 3;
-	int maxZoom = 47;
-	
+	int maxZoom = 100;
+	Vector<WorldChunk> relevantChunks = new Vector<WorldChunk>();
 	Buff buff = null;
 	
 	public final int state;
@@ -58,6 +59,7 @@ public class Play extends BasicGameState {
 		character = new PlayerCharacter("res/Knight.png", new Coordinate(0, 0), 8);
 		
 
+		
 		for (int i = -100; i < 100; i ++) {
 			for (int i1 = -100; i1 < 100; i1++) {
 				new Actor("res/grass.png", new Coordinate(i, i1), 0);
@@ -77,28 +79,30 @@ public class Play extends BasicGameState {
 		
 		Map<String, Image> texturesScaled = new HashMap<String, Image>();
 		
-		int RenderedObjects = 0;
+
 		
-		for(int i = 0; i < Game.allActors.size(); i++){
-			for(int i1 = 0; i1 < Game.allActors.get(i).size(); i1++){
-				Actor a = Game.allActors.get(i).get(i1);
-				if(a.isRendered){
-					int x, y;
-					x = (int) (((a.location.X - character.location.X) * Game.zoom) + gc.getWidth()/2);
-					y = (int) (((a.location.Y - character.location.Y) * Game.zoom) + gc.getHeight()/2);
-					
-					if (x > -Game.zoom && y > -Game.zoom && x < gc.getWidth() && y < gc.getHeight() && a.displayImage != null) {
+		int RenderedObjects = 0;
+		for(int chunk = 0; chunk < relevantChunks.size(); chunk++){
+			for(int i = 0; i < relevantChunks.get(chunk).actors.size(); i++){
+				for(int i1 = 0; i1 < relevantChunks.get(chunk).actors.get(i).size(); i1++){
+					Actor a = relevantChunks.get(chunk).actors.get(i).get(i1);
+					if(a.isRendered){
+						int x, y;
+						x = (int) (((a.location.X - character.location.X) * Game.zoom) + gc.getWidth()/2);
+						y = (int) (((a.location.Y - character.location.Y) * Game.zoom) + gc.getHeight()/2);
 						
-						if(!texturesScaled.containsKey(a.displayImage)){
-							texturesScaled.put(a.displayImage, Game.textures.get(a.displayImage).getScaledCopy(Game.zoom, Game.zoom) );
+						if (x > -Game.zoom && y > -Game.zoom && x < gc.getWidth() && y < gc.getHeight() && a.displayImage != null) {
+							
+							if(!texturesScaled.containsKey(a.displayImage)){
+								texturesScaled.put(a.displayImage, Game.textures.get(a.displayImage).getScaledCopy(Game.zoom, Game.zoom) );
+							}
+							RenderedObjects ++;
+							texturesScaled.get(a.displayImage).draw(x, y);
 						}
-						RenderedObjects ++;
-						texturesScaled.get(a.displayImage).draw(x, y);
 					}
 				}
 			}
 		}
-		
 		System.out.println(RenderedObjects);
 		
 	}	// End render method.
@@ -108,12 +112,22 @@ public class Play extends BasicGameState {
 			throws SlickException {
 		
 		Game.GameTotalTime += delta;
-	
-		
-		for (int i = 0; i < Game.TickingObjects.size(); i++) {
-			Game.TickingObjects.get(i).tick(delta);
+		relevantChunks.clear();
+
+		for(int i = 0; i < Game.world.chunks.size(); i++){
+			if(Game.world.chunks.get(i).location.X * Game.zoom > (-Game.zoom * Game.world.ChunkRes.X) && 
+					Game.world.chunks.get(i).location.Y * Game.zoom > (-Game.zoom * Game.world.ChunkRes.Y) &&
+					Game.world.chunks.get(i).location.X * Game.zoom < gc.getWidth() &&
+					Game.world.chunks.get(i).location.Y * Game.zoom < gc.getHeight()){
+				relevantChunks.addElement(Game.world.chunks.get(i));
+			}
 		}
 		
+		for(int chunk = 0; chunk < relevantChunks.size(); chunk++){
+			for (int i = 0; i < relevantChunks.get(chunk).tickingObjects.size(); i++) {
+				relevantChunks.get(chunk).tickingObjects.get(i).tick(delta);
+			}
+		}
 		Input i = gc.getInput();
 		
 		if (i.isKeyPressed(Keyboard.KEY_ESCAPE) ) {

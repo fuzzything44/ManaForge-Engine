@@ -11,7 +11,7 @@ public class PlayerCharacter extends Character {
  *	Current is the amount of HP/MP you have left
  *	Base is the unbuffed MaxHP/MaxMP/Stat
  */
-	public final float moveSpeed = 15f;
+	public final float moveSpeed = 5f;
 	
 	public Hat hat = null;
 	public Shirt shirt = null;
