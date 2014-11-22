@@ -16,6 +16,8 @@ public class Game extends StateBasedGame {
 	public static float GameTotalTime = 0;
 	public static Vector<Object> TickingObjects = new Vector<Object>();
 	public static int zoom = 20;
+	public static int maxZoom = 55;
+	public static int minZoom = 15;
 	public static Vector<Actor> allActors = new Vector<Actor>();
 
 	static Map<String, Image> textures;

@@ -22,7 +22,9 @@ import buffs.Buff;
 
 public class Play extends BasicGameState {
 
-
+	int minZoom = 3;
+	int maxZoom = 47;
+	
 	Buff buff = null;
 	
 	public final int state;
@@ -48,23 +50,23 @@ public class Play extends BasicGameState {
 		
 		Game.textures = new HashMap<String, Image>();
 		
-		Game.textures.put("res/Default.png", new Image("res/Default.png"));
-		Game.textures.put("res/Knight.png", new Image("res/Knight.png"));
-		Game.textures.put("res/grass.png", new Image("res/grass.png"));
+		Game.textures.put("res/Default.png", new Image("res/Default.png") );
+		Game.textures.put("res/Knight.png", new Image("res/Knight.png") );
+		Game.textures.put("res/grass.png", new Image("res/grass.png") );
 		if(character == null)
 			character = new PlayerCharacter();
 		
 
-		for (int i = -40; i < 40; i ++){
-			for (int i1 = -40; i1 < 40; i1++){
-				new Actor("res/grass.png", new Coordinate(i, i1));
+		for (int i = -40; i < 40; i ++) {
+			for (int i1 = -40; i1 < 40; i1++) {
+				new Actor("res/grass.png", new Coordinate(i, i1) );
 			}
 		}
 		
-		Actor a = new Actor(new Coordinate(3, 4));
-		Actor a1 = new Actor(new Coordinate(-5, -7));
-		Actor a2 = new Actor(new Coordinate(-2, 1));
-		Actor a3 = new Actor(new Coordinate(-8, 0));
+		Actor a = new Actor(new Coordinate(3, 4) );
+		Actor a1 = new Actor(new Coordinate(-5, -7) );
+		Actor a2 = new Actor(new Coordinate(-2, 1) );
+		Actor a3 = new Actor(new Coordinate(-8, 0) );
 		
 	}
 
@@ -126,18 +128,18 @@ public class Play extends BasicGameState {
 		
 		int RenderedObjects = 0;
 		
-		for(int order = 0; order < 10; order++){
-			for(int i1 = 0; i1 < Game.allActors.size(); i1++){
-				if( Game.allActors.get(i1).isRendered && Game.allActors.get(i1).renderOrder == order){
+		for(int order = 0; order < 10; order++) {
+			for(int i1 = 0; i1 < Game.allActors.size(); i1++) {
+				if( Game.allActors.get(i1).isRendered && Game.allActors.get(i1).renderOrder == order) {
 					Actor a =  Game.allActors.get(i1);
 					int x, y;
 					x = (int) (((a.location.X - character.location.X) * Game.zoom) + gc.getWidth()/2);
 					y = (int) (((a.location.Y - character.location.Y) * Game.zoom) + gc.getHeight()/2);
 					
-					if(x > -Game.zoom && y > -Game.zoom && x < gc.getWidth() && y < gc.getHeight() && a.displayImage != null){
+					if(x > -Game.zoom && y > -Game.zoom && x < gc.getWidth() && y < gc.getHeight() && a.displayImage != null) {
 						
-						if(!texturesScaled.containsKey(a.displayImage)){
-							texturesScaled.put(a.displayImage, Game.textures.get(a.displayImage).getScaledCopy(Game.zoom, Game.zoom));
+						if(!texturesScaled.containsKey(a.displayImage) ) {
+							texturesScaled.put(a.displayImage, Game.textures.get(a.displayImage).getScaledCopy(Game.zoom, Game.zoom) );
 						}
 						RenderedObjects++;
 						texturesScaled.get(a.displayImage).draw(x, y);
@@ -170,25 +172,29 @@ public class Play extends BasicGameState {
 			sbg.enterState(Game.pause);
 		}
 
-		character.setVelocity(new Coordinate(0));
+		character.setVelocity(new Coordinate(0) );
 		
-		if(i.isKeyDown(Keyboard.KEY_W)){
-			character.setVelocity(new Coordinate(character.getVelocity().X, -character.moveSpeed));
+		if(i.isKeyDown(Keyboard.KEY_W) ) {
+			character.setVelocity(new Coordinate(character.getVelocity().X, -character.moveSpeed) );
 		}
-		if(i.isKeyDown(Keyboard.KEY_A)){			
-			character.setVelocity(new Coordinate(-character.moveSpeed, character.getVelocity().Y));
+		if(i.isKeyDown(Keyboard.KEY_A) ) {			
+			character.setVelocity(new Coordinate(-character.moveSpeed, character.getVelocity().Y) );
 		}
-		if(i.isKeyDown(Keyboard.KEY_S)){			
-			character.setVelocity(new Coordinate(character.getVelocity().X, character.moveSpeed));
+		if(i.isKeyDown(Keyboard.KEY_S) ) {			
+			character.setVelocity(new Coordinate(character.getVelocity().X, character.moveSpeed) );
 		}
-		if(i.isKeyDown(Keyboard.KEY_D)){			
-			character.setVelocity(new Coordinate(character.moveSpeed, character.getVelocity().Y));
+		if(i.isKeyDown(Keyboard.KEY_D) ) {			
+			character.setVelocity(new Coordinate(character.moveSpeed, character.getVelocity().Y) );
 		}
-		if(i.isKeyPressed(Keyboard.KEY_Q)){
-			Game.zoom *=1.5;
+		if(i.isKeyPressed(Keyboard.KEY_Q) ) {
+			if (Game.zoom < maxZoom) {
+				Game.zoom *= 2;
+			}
 		}		
-		if(i.isKeyPressed(Keyboard.KEY_R)){
-			Game.zoom *=.5;
+		if(i.isKeyPressed(Keyboard.KEY_R) ) {
+			if (Game.zoom > minZoom) {
+				Game.zoom *= .5;
+			}
 		}
 	}	// End update method
 
