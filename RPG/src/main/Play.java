@@ -147,8 +147,8 @@ public class Play extends BasicGameState {
 					}
 					
 					
-				}
-			}
+				}	// End actor loop 
+			}		// End display order loop
 		}
 
 		System.out.println(RenderedObjects);

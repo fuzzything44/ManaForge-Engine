@@ -12,22 +12,22 @@ import org.newdawn.slick.SlickException;
 public class Actor extends Object {
 	public boolean doesCollide = false;
 	
-	public Actor() {
+	public Actor(int renderOrder) {
 		
 		if(!Game.allActors.contains(this)){
 		
-			Game.allActors.addElement(this);
+			Game.allActors.get(renderOrder).add(this);
 		}
 		displayImage = "res/Default.png";
 	
 		renderOrder = 1;
 	}
 
-	public Actor(Coordinate place) {
+	public Actor(Coordinate place, int renderOrder) {
 		
 		if(!Game.allActors.contains(this)){
 		
-			Game.allActors.addElement(this);
+			Game.allActors.get(renderOrder).add(this);
 		}
 		displayImage = "res/Default.png";
 	
@@ -37,27 +37,32 @@ public class Actor extends Object {
 		
 	}	
 	
-	public Actor(String image) {
+	public Actor(String image, int renderOrder) {
 		
 		if(!Game.allActors.contains(this)){
 		
-			Game.allActors.addElement(this);
+			Game.allActors.get(renderOrder).add(this);
 		}
 		displayImage = image;
 	
 		renderOrder = 1;
 	}
-	public Actor(String image, Coordinate place) {
+	public Actor(String image, Coordinate place, int renderOrder) {
 		
 		if(!Game.allActors.contains(this)){
 		
-			Game.allActors.addElement(this);
+			Game.allActors.get(renderOrder).add(this);
 		}
 		displayImage = image;
 	
-		renderOrder = 1;
+		this.renderOrder = renderOrder;
 		
 		location = place;
+	}
+	
+	public void changeRenderOrder(int newRenderOrder) {
+		Game.allActors.get(renderOrder).remove(this);
+		Game.allActors.get(newRenderOrder).add(this);
 	}
 	 
 	public String displayImage;

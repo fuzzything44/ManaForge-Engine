@@ -18,7 +18,7 @@ public class Game extends StateBasedGame {
 	public static int zoom = 20;
 	public static int maxZoom = 55;
 	public static int minZoom = 15;
-	public static Vector<Actor> allActors = new Vector<Actor>();
+	public static Vector<Vector<Actor> > allActors = new Vector<Vector<Actor> >(10);
 
 	static Map<String, Image> textures;
 	
@@ -42,7 +42,7 @@ public class Game extends StateBasedGame {
 		try {
 			
 			agc = new AppGameContainer(new Game("YAY") );
-			agc.setDisplayMode(800, 600, false);
+			agc.setDisplayMode(1920, 1080, true);
 			agc.start();
 			
 			
