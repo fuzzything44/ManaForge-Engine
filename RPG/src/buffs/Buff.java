@@ -192,12 +192,9 @@ public class Buff extends Object {
 	}	// End getBuffDescription()
 	
 	public boolean equals(Buff equalTo) {
-		if (equalTo.getBuffDescription().equals(getBuffDescription()) && equalTo.getBuffName().equals(buffName) ) {
-			return true;
-		} else {
-			return false;
-		}
+		return (equalTo.getBuffDescription().equals(getBuffDescription()) && equalTo.getBuffName().equals(buffName) );
 	}	// Overriding .equals method.
 		// For two buffs to be equal, they need the same generated description and name.
+
 }		// End Buff class.
 
