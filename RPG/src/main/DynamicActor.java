@@ -11,29 +11,29 @@ public class DynamicActor extends Actor {
 		velocity = c;
 	}
 
-	public DynamicActor(int renderOrder) {
-		super(renderOrder);
+	public DynamicActor(int renderOrder, WorldChunk chunkIn) {
+		super(renderOrder, chunkIn);
 		
-		Game.TickingObjects.add(this);
+		chunkIn.tickingObjects.add(this);
 		
 	}
 
-	public DynamicActor(Coordinate place, int renderOrder) {
-		super(place, renderOrder);
+	public DynamicActor(Coordinate place, int renderOrder, WorldChunk chunkIn) {
+		super(place, renderOrder, chunkIn);
 		
-		Game.TickingObjects.add(this);
+		chunkIn.tickingObjects.add(this);
 	}
 
-	public DynamicActor(String image, int renderOrder) {
-		super(image, renderOrder);
+	public DynamicActor(String image, int renderOrder, WorldChunk chunkIn) {
+		super(image, renderOrder, chunkIn);
 		
-		Game.TickingObjects.add(this);
+		chunkIn.tickingObjects.add(this);
 	}
 
-	public DynamicActor(String image, Coordinate place, int renderOrder) {
-		super(image, place, renderOrder);
+	public DynamicActor(String image, Coordinate place, int renderOrder, WorldChunk chunkIn) {
+		super(image, place, renderOrder, chunkIn);
 		
-		Game.TickingObjects.add(this);
+		chunkIn.tickingObjects.add(this);
 	}
 
 }

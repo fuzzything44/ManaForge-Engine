@@ -110,7 +110,7 @@ public class Buff extends Object {
 		
 		owner.addBuff(this);
 		if (!buffVals.isBuffPermanent) {
-			Game.TickingObjects.addElement(this);
+			Game.persistentChunk.tickingObjects.addElement(this);
 		}
 	}
 	
@@ -150,7 +150,7 @@ public class Buff extends Object {
 		buffVals.buffTimeLeft -=deltaTime;
 		if (buffVals.buffTimeLeft <= 0 && owner != null) {
 			owner.removeBuff(this);
-			Game.TickingObjects.remove(this);
+			Game.persistentChunks.tickingObjects.remove(this);
 		}
 	}	// End tick
 	

@@ -12,22 +12,22 @@ import org.newdawn.slick.SlickException;
 public class Actor extends Object {
 	public boolean doesCollide = false;
 	
-	public Actor(int renderOrder) {
+	public Actor(int renderOrder, WorldChunk chunkIn) {
 		
-		if(!Game.allActors.contains(this)){
+		if(!chunkIn.actors.contains(this)){
 		
-			Game.allActors.get(renderOrder).add(this);
+			chunkIn.actors.get(renderOrder).add(this);
 		}
 		displayImage = "res/Default.png";
 	
 		renderOrder = 1;
 	}
 
-	public Actor(Coordinate place, int renderOrder) {
+	public Actor(Coordinate place, int renderOrder, WorldChunk chunkIn) {
 		
-		if(!Game.allActors.contains(this)){
+		if(!chunkIn.actors.contains(this)){
 		
-			Game.allActors.get(renderOrder).add(this);
+			chunkIn.actors.get(renderOrder).add(this);
 		}
 		displayImage = "res/Default.png";
 	
@@ -37,21 +37,21 @@ public class Actor extends Object {
 		
 	}	
 	
-	public Actor(String image, int renderOrder) {
+	public Actor(String image, int renderOrder, WorldChunk chunkIn) {
 		
-		if(!Game.allActors.contains(this)){
+		if(!chunkIn.actors.contains(this)){
 		
-			Game.allActors.get(renderOrder).add(this);
+			chunkIn.actors.get(renderOrder).add(this);
 		}
 		displayImage = image;
 	
 		renderOrder = 1;
 	}
-	public Actor(String image, Coordinate place, int renderOrder) {
+	public Actor(String image, Coordinate place, int renderOrder, WorldChunk chunkIn) {
 		
-		if(!Game.allActors.contains(this)){
+		if(!chunkIn.actors.contains(this)){
 		
-			Game.allActors.get(renderOrder).add(this);
+			chunkIn.actors.get(renderOrder).add(this);
 		}
 		displayImage = image;
 	
@@ -60,9 +60,9 @@ public class Actor extends Object {
 		location = place;
 	}
 	
-	public void changeRenderOrder(int newRenderOrder) {
-		Game.allActors.get(renderOrder).remove(this);
-		Game.allActors.get(newRenderOrder).add(this);
+	public void changeRenderOrder(int newRenderOrder, WorldChunk chunkIn) {
+		chunkIn.actors.get(renderOrder).remove(this);
+		chunkIn.actors.get(newRenderOrder).add(this);
 	}
 	 
 	public String displayImage;
