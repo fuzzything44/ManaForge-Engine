@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Vector;
 
 import org.lwjgl.input.Keyboard;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -22,8 +23,8 @@ import buffs.Buff;
 
 public class Play extends BasicGameState {
 
-	int minZoom = 3;
-	int maxZoom = 100;
+	int minZoom = 12;
+	int maxZoom = 96;
 	Vector<WorldChunk> relevantChunks = new Vector<WorldChunk>();
 	Buff buff = null;
 
@@ -81,9 +82,7 @@ public class Play extends BasicGameState {
 			throws SlickException {
 		
 		Map<String, Image> texturesScaled = new HashMap<String, Image>();
-		
-		System.out.println(relevantChunks.size() + " Chunks");
-		
+				
 		Vector<Vector<Actor> > relevantActors = new Vector<Vector<Actor> >();
 		for(int i = 0; i < 10; i++){
 			relevantActors.add(new Vector<Actor>());
@@ -118,8 +117,15 @@ public class Play extends BasicGameState {
 					}
 				}
 			}
+		gr.setColor(Color.black);
+		gr.fillRect(0, 0, 1000, 60);
+		gr.setColor(Color.white);
+		gr.drawString("Rendered objects: " + RenderedObjects, 0, 20);
+		gr.drawString("Character location: " + character.location.X + ", " + character.location.Y, 0, 0);
+		gr.drawString("Chunks loaded: " + relevantChunks.size() , 0, 35);
+		gr.drawString("Zoom level: " + Game.zoom + ", Zoom multiplier: " + Game.zoomMult, 400, 0);
 		
-		System.out.println(RenderedObjects);
+		// drawing all the random info we might want on the screen.
 		
 	}	// End render method.
 
@@ -180,7 +186,6 @@ public class Play extends BasicGameState {
 			} 
 					
 		}
-		System.out.println("Character coords:" + character.location.X + ", " + character.location.Y);
 		for (int chunk = 0; chunk < relevantChunks.size(); chunk++) {
 			for (int i1 = 0; i1 < relevantChunks.get(chunk).tickingObjects.size(); i1++) {
 				relevantChunks.get(chunk).tickingObjects.get(i1).tick(delta);
@@ -207,7 +212,7 @@ public class Play extends BasicGameState {
 			character.setVelocity(new Coordinate(character.getVelocity().X,
 					character.moveSpeed));
 			if (i1.isKeyDown(Keyboard.KEY_W) ) {
-				character.setVelocity(new Coordinate(0,character.getVelocity().X));
+				character.setVelocity(new Coordinate(character.getVelocity().X, 0) );
 			}
 		}
 		if (i1.isKeyDown(Keyboard.KEY_D)) {
