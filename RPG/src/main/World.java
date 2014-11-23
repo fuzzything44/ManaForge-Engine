@@ -4,7 +4,7 @@ import java.util.Vector;
 
 public class World {
 	
-	public Coordinate ChunkRes = new Coordinate(100, 100);
+	public Coordinate ChunkRes = new Coordinate(50, 50);
 	
 	public Vector<WorldChunk> chunks = new Vector<WorldChunk>();
 	

@@ -56,12 +56,12 @@ public class Play extends BasicGameState {
 		character = new PlayerCharacter("res/Knight.png", new Coordinate(0, 0),
 				9);
 
-		for (int chunkX = -10; chunkX < 10; chunkX++) {
-			for (int chunkY = -10; chunkY < 10; chunkY++) {
+		for (int chunkX = -5; chunkX < 5; chunkX++) {
+			for (int chunkY = -5; chunkY < 5; chunkY++) {
 				WorldChunk buildChunk = new WorldChunk(new Coordinate(chunkX,
 						chunkY), Game.world);
-				for (int actorX = 0; actorX < 100; actorX++) {
-					for (int actorY = 0; actorY < 100; actorY++) {
+				for (int actorX = 0; actorX < Game.world.ChunkRes.X; actorX++) {
+					for (int actorY = 0; actorY < Game.world.ChunkRes.Y; actorY++) {
 						new Actor("res/grass.png", new Coordinate(actorX,
 								actorY), 0, buildChunk);
 					}
@@ -124,6 +124,8 @@ public class Play extends BasicGameState {
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
 			throws SlickException {
 
+		Game.zoom = Game.zoomMult * gc.getHeight()/1000;
+		
 		Game.GameTotalTime += delta;
 		relevantChunks.removeAllElements();
 		relevantChunks.add(Game.world.persistentChunk);
@@ -174,12 +176,12 @@ public class Play extends BasicGameState {
 		}
 		if (i.isKeyPressed(Keyboard.KEY_Q)) {
 			if (Game.zoom < maxZoom) {
-				Game.zoom *= 2;
+				Game.zoomMult *= 2;
 			}
 		}
 		if (i.isKeyPressed(Keyboard.KEY_R)) {
 			if (Game.zoom > minZoom) {
-				Game.zoom *= .5;
+				Game.zoomMult *= .5;
 			}
 		}
 		if (i.isKeyPressed(Keyboard.KEY_GRAVE)) {

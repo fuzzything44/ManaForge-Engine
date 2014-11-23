@@ -16,6 +16,7 @@ public class Game extends StateBasedGame {
 	
 	public static World world = new World();
 	
+	public static int zoomMult = 20;
 	public static int zoom = 20;
 	public static int maxZoom = 55;
 	public static int minZoom = 15;
@@ -44,7 +45,7 @@ public class Game extends StateBasedGame {
 		try {
 			
 			agc = new AppGameContainer(new Game("YAY") );
-			agc.setDisplayMode(3360, 2100, true);
+			agc.setDisplayMode(800, 600, false);
 			agc.start();
 			
 			
