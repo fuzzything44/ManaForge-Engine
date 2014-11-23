@@ -127,21 +127,15 @@ public class Play extends BasicGameState {
 		Game.GameTotalTime += delta;
 		relevantChunks.removeAllElements();
 		relevantChunks.add(Game.world.persistentChunk);
+
 		for (int i = 0; i < Game.world.chunks.size(); i++) {
-			relevantChunks.addElement(Game.world.chunks.get(i));
+			if ((Game.world.chunks.get(i).location.X - character.location.X)* Game.zoom * Game.world.ChunkRes.X > (-Game.world.ChunkRes.X * Game.world.ChunkRes.X)
+					&& (Game.world.chunks.get(i).location.Y - character.location.Y) * Game.zoom * Game.world.ChunkRes.Y > (-Game.world.ChunkRes.Y * Game.world.ChunkRes.Y)
+					&& (Game.world.chunks.get(i).location.X - character.location.X) * Game.zoom * Game.world.ChunkRes.X < gc.getWidth()
+					&& (Game.world.chunks.get(i).location.Y - character.location.Y) * Game.zoom * Game.world.ChunkRes.Y < gc.getHeight()) {
+				relevantChunks.addElement(Game.world.chunks.get(i));
+			}
 		}
-		/*
-		 * for(int i = 0; i < Game.world.chunks.size(); i++){ if(
-		 * Game.world.chunks.get(i).location.X * Game.zoom *
-		 * Game.world.ChunkRes.X > (-Game.world.ChunkRes.X) &&
-		 * Game.world.chunks.get(i).location.Y * Game.zoom *
-		 * Game.world.ChunkRes.Y > (-Game.world.ChunkRes.Y) &&
-		 * Game.world.chunks.get(i).location.X * Game.zoom *
-		 * Game.world.ChunkRes.X < gc.getWidth() &&
-		 * Game.world.chunks.get(i).location.Y * Game.zoom *
-		 * Game.world.ChunkRes.Y < gc.getHeight()){
-		 * relevantChunks.addElement(Game.world.chunks.get(i)); } }
-		 */
 
 		for (int chunk = 0; chunk < relevantChunks.size(); chunk++) {
 			for (int i = 0; i < relevantChunks.get(chunk).tickingObjects.size(); i++) {
