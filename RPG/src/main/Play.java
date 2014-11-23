@@ -1,9 +1,9 @@
 package main;
+
 /*
  * Pretty much everything for draw needs to be changed-placements need to be fixed, things need to be added, etc.
  * See the section for more notes on what need to be done.
  */
-
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,49 +26,49 @@ public class Play extends BasicGameState {
 	int maxZoom = 100;
 	Vector<WorldChunk> relevantChunks = new Vector<WorldChunk>();
 	Buff buff = null;
-	
+
 	public final int state;
 	public PlayerCharacter character = null;
+
 	public enum rightPaneStates {
-		equipment,
-		consumables,
-		buffs,
-		equipmentSpecific,
-		consumableSpecific,
-		buffSpecific
-	}	// What the right pane can display. Specific is the exact buff/consumable/equipment info.
-	public int infoPaneSpecific = 1;	// What vector index the specific thing is at.
+		equipment, consumables, buffs, equipmentSpecific, consumableSpecific, buffSpecific
+	} // What the right pane can display. Specific is the exact
+		// buff/consumable/equipment info.
+
+	public int infoPaneSpecific = 1; // What vector index the specific thing is
+										// at.
 	public rightPaneStates rightPaneState = rightPaneStates.buffs;
-	
+
 	public Play(int statein) {
 		state = statein;
 	}
-	
+
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
 
-		
 		Game.textures = new HashMap<String, Image>();
-		
-		Game.textures.put("res/Default.png", new Image("res/Default.png") );
-		Game.textures.put("res/Knight.png", new Image("res/Knight.png") );
-		Game.textures.put("res/grass.png", new Image("res/grass.png") );
 
-		
-		character = new PlayerCharacter("res/Knight.png", new Coordinate(0, 0), 9);
-		
-		for(int chunkX = 0; chunkX < 10; chunkX++){
-			for (int chunkY = 0; chunkY < 10; chunkY++){
-				WorldChunk buildChunk = new WorldChunk(new Coordinate(chunkX, chunkY), Game.world);
-				for(int actorX = 0; actorX < 100; actorX ++){
-					for (int actorY = 0; actorY < 100; actorY ++){
-						new Actor("res/grass.png", new Coordinate(actorX, actorY), 0, buildChunk);
+		Game.textures.put("res/Default.png", new Image("res/Default.png"));
+		Game.textures.put("res/Knight.png", new Image("res/Knight.png"));
+		Game.textures.put("res/grass.png", new Image("res/grass.png"));
+
+		character = new PlayerCharacter("res/Knight.png", new Coordinate(0, 0),
+				9);
+
+		for (int chunkX = -10; chunkX < 10; chunkX++) {
+			for (int chunkY = -10; chunkY < 10; chunkY++) {
+				WorldChunk buildChunk = new WorldChunk(new Coordinate(chunkX,
+						chunkY), Game.world);
+				for (int actorX = 0; actorX < 10; actorX++) {
+					for (int actorY = 0; actorY < 10; actorY++) {
+						new Actor("res/grass.png", new Coordinate(actorX,
+								actorY), 0, buildChunk);
 					}
 				}
 			}
 		}
-		
+
 	}
 
 	@Override
@@ -79,14 +79,26 @@ public class Play extends BasicGameState {
 		
 		System.out.println(relevantChunks.size() + " Chunks");
 		
+		Vector<Vector<Actor> > relevantActors = new Vector<Vector<Actor> >();
+		for(int i = 0; i < 10; i++){
+			relevantActors.add(new Vector<Actor>());
+		}
+		
+		for(int i = 0; i < relevantChunks.size(); i++){
+			for (int i1 = 0; i1 < relevantChunks.get(i).actors.size(); i1++){
+				for (int i2 = 0; i2 < relevantChunks.get(i).actors.get(i1).size(); i2++){
+					relevantActors.get(i).add(relevantChunks.get(i).actors.get(i1).get(i2));
+				}
+			}
+		}
+		
 		int RenderedObjects = 0;
-		for(int chunk = 0; chunk < relevantChunks.size(); chunk++){
-			for(int i = 0; i < relevantChunks.get(chunk).actors.size(); i++){
-				for(int i1 = 0; i1 < relevantChunks.get(chunk).actors.get(i).size(); i1++){
-					Actor a = relevantChunks.get(chunk).actors.get(i).get(i1);
+			for(int i = 0; i < relevantActors.size(); i++){
+				for(int i1 = 0; i1 < relevantActors.get(i).size(); i1++){
+					Actor a = relevantActors.get(i).get(i1);
 					if(a.isRendered){
 						int x, y;
-						x = (int) (((a.location.X - character.location.X + (relevantChunks.get(chunk).location.X * Game.world.ChunkRes.X)) * Game.zoom) + gc.getWidth()/2);
+						x = (int) (((a.location.X - character.location.X + (a. * Game.world.ChunkRes.X)) * Game.zoom) + gc.getWidth()/2);
 						y = (int) (((a.location.Y - character.location.Y + (relevantChunks.get(chunk).location.Y * Game.world.ChunkRes.Y)) * Game.zoom) + gc.getHeight()/2);
 						
 						if (x > -Game.zoom && y > -Game.zoom && x < gc.getWidth() && y < gc.getHeight() && a.displayImage != null) {
@@ -100,7 +112,7 @@ public class Play extends BasicGameState {
 					}
 				}
 			}
-		}
+		
 		System.out.println(RenderedObjects);
 		
 	}	// End render method.
@@ -108,59 +120,69 @@ public class Play extends BasicGameState {
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
 			throws SlickException {
-		
+
 		Game.GameTotalTime += delta;
 		relevantChunks.removeAllElements();
-		relevantChunks.add(Game.persistentChunk);
-
-		for(int i = 0; i < Game.world.chunks.size(); i++){
-			if(		Game.world.chunks.get(i).location.X * Game.zoom * Game.world.ChunkRes.X > (-Game.zoom * Game.world.ChunkRes.X) && 
-					Game.world.chunks.get(i).location.Y * Game.zoom * Game.world.ChunkRes.Y> (-Game.zoom * Game.world.ChunkRes.Y) &&
-					Game.world.chunks.get(i).location.X * Game.zoom * Game.world.ChunkRes.X< gc.getWidth() &&
-					Game.world.chunks.get(i).location.Y * Game.zoom * Game.world.ChunkRes.Y< gc.getHeight()){
-				relevantChunks.addElement(Game.world.chunks.get(i));
-			}
+		relevantChunks.add(Game.world.persistentChunk);
+		for (int i = 0; i < Game.world.chunks.size(); i++) {
+			relevantChunks.addElement(Game.world.chunks.get(i));
 		}
-		
-		for(int chunk = 0; chunk < relevantChunks.size(); chunk++){
+		/*
+		 * for(int i = 0; i < Game.world.chunks.size(); i++){ if(
+		 * Game.world.chunks.get(i).location.X * Game.zoom *
+		 * Game.world.ChunkRes.X > (-Game.world.ChunkRes.X) &&
+		 * Game.world.chunks.get(i).location.Y * Game.zoom *
+		 * Game.world.ChunkRes.Y > (-Game.world.ChunkRes.Y) &&
+		 * Game.world.chunks.get(i).location.X * Game.zoom *
+		 * Game.world.ChunkRes.X < gc.getWidth() &&
+		 * Game.world.chunks.get(i).location.Y * Game.zoom *
+		 * Game.world.ChunkRes.Y < gc.getHeight()){
+		 * relevantChunks.addElement(Game.world.chunks.get(i)); } }
+		 */
+
+		for (int chunk = 0; chunk < relevantChunks.size(); chunk++) {
 			for (int i = 0; i < relevantChunks.get(chunk).tickingObjects.size(); i++) {
 				relevantChunks.get(chunk).tickingObjects.get(i).tick(delta);
 			}
 		}
 		Input i = gc.getInput();
-		
-		if (i.isKeyPressed(Keyboard.KEY_ESCAPE) ) {
+
+		if (i.isKeyPressed(Keyboard.KEY_ESCAPE)) {
 			sbg.enterState(Game.pause);
 		}
-		
-		character.setVelocity(new Coordinate(0) );
-		
-		if(i.isKeyDown(Keyboard.KEY_W) ) {
-			character.setVelocity(new Coordinate(character.getVelocity().X, -character.moveSpeed) );
+
+		character.setVelocity(new Coordinate(0));
+
+		if (i.isKeyDown(Keyboard.KEY_W)) {
+			character.setVelocity(new Coordinate(character.getVelocity().X,
+					-character.moveSpeed));
 		}
-		if(i.isKeyDown(Keyboard.KEY_A) ) {			
-			character.setVelocity(new Coordinate(-character.moveSpeed, character.getVelocity().Y) );
+		if (i.isKeyDown(Keyboard.KEY_A)) {
+			character.setVelocity(new Coordinate(-character.moveSpeed,
+					character.getVelocity().Y));
 		}
-		if(i.isKeyDown(Keyboard.KEY_S) ) {			
-			character.setVelocity(new Coordinate(character.getVelocity().X, character.moveSpeed) );
+		if (i.isKeyDown(Keyboard.KEY_S)) {
+			character.setVelocity(new Coordinate(character.getVelocity().X,
+					character.moveSpeed));
 		}
-		if(i.isKeyDown(Keyboard.KEY_D) ) {			
-			character.setVelocity(new Coordinate(character.moveSpeed, character.getVelocity().Y) );
+		if (i.isKeyDown(Keyboard.KEY_D)) {
+			character.setVelocity(new Coordinate(character.moveSpeed, character
+					.getVelocity().Y));
 		}
-		if(i.isKeyPressed(Keyboard.KEY_Q) ) {
+		if (i.isKeyPressed(Keyboard.KEY_Q)) {
 			if (Game.zoom < maxZoom) {
 				Game.zoom *= 2;
 			}
-		}		
-		if(i.isKeyPressed(Keyboard.KEY_R) ) {
+		}
+		if (i.isKeyPressed(Keyboard.KEY_R)) {
 			if (Game.zoom > minZoom) {
 				Game.zoom *= .5;
 			}
 		}
-		if(i.isKeyPressed(Keyboard.KEY_GRAVE)){
+		if (i.isKeyPressed(Keyboard.KEY_GRAVE)) {
 			gc.exit();
 		}
-	}	// End update method
+	} // End update method
 
 	@Override
 	public int getID() {
