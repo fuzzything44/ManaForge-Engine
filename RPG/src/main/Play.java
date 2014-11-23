@@ -60,8 +60,8 @@ public class Play extends BasicGameState {
 			for (int chunkY = -10; chunkY < 10; chunkY++) {
 				WorldChunk buildChunk = new WorldChunk(new Coordinate(chunkX,
 						chunkY), Game.world);
-				for (int actorX = 0; actorX < 10; actorX++) {
-					for (int actorY = 0; actorY < 10; actorY++) {
+				for (int actorX = 0; actorX < 100; actorX++) {
+					for (int actorY = 0; actorY < 100; actorY++) {
 						new Actor("res/grass.png", new Coordinate(actorX,
 								actorY), 0, buildChunk);
 					}
@@ -128,11 +128,17 @@ public class Play extends BasicGameState {
 		relevantChunks.removeAllElements();
 		relevantChunks.add(Game.world.persistentChunk);
 
+		
 		for (int i = 0; i < Game.world.chunks.size(); i++) {
-			if ((Game.world.chunks.get(i).location.X - character.location.X)* Game.zoom * Game.world.ChunkRes.X > (-Game.world.ChunkRes.X * Game.world.ChunkRes.X)
-					&& (Game.world.chunks.get(i).location.Y - character.location.Y) * Game.zoom * Game.world.ChunkRes.Y > (-Game.world.ChunkRes.Y * Game.world.ChunkRes.Y)
-					&& (Game.world.chunks.get(i).location.X - character.location.X) * Game.zoom * Game.world.ChunkRes.X < gc.getWidth()
-					&& (Game.world.chunks.get(i).location.Y - character.location.Y) * Game.zoom * Game.world.ChunkRes.Y < gc.getHeight()) {
+			
+			int x, y;
+			x = (int) (((Game.world.chunks.get(i).location.X * Game.world.ChunkRes.X)- character.location.X) * Game.zoom + gc.getWidth()/2);
+			y = (int) (((Game.world.chunks.get(i).location.Y * Game.world.ChunkRes.Y)- character.location.Y) * Game.zoom + gc.getHeight()/2);
+			
+			if (x > (-Game.world.ChunkRes.X * Game.zoom)
+					&& y > (-Game.world.ChunkRes.Y * Game.zoom)
+					&& x < gc.getWidth()
+					&& y < gc.getHeight()) {
 				relevantChunks.addElement(Game.world.chunks.get(i));
 			}
 		}
