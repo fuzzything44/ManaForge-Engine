@@ -84,13 +84,10 @@ public class Play extends BasicGameState {
 			relevantActors.add(new Vector<Actor>());
 		}
 		
-		for(int i = 0; i < relevantChunks.size(); i++){
-			for (int i1 = 0; i1 < relevantChunks.get(i).actors.size(); i1++){
-				for (int i2 = 0; i2 < relevantChunks.get(i).actors.get(i1).size(); i2++){
-					relevantActors.get(i1)
-					.add(relevantChunks.get(i)
-							.actors.get(i1)
-							.get(i2));
+		for(int i = 0; i < relevantChunks.size(); i++) {
+			for (int i1 = 0; i1 < relevantChunks.get(i).actors.size(); i1++) {
+				for (int i2 = 0; i2 < relevantChunks.get(i).actors.get(i1).size(); i2++) {
+					relevantActors.get(i1).add(relevantChunks.get(i).actors.get(i1).get(i2) );
 				}
 			}
 		}
@@ -105,6 +102,7 @@ public class Play extends BasicGameState {
 						y = (int) (((a.location.Y - character.location.Y + (a.chunk.location.Y * Game.world.ChunkRes.Y)) * Game.zoom) + gc.getHeight()/2);
 						
 						if (x > -Game.zoom && y > -Game.zoom && x < gc.getWidth() && y < gc.getHeight() && a.displayImage != null) {
+							// if this is on the screen... 
 							
 							if(!texturesScaled.containsKey(a.displayImage)){
 								texturesScaled.put(a.displayImage, Game.textures.get(a.displayImage).getScaledCopy(Game.zoom, Game.zoom) );
@@ -129,14 +127,53 @@ public class Play extends BasicGameState {
 		relevantChunks.add(Game.world.persistentChunk);
 
 		for (int i = 0; i < Game.world.chunks.size(); i++) {
-			if ((Game.world.chunks.get(i).location.X - character.location.X)* Game.zoom * Game.world.ChunkRes.X > (-Game.world.ChunkRes.X * Game.world.ChunkRes.X)
-					&& (Game.world.chunks.get(i).location.Y - character.location.Y) * Game.zoom * Game.world.ChunkRes.Y > (-Game.world.ChunkRes.Y * Game.world.ChunkRes.Y)
-					&& (Game.world.chunks.get(i).location.X - character.location.X) * Game.zoom * Game.world.ChunkRes.X < gc.getWidth()
-					&& (Game.world.chunks.get(i).location.Y - character.location.Y) * Game.zoom * Game.world.ChunkRes.Y < gc.getHeight()) {
+			WorldChunk testingChunk = Game.world.chunks.get(i);
+			int screenWidth = gc.getWidth();
+			int screenHeight = gc.getHeight();
+			if (	testingChunk.location.X * Game.world.ChunkRes.X - character.location.X - .2 * Game.world.ChunkRes.X < screenWidth / (2 * Game.zoom) &&
+					testingChunk.location.Y * Game.world.ChunkRes.Y - character.location.Y - .2 * Game.world.ChunkRes.Y < screenHeight / (2 * Game.zoom) &&
+					testingChunk.location.X * Game.world.ChunkRes.X - character.location.X + 1.2 * Game.world.ChunkRes.X > -screenWidth / (2 * Game.zoom) &&
+					testingChunk.location.Y * Game.world.ChunkRes.Y - character.location.Y + 1.2 * Game.world.ChunkRes.Y > -screenHeight / (2 * Game.zoom) 
+					) {
+				/*	.	+-----------------------------------------+
+				 * 	.	|                   |                     |
+				 * 	.	|                   |                     |
+				 * 	.	|                   Y                     |
+				 * 	.	|                   |                     |
+				 * 	L	|                   |                     |
+				 * 	.	|.........X.........C..........X..........|
+				 * 	.	|                   |                     |
+				 * 	.	|                   |                     |
+				 * 	.	|                   Y                     |
+				 * 	.	|                   |                     |
+				 *  .	|                   |                     |
+				 * 	.	+-----------------------------------------+
+				 * 
+				 *  C is player character. In the center of the world.
+				 *  Y is the distance from the character to the top or bottom of the screen.
+				 *  X is the distance from the character to the side of the world.
+				 *  
+				 *  testingChunk.location gives the coordinate for the top left hand corner of the chunk.
+				 *  
+				 *  The chunk coordinate (in actors, not chunks) - the character coordinate gives us how many actors the chunk is away from the character.
+				 *  	screenSize/(2 * Game.zoom) gives us the amount of actors between the character and the side of the screen
+				 *  	(screenSize/2 for pixels to side, / by Game.zoom to get that in actors to the side (Game.zoom is pixels/actor)
+				 *  This gets us the basic equations:
+				 *  	testingChunk.location * Game.world.ChunkRes - character.location < screenSize / (2 * Game.zoom)
+				 *  	testingChunk.location * Game.world.ChunkRes - character.location > -screenSize / (2 * Game.zoom)
+				 *  
+				 *  The multiple of Game.world.ChunkRes is because we want the chunk to be visible if any part of it is on the screen.
+				 *  	(Only relevant for lower bounds)
+				 *  The .2 is because for some reason, chunks weren't loading instantly, so we had a slight amount of blackness around the edges.
+				 *  
+				 *  Basically, we need to check if the upper left hand corner of the chunk is more than one chunk away from the screen. (Or just off the screen for lower and right hand bounds)
+				 */
+				
 				relevantChunks.addElement(Game.world.chunks.get(i));
+			
 			}
 		}
-
+		System.out.println("Character coords:" + character.location.X + ", " + character.location.Y);
 		for (int chunk = 0; chunk < relevantChunks.size(); chunk++) {
 			for (int i = 0; i < relevantChunks.get(chunk).tickingObjects.size(); i++) {
 				relevantChunks.get(chunk).tickingObjects.get(i).tick(delta);
