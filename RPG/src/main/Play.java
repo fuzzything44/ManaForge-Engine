@@ -130,7 +130,6 @@ public class Play extends BasicGameState {
 
 		
 		for (int i = 0; i < Game.world.chunks.size(); i++) {
-//<<<<<<< HEAD
 			WorldChunk testingChunk = Game.world.chunks.get(i);
 			int screenWidth = gc.getWidth();
 			int screenHeight = gc.getHeight();
@@ -172,8 +171,7 @@ public class Play extends BasicGameState {
 				 *  
 				 *  Basically, we need to check if the upper left hand corner of the chunk is more than one chunk away from the screen. (Or just off the screen for lower and right hand bounds)
 				 */
-				
-// =======
+			}
 			
 			int x, y;
 			x = (int) (((Game.world.chunks.get(i).location.X * Game.world.ChunkRes.X)- character.location.X) * Game.zoom + gc.getWidth()/2);
@@ -183,52 +181,52 @@ public class Play extends BasicGameState {
 					&& y > (-Game.world.ChunkRes.Y * Game.zoom)
 					&& x < gc.getWidth()
 					&& y < gc.getHeight()) {
-//>>>>>>> origin/master
 				relevantChunks.addElement(Game.world.chunks.get(i));
 			
 			}
 		}
 		System.out.println("Character coords:" + character.location.X + ", " + character.location.Y);
 		for (int chunk = 0; chunk < relevantChunks.size(); chunk++) {
-			for (int i = 0; i < relevantChunks.get(chunk).tickingObjects.size(); i++) {
-				relevantChunks.get(chunk).tickingObjects.get(i).tick(delta);
+			for (int i1 = 0; i1 < relevantChunks.get(chunk).tickingObjects.size(); i1++) {
+				relevantChunks.get(chunk).tickingObjects.get(i1).tick(delta);
 			}
 		}
-		Input i = gc.getInput();
+		
+		Input i1 = gc.getInput();
 
-		if (i.isKeyPressed(Keyboard.KEY_ESCAPE)) {
+		if (i1.isKeyPressed(Keyboard.KEY_ESCAPE)) {
 			sbg.enterState(Game.pause);
 		}
 
 		character.setVelocity(new Coordinate(0));
 
-		if (i.isKeyDown(Keyboard.KEY_W)) {
+		if (i1.isKeyDown(Keyboard.KEY_W)) {
 			character.setVelocity(new Coordinate(character.getVelocity().X,
 					-character.moveSpeed));
 		}
-		if (i.isKeyDown(Keyboard.KEY_A)) {
+		if (i1.isKeyDown(Keyboard.KEY_A)) {
 			character.setVelocity(new Coordinate(-character.moveSpeed,
 					character.getVelocity().Y));
 		}
-		if (i.isKeyDown(Keyboard.KEY_S)) {
+		if (i1.isKeyDown(Keyboard.KEY_S)) {
 			character.setVelocity(new Coordinate(character.getVelocity().X,
 					character.moveSpeed));
 		}
-		if (i.isKeyDown(Keyboard.KEY_D)) {
+		if (i1.isKeyDown(Keyboard.KEY_D)) {
 			character.setVelocity(new Coordinate(character.moveSpeed, character
 					.getVelocity().Y));
 		}
-		if (i.isKeyPressed(Keyboard.KEY_Q)) {
+		if (i1.isKeyPressed(Keyboard.KEY_Q)) {
 			if (Game.zoom < maxZoom) {
 				Game.zoomMult *= 2;
 			}
 		}
-		if (i.isKeyPressed(Keyboard.KEY_R)) {
+		if (i1.isKeyPressed(Keyboard.KEY_R)) {
 			if (Game.zoom > minZoom) {
 				Game.zoomMult *= .5;
 			}
 		}
-		if (i.isKeyPressed(Keyboard.KEY_GRAVE)) {
+		if (i1.isKeyPressed(Keyboard.KEY_GRAVE)) {
 			gc.exit();
 		}
 	} // End update method
