@@ -62,8 +62,13 @@ public class Play extends BasicGameState {
 						chunkY), Game.world);
 				for (int actorX = 0; actorX < Game.world.ChunkRes.X; actorX++) {
 					for (int actorY = 0; actorY < Game.world.ChunkRes.Y; actorY++) {
+						if ( (actorX == Game.world.ChunkRes.Y - 1) || (actorX == 0) || (actorY == 0) || (actorY == Game.world.ChunkRes.Y - 1)) {
+							// if at the edge (edge of a chunk is x or y being 0 or the final part of the for loop, which is chunkres - 1
+							new Actor ("res/Default.png", new Coordinate (actorX, actorY), 0, buildChunk);
+						} else {
 						new Actor("res/grass.png", new Coordinate(actorX,
 								actorY), 0, buildChunk);
+						}
 					}
 				}
 			}
