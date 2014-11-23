@@ -206,10 +206,16 @@ public class Play extends BasicGameState {
 		if (i1.isKeyDown(Keyboard.KEY_S)) {
 			character.setVelocity(new Coordinate(character.getVelocity().X,
 					character.moveSpeed));
+			if (i1.isKeyDown(Keyboard.KEY_W) ) {
+				character.setVelocity(new Coordinate(0,character.getVelocity().X));
+			}
 		}
 		if (i1.isKeyDown(Keyboard.KEY_D)) {
 			character.setVelocity(new Coordinate(character.moveSpeed, character
 					.getVelocity().Y));
+			if (i1.isKeyDown(Keyboard.KEY_A) ) {
+				character.setVelocity(new Coordinate(0,character.getVelocity().Y));
+			}
 		}
 		if (i1.isKeyPressed(Keyboard.KEY_Q)) {
 			if (Game.zoom < maxZoom) {
