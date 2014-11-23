@@ -1,8 +1,5 @@
 package main;
 
-import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
-
 
 /* The base class for anything placeable in the world
  * 
@@ -11,7 +8,6 @@ import org.newdawn.slick.SlickException;
 
 public class Actor extends Object {
 	public boolean doesCollide = false;
-	private WorldChunk chunk;
 	
 	public Actor(int renderOrder, WorldChunk chunkIn) {
 		
@@ -22,7 +18,6 @@ public class Actor extends Object {
 		displayImage = "res/Default.png";
 	
 		renderOrder = 1;
-		chunk = chunkIn;
 	}
 
 	public Actor(Coordinate place, int renderOrder, WorldChunk chunkIn) {
@@ -36,7 +31,7 @@ public class Actor extends Object {
 		renderOrder = 1;
 		
 		location = place;
-		chunk = chunkIn;
+		
 	}	
 	
 	public Actor(String image, int renderOrder, WorldChunk chunkIn) {
@@ -48,7 +43,6 @@ public class Actor extends Object {
 		displayImage = image;
 	
 		renderOrder = 1;
-		chunk = chunkIn;
 	}
 	public Actor(String image, Coordinate place, int renderOrder, WorldChunk chunkIn) {
 		
@@ -61,13 +55,11 @@ public class Actor extends Object {
 		this.renderOrder = renderOrder;
 		
 		location = place;
-		
-		chunk = chunkIn;
 	}
 	
-	public void changeRenderOrder(int newRenderOrder) {
-		chunk.actors.get(renderOrder).remove(this);
-		chunk.actors.get(newRenderOrder).add(this);
+	public void changeRenderOrder(int newRenderOrder, WorldChunk chunkIn) {
+		chunkIn.actors.get(renderOrder).remove(this);
+		chunkIn.actors.get(newRenderOrder).add(this);
 	}
 	 
 	public String displayImage;

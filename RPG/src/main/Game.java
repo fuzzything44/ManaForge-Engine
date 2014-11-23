@@ -7,19 +7,14 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
 import java.util.Map;
-import java.util.Vector;
 
 public class Game extends StateBasedGame {
 
 	static final int play = 0;
 	static final int pause = 1;
 	public static float GameTotalTime = 0;
-//	public static Vector<Object> TickingObjects = new Vector<Object>();
-	
 	
 	public static World world = new World();
-	
-	public static WorldChunk persistentChunk = new WorldChunk(new Coordinate(0, 0), world);
 	
 	public static int zoom = 20;
 	public static int maxZoom = 55;

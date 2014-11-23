@@ -56,10 +56,18 @@ public class Play extends BasicGameState {
 		Game.textures.put("res/grass.png", new Image("res/grass.png") );
 
 		
-		character = new PlayerCharacter("res/Knight.png", new Coordinate(0, 0), 8);
+		character = new PlayerCharacter("res/Knight.png", new Coordinate(0, 0), 9);
 		
-		WorldChunk chunk1 = new WorldChunk(new Coordinate(0, 0), Game.world);
-		Actor a = new Actor(new Coordinate(2, 2), 0, chunk1);
+		for(int chunkX = 0; chunkX < 10; chunkX++){
+			for (int chunkY = 0; chunkY < 10; chunkY++){
+				WorldChunk buildChunk = new WorldChunk(new Coordinate(chunkX, chunkY), Game.world);
+				for(int actorX = 0; actorX < 100; actorX ++){
+					for (int actorY = 0; actorY < 100; actorY ++){
+						new Actor("res/grass.png", new Coordinate(actorX, actorY), 0, buildChunk);
+					}
+				}
+			}
+		}
 		
 	}
 
@@ -69,7 +77,7 @@ public class Play extends BasicGameState {
 		
 		Map<String, Image> texturesScaled = new HashMap<String, Image>();
 		
-
+		System.out.println(relevantChunks.size() + " Chunks");
 		
 		int RenderedObjects = 0;
 		for(int chunk = 0; chunk < relevantChunks.size(); chunk++){
@@ -78,8 +86,8 @@ public class Play extends BasicGameState {
 					Actor a = relevantChunks.get(chunk).actors.get(i).get(i1);
 					if(a.isRendered){
 						int x, y;
-						x = (int) (((a.location.X - character.location.X) * Game.zoom) + gc.getWidth()/2);
-						y = (int) (((a.location.Y - character.location.Y) * Game.zoom) + gc.getHeight()/2);
+						x = (int) (((a.location.X - character.location.X + (relevantChunks.get(chunk).location.X * Game.world.ChunkRes.X)) * Game.zoom) + gc.getWidth()/2);
+						y = (int) (((a.location.Y - character.location.Y + (relevantChunks.get(chunk).location.Y * Game.world.ChunkRes.Y)) * Game.zoom) + gc.getHeight()/2);
 						
 						if (x > -Game.zoom && y > -Game.zoom && x < gc.getWidth() && y < gc.getHeight() && a.displayImage != null) {
 							
@@ -106,10 +114,10 @@ public class Play extends BasicGameState {
 		relevantChunks.add(Game.persistentChunk);
 
 		for(int i = 0; i < Game.world.chunks.size(); i++){
-			if(Game.world.chunks.get(i).location.X * Game.zoom > (-Game.zoom * Game.world.ChunkRes.X) && 
-					Game.world.chunks.get(i).location.Y * Game.zoom > (-Game.zoom * Game.world.ChunkRes.Y) &&
-					Game.world.chunks.get(i).location.X * Game.zoom < gc.getWidth() &&
-					Game.world.chunks.get(i).location.Y * Game.zoom < gc.getHeight()){
+			if(		Game.world.chunks.get(i).location.X * Game.zoom * Game.world.ChunkRes.X > (-Game.zoom * Game.world.ChunkRes.X) && 
+					Game.world.chunks.get(i).location.Y * Game.zoom * Game.world.ChunkRes.Y> (-Game.zoom * Game.world.ChunkRes.Y) &&
+					Game.world.chunks.get(i).location.X * Game.zoom * Game.world.ChunkRes.X< gc.getWidth() &&
+					Game.world.chunks.get(i).location.Y * Game.zoom * Game.world.ChunkRes.Y< gc.getHeight()){
 				relevantChunks.addElement(Game.world.chunks.get(i));
 			}
 		}

@@ -29,7 +29,7 @@ public class Widget extends Object{
 		horizonitalFill = fillTypeH;
 		verticalFill = fillTypeV;
 		
-		Game.persistentChunk.tickingObjects.addElement(this);
+		Game.world.persistentChunk.tickingObjects.addElement(this);
 		
 		switch(horizonitalFill){
 		case Full:

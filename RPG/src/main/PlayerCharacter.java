@@ -53,16 +53,16 @@ public class PlayerCharacter extends Character {
 	public Vector<ConsumableItem> consumables = new Vector<ConsumableItem>();
 	
 	public PlayerCharacter(int renderOrder) {
-		super(renderOrder, Game.persistentChunk);
+		super(renderOrder, Game.world.persistentChunk);
 	}
 	public PlayerCharacter(Coordinate place, int renderOrder) {
-		super(place, renderOrder, Game.persistentChunk);
+		super(place, renderOrder, Game.world.persistentChunk);
 	}
 	public PlayerCharacter(String image, int renderOrder) {
-		super(image, renderOrder, Game.persistentChunk);
+		super(image, renderOrder, Game.world.persistentChunk);
 	}
 	public PlayerCharacter(String image, Coordinate place, int renderOrder) {
-		super(image, place, renderOrder, Game.persistentChunk);
+		super(image, place, renderOrder, Game.world.persistentChunk);
 	}
 	
 	public enum equipmentTypes {
