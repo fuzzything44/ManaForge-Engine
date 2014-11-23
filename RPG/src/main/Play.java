@@ -171,19 +171,9 @@ public class Play extends BasicGameState {
 				 *  
 				 *  Basically, we need to check if the upper left hand corner of the chunk is more than one chunk away from the screen. (Or just off the screen for lower and right hand bounds)
 				 */
-			}
-			
-			int x, y;
-			x = (int) (((Game.world.chunks.get(i).location.X * Game.world.ChunkRes.X)- character.location.X) * Game.zoom + gc.getWidth()/2);
-			y = (int) (((Game.world.chunks.get(i).location.Y * Game.world.ChunkRes.Y)- character.location.Y) * Game.zoom + gc.getHeight()/2);
-			
-			if (x > (-Game.world.ChunkRes.X * Game.zoom)
-					&& y > (-Game.world.ChunkRes.Y * Game.zoom)
-					&& x < gc.getWidth()
-					&& y < gc.getHeight()) {
-				relevantChunks.addElement(Game.world.chunks.get(i));
-			
-			}
+				relevantChunks.addElement(testingChunk);
+			} 
+					
 		}
 		System.out.println("Character coords:" + character.location.X + ", " + character.location.Y);
 		for (int chunk = 0; chunk < relevantChunks.size(); chunk++) {
