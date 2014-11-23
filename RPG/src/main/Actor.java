@@ -9,6 +9,8 @@ package main;
 public class Actor extends Object {
 	public boolean doesCollide = false;
 	
+	public WorldChunk chunk;
+	
 	public Actor(int renderOrder, WorldChunk chunkIn) {
 		
 		if(!chunkIn.actors.contains(this)){
@@ -18,6 +20,8 @@ public class Actor extends Object {
 		displayImage = "res/Default.png";
 	
 		renderOrder = 1;
+		
+		chunk = chunkIn;
 	}
 
 	public Actor(Coordinate place, int renderOrder, WorldChunk chunkIn) {
@@ -31,6 +35,7 @@ public class Actor extends Object {
 		renderOrder = 1;
 		
 		location = place;
+		chunk = chunkIn;
 		
 	}	
 	
@@ -43,6 +48,7 @@ public class Actor extends Object {
 		displayImage = image;
 	
 		renderOrder = 1;
+		chunk = chunkIn;
 	}
 	public Actor(String image, Coordinate place, int renderOrder, WorldChunk chunkIn) {
 		
@@ -55,6 +61,7 @@ public class Actor extends Object {
 		this.renderOrder = renderOrder;
 		
 		location = place;
+		chunk = chunkIn;
 	}
 	
 	public void changeRenderOrder(int newRenderOrder, WorldChunk chunkIn) {

@@ -87,7 +87,10 @@ public class Play extends BasicGameState {
 		for(int i = 0; i < relevantChunks.size(); i++){
 			for (int i1 = 0; i1 < relevantChunks.get(i).actors.size(); i1++){
 				for (int i2 = 0; i2 < relevantChunks.get(i).actors.get(i1).size(); i2++){
-					relevantActors.get(i).add(relevantChunks.get(i).actors.get(i1).get(i2));
+					relevantActors.get(i1)
+					.add(relevantChunks.get(i)
+							.actors.get(i1)
+							.get(i2));
 				}
 			}
 		}
@@ -98,8 +101,8 @@ public class Play extends BasicGameState {
 					Actor a = relevantActors.get(i).get(i1);
 					if(a.isRendered){
 						int x, y;
-						x = (int) (((a.location.X - character.location.X + (a. * Game.world.ChunkRes.X)) * Game.zoom) + gc.getWidth()/2);
-						y = (int) (((a.location.Y - character.location.Y + (relevantChunks.get(chunk).location.Y * Game.world.ChunkRes.Y)) * Game.zoom) + gc.getHeight()/2);
+						x = (int) (((a.location.X - character.location.X + (a.chunk.location.X * Game.world.ChunkRes.X)) * Game.zoom) + gc.getWidth()/2);
+						y = (int) (((a.location.Y - character.location.Y + (a.chunk.location.Y * Game.world.ChunkRes.Y)) * Game.zoom) + gc.getHeight()/2);
 						
 						if (x > -Game.zoom && y > -Game.zoom && x < gc.getWidth() && y < gc.getHeight() && a.displayImage != null) {
 							

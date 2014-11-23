@@ -10,7 +10,9 @@ public class WorldChunk {
 	public Coordinate location;
 	
 	public WorldChunk(Coordinate locationIn, World world){
-		world.chunks.addElement(this);
+		if(!world.chunks.contains(this)){
+			world.chunks.addElement(this);
+		}
 		
 		location = locationIn;
 		
