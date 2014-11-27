@@ -19,11 +19,7 @@ public class Game extends StateBasedGame {
 	public static Landscape landscape;
 	
 	public static int zoomMult = 20;
-	public static int zoom = 20;
-	public static int maxZoom = 55;
-	public static int minZoom = 15;
-//	public static Vector<Vector<Actor> > allActors = new Vector<Vector<Actor> >();
-
+	public static int zoom = 48;
 	static Map<String, Image> textures;
 	
 	public Game(String name) {
