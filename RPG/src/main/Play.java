@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Vector;
 
 import org.lwjgl.input.Keyboard;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -52,11 +53,13 @@ public class Play extends BasicGameState {
 		Game.textures.put("res/Default.png", new Image("res/Default.png"));
 		Game.textures.put("res/Knight.png", new Image("res/Knight.png"));
 		Game.textures.put("res/grass.png", new Image("res/grass.png"));
+		Game.textures.put("res/dirt.png", new Image("res/dirt.png"));
+		Game.textures.put("res/Tree.png", new Image("res/Tree.png"));
 
 		character = new PlayerCharacter("res/Knight.png", new Coordinate(0, 0),
 				9);
 
-		for (int chunkX = -5; chunkX < 5; chunkX++) {
+/*		for (int chunkX = -5; chunkX < 5; chunkX++) {
 			for (int chunkY = -5; chunkY < 5; chunkY++) {
 				WorldChunk buildChunk = new WorldChunk(new Coordinate(chunkX,
 						chunkY), Game.world);
@@ -67,8 +70,15 @@ public class Play extends BasicGameState {
 					}
 				}
 			}
-		}
-
+		}*/
+		Image i = new Image("res/TestLandscape.png");
+		Map<Color, String> imageInfo = new HashMap<Color, String>();
+		imageInfo.put(Color.red, "res/grass.png");
+		imageInfo.put(Color.blue, "res/Default.png");
+		imageInfo.put(Color.green, "res/Tree.png");
+		imageInfo.put(Color.black, "res/dirt.png");
+		Game.landscape = new Landscape(i, imageInfo);
+		
 	}
 
 	@Override
@@ -77,7 +87,27 @@ public class Play extends BasicGameState {
 		
 		Map<String, Image> texturesScaled = new HashMap<String, Image>();
 		
-		System.out.println(relevantChunks.size() + " Chunks");
+		// draw landscape
+		for(int x = 0; x < Game.landscape.loadImage.getWidth(); x++){
+			for (int y = 0; y < Game.landscape.loadImage.getHeight(); y++){
+				String image = Game.landscape.queryPixel(x, y);
+				boolean canDraw = true;
+				if(!texturesScaled.containsKey(image)){
+					if(Game.textures.get(image) == null){
+						canDraw = false;
+					}else{
+						texturesScaled.put(image, Game.textures.get(image).getScaledCopy(Game.zoom, Game.zoom) );
+					}
+				}
+				if(canDraw){
+					int drawX, drawY;
+					drawX = (int)((y - character.location.X) * Game.zoom + gc.getWidth()/2);
+					drawY = (int)((x - character.location.Y) * Game.zoom + gc.getHeight()/2);
+						
+					texturesScaled.get(image).draw(drawX, drawY);
+				}
+			}
+		}
 		
 		Vector<Vector<Actor> > relevantActors = new Vector<Vector<Actor> >();
 		for(int i = 0; i < 10; i++){
@@ -87,10 +117,7 @@ public class Play extends BasicGameState {
 		for(int i = 0; i < relevantChunks.size(); i++){
 			for (int i1 = 0; i1 < relevantChunks.get(i).actors.size(); i1++){
 				for (int i2 = 0; i2 < relevantChunks.get(i).actors.get(i1).size(); i2++){
-					relevantActors.get(i1)
-					.add(relevantChunks.get(i)
-							.actors.get(i1)
-							.get(i2));
+					relevantActors.get(i1).add(relevantChunks.get(i).actors.get(i1).get(i2));
 				}
 			}
 		}

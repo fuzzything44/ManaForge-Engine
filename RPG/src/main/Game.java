@@ -16,6 +16,8 @@ public class Game extends StateBasedGame {
 	
 	public static World world = new World();
 	
+	public static Landscape landscape;
+	
 	public static int zoomMult = 20;
 	public static int zoom = 20;
 	public static int maxZoom = 55;
