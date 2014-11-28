@@ -41,11 +41,11 @@ public class Coordinate {
 		return new Coordinate(X - c.X, Y - c.Y);
 	}
 	
-	public Coordinate mulitply(Coordinate c){
+	public Coordinate multiply(Coordinate c){
 		return new Coordinate(X * c.X, Y * c.Y);
 	}
 	
-	public Coordinate mulitply(float f){
+	public Coordinate multiply(float f){
 		return new Coordinate(X * f, Y * f);
 	}
 	

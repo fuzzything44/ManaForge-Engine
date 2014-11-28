@@ -12,9 +12,11 @@ public class PlayerCharacter extends Character {
  *	Base is the unbuffed MaxHP/MaxMP/Stat
  */
 	public final float moveSpeed = 5f;
-	
-	public Hat hat = null;
-	public Shirt shirt = null;
+
+// Equipment takes:
+//		int price, String name, String description, int amount, PlayerCharacter looter, Buff.BuffValues buffFromEquipment
+	public Hat hat = new Hat(0, "No hat", "Empty Slot", 1, this, new Buff.BuffValues());
+	public Shirt shirt = new Shirt(0, "No Shirt", "Empty Slot", 1, this, new Buff.BuffValues());
 //	public Pants pants = null;
 //	public Shoes shoes = null;
 //	public Necklace necklace = null;
@@ -147,22 +149,38 @@ public class PlayerCharacter extends Character {
 	}	// returns how many buffs are active
 	
 	public void equip(Equipment equippedItem) {
+		unEquip(equippedItem.equip);
+		
 		switch (equippedItem.equip) {
 		case hat:
-			hat.unEquip();
 			hat = (Hat) equippedItem;
+			break;
 		case shirt:
-			shirt.unEquip();
 			shirt = (Shirt) equippedItem;	// TODO before I go farther, is this the correct thing to do?
+			break;
 		default:
 			break;
 		}
-		
+	}
+	
+	public void unEquip(equipmentTypes equipSlot) {
+		switch(equipSlot) {
+		case hat:
+			removeBuff(hat.equipmentBuff);
+			hat = new Hat(0, "No hat", "Empty Slot", 1, this, new Buff.BuffValues());
+			break;
+		case shirt:
+			removeBuff(shirt.equipmentBuff);
+			shirt = new Shirt(0, "No shirt", "Empty Slot", 1, this, new Buff.BuffValues());
+			break;
+		default:
+			break;
+		}
 	}
 	
 	public void tick(float deltaTime){
 //		if (location.X >= maxX && location.X <= minX) {
-		location = location.add(velocity.mulitply(deltaTime/1000) );
+		location = location.add(velocity.multiply(deltaTime/1000) );
 	}
 
 }

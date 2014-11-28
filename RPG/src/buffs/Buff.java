@@ -44,7 +44,30 @@ public class Buff extends Object {
 		// Determines if the buff is permanent or not.
 		public boolean isBuffPermanent = false;
 		
-		
+		public boolean equals(BuffValues b) {
+			// For two buff values to be equal, they need the exact same buff amounts,
+			// description, and state of permanency.
+			return (this.strBuffPercent 	== b.strBuffPercent 	&&
+					this.dexBuffPercent 	== b.dexBuffPercent 	&&
+					this.wisBuffPercent 	== b.wisBuffPercent 	&&
+					this.attackBuffPercent	== b.attackBuffPercent 	&&
+					this.defenceBuffPercent == b.defenceBuffPercent &&
+					this.healthBuffPercent 	== b.healthBuffPercent 	&&
+					this.manaBuffPercent 	== b.manaBuffPercent 	&&
+					this.strBuffNumber		== b.strBuffNumber		&&
+					this.dexBuffNumber		== b.dexBuffNumber		&&
+					this.wisBuffNumber		== b.wisBuffNumber		&&
+					this.attackBuffNumber	== b.attackBuffNumber	&&
+					this.defenceBuffNumber	== b.defenceBuffNumber	&&
+					this.healthBuffNumber	== b.healthBuffNumber	&&
+					this.manaBuffNumber		== b.manaBuffNumber		&&
+				
+					this.buffDescription.equals(b.buffDescription)	&&
+					
+					this.isBuffPermanent	== b.isBuffPermanent
+					
+					);
+		}	// End buffValues equals method.
 		
 	}	// End buffValues
 	
@@ -108,7 +131,17 @@ public class Buff extends Object {
 		assert owner == null : "Owner is set to null. How did this happen?";
 		assert buffVals == null : "The given buff values (Buff.BuffValues) was null. Did you initialize it?";
 		
-		owner.addBuff(this);
+		int hasBuff = -1;	// the index of the buff. If -1, you do not have the buff.
+		for (int x = 0; x < owner.amountBuffs(); x++) {	// loops through to make sure you don't have the buff.
+			if (owner.buffs.get(x).equals(this)) {
+				hasBuff = x;
+			}
+		}
+		if (hasBuff == -1) {
+			owner.addBuff(this);
+		} else {
+			owner.buffs.get(hasBuff).increaseBuffLength(buffVals.buffTimeLeft);
+		}
 		if (!buffVals.isBuffPermanent) {
 			Game.world.persistentChunk.tickingObjects.addElement(this);
 		}
@@ -130,6 +163,8 @@ public class Buff extends Object {
 			return Math.round(baseValue*(buffVals.attackBuffPercent)) + buffVals.attackBuffNumber;
 		case defence:
 			return Math.round(baseValue*(buffVals.defenceBuffPercent)) + buffVals.defenceBuffNumber;
+//		case newStat:
+//			return Math.round(baseValue*(buffVals.statBuffPercent)) + buffVals.statBuffNumber;
 		default:
 			return baseValue;
 		}	// end switch
@@ -192,9 +227,11 @@ public class Buff extends Object {
 	}	// End getBuffDescription()
 	
 	public boolean equals(Buff equalTo) {
-		return (equalTo.getBuffDescription().equals(getBuffDescription()) && equalTo.getBuffName().equals(buffName) );
+		return (this.buffVals.equals(equalTo.buffVals)	&&
+				this.buffName.equals(equalTo.buffName)
+				);
 	}	// Overriding .equals method.
-		// For two buffs to be equal, they need the same generated description and name.
+		// For two buffs to be equal, they need the same buffVals and name.
 
 }		// End Buff class.
 
