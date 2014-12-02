@@ -6,8 +6,10 @@ package main;
  */
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Vector;
+import java.util.function.Consumer;
 
 import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.Color;
@@ -26,6 +28,7 @@ public class Play extends BasicGameState {
 	int minZoom = 12;
 	int maxZoom = 96;
 	Vector<WorldChunk> relevantChunks = new Vector<WorldChunk>();
+	Vector<Vector<Actor> > relevantActors = new Vector<Vector<Actor> >();
 	Buff buff = null;
 
 	public final int state;
@@ -82,7 +85,7 @@ public class Play extends BasicGameState {
 		imageInfo.put(Color.blue, "res/Default.png");
 		imageInfo.put(Color.green, "res/Tree.png");
 		imageInfo.put(Color.black, "res/dirt.png");
-		Game.landscape = new Landscape(i, imageInfo);
+		Game.landscape = new Landscape(i, imageInfo, new Coordinate(0, 0));
 		
 	}
 
@@ -91,6 +94,8 @@ public class Play extends BasicGameState {
 			throws SlickException {
 		
 		Map<String, Image> texturesScaled = new HashMap<String, Image>();
+		
+		relevantActors.clear();
 		
 		// draw landscape
 		for(int x = 0; x < Game.landscape.loadImage.getWidth(); x++){
@@ -114,18 +119,17 @@ public class Play extends BasicGameState {
 			}
 		}
 		
-		Vector<Vector<Actor> > relevantActors = new Vector<Vector<Actor> >();
 		for(int i = 0; i < 10; i++){
 			relevantActors.add(new Vector<Actor>());
 		}
 		
+		
+		
 		for(int i = 0; i < relevantChunks.size(); i++){
-			for (int i1 = 0; i1 < relevantChunks.get(i).actors.size(); i1++){
-				for (int i2 = 0; i2 < relevantChunks.get(i).actors.get(i1).size(); i2++){
-					relevantActors.get(i1).add(relevantChunks.get(i).actors.get(i1).get(i2));
-
-				}
-			}
+			Iterator<Actor> iter = relevantChunks.get(i).actors.values().iterator();
+			Consumer<Actor> a = (Actor act) -> parseChunk(act);
+			iter.forEachRemaining(a);
+			
 		}
 		
 		int RenderedObjects = 0;
@@ -160,6 +164,11 @@ public class Play extends BasicGameState {
 		// drawing all the random info we might want on the screen.
 		
 	}	// End render method.
+	
+	void parseChunk(Actor a){
+		relevantActors.get(a.renderOrder).add(a);
+	}
+	
 
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)

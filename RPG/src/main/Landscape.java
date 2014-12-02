@@ -9,20 +9,14 @@ import org.newdawn.slick.Image;
 public class Landscape extends Object{
 	
 	
-	public Landscape(Image image){
+
+	public Landscape (Image image, Map<Color, String> iI, Coordinate origin){
+		imageInfo  = iI;
 		loadImage = image;
-		imageInfo = new HashMap<Color, String>();
 		
 	}
 	
-	public Landscape (Image image, Map<Color, String> iI){
-		imageInfo  = iI;
-		loadImage = image;
-	}
-	
-	public Landscape (Map<Color, String> iI){
-		imageInfo = iI;
-	}
+
 
 	public Map<Color, String> imageInfo;
 	public Image loadImage;

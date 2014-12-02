@@ -1,12 +1,13 @@
 package main;
 
-import java.util.Vector;
+import java.util.HashMap;
+import java.util.Map;
 
 public class World {
 	
 	public Coordinate ChunkRes = new Coordinate(50, 50);
 	
-	public Vector<WorldChunk> chunks = new Vector<WorldChunk>();
+	public Map<Coordinate, WorldChunk> chunks = new HashMap<Coordinate, WorldChunk>();
 	
 	public WorldChunk persistentChunk = new WorldChunk(new Coordinate(0, 0), this);
 	

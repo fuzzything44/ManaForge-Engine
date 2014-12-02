@@ -13,10 +13,9 @@ public class Actor extends Object {
 	
 	public Actor(int renderOrder, WorldChunk chunkIn) {
 		
-		if(!chunkIn.actors.contains(this)){
+
+		chunkIn.actors.put(new Coordinate(0, 0), this);
 		
-			chunkIn.actors.get(renderOrder).add(this);
-		}
 		displayImage = "res/Default.png";
 	
 		renderOrder = 1;
@@ -26,10 +25,8 @@ public class Actor extends Object {
 
 	public Actor(Coordinate place, int renderOrder, WorldChunk chunkIn) {
 		
-		if(!chunkIn.actors.contains(this)){
+		chunkIn.actors.put(place, this);
 		
-			chunkIn.actors.get(renderOrder).add(this);
-		}
 		displayImage = "res/Default.png";
 	
 		renderOrder = 1;
@@ -40,11 +37,9 @@ public class Actor extends Object {
 	}	
 	
 	public Actor(String image, int renderOrder, WorldChunk chunkIn) {
+
+		chunkIn.actors.put(new Coordinate(0, 0), this);
 		
-		if(!chunkIn.actors.contains(this)){
-		
-			chunkIn.actors.get(renderOrder).add(this);
-		}
 		displayImage = image;
 	
 		renderOrder = 1;
@@ -52,10 +47,9 @@ public class Actor extends Object {
 	}
 	public Actor(String image, Coordinate place, int renderOrder, WorldChunk chunkIn) {
 		
-		if(!chunkIn.actors.contains(this)){
+
+		chunkIn.actors.put(place, this);
 		
-			chunkIn.actors.get(renderOrder).add(this);
-		}
 		displayImage = image;
 	
 		this.renderOrder = renderOrder;
@@ -65,8 +59,8 @@ public class Actor extends Object {
 	}
 	
 	public void changeRenderOrder(int newRenderOrder, WorldChunk chunkIn) {
-		chunkIn.actors.get(renderOrder).remove(this);
-		chunkIn.actors.get(newRenderOrder).add(this);
+		chunkIn.actors.get(location);
+		chunkIn.actors.put(location, this);
 	}
 	 
 	public String displayImage;
