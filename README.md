@@ -10,6 +10,7 @@ Go to libraries
 Click add Jars
 navagate to RPG/libs and add both the jars
 press OK and you are setup!!
+*Also, if you get errors you may need to set the build path for the library to .../RPG-Simulator/RPG/lib/lwjgl-2.9.1/native/windows
 
 Overview:
 
