@@ -60,25 +60,8 @@ public class Play extends BasicGameState {
 		Game.textures.put("res/Tree.png", new Image("res/Tree.png"));
 
 		character = new PlayerCharacter("res/Knight.png", new Coordinate(0, 0),
-				9);
-
-/*		for (int chunkX = -5; chunkX < 5; chunkX++) {
-			for (int chunkY = -5; chunkY < 5; chunkY++) {
-				WorldChunk buildChunk = new WorldChunk(new Coordinate(chunkX,
-						chunkY), Game.world);
-				for (int actorX = 0; actorX < Game.world.ChunkRes.X; actorX++) {
-					for (int actorY = 0; actorY < Game.world.ChunkRes.Y; actorY++) {
-						if ( (actorX == Game.world.ChunkRes.Y - 1) || (actorX == 0) || (actorY == 0) || (actorY == Game.world.ChunkRes.Y - 1)) {
-							// if at the edge (edge of a chunk is x or y being 0 or the final part of the for loop, which is chunkres - 1
-							new Actor ("res/Default.png", new Coordinate (actorX, actorY), 0, buildChunk);
-						} else {
-						new Actor("res/grass.png", new Coordinate(actorX,
-								actorY), 0, buildChunk);
-						}
-					}
-				}
-			}
-		}*/
+				9);		
+		
 		Image i = new Image("res/TestLandscape.png");
 		Map<Color, String> imageInfo = new HashMap<Color, String>();
 		imageInfo.put(Color.red, "res/grass.png");
@@ -138,9 +121,11 @@ public class Play extends BasicGameState {
 					Actor a = relevantActors.get(i).get(i1);
 					if(a.isRendered){
 						int x, y;
-						x = (int) (((a.location.X - character.location.X + (a.chunk.location.X * Game.world.ChunkRes.X)) * Game.zoom) + gc.getWidth()/2);
-						y = (int) (((a.location.Y - character.location.Y + (a.chunk.location.Y * Game.world.ChunkRes.Y)) * Game.zoom) + gc.getHeight()/2);
-						
+					//	x = (int) (((a.location.X - character.location.X + (a.chunk.location.X * Game.world.ChunkRes.X)) * Game.zoom) + gc.getWidth()/2);
+					//	y = (int) (((a.location.Y - character.location.Y + (a.chunk.location.Y * Game.world.ChunkRes.Y)) * Game.zoom) + gc.getHeight()/2);
+						x = 0;
+						y = 0;
+						// TODO New x and y equations.
 						if (x > -Game.zoom && y > -Game.zoom && x < gc.getWidth() && y < gc.getHeight() && a.displayImage != null) {
 							// if this is on the screen... 
 							
@@ -180,7 +165,7 @@ public class Play extends BasicGameState {
 		relevantChunks.removeAllElements();
 		relevantChunks.add(Game.world.persistentChunk);
 
-		Coordinate[] testCoordinates = new Coordinate[Game.world.chunks.keySet().size()];
+/*		Coordinate[] testCoordinates = new Coordinate[Game.world.chunks.keySet().size()];
 		// Creates a Coordinate array of the keys of the world map.
 		
 		Game.world.chunks.keySet().toArray(testCoordinates);
@@ -224,13 +209,23 @@ public class Play extends BasicGameState {
 				 *  The .2 is because for some reason, chunks weren't loading instantly, so we had a slight amount of blackness around the edges.
 				 *  
 				 *  Basically, we need to check if the upper left hand corner of the chunk is more than one chunk away from the screen. (Or just off the screen for lower and right hand bounds)
-				 */
+				 *
 				relevantChunks.addElement(Game.world.chunks.get(testCoordinates[i]) );
 				
 			} // End if
 					
 		}	// End for
-		
+*/		
+		int minX = 0;
+		int maxX = 10;
+		int minY = 0;
+		int maxY = 10;
+		// TODO new min/max equations.
+		for (int x = minX; x < maxX; x++) {
+			for (int y = minY; y < maxY; y++) {
+				relevantChunks.addElement(Game.world.chunks[x][y]);
+			}
+		}
 		for (int chunk = 0; chunk < relevantChunks.size(); chunk++) {
 			for (int i1 = 0; i1 < relevantChunks.get(chunk).tickingObjects.size(); i1++) {
 				relevantChunks.get(chunk).tickingObjects.get(i1).tick(delta);
