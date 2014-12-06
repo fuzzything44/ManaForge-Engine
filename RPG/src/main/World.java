@@ -24,7 +24,7 @@ public class World {
 			for (int chunkY = 0; chunkY < Game.world.chunks[0].length; chunkY++) {
 				for (int actorX = (int) -Game.world.ChunkRes.X; actorX < (int) Game.world.ChunkRes.X; actorX++) {
 					for (int actorY = (int) -Game.world.ChunkRes.X; actorY < (int) Game.world.ChunkRes.Y; actorY++) {
-						Game.world.chunks[chunkX][chunkY];	// TODO fix WorldChunk actors, fix basic generation.
+						//Game.world.chunks[chunkX][chunkY];	// TODO fix WorldChunk actors, fix basic generation.
 					}
 				}
 			}
