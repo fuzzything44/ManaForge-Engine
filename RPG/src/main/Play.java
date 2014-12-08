@@ -59,9 +59,8 @@ public class Play extends BasicGameState {
 		Game.textures.put("res/dirt.png", new Image("res/dirt.png"));
 		Game.textures.put("res/Tree.png", new Image("res/Tree.png"));
 
-		character = new PlayerCharacter("res/Knight.png", new Coordinate(0, 0),
-				9);		
-		
+		character = new PlayerCharacter("res/Knight.png", new Coordinate(0, 0), 9);		
+	
 		Image i = new Image("res/TestLandscape.png");
 		Map<Color, String> imageInfo = new HashMap<Color, String>();
 		imageInfo.put(Color.red, "res/grass.png");
@@ -69,6 +68,8 @@ public class Play extends BasicGameState {
 		imageInfo.put(Color.green, "res/Tree.png");
 		imageInfo.put(Color.black, "res/dirt.png");
 		Game.landscape = new Landscape(i, imageInfo, new Coordinate(0, 0));
+		
+		new Actor("res/grass.png", new Coordinate (0, 0), 5, Game.world.persistentChunk);
 		
 	}
 
@@ -100,7 +101,7 @@ public class Play extends BasicGameState {
 					texturesScaled.get(image).draw(drawX, drawY);
 				}
 			}
-		}
+		} 
 		
 		for(int i = 0; i < 10; i++){
 			relevantActors.add(new Vector<Actor>());
@@ -121,10 +122,10 @@ public class Play extends BasicGameState {
 					Actor a = relevantActors.get(i).get(i1);
 					if(a.isRendered){
 						int x, y;
-					//	x = (int) (((a.location.X - character.location.X + (a.chunk.location.X * Game.world.ChunkRes.X)) * Game.zoom) + gc.getWidth()/2);
-					//	y = (int) (((a.location.Y - character.location.Y + (a.chunk.location.Y * Game.world.ChunkRes.Y)) * Game.zoom) + gc.getHeight()/2);
-						x = 0;
-						y = 0;
+						x = (int) (((a.location.X - character.location.X + (a.chunk.location.X * Game.world.ChunkRes.X)) * Game.zoom) + gc.getWidth()/2);
+						y = (int) (((a.location.Y - character.location.Y + (a.chunk.location.Y * Game.world.ChunkRes.Y)) * Game.zoom) + gc.getHeight()/2);
+					//	x = 0;
+					//	y = 0;
 						// TODO New x and y equations.
 						if (x > -Game.zoom && y > -Game.zoom && x < gc.getWidth() && y < gc.getHeight() && a.displayImage != null) {
 							// if this is on the screen... 
@@ -216,7 +217,7 @@ public class Play extends BasicGameState {
 					
 		}	// End for
 */		
-		int minX = 0;
+	/*	int minX = 0;
 		int maxX = 10;
 		int minY = 0;
 		int maxY = 10;
@@ -230,8 +231,11 @@ public class Play extends BasicGameState {
 			for (int i1 = 0; i1 < relevantChunks.get(chunk).tickingObjects.size(); i1++) {
 				relevantChunks.get(chunk).tickingObjects.get(i1).tick(delta);
 			}
+		}*/
+	//	relevantChunks = Game.world.chunks[i];
+		for (int i = 0; i < Game.world.persistentChunk.tickingObjects.size(); i++){
+			Game.world.persistentChunk.tickingObjects.get(i).tick(delta);
 		}
-		
 		Input i1 = gc.getInput();
 
 		if (i1.isKeyPressed(Keyboard.KEY_ESCAPE)) {

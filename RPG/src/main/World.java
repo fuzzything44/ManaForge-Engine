@@ -3,8 +3,6 @@ package main;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.HashMap;
-import java.util.Map;
 
 public class World {
 	
@@ -39,8 +37,8 @@ public class World {
 					
 					// Should be the first line of a world. Should be in the form of
 					// ChunkResX_ChunkResY_NumChunksX_NumChunksY
-				}
-				
+		
+				}// End else
 			}	// End while
 
 			reader.close();
