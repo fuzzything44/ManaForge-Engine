@@ -110,7 +110,7 @@ public class Play extends BasicGameState {
 		
 		
 		for(int i = 0; i < relevantChunks.size(); i++){
-			Iterator<Actor> iter = relevantChunks.get(i).actors.values().iterator();
+			Iterator<Actor> iter = relevantChunks.get(i).actors.iterator();
 			Consumer<Actor> a = (Actor act) -> parseChunk(act);
 			iter.forEachRemaining(a);
 			

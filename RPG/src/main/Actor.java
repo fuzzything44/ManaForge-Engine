@@ -14,7 +14,7 @@ public class Actor extends Object {
 	public Actor(int renderOrder, WorldChunk chunkIn) {
 		
 
-		chunkIn.actors.put(new Coordinate(0, 0), this);
+		chunkIn.actors.addElement(this);
 		
 		displayImage = "res/Default.png";
 	
