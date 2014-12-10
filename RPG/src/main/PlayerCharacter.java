@@ -15,9 +15,9 @@ public class PlayerCharacter extends Character {
 
 // Equipment takes:
 //		int price, String name, String description, int amount, PlayerCharacter looter, Buff.BuffValues buffFromEquipment
-	public Hat hat = new Hat(0, "No hat", "Empty Slot", 1, this, new Buff.BuffValues());
-	public Shirt shirt = new Shirt(0, "No Shirt", "Empty Slot", 1, this, new Buff.BuffValues());
-//	public Pants pants = null;
+	public Equipment hat = Macros.equipment("noEquip_hat");
+	public Equipment shirt = Macros.equipment("noEquip_shirt");
+	public Equipment pants = Macros.equipment("noEquip_pants");
 //	public Shoes shoes = null;
 //	public Necklace necklace = null;
 //	public Earrings earrings = null;
@@ -74,7 +74,8 @@ public class PlayerCharacter extends Character {
 		shoes,
 		necklace,
 		earring,
-		ring
+		ring,
+		weapon
 	}
 	
 	public enum statType {
@@ -95,6 +96,9 @@ public class PlayerCharacter extends Character {
 	}	// remove expired buffs and refreshes stats
 	
 	public void refreshStats() {
+		// Method to recalculate all stats.
+		
+		// How much each stat is being buffed.
 		int healthBuff = 0,
 				manaBuff = 0,
 				strBuff = 0,
@@ -102,6 +106,7 @@ public class PlayerCharacter extends Character {
 				wisBuff = 0,
 				attackBuff = 0,
 				defenceBuff = 0;
+		// Setting each stat to right buff amount
 		for (int x = 0; x < buffs.size(); x++) {	// buff loop. Gets the total stat buff for everything.
 			healthBuff += buffs.get(x).getBuffAmount(baseHealth, statType.health);
 			manaBuff += buffs.get(x).getBuffAmount(baseMana, statType.mana);
@@ -144,7 +149,7 @@ public class PlayerCharacter extends Character {
 		refreshStats();
 	}	// Not needed to run. Just run constructor for a buff.
 	
-	public int amountBuffs(){
+	public int amountBuffs() {
 		return buffs.size();
 	}	// returns how many buffs are active
 	
@@ -153,10 +158,10 @@ public class PlayerCharacter extends Character {
 		
 		switch (equippedItem.equip) {
 		case hat:
-			hat = (Hat) equippedItem;
+			hat = equippedItem;
 			break;
 		case shirt:
-			shirt = (Shirt) equippedItem;	// TODO before I go farther, is this the correct thing to do?
+			shirt = equippedItem;	// TODO before I go farther, is this the correct thing to do?
 			break;
 		default:
 			break;
@@ -167,18 +172,18 @@ public class PlayerCharacter extends Character {
 		switch(equipSlot) {
 		case hat:
 			removeBuff(hat.equipmentBuff);
-			hat = new Hat(0, "No hat", "Empty Slot", 1, this, new Buff.BuffValues());
+			hat = Macros.equipment("noEquip_hat");
 			break;
 		case shirt:
 			removeBuff(shirt.equipmentBuff);
-			shirt = new Shirt(0, "No shirt", "Empty Slot", 1, this, new Buff.BuffValues());
+			shirt = Macros.equipment("noEquip_shirt");
 			break;
 		default:
 			break;
 		}
 	}
 	
-	public void tick(float deltaTime){
+	public void tick(float deltaTime) {
 //		if (location.X >= maxX && location.X <= minX) {
 		location = location.add(velocity.multiply(deltaTime/1000) );
 	}

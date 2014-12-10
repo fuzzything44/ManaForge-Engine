@@ -42,7 +42,7 @@ public class World {
 				
 				splitLine = line.split("_");
 				if (splitLine[0].equals("C") ) {
-					// Type is chunk.
+					// Type is WorldChunk
 					int chunkX = Integer.parseInt(splitLine[1]);
 					int chunkY = Integer.parseInt(splitLine[2]);
 					
@@ -51,15 +51,17 @@ public class World {
 					
 					// Chunks should be in format of C_coordX_coordY
 					// Anything else we need?
-				} else if (splitLine[0].equals("A") ) {
+				}	// End chunk line
+				else if (splitLine[0].equals("A") ) {
+					// Type is Actor
 					float actorX = Float.parseFloat(splitLine[1]);
 					float actorY = Float.parseFloat(splitLine[2]);
 					
 					Macros.actor(splitLine[3]);
 					
 					// Actor lines should be in format of A_coordX_coordY_name
-				}
-			}	// End while
+				}	// End Actor line
+			}		// End while
 
 			reader.close();
 			// Closing reader to stop memory leaks.
