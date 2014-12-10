@@ -25,7 +25,7 @@ public class Actor extends Object {
 
 	public Actor(Coordinate place, int renderOrder, WorldChunk chunkIn) {
 		
-		chunkIn.actors.put(place, this);
+		chunkIn.actors.addElement(this);
 		
 		displayImage = "res/Default.png";
 	
@@ -38,7 +38,7 @@ public class Actor extends Object {
 	
 	public Actor(String image, int renderOrder, WorldChunk chunkIn) {
 
-		chunkIn.actors.put(new Coordinate(0, 0), this);
+		chunkIn.actors.addElement(this);
 		
 		displayImage = image;
 	
@@ -48,7 +48,7 @@ public class Actor extends Object {
 	public Actor(String image, Coordinate place, int renderOrder, WorldChunk chunkIn) {
 		
 
-		chunkIn.actors.put(place, this);
+		chunkIn.actors.addElement(this);
 		
 		displayImage = image;
 	
@@ -60,7 +60,8 @@ public class Actor extends Object {
 	
 	public void changeRenderOrder(int newRenderOrder, WorldChunk chunkIn) {
 		chunkIn.actors.get(location);
-		chunkIn.actors.put(location, this);
+		// Now we need to actually get the actor location.
+		chunkIn.actors.addElement(this);
 	}
 	 
 	public String displayImage;
