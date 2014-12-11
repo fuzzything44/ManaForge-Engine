@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Vector;
-import java.util.function.Consumer;
 
 import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.Color;
@@ -110,10 +109,9 @@ public class Play extends BasicGameState {
 		
 		
 		for(int i = 0; i < relevantChunks.size(); i++){
-			Iterator<Actor> iter = relevantChunks.get(i).actors.iterator();
-			Consumer<Actor> a = (Actor act) -> parseChunk(act);
-			iter.forEachRemaining(a);
-			
+			for(int i1 = 0; i1 < relevantChunks.get(i).actors.size(); i1++){
+				parseChunk(relevantChunks.get(i).actors.get(i1));
+			}
 		}
 		
 		int RenderedObjects = 0;

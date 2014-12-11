@@ -59,7 +59,6 @@ public class Actor extends Object {
 	}
 	
 	public void changeRenderOrder(int newRenderOrder, WorldChunk chunkIn) {
-		chunkIn.actors.get(location);
 		// Now we need to actually get the actor location.
 		chunkIn.actors.addElement(this);
 	}

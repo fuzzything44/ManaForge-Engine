@@ -14,7 +14,7 @@ public class Macros {
 		
 		// Well, actors currently automatically add themselves to their chunk
 		// Should that happen with this class?
-		Actor generatedActor = new Actor();
+		Actor generatedActor = new Actor(0, new WorldChunk(new Coordinate(0, 0), Game.world)); //TODO: actually parse it !!
 		if (actorType.equalsIgnoreCase("grass")) {
 			// Make grass actor.
 		}
@@ -23,16 +23,16 @@ public class Macros {
 	}
 	
 	public static ConsumableItem consumable (String itemName) {
-		ConsumableItem generatedItem;
+		ConsumableItem generatedItem = null;
 		
 		
 		return generatedItem;
 	}
 	
 	public static Equipment equipment (String equipName) {
-		Equipment generatedEquipment;
+		Equipment generatedEquipment = null;
 		if (equipName.equalsIgnoreCase("noEquip_hat")) {
-			generatedEquipment = new Equipment();
+			generatedEquipment = new Equipment(0, equipName, equipName, 0, null, null, null); //TODO: actually parse it!!
 		} else if (equipName.equalsIgnoreCase("noEquip_shirt")) {
 			
 		} else {
