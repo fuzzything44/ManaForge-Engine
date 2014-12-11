@@ -41,7 +41,7 @@ public class Macros {
 		
 		return generatedEquipment;
 	}	// End equipment
-	
+	 
 	public static BuffValues buff (String buffName) {
 		BuffValues generatedBuff = new BuffValues();
 		if (buffName.equalsIgnoreCase("attack_small")) {
