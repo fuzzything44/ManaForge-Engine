@@ -10,12 +10,26 @@ public class World {
 	
 	public Coordinate ChunkRes = new Coordinate(50, 50);
 	
-	public WorldChunk[][] chunks;
+	public WorldChunk[][] chunks = new WorldChunk[100][100];
 	public WorldChunk persistentChunk;
 
 	public World()
 	{
 		persistentChunk = new WorldChunk(new Coordinate(0, 0), this);
+	}
+	
+	public void addActor(Coordinate location, int renderOrder, String image) {
+		int ChunkX = (int) Math.ceil(location.X / ChunkRes.X);
+		int ChunkY = (int) Math.ceil(location.Y / ChunkRes.Y);
+		if(chunks[ChunkX][ChunkY] != null){
+			
+			new Actor(image, new Coordinate(location.X - (ChunkRes.X * ChunkX), location.Y - (ChunkRes.Y * ChunkY)), renderOrder, chunks[ChunkX][ChunkY]);
+			
+		}else{
+			
+			chunks[ChunkX][ChunkY] = new WorldChunk(new Coordinate(ChunkX, ChunkY), this);
+			
+		}
 	}
 	
 	public void load(String file, Image background) {

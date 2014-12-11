@@ -6,7 +6,6 @@ package main;
  */
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Vector;
 
@@ -67,7 +66,8 @@ public class Play extends BasicGameState {
 		imageInfo.put(Color.blue, "res/Default.png");
 		imageInfo.put(Color.green, "res/Tree.png");
 		imageInfo.put(Color.black, "res/dirt.png");
-		Game.landscape = new Landscape(i, imageInfo, new Coordinate(0, 0));
+		Landscape.loadIntoChunks(Game.world, i, imageInfo, new Coordinate(0, 0));
+		//Game.landscape = new Landscape(i, imageInfo, new Coordinate(0, 0));
 		
 		new Actor("res/grass.png", new Coordinate (0, 0), 5, Game.world.persistentChunk);
 		
@@ -80,7 +80,7 @@ public class Play extends BasicGameState {
 		Map<String, Image> texturesScaled = new HashMap<String, Image>();
 		
 		relevantActors.clear();
-		
+		/*
 		// draw landscape
 		for(int x = 0; x < Game.landscape.loadImage.getWidth(); x++){
 			for (int y = 0; y < Game.landscape.loadImage.getHeight(); y++){
@@ -102,7 +102,7 @@ public class Play extends BasicGameState {
 				}
 			}
 		} 
-		
+		*/
 		for(int i = 0; i < 10; i++){
 			relevantActors.add(new Vector<Actor>());
 		}
@@ -140,6 +140,8 @@ public class Play extends BasicGameState {
 					}
 				}
 			}
+			
+			
 		gr.setColor(Color.black);
 		gr.fillRect(0, 0, 1000, 60);
 		gr.setColor(Color.white);
@@ -166,6 +168,7 @@ public class Play extends BasicGameState {
 		Game.GameTotalTime += delta;
 		relevantChunks.removeAllElements();
 		relevantChunks.add(Game.world.persistentChunk);
+		relevantChunks.add(Game.world.chunks[0][0]);
 
 /*		Coordinate[] testCoordinates = new Coordinate[Game.world.chunks.keySet().size()];
 		// Creates a Coordinate array of the keys of the world map.

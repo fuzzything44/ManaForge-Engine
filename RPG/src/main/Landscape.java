@@ -15,7 +15,16 @@ public class Landscape extends Object{
 		
 	}
 	
-
+	// load an image into chunks -- it is faster than doing a query every frame but it is static.
+	public static void loadIntoChunks(World world, Image image, Map<Color, String> imageData, Coordinate origin) {
+		for(int imageX = 0; imageX < image.getWidth(); imageX++) {
+			
+			for(int imageY = 0; imageY < image.getHeight(); imageY++) {
+				world.addActor(new Coordinate(imageX - origin.X, imageY - origin.Y), 0, imageData.get(image.getColor(imageX, imageY)));
+			}
+			
+		}
+	}
 
 	public Map<Color, String> imageInfo;
 	public Image loadImage;
