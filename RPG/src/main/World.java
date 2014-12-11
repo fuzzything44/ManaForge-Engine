@@ -8,11 +8,16 @@ import org.newdawn.slick.Image;
 
 public class World {
 	
-	public Coordinate ChunkRes;
+	public Coordinate ChunkRes = new Coordinate(50, 50);
 	
 	public WorldChunk[][] chunks;
-	public WorldChunk persistentChunk = new WorldChunk(new Coordinate(0, 0), this);
+	public WorldChunk persistentChunk;
 
+	public World()
+	{
+		persistentChunk = new WorldChunk(new Coordinate(0, 0), this);
+	}
+	
 	public void load(String file, Image background) {
 		// load loads the chunk array from a file.
 		// It does not load the persistent chunk!!!!!

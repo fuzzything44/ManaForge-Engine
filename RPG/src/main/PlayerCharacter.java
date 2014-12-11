@@ -15,9 +15,9 @@ public class PlayerCharacter extends Character {
 
 // Equipment takes:
 //		int price, String name, String description, int amount, PlayerCharacter looter, Buff.BuffValues buffFromEquipment
-	public Equipment hat = Macros.equipment("noEquip_hat");
-	public Equipment shirt = Macros.equipment("noEquip_shirt");
-	public Equipment pants = Macros.equipment("noEquip_pants");
+//	public Equipment hat = Macros.equipment("noEquip_hat");TODO: uncomment and fix bugs in Macros so it doesn't crash!
+//	public Equipment shirt = Macros.equipment("noEquip_shirt");
+//	public Equipment pants = Macros.equipment("noEquip_pants");
 //	public Shoes shoes = null;
 //	public Necklace necklace = null;
 //	public Earrings earrings = null;
@@ -154,20 +154,20 @@ public class PlayerCharacter extends Character {
 	}	// returns how many buffs are active
 	
 	public void equip(Equipment equippedItem) {
-		unEquip(equippedItem.equip);
+	//	unEquip(equippedItem.equip);
 		
 		switch (equippedItem.equip) {
 		case hat:
-			hat = equippedItem;
+	//		hat = equippedItem;
 			break;
 		case shirt:
-			shirt = equippedItem;	// TODO before I go farther, is this the correct thing to do?
+	//		shirt = equippedItem;	// TODO before I go farther, is this the correct thing to do?
 			break;
 		default:
 			break;
 		}
 	}
-	
+	/*
 	public void unEquip(equipmentTypes equipSlot) {
 		switch(equipSlot) {
 		case hat:
@@ -182,7 +182,7 @@ public class PlayerCharacter extends Character {
 			break;
 		}
 	}
-	
+	*/
 	public void tick(float deltaTime) {
 //		if (location.X >= maxX && location.X <= minX) {
 		location = location.add(velocity.multiply(deltaTime/1000) );

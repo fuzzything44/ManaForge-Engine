@@ -58,7 +58,8 @@ public class Play extends BasicGameState {
 		Game.textures.put("res/dirt.png", new Image("res/dirt.png"));
 		Game.textures.put("res/Tree.png", new Image("res/Tree.png"));
 
-		character = new PlayerCharacter("res/Knight.png", new Coordinate(0, 0), 9);		
+		character = new PlayerCharacter("res/Knight.png", new Coordinate(0, 0), 9);	
+		
 	
 		Image i = new Image("res/TestLandscape.png");
 		Map<Color, String> imageInfo = new HashMap<Color, String>();
@@ -120,7 +121,9 @@ public class Play extends BasicGameState {
 					Actor a = relevantActors.get(i).get(i1);
 					if(a.isRendered){
 						int x, y;
-						x = (int) (((a.location.X - character.location.X + (a.chunk.location.X * Game.world.ChunkRes.X)) * Game.zoom) + gc.getWidth()/2);
+						x = (int) (((a.location.X - character.location.X + (
+								a.chunk.location.X * Game.world.ChunkRes.X))
+								* Game.zoom) + gc.getWidth()/2);
 						y = (int) (((a.location.Y - character.location.Y + (a.chunk.location.Y * Game.world.ChunkRes.Y)) * Game.zoom) + gc.getHeight()/2);
 					//	x = 0;
 					//	y = 0;
