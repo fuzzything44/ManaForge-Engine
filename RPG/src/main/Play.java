@@ -19,7 +19,6 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
-import buffs.Buff;
 
 public class Play extends BasicGameState {
 
@@ -161,6 +160,11 @@ public class Play extends BasicGameState {
 		
 		int chunkX = (int) Math.floor(character.location.X / Game.world.ChunkRes.X);
 		int chunkY = (int) Math.floor(character.location.Y / Game.world.ChunkRes.Y);
+		
+		relevantChunks.add(Game.world.chunks[chunkX][chunkY]);
+		relevantChunks.add(Game.world.chunks[chunkX + 1][chunkY]);
+		relevantChunks.add(Game.world.chunks[chunkX][chunkY + 1]);
+		relevantChunks.add(Game.world.chunks[chunkX + 1][chunkY + 1]);
 		
 
 /*		Coordinate[] testCoordinates = new Coordinate[Game.world.chunks.keySet().size()];

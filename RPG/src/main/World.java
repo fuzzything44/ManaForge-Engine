@@ -39,7 +39,7 @@ public class World {
 	}
 	
 	public WorldChunk getActorChunk(Coordinate location) {
-		
+		return chunks[(int) Math.floor(location.X / ChunkRes.X)][(int) (location.Y / ChunkRes.Y)];
 	}
 	
 	public void load(String file, Image background) {

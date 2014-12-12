@@ -13,7 +13,7 @@ public class Macros {
 	public static Actor actor (String actorType, Coordinate location) {
 		Actor generatedActor = new Actor(0, new WorldChunk(new Coordinate(0, 0), Game.world)); //TODO: actually parse it !!
 		if (actorType.equalsIgnoreCase("grass")) {
-			generatedActor = new Actor(0, );
+			//generatedActor = new Actor(0, );
 		} else {
 			
 		}
