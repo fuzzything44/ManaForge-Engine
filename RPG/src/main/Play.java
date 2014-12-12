@@ -57,7 +57,7 @@ public class Play extends BasicGameState {
 
 		character = new PlayerCharacter(9, "res/Knight.png", new Coordinate(0, 0));	
 		
-		Game.world.load("res/w1/main.world", new Image("res/w1/TestLandscape.png") );
+		Game.world.load("src/res/w1/main.world", new Image("res/w1/TestLandscape.png") );
 		new Actor( 5, Game.world.persistentChunk, "res/grass.png", new Coordinate (0, 0) );
 		
 	}
