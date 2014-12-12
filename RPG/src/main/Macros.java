@@ -10,13 +10,12 @@ import items.Equipment;
  */
 public class Macros {
 
-	public static Actor actor (String actorType) {
-		
-		// Well, actors currently automatically add themselves to their chunk
-		// Should that happen with this class?
+	public static Actor actor (String actorType, Coordinate location) {
 		Actor generatedActor = new Actor(0, new WorldChunk(new Coordinate(0, 0), Game.world)); //TODO: actually parse it !!
 		if (actorType.equalsIgnoreCase("grass")) {
-			// Make grass actor.
+			generatedActor = new Actor(0, );
+		} else {
+			
 		}
 		
 		return generatedActor;

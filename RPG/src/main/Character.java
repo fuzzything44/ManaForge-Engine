@@ -9,16 +9,16 @@ public class Character extends DynamicActor {
 		super(renderOrder, chunkIn);
 		// TODO Auto-generated constructor stub
 	}
-	public Character(Coordinate place, int renderOrder, WorldChunk chunkIn) {
-		super(place, renderOrder, chunkIn);
+	public Character(int renderOrder, WorldChunk chunkIn, Coordinate place) {
+		super(renderOrder, chunkIn, place);
 		// TODO Auto-generated constructor stub
 	}
-	public Character(String image, int renderOrder, WorldChunk chunkIn) {
-		super(image, renderOrder, chunkIn);
+	public Character(int renderOrder, WorldChunk chunkIn, String image) {
+		super(renderOrder, chunkIn, image);
 		// TODO Auto-generated constructor stub
 	}
-	public Character(String image, Coordinate place, int renderOrder, WorldChunk chunkIn) {
-		super(image, place, renderOrder, chunkIn);
+	public Character(int renderOrder, WorldChunk chunkIn, String image, Coordinate place) {
+		super(renderOrder, chunkIn, image, place);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -32,12 +32,12 @@ public class Character extends DynamicActor {
 	
 
 	
-	int currentHealth;
-	int maxHealth;
-	int attack;
-	int experience;
-	int defence;
-	Vector<PossibleBodyParts> bodyParts;
+	public int currentHealth;
+	public int maxHealth;
+	public int attack;
+	public int experience;
+	public int defence;
+	public Vector<PossibleBodyParts> bodyParts;
 	
 	
 }
