@@ -3,33 +3,43 @@ package main;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.HashMap;
+import java.util.Map;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Image;
 
 public class World {
 	
 	public Coordinate ChunkRes = new Coordinate(50, 50);
 	
-	public WorldChunk[][] chunks = new WorldChunk[100][100];
+	public WorldChunk[][] chunks;
 	public WorldChunk persistentChunk;
 
 	public World()
 	{
 		persistentChunk = new WorldChunk(new Coordinate(0, 0), this);
+		chunks = new WorldChunk[1][1];
 	}
 	
 	public void addActor(Coordinate location, int renderOrder, String image) {
 		int ChunkX = (int) Math.floor(location.X / ChunkRes.X);
 		int ChunkY = (int) Math.floor(location.Y / ChunkRes.Y);
+
 		if(chunks[ChunkX][ChunkY] != null){
+
 			
-			new Actor(image, new Coordinate(location.X - (ChunkRes.X * ChunkX), location.Y - (ChunkRes.Y * ChunkY)), renderOrder, chunks[ChunkX][ChunkY]);
+			new Actor(renderOrder, chunks[ChunkX][ChunkY], image, new Coordinate(location.X - (ChunkRes.X * ChunkX), location.Y - (ChunkRes.Y * ChunkY) ) );
 			
-		}else{
+		} else {
 			
 			chunks[ChunkX][ChunkY] = new WorldChunk(new Coordinate(ChunkX, ChunkY), this);
 			
 		}
+	}
+	
+	public WorldChunk getActorChunk(Coordinate location) {
+		
 	}
 	
 	public void load(String file, Image background) {
@@ -48,12 +58,15 @@ public class World {
 			
 			// TODO load background here
 			
+			Map<Color, String> imageInfo = new HashMap<Color, String>();
+			imageInfo.put(Color.red, "res/grass.png");
+			imageInfo.put(Color.blue, "res/Default.png");
+			imageInfo.put(Color.green, "res/Tree.png");
+			imageInfo.put(Color.black, "res/dirt.png");
+			Landscape.loadIntoChunks(Game.world, background, imageInfo, new Coordinate(0, 0));
+			// Loads landscape from image.
 			
-			
-			
-			
-			
-			WorldChunk workingChunk;
+			WorldChunk workingChunk = null;
 			while (reader.ready()) {	// As long as there's another line...
 				line = reader.readLine();
 				
@@ -69,14 +82,13 @@ public class World {
 					chunks[chunkX][chunkY] = workingChunk;
 					
 					// Chunks should be in format of C_coordX_coordY
-					// Anything else we need?
 				}	// End chunk line
 				else if (splitLine[0].equals("A") ) {
 					// Type is Actor
 					float actorX = Float.parseFloat(splitLine[1]);
 					float actorY = Float.parseFloat(splitLine[2]);
 					
-					Macros.actor(splitLine[3]);
+					workingChunk.actors.addElement( Macros.actor(splitLine[3], new Coordinate(actorX, actorY) ) );
 					
 					// Actor lines should be in format of A_coordX_coordY_name
 				}	// End Actor line

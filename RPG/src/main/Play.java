@@ -23,18 +23,17 @@ import buffs.Buff;
 
 public class Play extends BasicGameState {
 
-	int minZoom = 12;
-	int maxZoom = 96;
+	final int MIN_ZOOM = 12;
+	final int MAX_ZOOM = 96;
 	Vector<WorldChunk> relevantChunks = new Vector<WorldChunk>();
 	Vector<Vector<Actor> > relevantActors = new Vector<Vector<Actor> >();
-	Buff buff = null;
 
 	public final int state;
 	public PlayerCharacter character = null;
 
 	public enum rightPaneStates {
 		equipment, consumables, buffs, equipmentSpecific, consumableSpecific, buffSpecific
-	} // What the right pane can display. Specific is the exact
+	} 	// What the right pane can display. Specific is the exact
 		// buff/consumable/equipment info.
 
 	public int infoPaneSpecific = 1; // What vector index the specific thing is
@@ -57,19 +56,10 @@ public class Play extends BasicGameState {
 		Game.textures.put("res/dirt.png", new Image("res/dirt.png"));
 		Game.textures.put("res/Tree.png", new Image("res/Tree.png"));
 
-		character = new PlayerCharacter("res/Knight.png", new Coordinate(0, 0), 9);	
+		character = new PlayerCharacter(9, "res/Knight.png", new Coordinate(0, 0));	
 		
-	
-		Image i = new Image("res/TestLandscape.png");
-		Map<Color, String> imageInfo = new HashMap<Color, String>();
-		imageInfo.put(Color.red, "res/grass.png");
-		imageInfo.put(Color.blue, "res/Default.png");
-		imageInfo.put(Color.green, "res/Tree.png");
-		imageInfo.put(Color.black, "res/dirt.png");
-		Landscape.loadIntoChunks(Game.world, i, imageInfo, new Coordinate(0, 0));
-		//Game.landscape = new Landscape(i, imageInfo, new Coordinate(0, 0));
-		
-		new Actor("res/grass.png", new Coordinate (0, 0), 5, Game.world.persistentChunk);
+		Game.world.load("res/w1/main.world", new Image("res/w1/TestLandscape.png") );
+		new Actor( 5, Game.world.persistentChunk, "res/grass.png", new Coordinate (0, 0) );
 		
 	}
 
@@ -274,12 +264,12 @@ public class Play extends BasicGameState {
 			}
 		}
 		if (i1.isKeyPressed(Keyboard.KEY_Q)) {
-			if (Game.zoom < maxZoom) {
+			if (Game.zoom < MAX_ZOOM) {
 				Game.zoomMult *= 2;
 			}
 		}
 		if (i1.isKeyPressed(Keyboard.KEY_R)) {
-			if (Game.zoom > minZoom) {
+			if (Game.zoom > MIN_ZOOM) {
 				Game.zoomMult *= .5;
 			}
 		}

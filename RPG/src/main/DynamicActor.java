@@ -18,20 +18,20 @@ public class DynamicActor extends Actor {
 		
 	}
 
-	public DynamicActor(Coordinate place, int renderOrder, WorldChunk chunkIn) {
-		super(place, renderOrder, chunkIn);
+	public DynamicActor(int renderOrder, WorldChunk chunkIn, Coordinate place) {
+		super(renderOrder, chunkIn, place);
 		
 		chunkIn.tickingObjects.add(this);
 	}
 
-	public DynamicActor(String image, int renderOrder, WorldChunk chunkIn) {
-		super(image, renderOrder, chunkIn);
+	public DynamicActor(int renderOrder, WorldChunk chunkIn, String image) {
+		super(renderOrder, chunkIn, image);
 		
 		chunkIn.tickingObjects.add(this);
 	}
 
-	public DynamicActor(String image, Coordinate place, int renderOrder, WorldChunk chunkIn) {
-		super(image, place, renderOrder, chunkIn);
+	public DynamicActor(int renderOrder, WorldChunk chunkIn, String image, Coordinate place) {
+		super(renderOrder, chunkIn, image, place);
 		
 		chunkIn.tickingObjects.add(this);
 	}

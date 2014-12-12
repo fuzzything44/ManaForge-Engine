@@ -1,7 +1,10 @@
 /* Overview:
- * 	
+ * Constructor takes buffValues and buff name
  * 
+ * To give a buff, use Buff.giveBuff();
+ * If the buff is already held, it increases the time.
  * 
+ * To see how much a stat is being buffed, use getBuffAmount(stat type)
  * 
  * 
  */
@@ -90,7 +93,7 @@ public class Buff extends Object {
 	// Array of values, useful for getting the description
 	
 	// Constructor for Buff
-	public Buff(String name, Buff.BuffValues buffValsIn, PlayerCharacter player) {
+	public Buff(String name, Buff.BuffValues buffValsIn) {
 		buffName = name;
 		buffVals = buffValsIn;
 		
@@ -126,8 +129,10 @@ public class Buff extends Object {
 		buffAmounts[6].buffAmount = buffVals.manaBuffNumber;
 		buffAmounts[6].buffType = "Mana";
 		
+	}
+
+	public void giveBuff(PlayerCharacter player) {
 		owner = player;
-		
 		assert owner == null : "Owner is set to null. How did this happen?";
 		assert buffVals == null : "The given buff values (Buff.BuffValues) was null. Did you initialize it?";
 		
@@ -147,26 +152,27 @@ public class Buff extends Object {
 		}
 	}
 	
-	public int getBuffAmount(int baseValue, PlayerCharacter.statType statType) {	// gives how much a stat is being buffed.
+	public int getBuffAmount(PlayerCharacter.statType statType) {	// gives how much a stat is being buffed.
+		
 		switch (statType) {	// lets you find out what variable is buffed and returns it.
 		case health:
-			return Math.round(baseValue*(buffVals.healthBuffPercent)) + buffVals.healthBuffNumber;
+			return Math.round(owner.baseHealth*(buffVals.healthBuffPercent)) + buffVals.healthBuffNumber;
 		case mana:
-			return Math.round(baseValue*(buffVals.manaBuffPercent)) + buffVals.manaBuffNumber;
+			return Math.round(owner.baseMana*(buffVals.manaBuffPercent)) + buffVals.manaBuffNumber;
 		case str:
-			return Math.round(baseValue*(buffVals.strBuffPercent)) + buffVals.strBuffNumber;
+			return Math.round(owner.baseStr*(buffVals.strBuffPercent)) + buffVals.strBuffNumber;
 		case dex:
-			return Math.round(baseValue*(buffVals.dexBuffPercent)) + buffVals.dexBuffNumber;
+			return Math.round(owner.baseDex*(buffVals.dexBuffPercent)) + buffVals.dexBuffNumber;
 		case wis:
-			return Math.round(baseValue*(buffVals.wisBuffPercent)) + buffVals.wisBuffNumber;
+			return Math.round(owner.baseWis*(buffVals.wisBuffPercent)) + buffVals.wisBuffNumber;
 		case attack:
-			return Math.round(baseValue*(buffVals.attackBuffPercent)) + buffVals.attackBuffNumber;
+			return Math.round(owner.attack*(buffVals.attackBuffPercent)) + buffVals.attackBuffNumber;
 		case defence:
-			return Math.round(baseValue*(buffVals.defenceBuffPercent)) + buffVals.defenceBuffNumber;
+			return Math.round(owner.defence*(buffVals.defenceBuffPercent)) + buffVals.defenceBuffNumber;
 //		case newStat:
 //			return Math.round(baseValue*(buffVals.statBuffPercent)) + buffVals.statBuffNumber;
 		default:
-			return baseValue;
+			return 0;
 		}	// end switch
 	}
 

@@ -57,14 +57,14 @@ public class PlayerCharacter extends Character {
 	public PlayerCharacter(int renderOrder) {
 		super(renderOrder, Game.world.persistentChunk);
 	}
-	public PlayerCharacter(Coordinate place, int renderOrder) {
-		super(place, renderOrder, Game.world.persistentChunk);
+	public PlayerCharacter(int renderOrder, Coordinate place) {
+		super(renderOrder, Game.world.persistentChunk, place);
 	}
-	public PlayerCharacter(String image, int renderOrder) {
-		super(image, renderOrder, Game.world.persistentChunk);
+	public PlayerCharacter(int renderOrder, String image) {
+		super(renderOrder, Game.world.persistentChunk, image);
 	}
-	public PlayerCharacter(String image, Coordinate place, int renderOrder) {
-		super(image, place, renderOrder, Game.world.persistentChunk);
+	public PlayerCharacter(int renderOrder, String image, Coordinate place) {
+		super(renderOrder, Game.world.persistentChunk, image, place);
 	}
 	
 	public enum equipmentTypes {
@@ -108,13 +108,13 @@ public class PlayerCharacter extends Character {
 				defenceBuff = 0;
 		// Setting each stat to right buff amount
 		for (int x = 0; x < buffs.size(); x++) {	// buff loop. Gets the total stat buff for everything.
-			healthBuff += buffs.get(x).getBuffAmount(baseHealth, statType.health);
-			manaBuff += buffs.get(x).getBuffAmount(baseMana, statType.mana);
-			strBuff += buffs.get(x).getBuffAmount(baseStr, statType.str);
-			dexBuff += buffs.get(x).getBuffAmount(baseWis, statType.wis);
-			wisBuff += buffs.get(x).getBuffAmount(baseDex, statType.dex);
-			attackBuff += buffs.get(x).getBuffAmount(attack, statType.attack);
-			defenceBuff += buffs.get(x).getBuffAmount(defenceBuff, statType.defence);
+			healthBuff += buffs.get(x).getBuffAmount(statType.health);
+			manaBuff += buffs.get(x).getBuffAmount(statType.mana);
+			strBuff += buffs.get(x).getBuffAmount(statType.str);
+			dexBuff += buffs.get(x).getBuffAmount(statType.wis);
+			wisBuff += buffs.get(x).getBuffAmount(statType.dex);
+			attackBuff += buffs.get(x).getBuffAmount(statType.attack);
+			defenceBuff += buffs.get(x).getBuffAmount(statType.defence);
 		}	// end buff loop.
 		maxHealth = healthBuff + baseHealth;	// setting buffed values to correct amounts
 		maxMana = manaBuff + baseMana;
