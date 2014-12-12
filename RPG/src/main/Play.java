@@ -168,7 +168,10 @@ public class Play extends BasicGameState {
 		Game.GameTotalTime += delta;
 		relevantChunks.removeAllElements();
 		relevantChunks.add(Game.world.persistentChunk);
-		relevantChunks.add(Game.world.chunks[0][0]);
+		
+		int chunkX = (int) Math.floor(character.location.X / Game.world.ChunkRes.X);
+		int chunkY = (int) Math.floor(character.location.Y / Game.world.ChunkRes.Y);
+		
 
 /*		Coordinate[] testCoordinates = new Coordinate[Game.world.chunks.keySet().size()];
 		// Creates a Coordinate array of the keys of the world map.

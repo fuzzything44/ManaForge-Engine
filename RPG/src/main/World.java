@@ -19,8 +19,8 @@ public class World {
 	}
 	
 	public void addActor(Coordinate location, int renderOrder, String image) {
-		int ChunkX = (int) Math.ceil(location.X / ChunkRes.X);
-		int ChunkY = (int) Math.ceil(location.Y / ChunkRes.Y);
+		int ChunkX = (int) Math.floor(location.X / ChunkRes.X);
+		int ChunkY = (int) Math.floor(location.Y / ChunkRes.Y);
 		if(chunks[ChunkX][ChunkY] != null){
 			
 			new Actor(image, new Coordinate(location.X - (ChunkRes.X * ChunkX), location.Y - (ChunkRes.Y * ChunkY)), renderOrder, chunks[ChunkX][ChunkY]);
