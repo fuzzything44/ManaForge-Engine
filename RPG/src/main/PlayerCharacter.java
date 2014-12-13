@@ -67,17 +67,6 @@ public class PlayerCharacter extends Character {
 		super(renderOrder, Game.world.persistentChunk, image, place);
 	}
 	
-	public enum equipmentTypes {
-		hat,
-		shirt,
-		pants,
-		shoes,
-		necklace,
-		earring,
-		ring,
-		weapon
-	}
-	
 	public enum statType {
 		health,
 		mana,
@@ -155,13 +144,31 @@ public class PlayerCharacter extends Character {
 	
 	public void equip(Equipment equippedItem) {
 	//	unEquip(equippedItem.equip);
-		
+		// TODO finish item equipping
 		switch (equippedItem.equip) {
 		case hat:
 	//		hat = equippedItem;
 			break;
 		case shirt:
-	//		shirt = equippedItem;	// TODO before I go farther, is this the correct thing to do?
+	//		shirt = equippedItem;	
+			break;
+		case pants:
+			
+			break;
+		case shoes:
+			
+			break;
+		case necklace:
+			
+			break;
+		case earring:
+			
+			break;
+		case ring:
+			
+			break;
+		case weapon:
+			
 			break;
 		default:
 			break;

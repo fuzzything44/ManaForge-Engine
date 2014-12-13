@@ -4,13 +4,26 @@ import buffs.Buff;
 import main.*;
 
 public class Equipment extends Item {
-	
-	public final PlayerCharacter.equipmentTypes equip;
+
+	public enum equipmentTypes {
+		hat,
+		shirt,
+		pants,
+		shoes,
+		necklace,
+		earring,
+		ring,
+		weapon
+	}
+		
+	public final equipmentTypes equip;
 	
 	public Buff equipmentBuff = null;
 	Buff.BuffValues vals;
+
+
 	
-	public Equipment(int price, String name, String description, int amount, PlayerCharacter.equipmentTypes equippedItem, PlayerCharacter looter, Buff.BuffValues buffFromItem) {
+	public Equipment(int price, String name, String description, int amount, equipmentTypes equippedItem, PlayerCharacter looter, Buff.BuffValues buffFromItem) {
 		super(price, name, description, amount, looter);
 		equip = equippedItem;
 		vals = buffFromItem;
@@ -35,5 +48,6 @@ public class Equipment extends Item {
 	public boolean equals(Equipment e) {
 		return (this.equip == e.equip && this.itemName.equals(e.itemName) && this.equipmentBuff.equals(e.equipmentBuff) );
 		// For two equipments to be equal, they need the same equip type, name, and buff.
-	}	// End equals
+	}	// End equals method
+	
 }
