@@ -95,7 +95,7 @@ public class Play extends BasicGameState {
 		for(int i = 0; i < 10; i++){
 			relevantActors.add(new Vector<Actor>());
 		}
-		
+		// Resetting relevantActors to be a Vector of an actor 
 		
 		
 		for(int i = 0; i < relevantChunks.size(); i++){
@@ -104,32 +104,31 @@ public class Play extends BasicGameState {
 			}
 		}
 		
+		
 		int RenderedObjects = 0;
-			for(int i = 0; i < relevantActors.size(); i++){
-				for(int i1 = 0; i1 < relevantActors.get(i).size(); i1++){
-					Actor a = relevantActors.get(i).get(i1);
-					if(a.isRendered){
-						int x, y;
-						x = (int) (((a.location.X - character.location.X + (
-								a.chunk.location.X * Game.world.ChunkRes.X))
-								* Game.zoom) + gc.getWidth()/2);
-						y = (int) (((a.location.Y - character.location.Y + (a.chunk.location.Y * Game.world.ChunkRes.Y)) * Game.zoom) + gc.getHeight()/2);
-					//	x = 0;
-					//	y = 0;
-						// TODO New x and y equations.
-						if (x > -Game.zoom && y > -Game.zoom && x < gc.getWidth() && y < gc.getHeight() && a.displayImage != null) {
-							// if this is on the screen... 
-							
-							if(!texturesScaled.containsKey(a.displayImage)){
-								texturesScaled.put(a.displayImage, Game.textures.get(a.displayImage).getScaledCopy(Game.zoom, Game.zoom) );
-							}
-							RenderedObjects ++;
-							texturesScaled.get(a.displayImage).draw(x, y);
+		for(int i = 0; i < relevantActors.size(); i++) {
+			for(int i1 = 0; i1 < relevantActors.get(i).size(); i1++) {
+				Actor a = relevantActors.get(i).get(i1);
+				if(a.isRendered) {
+					int x, y;
+					x = (int) ( ( (a.location.X - character.location.X + (
+							a.chunk.location.X * Game.world.ChunkRes.X) )
+							* Game.zoom) + gc.getWidth()/2);
+					y = (int) ( ( (a.location.Y - character.location.Y + (a.chunk.location.Y * Game.world.ChunkRes.Y) ) * Game.zoom) + gc.getHeight()/2);
+					// TODO New x and y equations.
+					if (x > -Game.zoom && y > -Game.zoom && x < gc.getWidth() && y < gc.getHeight() && a.displayImage != null) {
+						// if this is on the screen... 
+						
+						if(!texturesScaled.containsKey(a.displayImage) ) {
+							texturesScaled.put(a.displayImage, Game.textures.get(a.displayImage).getScaledCopy(Game.zoom, Game.zoom) );
 						}
+						RenderedObjects ++;
+						texturesScaled.get(a.displayImage).draw(x, y);
 					}
 				}
 			}
-			
+		}
+		
 			
 		gr.setColor(Color.black);
 		gr.fillRect(0, 0, 1000, 60);

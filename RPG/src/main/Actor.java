@@ -28,7 +28,7 @@ public class Actor extends Object {
 				
 		displayImage = "res/Default.png";
 	
-		renderOrder = 1;
+		this.renderOrder = renderOrder;
 		
 		chunk = chunkIn;
 	}
@@ -37,7 +37,7 @@ public class Actor extends Object {
 				
 		displayImage = "res/Default.png";
 	
-		renderOrder = 1;
+		this.renderOrder = renderOrder;
 		
 		location = place;
 		chunk = chunkIn;
@@ -48,7 +48,7 @@ public class Actor extends Object {
 		
 		displayImage = image;
 	
-		renderOrder = 1;
+		this.renderOrder = renderOrder;
 		chunk = chunkIn;
 	}
 	public Actor( int renderOrder, WorldChunk chunkIn, String image, Coordinate place) {
@@ -62,8 +62,11 @@ public class Actor extends Object {
 	}
 	
 	public void changeRenderOrder(int newRenderOrder) {
-		// Now we need to actually get the actor location.
-		chunk.actors.addElement(this);
+		renderOrder = newRenderOrder;
+		// TODO change render order in chunk.
 	}
 
+	public void addToWorld() {
+		chunk.actors.addElement(this);
+	}
 }
