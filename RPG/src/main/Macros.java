@@ -33,10 +33,16 @@ public class Macros {
 		} else if (actorType.equalsIgnoreCase("water") ) {
 			actorImage = "res/water.png";
 			// TODO when we have collision channels, this should stop Characters
-			// Water is a background actor that collides
+			// Water is a background actor that collides with characters.
+		} else if (actorType.contains("warp") ) {	
+			float warpX = Float.parseFloat(actorType.split("/.")[1] );
+			float warpY = Float.parseFloat(actorType.split("/.")[2] );
+			// warp tiles warp you to another location in the world.
+			// They move you on collide.
+//			generatedActor = new WarpActor();
 			
 		} else if (actorType.equalsIgnoreCase("tree")) {
-			generatedActor = new Actor(1, "res/tree.png", location);
+			generatedActor = new Actor(1, "res/Tree.png", location);
 			// Trees have a render order of 1. Currently.
 			// Trees also need to be solid.
 			
@@ -83,7 +89,7 @@ public class Macros {
 		}
 		
 		if (generatedEquipment == null) {
-			generatedEquipment = new Equipment(generatedAmount, generatedDescritption, generatedDescritption, generatedAmount, equipType, generatedBuff);
+			generatedEquipment = new Equipment(generatedAmount, generatedName, generatedDescritption, generatedAmount, equipType, generatedBuff);
 		}
 		return generatedEquipment;
 	}	// End equipment

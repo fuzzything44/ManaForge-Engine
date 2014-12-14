@@ -77,10 +77,10 @@ public class Play extends BasicGameState {
 		
 		
 		int RenderedObjects = 0;
-		for(int i = 0; i < relevantActors.size(); i++) {
-			for(int i1 = 0; i1 < relevantActors.get(i).size(); i1++) {
+		for (int i = 0; i < relevantActors.size(); i++) {
+			for (int i1 = 0; i1 < relevantActors.get(i).size(); i1++) {
 				Actor a = relevantActors.get(i).get(i1);
-				if(a.isRendered) {
+				if (a.isRendered) {
 					int x, y;
 					x = (int) ( ( (a.location.X - character.location.X + (
 							a.chunk.location.X * Game.world.ChunkRes.X) )
@@ -92,13 +92,16 @@ public class Play extends BasicGameState {
 						
 						if(!texturesScaled.containsKey(a.displayImage) ) {
 							texturesScaled.put(a.displayImage, Game.textures.get(a.displayImage).getScaledCopy(Game.zoom, Game.zoom) );
+							// If the image has no scaled copy yet.
 						}
 						RenderedObjects ++;
 						texturesScaled.get(a.displayImage).draw(x, y);
-					}
-				}
-			}
-		}
+						// Draw the scaled image at correct position.
+						
+					}	// End if on screen.
+				}	// End render if.
+			}	// End render order loop.
+		}	// End relevantActors loop.
 		
 			
 		gr.setColor(Color.black);
