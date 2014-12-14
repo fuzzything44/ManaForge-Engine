@@ -22,14 +22,6 @@ public class World {
 		chunks = new WorldChunk[1][1];
 	}
 	
-	public void addActor(Actor a) {
-		a.refreshChunk();
-//		if (a.doesTick) {
-//			a.chunk.tickingObjects.addElement(a);
-//		}
-		a.chunk.actors.addElement(a);
-		
-	}
 	public WorldChunk getActorChunk(Coordinate location) {
 		return chunks[(int) Math.floor(location.X / ChunkRes.X)][(int) (location.Y / ChunkRes.Y)];
 	}
@@ -67,7 +59,7 @@ public class World {
 				line = reader.readLine().split("_");
 				float actorX = Float.parseFloat(line[0]);
 				float actorY = Float.parseFloat(line[1]);
-				addActor(Macros.actor(line[2], new Coordinate(actorX, actorY) ) );
+				Macros.actor(line[2], new Coordinate(actorX, actorY) ).refreshChunk();
 				// All lines but first one should be in form X_Y_name
 				// where name is the actor name keyed to macros.
 				
