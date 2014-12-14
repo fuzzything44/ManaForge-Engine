@@ -4,6 +4,7 @@ import buffs.Buff;
 import buffs.Buff.BuffValues;
 import items.ConsumableItem;
 import items.Equipment;
+import items.Equipment.equipmentTypes;
 
 /*
  * Class to automatically generate Actors, items and more.
@@ -12,16 +13,30 @@ import items.Equipment;
 public class Macros {
 
 	public static Actor actor (String actorType, Coordinate location) {
-		WorldChunk actorChunk = Game.world.getActorChunk(location);
 		String actorImage = "res/Default.png";
 		int actorRender = 0;
 		// Variables needed to create an actor.
 		Actor generatedActor = null;
+
 		if (actorType.equalsIgnoreCase("grass")) {
 			actorImage = "res/grass.png";
 			// Grass is a background actor, and therefore is rendered first.
+
+		} else if (actorType.equalsIgnoreCase("dirt") ) {	
+			actorImage = "res/dirt.png";
+			// Dirt is a background actor.
+			
+		} else if (actorType.equalsIgnoreCase("sand") ) {	
+			actorImage = "res/sand.png";
+			// Sand is a background actor
+			
+		} else if (actorType.equalsIgnoreCase("water") ) {
+			actorImage = "res/water.png";
+			// TODO when we have collision channels, this should stop Characters
+			// Water is a background actor that collides
+			
 		} else if (actorType.equalsIgnoreCase("tree")) {
-			generatedActor = new Actor(1, actorChunk, "res/tree.png", location);
+			generatedActor = new Actor(1, "res/tree.png", location);
 			// Trees have a render order of 1. Currently.
 			// Trees also need to be solid.
 			
@@ -30,7 +45,7 @@ public class Macros {
 		}
 
 		if (generatedActor == null) {
-			generatedActor = new Actor(actorRender, actorChunk, actorImage, location);
+			generatedActor = new Actor(actorRender, actorImage, location);
 		}
 		
 		return generatedActor;
@@ -46,14 +61,30 @@ public class Macros {
 	
 	public static Equipment equipment (String equipName) {
 		Equipment generatedEquipment = null;
-		if (equipName.equalsIgnoreCase("noEquip_hat")) {
-			generatedEquipment = new Equipment(0, equipName, equipName, 0, null, null, null); //TODO: actually parse it!!
-		} else if (equipName.equalsIgnoreCase("noEquip_shirt")) {
-			
+		String generatedName = "No equipment";
+		String generatedDescritption = "No equipment";
+		int generatedAmount = 1;
+		equipmentTypes equipType = null;
+		Buff generatedBuff = new Buff("Equipment Buff", new BuffValues());
+		
+		
+		if (equipName.contains(".") ) {
+			generatedAmount = Integer.parseInt(equipName.split("/.")[1] ) ;
+			equipName = equipName.split("/.")[0];
+		}
+		if (equipName.equalsIgnoreCase("noEquip-hat")) {
+			generatedAmount = 0;
+			equipType = equipmentTypes.hat;
+		} else if (equipName.equalsIgnoreCase("noEquip-shirt")) {
+			generatedAmount = 0;
+			equipType = equipmentTypes.shirt;
 		} else {
 			// Throw an error.
 		}
 		
+		if (generatedEquipment == null) {
+			generatedEquipment = new Equipment(generatedAmount, generatedDescritption, generatedDescritption, generatedAmount, equipType, generatedBuff);
+		}
 		return generatedEquipment;
 	}	// End equipment
 	 

@@ -20,7 +20,8 @@ public class Landscape extends Object{
 		for(int imageX = 0; imageX < image.getWidth(); imageX++) {
 			
 			for(int imageY = 0; imageY < image.getHeight(); imageY++) {
-				world.addActor(new Coordinate(imageX - origin.X, imageY - origin.Y), 0, imageData.get(image.getColor(imageX, imageY)));
+				Actor a = Macros.actor(imageData.get(image.getColor(imageX, imageY)), new Coordinate (imageX, imageY) );
+				world.addActor(a);
 			}
 			
 		}

@@ -58,7 +58,7 @@ public class Play extends BasicGameState {
 		character = new PlayerCharacter(9, "res/Knight.png", new Coordinate(0, 0));	
 		
 		Game.world.load("src/res/w1/main.world", new Image("res/w1/TestLandscape.png") );
-		new Actor( 5, Game.world.persistentChunk, "res/grass.png", new Coordinate (0, 0) );
+		new Actor( 5, "res/grass.png", new Coordinate (0, 0) );
 		
 	}
 
@@ -68,39 +68,10 @@ public class Play extends BasicGameState {
 		
 		Map<String, Image> texturesScaled = new HashMap<String, Image>();
 		
-		relevantActors.clear();
-		/*
-		// draw landscape
-		for(int x = 0; x < Game.landscape.loadImage.getWidth(); x++){
-			for (int y = 0; y < Game.landscape.loadImage.getHeight(); y++){
-				String image = Game.landscape.queryPixel(x, y);
-				boolean canDraw = true;
-				if(!texturesScaled.containsKey(image)){
-					if(Game.textures.get(image) == null){
-						canDraw = false;
-					}else{
-						texturesScaled.put(image, Game.textures.get(image).getScaledCopy(Game.zoom, Game.zoom) );
-					}
-				}
-				if(canDraw){
-					int drawX, drawY;
-					drawX = (int)((y - character.location.X) * Game.zoom + gc.getWidth()/2);
-					drawY = (int)((x - character.location.Y) * Game.zoom + gc.getHeight()/2);
-						
-					texturesScaled.get(image).draw(drawX, drawY);
-				}
-			}
-		} 
-		*/
-		for(int i = 0; i < 10; i++){
-			relevantActors.add(new Vector<Actor>());
-		}
-		// Resetting relevantActors to be a Vector of an actor 
 		
-		
-		for(int i = 0; i < relevantChunks.size(); i++){
-			for(int i1 = 0; i1 < relevantChunks.get(i).actors.size(); i1++){
-				parseChunk(relevantChunks.get(i).actors.get(i1));
+		for(int i = 0; i < relevantChunks.size(); i++) {
+			for(int i1 = 0; i1 < relevantChunks.get(i).actors.size(); i1++) {
+				parseChunk(relevantChunks.get(i).actors.get(i1) );
 			}
 		}
 		
@@ -159,13 +130,26 @@ public class Play extends BasicGameState {
 		
 		int chunkX = (int) Math.floor(character.location.X / Game.world.ChunkRes.X);
 		int chunkY = (int) Math.floor(character.location.Y / Game.world.ChunkRes.Y);
-		
+
 		relevantChunks.add(Game.world.chunks[chunkX][chunkY]);
 		relevantChunks.add(Game.world.chunks[chunkX + 1][chunkY]);
 		relevantChunks.add(Game.world.chunks[chunkX][chunkY + 1]);
 		relevantChunks.add(Game.world.chunks[chunkX + 1][chunkY + 1]);
+		// TODO We should get actual chunk relevancy here.
 		
-
+		relevantActors.clear();
+		for(int i = 0; i < 10; i++) {
+			relevantActors.add(new Vector<Actor>());
+		}
+		// Resetting relevantActors to be a Vector of an actor 
+		
+		for (int i = 0; i < relevantChunks.size(); i++) {
+			for (int x = 0; x < relevantChunks.get(i).actors.size(); x++) {
+				relevantActors.get(relevantChunks.get(i).actors.get(x).renderOrder).add(relevantChunks.get(i).actors.get(x) );
+			}
+		}
+		// Adding ALL actors to be relevant (if they are in a relevant chunk).
+		
 /*		Coordinate[] testCoordinates = new Coordinate[Game.world.chunks.keySet().size()];
 		// Creates a Coordinate array of the keys of the world map.
 		
@@ -233,9 +217,18 @@ public class Play extends BasicGameState {
 			}
 		}*/
 	//	relevantChunks = Game.world.chunks[i];
-		for (int i = 0; i < Game.world.persistentChunk.tickingObjects.size(); i++){
-			Game.world.persistentChunk.tickingObjects.get(i).tick(delta);
+		for (int x = 0; x < Game.world.chunks.length; x++) {
+			for (int y = 0; y < Game.world.chunks[0].length; y++) {
+				// Looping through all chunks
+				for (int i = 0; i < Game.world.chunks[x][y].tickingObjects.size(); i++) {
+					// Looping through ticking objects in each chunk
+					Game.world.chunks[x][y].tickingObjects.get(i).tick(delta);
+				}
+			}
 		}
+		// Loops to tick each ticking object.
+		
+		
 		Input i1 = gc.getInput();
 
 		if (i1.isKeyPressed(Keyboard.KEY_ESCAPE)) {

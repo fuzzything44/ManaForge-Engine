@@ -4,7 +4,7 @@ package main;
 /* The base class for anything placeable in the world
  * 
  * Constructor:
- * 	int renderOrder, WorldChunk chunkIn [, String image, Coordinate place]
+ * 	int renderOrder [, String image, Coordinate place]
  *  
  * 	changeRenderOrder(int newOrder)
  */
@@ -14,6 +14,8 @@ public class Actor extends Object {
 	public boolean doesCollide = false;
 	
 	public WorldChunk chunk;
+
+	private World world;
 	
 	public String displayImage;
 	
@@ -21,52 +23,48 @@ public class Actor extends Object {
 	
 	public boolean isRendered = true;
 	
+	public boolean isPersistent = false;
+	
 	// 0 - 9, 9 is last, 0 is first
 	public int renderOrder;
 	
-	public Actor(int renderOrder, WorldChunk chunkIn) {
-				
+	public Actor(int renderOrder) {
 		displayImage = "res/Default.png";
-	
 		this.renderOrder = renderOrder;
-		
-		chunk = chunkIn;
+		world = Game.world;
 	}
 
-	public Actor(int renderOrder, WorldChunk chunkIn, Coordinate place) {
-				
-		displayImage = "res/Default.png";
-	
-		this.renderOrder = renderOrder;
-		
+	public Actor(int renderOrder, Coordinate place) {			
+		displayImage = "res/Default.png";	
+		this.renderOrder = renderOrder;		
 		location = place;
-		chunk = chunkIn;
-		
+		world = Game.world;
 	}	
 	
-	public Actor( int renderOrder, WorldChunk chunkIn, String image) {
+	public Actor( int renderOrder, String image) {
 		
-		displayImage = image;
-	
+		displayImage = image;	
 		this.renderOrder = renderOrder;
-		chunk = chunkIn;
+		world = Game.world;
 	}
-	public Actor( int renderOrder, WorldChunk chunkIn, String image, Coordinate place) {
+	public Actor( int renderOrder, String image, Coordinate place) {
 				
-		displayImage = image;
-	
-		this.renderOrder = renderOrder;
-		
+		displayImage = image;	
+		this.renderOrder = renderOrder;		
 		location = place;
-		chunk = chunkIn;
+		world = Game.world;
 	}
 	
 	public void changeRenderOrder(int newRenderOrder) {
 		renderOrder = newRenderOrder;
 		// TODO change render order in chunk.
 	}
-
-	public void addToWorld() {
-		chunk.actors.addElement(this);
+	
+	public void refreshChunk() {
+		if (!isPersistent) {
+			chunk = world.getActorChunk(location);
+		} else {
+			chunk = world.persistentChunk;
+		}
 	}
 }

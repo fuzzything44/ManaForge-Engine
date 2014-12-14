@@ -3,6 +3,8 @@ package main;
 import buffs.*;
 import items.*;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.Vector;
 
 public class PlayerCharacter extends Character {
@@ -55,16 +57,20 @@ public class PlayerCharacter extends Character {
 	public Vector<ConsumableItem> consumables = new Vector<ConsumableItem>();
 	
 	public PlayerCharacter(int renderOrder) {
-		super(renderOrder, Game.world.persistentChunk);
+		super(renderOrder);
+		isPersistent = true;
 	}
 	public PlayerCharacter(int renderOrder, Coordinate place) {
-		super(renderOrder, Game.world.persistentChunk, place);
+		super(renderOrder, place);
+		isPersistent = true;
 	}
 	public PlayerCharacter(int renderOrder, String image) {
-		super(renderOrder, Game.world.persistentChunk, image);
+		super(renderOrder, image);
+		isPersistent = true;
 	}
 	public PlayerCharacter(int renderOrder, String image, Coordinate place) {
-		super(renderOrder, Game.world.persistentChunk, image, place);
+		super(renderOrder, image, place);
+		isPersistent = true;
 	}
 	
 	public enum statType {
@@ -194,5 +200,63 @@ public class PlayerCharacter extends Character {
 //		if (location.X >= maxX && location.X <= minX) {
 		location = location.add(velocity.multiply(deltaTime/1000) );
 	}
-
+	
+	public void loadSave(String saveFile) {
+		try {
+			BufferedReader reader = new BufferedReader(new FileReader(saveFile) );
+			String[] line = reader.readLine().split("_");
+			// Save file first line is in the form of :
+			// Health_Mana_STR_DEX_WIS_ATK_DEF_Level_EXP_Money
+			baseHealth = Integer.parseInt(line[0]);
+			baseMana = Integer.parseInt(line[1]);
+			baseStr = Integer.parseInt(line[2]);
+			baseDex = Integer.parseInt(line[3]);
+			baseWis = Integer.parseInt(line[4]);
+			attack = Integer.parseInt(line[5]);
+			defence = Integer.parseInt(line[6]);
+			level = Integer.parseInt(line[7]);
+			experience = Integer.parseInt(line[8]);
+			money = Integer.parseInt(line[9]);
+			
+			line = reader.readLine().split("_");
+			// Second line is consumables held
+			for (int i = 0; i < line.length; i++) {
+				consumables.addElement(Macros.consumable(line[i]) );
+			}
+			// Should be in form of:
+			// Name.amount repeated with _ in between
+			
+			line = reader.readLine().split("_");
+			// Third line is equipment
+			for (int i = 0; i < line.length; i++) {
+				equips.addElement(Macros.equipment(line[i]) );
+			}
+			// Same format as consumables
+			
+			line = reader.readLine().split("_");
+			// Fourth line is buffs
+			for (int i = 0; i < line.length; i++) {
+				buffs.addElement(Macros.buff(line[i]) );
+			}
+			// Should be in format:
+			// Name.time repeated with _ in between
+			// When we save, we don't want to save equipment buffs
+			
+			line = reader.readLine().split("_");
+			// Fifth line is equipment
+			// Should be in format:
+			// Hat_Shirt_Pants_Shoes_Necklace_Earrings_Ring_Gloves_OffHand_Weapon
+			//Hat = 
+			
+			
+			
+			
+			
+			
+			refreshStats();
+			reader.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}	// End file loading
 }

@@ -46,7 +46,7 @@ public class Buff extends Object {
 		
 		// Determines if the buff is permanent or not.
 		public boolean isBuffPermanent = false;
-		
+
 		public boolean equals(BuffValues b) {
 			// For two buff values to be equal, they need the exact same buff amounts,
 			// description, and state of permanency.
@@ -80,10 +80,10 @@ public class Buff extends Object {
 			public String buffType;
 	}	// End buffAmountsClass
 	
-	private BuffValues buffVals;
+	public BuffValues buffVals;
 	// own instance of buffValues. Used for ... things
 	
-	private PlayerCharacter owner;
+	public PlayerCharacter owner;
 	// The player. Used to remove this buff.
 	
 	//	Name of the buff

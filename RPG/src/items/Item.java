@@ -10,12 +10,11 @@ public abstract class Item extends Object {
 	protected int itemAmount;
 	protected PlayerCharacter owner;
 	
-	protected Item(int price, String name, String description, int amount, PlayerCharacter looter) {
+	protected Item(int price, String name, String description, int amount) {
 		sellPrice       = price;
 		itemName        = name;
 		itemDescription = description;
 		itemAmount      = amount;
-		owner			= looter;
 	}
 	
 	//	Lets you gain items

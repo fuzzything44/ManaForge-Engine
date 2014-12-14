@@ -1,16 +1,16 @@
 package items;
 
-import main.PlayerCharacter;
-import buffs.Buff.BuffValues;
+import main.Game;
+import buffs.Buff;
 
 public class Weapon extends Equipment {
 	boolean twoHanded;
 	int specialCooldown;
 	int timeSinceSpecial;
 	public Weapon(int price, String name, String description, int amount,
-			PlayerCharacter looter, BuffValues buffFromItem, boolean isTwoHanded, int cooldown) {
+			Buff buffFromItem, boolean isTwoHanded, int cooldown) {
 
-		super(price, name, description, amount, equipmentTypes.weapon, looter, buffFromItem);
+		super(price, name, description, amount, equipmentTypes.weapon, buffFromItem);
 		twoHanded = isTwoHanded;
 		specialCooldown = cooldown;
 		timeSinceSpecial = cooldown;
@@ -23,6 +23,17 @@ public class Weapon extends Equipment {
 	public void specialAttack() {
 		if (timeSinceSpecial >= specialCooldown) {
 			// Use special attack
+		} else {
+			// do special attack
+			// Also add this to ticking objects
+			Game.world.persistentChunk.tickingObjects.addElement(this);
 		}
-	}	// End special attack
+	}		// End special attack
+	
+	public void tick(int deltaTime) {
+		timeSinceSpecial += deltaTime;
+		if (timeSinceSpecial >= specialCooldown) {
+			Game.world.persistentChunk.tickingObjects.remove(this);
+		}
+	}
 }
