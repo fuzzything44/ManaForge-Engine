@@ -56,9 +56,9 @@ public class Play extends BasicGameState {
 		Game.textures.put("res/Tree.png", new Image("res/Tree.png"));
 
 		character = new PlayerCharacter(9, "res/Knight.png", new Coordinate(0, 0));	
-		
+		character.isPersistent = true;
+		Game.world.addActor(character);
 		Game.world.load("src/res/w1/main.world", new Image("res/w1/TestLandscape.png") );
-		new Actor( 5, "res/grass.png", new Coordinate (0, 0) );
 		
 	}
 
