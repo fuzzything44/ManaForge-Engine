@@ -1,4 +1,4 @@
-package main;
+package actors;
 
 import buffs.*;
 import items.*;
@@ -6,6 +6,9 @@ import items.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.Vector;
+
+import main.Coordinate;
+import main.Macros;
 
 public class PlayerCharacter extends Character {
 	

@@ -19,6 +19,9 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
+import actors.Actor;
+import actors.PlayerCharacter;
+
 
 public class Play extends BasicGameState {
 

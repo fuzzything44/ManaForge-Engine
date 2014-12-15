@@ -9,7 +9,7 @@
 
 package items;
 
-import main.PlayerCharacter;
+import actors.PlayerCharacter;
 
 public class ConsumableItem extends Item {
 	

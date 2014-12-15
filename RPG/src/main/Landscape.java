@@ -5,6 +5,8 @@ import java.util.Map;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Image;
 
+import actors.Actor;
+
 public class Landscape extends Object{
 	
 	

@@ -2,6 +2,8 @@ package main;
 
 import java.util.Vector;
 
+import actors.Actor;
+
 public class WorldChunk {
 
 	public Vector<Object> tickingObjects = new Vector<Object>();

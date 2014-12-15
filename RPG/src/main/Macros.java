@@ -1,5 +1,6 @@
 package main;
 
+import actors.Actor;
 import buffs.Buff;
 import buffs.Buff.BuffValues;
 import items.ConsumableItem;

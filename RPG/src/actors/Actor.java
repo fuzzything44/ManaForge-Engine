@@ -1,4 +1,10 @@
-package main;
+package actors;
+
+import main.Coordinate;
+import main.Game;
+import main.Object;
+import main.World;
+import main.WorldChunk;
 
 
 /* The base class for anything placeable in the world

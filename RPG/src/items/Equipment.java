@@ -1,7 +1,7 @@
 package items;
 
+import actors.PlayerCharacter;
 import buffs.Buff;
-import main.*;
 
 public class Equipment extends Item {
 

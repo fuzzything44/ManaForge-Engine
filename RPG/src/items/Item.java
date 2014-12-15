@@ -1,6 +1,6 @@
 package items;
 
-import main.*;
+import actors.PlayerCharacter;
 import main.Object;
 
 public abstract class Item extends Object {

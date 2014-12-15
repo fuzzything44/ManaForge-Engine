@@ -1,4 +1,6 @@
-package main;
+package actors;
+
+import main.Coordinate;
 
 public class DynamicActor extends Actor {
 	protected Coordinate velocity = new Coordinate(0);

@@ -1,4 +1,6 @@
-package main;
+package actors;
+
+import main.Coordinate;
 
 // base character class. Can be used by either enemy or friendly
 public class Character extends DynamicActor {

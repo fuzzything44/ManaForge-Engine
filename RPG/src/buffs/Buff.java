@@ -10,8 +10,8 @@
  */
 package buffs;
 
+import actors.PlayerCharacter;
 import main.Object;
-import main.PlayerCharacter;
 import main.Game;
 
 public class Buff extends Object {
