@@ -55,11 +55,11 @@ public class Play extends BasicGameState {
 		Game.textures.put("res/dirt.png", new Image("res/dirt.png"));
 		Game.textures.put("res/Tree.png", new Image("res/Tree.png"));
 
+		Game.world.load("src/res/w1/main.world", new Image("res/w1/TestLandscape.png") );
 		character = new PlayerCharacter(9, "res/Knight.png", new Coordinate(0, 0));	
 		character.isPersistent = true;
 		character.refreshChunk();
-		Game.world.load("src/res/w1/main.world", new Image("res/w1/TestLandscape.png") );
-		
+
 	}
 
 	@Override
@@ -220,15 +220,14 @@ public class Play extends BasicGameState {
 			}
 		}*/
 	//	relevantChunks = Game.world.chunks[i];
-		for (int x = 0; x < Game.world.chunks.length; x++) {
-			for (int y = 0; y < Game.world.chunks[0].length; y++) {
-				// Looping through all chunks
-				for (int i = 0; i < Game.world.chunks[x][y].tickingObjects.size(); i++) {
-					// Looping through ticking objects in each chunk
-					Game.world.chunks[x][y].tickingObjects.get(i).tick(delta);
-				}
+
+		for (int i = 0; i < relevantChunks.size(); i++) {
+			// Looping through relevant chunks to get all ticking actors
+			for (int x = 0; x <relevantChunks.get(i).tickingObjects.size(); x++) {
+				relevantChunks.get(i).tickingObjects.get(x).tick(delta);
 			}
 		}
+		
 		// Loops to tick each ticking object.
 		
 		
@@ -238,7 +237,7 @@ public class Play extends BasicGameState {
 			sbg.enterState(Game.pause);
 		}
 
-		character.setVelocity(new Coordinate(0));
+		character.setVelocity(new Coordinate(0, 0) );
 
 		if (i1.isKeyDown(Keyboard.KEY_W)) {
 			character.setVelocity(new Coordinate(character.getVelocity().X,

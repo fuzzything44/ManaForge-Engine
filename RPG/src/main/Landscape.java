@@ -21,7 +21,7 @@ public class Landscape extends Object{
 			
 			for(int imageY = 0; imageY < image.getHeight(); imageY++) {
 				Actor a = Macros.actor(imageData.get(image.getColor(imageX, imageY)), new Coordinate (imageX, imageY) );
-				world.addActor(a);
+				a.refreshChunk();
 			}
 			
 		}

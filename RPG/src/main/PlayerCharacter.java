@@ -199,6 +199,7 @@ public class PlayerCharacter extends Character {
 	public void tick(float deltaTime) {
 //		if (location.X >= maxX && location.X <= minX) {
 		location = location.add(velocity.multiply(deltaTime/1000) );
+		System.out.println("Moving: X = " + velocity.X + " Y = " + velocity.Y);
 	}
 	
 	public void loadSave(String saveFile) {
@@ -207,6 +208,7 @@ public class PlayerCharacter extends Character {
 			String[] line = reader.readLine().split("_");
 			// Save file first line is in the form of :
 			// Health_Mana_STR_DEX_WIS_ATK_DEF_Level_EXP_Money
+			// Adding new base variables go on this line.
 			baseHealth = Integer.parseInt(line[0]);
 			baseMana = Integer.parseInt(line[1]);
 			baseStr = Integer.parseInt(line[2]);
@@ -221,7 +223,7 @@ public class PlayerCharacter extends Character {
 			line = reader.readLine().split("_");
 			// Second line is consumables held
 			for (int i = 0; i < line.length; i++) {
-				consumables.addElement(Macros.consumable(line[i]) );
+				Macros.consumable(line[i]).addToInventory(this);
 			}
 			// Should be in form of:
 			// Name.amount repeated with _ in between
@@ -229,14 +231,14 @@ public class PlayerCharacter extends Character {
 			line = reader.readLine().split("_");
 			// Third line is equipment
 			for (int i = 0; i < line.length; i++) {
-				equips.addElement(Macros.equipment(line[i]) );
+				Macros.equipment(line[i]).addToInventory(this);
 			}
 			// Same format as consumables
 			
 			line = reader.readLine().split("_");
 			// Fourth line is buffs
 			for (int i = 0; i < line.length; i++) {
-				buffs.addElement(Macros.buff(line[i]) );
+				Macros.buff(line[i]).giveBuff(this);
 			}
 			// Should be in format:
 			// Name.time repeated with _ in between
@@ -246,7 +248,7 @@ public class PlayerCharacter extends Character {
 			// Fifth line is equipment
 			// Should be in format:
 			// Hat_Shirt_Pants_Shoes_Necklace_Earrings_Ring_Gloves_OffHand_Weapon
-			//Hat = 
+			// All are integer indices. (Maybe. We should figure out how we will handle equips.
 			
 			
 			
