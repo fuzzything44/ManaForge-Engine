@@ -202,7 +202,6 @@ public class PlayerCharacter extends Character {
 	public void tick(float deltaTime) {
 //		if (location.X >= maxX && location.X <= minX) {
 		location = location.add(velocity.multiply(deltaTime/1000) );
-		System.out.println("Moving: X = " + velocity.X + " Y = " + velocity.Y);
 	}
 	
 	public void loadSave(String saveFile) {

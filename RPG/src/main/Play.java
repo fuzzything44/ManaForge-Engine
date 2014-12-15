@@ -136,7 +136,18 @@ public class Play extends BasicGameState {
 		
 		int chunkX = (int) Math.floor(character.location.X / Game.world.ChunkRes.X);
 		int chunkY = (int) Math.floor(character.location.Y / Game.world.ChunkRes.Y);
-
+		if (chunkX < 0) {
+			chunkX = 0;
+		}
+		if (chunkY < 0) {
+			chunkY = 0;
+		}
+		if (chunkX >= Game.world.chunks.length - 1) {
+			chunkX = Game.world.chunks.length - 2;
+		}
+		if (chunkY >= Game.world.chunks[chunkX].length - 1) {
+			chunkY = Game.world.chunks[chunkX].length - 2;
+		}
 		relevantChunks.add(Game.world.chunks[chunkX][chunkY]);
 		relevantChunks.add(Game.world.chunks[chunkX + 1][chunkY]);
 		relevantChunks.add(Game.world.chunks[chunkX][chunkY + 1]);
