@@ -162,12 +162,29 @@ public class Play extends BasicGameState {
 		
 		for (int i = 0; i < relevantChunks.size(); i++) {
 			for (int x = 0; x < relevantChunks.get(i).actors.size(); x++) {
-				relevantActors.get(relevantChunks.get(i).actors.get(x).renderOrder).add(relevantChunks.get(i).actors.get(x) );
+				if (true) {
+					// TODO get actor relevancy equations here.
+					relevantActors.get(relevantChunks.get(i).actors.get(x).renderOrder).add(relevantChunks.get(i).actors.get(x) );
+				}
 			}
 		}
 		// Adding ALL actors to be relevant (if they are in a relevant chunk).
 		
-/*		Coordinate[] testCoordinates = new Coordinate[Game.world.chunks.keySet().size()];
+/*	TODO TODO TODO TODO TODO TODO Do we even need these comments? If you don't think so, delete them.	
+ *	TODO 
+ * 	TODO
+ * TODO
+ * TODO
+ * TODO
+ * TODO
+ * TODO
+ * TODO
+ * TODO
+ * TODO
+ * 
+ * Coordinate[] testCoordinates = new Coordinate[Game.world.chunks.keySet().size()];
+ 
+		
 		// Creates a Coordinate array of the keys of the world map.
 		
 		Game.world.chunks.keySet().toArray(testCoordinates);
@@ -237,11 +254,10 @@ public class Play extends BasicGameState {
 
 		for (int i = 0; i < relevantChunks.size(); i++) {
 			// Looping through relevant chunks to get all ticking actors
-			for (int x = 0; x <relevantChunks.get(i).tickingObjects.size(); x++) {
+			for (int x = 0; x < relevantChunks.get(i).tickingObjects.size(); x++) {
 				relevantChunks.get(i).tickingObjects.get(x).tick(delta);
 			}
 		}
-		
 		// Loops to tick each ticking object.
 		
 		
