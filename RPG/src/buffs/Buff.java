@@ -39,14 +39,18 @@ public class Buff extends Object {
 			defenceBuffNumber = 0;
 
 		//	How much time left until the buff runs out
-		public float buffTimeLeft = 1;
+		public int buffTimeLeft = 1;
 		
 		// Description of the buff. If default, will display basic nonzero stat modifiers (dexBuffNumber, dexBuffPercent ex.)
 		public String buffDescription = "default";
 		
 		// Determines if the buff is permanent or not.
 		public boolean isBuffPermanent = false;
-
+		
+		public boolean noRemove = false;
+		// Boolean to make it so items can't remove it. Should be checked in the item
+		// method itself, as eventually it needs to be removed.
+		
 		public boolean equals(BuffValues b) {
 			// For two buff values to be equal, they need the exact same buff amounts,
 			// description, and state of permanency.
@@ -74,7 +78,7 @@ public class Buff extends Object {
 		
 	}	// End buffValues
 	
-	public class buffAmountsClass {
+	private class buffAmountsClass {
 			public float buffPercent;
 			public int buffAmount;
 			public String buffType;
@@ -183,6 +187,43 @@ public class Buff extends Object {
 	
 	public float getTimeLeft() {
 		return buffVals.buffTimeLeft;
+	}
+	
+	public String getTimeString() {
+		// Method to get time left of a buff as a String
+		
+		// If the buff is permanent, just have it give a dash.
+		if (buffVals.isBuffPermanent) {
+			return "-";
+		}
+		
+		String time = "";
+
+		int hours = 0;
+		int minutes = 0;
+		int seconds = buffVals.buffTimeLeft / 1000;
+
+		minutes = seconds / 60;
+		seconds -= minutes * 60;
+		// 60 seconds in a minute. Setting minutes.
+		
+		hours = minutes / 60;
+		minutes -= hours * 60;
+		// 60 minutes in an hour. Setting hours.
+		
+		// If there is more than an hour of the buff left, it needs to say so.
+		if (hours > 0) {
+			time += String.format("%sh ", hours);
+		}
+		// If there is more than a minute of the buff left, it needs to say so.
+		if (minutes > 0 || hours > 0) {
+			time += String.format("%sm ", minutes);
+		}
+		// Always say how many seconds are left
+		time += String.format("%ss", seconds);
+		return time;
+		// Example return if it lasts 2 hours, 50 minutes, 10 seconds:
+		// 2h 50m 10s
 	}
 	
 	// What the buff does every tick: decrease time left and remove itself if no time is left
