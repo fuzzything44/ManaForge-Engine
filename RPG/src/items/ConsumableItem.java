@@ -12,11 +12,11 @@ package items;
 import actors.PlayerCharacter;
 
 public class ConsumableItem extends Item {
-	
+	private UseMethod useItem;
 	//	Constructor for the class. Takes name and starting amount.
-	public ConsumableItem(int price, String name, String description, int amount) {
+	public ConsumableItem(int price, String name, String description, int amount, UseMethod use) {
 		super(price, name, description, amount);
-		
+		useItem = use;
 		int indexOfConsumable = 0;
 		for (int x = 1; x <= owner.consumables.size(); x++) {	// Loops through to see if you have this item
 			if (owner.consumables.get(x).getItemName().equals(name) ) {
@@ -31,7 +31,9 @@ public class ConsumableItem extends Item {
 		}
 	}
 	// Uses the item. Goes to specific use method.
-	public void use() {}
+	public void use() {
+		useItem.onUse(this);
+	}
 	
 	public void addToInventory(PlayerCharacter looter) {
 		owner = looter;

@@ -6,6 +6,7 @@ import buffs.Buff.BuffValues;
 import items.ConsumableItem;
 import items.Equipment;
 import items.Equipment.equipmentTypes;
+import items.UseMethod;
 
 /*
  * Class to automatically generate Actors, items and more.
@@ -60,9 +61,24 @@ public class Macros {
 	
 	public static ConsumableItem consumable (String itemName) {
 		ConsumableItem generatedItem = null;
+		int price = 0;
+		String name = "An Item";
+		String description = "Does nothing";
+		int amount = 1;
+		UseMethod use;
+		// Basic ConsumableItem constructor requirements
+		
+		use = new UseMethod() { public void onUse(ConsumableItem itemUsed) {} };
+		// Sets using an item to do nothing.
+		
+		if (itemName.equalsIgnoreCase("redPotion") ) {
+			
+		}
 		
 		
-		
+		if (generatedItem == null) {
+			generatedItem = new ConsumableItem(price, name, description, amount, use);
+		}
 		return generatedItem;
 	}	// End consumable generation.
 	
