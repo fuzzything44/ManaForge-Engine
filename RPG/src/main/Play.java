@@ -107,6 +107,9 @@ public class Play extends BasicGameState {
 		}	// End relevantActors loop.
 		System.out.println((System.nanoTime() - start) / 1000000);
 			
+		
+		
+		
 		gr.setColor(Color.black);
 		gr.fillRect(0, 0, 1000, 60);
 		gr.setColor(Color.white);
