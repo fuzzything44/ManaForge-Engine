@@ -46,7 +46,7 @@ public class World {
 			}
 			// Initializing all chunks in the array.
 			
-			
+			// TODO: Will need to add this to the .world file
 			Map<Color, String> imageInfo = new HashMap<Color, String>();
 			imageInfo.put(Color.red, "grass");
 			imageInfo.put(Color.blue, "default");

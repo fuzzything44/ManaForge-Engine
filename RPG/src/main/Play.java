@@ -25,7 +25,7 @@ import actors.PlayerCharacter;
 
 public class Play extends BasicGameState {
 
-	final int MIN_ZOOM = 12;
+	final int MIN_ZOOM = 1;
 	final int MAX_ZOOM = 96;
 	Vector<WorldChunk> relevantChunks = new Vector<WorldChunk>();
 	Vector<Vector<Actor> > relevantActors = new Vector<Vector<Actor> >();
@@ -58,7 +58,8 @@ public class Play extends BasicGameState {
 		Game.textures.put("res/dirt.png", new Image("res/dirt.png"));
 		Game.textures.put("res/Tree.png", new Image("res/Tree.png"));
 
-		Game.world.load("src/res/w1/main.world", new Image("res/w1/TestLandscape.png") );
+		Game.world.load("src/res/w1/main.world", new Image("/src/res/w1/TestLandscape.png") );
+		
 		character = new PlayerCharacter(9, "res/Knight.png", new Coordinate(0, 0));	
 		character.isPersistent = true;
 		character.refreshChunk();
@@ -77,7 +78,7 @@ public class Play extends BasicGameState {
 				parseChunk(relevantChunks.get(i).actors.get(i1) );
 			}
 		}
-		
+		System.out.println(Game.world.ChunkRes.X);
 		
 		int RenderedObjects = 0;
 		for (int i = 0; i < relevantActors.size(); i++) {
@@ -85,10 +86,8 @@ public class Play extends BasicGameState {
 				Actor a = relevantActors.get(i).get(i1);
 				if (a.isRendered) {
 					int x, y;
-					x = (int) ( ( (a.location.X - character.location.X + (
-							a.chunk.location.X * Game.world.ChunkRes.X) )
-							* Game.zoom) + gc.getWidth()/2);
-					y = (int) ( ( (a.location.Y - character.location.Y + (a.chunk.location.Y * Game.world.ChunkRes.Y) ) * Game.zoom) + gc.getHeight()/2);
+					x = (int) ( ( (a.location.X - character.location.X) * Game.zoom) + gc.getWidth() / 2);
+					y = (int) ( ( (a.location.Y - character.location.Y) * Game.zoom) + gc.getHeight() / 2);
 					// TODO New x and y equations.
 					if (x > -Game.zoom && y > -Game.zoom && x < gc.getWidth() && y < gc.getHeight() && a.displayImage != null) {
 						// if this is on the screen... 
@@ -170,18 +169,7 @@ public class Play extends BasicGameState {
 		}
 		// Adding ALL actors to be relevant (if they are in a relevant chunk).
 		
-/*	TODO TODO TODO TODO TODO TODO Do we even need these comments? If you don't think so, delete them.	
- *	TODO 
- * 	TODO
- * TODO
- * TODO
- * TODO
- * TODO
- * TODO
- * TODO
- * TODO
- * TODO
- * 
+/*	
  * Coordinate[] testCoordinates = new Coordinate[Game.world.chunks.keySet().size()];
  
 		

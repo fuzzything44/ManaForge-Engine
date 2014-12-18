@@ -16,7 +16,7 @@ public class PlayerCharacter extends Character {
  *	Current is the amount of HP/MP you have left
  *	Base is the unbuffed MaxHP/MaxMP/Stat
  */
-	public final float moveSpeed = 5f;
+	public final float moveSpeed = 50f;
 
 // Equipment takes:
 //		int price, String name, String description, int amount, PlayerCharacter looter, Buff.BuffValues buffFromEquipment
