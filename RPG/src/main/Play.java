@@ -78,7 +78,8 @@ public class Play extends BasicGameState {
 				parseChunk(relevantChunks.get(i).actors.get(i1) );
 			}
 		}
-		System.out.println(Game.world.ChunkRes.X);
+		
+		long start = System.nanoTime();
 		
 		int RenderedObjects = 0;
 		for (int i = 0; i < relevantActors.size(); i++) {
@@ -88,7 +89,7 @@ public class Play extends BasicGameState {
 					int x, y;
 					x = (int) ( ( (a.location.X - character.location.X) * Game.zoom) + gc.getWidth() / 2);
 					y = (int) ( ( (a.location.Y - character.location.Y) * Game.zoom) + gc.getHeight() / 2);
-					// TODO New x and y equations.
+
 					if (x > -Game.zoom && y > -Game.zoom && x < gc.getWidth() && y < gc.getHeight() && a.displayImage != null) {
 						// if this is on the screen... 
 						
@@ -104,7 +105,7 @@ public class Play extends BasicGameState {
 				}	// End render if.
 			}	// End render order loop.
 		}	// End relevantActors loop.
-		
+		System.out.println((System.nanoTime() - start) / 1000000);
 			
 		gr.setColor(Color.black);
 		gr.fillRect(0, 0, 1000, 60);
@@ -151,7 +152,6 @@ public class Play extends BasicGameState {
 		relevantChunks.add(Game.world.chunks[chunkX + 1][chunkY]);
 		relevantChunks.add(Game.world.chunks[chunkX][chunkY + 1]);
 		relevantChunks.add(Game.world.chunks[chunkX + 1][chunkY + 1]);
-		// TODO We should get actual chunk relevancy here.
 		
 		relevantActors.clear();
 		for(int i = 0; i < 10; i++) {
