@@ -49,6 +49,8 @@ public class Game extends StateBasedGame {
 			
 		} catch (SlickException e) {
 			e.printStackTrace();
+			LogCreator.crashLog(e);
+			System.exit(1);
 		}
 		
 	}
