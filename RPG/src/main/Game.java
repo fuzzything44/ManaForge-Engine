@@ -54,9 +54,7 @@ public class Game extends StateBasedGame {
 			context = JavaCL.createBestContext();
 		    queue = context.createDefaultQueue();
 		    byteOrder = context.getByteOrder();
-	        String src;
-			
-			src = IOUtils.readText(Game.class.getResource("/kernels/Collision.cl"));
+	        String src = IOUtils.readText(Game.class.getResource("kernels/Collision.cl"));
 
 	        program = context.createProgram(src);
 	        

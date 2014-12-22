@@ -30,6 +30,7 @@ public class Actor extends Object {
 	public boolean isRendered = true;
 	
 	public boolean isPersistent = false;
+	public boolean collides = false;
 	
 	// 0 - 9, 9 is last, 0 is first
 	public int renderOrder;

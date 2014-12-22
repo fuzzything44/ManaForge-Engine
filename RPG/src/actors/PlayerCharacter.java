@@ -61,19 +61,23 @@ public class PlayerCharacter extends Character {
 	
 	public PlayerCharacter(int renderOrder) {
 		super(renderOrder);
+		collides = true;
 		isPersistent = true;
 	}
 	public PlayerCharacter(int renderOrder, Coordinate place) {
 		super(renderOrder, place);
 		isPersistent = true;
+		collides = true;
 	}
 	public PlayerCharacter(int renderOrder, String image) {
 		super(renderOrder, image);
 		isPersistent = true;
+		collides = true;
 	}
 	public PlayerCharacter(int renderOrder, String image, Coordinate place) {
 		super(renderOrder, image, place);
 		isPersistent = true;
+		collides = true;
 	}
 	
 	public enum statType {
