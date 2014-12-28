@@ -62,6 +62,8 @@ public class Game extends StateBasedGame {
 	        
 		} catch (IOException e) {
 			e.printStackTrace();
+			LogCreator.crashLog(e);
+			System.exit(1);
 		}
 		
 		getState(pause).init(gc, this);
