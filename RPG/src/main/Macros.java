@@ -7,6 +7,7 @@ import items.ConsumableItem;
 import items.Equipment;
 import items.Equipment.equipmentTypes;
 import items.UseMethod;
+import items.Weapon;
 
 /*
  * Class to automatically generate Actors, items and more.
@@ -124,5 +125,10 @@ public class Macros {
 		
 		return new Buff(generatedName, generatedBuff);
 	}	// End buff generation
+
+	public static Weapon weapon(String string) {
+		// TODO Add Weapon generation.
+		return null;
+	}
 	
 }

@@ -7,13 +7,17 @@ public class Weapon extends Equipment {
 	boolean twoHanded;
 	int specialCooldown;
 	int timeSinceSpecial;
+	int timeSinceAttack;
+	int attackCooldown;
 	public Weapon(int price, String name, String description, int amount,
-			Buff buffFromItem, boolean isTwoHanded, int cooldown) {
+			Buff buffFromItem, boolean isTwoHanded, int specialCooldown, int attackCooldown) {
 
 		super(price, name, description, amount, equipmentTypes.weapon, buffFromItem);
 		twoHanded = isTwoHanded;
-		specialCooldown = cooldown;
-		timeSinceSpecial = cooldown;
+		this.specialCooldown = specialCooldown;
+		this.attackCooldown = attackCooldown;
+		timeSinceSpecial = specialCooldown;
+		timeSinceAttack = attackCooldown;
 	}
 	public void attack() {
 		// When you attack with your weapon.
@@ -24,16 +28,12 @@ public class Weapon extends Equipment {
 		if (timeSinceSpecial >= specialCooldown) {
 			// Use special attack
 		} else {
-			// do special attack
-			// Also add this to ticking objects
-			Game.world.persistentChunk.tickingObjects.addElement(this);
+			// Can't do special attack
 		}
 	}		// End special attack
 	
 	public void tick(int deltaTime) {
 		timeSinceSpecial += deltaTime;
-		if (timeSinceSpecial >= specialCooldown) {
-			Game.world.persistentChunk.tickingObjects.remove(this);
-		}
+		timeSinceAttack += deltaTime;
 	}
 }

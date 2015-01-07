@@ -11,11 +11,12 @@ import org.newdawn.slick.Image;
 
 public class World {
 	
-	public Coordinate ChunkRes = new Coordinate(50, 50);
+	public Coordinate chunkRes = new Coordinate(50, 50);
 	
 	public WorldChunk[][] chunks;
 	public WorldChunk persistentChunk;
-
+	public Image[][] backgroundImages;
+	
 	public World()
 	{
 		persistentChunk = new WorldChunk(new Coordinate(0, 0), this);
@@ -23,7 +24,7 @@ public class World {
 	}
 	
 	public WorldChunk getActorChunk(Coordinate location) {
-		return chunks[(int) Math.floor(location.X / ChunkRes.X)][(int) (location.Y / ChunkRes.Y)];
+		return chunks[(int) Math.floor(location.X / chunkRes.X)][(int) (location.Y / chunkRes.Y)];
 	}
 	
 	public void load(String file, Image background) {
@@ -33,8 +34,8 @@ public class World {
 			BufferedReader reader = new BufferedReader(new FileReader(file) );
 			
 			String[] line = reader.readLine().split("_");
-			ChunkRes.X = Float.parseFloat(line[0]);
-			ChunkRes.Y = Float.parseFloat(line[1]);
+			chunkRes.X = Float.parseFloat(line[0]);
+			chunkRes.Y = Float.parseFloat(line[1]);
 			chunks = new WorldChunk[Integer.parseInt(line[2])][Integer.parseInt(line[3])];
 			// First line gives world constants.
 			// Format: ChunkResX_ChunkResY_NumChunksX_NumChunksY
@@ -46,13 +47,29 @@ public class World {
 			}
 			// Initializing all chunks in the array.
 			
+			backgroundImages = new Image[(int) (chunkRes.X) * chunks.length][(int) (chunkRes.Y) * chunks[0].length];
+			
+			
 			// TODO: Will need to add this to the .world file
-			Map<Color, String> imageInfo = new HashMap<Color, String>();
-			imageInfo.put(Color.red, "grass");
-			imageInfo.put(Color.blue, "default");
-			imageInfo.put(Color.green, "tree");
-			imageInfo.put(Color.black, "dirt");
-			Landscape.loadIntoChunks(Game.world, background, imageInfo, new Coordinate(0, 0));
+			Map<Color, Image> imageInfo = new HashMap<Color, Image>();
+			
+			addColors : while (true) {
+				String nextLine = reader.readLine();
+				if (!nextLine.equalsIgnoreCase("end") ) {
+				line = nextLine.split("_");
+				
+				Color color = Color.decode(line[0]);
+				Image image = new Image(line[1]);
+				
+				imageInfo.put(color, image);
+				
+				} else {
+					break addColors;
+				}	// End if not end.
+			}	// End while
+				
+			
+			Landscape.loadIntoWorld(Game.world, background, imageInfo, new Coordinate(0, 0));
 			// Loads landscape from image.
 			
 			while (reader.ready() ) {	// As long as there's another line...

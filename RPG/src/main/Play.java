@@ -249,8 +249,8 @@ public class Play extends BasicGameState {
 		relevantChunks.removeAllElements();
 		relevantChunks.add(Game.world.persistentChunk);
 		
-		int chunkX = (int) Math.floor(character.location.X / Game.world.ChunkRes.X);
-		int chunkY = (int) Math.floor(character.location.Y / Game.world.ChunkRes.Y);
+		int chunkX = (int) Math.floor(character.location.X / Game.world.chunkRes.X);
+		int chunkY = (int) Math.floor(character.location.Y / Game.world.chunkRes.Y);
 		if (chunkX < 0) {
 			chunkX = 0;
 		}
