@@ -67,11 +67,11 @@ public class Play extends BasicGameState {
 
 		Game.textures = new HashMap<String, Image>();
 
-		Game.textures.put("res/Default.png", new Image("res/Default.png"));
+		Game.textures.put("res/default.png", new Image("res/default.png"));
 		Game.textures.put("res/Knight.png", new Image("res/Knight.png"));
 		Game.textures.put("res/grass.png", new Image("res/grass.png"));
 		Game.textures.put("res/dirt.png", new Image("res/dirt.png"));
-		Game.textures.put("res/Tree.png", new Image("res/Tree.png"));
+		Game.textures.put("res/tree.png", new Image("res/tree.png"));
 
 		Game.world.load("src/res/w1/main.world", new Image("/src/res/w1/TestLandscape.png") );
 		
