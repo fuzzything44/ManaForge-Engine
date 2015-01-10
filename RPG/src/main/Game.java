@@ -76,7 +76,7 @@ public class Game extends StateBasedGame {
 		
 		try {
 			
-			agc = new AppGameContainer(new Game("YAY") );
+			agc = new AppGameContainer(new Game("RPG Game v.-1.0: Hope you like crashes.") );
 			agc.setDisplayMode(800, 600, false);
 			agc.start();
 			

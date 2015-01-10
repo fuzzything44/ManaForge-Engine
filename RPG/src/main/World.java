@@ -56,13 +56,13 @@ public class World {
 			addColors : while (true) {
 				String nextLine = reader.readLine();
 				if (!nextLine.equalsIgnoreCase("end") ) {
-				line = nextLine.split("_");
-				
-				Color color = Color.decode(line[0]);
-				Image image = new Image(line[1]);
-				
-				imageInfo.put(color, image);
-				
+					line = nextLine.split("_");
+					
+					Color color = Color.decode(line[0]);
+					Image image = new Image(line[1]);
+					
+					imageInfo.put(color, image);
+					
 				} else {
 					break addColors;
 				}	// End if not end.

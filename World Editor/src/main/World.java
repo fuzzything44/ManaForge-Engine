@@ -2,11 +2,14 @@ package main;
 
 import java.awt.image.BufferedImage;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+
+import javax.imageio.ImageIO;
 
 import org.newdawn.slick.Image;
 
@@ -67,14 +70,49 @@ public class World {
 				}
 			}// End y for
 		}// End x for
-		// TODO: Save Image here
+		// Image has been created!
+		try {
+			ImageIO.write(backgroundSave, "PNG", new File(saveFolder + "background") );
+			// Saving the image
+		} catch (IOException e1) {
+			
+		}
 		
 		// TODO: Create text file here.
 		try {
 			BufferedWriter textFile = new BufferedWriter(new FileWriter(saveFolder + "main.world") );
-			textFile.write("Now we save the text file!");
+			
+			textFile.write(String.format("%d_%d_%d_%d", chunkResX, chunkResY, chunks.size(), chunks.getFirst().size() ) );
+			textFile.newLine();
+			Image[] images = (Image[]) imageMap.keySet().toArray();
+			// Array of all the images used.
+			
+			for (int i = 0; i < images.length; i++) {
+				// Adding the color mappings
+				int color = imageMap.get(images[i]);
+				String imageName = images[i].getName();
+				
+				textFile.write(color + "_" + imageName);
+				// Writes the actual mapping.
+				textFile.newLine();
+			}
+			textFile.write("end");
+			// Ending color mapping
+			
+			// Now to write all actors to the file
+			// First 2 loops go through the chunks. Inside goes through the actor vector
+			for (int x = 0; x < chunks.size(); x++) {
+				for (int y = 0; y < chunks.get(x).size(); y++) {
+					for (int i = 0; i < chunks.get(x).get(y).actors.size(); i++) {
+						Actor writtenActor = chunks.get(x).get(y).actors.get(i);
+						textFile.write(writtenActor.actorLocation.x + "_" + writtenActor.actorLocation.y + "_" + writtenActor.actorName);
+						// Writes the Macros name of the actor.
+					}
+				}
+			}
 			
 			
+			textFile.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
