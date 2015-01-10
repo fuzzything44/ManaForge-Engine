@@ -18,6 +18,7 @@ public class WorldChunk {
 	}
 	
 	public void addActor(Actor a) {
-		
+		actors.addElement(a);
 	}
+	
 }

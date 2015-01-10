@@ -24,6 +24,16 @@ public class World {
 		
 	}
 	
+	public WorldChunk getActorChunk(Coordinate location) {
+		return chunks.get( (int) Math.floor(location.x / chunkResX) ).get( (int) Math.floor(location.y / chunkResY) );
+		// Gets you what chunk the absolute location maps to.
+	}
+	
+	public WorldChunk getActorChunk(Actor a) {
+		return getActorChunk(a.actorLocation);
+	}
+	
+	
 	public void save(String saveFolder) {
 		BufferedImage backgroundSave = new BufferedImage(chunkResX * chunks.size(), chunkResY * chunks.getFirst().size(), BufferedImage.TYPE_INT_RGB);
 
