@@ -13,7 +13,12 @@ import com.nativelibs4java.opencl.CLQueue;
 import com.nativelibs4java.opencl.JavaCL;
 import com.nativelibs4java.util.IOUtils;
 
+
+
+
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.Reader;
 import java.nio.ByteOrder;
 import java.util.Map;
 
@@ -54,11 +59,21 @@ public class Game extends StateBasedGame {
 			context = JavaCL.createBestContext();
 		    queue = context.createDefaultQueue();
 		    byteOrder = context.getByteOrder();
-	        String src = IOUtils.readText(Game.class.getResource("kernels/Collision.cl"));
-
+		    
+		    Reader reader = new FileReader("src/kernels/Collision.cl");
+		    String src = new String();
+		    
+		    int data = reader.read();
+		    while(data != -1){
+		    	src += (char)(data);
+		        data = reader.read();
+		    }
+	        
 	        program = context.createProgram(src);
 	        
 	        collideKern = program.createKernel("collide");
+	        
+	        reader.close();
 	        
 		} catch (IOException e) {
 			e.printStackTrace();
