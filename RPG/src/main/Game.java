@@ -13,9 +13,6 @@ import com.nativelibs4java.opencl.CLQueue;
 import com.nativelibs4java.opencl.JavaCL;
 import com.nativelibs4java.util.IOUtils;
 
-
-
-
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
