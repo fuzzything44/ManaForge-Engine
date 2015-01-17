@@ -20,10 +20,10 @@ public class PlayerCharacter extends Character {
 
 // Equipment takes:
 //		int price, String name, String description, int amount, PlayerCharacter looter, Buff.BuffValues buffFromEquipment
-	public Equipment hat = Macros.equipment("noEquip_hat");
-	public Equipment shirt = Macros.equipment("noEquip_shirt");
-	public Equipment pants = Macros.equipment("noEquip_pants");
-	public Weapon weapon = Macros.weapon("noEquip_weapon");
+//	public Equipment hat = Macros.equipment("noEquip_hat");
+//	public Equipment shirt = Macros.equipment("noEquip_shirt");
+//	public Equipment pants = Macros.equipment("noEquip_pants");
+//	public Weapon weapon = Macros.weapon("noEquip_weapon");
 	
 	public int baseHealth = 100;
 //	int maxHealth;		Already in Character
@@ -201,7 +201,7 @@ public class PlayerCharacter extends Character {
 	public void tick(float deltaTime) {
 //		if (location.X >= maxX && location.X <= minX) {
 		location = location.add(velocity.multiply(deltaTime/1000) );
-		weapon.tick(deltaTime);
+//		weapon.tick(deltaTime);
 	}
 	
 	public void loadSave(String saveFile) {
