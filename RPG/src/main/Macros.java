@@ -137,7 +137,6 @@ public class Macros {
 		return null;
 	}
 
-
 	public static String loadText(String name) {
 		if(!name.endsWith(".cl")) {
 			name += ".cl";
