@@ -94,13 +94,23 @@ public class Game extends StateBasedGame {
 		// Get the first available platform
 		
 		platform = CLPlatform.getPlatforms().get(PLATFORM_ID); 
+		
 		System.out.println("\nPlatform Name: " + platform.getInfoString(CL10.CL_PLATFORM_NAME));
 		System.out.println("Platform Profile: " + platform.getInfoString(CL10.CL_PLATFORM_PROFILE));
 		System.out.println("Vendor Name: " + platform.getInfoString(CL10.CL_PLATFORM_VENDOR));
 		System.out.println("Version: " + platform.getInfoString(CL10.CL_PLATFORM_VERSION) + "\n");
 		
+		
 		// Run our program on the GPU
 		devices = platform.getDevices(CL10.CL_DEVICE_TYPE_ALL);
+		
+		System.out.println("Name: " + devices.get(0).getInfoString(CL10.CL_DEVICE_NAME));
+		System.out.println("Type : " + devices.get(0).getInfoString(CL10.CL_DEVICE_TYPE));
+		System.out.println("Avaliable: " + devices.get(0).getInfoBoolean(CL10.CL_DEVICE_AVAILABLE));
+		System.out.println("Extensions: " + devices.get(0).getInfoString(CL10.CL_DEVICE_EXTENSIONS));
+		System.out.println("Compute Units: " + devices.get(0).getInfoInt(CL10.CL_DEVICE_MAX_COMPUTE_UNITS));
+		System.out.println("Execution Capabalities: " + devices.get(0).getInfoString(CL10.CL_DEVICE_EXECUTION_CAPABILITIES));
+		
 		// Create an OpenCL context, this is where we could create an OpenCL-OpenGL compatible context
 		context = CLContext.create(platform, devices, errorBuf);
 		// Create a command queue
