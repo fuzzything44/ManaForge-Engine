@@ -116,7 +116,7 @@ public class Play extends BasicGameState {
 		float endX = (float) (character.location.X + 0.5*gc.getWidth()/Game.zoom );
 		float startY = (float) ( character.location.Y - 0.5*gc.getHeight()/Game.zoom - 1 );
 		float endY = (float) (character.location.Y + 0.5*gc.getHeight()/Game.zoom );
-		for (float x = startX; x < endX; x++) {
+		for (float x = startX; x < endX + Game.zoom; x++) {
 			for (float y = startY; y < endY + Game.zoom; y++) {
 				try {
 					float drawX = (Math.round(x) - startX - 1) * Game.zoom;
@@ -126,7 +126,8 @@ public class Play extends BasicGameState {
 				// Looping through and drawing all necessary background images.
 			}
 		}
-//		char.x - pixels/pixPerActor - 1 is left bound
+
+
 		int RenderedObjects = 0;
 		for (int i = 0; i < relevantActors.size(); i++) {
 			for (int i1 = 0; i1 < relevantActors.get(i).size(); i1++) {

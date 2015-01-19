@@ -43,7 +43,11 @@ public class Place extends BasicGameState {
 		Vector<WorldChunk> relevantChunks = new Vector<WorldChunk>();
 		relevantChunks.add(Game.workingWorld.getActorChunk(Game.topLeft) );
 		// Adds the top left hand corner chunk.
-		
+		for (int x = 0; x < 10; x++) {
+			for (int y = 0; y < 10; y++) {
+				Game.workingWorld.getActorChunk(Game.topLeft).background[x][y].draw(x, y);
+			}
+		}
 		
 	}
 
