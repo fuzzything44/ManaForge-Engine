@@ -1,10 +1,5 @@
 package main;
 
-/*
- * Pretty much everything for draw needs to be changed-placements need to be fixed, things need to be added, etc.
- * See the section for more notes on what need to be done.
- */
-
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.HashMap;
@@ -34,8 +29,6 @@ import actors.PlayerCharacter;
 
 public class Play extends BasicGameState {
 	
-	
-	
 	final int MIN_ZOOM = 1;
 	final int MAX_ZOOM = 96;
 	Vector<WorldChunk> relevantChunks = new Vector<WorldChunk>();
@@ -49,9 +42,6 @@ public class Play extends BasicGameState {
 	} 	// What the right pane can display. Specific is the exact
 		// buff/consumable/equipment info.
 
-	public int infoPaneSpecific = 1; // What vector index the specific thing is
-										// at.
-	public rightPaneStates rightPaneState = rightPaneStates.buffs;
 
 	public Vector<DynamicActor> dynamicActors;
 	
@@ -107,7 +97,6 @@ public class Play extends BasicGameState {
 		
 		d_static = BufferUtils.createFloatBuffer(STATIC_MAX);
 		h_static = new float[STATIC_MAX];
-				
 		
 	}
 
@@ -123,18 +112,21 @@ public class Play extends BasicGameState {
 		Map<String, Image> texturesScaled = new HashMap<String, Image>();
 		
 		// Variables to see how far left/right and up/down we draw images.
-		int startX = 0;
-		int endX = 10;
-		int startY = 0;
-		int endY = 10;
-		// TODO actual equations on what images to draw. Just like we need actual relevancy equations.
-		for (int x = startX; x < endX; x++) {
-			for (int y = startY; y < endY; y++) {
-				Game.world.backgroundImages[x][y].draw(x, y);
+		float startX = (float) (character.location.X - 0.5*gc.getWidth()/Game.zoom - 1) ;
+		float endX = (float) (character.location.X + 0.5*gc.getWidth()/Game.zoom );
+		float startY = (float) ( character.location.Y - 0.5*gc.getHeight()/Game.zoom - 1 );
+		float endY = (float) (character.location.Y + 0.5*gc.getHeight()/Game.zoom );
+		for (float x = startX; x < endX; x++) {
+			for (float y = startY; y < endY; y++) {
+				try {
+					float drawX = (x - startX) * Game.zoom;
+					float drawY = (y - startY) * Game.zoom;
+					Game.world.backgroundImages[Math.round(x)][Math.round(y)].getScaledCopy(Game.zoom, Game.zoom).draw(drawX, drawY);
+				} catch (ArrayIndexOutOfBoundsException e) {}
 				// Looping through and drawing all necessary background images.
 			}
 		}
-		
+//		char.x - pixels/pixPerActor - 1 is left bound
 		int RenderedObjects = 0;
 		for (int i = 0; i < relevantActors.size(); i++) {
 			for (int i1 = 0; i1 < relevantActors.get(i).size(); i1++) {
@@ -339,6 +331,7 @@ public class Play extends BasicGameState {
 				 *  .	|                   |                     |
 				 * 	.	+-----------------------------------------+
 				 * 
+				 * screenSize / 2
 				 *  C is player character. In the center of the world.
 				 *  Y is the distance from the character to the top or bottom of the screen.
 				 *  X is the distance from the character to the side of the world.
