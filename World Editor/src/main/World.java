@@ -33,7 +33,6 @@ public class World {
 		return getActorChunk(a.actorLocation);
 	}
 	
-	
 	public void save(String saveFolder) {
 		BufferedImage backgroundSave = new BufferedImage(chunkResX * chunks.size(), chunkResY * chunks.getFirst().size(), BufferedImage.TYPE_INT_RGB);
 
@@ -127,4 +126,45 @@ public class World {
 			e.printStackTrace();
 		}
 	}// End save
+	
+	public void addChunksLeft() {
+		LinkedList<WorldChunk> chunkRow = new LinkedList<WorldChunk>();
+		// Creating a row of chunks to add to the left
+		
+		for (int i = 0; i < chunks.getFirst().size(); i++) {
+			chunkRow.add(new WorldChunk(this) );
+			// Filling the row of chunks.
+		}
+		chunks.addFirst(chunkRow);
+		// Adding the row.
+	}
+	
+	public void addChunksRight() {
+		LinkedList<WorldChunk> chunkRow = new LinkedList<WorldChunk>();
+		// Creating a row of chunks to add to the right
+		
+		for (int i = 0; i < chunks.getFirst().size(); i++) {
+			chunkRow.add(new WorldChunk(this) );
+			// Filling the row of chunks.
+		}
+		chunks.addLast(chunkRow);
+		// Adding the row.
+	}
+	
+	public void addChunksTop() {
+		// Loop through the list of chunks.
+		for (int i = 0; i < chunks.size(); i++) {
+			chunks.get(i).addFirst(new WorldChunk(this) );
+			// Add a world chunk at this x and top y (addFirst)
+		}
+	}
+	
+	public void addChunksBottom() {
+		// Loop through the list of chunks.
+		for (int i = 0; i < chunks.size(); i++) {
+			chunks.get(i).addLast(new WorldChunk(this) );
+			// Add a world chunk at this x and bottom y (addLast)
+		}
+
+	}
 }

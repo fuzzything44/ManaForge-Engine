@@ -122,13 +122,18 @@ public class Play extends BasicGameState {
 		
 		Map<String, Image> texturesScaled = new HashMap<String, Image>();
 		
-		
-		for(int i = 0; i < relevantChunks.size(); i++) {
-			for(int i1 = 0; i1 < relevantChunks.get(i).actors.size(); i1++) {
-				parseChunk(relevantChunks.get(i).actors.get(i1) );
+		// Variables to see how far left/right and up/down we draw images.
+		int startX = 0;
+		int endX = 10;
+		int startY = 0;
+		int endY = 10;
+		// TODO actual equations on what images to draw. Just like we need actual relevancy equations.
+		for (int x = startX; x < endX; x++) {
+			for (int y = startY; y < endY; y++) {
+				Game.world.backgroundImages[x][y].draw(x, y);
+				// Looping through and drawing all necessary background images.
 			}
 		}
-		
 		
 		int RenderedObjects = 0;
 		for (int i = 0; i < relevantActors.size(); i++) {
@@ -258,7 +263,7 @@ public class Play extends BasicGameState {
 		
 	}	// End render method.
 	
-	void parseChunk(Actor a){
+	void parseChunk(Actor a) {
 		relevantActors.get(a.renderOrder).add(a);
 	}
 	
@@ -298,12 +303,9 @@ public class Play extends BasicGameState {
 		}
 		// Resetting relevantActors to be a Vector of an actor 
 		
-		for (int i = 0; i < relevantChunks.size(); i++) {
-			for (int x = 0; x < relevantChunks.get(i).actors.size(); x++) {
-				if (true) {
-					// TODO get actor relevancy equations here.
-					relevantActors.get(relevantChunks.get(i).actors.get(x).renderOrder).add(relevantChunks.get(i).actors.get(x) );
-				}
+		for(int i = 0; i < relevantChunks.size(); i++) {
+			for(int i1 = 0; i1 < relevantChunks.get(i).actors.size(); i1++) {
+				parseChunk(relevantChunks.get(i).actors.get(i1) );
 			}
 		}
 		// Adding ALL actors to be relevant (if they are in a relevant chunk).

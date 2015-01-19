@@ -49,19 +49,7 @@ public class Place extends BasicGameState {
 
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int deltaTime)
-			throws SlickException {
-		if (Game.topLeft.x < 0) {
-			// If there is no chunk to the left of the world...
-			
-			Game.topLeft.x += Game.workingWorld.chunkResX;
-			LinkedList<WorldChunk> chunkRow = new LinkedList<WorldChunk>();
-			for (int i = 0; i < Game.workingWorld.chunks.getFirst().size(); i++) {
-				chunkRow.add(new WorldChunk(Game.workingWorld) );
-				// Filling the row of chunks.
-			}
-			Game.workingWorld.chunks.addFirst(chunkRow);
-		}
-		
+			throws SlickException {		
 		
 		Input input = gc.getInput();
 		if (input.isKeyPressed(Keyboard.KEY_G) ) {

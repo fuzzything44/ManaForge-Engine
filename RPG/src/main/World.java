@@ -20,7 +20,8 @@ public class World {
 	public World()
 	{
 		persistentChunk = new WorldChunk(new Coordinate(0, 0), this);
-		chunks = new WorldChunk[1][1];
+		chunks = new WorldChunk[0][0];
+		backgroundImages = new Image[0][0];
 	}
 	
 	public WorldChunk getActorChunk(Coordinate location) {
