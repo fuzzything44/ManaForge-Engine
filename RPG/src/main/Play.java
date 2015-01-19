@@ -119,8 +119,8 @@ public class Play extends BasicGameState {
 		for (float x = startX; x < endX; x++) {
 			for (float y = startY; y < endY; y++) {
 				try {
-					float drawX = (x - startX) * Game.zoom;
-					float drawY = (y - startY) * Game.zoom;
+					float drawX = (Math.round(x) - startX - 1) * Game.zoom;
+					float drawY = (Math.round(y) - startY - 1) * Game.zoom;
 					Game.world.backgroundImages[Math.round(x)][Math.round(y)].getScaledCopy(Game.zoom, Game.zoom).draw(drawX, drawY);
 				} catch (ArrayIndexOutOfBoundsException e) {}
 				// Looping through and drawing all necessary background images.
