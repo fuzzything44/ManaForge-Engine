@@ -40,7 +40,7 @@ public class Game extends StateBasedGame {
 	// OpenCL variables	
 	public static CLContext context;
 	public static CLPlatform platform;
-	public static List<CLDevice> devices;
+	public static CLDevice device;
 	public static CLCommandQueue queue;
 	public static CLProgram program;	
 	public static CLKernel collideKernel;
@@ -93,34 +93,37 @@ public class Game extends StateBasedGame {
 		CL.create();
 		// Get the first available platform
 		
-		platform = CLPlatform.getPlatforms().get(PLATFORM_ID); 
+		List<CLPlatform> platformList = CLPlatform.getPlatforms();
+		List<CLDevice> devices = null;
 		
-		System.out.println("\nPlatform Name: " + platform.getInfoString(CL10.CL_PLATFORM_NAME));
-		System.out.println("Platform Profile: " + platform.getInfoString(CL10.CL_PLATFORM_PROFILE));
-		System.out.println("Vendor Name: " + platform.getInfoString(CL10.CL_PLATFORM_VENDOR));
-		System.out.println("Version: " + platform.getInfoString(CL10.CL_PLATFORM_VERSION) + "\n");
+		int currentMax = 0;		
+		// get best device and platform. Loops through all of the platforms and devices to find the one with the most compute units
+		for(int plat = 0; plat < platformList.size(); plat++) {
+			
+			devices = platformList.get(plat).getDevices(CL10.CL_DEVICE_TYPE_ALL);
+			
+			for(int dev = 0; dev < devices.size(); dev++) {
+				
+				// if it has more units, then set the platform and stuff to it
+				if(devices.get(dev).getInfoInt(CL10.CL_DEVICE_MAX_COMPUTE_UNITS) > currentMax) {
+					device = devices.get(dev);
+					platform = platformList.get(plat);
+				}
+			} // end devices loop
+		} // end platform loop
 		
-		
-		// Run our program on the GPU
-		devices = platform.getDevices(CL10.CL_DEVICE_TYPE_ALL);
-		
-		System.out.println("Name: " + devices.get(0).getInfoString(CL10.CL_DEVICE_NAME));
-		System.out.println("Type : " + devices.get(0).getInfoString(CL10.CL_DEVICE_TYPE));
-		System.out.println("Avaliable: " + devices.get(0).getInfoBoolean(CL10.CL_DEVICE_AVAILABLE));
-		System.out.println("Extensions: " + devices.get(0).getInfoString(CL10.CL_DEVICE_EXTENSIONS));
-		System.out.println("Compute Units: " + devices.get(0).getInfoInt(CL10.CL_DEVICE_MAX_COMPUTE_UNITS));
-		System.out.println("Execution Capabalities: " + devices.get(0).getInfoString(CL10.CL_DEVICE_EXECUTION_CAPABILITIES));
+		System.out.println("Name: " + device.getInfoString(CL10.CL_DEVICE_NAME));
 		
 		// Create an OpenCL context, this is where we could create an OpenCL-OpenGL compatible context
 		context = CLContext.create(platform, devices, errorBuf);
 		// Create a command queue
-		queue = CL10.clCreateCommandQueue(context, devices.get(0), CL10.CL_QUEUE_PROFILING_ENABLE, errorBuf);
+		queue = CL10.clCreateCommandQueue(context, device, CL10.CL_QUEUE_PROFILING_ENABLE, errorBuf);
 		// Check for any errors
 		Util.checkCLError(errorBuf.get(0)); 
 		// Create an OpenCL 'program' from a source code file
 		program = CL10.clCreateProgramWithSource(context, Macros.loadText("kernels/Collision.cl"), null);
 		// Build the OpenCL program, store it on the specified device
-		int error = CL10.clBuildProgram(program, devices.get(0), "", null);
+		int error = CL10.clBuildProgram(program, device, "", null);
 		// Check for any OpenCL errors
 		Util.checkCLError(error);
 		// Create a kernel instance of our OpenCl program
