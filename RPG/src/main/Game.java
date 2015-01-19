@@ -115,7 +115,7 @@ public class Game extends StateBasedGame {
 		System.out.println("Name: " + device.getInfoString(CL10.CL_DEVICE_NAME));
 		
 		// Create an OpenCL context, this is where we could create an OpenCL-OpenGL compatible context
-		context = CLContext.create(platform, devices, errorBuf);
+		context = CLContext.create(device.getPlatform(), device.getPlatform().getDevices(CL10.CL_DEVICE_TYPE_ALL), errorBuf);
 		// Create a command queue
 		queue = CL10.clCreateCommandQueue(context, device, CL10.CL_QUEUE_PROFILING_ENABLE, errorBuf);
 		// Check for any errors
