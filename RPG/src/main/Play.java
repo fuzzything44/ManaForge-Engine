@@ -117,7 +117,7 @@ public class Play extends BasicGameState {
 		float startY = (float) ( character.location.Y - 0.5*gc.getHeight()/Game.zoom - 1 );
 		float endY = (float) (character.location.Y + 0.5*gc.getHeight()/Game.zoom );
 		for (float x = startX; x < endX; x++) {
-			for (float y = startY; y < endY; y++) {
+			for (float y = startY; y < endY + Game.zoom; y++) {
 				try {
 					float drawX = (Math.round(x) - startX - 1) * Game.zoom;
 					float drawY = (Math.round(y) - startY - 1) * Game.zoom;
