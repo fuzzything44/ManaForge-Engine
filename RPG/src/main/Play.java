@@ -106,7 +106,7 @@ public class Play extends BasicGameState {
 		h_dynamic = new float[DYNAMIC_MAX];
 		
 		d_static = BufferUtils.createFloatBuffer(STATIC_MAX);
-		h_dynamic = new float[STATIC_MAX];
+		h_static = new float[STATIC_MAX];
 				
 		
 	}
