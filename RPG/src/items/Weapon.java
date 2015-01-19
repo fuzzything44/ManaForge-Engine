@@ -1,6 +1,5 @@
 package items;
 
-import main.Game;
 import buffs.Buff;
 
 public class Weapon extends Equipment {
