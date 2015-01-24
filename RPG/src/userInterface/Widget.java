@@ -50,8 +50,8 @@ public class Widget extends Object{
 		
 	}
 	
+	@Override
 	public void tick(float DeltaTime){
-		super.tick(DeltaTime);
 		
 		switch(horizonitalFill){
 		case Full:

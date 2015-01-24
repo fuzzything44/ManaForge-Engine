@@ -227,8 +227,8 @@ public class Buff extends Object {
 	}
 	
 	// What the buff does every tick: decrease time left and remove itself if no time is left
+	@Override
 	public void tick(float deltaTime) {
-		super.tick(deltaTime);
 		buffVals.buffTimeLeft -=deltaTime;
 		if (buffVals.buffTimeLeft <= 0 && owner != null) {
 			owner.removeBuff(this);

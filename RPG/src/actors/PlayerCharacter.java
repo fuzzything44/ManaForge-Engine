@@ -199,6 +199,7 @@ public class PlayerCharacter extends Character {
 	}
 	*/
 	
+	@Override
 	public void tick(float deltaTime) {
 //		if (location.X >= maxX && location.X <= minX) {
 		location = location.add(velocity.multiply(deltaTime/1000) );

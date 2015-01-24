@@ -12,7 +12,6 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opencl.CL10;
 import org.lwjgl.opencl.CLMem;
 import org.lwjgl.opencl.Util;
-
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -25,6 +24,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import actors.Actor;
 import actors.DynamicActor;
 import actors.PlayerCharacter;
+import actors.Projectile;
 
 
 public class Play extends BasicGameState {
@@ -67,31 +67,50 @@ public class Play extends BasicGameState {
 		Game.textures = new HashMap<String, Image>();
 
 		Game.textures.put("res/default.png", new Image("res/default.png"));
-		Game.textures.put("res/Knight.png", new Image("res/Knight.png"));
+		Game.textures.put("res/knight.png", new Image("res/Knight.png"));
 		Game.textures.put("res/grass.png", new Image("res/grass.png"));
 		Game.textures.put("res/dirt.png", new Image("res/dirt.png"));
 		Game.textures.put("res/tree.png", new Image("res/tree.png"));
 
 		Game.world.load("src/res/w1/main.world", new Image("/src/res/w1/TestLandscape.png") );
 		
-		character = new PlayerCharacter(9, "res/Knight.png", new Coordinate(0, 0));	
+		character = new PlayerCharacter(9, "res/knight.png", new Coordinate(0, 0));	
 		character.isPersistent = true;
 		character.refreshChunk();
 		
 		dynamicActors = new Vector<DynamicActor>();
 		
-		DynamicActor build = new DynamicActor(2, "res/Knight.png", new Coordinate(5, 5));
+		DynamicActor build = new DynamicActor(2, "res/knight.png", new Coordinate(5, 5));
 		
 		build.collides = true;
 		build.isPersistent = true;
 		build.refreshChunk();
 		
-		Actor build1= new Actor(2, "res/Knight.png", new Coordinate(7, 5));
+		Actor build1 = new Actor(2, "res/knight.png", new Coordinate(7, 5) );
 		
 		build1.collides = true;
 		build1.isPersistent = true;
 		build1.refreshChunk();
-
+				
+		Actor testSpawner = new Actor(2, "res/default.png", new Coordinate(7,7) ) {
+			int timeUntilSpawn = 0;
+			
+			@Override
+			public void tick(float deltaTime) {
+				System.out.println("Spawner Ticked");
+				timeUntilSpawn -= deltaTime;
+				if (timeUntilSpawn <= 0) {
+					timeUntilSpawn = 1000;
+					Projectile projectile = new Projectile(location, new Coordinate(0, 3), 3000, "res/tree.png", this);
+					projectile.collides = true;
+					projectile.refreshChunk();
+				}
+			}	// End tick	
+		}; 
+		// Creating a new hardcoded custom actor to spawn projectiles
+		testSpawner.doesTick = true;
+		testSpawner.refreshChunk();
+		
 		d_dynamic = BufferUtils.createFloatBuffer(DYNAMIC_MAX);
 		h_dynamic = new float[DYNAMIC_MAX];
 		
@@ -139,9 +158,12 @@ public class Play extends BasicGameState {
 
 					if (x > -Game.zoom && y > -Game.zoom && x < gc.getWidth() && y < gc.getHeight() && a.displayImage != null) {
 						// if this is on the screen... 
-						
 						if(!texturesScaled.containsKey(a.displayImage) ) {
-							texturesScaled.put(a.displayImage, Game.textures.get(a.displayImage).getScaledCopy(Game.zoom, Game.zoom) );
+							texturesScaled.put(
+									a.displayImage, 
+									Game.textures.
+									get(a.displayImage).
+									getScaledCopy(Game.zoom, Game.zoom) );
 							// If the image has no scaled copy yet.
 						}
 						RenderedObjects ++;
