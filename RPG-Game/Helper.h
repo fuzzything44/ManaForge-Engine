@@ -1,6 +1,6 @@
 #pragma once
 
-#include <GL/glew.h>
+#include <GLTools/glew.h>
 
 #include <lodepng/lodepng.h>
 #include <iostream>

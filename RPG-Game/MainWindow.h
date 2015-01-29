@@ -2,8 +2,8 @@
 
 #include <iostream>
 
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
+#include <GLTools/glew.h>
+#include <GLTools/glfw3.h>
 
 class MainWindow
 {

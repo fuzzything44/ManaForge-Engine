@@ -104,8 +104,13 @@ GLint MainWindow::run(GLuint width, GLuint height, const GLchar* title, GLFWmoni
 
 	} while (!glfwWindowShouldClose(window));
 
-
-	return exit();
+	if (exit){
+		return exit();
+	}
+	else
+	{
+		return 0;
+	}
 }
 
 GLvoid MainWindow::bindResize(GLvoid(*resizeIn)(GLFWwindow*, GLint, GLint))
