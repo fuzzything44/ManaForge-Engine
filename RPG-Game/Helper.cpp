@@ -5,6 +5,8 @@ using std::cout;
 using std::string;
 using std::ifstream;
 
+
+
 GLvoid decode(std::vector<GLubyte>& image, const GLchar* filename, GLuint& width, GLuint& height)
 {
 
@@ -250,4 +252,24 @@ GLvoid setActiveTexture(GLuint ID)
 	default:
 		break;
 	}
+}
+
+
+cl::Program loadProgram(const GLchar* filepath, cl::Context& context, std::vector<cl::Device>& devices, cl_int* err)
+{
+
+
+	// load kernel
+	std::string source = loadFileToStr("kernels.cl");
+
+	cl::Program program(context, source);
+	*err = CL_SUCCESS;
+	*err = program.build(devices);
+
+	if (err != CL_SUCCESS){
+		std::cout << " Error building: " << program.getBuildInfo<CL_PROGRAM_BUILD_LOG>(devices[0]) << "\t" << *err << "\n";
+	}
+
+
+	return program;
 }
