@@ -88,11 +88,11 @@ GLint MainWindow::run(GLuint width, GLuint height, const GLchar* title, GLFWmoni
 	}
 
 	// set initial tick
-	GLfloat LastTick = glfwGetTime();
+	GLfloat LastTick =(GLfloat) (glfwGetTime());
 
 	do {
 		// calculate tick time
-		GLfloat CurrentTick = glfwGetTime();
+		GLfloat CurrentTick = (GLfloat) (glfwGetTime());
 		GLfloat delta = CurrentTick - LastTick;
 		LastTick = CurrentTick;
 
