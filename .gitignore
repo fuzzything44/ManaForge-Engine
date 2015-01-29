@@ -28,4 +28,5 @@
 *.app
 
 *.opensdf
-*.sdf
+*.v12.suo
+*.suo
