@@ -14,12 +14,13 @@ GLFWwindow* MainWindow::window = NULL;
 
 GLint MainWindow::run(GLuint width, GLuint height, const GLchar* title, GLFWmonitor* monitor, GLFWwindow* share)
 {
-
-	if (!glfwInit())
+	// init GLFW (our window handler)
+	int err = glfwInit();
+	if (err != 1)
 	{
 		cout << "Failed to init GLFW" << endl;
 
-		return -1;
+		return err;
 	}
 
 	// set AA
@@ -35,13 +36,14 @@ GLint MainWindow::run(GLuint width, GLuint height, const GLchar* title, GLFWmoni
 	// set the window to non-resizable
 	glfwWindowHint(GLFW_RESIZABLE, false);
 
+	// create the winodw
 	window = glfwCreateWindow(width, height, title, monitor, share);
 	
-
 	// exit if the window wasn't initialized correctly
 	if (!window)
 	{
 		fprintf(stderr, "Window failed to create");
+		// terminate the glfw session
 		glfwTerminate();
 		return -1;
 	}
@@ -53,14 +55,17 @@ GLint MainWindow::run(GLuint width, GLuint height, const GLchar* title, GLFWmoni
 	// use newer GL
 	glewExperimental = GL_TRUE;
 
+	// make sure the cursor is shown. Most likely want to change this in the future
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 	
 
 
-
-	if (glewInit() != GLEW_OK)
+	// init GL (glew is an extension that does this for us)
+	err = glewInit();
+	if (err != GLEW_OK)
 	{
-		cout << "Failed to init GLEW. err code: "<< glewInit() << endl;
+		cout << "Failed to init GLEW. err code: " << err << endl;
+		// terminate the glfw session
 		glfwTerminate();
 		return -1;
 	}
@@ -68,40 +73,50 @@ GLint MainWindow::run(GLuint width, GLuint height, const GLchar* title, GLFWmoni
 	// Ensure we can capture the escape key being pressed below
 	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 
-
+	// if there is a scroll function, set it to the scroll callback
 	if (scroll)
 		glfwSetScrollCallback(window, scroll);
 
+	// if init exists use it and if it doesn't succede return the error code.
 	if (init)
 	{
-		GLint errCode = init();
-		if (errCode != 0)
+		err = init();
+		if (err != 0)
 		{
-			return errCode;
+			return err;
 		}
 	}
 
+	// set initial tick
 	GLfloat LastTick = glfwGetTime();
 
 	do {
+		// calculate tick time
 		GLfloat CurrentTick = glfwGetTime();
 		GLfloat delta = CurrentTick - LastTick;
 		LastTick = CurrentTick;
 
+		// if our keyboard function exists, then use it
 		if (keyboard)
 			keyboard(window, delta);
 
+		// if our draw function exists, us it
 		if (draw)
 			draw(delta);
 
+		// swap front and back buffers 
 		glfwSwapBuffers(window);
-		glfwPollEvents();
 
+		// make sure all events are done
+		glfwPollEvents();
+		
+		// if user is pressing esc, exit the application
 		if (glfwGetKey(window, GLFW_KEY_ESCAPE))
 		{
 			glfwSetWindowShouldClose(window, GL_TRUE);
 		}
-
+	// render another frame so long the window shouldn't close. 
+	//This is analogous for setting it through a function or pressing the close button
 	} while (!glfwWindowShouldClose(window));
 
 	if (exit){
