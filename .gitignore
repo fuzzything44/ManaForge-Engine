@@ -11,7 +11,6 @@
 # Compiled Dynamic libraries
 *.so
 *.dylib
-*.dll
 
 # Fortran module files
 *.mod
@@ -31,3 +30,8 @@
 *.opensdf
 *.v12.suo
 *.suo
+*.ilk
+*.log
+*.pdb
+*.tlog
+*.idb
