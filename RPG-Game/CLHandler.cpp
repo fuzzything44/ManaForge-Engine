@@ -39,8 +39,7 @@ cl_int CLHandler::initCL()
 		system("pause");
 		exit(-1);
 	}
-	//cl::Program program = loadProgram("kernel.cl", context, devices, &err);
-
+	
 
 	return CL_SUCCESS;
 }

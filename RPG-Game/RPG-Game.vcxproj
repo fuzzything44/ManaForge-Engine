@@ -93,6 +93,9 @@
     <ClInclude Include="include\LodePNG\lodepng.h" />
     <ClInclude Include="MainWindow.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="collision.cl" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

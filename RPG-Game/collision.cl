@@ -1,0 +1,1 @@
+__OPENCL_VERSION__

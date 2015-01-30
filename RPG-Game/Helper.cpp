@@ -22,26 +22,33 @@ GLvoid decode(std::vector<GLubyte>& image, const GLchar* filename, GLuint& width
 
 GLvoid encodeAndSave(const std::vector<GLubyte>& inPixels, const GLchar* filename, GLuint width, GLuint height)
 {
+	// the encoded version of the original
 	std::vector<GLubyte> outEncoded;
 
-	unsigned error = lodepng::encode(outEncoded, inPixels, width, height);
+	// encodes it and then saves the error into error
+	GLint error = lodepng::encode(outEncoded, inPixels, width, height);
 
+	// if the encoder failed, then return.
 	if (error){
 
 		std::cout << "encoder error" << error << ": " << lodepng_error_text(error) << std::endl;
 
 		return;
 	}
-
+	
+	// save the file
 	lodepng::save_file(outEncoded, filename);
 }
 
 GLvoid encodeAndSave(GLubyte* inPixels, const GLchar* filename, GLuint width, GLuint height)
 {
+	// the encoded version of the original
 	std::vector<GLubyte> outEncoded;
 
+	// encodes it and then saves the error into error
 	unsigned error = lodepng::encode(outEncoded, inPixels, width, height);
 
+	// if the encoder failed, then return.
 	if (error){
 
 		std::cout << "encoder error" << error << ": " << lodepng_error_text(error) << std::endl;
@@ -49,21 +56,27 @@ GLvoid encodeAndSave(GLubyte* inPixels, const GLchar* filename, GLuint width, GL
 		return;
 	}
 
+	// save the file
 	lodepng::save_file(outEncoded, filename);
 }
 
 
 string loadFileToStr(const GLchar* filename)
 {
+	// stream for the file
 	ifstream stream;
 	stream.open(filename);
 
+	// if the steam if bad then return
 	if (stream.bad())
 	{
 		std::cout << "Bad stream" << std::endl;
+		return NULL;
 	}
-
+	// define strings for each line and the final string
 	string ret, build;
+
+	// while there is another line, append it to ret.
 	while (std::getline(stream, build))
 	{
 		ret += build;
@@ -76,26 +89,34 @@ string loadFileToStr(const GLchar* filename)
 
 GLuint loadTexture(const GLchar* filepath, GLuint& width, GLuint& height)
 {
+	// image vector.
 	vector<GLubyte> img;
 
+	// decodes the image to img
 	decode(img, filepath, width, height);
 
+	// if the image is empty return
 	if (img.size() == 0)
 	{
 		std::cout << "Bad Image" << std::endl;
 		system("pause");
 		return 0;
 	}
-	// return variable
+	// return value
 	GLuint ret;
 
+	// gen textures
 	glGenTextures(1, &ret);
 
+	// bind the ret to GL_TEXTURE_2D so everyting usin GL_TEXTURE_2D referrs to ret
 	glBindTexture(GL_TEXTURE_2D, ret);
 
+	// set parameters. Current filtering techunique is GL_LINEAR http://www.arcsynthesis.org/gltut/Texturing/Tut15%20Magnification.html
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
+	// copy the data to the texture associated with ret. 
+	// format is RGBA internally and externally, and the size is unsigned char, which is unsigned byte
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, &img[0]);
 
 	return ret;
@@ -172,15 +193,15 @@ GLuint LoadShaders(const GLchar * vertex_file_path, const GLchar * fragment_file
 		printf("%s\n", &ProgramErrorMessage[0]);
 	}
 
+	// free the sader memory -- it is already in the program
 	glDeleteShader(VertexShaderID);
 	glDeleteShader(FragmentShaderID);
 
 	return ProgramID;
 }
 
-cl::Program loadProgram(const GLchar* filepath, cl::Context& context, std::vector<cl::Device>& devices, cl_int* err)
+cl::Program loadCLProgram(const GLchar* filepath, cl::Context& context, std::vector<cl::Device>& devices, cl_int* err)
 {
-
 
 	// load kernel
 	std::string source = loadFileToStr("kernels.cl");

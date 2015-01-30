@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Kernels">
+      <UniqueIdentifier>{137b71f2-263b-433a-a11d-cfc27af46ed2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{c2589813-b211-4cc5-9b8e-c9fb179d6343}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RPG-Game.cpp">
@@ -44,5 +50,10 @@
     <ClInclude Include="CLHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="collision.cl">
+      <Filter>Kernels</Filter>
+    </None>
   </ItemGroup>
 </Project>

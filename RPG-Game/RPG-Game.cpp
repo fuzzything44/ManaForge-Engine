@@ -5,8 +5,10 @@
 // opengl includes
 #include <CL/cl.hpp> // .hpp has some object oriented programming approaches to it
 
+// force use of the CL_1_2
 #undef CL_VERSION_1_2
 
+#include <CL/cl.h>
 #include <CL/cl_gl.h> // interop code
 
 #include "MainWindow.h"
@@ -48,6 +50,8 @@ GLint init()
 
 	// init openCL. opencl has to be initalized after opengl and all of our buffers. 
 	cl_int err = CLHandler::initCL();
+
+	
 
 	// return error code. Zero for success
 	return 0;
