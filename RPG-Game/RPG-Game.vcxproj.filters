@@ -52,9 +52,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="collision.cl">
-      <Filter>Kernels</Filter>
-    </None>
     <None Include="default.vertexshader">
       <Filter>Shaders</Filter>
     </None>

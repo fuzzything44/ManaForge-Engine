@@ -94,7 +94,6 @@
     <ClInclude Include="MainWindow.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="collision.cl" />
     <None Include="default.vertexshader" />
     <None Include="derault.fragmentshader" />
     <None Include="updateFrame.cl" />
