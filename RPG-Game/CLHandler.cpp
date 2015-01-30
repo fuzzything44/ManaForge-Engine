@@ -7,6 +7,8 @@ std::vector<cl::Device> CLHandler::devices = std::vector<cl::Device>();
 cl_int updateCL(cl::BufferGL output)
 {
 	
+
+	return CL_SUCCESS;
 }
 
 cl_int CLHandler::initCL()
