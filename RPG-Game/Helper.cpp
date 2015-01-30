@@ -86,8 +86,9 @@ GLuint loadTexture(const GLchar* filepath, GLuint& width, GLuint& height)
 		system("pause");
 		return 0;
 	}
-
+	// return variable
 	GLuint ret;
+
 	glGenTextures(1, &ret);
 
 	glBindTexture(GL_TEXTURE_2D, ret);
@@ -101,6 +102,7 @@ GLuint loadTexture(const GLchar* filepath, GLuint& width, GLuint& height)
 
 }
 
+// Load Shaders from the files defined
 GLuint LoadShaders(const GLchar * vertex_file_path, const GLchar * fragment_file_path){
 
 	// Create the shaders
@@ -175,85 +177,6 @@ GLuint LoadShaders(const GLchar * vertex_file_path, const GLchar * fragment_file
 
 	return ProgramID;
 }
-
-GLvoid setActiveTexture(GLuint ID)
-{
-	if (ID > 31)
-	{
-		return;
-	}
-
-	switch (ID)
-	{
-	case 0:
-		glActiveTexture(GL_TEXTURE0);
-	case 1:
-		glActiveTexture(GL_TEXTURE1);
-	case 2:
-		glActiveTexture(GL_TEXTURE2);
-	case 3:
-		glActiveTexture(GL_TEXTURE3);
-	case 4:
-		glActiveTexture(GL_TEXTURE4);
-	case 5:
-		glActiveTexture(GL_TEXTURE5);
-	case 6:
-		glActiveTexture(GL_TEXTURE6);
-	case 7:
-		glActiveTexture(GL_TEXTURE7);
-	case 8:
-		glActiveTexture(GL_TEXTURE8);
-	case 9:
-		glActiveTexture(GL_TEXTURE9);
-	case 10:
-		glActiveTexture(GL_TEXTURE10);
-	case 11:
-		glActiveTexture(GL_TEXTURE11);
-	case 12:
-		glActiveTexture(GL_TEXTURE12);
-	case 13:
-		glActiveTexture(GL_TEXTURE13);
-	case 14:
-		glActiveTexture(GL_TEXTURE14);
-	case 15:
-		glActiveTexture(GL_TEXTURE15);
-	case 16:
-		glActiveTexture(GL_TEXTURE16);
-	case 17:
-		glActiveTexture(GL_TEXTURE17);
-	case 18:
-		glActiveTexture(GL_TEXTURE18);
-	case 19:
-		glActiveTexture(GL_TEXTURE19);
-	case 20:
-		glActiveTexture(GL_TEXTURE20);
-	case 21:
-		glActiveTexture(GL_TEXTURE21);
-	case 22:
-		glActiveTexture(GL_TEXTURE22);
-	case 23:
-		glActiveTexture(GL_TEXTURE23);
-	case 24:
-		glActiveTexture(GL_TEXTURE24);
-	case 25:
-		glActiveTexture(GL_TEXTURE25);
-	case 26:
-		glActiveTexture(GL_TEXTURE26);
-	case 27:
-		glActiveTexture(GL_TEXTURE27);
-	case 28:
-		glActiveTexture(GL_TEXTURE28);
-	case 29:
-		glActiveTexture(GL_TEXTURE29);
-	case 30:
-		glActiveTexture(GL_TEXTURE30);
-	case 31:
-		glActiveTexture(GL_TEXTURE31);
-	default:
-		break;
-	}
-}
-
 
 cl::Program loadProgram(const GLchar* filepath, cl::Context& context, std::vector<cl::Device>& devices, cl_int* err)
 {
