@@ -81,12 +81,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CLHandler.cpp" />
     <ClCompile Include="Helper.cpp" />
     <ClCompile Include="include\LodePNG\lodepng.cpp" />
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="RPG-Game.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CLHandler.h" />
     <ClInclude Include="Helper.h" />
     <ClInclude Include="include\LodePNG\lodepng.h" />
     <ClInclude Include="MainWindow.h" />
