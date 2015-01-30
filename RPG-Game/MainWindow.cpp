@@ -86,7 +86,7 @@ GLint MainWindow::run(GLuint width, GLuint height, const GLchar* title, GLFWmoni
 			return err;
 		}
 	}
-
+	
 	// set initial tick
 	GLfloat LastTick =(GLfloat) (glfwGetTime());
 

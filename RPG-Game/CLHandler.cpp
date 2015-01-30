@@ -4,7 +4,7 @@ cl::Context CLHandler::context = cl::Context();
 cl::Platform CLHandler::platform = cl::Platform();
 std::vector<cl::Device> CLHandler::devices = std::vector<cl::Device>();
 
-cl_int updateCL(cl::BufferGL output)
+cl_int CLHandler::updateCL(cl::BufferGL output, cl_float2 characterLocation)
 {
 	
 
@@ -18,7 +18,11 @@ cl_int CLHandler::initCL()
 	std::cout << "Using Platform: " << platform.getInfo<CL_PLATFORM_NAME>() << std::endl;
 
 	platform.getDevices(CL_DEVICE_TYPE_ALL, &devices);
-	errChkCL(devices.size() != 0 ? CL_SUCCESS : -1, "Get Devices");
+	if (!errChkCL(devices.size() != 0 ? CL_DEVICE_NOT_AVAILABLE : CL_SUCCESS, "platform.getDevices"))
+	{
+		return CL_DEVICE_NOT_AVAILABLE;
+	}
+
 
 	std::cout << "Using Device: " << devices[0].getInfo<CL_DEVICE_NAME>() << std::endl;
 
@@ -34,10 +38,8 @@ cl_int CLHandler::initCL()
 	cl_int err = CL_SUCCESS;
 	context = cl::Context(devices, context_properties, NULL, NULL, &err);
 
-	if (err != CL_SUCCESS){
-		std::cout << "Error creating context" << "\t" << err << "\n";
-		system("pause");
-		exit(-1);
+	if (!errChkCL(err, "Create Context")){
+		return err;
 	}
 	
 

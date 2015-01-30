@@ -29,9 +29,9 @@ GLint main()
 
 	// bind the init function to init
 	MainWindow::bindInit(init);
-
 	// run the window. consumes the thread until it returns
 	return MainWindow::run(800, 600, "RPG-Simulator", NULL, NULL);
+	
 }
 
 GLvoid draw(GLfloat delta)
@@ -47,8 +47,6 @@ GLint init()
 	
 	// enable the depth buffer so the trianges in front are in front
 	glEnable(GL_DEPTH_BUFFER);
-
-
 
 
 	// init openCL. opencl has to be initalized after opengl and all of our buffers. 

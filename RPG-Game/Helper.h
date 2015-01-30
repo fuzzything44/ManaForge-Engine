@@ -38,12 +38,17 @@ GLuint loadTexture(const GLchar* filepath, GLuint& width, GLuint& height);
 cl::Program loadCLProgram(const GLchar* filepath, cl::Context& context, std::vector<cl::Device>& devices, cl_int* err = NULL);
 
 // OpenCL err checking
-inline void errChkCL(cl_int error, const char* name)
+inline cl_bool errChkCL(cl_int error, const char* name)
 {
 	if (error != CL_SUCCESS)
 	{
 		std::cout << "Error: " << name << "(" << error << ")" << std::endl;
-		system("pause");
-		exit(error);
+		return false;
 	}
+	else
+	{
+		return true;
+	}
+
+
 }
