@@ -9,7 +9,7 @@ class CLHandler
 {
 public:
 
-	/// <summary> initialize the context, platform and devices. Returns an error code, and CL_SUCCESS for success </summary>
+	/// <summary> initialize the context, platform and devices. Returns an error code, CL_SUCCESS for success </summary>
 	static cl_int initCL();
 
 	/// <param name = 'output'> the buffer to write to </param>
