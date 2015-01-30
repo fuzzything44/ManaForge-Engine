@@ -61,5 +61,8 @@
     <None Include="derault.fragmentshader">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="updateFrame.cl">
+      <Filter>Kernels</Filter>
+    </None>
   </ItemGroup>
 </Project>
