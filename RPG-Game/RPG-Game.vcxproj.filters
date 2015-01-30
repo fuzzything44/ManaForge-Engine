@@ -55,5 +55,11 @@
     <None Include="collision.cl">
       <Filter>Kernels</Filter>
     </None>
+    <None Include="default.vertexshader">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="derault.fragmentshader">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

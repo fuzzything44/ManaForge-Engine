@@ -36,8 +36,8 @@ GLint main()
 
 GLvoid draw(GLfloat delta)
 {
-	// clear the color buffer
-	glClear(GL_COLOR_BUFFER_BIT);
+	// clear the color buffer and depth buffer (makes sure the trianges in front get rendered in front
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 GLint init()
@@ -45,13 +45,14 @@ GLint init()
 	// set a background color -- it is in 0-1 scale. Pink is the best.
 	glClearColor(1.f, .2f, .5f, 1.f);
 	
+	// enable the depth buffer so the trianges in front are in front
+	glEnable(GL_DEPTH_BUFFER);
+
 
 
 
 	// init openCL. opencl has to be initalized after opengl and all of our buffers. 
 	cl_int err = CLHandler::initCL();
-
-	
 
 	// return error code. Zero for success
 	return 0;

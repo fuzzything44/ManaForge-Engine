@@ -1,1 +1,4 @@
-__OPENCL_VERSION__
+__kernel void collide()
+{ 
+
+}

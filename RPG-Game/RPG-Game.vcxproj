@@ -95,6 +95,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="collision.cl" />
+    <None Include="default.vertexshader" />
+    <None Include="derault.fragmentshader" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
