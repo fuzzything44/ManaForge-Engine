@@ -4,6 +4,9 @@
 
 // opengl includes
 #include <CL/cl.hpp> // .hpp has some object oriented programming approaches to it
+
+#undef CL_VERSION_1_2
+
 #include <CL/cl_gl.h> // interop code
 
 #include "MainWindow.h"
