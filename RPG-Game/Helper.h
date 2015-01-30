@@ -16,28 +16,64 @@
 #include <vector>
 
 
-// decodes an image and saves it in the vector supplied. With and height are refrences so they can be returned
+/// <summary> decodes an image and saves it to the image vector. </summary>
+/// <param name='image'> A reference to a vector of GLubyte (unsigned char). Must be initalized. </param>
+/// <param name='filename'> The path to the image. Must be a PNG file. </param>
+/// <param name='width'> A reference to a GLuint that is set to the width of the loaded PNG. </param>
+/// <param name='height'> A reference to a GLuint that is set to the height of the loaded PNG. </param>
 void decode(std::vector<GLubyte>& image, const GLchar* filename, GLuint& width, GLuint& height);
 
-// saves a png file from the vector supplied to the space filename. Overrides if it already exists
+/// <summary> saves a png file from the vector supplied to the filename. Overrides if it already exists </summary>
+/// <param name='inPixels'> a const refrence to a vector of GLubyte (unsigned char). 
+/// <para> Must be size of at least width * height * 4 </para>
+/// <para> Must be in format of left to right rows then top to bottom columns </para>
+/// </param>
+/// <param name='filename'> the path to the file to load. Can have any extension, but preferably .png. 
+/// <para> File will be overriten without warning if it already exists </para>
+/// </param>
+/// <param name='width'> The width of the image </param>
+/// <param name='height'> The height of the image </param>
 void encodeAndSave(const std::vector<GLubyte>& inPixels, const GLchar* filename, GLuint width, GLuint height);
 
-// saves a png file from the array supplied.
-void encodeAndSave(GLubyte* inPixels, const GLchar* filename, GLuint width, GLuint height);
+/// <summary> saves a png file from the array supplied to the filename. Overrides if it already exists </summary>
+/// <param name='inPixels'> a const GLubyte (unsigned char) array to save. 
+/// <para> Must be size of at least width * height * 4 </para>
+/// <para> Must be in format of left to right rows then top to bottom columns </para>
+/// </param>
+/// <param name='filename'> the path to the file to load. Can have any extension, but preferably .png. 
+/// <para> File will be overriten without warning if it already exists </para>
+/// </param>
+/// <param name='width'> The width of the image </param>
+/// <param name='height'> The height of the image </param>
+void encodeAndSave(const GLubyte* inPixels, const GLchar* filename, GLuint width, GLuint height);
 
-// loads the selected file to a string.
+/// <summary> Loads the selected file to a string.
+/// <para> Returns a string that contains the data </para>
+/// </summary>
+/// <param name='filename'> The path to the file. </param>
 std::string loadFileToStr(const GLchar* filename);
 
-// loads a program from the filepaths specifed
+/// <summary> loads a program from the filepaths specifed </summary>
+/// <param name='vertexFile'> The path to the vertex shader. Must contain an extension. </param>
+/// <param name='fragmentFile'> The path to the fragment shader. Must contain an extension. </param>
 GLuint LoadShaders(const GLchar* vertexFile, const GLchar* fragmentFile);
 
-// loads a texture and returns the ID. width and height are 'returned'
+/// <summary> loads a texture and returns the ID. </summary>
+/// <param name='filepath'> the path to the file of the PNG file to be loaded </param>
+/// <param name='width'> an initalized refrence to a GLuint that is set to the height </param>
+/// <param name='height'> an initalized refrence to a GLuint that is set to the width </param>
 GLuint loadTexture(const GLchar* filepath, GLuint& width, GLuint& height);
 
-// loads a CL program from the filepath using the context and devices
+/// <summary> loads a CL program and returns it </summary>
+/// <param name='filepath'> The path to the file that contains the kernels. Must have an extension. </param>
+/// <param name='context'> The context to create the program in </param>
+/// <param name='devices'> A vector of cl::Device that has the devices to comile it on. </param>
+/// <param name='err'> A cl_int* that is set to the error code. Suggested for error handling. </param>
 cl::Program loadCLProgram(const GLchar* filepath, cl::Context& context, std::vector<cl::Device>& devices, cl_int* err = NULL);
 
-// OpenCL err checking
+/// <summary> OpenCL err checking. Returns true is successfull (CL_SUCCESS) </summary>
+/// <param name='error'> The error code. </param>
+/// <param name='name'> The name of the operation. Used for debugging later. </param>
 inline cl_bool errChkCL(cl_int error, const char* name)
 {
 	if (error != CL_SUCCESS)

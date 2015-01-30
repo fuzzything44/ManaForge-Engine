@@ -40,7 +40,7 @@ GLvoid encodeAndSave(const std::vector<GLubyte>& inPixels, const GLchar* filenam
 	lodepng::save_file(outEncoded, filename);
 }
 
-GLvoid encodeAndSave(GLubyte* inPixels, const GLchar* filename, GLuint width, GLuint height)
+GLvoid encodeAndSave(const GLubyte* inPixels, const GLchar* filename, GLuint width, GLuint height)
 {
 	// the encoded version of the original
 	std::vector<GLubyte> outEncoded;
