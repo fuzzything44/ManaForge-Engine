@@ -38,6 +38,8 @@ GLvoid draw(GLfloat delta)
 {
 	// clear the color buffer and depth buffer (makes sure the trianges in front get rendered in front
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+
 }
 
 GLint init()
@@ -51,6 +53,10 @@ GLint init()
 
 	// init openCL. opencl has to be initalized after opengl and all of our buffers. 
 	cl_int err = CLHandler::initCL();
+	if (err != CL_SUCCESS)
+	{
+		return err;
+	}
 
 	// return error code. Zero for success
 	return 0;

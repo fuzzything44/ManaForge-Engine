@@ -18,7 +18,7 @@ cl_int CLHandler::initCL()
 	std::cout << "Using Platform: " << platform.getInfo<CL_PLATFORM_NAME>() << std::endl;
 
 	platform.getDevices(CL_DEVICE_TYPE_ALL, &devices);
-	if (!errChkCL(devices.size() != 0 ? CL_DEVICE_NOT_AVAILABLE : CL_SUCCESS, "platform.getDevices"))
+	if (!errChkCL(devices.size() != 0 ? CL_SUCCESS : CL_DEVICE_NOT_AVAILABLE, "platform.getDevices"))
 	{
 		return CL_DEVICE_NOT_AVAILABLE;
 	}
