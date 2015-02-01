@@ -19,6 +19,9 @@
     <Filter Include="Shaders">
       <UniqueIdentifier>{c2589813-b211-4cc5-9b8e-c9fb179d6343}</UniqueIdentifier>
     </Filter>
+    <Filter Include="lodepng">
+      <UniqueIdentifier>{1911d740-8639-47f5-9b41-6dc8599d94a6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RPG-Game.cpp">
@@ -30,10 +33,13 @@
     <ClCompile Include="MainWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="include\LodePNG\lodepng.cpp">
+    <ClCompile Include="CLHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CLHandler.cpp">
+    <ClCompile Include="include\LodePNG\lodepng.cpp">
+      <Filter>lodepng</Filter>
+    </ClCompile>
+    <ClCompile Include="Chunk.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -44,10 +50,13 @@
     <ClInclude Include="MainWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\LodePNG\lodepng.h">
+    <ClInclude Include="CLHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CLHandler.h">
+    <ClInclude Include="include\LodePNG\lodepng.h">
+      <Filter>lodepng</Filter>
+    </ClInclude>
+    <ClInclude Include="Chunk.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

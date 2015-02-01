@@ -81,6 +81,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Chunk.cpp" />
     <ClCompile Include="CLHandler.cpp" />
     <ClCompile Include="Helper.cpp" />
     <ClCompile Include="include\LodePNG\lodepng.cpp" />
@@ -88,6 +89,7 @@
     <ClCompile Include="RPG-Game.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Chunk.h" />
     <ClInclude Include="CLHandler.h" />
     <ClInclude Include="Helper.h" />
     <ClInclude Include="include\LodePNG\lodepng.h" />

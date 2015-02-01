@@ -5,6 +5,7 @@
 
 #include <vector>
 
+// Class to do all the OpenCL calculations. 
 class CLHandler
 {
 public:
