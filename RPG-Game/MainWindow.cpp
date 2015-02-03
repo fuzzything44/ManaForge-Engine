@@ -14,6 +14,8 @@ GLFWwindow* MainWindow::window = NULL;
 
 GLint MainWindow::run(GLuint width, GLuint height, const GLchar* title, GLFWmonitor* monitor, GLFWwindow* share)
 {
+
+
 	// init GLFW (our window handler)
 	int err = glfwInit();
 	if (err != 1)
@@ -27,8 +29,8 @@ GLint MainWindow::run(GLuint width, GLuint height, const GLchar* title, GLFWmoni
 	glfwWindowHint(GLFW_SAMPLES, 1);
 
 	// set GL version
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
 
 	// set profile to core profile
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -76,7 +78,7 @@ GLint MainWindow::run(GLuint width, GLuint height, const GLchar* title, GLFWmoni
 	// if there is a scroll function, set it to the scroll callback
 	if (scroll)
 		glfwSetScrollCallback(window, scroll);
-
+	
 	// if init exists use it and if it doesn't succede return the error code.
 	if (init)
 	{

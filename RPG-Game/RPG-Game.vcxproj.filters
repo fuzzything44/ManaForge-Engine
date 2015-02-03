@@ -61,14 +61,14 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="default.vertexshader">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="derault.fragmentshader">
-      <Filter>Shaders</Filter>
-    </None>
     <None Include="updateFrame.cl">
       <Filter>Kernels</Filter>
+    </None>
+    <None Include="defaultvert.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="defaultfrag.glsl">
+      <Filter>Shaders</Filter>
     </None>
   </ItemGroup>
 </Project>

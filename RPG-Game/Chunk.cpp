@@ -5,31 +5,31 @@
 // set inital value for static variable
 std::vector<Chunk*> Chunk::chunks = std::vector<Chunk*>();
 
-GLvoid Chunk::addChunk(GLuint programIn, glm::vec2 locationIn = glm::vec2(0.f, 0.f))
+GLvoid Chunk::addChunk(GLuint programIn, glm::mat4* viewMatIn, GLfloat* scaleIn, glm::vec2 locationIn)
 {
 	// add the chunk to the vector of chunks
-	chunks.push_back(new Chunk(programIn, locationIn));
+	chunks.push_back(new Chunk(programIn, viewMatIn, scaleIn, locationIn));
 
 }
 
-Chunk::Chunk(GLuint programIn, glm::vec2 locationIn) 
-	: location(locationIn), program(programIn)
+Chunk::Chunk(GLuint programIn, glm::mat4* viewMatIn, GLfloat* scaleIn, glm::vec2 locationIn) 
+	: location(locationIn), program(programIn), viewMat(viewMatIn), scale(scaleIn)
 {
 
-	// the data for locations + allocate || four vertices per actor || two values per vertex || there are CHUNK_WIDTH squared actors
-	std::vector<GLfloat> locData		 (			4				*				2		 *	 CHUNK_WIDTH * CHUNK_WIDTH);
+	// the data for locations 
+	std::vector<GLfloat> locData;
 
 	// allocate the same amount as above for texture coordinates
-	std::vector<GLfloat> texCoords(12 * CHUNK_WIDTH * CHUNK_WIDTH);
+	std::vector<GLfloat> texCoords;
 
-	// the element data + allocate || two trianges per actor || three vertices per triangle || there are CHUNK_WIDTH squared actors
-	std::vector<GLuint> eboData(2 * 3 * CHUNK_WIDTH * CHUNK_WIDTH);
+	// the element data 
+	std::vector<GLuint> eboData;
 
 
 	// init vbos, vaos, and textures
-	for (int x = - CHUNK_WIDTH / 2; x < CHUNK_WIDTH / 2; x++)
+	for (int y = 0; y < CHUNK_WIDTH; y++)
 	{
-		for (int y = -CHUNK_WIDTH / 2; y < CHUNK_WIDTH / 2; y++)
+		for (int x = 0; x < CHUNK_WIDTH; x++)
 		{
 			GLfloat startX = x + location.x;
 			GLfloat startY = y + location.y;
@@ -62,7 +62,7 @@ Chunk::Chunk(GLuint programIn, glm::vec2 locationIn)
 			texCoords.push_back(1); // top right
 
 
-			GLuint startIdx = ((y + CHUNK_WIDTH / 2) * CHUNK_WIDTH + (x + CHUNK_WIDTH / 2)) * 4;
+			GLuint startIdx = (y * CHUNK_WIDTH + x) * 4;
 
 			eboData.push_back(startIdx);
 			eboData.push_back(startIdx + 1);
@@ -100,7 +100,7 @@ Chunk::Chunk(GLuint programIn, glm::vec2 locationIn)
 	glBindBuffer(GL_ARRAY_BUFFER, UVBufferID);
 
 	// bind UV data to be sen tot the GPU
-	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * locData.size(), &locData[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * texCoords.size(), &texCoords[0], GL_STATIC_DRAW);
 
 
 	// init element buffer
@@ -110,13 +110,76 @@ Chunk::Chunk(GLuint programIn, glm::vec2 locationIn)
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, eboID);
 
 	// send element data to the GPU
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLfloat) * locData.size(), &locData[0], GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLfloat) * eboData.size(), &eboData[0], GL_STATIC_DRAW);
 
+	elementCount = eboData.size();
+
+
+	viewMatUniID = glGetUniformLocation(program, "viewMat");
+	renderOrderUniID = glGetUniformLocation(program, "renderOrder");
+	scaleUniID = glGetUniformLocation(program, "scale");
 }
 
 GLvoid Chunk::drawChunk()
 {
+	glUseProgram(program);
+	glBindVertexArray(vaoID);
 
+	// set the viewMat in the shader to the view mat. We ned to derefrence, get first element, then turn back into pointer
+	glUniformMatrix4fv(viewMatUniID, 1, GL_FALSE, &(*viewMat)[0][0]);
+
+	// set the renderOrder in the shader -- render order is always 0 for landscape actors
+	glUniform1i(renderOrderUniID, renderOrder);
+
+	// set the scale
+	glUniform1f(scaleUniID, *scale);
+
+	// bind location data to the element attrib array so it shows up in our shaders -- the location is zero (look in shader)
+	glEnableVertexAttribArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, locBufferID);
+	glVertexAttribPointer(
+		0, // location 0 (see shader)
+		2, // two elements per vertex (x,y)
+		GL_FLOAT, // they are floats
+		GL_FALSE, // not normalized (look up vector normalization)
+		sizeof(GLfloat) * 2, // the next element is 2 floats later
+		0 // dont copy -- use the GL_ARRAY_BUFFER instead
+		);
+
+	// bind UV data to the element attrib array so it shows up in our sahders -- the location is  (look in shader)
+	glEnableVertexAttribArray(1);
+	glBindBuffer(GL_ARRAY_BUFFER, UVBufferID);
+	glVertexAttribPointer(
+		1, // location 1 (see shader)
+		2, // two elements per vertex (u,v)
+		GL_FLOAT, // they are floats
+		GL_FALSE, // not normalized (look up vector normalization)
+		sizeof(GLfloat) * 2, // the next element is 2 floats later
+		0 // use the GL_ARRAY_BUFFER instead of copying on the spot
+		);
+
+	// bind the element buffer so it is used to make our draw call
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, eboID);
+
+	// draw our chunk -- only one draw call
+	glDrawElements(
+		GL_TRIANGLES, // they are trianges
+		elementCount, // these many verticies
+		GL_UNSIGNED_INT, // the data is GLuint - unsigned int
+		0 // use the buffer instead of raw data
+		);
+
+	glDisableVertexAttribArray(0);
+	glDisableVertexAttribArray(1);
+}
+
+void Chunk::draw()
+{
+	// return if there are no chunks
+	if (chunks.size() == 0)
+		return;
+
+	chunks[0]->drawChunk();
 }
 
 glm::vec2 Chunk::getLocation()
