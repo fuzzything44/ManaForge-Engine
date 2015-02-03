@@ -20,8 +20,8 @@ void main()
 	// gl_Position is a special vec3 that defines the location in space.
 
 	// set the final position
-	vec4 location = vec4(in_location, -(9.f - renderOrder) / 9.f, 1.f);
-	gl_Position = (location) * scale;
+	vec4 location = vec4(in_location - 1, (9.f - renderOrder) / 9.f, 1.f);
+	gl_Position = (viewMat * location) * scale;
 
 	// send the data to the fragment shader and interpolates it so it has the correct value
 	UV = in_UV;

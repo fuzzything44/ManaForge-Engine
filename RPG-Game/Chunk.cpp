@@ -4,12 +4,18 @@
 
 // set inital value for static variable
 std::vector<Chunk*> Chunk::chunks = std::vector<Chunk*>();
+Chunk* Chunk::persistentChunk = NULL;
 
 GLvoid Chunk::addChunk(GLuint programIn, glm::mat4* viewMatIn, GLfloat* scaleIn, glm::vec2 locationIn)
 {
 	// add the chunk to the vector of chunks
 	chunks.push_back(new Chunk(programIn, viewMatIn, scaleIn, locationIn));
 
+}
+
+GLvoid Chunk::initPersistent(GLuint programIn, glm::mat4* viewMatIn, GLfloat* scaleIn)
+{
+	persistentChunk = new Chunk(programIn, viewMatIn, scaleIn);
 }
 
 Chunk::Chunk(GLuint programIn, glm::mat4* viewMatIn, GLfloat* scaleIn, glm::vec2 locationIn) 
@@ -128,6 +134,7 @@ GLvoid Chunk::drawChunk()
 	// set the viewMat in the shader to the view mat. We ned to derefrence, get first element, then turn back into pointer
 	glUniformMatrix4fv(viewMatUniID, 1, GL_FALSE, &(*viewMat)[0][0]);
 
+
 	// set the renderOrder in the shader -- render order is always 0 for landscape actors
 	glUniform1i(renderOrderUniID, renderOrder);
 
@@ -175,6 +182,17 @@ GLvoid Chunk::drawChunk()
 
 void Chunk::draw()
 {
+	// return if there is no persistent chunk
+	if (persistentChunk == NULL)
+	{
+		std::cout << "There is no persistent chunk" << std::endl;
+
+		return;
+	}
+
+	// always draw the persistent chunk
+	persistentChunk->drawChunk();
+
 	// return if there are no chunks
 	if (chunks.size() == 0)
 		return;

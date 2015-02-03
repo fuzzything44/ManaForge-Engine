@@ -24,7 +24,7 @@
 GLvoid draw(GLfloat delta);
 GLint init();
 glm::mat4 viewMat;
-float scale = 100.f;
+float scale = 1.f;
 
 GLuint screenX = 800, screenY = 600;
 
@@ -67,14 +67,20 @@ GLint init()
 	{
 		return err;
 	}
+
+	// load a temp 
 	GLuint width, height;
-	GLuint tex = loadDDS("textures/0.dds");
+	GLuint tex = loadDDS("textures/5.dds");
+	glBindTexture(GL_TEXTURE_2D, tex);
 
 	GLuint program = LoadShaders("defaultvert.glsl", "defaultfrag.glsl");
 
-	viewMat = glm::ortho((float)-screenX, (float)screenX, (float)-screenY, (float)screenY);
+	float aspectRatio = float((float)screenX / (float)screenY);
+	
+	// make the viewmat so there is no distortion based on aspect ratio.
+	viewMat = glm::ortho(-aspectRatio, aspectRatio, -1.f, 1.f);
 
-	Chunk::addChunk(program, &viewMat, &scale);
+	Chunk::initPersistent(program, &viewMat, &scale);
 
 	// return error code. Zero for success
 	return 0;
