@@ -122,7 +122,6 @@ Chunk::Chunk(GLuint programIn, glm::mat4* viewMatIn, glm::vec2 locationIn)
 
 
 	viewMatUniID = glGetUniformLocation(program, "viewMat");
-	renderOrderUniID = glGetUniformLocation(program, "renderOrder");
 }
 
 GLvoid Chunk::drawChunk()
@@ -132,11 +131,6 @@ GLvoid Chunk::drawChunk()
 
 	// set the viewMat in the shader to the view mat. We ned to derefrence, get first element, then turn back into pointer
 	glUniformMatrix4fv(viewMatUniID, 1, GL_FALSE, &(*viewMat)[0][0]);
-
-
-	// set the renderOrder in the shader -- render order is always 0 for landscape actors
-	glUniform1i(renderOrderUniID, renderOrder);
-
 
 	// bind location data to the element attrib array so it shows up in our shaders -- the location is zero (look in shader)
 	glEnableVertexAttribArray(0);
