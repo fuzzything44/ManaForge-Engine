@@ -1,3 +1,5 @@
+#pragma once
+
 #include "Helper.h"
 
 #include <CL/cl.hpp>

@@ -42,6 +42,9 @@
     <ClCompile Include="Chunk.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Actor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Helper.h">
@@ -59,15 +62,18 @@
     <ClInclude Include="Chunk.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Actor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="updateFrame.cl">
       <Filter>Kernels</Filter>
     </None>
-    <None Include="defaultvert.glsl">
+    <None Include="chunkfrag.glsl">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="defaultfrag.glsl">
+    <None Include="chunkvert.glsl">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

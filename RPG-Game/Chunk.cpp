@@ -6,20 +6,20 @@
 std::vector<Chunk*> Chunk::chunks = std::vector<Chunk*>();
 Chunk* Chunk::persistentChunk = NULL;
 
-GLvoid Chunk::addChunk(GLuint programIn, glm::mat4* viewMatIn, GLfloat* scaleIn, glm::vec2 locationIn)
+GLvoid Chunk::addChunk(GLuint programIn, glm::mat4* viewMatIn, glm::vec2 locationIn)
 {
 	// add the chunk to the vector of chunks
-	chunks.push_back(new Chunk(programIn, viewMatIn, scaleIn, locationIn));
+	chunks.push_back(new Chunk(programIn, viewMatIn, locationIn));
 
 }
 
-GLvoid Chunk::initPersistent(GLuint programIn, glm::mat4* viewMatIn, GLfloat* scaleIn)
+GLvoid Chunk::initPersistent(GLuint programIn, glm::mat4* viewMatIn)
 {
-	persistentChunk = new Chunk(programIn, viewMatIn, scaleIn);
+	persistentChunk = new Chunk(programIn, viewMatIn);
 }
 
-Chunk::Chunk(GLuint programIn, glm::mat4* viewMatIn, GLfloat* scaleIn, glm::vec2 locationIn) 
-	: location(locationIn), program(programIn), viewMat(viewMatIn), scale(scaleIn)
+Chunk::Chunk(GLuint programIn, glm::mat4* viewMatIn, glm::vec2 locationIn) 
+	: location(locationIn), program(programIn), viewMat(viewMatIn)
 {
 
 	// the data for locations 
@@ -123,7 +123,6 @@ Chunk::Chunk(GLuint programIn, glm::mat4* viewMatIn, GLfloat* scaleIn, glm::vec2
 
 	viewMatUniID = glGetUniformLocation(program, "viewMat");
 	renderOrderUniID = glGetUniformLocation(program, "renderOrder");
-	scaleUniID = glGetUniformLocation(program, "scale");
 }
 
 GLvoid Chunk::drawChunk()
@@ -138,8 +137,6 @@ GLvoid Chunk::drawChunk()
 	// set the renderOrder in the shader -- render order is always 0 for landscape actors
 	glUniform1i(renderOrderUniID, renderOrder);
 
-	// set the scale
-	glUniform1f(scaleUniID, *scale);
 
 	// bind location data to the element attrib array so it shows up in our shaders -- the location is zero (look in shader)
 	glEnableVertexAttribArray(0);

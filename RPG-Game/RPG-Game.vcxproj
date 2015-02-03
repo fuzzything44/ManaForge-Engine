@@ -81,6 +81,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Actor.cpp" />
     <ClCompile Include="Chunk.cpp" />
     <ClCompile Include="CLHandler.cpp" />
     <ClCompile Include="Helper.cpp" />
@@ -89,6 +90,7 @@
     <ClCompile Include="RPG-Game.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Actor.h" />
     <ClInclude Include="Chunk.h" />
     <ClInclude Include="CLHandler.h" />
     <ClInclude Include="Helper.h" />
@@ -96,12 +98,12 @@
     <ClInclude Include="MainWindow.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="defaultvert.glsl">
+    <None Include="chunkvert.glsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </ExcludedFromBuild>
       <FileType>Document</FileType>
     </None>
-    <None Include="defaultfrag.glsl" />
+    <None Include="chunkfrag.glsl" />
     <None Include="updateFrame.cl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
