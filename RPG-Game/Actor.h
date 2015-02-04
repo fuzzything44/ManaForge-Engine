@@ -16,7 +16,7 @@ public:
 	/// <summary> adds an actor -- automaitally handles chunk stuff </summary>
 	/// <param name='boundsIn'> the bounds for the actor -- first two elements are XY coordinates and the second are length and width. </param>
 	/// <param name='UVs'> the UVs for the object </param>
-	static void addActor(glm::vec4 boundsIn, GLfloat* UVs);
+	static void addActor(const glm::vec4& bounds, GLfloat* UVs, GLboolean isPersistent = false);
 
 	// Make Chunk a freind so it can access private methods (namely tick)
 	friend Chunk;
@@ -26,7 +26,7 @@ public:
 private:
 
 	// private constructor
-	Actor(glm::vec4 boundsIn, GLfloat* UVs, Chunk* chunk);
+	Actor(const glm::vec4& boundsIn, GLfloat* UVs, Chunk* chunkIn);
 
 	// the chunk that the actor resides in
 	Chunk* chunk;
