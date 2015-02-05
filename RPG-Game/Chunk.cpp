@@ -190,11 +190,11 @@ void Chunk::draw()
 	// always draw the persistent chunk
 	persistentChunk->drawChunk();
 
-	// return if there are no chunks
-	if (chunks.size() == 0)
-		return;
-
-	chunks[0]->drawChunk();
+	// C++11 ranged-based for-loop http://www.cprogramming.com/c++11/c++11-ranged-for-loop.html
+	for (auto& elem : chunks)
+	{
+		elem->drawChunk();
+	}
 }
 
 glm::vec2 Chunk::getLocation()

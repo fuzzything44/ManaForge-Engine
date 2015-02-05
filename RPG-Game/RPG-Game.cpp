@@ -30,9 +30,9 @@ GLvoid resize(GLFWwindow* window, GLint x, GLint y);
 glm::mat4 viewMat;
 glm::mat4 projection;
 
-GLfloat scale = 1;
 
-GLuint screenX = 800, screenY = 600;
+// 1/sclae * 2 is how many units fit vertically
+GLfloat scale = 1;
 
 cl_int initCL();
 
@@ -51,8 +51,10 @@ GLint main()
 
 	// bind the init function to init
 	MainWindow::bindInit(init);
+
+
 	// run the window. consumes the thread until it returns
-	return MainWindow::run(screenX, screenY, "RPG-Simulator", NULL, NULL);
+	return MainWindow::run("RPG-Simulator", GL_FALSE);
 	
 }
 
@@ -102,12 +104,20 @@ GLint init()
 
 	GLuint program = LoadShaders("chunkvert.glsl", "chunkfrag.glsl");
 
-	float aspectRatio = float((float)screenX / (float)screenY);
+	GLint widthWin, heightWin;
+
+	glfwGetWindowSize(MainWindow::window, &widthWin, &heightWin);
+
+	float aspectRatio = (float)widthWin / (float)heightWin;
 	
 	// make the projection so there is no distortion based on aspect ratio.
 	projection = glm::ortho(-aspectRatio, aspectRatio, -1.f, 1.f);
 
 	Chunk::initPersistent(program, &viewMat);
+
+	Chunk::addChunk(program, &viewMat, glm::vec2(CHUNK_WIDTH, 0));
+	Chunk::addChunk(program, &viewMat, glm::vec2(0, CHUNK_WIDTH));
+	Chunk::addChunk(program, &viewMat, glm::vec2(CHUNK_WIDTH, CHUNK_WIDTH));
 
 	glfwSetScrollCallback(MainWindow::window, scroll);
 	glfwSetWindowSizeCallback(MainWindow::window, resize);

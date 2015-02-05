@@ -11,12 +11,9 @@ class MainWindow
 public:
 
 	/// <summary> Runs the Thread. Consumes the thread and returns the error code. </summary>
-	/// <param name='width'> The width of the window </param>
-	/// <param name='height'> The height of the winodw </param>
 	/// <param name='title'> The title of the winodw </param>
-	/// <param name='monitor'> The monitor to run the program on. Null if windowed mode is wanted. </param>
-	/// <param name='share'> The GLFWwindow to share with </param>
-	static GLint MainWindow::run(GLuint width, GLuint height, const GLchar* title, GLFWmonitor* monitor, GLFWwindow* share);
+	/// <param name='isFullscreen'> If the window should be fullscree or not </param>
+	static GLint MainWindow::run(const GLchar* title, GLboolean isFullscreen);
 
 	/// <summary> Bind the function to be called each frame to draw the elements.
 	/// <para> Called after the keyboard function </para>

@@ -12,7 +12,7 @@ GLint(*MainWindow::exit)() = NULL;
 GLvoid(*MainWindow::scroll)(GLFWwindow*, GLdouble, GLdouble) = NULL;
 GLFWwindow* MainWindow::window = NULL;
 
-GLint MainWindow::run(GLuint width, GLuint height, const GLchar* title, GLFWmonitor* monitor, GLFWwindow* share)
+GLint MainWindow::run(const GLchar* title, GLboolean isFullscreen)
 {
 
 
@@ -25,6 +25,11 @@ GLint MainWindow::run(GLuint width, GLuint height, const GLchar* title, GLFWmoni
 		return err;
 	}
 
+	int count;
+
+	GLFWmonitor* mon = glfwGetPrimaryMonitor();
+	const GLFWvidmode* mode = glfwGetVideoMode(mon);
+	
 	// set AA
 	glfwWindowHint(GLFW_SAMPLES, 1);
 
@@ -39,7 +44,7 @@ GLint MainWindow::run(GLuint width, GLuint height, const GLchar* title, GLFWmoni
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
 	// create the winodw
-	window = glfwCreateWindow(width, height, title, monitor, share);
+	window = glfwCreateWindow(isFullscreen ? mode->width : 800, isFullscreen ? mode->height : 600, title, isFullscreen ? mon : NULL, NULL);
 	
 	// exit if the window wasn't initialized correctly
 	if (!window)
