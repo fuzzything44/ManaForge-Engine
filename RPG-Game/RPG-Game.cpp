@@ -24,6 +24,7 @@
 GLvoid draw(GLfloat delta);
 GLint init();
 GLvoid scroll(GLFWwindow* winodw, GLdouble x, GLdouble y);
+GLvoid resize(GLFWwindow* window, GLint x, GLint y);
 
 glm::mat4 viewMat;
 glm::mat4 projection;
@@ -101,9 +102,24 @@ GLint init()
 	Chunk::initPersistent(program, &viewMat);
 
 	glfwSetScrollCallback(MainWindow::window, scroll);
+	glfwSetWindowSizeCallback(MainWindow::window, resize);
 
 	// return error code. Zero for success
 	return 0;
+}
+
+GLvoid resize(GLFWwindow* window, GLint x, GLint y)
+{
+	std::cout << "Resized" << std::endl;
+
+	// compute the aspect ratio
+	GLfloat aspectRatio = (GLfloat)x / (GLfloat)y;
+
+	// update ogl to use entire screen
+	glViewport(0, 0, x, y);
+
+	// update the projection matrix with the new aspect ratios
+	projection = glm::ortho(-aspectRatio, aspectRatio, -1.f, 1.f);
 }
 
 GLvoid scroll(GLFWwindow* winodw, GLdouble x, GLdouble y)
