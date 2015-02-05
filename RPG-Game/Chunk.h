@@ -14,6 +14,8 @@ class Chunk
 {
 public:
 
+	// freind the actor class so we can share private methods
+	friend Actor;
 
 	// static function to add a chunk -- there is no default constructor so all get stored in chunks
 	static GLvoid addChunk(GLuint programIn, glm::mat4* viewMatIn, glm::vec2 locationIn = glm::vec2(0.f, 0.f));
@@ -26,7 +28,7 @@ public:
 	// getter for location
 	glm::vec2 getLocation();
 
-private:
+protected:
 	// opengl handles
 	GLuint locBufferID, UVBufferID, eboID, vaoID, program;
 
@@ -35,6 +37,9 @@ private:
 
 	// the amount of elemetns
 	size_t elementCount;
+
+	// a vector of all of the actors in the scene. Naive implemntation -- will fix later
+	std::vector<Actor*> actors;
 
 	glm::mat4* viewMat;
 	GLuint renderOrder = 0;
