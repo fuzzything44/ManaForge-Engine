@@ -23,6 +23,7 @@
 /*************** P R O T O T Y P E S ***************************************************/
 GLvoid draw(GLfloat delta);
 GLint init();
+GLvoid keyboard(GLFWwindow* window, GLfloat delta);
 GLvoid scroll(GLFWwindow* winodw, GLdouble x, GLdouble y);
 GLvoid resize(GLFWwindow* window, GLint x, GLint y);
 
@@ -44,6 +45,7 @@ GLint main()
 
 	// bind the draw function to the draw function
 	MainWindow::bindDraw(draw);
+	MainWindow::bindKeyboard(keyboard);
 
 	MainWindow::bindScroll(scroll);
 
@@ -51,6 +53,12 @@ GLint main()
 	MainWindow::bindInit(init);
 	// run the window. consumes the thread until it returns
 	return MainWindow::run(screenX, screenY, "RPG-Simulator", NULL, NULL);
+	
+}
+
+
+GLvoid keyboard(GLFWwindow* window, GLfloat delta)
+{
 	
 }
 
@@ -110,8 +118,6 @@ GLint init()
 
 GLvoid resize(GLFWwindow* window, GLint x, GLint y)
 {
-	std::cout << "Resized" << std::endl;
-
 	// compute the aspect ratio
 	GLfloat aspectRatio = (GLfloat)x / (GLfloat)y;
 
