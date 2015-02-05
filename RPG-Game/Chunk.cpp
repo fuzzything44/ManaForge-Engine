@@ -1,6 +1,6 @@
 #include "Chunk.h"
 
-#include <GLFW/glfw3.h>
+#include <GLTools/glfw3.h>
 
 // set inital value for static variable
 std::vector<Chunk*> Chunk::chunks = std::vector<Chunk*>();
