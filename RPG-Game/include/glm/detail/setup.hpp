@@ -1,7 +1,7 @@
 ///////////////////////////////////////////////////////////////////////////////////
 /// OpenGL Mathematics (glm.g-truc.net)
 ///
-/// Copyright (c) 2005 - 2015 G-Truc Creation (www.g-truc.net)
+/// Copyright (c) 2005 - 2014 G-Truc Creation (www.g-truc.net)
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
 /// in the Software without restriction, including without limitation the rights
@@ -38,16 +38,11 @@
 ///////////////////////////////////////////////////////////////////////////////////
 // Version
 
-#define GLM_VERSION					97
+#define GLM_VERSION					96
 #define GLM_VERSION_MAJOR			0
 #define GLM_VERSION_MINOR			9
-#define GLM_VERSION_PATCH			7
-#define GLM_VERSION_REVISION		0
-
-#if(defined(GLM_MESSAGES) && !defined(GLM_MESSAGE_VERSION_DISPLAYED))
-#	define GLM_MESSAGE_VERSION_DISPLAYED
-#	pragma message ("GLM: version 0.9.7")
-#endif//GLM_MESSAGE
+#define GLM_VERSION_PATCH			6
+#define GLM_VERSION_REVISION		1
 
 ///////////////////////////////////////////////////////////////////////////////////
 // Platform
@@ -632,13 +627,12 @@
 // User defines: GLM_FORCE_PURE GLM_FORCE_SSE2 GLM_FORCE_SSE3 GLM_FORCE_AVX GLM_FORCE_AVX2
 
 #define GLM_ARCH_PURE		0x0000
-#define GLM_ARCH_ARM		0x0001
-#define GLM_ARCH_X86		0x0002
-#define GLM_ARCH_SSE2		0x0004
-#define GLM_ARCH_SSE3		0x0008
-#define GLM_ARCH_SSE4		0x0010
-#define GLM_ARCH_AVX		0x0020
-#define GLM_ARCH_AVX2		0x0040
+#define GLM_ARCH_X86		0x0001
+#define GLM_ARCH_SSE2		0x0002
+#define GLM_ARCH_SSE3		0x0004
+#define GLM_ARCH_SSE4		0x0008
+#define GLM_ARCH_AVX		0x0010
+#define GLM_ARCH_AVX2		0x0020
 
 #if defined(GLM_FORCE_PURE)
 #	define GLM_ARCH GLM_ARCH_PURE
@@ -665,9 +659,7 @@
 #		define GLM_ARCH GLM_ARCH_PURE
 #	endif
 #elif (GLM_COMPILER & GLM_COMPILER_VC) || ((GLM_COMPILER & GLM_COMPILER_INTEL) && (GLM_PLATFORM & GLM_PLATFORM_WINDOWS))
-#	if defined(_M_ARM_FP)
-#		define GLM_ARCH (GLM_ARCH_ARM)
-#	elif defined(__AVX2__)
+#	if defined(__AVX2__)
 #		define GLM_ARCH (GLM_ARCH_AVX2 | GLM_ARCH_AVX | GLM_ARCH_SSE4 | GLM_ARCH_SSE3 | GLM_ARCH_SSE2)
 #	elif defined(__AVX__)
 #		define GLM_ARCH (GLM_ARCH_AVX | GLM_ARCH_SSE4 | GLM_ARCH_SSE3 | GLM_ARCH_SSE2)
@@ -728,8 +720,6 @@
 #	define GLM_MESSAGE_ARCH_DISPLAYED
 #	if(GLM_ARCH == GLM_ARCH_PURE)
 #		pragma message("GLM: Platform independent code")
-#	elif(GLM_ARCH & GLM_ARCH_ARM)
-#		pragma message("GLM: ARM instruction set")
 #	elif(GLM_ARCH & GLM_ARCH_AVX2)
 #		pragma message("GLM: AVX2 instruction set")
 #	elif(GLM_ARCH & GLM_ARCH_AVX)

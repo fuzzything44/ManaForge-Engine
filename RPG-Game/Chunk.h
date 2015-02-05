@@ -13,8 +13,7 @@ class Chunk;
 class Chunk
 {
 public:
-	// make sure actor can access chunk's private stuff
-	friend Actor;
+
 
 	// static function to add a chunk -- there is no default constructor so all get stored in chunks
 	static GLvoid addChunk(GLuint programIn, glm::mat4* viewMatIn, glm::vec2 locationIn = glm::vec2(0.f, 0.f));
@@ -32,12 +31,13 @@ private:
 	GLuint locBufferID, UVBufferID, eboID, vaoID, program;
 
 	// location of the uniform variables so we can set them
-	GLint viewMatUniID;
+	GLint renderOrderUniID, viewMatUniID;
 
 	// the amount of elemetns
 	size_t elementCount;
 
 	glm::mat4* viewMat;
+	GLuint renderOrder = 0;
 
 	glm::vec2 location;
 
