@@ -1,5 +1,5 @@
 // define the version of GLSL to use
-#version 420 core
+#version 330 core
 
 // the texture object we can query from
 uniform sampler2D tex0;

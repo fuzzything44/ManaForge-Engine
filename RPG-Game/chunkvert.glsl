@@ -1,5 +1,5 @@
 // define the version of GLSL to use
-#version 420 core
+#version 330 core
 
 // location and render order. Both defined for all verticies using a GL_ARRAY_BUFFER
 layout(location = 0) in vec2 in_location;
