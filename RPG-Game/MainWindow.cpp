@@ -35,8 +35,8 @@ GLint MainWindow::run(GLuint width, GLuint height, const GLchar* title, GLFWmoni
 	// set profile to core profile
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	// set the window to non-resizable (true currently for debugging)
-	glfwWindowHint(GLFW_RESIZABLE, true);
+	// set the window to non-resizable
+	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
 	// create the winodw
 	window = glfwCreateWindow(width, height, title, monitor, share);
