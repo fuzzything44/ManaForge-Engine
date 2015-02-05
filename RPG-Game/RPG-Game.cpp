@@ -75,6 +75,10 @@ GLint init()
 	// load a temp 
 	GLuint width, height;
 	GLuint tex = loadDDS("textures/5.dds");
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+
 	glBindTexture(GL_TEXTURE_2D, tex);
 
 	GLuint program = LoadShaders("chunkvert.glsl", "chunkfrag.glsl");
