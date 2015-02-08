@@ -9,6 +9,7 @@ class Chunk;
 
 // the chunk width
 #define CHUNK_WIDTH 50
+#define MAX_ACTORS 20
 
 class Chunk
 {

@@ -115,8 +115,9 @@ GLint init()
 
 	Chunk::initPersistent(program, &viewMat);
 
-	Chunk::addChunk(program, &viewMat, glm::vec2(CHUNK_WIDTH, 0));
-	Chunk::addChunk(program, &viewMat, glm::vec2(0, CHUNK_WIDTH));
+	Chunk::addChunk(program, &viewMat, glm::vec2(0.f, 0.f));
+	Chunk::addChunk(program, &viewMat, glm::vec2(CHUNK_WIDTH, 0.f));
+	Chunk::addChunk(program, &viewMat, glm::vec2(0.f, CHUNK_WIDTH));
 	Chunk::addChunk(program, &viewMat, glm::vec2(CHUNK_WIDTH, CHUNK_WIDTH));
 
 	glfwSetScrollCallback(MainWindow::window, scroll);
