@@ -114,6 +114,7 @@ GLint init()
 	projection = glm::ortho(-aspectRatio, aspectRatio, -1.f, 1.f);
 
 	Chunk::initChunks(program, &viewMat, glm::uvec2(5, 10));
+	
 
 	glfwSetScrollCallback(MainWindow::window, scroll);
 	glfwSetWindowSizeCallback(MainWindow::window, resize);

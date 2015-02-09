@@ -154,7 +154,7 @@ static unsigned uivector_reserve(uivector* p, size_t allocsize)
 {
 	if (allocsize > p->allocsize)
 	{
-		size_t newsize = (allocsize > p->allocsize * 2) ? allocsize : (allocsize * 3 / 2);
+		size_t newsize = (allocsize > p->allocsize * 2) ? allocsize : (allocsize * 3 * .5);
 		void* data = lodepng_realloc(p->data, newsize);
 		if (data)
 		{

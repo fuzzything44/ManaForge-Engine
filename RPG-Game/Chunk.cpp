@@ -12,11 +12,12 @@ GLvoid Chunk::initChunks(GLuint programIn, glm::mat4* viewMatIn, glm::uvec2 chun
 {
 	chunksSize = chunksSizeIn;
 
+	// allocate the pointer
 	chunks = (Chunk***)malloc(sizeof(Chunk**) * chunksSize.y);
 
 	for (int x = 0; x < chunksSize.y; x++)
 	{
-		// allocate the coloumn
+		// allocate the column -- you can read about malloc: http://www.cplusplus.com/reference/cstdlib/malloc/
 		chunks[x] = (Chunk**)malloc(sizeof(Chunk*) * chunksSize.y);
 		for (int y = 0; y < chunksSize.y; y++)
 		{
