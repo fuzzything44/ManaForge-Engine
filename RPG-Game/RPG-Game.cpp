@@ -95,7 +95,7 @@ GLint init()
 
 	// load a temp 
 	GLuint width, height;
-	GLuint tex = loadDDS("textures/5.dds");
+	GLuint tex = loadDDS("textures/1.dds");
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
@@ -113,12 +113,7 @@ GLint init()
 	// make the projection so there is no distortion based on aspect ratio.
 	projection = glm::ortho(-aspectRatio, aspectRatio, -1.f, 1.f);
 
-	Chunk::initPersistent(program, &viewMat);
-
-	Chunk::addChunk(program, &viewMat, glm::vec2(0.f, 0.f));
-	Chunk::addChunk(program, &viewMat, glm::vec2(CHUNK_WIDTH, 0.f));
-	Chunk::addChunk(program, &viewMat, glm::vec2(0.f, CHUNK_WIDTH));
-	Chunk::addChunk(program, &viewMat, glm::vec2(CHUNK_WIDTH, CHUNK_WIDTH));
+	Chunk::initChunks(program, &viewMat, glm::uvec2(5, 10));
 
 	glfwSetScrollCallback(MainWindow::window, scroll);
 	glfwSetWindowSizeCallback(MainWindow::window, resize);

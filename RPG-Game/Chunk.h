@@ -18,11 +18,8 @@ public:
 	// freind the actor class so we can share private methods
 	friend Actor;
 
-	// static function to add a chunk -- there is no default constructor so all get stored in chunks
-	static GLvoid addChunk(GLuint programIn, glm::mat4* viewMatIn, glm::vec2 locationIn = glm::vec2(0.f, 0.f));
-	
 	// inits the persistant chunk
-	static GLvoid initPersistent(GLuint programIn, glm::mat4* viewMatIn);
+	static GLvoid initChunks(GLuint programIn, glm::mat4* viewMatIn, glm::uvec2 chunksSizeIn);
 
 	static void draw();
 
@@ -30,6 +27,8 @@ public:
 	glm::vec2 getLocation();
 
 protected:
+
+
 	// opengl handles
 	GLuint locBufferID, UVBufferID, eboID, vaoID, program;
 
@@ -49,8 +48,12 @@ protected:
 
 	GLvoid drawChunk();
 
-	// vector to store refrences to all of the chunks
-	static std::vector<Chunk*> chunks;
+	// a 2D array of pointers to chunks
+	static Chunk*** chunks;
+
+	// size of the array
+	static glm::uvec2 chunksSize;
+
 	static Chunk* persistentChunk;
 
 	/// <summary> Constructor giving a location </summary>

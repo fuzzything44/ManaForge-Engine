@@ -3,18 +3,27 @@
 #include <GLTools/glfw3.h>
 
 // set inital value for static variable
-std::vector<Chunk*> Chunk::chunks = std::vector<Chunk*>();
+Chunk*** Chunk::chunks = NULL;
 Chunk* Chunk::persistentChunk = NULL;
+glm::uvec2 Chunk::chunksSize = glm::uvec2(0, 0);
 
-GLvoid Chunk::addChunk(GLuint programIn, glm::mat4* viewMatIn, glm::vec2 locationIn)
+
+GLvoid Chunk::initChunks(GLuint programIn, glm::mat4* viewMatIn, glm::uvec2 chunksSizeIn)
 {
-	// add the chunk to the vector of chunks
-	chunks.push_back(new Chunk(programIn, viewMatIn, locationIn));
+	chunksSize = chunksSizeIn;
 
-}
+	chunks = (Chunk***)malloc(sizeof(Chunk**) * chunksSize.y);
 
-GLvoid Chunk::initPersistent(GLuint programIn, glm::mat4* viewMatIn)
-{
+	for (int x = 0; x < chunksSize.y; x++)
+	{
+		// allocate the coloumn
+		chunks[x] = (Chunk**)malloc(sizeof(Chunk*) * chunksSize.y);
+		for (int y = 0; y < chunksSize.y; y++)
+		{
+			chunks[x][y] = new Chunk(programIn, viewMatIn, glm::vec2(x * CHUNK_WIDTH, y * CHUNK_WIDTH));
+		}
+	}
+
 	persistentChunk = new Chunk(programIn, viewMatIn);
 }
 
@@ -198,11 +207,13 @@ void Chunk::draw()
 	// always draw the persistent chunk
 	persistentChunk->drawChunk();
 
-	// C++11 ranged-based for-loop http://www.cprogramming.com/c++11/c++11-ranged-for-loop.html
 	// Currently only loops through all of the chunks and draws them -- soon to be better handling 
-	for (auto& elem : chunks)
+	for (int y = 0; y < chunksSize.y; y++)
 	{
-		elem->drawChunk();
+		for (int x = 0; x < chunksSize.x; x++)
+		{
+			chunks[x][y]->drawChunk();
+		}
 	}
 }
 
