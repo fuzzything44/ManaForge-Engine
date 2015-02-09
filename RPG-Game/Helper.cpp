@@ -7,60 +7,6 @@ using std::ifstream;
 
 
 
-GLvoid decode(std::vector<GLubyte>& image, const GLchar* filename, GLuint& width, GLuint& height)
-{
-
-	//decode
-	unsigned error = lodepng::decode(image, width, height, filename);
-
-	//if there's an error, display it
-	if (error) std::cout << "decoder error " << error << ": " << lodepng_error_text(error) << std::endl;
-
-	//the pixels are now in the vector "image", 4 bytes per pixel, ordered RGBARGBA..., use it as texture, draw it, ...
-
-}
-
-GLvoid encodeAndSave(const std::vector<GLubyte>& inPixels, const GLchar* filename, GLuint width, GLuint height)
-{
-	// the encoded version of the original
-	std::vector<GLubyte> outEncoded;
-
-	// encodes it and then saves the error into error
-	GLint error = lodepng::encode(outEncoded, inPixels, width, height);
-
-	// if the encoder failed, then return.
-	if (error){
-
-		std::cout << "encoder error" << error << ": " << lodepng_error_text(error) << std::endl;
-
-		return;
-	}
-	
-	// save the file
-	lodepng::save_file(outEncoded, filename);
-}
-
-GLvoid encodeAndSave(const GLubyte* inPixels, const GLchar* filename, GLuint width, GLuint height)
-{
-	// the encoded version of the original
-	std::vector<GLubyte> outEncoded;
-
-	// encodes it and then saves the error into error
-	unsigned error = lodepng::encode(outEncoded, inPixels, width, height);
-
-	// if the encoder failed, then return.
-	if (error){
-
-		std::cout << "encoder error" << error << ": " << lodepng_error_text(error) << std::endl;
-
-		return;
-	}
-
-	// save the file
-	lodepng::save_file(outEncoded, filename);
-}
-
-
 string loadFileToStr(const GLchar* filename)
 {
 	// stream for the file
@@ -87,41 +33,6 @@ string loadFileToStr(const GLchar* filename)
 }
 
 
-GLuint loadTexture(const GLchar* filepath, GLuint& width, GLuint& height)
-{
-	// image vector.
-	vector<GLubyte> img;
-
-	// decodes the image to img
-	decode(img, filepath, width, height);
-
-	// if the image is empty return
-	if (img.size() == 0)
-	{
-		std::cout << "Bad Image" << std::endl;
-		system("pause");
-		return 0;
-	}
-	// return value
-	GLuint ret;
-
-	// gen textures
-	glGenTextures(1, &ret);
-
-	// bind the ret to GL_TEXTURE_2D so everyting usin GL_TEXTURE_2D referrs to ret
-	glBindTexture(GL_TEXTURE_2D, ret);
-
-	// set parameters. Current filtering techunique is GL_LINEAR http://www.arcsynthesis.org/gltut/Texturing/Tut15%20Magnification.html
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	// copy the data to the texture associated with ret. 
-	// format is RGBA internally and externally, and the size is unsigned char, which is unsigned byte
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, &img[0]);
-
-	return ret;
-
-}
 
 // Load Shaders from the files defined
 GLuint LoadShaders(const GLchar * vertex_file_path, const GLchar * fragment_file_path){

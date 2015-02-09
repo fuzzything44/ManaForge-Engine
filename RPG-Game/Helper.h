@@ -6,8 +6,6 @@
 // OpenCL include
 #include <CL/cl.hpp>
 
-// lodepng include
-#include <lodepng/lodepng.h>
 
 // standard library includes
 #include <iostream>
@@ -21,36 +19,6 @@
 #define FOURCC_DXT5 0x35545844 // Equivalent to "DXT5" in ASCII
 
 
-/// <summary> decodes an image and saves it to the image vector. </summary>
-/// <param name='image'> A reference to a vector of GLubyte (unsigned char). Must be initalized. </param>
-/// <param name='filename'> The path to the image. Must be a PNG file. </param>
-/// <param name='width'> A reference to a GLuint that is set to the width of the loaded PNG. </param>
-/// <param name='height'> A reference to a GLuint that is set to the height of the loaded PNG. </param>
-void decode(std::vector<GLubyte>& image, const GLchar* filename, GLuint& width, GLuint& height);
-
-/// <summary> saves a png file from the vector supplied to the filename. Overrides if it already exists </summary>
-/// <param name='inPixels'> a const refrence to a vector of GLubyte (unsigned char). 
-/// <para> Must be size of at least width * height * 4 </para>
-/// <para> Must be in format of left to right rows then top to bottom columns </para>
-/// </param>
-/// <param name='filename'> the path to the file to load. Can have any extension, but preferably .png. 
-/// <para> File will be overriten without warning if it already exists </para>
-/// </param>
-/// <param name='width'> The width of the image </param>
-/// <param name='height'> The height of the image </param>
-void encodeAndSave(const std::vector<GLubyte>& inPixels, const GLchar* filename, GLuint width, GLuint height);
-
-/// <summary> saves a png file from the array supplied to the filename. Overrides if it already exists </summary>
-/// <param name='inPixels'> a const GLubyte (unsigned char) array to save. 
-/// <para> Must be size of at least width * height * 4 </para>
-/// <para> Must be in format of left to right rows then top to bottom columns </para>
-/// </param>
-/// <param name='filename'> the path to the file to load. Can have any extension, but preferably .png. 
-/// <para> File will be overriten without warning if it already exists </para>
-/// </param>
-/// <param name='width'> The width of the image </param>
-/// <param name='height'> The height of the image </param>
-void encodeAndSave(const GLubyte* inPixels, const GLchar* filename, GLuint width, GLuint height);
 
 /// <summary> Loads the selected file to a string.
 /// <para> Returns a string that contains the data </para>
@@ -62,12 +30,6 @@ std::string loadFileToStr(const GLchar* filename);
 /// <param name='vertexFile'> The path to the vertex shader. Must contain an extension. </param>
 /// <param name='fragmentFile'> The path to the fragment shader. Must contain an extension. </param>
 GLuint LoadShaders(const GLchar* vertexFile, const GLchar* fragmentFile);
-
-/// <summary> loads a texture and returns the ID. </summary>
-/// <param name='filepath'> the path to the file of the PNG file to be loaded </param>
-/// <param name='width'> an initalized refrence to a GLuint that is set to the height </param>
-/// <param name='height'> an initalized refrence to a GLuint that is set to the width </param>
-GLuint loadTexture(const GLchar* filepath, GLuint& width, GLuint& height);
 
 /// <summary> loads a CL program and returns it </summary>
 /// <param name='filepath'> The path to the file that contains the kernels. Must have an extension. </param>
