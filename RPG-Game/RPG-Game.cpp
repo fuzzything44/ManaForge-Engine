@@ -32,7 +32,7 @@ glm::mat4 projection;
 
 
 // 1/sclae * 2 is how many units fit vertically
-GLfloat scale = 1;
+GLfloat scale = 10;
 
 cl_int initCL();
 
