@@ -31,6 +31,7 @@ public:
 
 protected:
 
+	
 
 	// opengl handles
 	GLuint locBufferID, UVBufferID, eboID, vaoID, program;

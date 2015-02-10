@@ -2,11 +2,8 @@
 #include <GLTools/glew.h>
 #include <GLTools/glfw3.h>
 
-// opengl includes
+// opencl includes
 #include <CL/cl.hpp> // .hpp has some object oriented programming approaches to it
-
-// force use of the CL_1_2
-#undef CL_VERSION_1_2
 
 #include <CL/cl.h>
 #include <CL/cl_gl.h> // interop code

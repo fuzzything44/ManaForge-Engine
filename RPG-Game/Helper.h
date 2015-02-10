@@ -42,18 +42,6 @@ cl::Program loadCLProgram(const GLchar* filepath, cl::Context& context, std::vec
 /// <param name='imagepath'> the pathe to the DDS file </param>
 GLuint loadDDS(const GLchar * imagepath);
 
-/// <summary> load a DSS format to the texture specified at the location specified </summary>
-/// <param name='texToAppend'> The handle for the texture to append the image to </param>
-/// <param name='Xoffset'> The X offset of the original texture to place the image </param>
-/// <param name='Yoffset'> The Y offset of the original texture to place the image </param>
-/// <param name='filepath'> The path to the DDS file. </param>
-void appendDDS(GLuint texToAppend, GLuint Xoffset, GLuint Yoffset, const GLchar* filepath);
-
-/// <summary> allocates an empty texture library from the format of the given DDS file </summary>
-/// <param name='num'> The amount of textures in one direction. total textures is up to num squared </param>
-/// <param name='filepath'> The path to the DDS file to load </param>
-GLuint allocateCompressedTextureLibraryFromDDS(GLuint num, const char* filepath);
-
 /// <summary> OpenCL err checking. Returns true is successfull (CL_SUCCESS) </summary>
 /// <param name='error'> The error code. </param>
 /// <param name='name'> The name of the operation. Used for debugging later. </param>
