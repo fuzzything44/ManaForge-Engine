@@ -43,7 +43,7 @@ void TextureLibrary::addTexture(std::string key, const char* filename)
 	// proceed to the next location
 	nextLocation.x++;
 
-	if (nextLocation.x > TEXTURE_WIDTH)
+	if (nextLocation.x >= TEXTURE_WIDTH)
 	{
 		nextLocation.x = 0;
 		nextLocation.y++;
