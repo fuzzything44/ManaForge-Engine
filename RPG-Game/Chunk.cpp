@@ -208,7 +208,13 @@ GLvoid Chunk::drawChunk()
 void Chunk::draw()
 {
 
+	for (int i = 0; i < texUniformHandles.size(); i++)
+	{
+		glUniform1i(texUniformHandles[i], i);
+		glActiveTexture(GL_TEXTURE0 + i);
+		glBindTexture(GL_TEXTURE_2D, TextureLibrary::getTextureHandle(i));
 
+	}
 
 	// return if there is no persistent chunk
 	if (persistentChunk == NULL)
