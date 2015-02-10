@@ -6,9 +6,14 @@
 #include <string>
 
 std::vector<GLuint> TextureLibrary::textures = std::vector<GLuint>();
-std::map<std::string, UVData> TextureLibrary::UVDataMap = std::map<std::string, UVData>();
+std::unordered_map<std::string, UVData> TextureLibrary::UVDataMap = std::unordered_map<std::string, UVData>();
 glm::uvec2 TextureLibrary::nextLocation = glm::uvec2(0, 0);
 GLint TextureLibrary::currentTexture = 0;
+
+GLuint TextureLibrary::getTexturesAmnt()
+{
+	return textures.size();
+}
 
 GLuint TextureLibrary::getTextureHandle(GLuint idx)
 {
@@ -30,12 +35,19 @@ void TextureLibrary::addTexture(std::string key, const char* filename)
 	// width of one texture in UV coordinates
 	float pitch = 1.f / TEXTURE_WIDTH;
 
-	// populate the data for the UVs
+	// populate the data for the UVs -- Flip the UVs vertically because DDS stores them in the opposite direction.
 	UVData data;
-	data.bottomLeft =	glm::vec2(pitch *  nextLocation.x		, pitch *  nextLocation.y);
-	data.topLeft =		glm::vec2(pitch *  nextLocation.x		, pitch * (nextLocation.y + 1));
-	data.bottomRight =	glm::vec2(pitch * (nextLocation.x + 1)	, pitch *  nextLocation.y);
-	data.topRight =		glm::vec2(pitch * (nextLocation.x + 1)	, pitch * (nextLocation.y + 1));
+	data.bottomLeft =	glm::vec2(pitch *  nextLocation.x		+ currentTexture, 
+		pitch * (nextLocation.y + 1)	+ currentTexture);
+
+	data.topLeft =		glm::vec2(pitch *  nextLocation.x		+ currentTexture, 
+		pitch * (nextLocation.y)		+ currentTexture);
+
+	data.bottomRight =	glm::vec2(pitch * (nextLocation.x + 1)	+ currentTexture,
+		pitch * (nextLocation.y + 1)	+ currentTexture);
+
+	data.topRight =		glm::vec2(pitch * (nextLocation.x + 1)	+ currentTexture, 
+		pitch * (nextLocation.y)		+ currentTexture);
 
 	// add it to the datamap
 	UVDataMap[key] = data;

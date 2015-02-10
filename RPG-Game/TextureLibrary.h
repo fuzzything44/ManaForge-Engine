@@ -4,7 +4,7 @@
 #include <glm/glm.hpp>
 
 #include <vector>
-#include <map>
+#include <unordered_map>
 
 // Hex defines for the compression methods.
 #define FOURCC_DXT1 0x31545844 // Equivalent to "DXT1" in ASCII
@@ -31,6 +31,8 @@ class TextureLibrary
 {
 public:
 
+	static GLuint getTexturesAmnt();
+
 	static UVData getUVData(std::string key);
 
 	static void addTexture(std::string key, const char* filename);
@@ -42,8 +44,8 @@ private:
 	// stores the handles to the textures
 	static std::vector<GLuint> textures;
 
-	static std::map<std::string, UVData> UVDataMap;
-
+	static std::unordered_map<std::string, UVData> UVDataMap;
+	
 	/// <summary> load a DSS format to the texture specified at the location specified </summary>
 	/// <param name='texToAppend'> The handle for the texture to append the image to </param>
 	/// <param name='Xoffset'> The X offset of the original texture to place the image </param>

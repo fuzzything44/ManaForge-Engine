@@ -2,15 +2,18 @@
 
 #include <GLTools/glfw3.h>
 
-// set inital value for static variable
+// set inital value for static variables
 Chunk*** Chunk::chunks = NULL;
 Chunk* Chunk::persistentChunk = NULL;
 glm::uvec2 Chunk::chunksSize = glm::uvec2(0, 0);
+std::vector<GLint> Chunk::texUniformHandles = std::vector<GLint>();
+GLuint Chunk::program = 0;
 
 
 GLvoid Chunk::initChunks(GLuint programIn, glm::mat4* viewMatIn, const glm::uvec2& chunksSizeIn)
 {
 	chunksSize = chunksSizeIn;
+	program = programIn;
 
 	// allocate the pointer
 	chunks = (Chunk***)malloc(sizeof(Chunk**) * chunksSize.y);
@@ -21,28 +24,42 @@ GLvoid Chunk::initChunks(GLuint programIn, glm::mat4* viewMatIn, const glm::uvec
 		chunks[x] = (Chunk**)malloc(sizeof(Chunk*) * chunksSize.y);
 		for (int y = 0; y < chunksSize.y; y++)
 		{
-			chunks[x][y] = new Chunk(programIn, viewMatIn, glm::vec2(x * CHUNK_WIDTH, y * CHUNK_WIDTH));
+			chunks[x][y] = new Chunk(viewMatIn, glm::vec2(x * CHUNK_WIDTH, y * CHUNK_WIDTH));
 		}
 	}
 
-	persistentChunk = new Chunk(programIn, viewMatIn);
+	persistentChunk = new Chunk(viewMatIn);
+
+
+	// initalize all handles
+	for (int i = 0; i < TextureLibrary::getTexturesAmnt(); i++)
+	{
+		std::stringstream ss;
+		ss << i;
+		std::string name = "tex";
+		name.append(ss.str());
+		texUniformHandles.push_back(glGetUniformLocation(program, name.c_str()));
+	}
 }
 
-Chunk::Chunk(GLuint programIn, glm::mat4* viewMatIn, glm::vec2 locationIn) 
-	: location(locationIn), program(programIn), viewMat(viewMatIn)
+Chunk::Chunk(glm::mat4* viewMatIn, glm::vec2 locationIn) 
+	: location(locationIn), viewMat(viewMatIn)
 {
+	// the persistent chunk doesn't get anything
 	if (this != persistentChunk)
 	{
 
 		// the data for locations 
 		std::vector<GLfloat> locData;
+		locData.reserve(8 * CHUNK_WIDTH * CHUNK_WIDTH);
 
 		// allocate the same amount as above for texture coordinates
 		std::vector<UVData> texCoords;
+		texCoords.reserve(CHUNK_WIDTH * CHUNK_WIDTH);
 
 		// the element data 
 		std::vector<GLuint> eboData;
-
+		eboData.reserve(6 * CHUNK_WIDTH * CHUNK_WIDTH);
 
 		// init vbos, vaos, and textures
 		for (int y = 0; y < CHUNK_WIDTH; y++)
@@ -67,7 +84,7 @@ Chunk::Chunk(GLuint programIn, glm::mat4* viewMatIn, glm::vec2 locationIn)
 
 				// use a random texture
 				srand(glfwGetTime() * 1000000);
-				GLuint tex = rand() % 4 + 1;
+				GLuint tex = rand() % 17;
 				std::stringstream stream;
 				stream << tex;
 				texCoords.push_back(TextureLibrary::getUVData(stream.str()));
@@ -190,6 +207,9 @@ GLvoid Chunk::drawChunk()
 
 void Chunk::draw()
 {
+
+
+
 	// return if there is no persistent chunk
 	if (persistentChunk == NULL)
 	{

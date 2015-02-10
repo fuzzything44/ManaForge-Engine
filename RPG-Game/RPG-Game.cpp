@@ -81,8 +81,10 @@ GLint init()
 	
 	// enable the depth buffer so the trianges in front are in front
 	glEnable(GL_DEPTH_TEST);
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	
+
+	// enable transparency
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	// init openCL. opencl has to be initalized after opengl and all of our buffers. 
 	cl_int err = CLHandler::initCL();
@@ -91,10 +93,23 @@ GLint init()
 		return err;
 	}
 
+	TextureLibrary::addTexture("0", "textures/0.dds");
 	TextureLibrary::addTexture("1", "textures/1.dds");
 	TextureLibrary::addTexture("2", "textures/2.dds");
 	TextureLibrary::addTexture("3", "textures/3.dds");
 	TextureLibrary::addTexture("4", "textures/4.dds");
+	TextureLibrary::addTexture("5", "textures/5.dds");
+	TextureLibrary::addTexture("6", "textures/6.dds");
+	TextureLibrary::addTexture("7", "textures/7.dds");
+	TextureLibrary::addTexture("8", "textures/8.dds");
+	TextureLibrary::addTexture("9", "textures/9.dds");
+	TextureLibrary::addTexture("10", "textures/10.dds");
+	TextureLibrary::addTexture("11", "textures/11.dds");
+	TextureLibrary::addTexture("12", "textures/12.dds");
+	TextureLibrary::addTexture("13", "textures/13.dds");
+	TextureLibrary::addTexture("14", "textures/14.dds");
+	TextureLibrary::addTexture("15", "textures/15.dds");
+	TextureLibrary::addTexture("16", "textures/16.dds");
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);

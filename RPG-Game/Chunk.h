@@ -37,7 +37,9 @@ protected:
 	
 
 	// opengl handles
-	GLuint locBufferID, UVBufferID, eboID, vaoID, program;
+	GLuint locBufferID, UVBufferID, eboID, vaoID;
+
+	static GLuint program;
 
 	// location of the uniform variables so we can set them
 	GLint renderOrderUniID, viewMatUniID;
@@ -65,6 +67,8 @@ protected:
 
 	/// <summary> Constructor giving a location </summary>
 	/// <param name='location'> The location of the new Chunk </param>
-	Chunk(GLuint program, glm::mat4* viewMatIn, glm::vec2 locationIn = glm::vec2(0.f, 0.f));
+	Chunk(glm::mat4* viewMatIn, glm::vec2 locationIn = glm::vec2(0.f, 0.f));
+
+	static std::vector<GLint> texUniformHandles;
 
 };
