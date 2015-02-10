@@ -25,7 +25,7 @@ public:
 	/// <param name='programIn'> The program to use </param>
 	/// <param name='viewMatIn'> A pointer to the view matrix to be used </param>
 	/// <param name='chunksSizeIn'> The amount of chunks to initalize </param>
-	static GLvoid initChunks(GLuint programIn, glm::mat4* viewMatIn, glm::uvec2 chunksSizeIn);
+	static GLvoid initChunks(GLuint programIn, glm::mat4* viewMatIn, const glm::uvec2& chunksSizeIn);
 
 	static void draw();
 

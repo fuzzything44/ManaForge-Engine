@@ -8,14 +8,14 @@ Chunk* Chunk::persistentChunk = NULL;
 glm::uvec2 Chunk::chunksSize = glm::uvec2(0, 0);
 
 
-GLvoid Chunk::initChunks(GLuint programIn, glm::mat4* viewMatIn, glm::uvec2 chunksSizeIn)
+GLvoid Chunk::initChunks(GLuint programIn, glm::mat4* viewMatIn, const glm::uvec2& chunksSizeIn)
 {
 	chunksSize = chunksSizeIn;
 
 	// allocate the pointer
 	chunks = (Chunk***)malloc(sizeof(Chunk**) * chunksSize.y);
 
-	for (int x = 0; x < chunksSize.y; x++)
+	for (int x = 0; x < chunksSize.x; x++)
 	{
 		// allocate the column -- you can read about malloc: http://www.cplusplus.com/reference/cstdlib/malloc/
 		chunks[x] = (Chunk**)malloc(sizeof(Chunk*) * chunksSize.y);

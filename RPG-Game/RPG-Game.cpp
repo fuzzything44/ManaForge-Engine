@@ -112,7 +112,7 @@ GLint init()
 	// make the projection so there is no distortion based on aspect ratio.
 	projection = glm::ortho(-aspectRatio, aspectRatio, -1.f, 1.f);
 
-	Chunk::initChunks(program, &viewMat, glm::uvec2(5, 10));
+	Chunk::initChunks(program, &viewMat, glm::uvec2(10, 3));
 	
 
 	glfwSetScrollCallback(MainWindow::window, scroll);

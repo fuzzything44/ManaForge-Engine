@@ -58,8 +58,7 @@ void TextureLibrary::addTexture(std::string key, const char* filename)
 
 UVData TextureLibrary::getUVData(std::string key)
 {
-	
-	return UVDataMap[key];
+	return UVDataMap.find(key)->second;
 }
 
 

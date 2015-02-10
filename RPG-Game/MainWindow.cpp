@@ -84,6 +84,8 @@ GLint MainWindow::run(const GLchar* title, GLboolean isFullscreen)
 	if (scroll)
 		glfwSetScrollCallback(window, scroll);
 	
+	double start = glfwGetTime();
+
 	// if init exists use it and if it doesn't succede return the error code.
 	if (init)
 	{
@@ -94,6 +96,8 @@ GLint MainWindow::run(const GLchar* title, GLboolean isFullscreen)
 		}
 	}
 	
+	std::cout << "Init finished in " << glfwGetTime() - start << "s" << std::endl;
+
 	// set initial tick
 	GLfloat LastTick =(GLfloat) (glfwGetTime());
 
