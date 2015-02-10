@@ -2,7 +2,10 @@
 
 #include <glm/glm.hpp>
 
+#include <sstream>
+
 #include "Helper.h"
+#include "TextureLibrary.h"
 
 class Chunk;
 #include "Actor.h"

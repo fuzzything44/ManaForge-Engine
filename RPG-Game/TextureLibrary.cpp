@@ -5,6 +5,64 @@
 #include <fstream>
 #include <string>
 
+std::vector<GLuint> TextureLibrary::textures = std::vector<GLuint>();
+std::map<std::string, UVData> TextureLibrary::UVDataMap = std::map<std::string, UVData>();
+glm::uvec2 TextureLibrary::nextLocation = glm::uvec2(0, 0);
+GLint TextureLibrary::currentTexture = 0;
+
+GLuint TextureLibrary::getTextureHandle(GLuint idx)
+{
+	return textures[idx];
+}
+
+void TextureLibrary::addTexture(std::string key, const char* filename)
+{
+	// if we need to make a new texture, do it
+	if (currentTexture >= textures.size())
+	{
+		textures.push_back(allocateCompressedTextureLibraryFromDDS(TEXTURE_WIDTH, filename));
+
+		nextLocation.x = nextLocation.y = 0;
+	}
+
+	appendDDS(textures[currentTexture], nextLocation.x * IMAGE_WIDTH, nextLocation.y * IMAGE_WIDTH, filename);
+	
+	// width of one texture in UV coordinates
+	float pitch = 1.f / TEXTURE_WIDTH;
+
+	// populate the data for the UVs
+	UVData data;
+	data.bottomLeft =	glm::vec2(pitch *  nextLocation.x		, pitch *  nextLocation.y);
+	data.topLeft =		glm::vec2(pitch *  nextLocation.x		, pitch * (nextLocation.y + 1));
+	data.bottomRight =	glm::vec2(pitch * (nextLocation.x + 1)	, pitch *  nextLocation.y);
+	data.topRight =		glm::vec2(pitch * (nextLocation.x + 1)	, pitch * (nextLocation.y + 1));
+
+	// add it to the datamap
+	UVDataMap[key] = data;
+
+	// proceed to the next location
+	nextLocation.x++;
+
+	if (nextLocation.x > TEXTURE_WIDTH)
+	{
+		nextLocation.x = 0;
+		nextLocation.y++;
+
+		if (nextLocation.y > TEXTURE_WIDTH)
+		{
+			nextLocation.y = 0;
+			currentTexture++;
+		}
+	}
+}
+
+UVData TextureLibrary::getUVData(std::string key)
+{
+	
+	return UVDataMap[key];
+}
+
+
 void TextureLibrary::appendDDS(GLuint texToAppend, GLuint Xoffset, GLuint Yoffset, const GLchar* filepath)
 {
 

@@ -11,6 +11,12 @@
 #define FOURCC_DXT3 0x33545844 // Equivalent to "DXT3" in ASCII
 #define FOURCC_DXT5 0x35545844 // Equivalent to "DXT5" in ASCII
 
+// size of each texture
+static const GLuint IMAGE_WIDTH = 256;
+
+// amount of textures in one direction. Size of texture is (IMAGE_WIDTH * TEXTURE_WIDTH)^2
+static const GLuint TEXTURE_WIDTH = 2;
+
 
 struct UVData
 {
@@ -25,7 +31,11 @@ class TextureLibrary
 {
 public:
 
-	static UVData getUVData(const char* key);
+	static UVData getUVData(std::string key);
+
+	static void addTexture(std::string key, const char* filename);
+
+	static GLuint getTextureHandle(GLuint idx);
 
 private:
 	
@@ -45,6 +55,9 @@ private:
 	/// <summary> allocates an empty texture library from the format of the given DDS file </summary>
 	/// <param name='num'> The amount of textures in one direction. total textures is up to num ^ 2 </param>
 	/// <param name='filepath'> The path to the DDS file to load </param>
-	GLuint allocateCompressedTextureLibraryFromDDS(GLuint num, const char* filepath);
+	static GLuint allocateCompressedTextureLibraryFromDDS(GLuint num, const char* filepath);
 
+	// the location of the next image.
+	static glm::uvec2 nextLocation;
+	static GLint currentTexture;
 };

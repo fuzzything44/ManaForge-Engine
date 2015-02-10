@@ -38,7 +38,7 @@ Chunk::Chunk(GLuint programIn, glm::mat4* viewMatIn, glm::vec2 locationIn)
 		std::vector<GLfloat> locData;
 
 		// allocate the same amount as above for texture coordinates
-		std::vector<GLfloat> texCoords;
+		std::vector<UVData> texCoords;
 
 		// the element data 
 		std::vector<GLuint> eboData;
@@ -65,19 +65,12 @@ Chunk::Chunk(GLuint programIn, glm::mat4* viewMatIn, glm::vec2 locationIn)
 				locData.push_back(startX + 1);
 				locData.push_back(startY + 1); // top right
 
-
-				// add default texture coordinates -- will change with texture libraries
-				texCoords.push_back(0);
-				texCoords.push_back(0); // bottom left
-
-				texCoords.push_back(0);
-				texCoords.push_back(1); // top left
-
-				texCoords.push_back(1);
-				texCoords.push_back(0); // botom right
-
-				texCoords.push_back(1);
-				texCoords.push_back(1); // top right
+				// use a random texture
+				srand(glfwGetTime() * 1000000);
+				GLuint tex = rand() % 4 + 1;
+				std::stringstream stream;
+				stream << tex;
+				texCoords.push_back(TextureLibrary::getUVData(stream.str()));
 
 
 				GLuint startIdx = (y * CHUNK_WIDTH + x) * 4;
@@ -118,7 +111,7 @@ Chunk::Chunk(GLuint programIn, glm::mat4* viewMatIn, glm::vec2 locationIn)
 		glBindBuffer(GL_ARRAY_BUFFER, UVBufferID);
 
 		// bind UV data to be sen tot the GPU
-		glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * texCoords.size(), &texCoords[0], GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(UVData) * texCoords.size(), &texCoords[0].bottomLeft.x, GL_STATIC_DRAW);
 
 
 		// init element buffer

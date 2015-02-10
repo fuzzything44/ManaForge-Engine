@@ -16,6 +16,7 @@
 #include "Helper.h"
 #include "Chunk.h"
 #include "CLHandler.h"
+#include "TextureLibrary.h"
 
 /*************** P R O T O T Y P E S ***************************************************/
 GLvoid draw(GLfloat delta);
@@ -90,14 +91,15 @@ GLint init()
 		return err;
 	}
 
-	// load a temp 
-	GLuint width, height;
-	GLuint tex = loadDDS("textures/1.dds");
+	TextureLibrary::addTexture("1", "textures/1.dds");
+	TextureLibrary::addTexture("2", "textures/2.dds");
+	TextureLibrary::addTexture("3", "textures/3.dds");
+	TextureLibrary::addTexture("4", "textures/4.dds");
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 6);
 
-	glBindTexture(GL_TEXTURE_2D, tex);
 
 	GLuint program = LoadShaders("chunkvert.glsl", "chunkfrag.glsl");
 
