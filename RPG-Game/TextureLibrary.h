@@ -15,7 +15,7 @@
 static const GLuint IMAGE_WIDTH = 256;
 
 // amount of textures in one direction. Size of texture is (IMAGE_WIDTH * TEXTURE_WIDTH)^2
-static const GLuint TEXTURE_WIDTH = 2;
+static const GLuint TEXTURE_WIDTH = 64;
 
 
 struct UVData
@@ -30,19 +30,15 @@ struct UVData
 class TextureLibrary
 {
 public:
-
-	static GLuint getTexturesAmnt();
-
+	
 	static UVData getUVData(std::string key);
 
 	static void addTexture(std::string key, const char* filename);
-
-	static GLuint getTextureHandle(GLuint idx);
+	
+	static GLuint getTextureHandle();
 
 private:
 	
-	// stores the handles to the textures
-	static std::vector<GLuint> textures;
 
 	static std::unordered_map<std::string, UVData> UVDataMap;
 	
@@ -61,5 +57,7 @@ private:
 
 	// the location of the next image.
 	static glm::uvec2 nextLocation;
-	static GLint currentTexture;
+
+	// stores the handles to the textures
+	static GLuint texture;
 };

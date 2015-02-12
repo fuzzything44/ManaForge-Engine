@@ -69,6 +69,6 @@ protected:
 	/// <param name='location'> The location of the new Chunk </param>
 	Chunk(glm::mat4* viewMatIn, glm::vec2 locationIn = glm::vec2(0.f, 0.f));
 
-	static std::vector<GLint> texUniformHandles;
+	static GLint texUniformHandle;
 
 };

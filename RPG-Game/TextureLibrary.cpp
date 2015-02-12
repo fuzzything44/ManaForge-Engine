@@ -5,49 +5,39 @@
 #include <fstream>
 #include <string>
 
-std::vector<GLuint> TextureLibrary::textures = std::vector<GLuint>();
+GLuint TextureLibrary::texture = 0;
 std::unordered_map<std::string, UVData> TextureLibrary::UVDataMap = std::unordered_map<std::string, UVData>();
 glm::uvec2 TextureLibrary::nextLocation = glm::uvec2(0, 0);
-GLint TextureLibrary::currentTexture = 0;
 
-GLuint TextureLibrary::getTexturesAmnt()
+GLuint TextureLibrary::getTextureHandle()
 {
-	return textures.size();
-}
-
-GLuint TextureLibrary::getTextureHandle(GLuint idx)
-{
-	return textures[idx];
+	return texture;
 }
 
 void TextureLibrary::addTexture(std::string key, const char* filename)
 {
 	// if we need to make a new texture, do it
-	if (currentTexture >= textures.size())
+	if (texture == 0)
 	{
-		textures.push_back(allocateCompressedTextureLibraryFromDDS(TEXTURE_WIDTH, filename));
+		texture = allocateCompressedTextureLibraryFromDDS(TEXTURE_WIDTH, filename);
 
 		nextLocation.x = nextLocation.y = 0;
 	}
 
-	appendDDS(textures[currentTexture], nextLocation.x * IMAGE_WIDTH, nextLocation.y * IMAGE_WIDTH, filename);
+	appendDDS(texture, nextLocation.x * IMAGE_WIDTH, nextLocation.y * IMAGE_WIDTH, filename);
 	
 	// width of one texture in UV coordinates
 	float pitch = 1.f / TEXTURE_WIDTH;
 
 	// populate the data for the UVs -- Flip the UVs vertically because DDS stores them in the opposite direction.
 	UVData data;
-	data.bottomLeft =	glm::vec2(pitch *  nextLocation.x		+ currentTexture, 
-		pitch * (nextLocation.y + 1)	+ currentTexture);
+	data.bottomLeft =	glm::vec2(pitch *  nextLocation.x, pitch * (nextLocation.y + 1));
 
-	data.topLeft =		glm::vec2(pitch *  nextLocation.x		+ currentTexture, 
-		pitch * (nextLocation.y)		+ currentTexture);
+	data.topLeft =		glm::vec2(pitch *  nextLocation.x, pitch * (nextLocation.y));
 
-	data.bottomRight =	glm::vec2(pitch * (nextLocation.x + 1)	+ currentTexture,
-		pitch * (nextLocation.y + 1)	+ currentTexture);
+	data.bottomRight =	glm::vec2(pitch * (nextLocation.x + 1), pitch * (nextLocation.y + 1));
 
-	data.topRight =		glm::vec2(pitch * (nextLocation.x + 1)	+ currentTexture, 
-		pitch * (nextLocation.y)		+ currentTexture);
+	data.topRight =		glm::vec2(pitch * (nextLocation.x + 1), pitch * (nextLocation.y));
 
 	// add it to the datamap
 	UVDataMap[key] = data;
@@ -60,10 +50,9 @@ void TextureLibrary::addTexture(std::string key, const char* filename)
 		nextLocation.x = 0;
 		nextLocation.y++;
 
-		if (nextLocation.y > TEXTURE_WIDTH)
+		if (nextLocation.y >= TEXTURE_WIDTH)
 		{
 			nextLocation.y = 0;
-			currentTexture++;
 		}
 	}
 }

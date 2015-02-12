@@ -6,7 +6,7 @@
 Chunk*** Chunk::chunks = NULL;
 Chunk* Chunk::persistentChunk = NULL;
 glm::uvec2 Chunk::chunksSize = glm::uvec2(0, 0);
-std::vector<GLint> Chunk::texUniformHandles = std::vector<GLint>();
+GLint Chunk::texUniformHandle = -1;
 GLuint Chunk::program = 0;
 
 
@@ -32,14 +32,7 @@ GLvoid Chunk::initChunks(GLuint programIn, glm::mat4* viewMatIn, const glm::uvec
 
 
 	// initalize all handles
-	for (int i = 0; i < TextureLibrary::getTexturesAmnt(); i++)
-	{
-		std::stringstream ss;
-		ss << i;
-		std::string name = "tex";
-		name.append(ss.str());
-		texUniformHandles.push_back(glGetUniformLocation(program, name.c_str()));
-	}
+	texUniformHandle = glGetUniformLocation(program, "texArray");
 }
 
 Chunk::Chunk(glm::mat4* viewMatIn, glm::vec2 locationIn) 
@@ -153,8 +146,13 @@ GLvoid Chunk::drawChunk()
 	if (this != persistentChunk)
 	{
 
-
 		glUseProgram(program);
+		
+		glUniform1i(glGetUniformLocation(program, "texArray"), 0);
+
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, TextureLibrary::getTextureHandle());
+
 		glBindVertexArray(vaoID);
 
 		// set the viewMat in the shader to the view mat. We ned to derefrence, get first element, then turn back into pointer
@@ -207,14 +205,6 @@ GLvoid Chunk::drawChunk()
 
 void Chunk::draw()
 {
-
-	for (int i = 0; i < texUniformHandles.size(); i++)
-	{
-		glUniform1i(texUniformHandles[i], i);
-		glActiveTexture(GL_TEXTURE0 + i);
-		glBindTexture(GL_TEXTURE_2D, TextureLibrary::getTextureHandle(i));
-
-	}
 
 	// return if there is no persistent chunk
 	if (persistentChunk == NULL)
