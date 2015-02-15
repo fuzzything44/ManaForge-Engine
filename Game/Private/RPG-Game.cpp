@@ -65,7 +65,7 @@ GLint main()
 
 	}
 
-	chdir(path.append("Resource\\").c_str());
+	_chdir(path.append("Resource\\").c_str());
 
 
 	std::cout << std::endl << std::endl << std::endl;
