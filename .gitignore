@@ -40,3 +40,6 @@
 
 Debug/Engine.*
 Debug/Game.*
+Game/Deubg/
+Engine/Debug/
+Editor/Debug
