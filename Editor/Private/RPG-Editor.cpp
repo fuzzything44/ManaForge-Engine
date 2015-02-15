@@ -39,7 +39,6 @@ cl_int initCL();
 GLint main()
 {
 
-
 	std::cout << std::endl << std::endl << std::endl;
 
 	// bind the draw function to the draw function

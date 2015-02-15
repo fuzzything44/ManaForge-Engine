@@ -20,7 +20,6 @@
 #define FOURCC_DXT5 0x35545844 // Equivalent to "DXT5" in ASCII
 
 
-
 /// <summary> Loads the selected file to a string.
 /// <para> Returns a string that contains the data </para>
 /// </summary>

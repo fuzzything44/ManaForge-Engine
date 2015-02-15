@@ -18,6 +18,8 @@
 #include "CLHandler.h"
 #include "TextureLibrary.h"
 
+#include <direct.h>
+
 /*************** P R O T O T Y P E S ***************************************************/
 GLvoid draw(GLfloat delta);
 GLint init();
@@ -38,6 +40,32 @@ cl_int initCL();
 
 GLint main()
 {
+	// changes the path so everything we open will be in Resoruce/
+	char ownPth[MAX_PATH];
+
+	// Will contain exe path
+	HMODULE hModule = GetModuleHandle(NULL);
+	if (hModule == NULL)
+	{
+		return -293;
+	}
+	// When passing NULL to GetModuleHandle, it returns handle of exe itself
+	GetModuleFileName(hModule, ownPth, (sizeof(ownPth)));
+	
+	std::string path = ownPth;
+	//path = path.substr(0, path.size() - 14);
+
+	// remove the exe and the directory
+	for (int i = 0; i < 2; i++){
+
+		
+		do {
+			path = path.substr(0, path.size() - 1);
+		} while (path[path.size() - 1] != '\\');
+
+	}
+
+	chdir(path.append("Resource\\").c_str());
 
 
 	std::cout << std::endl << std::endl << std::endl;
@@ -91,23 +119,23 @@ GLint init()
 
 
 
-	TextureLibrary::addTexture("0", "textures/0.dds");
-	TextureLibrary::addTexture("1", "textures/1.dds");
-	TextureLibrary::addTexture("2", "textures/2.dds");
-	TextureLibrary::addTexture("3", "textures/3.dds");
-	TextureLibrary::addTexture("4", "textures/4.dds");
-	TextureLibrary::addTexture("5", "textures/5.dds");
-	TextureLibrary::addTexture("6", "textures/6.dds");
-	TextureLibrary::addTexture("7", "textures/7.dds");
-	TextureLibrary::addTexture("8", "textures/8.dds");
-	TextureLibrary::addTexture("9", "textures/9.dds");
-	TextureLibrary::addTexture("10", "textures/10.dds");
-	TextureLibrary::addTexture("11", "textures/11.dds");
-	TextureLibrary::addTexture("12", "textures/12.dds");
-	TextureLibrary::addTexture("13", "textures/13.dds");
-	TextureLibrary::addTexture("14", "textures/14.dds");
-	TextureLibrary::addTexture("15", "textures/15.dds");
-	TextureLibrary::addTexture("16", "textures/16.dds");
+	TextureLibrary::addTexture("0", "textures\\0.dds");
+	TextureLibrary::addTexture("1", "textures\\1.dds");
+	TextureLibrary::addTexture("2", "textures\\2.dds");
+	TextureLibrary::addTexture("3", "textures\\3.dds");
+	TextureLibrary::addTexture("4", "textures\\4.dds");
+	TextureLibrary::addTexture("5", "textures\\5.dds");
+	TextureLibrary::addTexture("6", "textures\\6.dds");
+	TextureLibrary::addTexture("7", "textures\\7.dds");
+	TextureLibrary::addTexture("8", "textures\\8.dds");
+	TextureLibrary::addTexture("9", "textures\\9.dds");
+	TextureLibrary::addTexture("10", "textures\\10.dds");
+	TextureLibrary::addTexture("11", "textures\\11.dds");
+	TextureLibrary::addTexture("12", "textures\\12.dds");
+	TextureLibrary::addTexture("13", "textures\\13.dds");
+	TextureLibrary::addTexture("14", "textures\\14.dds");
+	TextureLibrary::addTexture("15", "textures\\15.dds");
+	TextureLibrary::addTexture("16", "textures\\16.dds");
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
@@ -116,9 +144,7 @@ GLint init()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-	GLuint program = LoadShaders("shaders/chunkvert.glsl", "shaders/chunkfrag.glsl");
-
-
+	GLuint program = LoadShaders("shaders\\chunkvert.glsl", "shaders\\chunkfrag.glsl");
 
 	Chunk::initChunks(program, &viewMat, glm::uvec2(10, 3));
 	

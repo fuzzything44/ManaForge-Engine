@@ -45,6 +45,7 @@ Chunk::Chunk(glm::mat4* viewMatIn, glm::vec2 locationIn)
 	{
 		srand((unsigned int)this);
 
+		// init the generator -- will remove with loading
 		std::mersenne_twister_engine < std::uint_fast32_t, 32, 624, 397, 31,
 			0x9908b0df, 11,
 			0xffffffff, 7,
