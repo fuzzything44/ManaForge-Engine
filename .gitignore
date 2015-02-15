@@ -37,3 +37,8 @@
 *.db
 *.psess
 *.vspx
+Game/Debug/Engine.dll
+Game/Debug/Engine.exp
+Game/Debug/Engine.lib
+Game/Debug/Game.exp
+Game/Debug/Game.lib
