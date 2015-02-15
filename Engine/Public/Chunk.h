@@ -12,8 +12,8 @@ class Chunk;
 #include "Actor.h"
 
 // the chunk width
-#define CHUNK_WIDTH 50
-#define MAX_ACTORS 20
+static const GLuint CHUNK_WIDTH = 50;
+static const GLuint MAX_ACTORS = 20;
 
 class Chunk
 {
