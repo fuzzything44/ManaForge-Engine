@@ -1,7 +1,7 @@
 #include "CLHandler.h"
 
-cl::Context CLHandler::context = cl::Context();
-cl::Platform CLHandler::platform = cl::Platform();
+cl::Context* CLHandler::context = NULL;
+cl::Platform CLHandler::platform = NULL;
 cl::CommandQueue CLHandler::queue = cl::CommandQueue();
 std::vector<cl::Device> CLHandler::devices = std::vector<cl::Device>();
 
@@ -12,8 +12,9 @@ cl_int CLHandler::updateCL(cl::BufferGL output, cl_float2 characterLocation)
 	return CL_SUCCESS;
 }
 
-cl_int CLHandler::initCL(cl_context_properties* contextProps)
+cl_int CLHandler::initCL()
 {
+
 	platform = getBestPlatform();
 
 	std::cout << "Using Platform: " << platform.getInfo<CL_PLATFORM_NAME>() << std::endl;
@@ -27,9 +28,16 @@ cl_int CLHandler::initCL(cl_context_properties* contextProps)
 
 	std::cout << "Using Device: " << devices[0].getInfo<CL_DEVICE_NAME>() << std::endl;
 
+	cl_context_properties context_properties[] =
+	{
+		CL_GL_CONTEXT_KHR, (cl_context_properties)wglGetCurrentContext(),
+		CL_WGL_HDC_KHR, (cl_context_properties)wglGetCurrentDC(),
+		CL_CONTEXT_PLATFORM, (cl_context_properties)platform(),
+		NULL
+	};
 
 	cl_int err = CL_SUCCESS;
-	context = cl::Context(devices, contextProps, NULL, NULL, &err);
+	context = new cl::Context(devices, NULL, NULL, NULL, &err);
 
 	if (!errChkCL(err, "Create Context")){
 		return err;
@@ -41,6 +49,8 @@ cl_int CLHandler::initCL(cl_context_properties* contextProps)
 
 void CLHandler::exitCL()
 {
+	clReleaseCommandQueue(queue());
+	clReleaseContext((*context)());
 }
 
 cl::Platform CLHandler::getBestPlatform()

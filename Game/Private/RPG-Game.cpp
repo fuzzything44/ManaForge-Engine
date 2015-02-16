@@ -118,6 +118,7 @@ GLint init()
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 
+	CLHandler::initCL();
 
 	TextureLibrary::addTexture("0", "textures\\0.dds");
 	TextureLibrary::addTexture("1", "textures\\1.dds");
@@ -146,7 +147,7 @@ GLint init()
 
 	GLuint program = LoadShaders("shaders\\chunkvert.glsl", "shaders\\chunkfrag.glsl");
 
-	Chunk::initChunks(program, &viewMat, glm::uvec2(10, 3));
+	Chunk::initChunks(program, &viewMat, glm::uvec2(1, 3));
 	
 
 	float aspectRatio = (float)MainWindow::getWindowWidth() / (float)MainWindow::getWindowHeight();
