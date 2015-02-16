@@ -31,13 +31,7 @@ ENGINE_API std::string loadFileToStr(const GLchar* filename);
 /// <param name='fragmentFile'> The path to the fragment shader. Must contain an extension. </param>
 ENGINE_API GLuint LoadShaders(const GLchar* vertexFile, const GLchar* fragmentFile);
 
-/// <summary> loads a CL program and returns it </summary>
-/// <param name='filepath'> The path to the file that contains the kernels. Must have an extension. </param>
-/// <param name='context'> The context to create the program in </param>
-/// <param name='devices'> A vector of cl::Device that has the devices to comile it on. </param>
-/// <param name='err'> A cl_int* that is set to the error code. Suggested for error handling. </param>
-ENGINE_API cl::Program loadCLProgram(const GLchar* filepath, cl::Context& context, 
-	std::vector<cl::Device>& devices, cl_int* err = NULL);
+
 
 /// <summary> load a DDS format texture to the GLuint that is returned </summary>
 /// <param name='imagepath'> the pathe to the DDS file </param>

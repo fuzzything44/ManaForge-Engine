@@ -35,7 +35,10 @@ string loadFileToStr(const GLchar* filename)
 
 
 // Load Shaders from the files defined
-GLuint LoadShaders(const GLchar * vertex_file_path, const GLchar * fragment_file_path){
+GLuint LoadShaders(const GLchar * vertex_file_path, const GLchar * fragment_file_path)
+{
+
+	std::cout << std::endl << std::endl;
 
 	// Create the shaders
 	GLuint VertexShaderID = glCreateShader(GL_VERTEX_SHADER);
@@ -109,24 +112,6 @@ GLuint LoadShaders(const GLchar * vertex_file_path, const GLchar * fragment_file
 	glDeleteShader(FragmentShaderID);
 
 	return ProgramID;
-}
-
-cl::Program loadCLProgram(const GLchar* filepath, cl::Context& context, std::vector<cl::Device>& devices, cl_int* err)
-{
-
-	// load kernel
-	std::string source = loadFileToStr("kernels.cl");
-
-	cl::Program program(context, source);
-	*err = CL_SUCCESS;
-	*err = program.build(devices);
-
-	if (err != CL_SUCCESS){
-		std::cout << " Error building: " << program.getBuildInfo<CL_PROGRAM_BUILD_LOG>(devices[0]) << "\t" << *err << "\n";
-	}
-
-
-	return program;
 }
 
 

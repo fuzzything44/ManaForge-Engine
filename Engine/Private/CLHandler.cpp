@@ -3,9 +3,16 @@
 cl::Context* CLHandler::context = NULL;
 cl::Platform CLHandler::platform = NULL;
 cl::CommandQueue CLHandler::queue = cl::CommandQueue();
+cl::Program* CLHandler::updateProgram = NULL;
+cl::Kernel CLHandler::collideKern = cl::Kernel();
 std::vector<cl::Device> CLHandler::devices = std::vector<cl::Device>();
 
-cl_int CLHandler::updateCL(cl::BufferGL output, cl_float2 characterLocation)
+/// <param name = 'locBuffer'> the buffer to write to </param>
+/// <param name='UVBuffer'> The Buffer to write UV data to </param>
+/// <param name='elemBuffer'> The element buffer object to write to </param>
+/// <param name = 'characterLocation'> the current location of the character </param>
+/// <summary> called each frame. </summary>
+cl_int CLHandler::updateCL(cl::BufferGL locBuffer, cl::BufferGL UVBuffer, cl::BufferGL elemBuffer, cl_float2 characterLocation)
 {
 	
 
@@ -28,25 +35,49 @@ cl_int CLHandler::initCL()
 
 	std::cout << "Using Device: " << devices[0].getInfo<CL_DEVICE_NAME>() << std::endl;
 
+
+	// define properies for the context
 	cl_context_properties context_properties[] =
 	{
-		CL_GL_CONTEXT_KHR, (cl_context_properties)wglGetCurrentContext(),
-		CL_WGL_HDC_KHR, (cl_context_properties)wglGetCurrentDC(),
-		CL_CONTEXT_PLATFORM, (cl_context_properties)platform(),
-		NULL
+		CL_GL_CONTEXT_KHR, (cl_context_properties)wglGetCurrentContext(), // use the openGL context so we can share buffers
+		CL_WGL_HDC_KHR, (cl_context_properties)wglGetCurrentDC(), // use the openGL DC
+		CL_CONTEXT_PLATFORM, (cl_context_properties)platform(), // use the platform that we decided was fastest
+		NULL // add a null at end so we don't get null ptr exception.
 	};
 
+	// create the context --  store error in err
 	cl_int err = CL_SUCCESS;
 	context = new cl::Context(devices, NULL, NULL, NULL, &err);
 
-	if (!errChkCL(err, "Create Context")){
+	// make sure the context was created successfully
+	if (!errChkCL(err, "Create Context"))
+	{
 		return err;
 	}
-	
+
+	// load the program
+	err = loadCLProgram(UPDATE_LOCATION, updateProgram);
+
+	std::cout << std::endl << "Loading kernel: collide from program" << std::endl;
+
+	// load the kernel from the program
+	cl::Kernel Kern(*updateProgram, "collide", &err);
+
+	// do error checking
+	if (!errChkCL(err, "Load Kernel collide"))
+	{
+		return err;
+	}
+	else
+	{
+		std::cout << "Kernel Loading completed" << std::endl;
+	}
+
 
 	return CL_SUCCESS;
 }
 
+/// <summary> Called upon exit -- cleans up openCL resoruces. </summary>
 void CLHandler::exitCL()
 {
 	clReleaseCommandQueue(queue());
@@ -86,4 +117,44 @@ cl::Platform CLHandler::getBestPlatform()
 		}
 	}
 	return ret;
+}
+
+/// <summary> loads a CL program and returns the error code </summary>
+/// <param name='filepath'> The path to the file that contains the kernels. Must have an extension. </param>
+/// <param name='program'> 
+/// <para> refrence to the pointer to the program to write to <para>
+/// <para> -- this way it saves the memory address back to the pointer given <para>
+/// </param>
+cl_int CLHandler::loadCLProgram(const GLchar* filepath, cl::Program*& program)
+{
+	std::cout << std::endl << std::endl;
+
+	int err = CL_SUCCESS;
+
+	// load kernel
+	std::cout << "Compiling Program " << filepath << std::endl;
+
+	std::string source = loadFileToStr(filepath);
+
+	program = new cl::Program();
+	*program = cl::Program(*context, source, false, &err);
+
+	if (!errChkCL(err, "Create Program"))
+	{
+		return err;
+	}
+
+	err = program->build(devices);
+
+	if (err != CL_SUCCESS)
+	{
+		std::cout << " Error building: " << program->getBuildInfo<CL_PROGRAM_BUILD_LOG>(devices[0]) << "\t" << err << "\n";
+		return err;
+	}
+	else
+	{
+		std::cout << "Program successfully compiled" << std::endl;
+	}
+
+	return err;
 }

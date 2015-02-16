@@ -16,6 +16,7 @@ struct ActorData
 	glm::vec2 velocity;
 	UVData UVs;
 	Actor* loc;
+	bool collides;
 	// TODO: add collision channels -- need to make
 };
 
@@ -39,9 +40,13 @@ protected:
 
 	/// <summary> called every frame if the variable ticks is true </summary>
 	/// <param name='deltaTime'> the time in milliseconds since the previous time. </param>
-	virtual void tick(GLfloat deltaTime);
+	virtual void tick(GLfloat deltaTime) {	}
 
 	Actor(const glm::vec4& boundsIn, GLfloat* UVs, Chunk* chunkIn);
+
+	/// <summary> called when this actor overlaps with another actor </summary>
+	/// <param ='otherActor'> the actor that it collides with </param>
+	virtual void collide(Actor* otherActor) {	}
 
 	// the velocity of the actor
 	glm::vec2 velocity;

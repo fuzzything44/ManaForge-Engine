@@ -20,7 +20,3 @@ Actor::Actor(const glm::vec4& boundsIn, GLfloat* UVs, Chunk* chunkIn) : bounds(b
 
 }
 
-GLvoid Actor::tick(GLfloat deltaTime)
-{
-
-}
