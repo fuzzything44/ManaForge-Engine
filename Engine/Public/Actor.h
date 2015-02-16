@@ -9,6 +9,17 @@
 class Actor;
 #include "Chunk.h"
 
+// struct containing all of the Data for OpenCL
+struct ActorData
+{
+	glm::vec4 bounds;
+	glm::vec2 velocity;
+	UVData UVs;
+	Actor* loc;
+	// TODO: add collision channels -- need to make
+};
+
+
 // the actor class -- by default dynamic 
 class Actor
 {

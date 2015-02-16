@@ -1,3 +1,6 @@
+// windows includes
+#include <direct.h>
+
 // opengl includes
 #include <GLTools/glew.h>
 #include <GLTools/glfw3.h>
@@ -5,20 +8,17 @@
 // opencl includes
 #include <CL/cl.hpp> // .hpp has some object oriented programming approaches to it
 
-#include <CL/cl.h>
-#include <CL/cl_gl.h> // interop code
-
 // glm headers
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+// local includes
 #include "MainWindow.h"
 #include "Helper.h"
 #include "Chunk.h"
 #include "CLHandler.h"
 #include "TextureLibrary.h"
 
-#include <direct.h>
 
 /*************** P R O T O T Y P E S ***************************************************/
 GLvoid draw(GLfloat delta);
@@ -147,6 +147,7 @@ GLint init()
 
 	GLuint program = LoadShaders("shaders\\chunkvert.glsl", "shaders\\chunkfrag.glsl");
 
+	// init 1 * 3 chunks of CHUNK_SIZE * CHUNK_SIZE 
 	Chunk::initChunks(program, &viewMat, glm::uvec2(1, 3));
 	
 

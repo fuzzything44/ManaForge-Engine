@@ -21,12 +21,12 @@ public:
 	/// <summary> called each frame. </summary>
 	static ENGINE_API cl_int updateCL(cl::BufferGL output, cl_float2 characterLocation);
 
-	static cl::Context* context;
+	static ENGINE_API cl::Context* context;
 	static ENGINE_API cl::Platform platform;
 	static ENGINE_API cl::CommandQueue queue;
 	static ENGINE_API std::vector<cl::Device> devices;
 	
-	
+	/// <summary> Called upon exit -- cleans up openCL resoruces. </summary>
 	static ENGINE_API void exitCL();
 
 protected:

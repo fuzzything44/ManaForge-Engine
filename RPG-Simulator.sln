@@ -15,6 +15,40 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Editor", "Editor\Editor.vcx
 		{366C8B6A-FC80-421F-9AAA-F3A29F3061F5} = {366C8B6A-FC80-421F-9AAA-F3A29F3061F5}
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resources", "Resources", "{2032E0A9-1EDF-41C9-87FE-45E0157F2A7D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Textures", "Textures", "{1AC95EF7-8FDC-4A65-916E-E28F9663E30E}"
+	ProjectSection(SolutionItems) = preProject
+		Resource\textures\0.DDS = Resource\textures\0.DDS
+		Resource\textures\1.DDS = Resource\textures\1.DDS
+		Resource\textures\10.DDS = Resource\textures\10.DDS
+		Resource\textures\11.DDS = Resource\textures\11.DDS
+		Resource\textures\12.DDS = Resource\textures\12.DDS
+		Resource\textures\13.DDS = Resource\textures\13.DDS
+		Resource\textures\14.DDS = Resource\textures\14.DDS
+		Resource\textures\15.DDS = Resource\textures\15.DDS
+		Resource\textures\16.DDS = Resource\textures\16.DDS
+		Resource\textures\2.DDS = Resource\textures\2.DDS
+		Resource\textures\3.DDS = Resource\textures\3.DDS
+		Resource\textures\4.DDS = Resource\textures\4.DDS
+		Resource\textures\5.DDS = Resource\textures\5.DDS
+		Resource\textures\6.DDS = Resource\textures\6.DDS
+		Resource\textures\7.DDS = Resource\textures\7.DDS
+		Resource\textures\8.DDS = Resource\textures\8.DDS
+		Resource\textures\9.DDS = Resource\textures\9.DDS
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Kernels", "Kernels", "{2D93045F-4978-494A-AAF5-54DA8E0F4ADB}"
+	ProjectSection(SolutionItems) = preProject
+		Resource\kernels\updateFrame.cl = Resource\kernels\updateFrame.cl
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shaders", "Shaders", "{922DBDA2-2FEF-4153-9B2B-51AFD603A4E3}"
+	ProjectSection(SolutionItems) = preProject
+		Resource\shaders\chunkfrag.glsl = Resource\shaders\chunkfrag.glsl
+		Resource\shaders\chunkvert.glsl = Resource\shaders\chunkvert.glsl
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -36,5 +70,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{1AC95EF7-8FDC-4A65-916E-E28F9663E30E} = {2032E0A9-1EDF-41C9-87FE-45E0157F2A7D}
+		{2D93045F-4978-494A-AAF5-54DA8E0F4ADB} = {2032E0A9-1EDF-41C9-87FE-45E0157F2A7D}
+		{922DBDA2-2FEF-4153-9B2B-51AFD603A4E3} = {2032E0A9-1EDF-41C9-87FE-45E0157F2A7D}
 	EndGlobalSection
 EndGlobal

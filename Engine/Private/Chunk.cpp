@@ -86,9 +86,8 @@ Chunk::Chunk(glm::mat4* viewMatIn, glm::vec2 locationIn)
 				locData.push_back(startY + 1); // top right
 
 				// use a random texture -- will use loading
-				
-				
-				GLuint tex = std::uniform_int_distribution<int>(0, 17)(gen);
+				// currently 17 textures
+				GLuint tex = std::uniform_int_distribution<int>(0, 16)(gen);
 				std::stringstream stream;
 				stream << tex;
 				texCoords.push_back(TextureLibrary::getUVData(stream.str()));
