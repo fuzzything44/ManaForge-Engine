@@ -6,6 +6,14 @@
 
 #include <glm/glm.hpp>
 
+// enum for the window modes
+enum WindowMode
+{
+	FULLSCREEN,
+	FULLSCREEN_WINDOWED,
+	WINDOWED
+};
+
 // Handler class for window
 class MainWindow
 {
@@ -13,8 +21,10 @@ public:
 
 	/// <summary> Runs the Thread. Consumes the thread and returns the error code. </summary>
 	/// <param name='title'> The title of the winodw </param>
-	/// <param name='isFullscreen'> If the window should be fullscree or not </param>
-	static GLint MainWindow::run(const GLchar* title, GLboolean isFullscreen);
+	/// <param name='mode'> The mode to run the window in </param>
+	/// <param name='width'> The width of the window to run. Ignored if mode is FULLSCREEN_WINDOWED </param>
+	/// <param name='height'> The height of the window to run. Ignored if mode is FULLSCREEN_WINDOWED </param>
+	static GLint MainWindow::run(const GLchar* title, WindowMode mode, GLuint width, GLuint height);
 
 	/// <summary> Bind the function to be called each frame to draw the elements.
 	/// <para> Called after the keyboard function </para>

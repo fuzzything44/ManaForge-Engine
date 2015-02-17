@@ -14,10 +14,8 @@ out vec4 color;
 void main()
 {
 	// use the texture2D method to get the color at the corresponding texture location using the filtering method provided.
-	// http://www.arcsynthesis.org/gltut/Texturing/Tut15%20Magnification.html
-	// also filps Y coordinate of UVs
+	// http://www.arcsynthesis.org/gltut/Texturing/Tut15%20Magnification.html	
+	color = texture2D(tex, UV);
+
 	
-	color = texture2D(tex, vec2(UV.s, UV.t));
-
-
 }

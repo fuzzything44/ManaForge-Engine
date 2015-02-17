@@ -13,7 +13,7 @@ GLvoid(*MainWindow::scroll)(GLFWwindow*, GLdouble, GLdouble) = NULL;
 GLFWwindow* MainWindow::window = NULL;
 
 
-GLint MainWindow::run(const GLchar* title, GLboolean isFullscreen)
+GLint MainWindow::run(const GLchar* title, WindowMode windowmode, GLuint width, GLuint height)
 {
 
 
@@ -36,6 +36,8 @@ GLint MainWindow::run(const GLchar* title, GLboolean isFullscreen)
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 
+	glfwWindowHint(GLFW_DECORATED, false);
+
 	// set profile to core profile
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
@@ -43,7 +45,23 @@ GLint MainWindow::run(const GLchar* title, GLboolean isFullscreen)
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
 	// create the winodw
-	window = glfwCreateWindow(isFullscreen ? mode->width : 800, isFullscreen ? mode->height : 600, title, isFullscreen ? mon : NULL, NULL);
+	switch (windowmode)
+	{
+	case FULLSCREEN:
+		window = glfwCreateWindow(width, height, title, mon, NULL);
+		break;
+	case FULLSCREEN_WINDOWED:
+		window = glfwCreateWindow(mode->width, mode->height, title, NULL, NULL);
+		break;
+
+	case WINDOWED:
+		window = glfwCreateWindow(width, height, title, NULL, NULL);
+		break;
+
+	default:
+
+		break;
+	}
 	
 	// exit if the window wasn't initialized correctly
 	if (!window)

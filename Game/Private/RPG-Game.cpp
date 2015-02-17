@@ -83,7 +83,7 @@ GLint main()
 	MainWindow::bindResize(resize);
 
 	// run the window. consumes the thread until it returns
-	return MainWindow::run("RPG-Simulator", GL_FALSE);
+	return MainWindow::run("RPG-Simulator", WindowMode::WINDOWED, 800, 600);
 	
 }
 
