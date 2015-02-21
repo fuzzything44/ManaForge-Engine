@@ -44,3 +44,5 @@ Game/Deubg/
 Engine/Debug/
 Editor/Debug/
 Debug/Editor.*
+
+ipch/
