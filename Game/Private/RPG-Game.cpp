@@ -44,7 +44,7 @@ GLint main()
 	//path = path.substr(0, path.size() - 14);
 
 	// remove the exe and the directory
-	for (int i = 0; i < 2; i++){
+	for (int i = 0; i < 3; i++){
 
 		
 		do {

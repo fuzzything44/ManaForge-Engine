@@ -38,11 +38,11 @@
 *.psess
 *.vspx
 
-Debug/Engine.*
-Debug/Game.*
-Game/Deubg/
-Engine/Debug/
-Editor/Debug/
-Debug/Editor.*
+bin/Debug/Engine.*
+bin/Debug/Game.*
+bin/Game/Deubg/
+bin/Engine/Debug/
+bin/Editor/Debug/
+bin/Debug/Editor.*
 
 ipch/

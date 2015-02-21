@@ -2,7 +2,7 @@
 
 // worldwide includes. MUST be included first in every cpp file
 
-#ifdef _WINDOWS
+#ifdef _WIN32
 #include <Windows.h>
 #endif
 
