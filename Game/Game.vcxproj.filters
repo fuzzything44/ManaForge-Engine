@@ -17,10 +17,12 @@
     <ClCompile Include="Private\RPG-Game.cpp">
       <Filter>Private</Filter>
     </ClCompile>
+    <ClCompile Include="stdafx.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Public\MainWindow.h">
       <Filter>Public</Filter>
     </ClInclude>
+    <ClInclude Include="stdafx.h" />
   </ItemGroup>
 </Project>

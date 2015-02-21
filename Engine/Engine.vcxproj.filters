@@ -44,6 +44,9 @@
     <ClInclude Include="public\TextureLibrary.h">
       <Filter>Public</Filter>
     </ClInclude>
-    <ClInclude Include="Public\stdafx.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Public\Engine.h">
+      <Filter>Public</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,5 +1,5 @@
 #pragma once
-#include "stdafx.h"
+#include "Engine.h"
 
 // OpenGL include
 #include <GLTools/glew.h>
