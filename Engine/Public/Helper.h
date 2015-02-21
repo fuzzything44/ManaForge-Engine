@@ -1,5 +1,5 @@
 #pragma once
-#include "Engine.h"
+#include "stdafx.h"
 
 // OpenGL include
 #include <GLTools/glew.h>
@@ -24,18 +24,18 @@
 /// <para> Returns a string that contains the data </para>
 /// </summary>
 /// <param name='filename'> The path to the file. </param>
-ENGINE_API std::string loadFileToStr(const GLchar* filename);
+ENGINE_API std::string loadFileToStr(const char* filename);
 
 /// <summary> loads a program from the filepaths specifed </summary>
 /// <param name='vertexFile'> The path to the vertex shader. Must contain an extension. </param>
 /// <param name='fragmentFile'> The path to the fragment shader. Must contain an extension. </param>
-ENGINE_API GLuint LoadShaders(const GLchar* vertexFile, const GLchar* fragmentFile);
+ENGINE_API GLuint LoadShaders(const char* vertexFile, const char* fragmentFile);
 
 
 
 /// <summary> load a DDS format texture to the GLuint that is returned </summary>
 /// <param name='imagepath'> the pathe to the DDS file </param>
-ENGINE_API GLuint loadDDS(const GLchar * imagepath);
+ENGINE_API GLuint loadDDS(const char * imagepath);
 
 /// <summary> OpenCL err checking. Returns true is successfull (CL_SUCCESS) </summary>
 /// <param name='error'> The error code. </param>

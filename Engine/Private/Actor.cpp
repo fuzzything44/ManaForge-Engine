@@ -1,7 +1,8 @@
+#include "stdafx.h"
 #include "Actor.h"
 
 
-GLvoid Actor::addActor(const glm::vec4& boundsIn, GLfloat* UVs, GLboolean isPersisitent)
+GLvoid Actor::addActor(const vec4& boundsIn, GLfloat* UVs, GLboolean isPersisitent)
 {
 	if (isPersisitent)
 	{
@@ -15,7 +16,7 @@ GLvoid Actor::addActor(const glm::vec4& boundsIn, GLfloat* UVs, GLboolean isPers
 	}
 }
 
-Actor::Actor(const glm::vec4& boundsIn, GLfloat* UVs, Chunk* chunkIn) : bounds(boundsIn), chunk(chunkIn)
+Actor::Actor(const vec4& boundsIn, GLfloat* UVs, Chunk* chunkIn) : bounds(boundsIn), chunk(chunkIn)
 {
 
 }

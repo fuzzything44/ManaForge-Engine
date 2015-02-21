@@ -1,5 +1,5 @@
 #pragma once
-#include "Engine.h"
+#include "stdafx.h"
 
 #include "Helper.h"
 
@@ -8,7 +8,7 @@
 
 #include <vector>
 
-static const const char* UPDATE_LOCATION = "kernels/updateFrame.cl";
+static const char* UPDATE_LOCATION = "kernels/updateFrame.cl";
 
 // Class to do all the OpenCL calculations. 
 class CLHandler
@@ -16,19 +16,23 @@ class CLHandler
 public:
 
 	/// <summary> initialize the context, platform and devices. Returns an error code, CL_SUCCESS for success </summary>
-	static ENGINE_API cl_int initCL();
+	static ENGINE_API cl_int initCL(GLuint posBuffer, GLuint UVBuffer, GLuint elemBuffer);
 
 	/// <param name = 'locBuffer'> the buffer to write to </param>
-	/// <param name='UVBuffer'> The Buffer to write UV data to </param>
-	/// <param name='elemBuffer'> The element buffer object to write to </param>
 	/// <param name = 'characterLocation'> the current location of the character </param>
 	/// <summary> called each frame. </summary>
-	static ENGINE_API cl_int updateCL(cl::BufferGL locBuffer, cl::BufferGL UVBuffer, cl::BufferGL elemBuffer, cl_float2 characterLocation);
+	static ENGINE_API cl_int updateCL(cl_float2 characterLocation);
 
 	/// <summary> Called upon exit -- cleans up openCL resoruces. </summary>
 	static ENGINE_API void exitCL();
 
 protected:
+
+	// a buffer for the actorData
+	static cl::Buffer actors;
+
+	// the GL buffers
+	static cl::BufferGL posCLBuffer, UVCLBuffer, elemCLBuffer;
 
 	// pointer to the context -- needs to be a pointer or else it will freeze on exit . Will be null before initCL();
 	static cl::Context* context;
@@ -37,7 +41,7 @@ protected:
 	static cl::Platform platform;
 
 	// the queue to use. Wil be invalid before initCL()
-	static cl::CommandQueue queue;
+	static cl::CommandQueue* queue;
 
 	// a list of the devices of platform
 	static std::vector<cl::Device> devices;

@@ -1,13 +1,10 @@
+#include "stdafx.h"
 #include "TextureLibrary.h"
 
-#include <stdio.h>
-#include <iostream>
-#include <fstream>
-#include <string>
 
 GLuint TextureLibrary::texture = 0;
 std::unordered_map<std::string, UVData> TextureLibrary::UVDataMap = std::unordered_map<std::string, UVData>();
-glm::uvec2 TextureLibrary::nextLocation = glm::uvec2(0, 0);
+uvec2 TextureLibrary::nextLocation = uvec2(0, 0);
 
 GLuint TextureLibrary::getTextureHandle()
 {
@@ -31,13 +28,13 @@ void TextureLibrary::addTexture(std::string key, const char* filename)
 
 	// populate the data for the UVs -- Flip the UVs vertically because DDS stores them in the opposite direction.
 	UVData data;
-	data.bottomLeft =	glm::vec2(pitch *  nextLocation.x, pitch * (nextLocation.y + 1));
+	data.bottomLeft =	vec2(pitch *  nextLocation.x, pitch * (nextLocation.y + 1));
 
-	data.topLeft =		glm::vec2(pitch *  nextLocation.x, pitch * (nextLocation.y));
+	data.topLeft =		vec2(pitch *  nextLocation.x, pitch * (nextLocation.y));
 
-	data.bottomRight =	glm::vec2(pitch * (nextLocation.x + 1), pitch * (nextLocation.y + 1));
+	data.bottomRight =	vec2(pitch * (nextLocation.x + 1), pitch * (nextLocation.y + 1));
 
-	data.topRight =		glm::vec2(pitch * (nextLocation.x + 1), pitch * (nextLocation.y));
+	data.topRight =		vec2(pitch * (nextLocation.x + 1), pitch * (nextLocation.y));
 
 	// add it to the datamap
 	UVDataMap[key] = data;
@@ -63,7 +60,7 @@ UVData TextureLibrary::getUVData(std::string key)
 }
 
 
-void TextureLibrary::appendDDS(GLuint texToAppend, GLuint Xoffset, GLuint Yoffset, const GLchar* filepath)
+void TextureLibrary::appendDDS(GLuint texToAppend, GLuint Xoffset, GLuint Yoffset, const char* filepath)
 {
 
 	unsigned char header[124];

@@ -1,25 +1,30 @@
+#include "stdafx.h"
 #include "CLHandler.h"
 
+// init static variables
 cl::Context* CLHandler::context = NULL;
 cl::Platform CLHandler::platform = NULL;
-cl::CommandQueue CLHandler::queue = cl::CommandQueue();
+cl::CommandQueue* CLHandler::queue = NULL;
 cl::Program* CLHandler::updateProgram = NULL;
 cl::Kernel CLHandler::collideKern = cl::Kernel();
+cl::Buffer CLHandler::actors = cl::Buffer();
+cl::BufferGL CLHandler::posCLBuffer = cl::BufferGL();
+cl::BufferGL CLHandler::UVCLBuffer = cl::BufferGL();
+cl::BufferGL CLHandler::elemCLBuffer = cl::BufferGL();
 std::vector<cl::Device> CLHandler::devices = std::vector<cl::Device>();
 
+
 /// <param name = 'locBuffer'> the buffer to write to </param>
-/// <param name='UVBuffer'> The Buffer to write UV data to </param>
-/// <param name='elemBuffer'> The element buffer object to write to </param>
 /// <param name = 'characterLocation'> the current location of the character </param>
 /// <summary> called each frame. </summary>
-cl_int CLHandler::updateCL(cl::BufferGL locBuffer, cl::BufferGL UVBuffer, cl::BufferGL elemBuffer, cl_float2 characterLocation)
+cl_int CLHandler::updateCL(cl_float2 characterLocation)
 {
 	
 
 	return CL_SUCCESS;
 }
 
-cl_int CLHandler::initCL()
+cl_int CLHandler::initCL(GLuint posBuffer, GLuint UVBuffer, GLuint elemBuffer)
 {
 
 	platform = getBestPlatform();
@@ -73,6 +78,26 @@ cl_int CLHandler::initCL()
 		std::cout << "Kernel Loading completed" << std::endl;
 	}
 
+	// init the queue
+	queue = new cl::CommandQueue(*context, NULL, &err);
+
+	// do error checking
+	if (!errChkCL(err, "Init command queue"))
+	{
+		return err;
+	}
+
+
+	// init the buffer
+	actors = cl::Buffer(*context, (cl_mem_flags)CL_MEM_READ_WRITE, NULL, &err);	
+	
+	// do error checking
+	if (!errChkCL(err, "Create Actor Buffer"))
+	{
+		return err;
+	}
+
+	
 
 	return CL_SUCCESS;
 }
@@ -80,7 +105,7 @@ cl_int CLHandler::initCL()
 /// <summary> Called upon exit -- cleans up openCL resoruces. </summary>
 void CLHandler::exitCL()
 {
-	clReleaseCommandQueue(queue());
+	clReleaseCommandQueue((*queue)());
 	clReleaseContext((*context)());
 }
 

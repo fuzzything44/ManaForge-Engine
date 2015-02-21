@@ -1,20 +1,22 @@
+#include "stdafx.h"
 #include "Chunk.h"
 
-#include <GLTools/glfw3.h>
 #include <random>
 
 // set inital value for static variables
 Chunk*** Chunk::chunks = NULL;
 Chunk* Chunk::persistentChunk = NULL;
-glm::uvec2 Chunk::chunksSize = glm::uvec2(0, 0);
+uvec2 Chunk::chunksSize = uvec2(0, 0);
 GLint Chunk::texUniformHandle = -1;
 GLuint Chunk::program = 0;
+mat4* Chunk::viewMat = NULL;
 
 
-GLvoid Chunk::initChunks(GLuint programIn, glm::mat4* viewMatIn, const glm::uvec2& chunksSizeIn)
+GLvoid Chunk::initChunks(GLuint programIn, mat4* viewMatIn, const uvec2& chunksSizeIn)
 {
 	chunksSize = chunksSizeIn;
 	program = programIn;
+	viewMat = viewMatIn;
 
 	// allocate the pointer
 	chunks = (Chunk***)malloc(sizeof(Chunk**) * chunksSize.y);
@@ -25,20 +27,20 @@ GLvoid Chunk::initChunks(GLuint programIn, glm::mat4* viewMatIn, const glm::uvec
 		chunks[x] = (Chunk**)malloc(sizeof(Chunk*) * chunksSize.y);
 		for (GLuint y = 0; y < chunksSize.y; y++)
 		{
-			chunks[x][y] = new Chunk(viewMatIn, glm::vec2(x * CHUNK_WIDTH, y * CHUNK_WIDTH));
+			chunks[x][y] = new Chunk(vec2(x * CHUNK_WIDTH, y * CHUNK_WIDTH));
 		}
 	}
 
 
-	persistentChunk = new Chunk(viewMatIn);
+	persistentChunk = new Chunk();
 
 
 	// initalize all handles
 	texUniformHandle = glGetUniformLocation(program, "texArray");
 }
 
-Chunk::Chunk(glm::mat4* viewMatIn, glm::vec2 locationIn)
-	: location(locationIn), viewMat(viewMatIn)
+Chunk::Chunk(vec2 locationIn)
+	: location(locationIn)
 {
 	// the persistent chunk doesn't get anything
 	if (this != persistentChunk)
@@ -213,7 +215,7 @@ GLvoid Chunk::drawChunk()
 	}
 }
 
-void Chunk::draw()
+void Chunk::draw(vec2 characterLoc)
 {
 
 	// return if there is no persistent chunk
@@ -227,17 +229,30 @@ void Chunk::draw()
 	// always draw the persistent chunk
 	persistentChunk->drawChunk();
 
-	// Currently only loops through all of the chunks and draws them -- soon to be better handling 
-	for (GLuint y = 0; y < chunksSize.y; y++)
+	uvec2 chunkoffset(characterLoc / vec2((GLfloat)CHUNK_WIDTH));
+
+	int chunksInEachDir = 0;
+
+	// finds out how much we need to reach in each direction -- find an equation in the future
+	for (chunksInEachDir;	(vec4(chunksInEachDir * CHUNK_WIDTH, 0, 0, 1) * *viewMat).x < 1 
+		||					(vec4(0, chunksInEachDir * CHUNK_WIDTH, 0, 1) * *viewMat).y < 1; chunksInEachDir++);
+
+	for (int x = -chunksInEachDir; x < chunksInEachDir; x++)
 	{
-		for (GLuint x = 0; x < chunksSize.x; x++)
+		for (int y = -chunksInEachDir; y < chunksInEachDir; y++)
 		{
-			chunks[x][y]->drawChunk();
+			// if the chunk exists, draw it.
+			if (0 <= (x - chunkoffset.x) && (x - chunkoffset.x) < chunksSize.x && 
+				0 <= (y - chunkoffset.y) && (y - chunkoffset.y) < chunksSize.y)
+			{
+				chunks[x - chunkoffset.x][y - chunkoffset.y]->drawChunk();
+			}
 		}
 	}
+	
 }
 
-glm::vec2 Chunk::getLocation()
+vec2 Chunk::getLocation()
 {
 	// return a copy of the location variable
 	return location;

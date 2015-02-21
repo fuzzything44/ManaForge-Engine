@@ -22,7 +22,7 @@ struct ActorData
 __kernel void collide(
 	__global struct ActorData* dynamicData,		// the Actor data for the dynamic (speed greater than one)
 	__global struct ActorData* staticData,		// the Actor data for the static actors
-	__global bool* didCollide,					// set to one for collision and 0 for not
+	__global int* didCollide,					// set to one for collision and 0 for not
 	__global void* outActorData)				// the out pointers to each actor that collided in pairs that collided 
 {
 	// TODO: add actual collsion checking
@@ -31,4 +31,14 @@ __kernel void collide(
 
 	didCollide[id.y] = 0;
 
+}
+
+__kernel void belloch_scan(
+	__global int* in,
+	__global int* out,
+	int length)
+{
+	__private uint idx = get_global_id(0);
+
+	
 }

@@ -1,5 +1,5 @@
 #pragma once
-#include "Engine.h"
+#include "stdafx.h"
 
 #include <GLTools/glew.h>
 #include <glm/glm.hpp>
@@ -21,10 +21,10 @@ static const GLuint TEXTURE_WIDTH = 64;
 
 struct UVData
 {
-	glm::vec2 bottomLeft;
-	glm::vec2 topLeft;
-	glm::vec2 bottomRight;
-	glm::vec2 topRight;
+	vec2 bottomLeft;
+	vec2 topLeft;
+	vec2 bottomRight;
+	vec2 topRight;
 };
 
 // handles the texture libraries
@@ -57,7 +57,7 @@ private:
 	static GLuint allocateCompressedTextureLibraryFromDDS(GLuint num, const char* filepath);
 
 	// the location of the next image.
-	static glm::uvec2 nextLocation;
+	static uvec2 nextLocation;
 
 	// stores the handles to the textures
 	static GLuint texture;

@@ -30,13 +30,25 @@ GLint MainWindow::run(const GLchar* title, WindowMode windowmode, GLuint width, 
 	const GLFWvidmode* mode = glfwGetVideoMode(mon);
 	
 	// set AA
-	glfwWindowHint(GLFW_SAMPLES, 1);
+	glfwWindowHint(GLFW_SAMPLES, 8);
+
+	glfwWindowHint(GL_DOUBLEBUFFER, false);
+	
+	
 
 	// set GL version
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 
-	glfwWindowHint(GLFW_DECORATED, false);
+	// we don't want a border if it is fullscreen windowed, otherwise we do
+	if (windowmode == FULLSCREEN_WINDOWED){
+
+		glfwWindowHint(GLFW_DECORATED, false);
+	}
+	else
+	{
+		glfwWindowHint(GLFW_DECORATED, true);
+	}
 
 	// set profile to core profile
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);

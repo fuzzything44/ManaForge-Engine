@@ -1,9 +1,5 @@
 #pragma once
-#include "Engine.h"
-
-#include <glm/glm.hpp>
-
-#include <sstream>
+#include "stdafx.h"
 
 #include "Helper.h"
 #include "TextureLibrary.h"
@@ -12,7 +8,7 @@ class Chunk;
 #include "Actor.h"
 
 // the chunk width
-static const GLuint CHUNK_WIDTH = 50;
+static const GLuint CHUNK_WIDTH = 2;
 static const GLuint MAX_ACTORS = 20;
 
 class Chunk
@@ -26,12 +22,12 @@ public:
 	/// <param name='programIn'> The program to use </param>
 	/// <param name='viewMatIn'> A pointer to the view matrix to be used </param>
 	/// <param name='chunksSizeIn'> The amount of chunks to initalize </param>
-	static GLvoid ENGINE_API initChunks(GLuint programIn, glm::mat4* viewMatIn, const glm::uvec2& chunksSizeIn);
+	static GLvoid ENGINE_API initChunks(GLuint programIn, mat4* viewMatIn, const uvec2& chunksSizeIn);
 
-	static void ENGINE_API draw();
+	static void ENGINE_API draw(vec2 characterLoc);
 
 	// getter for location
-	glm::vec2 ENGINE_API getLocation();
+	vec2 ENGINE_API getLocation();
 
 protected:
 
@@ -51,10 +47,10 @@ protected:
 	// a vector of all of the actors in the scene. Naive implemntation -- will fix later
 	std::vector<Actor*> actors;
 
-	glm::mat4* viewMat;
+	static mat4* viewMat;
 	GLuint renderOrder = 0;
 
-	glm::vec2 location;
+	vec2 location;
 
 	GLvoid drawChunk();
 
@@ -62,13 +58,13 @@ protected:
 	static Chunk*** chunks;
 
 	// size of the array
-	static glm::uvec2 chunksSize;
+	static uvec2 chunksSize;
 
 	static Chunk* persistentChunk;
 
 	/// <summary> Constructor giving a location </summary>
 	/// <param name='location'> The location of the new Chunk </param>
-	Chunk(glm::mat4* viewMatIn, glm::vec2 locationIn = glm::vec2(0.f, 0.f));
+	Chunk(vec2 locationIn = vec2(0.f, 0.f));
 
 	static GLint texUniformHandle;
 

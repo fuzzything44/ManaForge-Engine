@@ -1,16 +1,4 @@
-// windows includes
-#include <direct.h>
-
-// opengl includes
-#include <GLTools/glew.h>
-#include <GLTools/glfw3.h>
-
-// opencl includes
-#include <CL/cl.hpp> // .hpp has some object oriented programming approaches to it
-
-// glm headers
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
+#include <stdafx.h>
 
 // local includes
 #include "MainWindow.h"
@@ -96,13 +84,13 @@ GLvoid keyboard(GLFWwindow* window, GLfloat delta)
 GLvoid draw(GLfloat delta)
 {
 	// compute the viewMat
-	viewMat = glm::scale(projection, glm::vec3(scale, scale, 1.f));
+	viewMat = glm::scale(projection, glm::vec3(scale, scale, 1));
 
 	// clear the color buffer and depth buffer (makes sure the trianges in front get rendered in front
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-
-	Chunk::draw();
+	// temp -- will actually have player location
+	Chunk::draw(glm::vec2(0.f));
 }
 
 GLint init()
@@ -118,7 +106,7 @@ GLint init()
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 
-	CLHandler::initCL();
+	CLHandler::initCL(0, 0, 0);
 
 	TextureLibrary::addTexture("0", "textures\\0.dds");
 	TextureLibrary::addTexture("1", "textures\\1.dds");
@@ -148,7 +136,7 @@ GLint init()
 	GLuint program = LoadShaders("shaders\\chunkvert.glsl", "shaders\\chunkfrag.glsl");
 
 	// init 1 * 3 chunks of CHUNK_SIZE * CHUNK_SIZE 
-	Chunk::initChunks(program, &viewMat, glm::uvec2(1, 3));
+	Chunk::initChunks(program, &viewMat, glm::uvec2(10, 30));
 	
 
 	float aspectRatio = (float)MainWindow::getWindowWidth() / (float)MainWindow::getWindowHeight();

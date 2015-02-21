@@ -26,6 +26,7 @@
     <ClCompile Include="private\TextureLibrary.cpp">
       <Filter>Private</Filter>
     </ClCompile>
+    <ClCompile Include="stdafx.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="public\Actor.h">
@@ -43,8 +44,6 @@
     <ClInclude Include="public\TextureLibrary.h">
       <Filter>Public</Filter>
     </ClInclude>
-    <ClInclude Include="Public\Engine.h">
-      <Filter>Public</Filter>
-    </ClInclude>
+    <ClInclude Include="Public\stdafx.h" />
   </ItemGroup>
 </Project>
