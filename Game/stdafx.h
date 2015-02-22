@@ -3,6 +3,10 @@
 #include <direct.h>
 #endif
 
+#ifdef __linux__
+#include <unistd.h>
+#endif
+
 #include <GLTools/glew.h>
 #include <GLTools/glfw3.h>
 

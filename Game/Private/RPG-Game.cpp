@@ -25,8 +25,8 @@ GLfloat scale = .1f;
 
 cl_int initCL();
 
-
-GLint main()
+#ifdef _WIN32
+int changeDir()
 {
 	// changes the path so everything we open will be in Resoruce/
 	char ownPth[MAX_PATH];
@@ -39,14 +39,14 @@ GLint main()
 	}
 	// When passing NULL to GetModuleHandle, it returns handle of exe itself
 	GetModuleFileName(hModule, ownPth, (sizeof(ownPth)));
-	
+
 	std::string path = ownPth;
 	//path = path.substr(0, path.size() - 14);
 
 	// remove the exe and the directory
 	for (int i = 0; i < 3; i++){
 
-		
+
 		do {
 			path = path.substr(0, path.size() - 1);
 		} while (path[path.size() - 1] != '\\');
@@ -55,6 +55,27 @@ GLint main()
 
 	_chdir(path.append("Resource\\").c_str());
 
+	return 0;
+}
+#endif
+
+#ifdef __linux__
+int changeDir()
+{
+	//TODO write linux code
+
+	return 0;
+}
+#endif
+
+GLint main()
+{
+
+	int err = changeDir();
+	if (err != 0)
+	{
+		return err;
+	}
 
 	std::cout << std::endl << std::endl << std::endl;
 
