@@ -38,8 +38,8 @@ GLint MainWindow::run(const GLchar* title, WindowMode windowmode, GLuint width, 
 	
 
 	// set GL version
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 
 	// we don't want a border if it is fullscreen windowed, otherwise we do
 	if (windowmode == FULLSCREEN_WINDOWED){

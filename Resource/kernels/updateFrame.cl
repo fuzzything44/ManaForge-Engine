@@ -25,9 +25,33 @@ __kernel void collide(
 	__global int* didCollide,					// set to one for collision and 0 for not
 	__global void* outActorData)				// the out pointers to each actor that collided in pairs that collided 
 {
-	// TODO: add actual collsion checking
-
+	
 	uint2 id = (uint2)(get_global_id(0), get_global_id(1));
+
+	ActorData dataA = dynamicData[id.y];
+
+	float recip;
+	float minX;
+	float maxX;
+	float minY;
+	float maxY;
+
+	if (Vx1 != Vx2) {
+		recip = 1/(Vx1 - vx2);
+		minX = (xi2 - xi1 - L1) * recip;
+		maxX = (xi2 - xi1 + L2) * recip;
+	} else {
+		// Regular collision. 
+	}
+
+	recip = 1/(Vy1 - Vy2);
+	minY = (yi2 - yi1 - W1) * recip;
+	maxY = (yi2 - yi1 + W2) * recip;
+
+	float minTime = minX < minY ? minY : minX;
+	float maxTime = maxX > maxY ? maxY : maxX;
+
+
 
 	didCollide[id.y] = 0;
 
