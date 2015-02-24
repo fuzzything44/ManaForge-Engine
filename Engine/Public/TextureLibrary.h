@@ -16,7 +16,7 @@
 static const GLuint IMAGE_WIDTH = 256;
 
 // amount of textures in one direction. Size of texture is (IMAGE_WIDTH * TEXTURE_WIDTH)^2
-static const GLuint TEXTURE_WIDTH = 64;
+static const GLuint TEXTURE_WIDTH = 16;
 
 
 struct UVData

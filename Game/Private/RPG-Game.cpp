@@ -21,7 +21,7 @@ glm::mat4 projection;
 
 
 // 1/sclae * 2 is how many units fit vertically
-GLfloat scale = .1f;
+GLfloat scale = 1.f;
 
 cl_int initCL();
 
@@ -53,9 +53,8 @@ int changeDir()
 
 	}
 
-	_chdir(path.append("Resource\\").c_str());
+	return _chdir(path.append("Resource\\").c_str());
 
-	return 0;
 }
 #endif
 
@@ -157,7 +156,7 @@ GLint init()
 	GLuint program = LoadShaders("shaders\\chunkvert.glsl", "shaders\\chunkfrag.glsl");
 
 	// init 1 * 3 chunks of CHUNK_SIZE * CHUNK_SIZE 
-	Chunk::initChunks(program, &viewMat, glm::uvec2(10, 30));
+	Chunk::initChunks(program, &viewMat, glm::uvec2(2, 2));
 	
 
 	float aspectRatio = (float)MainWindow::getWindowWidth() / (float)MainWindow::getWindowHeight();

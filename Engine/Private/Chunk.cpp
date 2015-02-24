@@ -231,15 +231,15 @@ void Chunk::draw(vec2 characterLoc)
 
 	uvec2 chunkoffset(characterLoc / vec2((GLfloat)CHUNK_WIDTH));
 
-	int chunksInEachDir = 0;
+	ivec2 chunksInEachDir = glm::uvec2( 1 / (*viewMat)[0][0], 1 / (*viewMat)[1][1]);
 
 	// finds out how much we need to reach in each direction -- find an equation in the future
-	for (chunksInEachDir;	(vec4(chunksInEachDir * CHUNK_WIDTH, 0, 0, 1) * *viewMat).x < 1 
-		||					(vec4(0, chunksInEachDir * CHUNK_WIDTH, 0, 1) * *viewMat).y < 1; chunksInEachDir++);
 
-	for (int x = -chunksInEachDir; x < chunksInEachDir; x++)
+	
+
+	for (int x = -chunksInEachDir.x; x < chunksInEachDir.x; x++)
 	{
-		for (int y = -chunksInEachDir; y < chunksInEachDir; y++)
+		for (int y = -chunksInEachDir.y; y < chunksInEachDir.y; y++)
 		{
 			// if the chunk exists, draw it.
 			if (0 <= (x - chunkoffset.x) && (x - chunkoffset.x) < chunksSize.x && 
