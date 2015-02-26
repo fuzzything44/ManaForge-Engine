@@ -8,7 +8,7 @@ class Chunk;
 #include "Actor.h"
 
 // the chunk width
-static const GLuint CHUNK_WIDTH = 200;
+static const GLuint CHUNK_WIDTH = 50;
 static const GLuint MAX_ACTORS = 20;
 
 class Chunk

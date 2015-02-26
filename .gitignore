@@ -44,5 +44,7 @@ bin/Game/Deubg/
 bin/Engine/Debug/
 bin/Editor/Debug/
 bin/Debug/Editor.*
+bin/Release/Engine.*
+bin/Release/Game.*
 
 ipch/
