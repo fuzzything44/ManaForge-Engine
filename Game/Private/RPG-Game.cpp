@@ -21,7 +21,7 @@ glm::mat4 projection;
 
 
 // 1/sclae * 2 is how many units fit vertically
-GLfloat scale = 1.f;
+GLfloat scale = 0.1f;
 
 cl_int initCL();
 
@@ -128,6 +128,7 @@ GLint init()
 
 	CLHandler::initCL(0, 0, 0);
 
+
 	TextureLibrary::addTexture("0", "textures\\0.dds");
 	TextureLibrary::addTexture("1", "textures\\1.dds");
 	TextureLibrary::addTexture("2", "textures\\2.dds");
@@ -146,12 +147,14 @@ GLint init()
 	TextureLibrary::addTexture("15", "textures\\15.dds");
 	TextureLibrary::addTexture("16", "textures\\16.dds");
 
+
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 6);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
 
 	GLuint program = LoadShaders("shaders\\chunkvert.glsl", "shaders\\chunkfrag.glsl");
 
