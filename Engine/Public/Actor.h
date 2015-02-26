@@ -11,6 +11,7 @@ struct ActorData
 {
 	vec4 bounds;
 	vec2 velocity;
+	float rotation;
 	UVData UVs;
 	Actor* loc;
 	bool collides;
