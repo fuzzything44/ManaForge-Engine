@@ -47,7 +47,14 @@ bin/Debug/Editor.*
 bin/Release/Engine.*
 bin/Release/Game.*
 
+
+
+
 ipch/
 
 Resource/log.txt
 
+*codeanalysis*.*
+*.codeanalysisast
+*.codeanalysis
+*.codeanalysis
