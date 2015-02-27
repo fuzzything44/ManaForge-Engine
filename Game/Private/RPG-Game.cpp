@@ -7,8 +7,6 @@
 #include "CLHandler.h"
 #include "TextureLibrary.h"
 
-#include <boost/algorithm/clamp.hpp>
-
 /*************** P R O T O T Y P E S ***************************************************/
 GLvoid draw(GLfloat delta);
 GLint init();
@@ -207,8 +205,6 @@ GLvoid scroll(GLFWwindow* winodw, GLdouble x, GLdouble y)
 			scale /= 2.f;
 		}
 
-		// clamp it -- minScale to MaxScale
-		scale = boost::algorithm::clamp(scale, minScale, maxScale);
 	}
 }
 
