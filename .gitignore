@@ -55,6 +55,7 @@ ipch/
 Resource/log.txt
 
 *codeanalysis*.*
-*.codeanalysisast
-*.codeanalysis
-*.codeanalysis
+
+*.pch.codeanalysisast
+*.pch.codeanalysis
+Game/Debug/Game.pch.codeanalysis
