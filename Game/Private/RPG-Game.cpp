@@ -7,6 +7,7 @@
 #include "CLHandler.h"
 #include "TextureLibrary.h"
 
+#include <boost/algorithm/clamp.hpp>
 
 /*************** P R O T O T Y P E S ***************************************************/
 GLvoid draw(GLfloat delta);
@@ -16,12 +17,16 @@ GLvoid scroll(GLFWwindow* winodw, GLdouble x, GLdouble y);
 GLvoid resize(GLFWwindow* window, GLint x, GLint y);
 GLint exit();
 
+
 glm::mat4 viewMat;
 glm::mat4 projection;
 
 
 // 1/sclae * 2 is how many units fit vertically
 GLfloat scale = 0.1f;
+
+static const GLfloat minScale = .00625f;
+static const GLfloat maxScale = 1.f;
 
 cl_int initCL();
 
@@ -103,6 +108,8 @@ GLvoid keyboard(GLFWwindow* window, GLfloat delta)
 
 GLvoid draw(GLfloat delta)
 {
+
+	std::cout << scale << std::endl;
 
 	// compute the viewMat
 	viewMat = glm::scale(projection, glm::vec3(scale, scale, 1));
@@ -200,6 +207,8 @@ GLvoid scroll(GLFWwindow* winodw, GLdouble x, GLdouble y)
 			scale /= 2.f;
 		}
 
+		// clamp it -- minScale to MaxScale
+		scale = boost::algorithm::clamp(scale, minScale, maxScale);
 	}
 }
 
