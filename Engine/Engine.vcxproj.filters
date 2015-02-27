@@ -27,6 +27,9 @@
       <Filter>Private</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="Private\Logging.cpp">
+      <Filter>Private</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="public\Actor.h">
@@ -46,6 +49,9 @@
     </ClInclude>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Public\Engine.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\Logging.h">
       <Filter>Public</Filter>
     </ClInclude>
   </ItemGroup>

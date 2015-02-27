@@ -1,4 +1,7 @@
 #pragma once
+#include <Engine.h>
+#include <Logging.h>
+#include <Helper.h>
 #include <iostream>
 
 #include <GLTools/glew.h>

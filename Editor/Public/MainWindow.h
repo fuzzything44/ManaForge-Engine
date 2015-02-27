@@ -1,4 +1,5 @@
 #pragma once
+#include <Logging.h>
 #include <iostream>
 
 #include <GLTools/glew.h>

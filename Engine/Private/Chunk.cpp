@@ -221,7 +221,7 @@ void Chunk::draw(vec2 characterLoc)
 	// return if there is no persistent chunk
 	if (persistentChunk == NULL)
 	{
-		std::cout << "There is no persistent chunk" << std::endl;
+		ENG_LOG("There is no persistent chunk\n");
 
 		return;
 	}

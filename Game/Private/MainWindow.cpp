@@ -1,8 +1,6 @@
 #include "stdafx.h"
 #include "MainWindow.h"
-
-using std::cout;
-using std::endl;
+#include <sstream>
 
 
 /***************************** I N I T	 S T A T I C	  V A R I A B L E S ***********************/
@@ -22,7 +20,7 @@ GLint MainWindow::run(const GLchar* title, WindowMode windowmode, GLuint width, 
 	int err = glfwInit();
 	if (err != 1)
 	{
-		cout << "Failed to init GLFW" << endl;
+		ENG_LOG("Failed to init GLFW" << std::endl);
 
 		return err;
 	}
@@ -101,7 +99,7 @@ GLint MainWindow::run(const GLchar* title, WindowMode windowmode, GLuint width, 
 	err = glewInit();
 	if (err != GLEW_OK)
 	{
-		cout << "Failed to init GLEW. err code: " << err << endl;
+		ENG_LOG("Failed to init GLEW. err code: ");
 		// terminate the glfw session
 		glfwTerminate();
 		return -1;
@@ -125,8 +123,13 @@ GLint MainWindow::run(const GLchar* title, WindowMode windowmode, GLuint width, 
 			return err;
 		}
 	}
-	
-	std::cout << "Init finished in " << glfwGetTime() - start << "s" << std::endl;
+
+	std::ostringstream ss;
+
+
+	ENG_LOG("Init finished in " << glfwGetTime() - start << "s");
+
+
 
 	// set initial tick
 	GLfloat LastTick =(GLfloat) (glfwGetTime());

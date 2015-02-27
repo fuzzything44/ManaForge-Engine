@@ -2,6 +2,7 @@
 #include "Engine.h"
 
 #include "Helper.h"
+#include "Logging.h"
 
 #include <CL/cl.hpp>
 #include <CL/cl_gl.h>

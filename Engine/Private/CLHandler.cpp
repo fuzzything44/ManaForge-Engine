@@ -29,7 +29,7 @@ cl_int CLHandler::initCL(GLuint posBuffer, GLuint UVBuffer, GLuint elemBuffer)
 
 	platform = getBestPlatform();
 
-	std::cout << "Using Platform: " << platform.getInfo<CL_PLATFORM_NAME>() << std::endl;
+	ENG_LOG("Using Platform: " << platform.getInfo<CL_PLATFORM_NAME>() << std::endl);
 
 	platform.getDevices(CL_DEVICE_TYPE_ALL, &devices);
 	if (!errChkCL(devices.size() != 0 ? CL_SUCCESS : CL_DEVICE_NOT_AVAILABLE, "platform.getDevices"))
@@ -38,7 +38,7 @@ cl_int CLHandler::initCL(GLuint posBuffer, GLuint UVBuffer, GLuint elemBuffer)
 	}
 
 
-	std::cout << "Using Device: " << devices[0].getInfo<CL_DEVICE_NAME>() << std::endl;
+	ENG_LOG("Using Device: " << devices[0].getInfo<CL_DEVICE_NAME>() << std::endl);
 
 
 	// define properies for the context
@@ -63,7 +63,7 @@ cl_int CLHandler::initCL(GLuint posBuffer, GLuint UVBuffer, GLuint elemBuffer)
 	// load the program
 	err = loadCLProgram(UPDATE_LOCATION, updateProgram);
 
-	std::cout << std::endl << "Loading kernel: collide from program" << std::endl;
+	ENG_LOG(std::endl << "Loading kernel: collide from program" << std::endl);
 
 	// load the kernel from the program
 	cl::Kernel Kern(*updateProgram, "collide", &err);
@@ -75,7 +75,7 @@ cl_int CLHandler::initCL(GLuint posBuffer, GLuint UVBuffer, GLuint elemBuffer)
 	}
 	else
 	{
-		std::cout << "Kernel Loading completed" << std::endl;
+		ENG_LOG("Kernel Loading completed" << std::endl);
 	}
 
 	// init the queue
@@ -152,12 +152,12 @@ cl::Platform CLHandler::getBestPlatform()
 /// </param>
 cl_int CLHandler::loadCLProgram(const GLchar* filepath, cl::Program*& program)
 {
-	std::cout << std::endl << std::endl;
+	ENG_LOG(std::endl << std::endl);
 
 	int err = CL_SUCCESS;
 
 	// load kernel
-	std::cout << "Compiling Program " << filepath << std::endl;
+	ENG_LOG("Compiling Program " << filepath << std::endl);
 
 	std::string source = loadFileToStr(filepath);
 
@@ -173,12 +173,12 @@ cl_int CLHandler::loadCLProgram(const GLchar* filepath, cl::Program*& program)
 
 	if (err != CL_SUCCESS)
 	{
-		std::cout << " Error building: " << program->getBuildInfo<CL_PROGRAM_BUILD_LOG>(devices[0]) << "\t" << err << "\n";
+		ENG_LOG(" Error building: " << program->getBuildInfo<CL_PROGRAM_BUILD_LOG>(devices[0]) << "\t" << err << "\n");
 		return err;
 	}
 	else
 	{
-		std::cout << "Program successfully compiled" << std::endl;
+		ENG_LOG("Program successfully compiled" << std::endl);
 	}
 
 	return err;

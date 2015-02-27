@@ -1,10 +1,15 @@
 #pragma once
-
 // worldwide typedefs
+
+#ifdef ENGINE
+#define ENGINE_API _declspec(dllexport)
+#else
+#define ENGINE_API _declspec(dllimport)
+#endif
+
 
 #include <glm/glm.hpp>
 
-#define ENGINE_API _declspec(dllexport)
 
 typedef glm::vec2 vec2;
 typedef glm::vec3 vec3;

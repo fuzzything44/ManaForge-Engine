@@ -52,9 +52,9 @@ int changeDir()
 		} while (path[path.size() - 1] != '\\');
 
 	}
-
 	return _chdir(path.append("Resource\\").c_str());
 
+	
 }
 #endif
 
@@ -76,7 +76,7 @@ GLint main()
 		return err;
 	}
 
-	std::cout << std::endl << std::endl << std::endl;
+	logging::init();
 
 	// bind the draw function to the draw function
 	MainWindow::bindDraw(draw);
@@ -103,6 +103,7 @@ GLvoid keyboard(GLFWwindow* window, GLfloat delta)
 
 GLvoid draw(GLfloat delta)
 {
+
 	// compute the viewMat
 	viewMat = glm::scale(projection, glm::vec3(scale, scale, 1));
 

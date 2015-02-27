@@ -11,7 +11,7 @@ std::string loadFileToStr(const char* filename)
 	// if the steam if bad then return
 	if (stream.bad())
 	{
-		std::cout << "Bad stream" << std::endl;
+		ENG_LOG("Bad stream" << std::endl);
 		return NULL;
 	}
 	// define strings for each line and the final string
@@ -31,7 +31,7 @@ std::string loadFileToStr(const char* filename)
 GLuint LoadShaders(const char * vertex_file_path, const char * fragment_file_path)
 {
 
-	std::cout << std::endl << std::endl;
+	ENG_LOG(std::endl << std::endl);
 
 	// Create the shaders
 	GLuint VertexShaderID = glCreateShader(GL_VERTEX_SHADER);

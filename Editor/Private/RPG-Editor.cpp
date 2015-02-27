@@ -40,6 +40,8 @@ cl_int initCL();
 
 GLint main()
 {
+
+
 	// changes the path so everything we open will be in Resoruce/
 	char ownPth[MAX_PATH];
 
@@ -68,7 +70,7 @@ GLint main()
 	_chdir(path.append("Resource\\").c_str());
 
 
-	std::cout << std::endl << std::endl << std::endl;
+	ENG_LOG(std::endl << std::endl << std::endl);
 
 	// bind the draw function to the draw function
 	MainWindow::bindDraw(draw);

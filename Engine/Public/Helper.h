@@ -1,5 +1,6 @@
 #pragma once
 #include "Engine.h"
+#include "Logging.h"
 
 // OpenGL include
 #include <GLTools/glew.h>
@@ -44,7 +45,7 @@ inline ENGINE_API cl_bool errChkCL(cl_int error, const char* name)
 {
 	if (error != CL_SUCCESS)
 	{
-		std::cout << "Error: " << name << "(" << error << ")" << std::endl;
+		ENG_LOG("Error: " << name << "(" << error << ")" << std::endl);
 		return false;
 	}
 	else
@@ -53,3 +54,4 @@ inline ENGINE_API cl_bool errChkCL(cl_int error, const char* name)
 	}
 	
 }
+

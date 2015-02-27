@@ -1,7 +1,5 @@
 #include "MainWindow.h"
 
-using std::cout;
-using std::endl;
 
 
 /***************************** I N I T	 S T A T I C	  V A R I A B L E S ***********************/
@@ -21,7 +19,7 @@ GLint MainWindow::run(const GLchar* title, GLboolean isFullscreen)
 	int err = glfwInit();
 	if (err != 1)
 	{
-		cout << "Failed to init GLFW" << endl;
+		ENG_LOG("Failed to init GLFW" << std::endl);
 
 		return err;
 	}
@@ -70,7 +68,7 @@ GLint MainWindow::run(const GLchar* title, GLboolean isFullscreen)
 	err = glewInit();
 	if (err != GLEW_OK)
 	{
-		cout << "Failed to init GLEW. err code: " << err << endl;
+		ENG_LOG("Failed to init GLEW. err code: " << err << std::endl);
 		// terminate the glfw session
 		glfwTerminate();
 		return -1;
@@ -95,7 +93,7 @@ GLint MainWindow::run(const GLchar* title, GLboolean isFullscreen)
 		}
 	}
 	
-	std::cout << "Init finished in " << glfwGetTime() - start << "s" << std::endl;
+	ENG_LOG("Init finished in " << glfwGetTime() - start << "s" << std::endl);
 
 	// set initial tick
 	GLfloat LastTick =(GLfloat) (glfwGetTime());
