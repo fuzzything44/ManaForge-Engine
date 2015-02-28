@@ -34,6 +34,11 @@ Actor::Actor(const ActorData& dataIn, Chunk* chunkIn)
 
 }
 
+void Actor::tick(float deltaTime)
+{
+	needsUpdate = false;
+}
+
 vec2 Actor::getLocation()
 {
 	return data.location;
@@ -59,11 +64,13 @@ vec2  Actor::getVelocity()
 void Actor::setLocation(vec2 newLoc)
 {
 	data.location = newLoc;
+	needsUpdate = true;
 }
 
 void Actor::setSize(vec2 newSize)
 {
 	data.size = newSize;
+	needsUpdate = true;
 }
 
 
@@ -71,11 +78,13 @@ void Actor::setSize(vec2 newSize)
 void Actor::setRotation(float newRot)
 {
 	data.rotation = newRot;
+	needsUpdate = true;
 }
 
 
 void Actor::setVelocity(vec2 newVelocity)
 {
 	data.velocity = newVelocity;
+	needsUpdate = true;
 }
 

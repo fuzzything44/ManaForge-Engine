@@ -41,11 +41,13 @@ public:
 	static ENGINE_API GLvoid addActor(const vec4& bounds, const vec2& velocity, const float& rotation,
 		GLboolean collides, UVData UVs, GLboolean isPersisitent);
 
+	// getters
 	vec2  getLocation();
 	vec2  getSize();
 	float getRotation();
 	vec2  getVelocity();
 
+	// setters
 	void setLocation(vec2 newLoc);
 	void setSize(vec2 newSize);
 	void setRotation(float newRot);
@@ -53,12 +55,14 @@ public:
 
 protected:
 
+	bool needsUpdate = false;
+
 	// refrence to the chunk that it resides in
 	Chunk* chunk;
 
 	/// <summary> called every frame if the variable ticks is true </summary>
 	/// <param name='deltaTime'> the time in milliseconds since the previous time. </param>
-	virtual void tick(GLfloat deltaTime) {	}
+	virtual void tick(GLfloat deltaTime);
 
 	Actor(const ActorData& dataIn, Chunk* chunkIn);
 
