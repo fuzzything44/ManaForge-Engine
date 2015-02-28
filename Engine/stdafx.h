@@ -6,6 +6,10 @@
 #include <Windows.h>
 #endif
 
+#ifdef __APPLE__
+#include <unistd.h>
+#endif
+
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.inl>
 

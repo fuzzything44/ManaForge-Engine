@@ -66,6 +66,35 @@ int changeDir()
 }
 #endif
 
+#ifdef __APPLE__
+int changeDir()
+{
+	char path[1024];
+	uint32_t size = sizeof(path);
+	if (_NSGetExecutablePath(path, &size) == 0)
+		printf("executable path is %s\n", path);
+	else
+		printf("buffer too small; need size %u\n", size);
+
+	std::string pathStr = path;
+	//path = path.substr(0, path.size() - 14);
+
+	// remove the exe and the directory
+	for (int i = 0; i < 3; i++){
+
+		do {
+			path = pathStr.substr(0, pathStr.size() - 1);
+		} while (pathStr[pathStr.size() - 1] != '\\');
+
+	}
+
+
+	chdir(pathStr.c_str());
+
+	return 0;
+}
+#endif
+
 GLint main()
 {
 
