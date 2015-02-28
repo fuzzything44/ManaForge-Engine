@@ -15,18 +15,12 @@
       <Filter>Private</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp" />
-    <ClCompile Include="Private\Window.cpp">
-      <Filter>Private</Filter>
-    </ClCompile>
     <ClCompile Include="Private\MainWindow.cpp">
       <Filter>Private</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="Public\Window.h">
-      <Filter>Public</Filter>
-    </ClInclude>
     <ClInclude Include="Public\MainWindow.h">
       <Filter>Public</Filter>
     </ClInclude>

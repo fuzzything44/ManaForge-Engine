@@ -98,6 +98,7 @@
     <ClCompile Include="private\Helper.cpp" />
     <ClCompile Include="Private\Logging.cpp" />
     <ClCompile Include="private\TextureLibrary.cpp" />
+    <ClCompile Include="Private\Window.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -111,6 +112,7 @@
     <ClInclude Include="public\Helper.h" />
     <ClInclude Include="Public\Logging.h" />
     <ClInclude Include="public\TextureLibrary.h" />
+    <ClInclude Include="Public\Window.h" />
     <ClInclude Include="stdafx.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>

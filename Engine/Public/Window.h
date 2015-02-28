@@ -27,34 +27,34 @@ public:
 	/// <param name='title'> The title of the winodw </param>
 	/// <param name='mode'> The mode to run the window in </param>
 	/// <param name='size'> The size of the window
-	Window(std::string title, WindowMode mode, uvec2 size);
+	ENGINE_API Window(std::string title, WindowMode mode, uvec2 size);
 
 	// Runs the window
-	virtual GLint run();
+	ENGINE_API virtual GLint run();
 
-	uvec2 getSize();
+	uvec2 ENGINE_API getSize();
 
 protected:
 
 	std::string title;
 	WindowMode mode;
-
-	void updateWindowParameters();
-
+	 
+	ENGINE_API void updateWindowParameters();
+	 
 	bool hasFocus;
-
+	 
 	GLFWwindow* window;
-	
-	virtual GLint init() = 0;
-	virtual void scroll(GLFWwindow* window, double x, double y) = 0;
-	virtual void draw(float deltaTime) = 0;
-	virtual void input(GLFWwindow* window, float deltaTime) = 0;
-	virtual GLint exit() = 0;
-	virtual GLvoid focus(GLFWwindow* window, int focused) = 0;
-
-	static std::map<GLFWwindow*, Window*> windows;
-
-	static void scrollCallback(GLFWwindow* window, double x, double y)
+	 
+	ENGINE_API virtual GLint init() = 0;
+	ENGINE_API virtual void scroll(GLFWwindow* window, double x, double y) = 0;
+	ENGINE_API virtual void draw(float deltaTime) = 0;
+	ENGINE_API virtual void input(GLFWwindow* window, float deltaTime) = 0;
+	ENGINE_API virtual GLint exit() = 0;
+	ENGINE_API virtual GLvoid focus(GLFWwindow* window, int focused) = 0;
+	 
+	ENGINE_API static std::map<GLFWwindow*, Window*> windows;
+	 
+	ENGINE_API static void scrollCallback(GLFWwindow* window, double x, double y)
 	{
 		if (Window* winObj = windows[window])
 		{
@@ -62,7 +62,7 @@ protected:
 		}
 	}
 
-	static void focusCallback(GLFWwindow* window, int focused)
+	ENGINE_API static void focusCallback(GLFWwindow* window, int focused)
 	{
 		if (Window* winObj = windows[window])
 		{

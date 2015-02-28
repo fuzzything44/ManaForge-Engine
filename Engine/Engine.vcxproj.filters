@@ -30,6 +30,9 @@
     <ClCompile Include="Private\Logging.cpp">
       <Filter>Private</Filter>
     </ClCompile>
+    <ClCompile Include="Private\Window.cpp">
+      <Filter>Private</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="public\Actor.h">
@@ -52,6 +55,9 @@
       <Filter>Public</Filter>
     </ClInclude>
     <ClInclude Include="Public\Logging.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\Window.h">
       <Filter>Public</Filter>
     </ClInclude>
   </ItemGroup>
