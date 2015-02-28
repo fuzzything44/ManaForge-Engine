@@ -10,6 +10,7 @@ GLint(*MainWindow::init)() = NULL;
 GLint(*MainWindow::exit)() = NULL;
 GLvoid(*MainWindow::scroll)(GLFWwindow*, GLdouble, GLdouble) = NULL;
 GLFWwindow* MainWindow::window = NULL;
+bool MainWindow::hasFocus = true;
 
 
 GLint MainWindow::run(const GLchar* title, WindowMode windowmode, GLuint width, GLuint height)
@@ -124,8 +125,7 @@ GLint MainWindow::run(const GLchar* title, WindowMode windowmode, GLuint width, 
 		}
 	}
 
-	std::ostringstream ss;
-
+	glfwSetWindowFocusCallback(window, focus);
 
 	ENG_LOG("Init finished in " << glfwGetTime() - start << "s");
 
@@ -135,32 +135,41 @@ GLint MainWindow::run(const GLchar* title, WindowMode windowmode, GLuint width, 
 	GLfloat LastTick =(GLfloat) (glfwGetTime());
 
 	do {
-		// calculate tick time
-		GLfloat CurrentTick = (GLfloat) (glfwGetTime());
-		GLfloat delta = CurrentTick - LastTick;
-		LastTick = CurrentTick;
 
-		// if our keyboard function exists, then use it
-		if (keyboard)
-			keyboard(window, delta);
+		if (hasFocus){
 
-		// if our draw function exists, us it
-		if (draw)
-			draw(delta);
+			// calculate tick time
+			GLfloat CurrentTick = (GLfloat)(glfwGetTime());
+			GLfloat delta = CurrentTick - LastTick;
+			LastTick = CurrentTick;
 
-		// swap front and back buffers 
-		glfwSwapBuffers(window);
+
+			// if our keyboard function exists, then use it
+			if (keyboard)
+				keyboard(window, delta);
+
+			// if our draw function exists, us it
+			if (draw)
+				draw(delta);
+
+			// swap front and back buffers 
+			glfwSwapBuffers(window);
+
+
+
+			// if user is pressing esc, exit the application
+			if (glfwGetKey(window, GLFW_KEY_ESCAPE))
+			{
+				glfwSetWindowShouldClose(window, GL_TRUE);
+			}
+			// render another frame so long the window shouldn't close. 
+			// This is analogous for setting it through a function or pressing the close button
+
+		}
 
 		// make sure all events are done
 		glfwPollEvents();
-		
-		// if user is pressing esc, exit the application
-		if (glfwGetKey(window, GLFW_KEY_ESCAPE))
-		{
-			glfwSetWindowShouldClose(window, GL_TRUE);
-		}
-	// render another frame so long the window shouldn't close. 
-	// This is analogous for setting it through a function or pressing the close button
+
 	} while (!glfwWindowShouldClose(window));
 
 	if (exit){
@@ -217,4 +226,10 @@ GLint MainWindow::getWindowHeight()
 	glfwGetWindowSize(window, NULL, &height);
 
 	return height;
+}
+
+
+GLvoid MainWindow::focus(GLFWwindow* window, int in)
+{
+	hasFocus = in == 0 ? false : true;
 }

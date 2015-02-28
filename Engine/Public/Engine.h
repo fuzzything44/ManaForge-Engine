@@ -23,3 +23,6 @@ typedef glm::ivec4 ivec4;
 typedef glm::mat2 mat2;
 typedef glm::mat3 mat3;
 typedef glm::mat4 mat4;
+typedef glm::dvec2 dvec2;
+typedef glm::dvec3 dvec3;
+typedef glm::dvec4 dvec4;

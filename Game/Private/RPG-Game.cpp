@@ -101,7 +101,28 @@ GLint main()
 
 GLvoid keyboard(GLFWwindow* window, GLfloat delta)
 {
+	// get the cursor position
+	dvec2 pos;
+	glfwGetCursorPos(window, &pos.x, &pos.y);
 
+	// get the size of the window
+	ivec2 size;
+	glfwGetWindowSize(window, &size.x, &size.y);
+
+	// convert to screen corrdinates (-1 to 1)
+	pos /= dvec2(size);
+	pos.y = 1 - pos.y;
+	pos *= 2.0f;
+	pos -= 1;
+
+	// multiply by the inverse of the view matrix -- we are doing the opposite operation then usual 
+	vec4 pos4 = vec4(pos.x, pos.y, 0.f, 1.f) * glm::inverse(viewMat);
+
+	// convert back into vec2
+	pos = vec2(pos4.x, pos4.y);
+
+//	pos -= characterLocation();
+	ENG_LOG("X: " << pos.x << "\tY: " << pos.y << std::endl);
 }
 
 GLvoid draw(GLfloat delta)
@@ -114,7 +135,7 @@ GLvoid draw(GLfloat delta)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// temp -- will actually have player location
-	Chunk::draw(glm::vec2(0.f));
+	Chunk::draw(vec2(0.f));
 }
 
 GLint init()
@@ -163,7 +184,7 @@ GLint init()
 	GLuint program = LoadShaders("shaders\\chunkvert.glsl", "shaders\\chunkfrag.glsl");
 
 	// init 1 * 3 chunks of CHUNK_SIZE * CHUNK_SIZE 
-	Chunk::initChunks(program, &viewMat, glm::uvec2(2, 2));
+	Chunk::initChunks(program, &viewMat, glm::uvec2(2, 10));
 	
 
 	float aspectRatio = (float)MainWindow::getWindowWidth() / (float)MainWindow::getWindowHeight();

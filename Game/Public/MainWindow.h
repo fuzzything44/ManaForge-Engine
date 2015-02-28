@@ -79,6 +79,7 @@ public:
 
 private:
 
+	static bool hasFocus;
 
 	static GLFWwindow* window;
 	
@@ -88,4 +89,7 @@ private:
 	static GLint(*init)();
 	static GLint(*exit)();
 	static GLvoid(*scroll)(GLFWwindow*, GLdouble, GLdouble);
+
+
+	static GLvoid focus(GLFWwindow* window, int in);
 };
