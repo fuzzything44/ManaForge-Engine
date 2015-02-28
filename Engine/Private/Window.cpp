@@ -71,7 +71,7 @@ Window::Window(std::string title, WindowMode windowmode, uvec2 size)
 	// exit if the window wasn't initialized correctly
 	if (!window)
 	{
-		fprintf(stderr, "Window failed to create");
+		ENG_LOG("\nWindow failed to create. Exiting");
 		// terminate the glfw session
 		glfwTerminate();
 		return;

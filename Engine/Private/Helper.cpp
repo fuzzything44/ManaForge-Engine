@@ -86,7 +86,7 @@ GLuint LoadShaders(const char * vertex_file_path, const char * fragment_file_pat
 
 
 	// Link the program
-	printf("Linking program\n");
+	ENG_LOG("Linking program\n");
 	GLuint ProgramID = glCreateProgram();
 	glAttachShader(ProgramID, VertexShaderID);
 	glAttachShader(ProgramID, FragmentShaderID);
@@ -98,7 +98,7 @@ GLuint LoadShaders(const char * vertex_file_path, const char * fragment_file_pat
 	if (InfoLogLength > 0){
 		std::vector<char> ProgramErrorMessage(InfoLogLength + 1);
 		glGetProgramInfoLog(ProgramID, InfoLogLength, NULL, &ProgramErrorMessage[0]);
-		printf("%s\n", &ProgramErrorMessage[0]);
+		ENG_LOG("\n" << &ProgramErrorMessage[0]);
 	}
 
 	// free the sader memory -- it is already in the program

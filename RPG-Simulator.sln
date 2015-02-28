@@ -10,11 +10,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Game", "Game\Game.vcxproj",
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Engine", "Engine\Engine.vcxproj", "{366C8B6A-FC80-421F-9AAA-F3A29F3061F5}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Editor", "Editor\Editor.vcxproj", "{3AF6F81A-9B5E-4232-8E1E-89F3FA2A13A1}"
-	ProjectSection(ProjectDependencies) = postProject
-		{366C8B6A-FC80-421F-9AAA-F3A29F3061F5} = {366C8B6A-FC80-421F-9AAA-F3A29F3061F5}
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resources", "Resources", "{2032E0A9-1EDF-41C9-87FE-45E0157F2A7D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Textures", "Textures", "{1AC95EF7-8FDC-4A65-916E-E28F9663E30E}"
@@ -332,9 +327,6 @@ Global
 		{366C8B6A-FC80-421F-9AAA-F3A29F3061F5}.Debug|Win32.Build.0 = Debug|Win32
 		{366C8B6A-FC80-421F-9AAA-F3A29F3061F5}.Release|Win32.ActiveCfg = Release|Win32
 		{366C8B6A-FC80-421F-9AAA-F3A29F3061F5}.Release|Win32.Build.0 = Release|Win32
-		{3AF6F81A-9B5E-4232-8E1E-89F3FA2A13A1}.Debug|Win32.ActiveCfg = Debug|Win32
-		{3AF6F81A-9B5E-4232-8E1E-89F3FA2A13A1}.Release|Win32.ActiveCfg = Release|Win32
-		{3AF6F81A-9B5E-4232-8E1E-89F3FA2A13A1}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
