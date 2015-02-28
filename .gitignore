@@ -59,3 +59,4 @@ Resource/log.txt
 *.pch.codeanalysisast
 *.pch.codeanalysis
 Game/Debug/Game.pch.codeanalysis
+log.txt
