@@ -11,7 +11,7 @@ Actor::Actor(const ActorData& dataIn, Chunk* chunkIn)
 	// add this class to the chunk
 	chunk->actors.push_back(this);
 
-	ENG_LOG("Create Buffer For Actor" << std::endl);
+	ENG_LOG("\nCreate Buffer For Actor" << std::endl);
 
 	cl_int err;
 	buff = cl::Buffer(*CLHandler::context, CL_MEM_READ_WRITE, sizeof(ActorData), &data, &err);

@@ -21,6 +21,8 @@ void TextureLibrary::addTexture(std::string key, const char* filename)
 		nextLocation.x = nextLocation.y = 0;
 	}
 
+	ENG_LOG("\nLoading Texture " << filename);
+
 	appendDDS(texture, nextLocation.x * IMAGE_WIDTH, nextLocation.y * IMAGE_WIDTH, filename);
 	
 	// width of one texture in UV coordinates
@@ -52,6 +54,7 @@ void TextureLibrary::addTexture(std::string key, const char* filename)
 			nextLocation.y = 0;
 		}
 	}
+	ENG_LOG("\nTexture Loaded!\n");
 }
 
 UVData TextureLibrary::getUVData(std::string key)

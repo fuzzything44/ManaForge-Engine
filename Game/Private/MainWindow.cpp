@@ -1,235 +1,159 @@
 #include "stdafx.h"
+
 #include "MainWindow.h"
-#include <sstream>
 
 
-/***************************** I N I T	 S T A T I C	  V A R I A B L E S ***********************/
-GLvoid(*MainWindow::draw)(GLfloat) = NULL;
-GLvoid(*MainWindow::keyboard)(GLFWwindow*, GLfloat) = NULL;
-GLint(*MainWindow::init)() = NULL;
-GLint(*MainWindow::exit)() = NULL;
-GLvoid(*MainWindow::scroll)(GLFWwindow*, GLdouble, GLdouble) = NULL;
-GLFWwindow* MainWindow::window = NULL;
-bool MainWindow::hasFocus = true;
+MainWindow::MainWindow(std::string title, WindowMode mode, uvec2 size) : Window(title, mode, size)
+{
+	
+}
 
-
-GLint MainWindow::run(const GLchar* title, WindowMode windowmode, GLuint width, GLuint height)
+MainWindow::MainWindow(const char* title, WindowMode mode, uvec2 size) : Window(std::string(title), mode, size)
 {
 
+}
 
-	// init GLFW (our window handler)
-	int err = glfwInit();
-	if (err != 1)
+GLint MainWindow::init()
+{
+
+	// set a background color -- it is in 0-1 scale. Pink is the best.
+	glClearColor(1.f, .2f, .5f, 1.f);
+
+	// enable the depth buffer so the trianges in front are in front
+	glEnable(GL_DEPTH_TEST);
+
+	// enable transparency
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+
+	CLHandler::initCL(0, 0, 0);
+
+	TextureLibrary::addTexture("0", "textures\\0.dds");
+	TextureLibrary::addTexture("1", "textures\\1.dds");
+	TextureLibrary::addTexture("2", "textures\\2.dds");
+	TextureLibrary::addTexture("3", "textures\\3.dds");
+	TextureLibrary::addTexture("4", "textures\\4.dds");
+	TextureLibrary::addTexture("5", "textures\\5.dds");
+	TextureLibrary::addTexture("6", "textures\\6.dds");
+	TextureLibrary::addTexture("7", "textures\\7.dds");
+	TextureLibrary::addTexture("8", "textures\\8.dds");
+	TextureLibrary::addTexture("9", "textures\\9.dds");
+	TextureLibrary::addTexture("10", "textures\\10.dds");
+	TextureLibrary::addTexture("11", "textures\\11.dds");
+	TextureLibrary::addTexture("12", "textures\\12.dds");
+	TextureLibrary::addTexture("13", "textures\\13.dds");
+	TextureLibrary::addTexture("14", "textures\\14.dds");
+	TextureLibrary::addTexture("15", "textures\\15.dds");
+	TextureLibrary::addTexture("16", "textures\\16.dds");
+
+	ENG_LOG("\nTextures Loaded!\n");
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 6);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+
+	GLuint program = LoadShaders("shaders\\chunkvert.glsl", "shaders\\chunkfrag.glsl");
+	
+	ENG_LOG("\nShaders Loaded!\n");
+
+	// init 1 * 3 chunks of CHUNK_SIZE * CHUNK_SIZE 
+	Chunk::initChunks(program, &viewMat, glm::uvec2(2, 10));
+
+	ENG_LOG("\nChunks Loaded!\n");
+
+	float aspectRatio = (float)getSize().x / (float)getSize().y;
+
+	// make the projection so there is no distortion based on aspect ratio.
+	projection = glm::ortho(-aspectRatio, aspectRatio, -1.f, 1.f);
+
+	Actor* act = Actor::addActor<Actor>(vec2(1.f, 1.f), vec2(1.f, 1.f), vec2(0.f, 0.f), 0, false, UVData(), true);
+
+	// return error code. Zero for success
+	return 0;
+}
+
+void MainWindow::scroll(GLFWwindow* window, double x, double y)
+{
+	if (x != 0 || y != 0)
 	{
-		ENG_LOG("Failed to init GLFW" << std::endl);
-
-		return err;
-	}
-	
-	GLFWmonitor* mon = glfwGetPrimaryMonitor();
-	const GLFWvidmode* mode = glfwGetVideoMode(mon);
-	
-	// set AA
-	glfwWindowHint(GLFW_SAMPLES, 8);
-
-	glfwWindowHint(GL_DOUBLEBUFFER, false);
-	
-	
-
-	// set GL version
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-
-	// we don't want a border if it is fullscreen windowed, otherwise we do
-	if (windowmode == FULLSCREEN_WINDOWED){
-
-		glfwWindowHint(GLFW_DECORATED, false);
-	}
-	else
-	{
-		glfwWindowHint(GLFW_DECORATED, true);
-	}
-
-	// set profile to core profile
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-	// set the window to non-resizable
-	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-
-	// create the winodw
-	switch (windowmode)
-	{
-	case FULLSCREEN:
-		window = glfwCreateWindow(width, height, title, mon, NULL);
-		break;
-	case FULLSCREEN_WINDOWED:
-		window = glfwCreateWindow(mode->width, mode->height, title, NULL, NULL);
-		break;
-
-	case WINDOWED:
-		window = glfwCreateWindow(width, height, title, NULL, NULL);
-		break;
-
-	default:
-
-		break;
-	}
-	
-	// exit if the window wasn't initialized correctly
-	if (!window)
-	{
-		fprintf(stderr, "Window failed to create");
-		// terminate the glfw session
-		glfwTerminate();
-		return -1;
-	}
-
-
-	// make context current
-	glfwMakeContextCurrent(window);
-
-	// use newer GL
-	glewExperimental = GL_TRUE;
-
-	// make sure the cursor is shown. Most likely want to change this in the future
-	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-	
-
-
-	// init GL (glew is an extension that does this for us)
-	err = glewInit();
-	if (err != GLEW_OK)
-	{
-		ENG_LOG("Failed to init GLEW. err code: ");
-		// terminate the glfw session
-		glfwTerminate();
-		return -1;
-	}
-
-	// Ensure we can capture the escape key being pressed below
-	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
-
-	// if there is a scroll function, set it to the scroll callback
-	if (scroll)
-		glfwSetScrollCallback(window, scroll);
-	
-	double start = glfwGetTime();
-
-	// if init exists use it and if it doesn't succede return the error code.
-	if (init)
-	{
-		err = init();
-		if (err != 0)
+		if (y == 1.f)
 		{
-			return err;
+			// scale the scale
+			scale *= 2.f;
 		}
-	}
-
-	glfwSetWindowFocusCallback(window, focus);
-
-	ENG_LOG("Init finished in " << glfwGetTime() - start << "s");
-
-
-
-	// set initial tick
-	GLfloat LastTick =(GLfloat) (glfwGetTime());
-
-	do {
-
-		if (hasFocus){
-
-			// calculate tick time
-			GLfloat CurrentTick = (GLfloat)(glfwGetTime());
-			GLfloat delta = CurrentTick - LastTick;
-			LastTick = CurrentTick;
-
-
-			// if our keyboard function exists, then use it
-			if (keyboard)
-				keyboard(window, delta);
-
-			// if our draw function exists, us it
-			if (draw)
-				draw(delta);
-
-			// swap front and back buffers 
-			glfwSwapBuffers(window);
-
-
-
-			// if user is pressing esc, exit the application
-			if (glfwGetKey(window, GLFW_KEY_ESCAPE))
-			{
-				glfwSetWindowShouldClose(window, GL_TRUE);
-			}
-			// render another frame so long the window shouldn't close. 
-			// This is analogous for setting it through a function or pressing the close button
-
+		else if (y == -1.f)
+		{
+			// scale the scale variable
+			scale /= 2.f;
 		}
 
-		// make sure all events are done
-		glfwPollEvents();
-
-	} while (!glfwWindowShouldClose(window));
-
-	if (exit){
-		return exit();
-	}
-	else
-	{
-		return 0;
 	}
 }
 
-GLvoid MainWindow::bindResize(GLvoid(*resizeIn)(GLFWwindow*, GLint, GLint))
+
+void MainWindow::draw(float deltaTime)
 {
+	// compute the viewMat
+	viewMat = glm::scale(projection, glm::vec3(scale, scale, 1));
 
-	glfwSetWindowSizeCallback(window, resizeIn);
-}
+	// clear the color buffer and depth buffer (makes sure the trianges in front get rendered in front
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-GLvoid MainWindow::bindDraw(GLvoid(*drawIn)(GLfloat))
-{
-	draw = drawIn;
-}
-
-GLvoid MainWindow::bindExit(GLint(*exitIn)())
-{
-	exit = exitIn;
-}
-GLvoid MainWindow::bindInit(GLint(*initIn)())
-{
-	init = initIn;
-}
-GLvoid MainWindow::bindKeyboard(GLvoid(*keyboardIn)(GLFWwindow*, GLfloat))
-{
-	keyboard = keyboardIn;
-}
-
-GLvoid MainWindow::bindScroll(GLvoid(*scrollIn)(GLFWwindow*, GLdouble, GLdouble))
-{
-	scroll = scrollIn;
-}
-
-GLint MainWindow::getWindowWidth()
-{
-	int width;
-
-	glfwGetWindowSize(window, &width, NULL);
-
-	return width;
-}
-
-GLint MainWindow::getWindowHeight()
-{
-	int height;
-
-	glfwGetWindowSize(window, NULL, &height);
-
-	return height;
+	// temp -- will actually have player location
+	Chunk::draw(vec2(0.f));
 }
 
 
-GLvoid MainWindow::focus(GLFWwindow* window, int in)
+void MainWindow::input(GLFWwindow* window, float deltaTime)
 {
-	hasFocus = in == 0 ? false : true;
+	// get the cursor position
+	dvec2 pos;
+	glfwGetCursorPos(window, &pos.x, &pos.y);
+
+	// get the size of the window
+	ivec2 size;
+	glfwGetWindowSize(window, &size.x, &size.y);
+
+	// convert to screen corrdinates (-1 to 1)
+	pos /= dvec2(size);
+	pos.y = 1 - pos.y;
+	pos *= 2.0f;
+	pos -= 1;
+
+	// multiply by the inverse of the view matrix -- we are doing the opposite operation then usual 
+	vec4 pos4 = vec4(pos.x, pos.y, 0.f, 1.f) * glm::inverse(viewMat);
+
+	// convert back into vec2
+	pos = vec2(pos4.x, pos4.y);
+}
+
+
+GLint MainWindow::exit()
+{
+	CLHandler::exitCL();
+
+	return 0;
+}
+
+
+GLvoid MainWindow::focus(GLFWwindow* window, int focused)
+{
+
+}
+
+GLvoid MainWindow::resize(GLFWwindow* window, double x, double y)
+{
+	// compute the aspect ratio
+	GLfloat aspectRatio = (GLfloat)x / (GLfloat)y;
+
+	// update ogl to use entire screen
+	glViewport(0, 0, (GLsizei)x, (GLsizei)y);
+
+	// update the projection matrix with the new aspect ratios
+	projection = glm::ortho(-aspectRatio, aspectRatio, -1.f, 1.f);
 }

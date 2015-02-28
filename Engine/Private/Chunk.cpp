@@ -27,6 +27,7 @@ GLvoid Chunk::initChunks(GLuint programIn, mat4* viewMatIn, const uvec2& chunksS
 		chunks[x] = (Chunk**)malloc(sizeof(Chunk*) * chunksSize.y);
 		for (GLuint y = 0; y < chunksSize.y; y++)
 		{
+			ENG_LOG("\nInit Chunk (" << x << ", " << y << ")");
 			chunks[x][y] = new Chunk(vec2(x * CHUNK_WIDTH, y * CHUNK_WIDTH));
 		}
 	}
