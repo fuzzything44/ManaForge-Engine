@@ -9,20 +9,22 @@ class Actor;
 // struct containing all of the Data for OpenCL
 struct ActorData
 {
-	ActorData(vec4 boundsIn = vec4(0.f, 0.f, 0.f, 0.f), vec2 velocityIn = vec2(0.f, 0.f), 
-		float rotationIn = 0.f, UVData UVsIn = UVData(), Actor* locIn = NULL, bool collidesIn = false) 
-		: bounds(boundsIn),
+	ActorData(vec2 locationIn = vec2(0.f, 0.f), vec2 sizeIn = vec2(0.f, 0.f), vec2 velocityIn = vec2(0.f, 0.f), 
+		float rotationIn = 0.f, UVData& UVsIn = UVData(), Actor* actorPtrIn = NULL, bool collidesIn = false) 
+		: location(locationIn),
+		size(sizeIn),
 		velocity(velocityIn),
 		rotation(rotationIn),
 		UVs(UVsIn),
-		loc(locIn),
+		actorPtr(actorPtrIn),
 		collides(collidesIn) { }
 
-	vec4 bounds;
+	vec2 location;
+	vec2 size;
 	vec2 velocity;
 	float rotation;
 	UVData UVs;
-	Actor* loc;
+	Actor* actorPtr;
 	bool collides;
 	// TODO: add collision channels -- need to make
 };
@@ -36,7 +38,18 @@ public:
 	friend Chunk;
 
 	template <typename T>
-	static ENGINE_API GLvoid addActor(const vec4& boundsIn, GLfloat* UVs, GLboolean isPersisitent);
+	static ENGINE_API GLvoid addActor(const vec4& bounds, const vec2& velocity, const float& rotation,
+		GLboolean collides, UVData UVs, GLboolean isPersisitent);
+
+	vec2  getLocation();
+	vec2  getSize();
+	float getRotation();
+	vec2  getVelocity();
+
+	void setLocation(vec2 newLoc);
+	void setSize(vec2 newSize);
+	void setRotation(float newRot);
+	void setVelocity(vec2 newVelocity);
 
 protected:
 

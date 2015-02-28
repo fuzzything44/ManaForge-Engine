@@ -107,7 +107,7 @@ GLvoid keyboard(GLFWwindow* window, GLfloat delta)
 GLvoid draw(GLfloat delta)
 {
 
-	std::cout << scale << std::endl;
+	ENG_LOG(scale << std::endl);
 
 	// compute the viewMat
 	viewMat = glm::scale(projection, glm::vec3(scale, scale, 1));
