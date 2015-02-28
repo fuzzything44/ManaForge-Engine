@@ -13,3 +13,7 @@
 #include <fstream>
 #include <fstream>
 #include <sstream>
+#include <map>
+
+#include <Logging.h>
+#include <Helper.h>

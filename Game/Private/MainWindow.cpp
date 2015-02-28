@@ -64,8 +64,6 @@ GLint MainWindow::init()
 	// init 1 * 3 chunks of CHUNK_SIZE * CHUNK_SIZE 
 	Chunk::initChunks(program, &viewMat, glm::uvec2(2, 10));
 
-	ENG_LOG("\nChunks Loaded!\n");
-
 	float aspectRatio = (float)getSize().x / (float)getSize().y;
 
 	// make the projection so there is no distortion based on aspect ratio.

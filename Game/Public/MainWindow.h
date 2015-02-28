@@ -1,8 +1,4 @@
 #pragma once
-#include <Window.h>
-#include <CLHandler.h>
-#include <TextureLibrary.h>
-
 
 class MainWindow : public Window
 {

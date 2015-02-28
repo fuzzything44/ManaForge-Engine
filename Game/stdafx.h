@@ -14,3 +14,7 @@
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.inl>
+
+#include <CLHandler.h>
+#include <TextureLibrary.h>
+#include <Window.h>

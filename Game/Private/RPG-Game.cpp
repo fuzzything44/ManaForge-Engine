@@ -1,11 +1,6 @@
 #include "stdafx.h"
 
 // local includes
-#include "Window.h"
-#include "Helper.h"
-#include "Chunk.h"
-#include "CLHandler.h"
-#include "TextureLibrary.h"
 #include "MainWindow.h"
 
 /*************** P R O T O T Y P E S ***************************************************/

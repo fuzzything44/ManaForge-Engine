@@ -1,6 +1,6 @@
 #pragma once
-#include "Engine.h"
-#include "Logging.h"
+#include <Engine.h>
+#include <Logging.h>
 
 // OpenGL include
 #include <GLTools/glew.h>

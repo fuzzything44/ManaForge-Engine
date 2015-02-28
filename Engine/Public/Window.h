@@ -1,14 +1,7 @@
 #pragma once
 #include <Engine.h>
-#include <Logging.h>
-#include <Helper.h>
-#include <iostream>
 #include <map>
 
-#include <GLTools/glew.h>
-#include <GLTools/glfw3.h>
-
-#include <glm/glm.hpp>
 
 // enum for the window modes
 enum WindowMode

@@ -18,6 +18,8 @@ GLvoid Chunk::initChunks(GLuint programIn, mat4* viewMatIn, const uvec2& chunksS
 	program = programIn;
 	viewMat = viewMatIn;
 
+	ENG_LOG("\nInitalizing Chunks:")
+
 	// allocate the pointer
 	chunks = (Chunk***)malloc(sizeof(Chunk**) * chunksSize.y);
 
@@ -31,7 +33,7 @@ GLvoid Chunk::initChunks(GLuint programIn, mat4* viewMatIn, const uvec2& chunksS
 			chunks[x][y] = new Chunk(vec2(x * CHUNK_WIDTH, y * CHUNK_WIDTH));
 		}
 	}
-
+	ENG_LOG("\nDone Initalizing Chunks.\n")
 
 	persistentChunk = new Chunk();
 

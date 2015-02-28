@@ -10,6 +10,9 @@
 
 #include <glm/glm.hpp>
 
+#include <GLTools/glew.h>
+#include <GLTools/glfw3.h>
+
 
 typedef glm::vec2 vec2;
 typedef glm::vec3 vec3;
