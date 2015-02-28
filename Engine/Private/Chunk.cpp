@@ -8,6 +8,7 @@ Chunk*** Chunk::chunks = NULL;
 Chunk* Chunk::persistentChunk = NULL;
 uvec2 Chunk::chunksSize = uvec2(0, 0);
 GLint Chunk::texUniformHandle = -1;
+GLint Chunk::characterLocUniformHandle = -1;
 GLuint Chunk::program = 0;
 mat4* Chunk::viewMat = NULL;
 
@@ -34,6 +35,7 @@ GLvoid Chunk::initChunks(GLuint programIn, mat4* viewMatIn, const uvec2& chunksS
 
 	persistentChunk = new Chunk();
 
+	characterLocUniformHandle = glGetUniformLocation(program, "characterLoc");
 
 	// initalize all handles
 	texUniformHandle = glGetUniformLocation(program, "texArray");
@@ -42,6 +44,9 @@ GLvoid Chunk::initChunks(GLuint programIn, mat4* viewMatIn, const uvec2& chunksS
 Chunk::Chunk(vec2 locationIn)
 	: location(locationIn)
 {
+	glUseProgram(program);
+
+
 	// the persistent chunk doesn't get anything
 	if (this != persistentChunk)
 	{
@@ -217,6 +222,10 @@ GLvoid Chunk::drawChunk()
 
 void Chunk::draw(vec2 characterLoc)
 {
+	if (characterLocUniformHandle != -1)
+	{
+		glUniform2f(characterLocUniformHandle, characterLoc.x, characterLoc.y);
+	}
 
 	// return if there is no persistent chunk
 	if (persistentChunk == NULL)

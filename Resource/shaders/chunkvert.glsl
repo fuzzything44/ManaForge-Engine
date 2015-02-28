@@ -21,7 +21,7 @@ void main()
 
 	// set the final position
 	vec4 location = vec4(in_location, (9.f - renderOrder) / 9.f, 1.f);
-	gl_Position = (viewMat * location) - vec4(characterLoc, 0, 0);
+	gl_Position = viewMat * (location - vec4(characterLoc, 0, 0));
 
 	// send the data to the fragment shader and interpolates it so it has the correct value
 	UV = in_UV;

@@ -2,11 +2,17 @@
 #include "Actor.h"
 
 
-GLvoid Actor::addActor(const vec4& boundsIn, GLfloat* UVs, GLboolean isPersisitent)
+template <typename T>
+GLvoid Actor::addActor(const vec4& boundsIn, const vec2& velocityIn, const float& rotationIn,
+	GLboolean collides, UVData UVs, GLboolean isPersisitent)
 {
 	if (isPersisitent)
 	{
-		Actor* newAct = (Actor*)_aligned_malloc(sizeof(Actor), 16);
+		T* newAct = (T*)_aligned_malloc(sizeof(T), 16);
+
+		// build actorData
+		ActorData data(boundsIn, velocityIn, rotationIn, UVs, collides)
+
 		*newAct = Actor(boundsIn, UVs, Chunk::persistentChunk);
 		Chunk::persistentChunk->actors.push_back(newAct);
 	}
@@ -16,7 +22,7 @@ GLvoid Actor::addActor(const vec4& boundsIn, GLfloat* UVs, GLboolean isPersisite
 	}
 }
 
-Actor::Actor(const vec4& boundsIn, GLfloat* UVs, Chunk* chunkIn) : bounds(boundsIn), chunk(chunkIn)
+Actor::Actor(const ActorData& dataIn, Chunk* chunkIn) : data(dataIn), chunk(chunkIn)
 {
 
 }

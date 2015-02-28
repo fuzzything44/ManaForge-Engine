@@ -9,6 +9,15 @@ class Actor;
 // struct containing all of the Data for OpenCL
 struct ActorData
 {
+	ActorData(vec4 boundsIn = vec4(0.f, 0.f, 0.f, 0.f), vec2 velocityIn = vec2(0.f, 0.f), 
+		float rotationIn = 0.f, UVData UVsIn = UVData(), Actor* locIn = NULL, bool collidesIn = false) 
+		: bounds(boundsIn),
+		velocity(velocityIn),
+		rotation(rotationIn),
+		UVs(UVsIn),
+		loc(locIn),
+		collides(collidesIn) { }
+
 	vec4 bounds;
 	vec2 velocity;
 	float rotation;
@@ -26,12 +35,10 @@ public:
 	// Make Chunk a freind so it can access private methods (namely tick)
 	friend Chunk;
 
+	template <typename T>
 	static ENGINE_API GLvoid addActor(const vec4& boundsIn, GLfloat* UVs, GLboolean isPersisitent);
 
 protected:
-	
-	// first two elements are X, Y, and second two are width, height
-	vec4 bounds;
 
 	// refrence to the chunk that it resides in
 	Chunk* chunk;
@@ -40,15 +47,13 @@ protected:
 	/// <param name='deltaTime'> the time in milliseconds since the previous time. </param>
 	virtual void tick(GLfloat deltaTime) {	}
 
-	Actor(const vec4& boundsIn, GLfloat* UVs, Chunk* chunkIn);
+	Actor(const ActorData& dataIn, Chunk* chunkIn);
 
 	/// <summary> called when this actor overlaps with another actor </summary>
 	/// <param ='otherActor'> the actor that it collides with </param>
 	virtual void collide(Actor* otherActor) {	}
 
-	// the velocity of the actor
-	vec2 velocity;
-
-	
+	// holds all of the data for the class
+	ActorData data;
 	
 };

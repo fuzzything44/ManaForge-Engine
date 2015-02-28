@@ -21,6 +21,14 @@ static const GLuint TEXTURE_WIDTH = 16;
 
 struct UVData
 {
+	UVData(vec2 bottomLeftIn = vec2(0.f, 0.f), vec2 topLeftIn = vec2(0.f, 0.f),
+		vec2 bottomRightIn = vec2(0.f, 0.f), vec2 topRightIn = vec2(0.f, 0.f))
+		: bottomLeft(bottomLeftIn),
+		topLeft(topLeftIn),
+		bottomRight(bottomRightIn),
+		topRight(topRightIn) { }
+
+
 	vec2 bottomLeft;
 	vec2 topLeft;
 	vec2 bottomRight;
