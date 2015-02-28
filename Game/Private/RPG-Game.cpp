@@ -107,8 +107,6 @@ GLvoid keyboard(GLFWwindow* window, GLfloat delta)
 GLvoid draw(GLfloat delta)
 {
 
-	ENG_LOG(scale << std::endl);
-
 	// compute the viewMat
 	viewMat = glm::scale(projection, glm::vec3(scale, scale, 1));
 
@@ -173,6 +171,7 @@ GLint init()
 	// make the projection so there is no distortion based on aspect ratio.
 	projection = glm::ortho(-aspectRatio, aspectRatio, -1.f, 1.f);
 
+	Actor* act = Actor::addActor<Actor>(vec2(1.f, 1.f), vec2(1.f, 1.f), vec2(0.f, 0.f), 0, false, UVData(), true);
 
 	// return error code. Zero for success
 	return 0;

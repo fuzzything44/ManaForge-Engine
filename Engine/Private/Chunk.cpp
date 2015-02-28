@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "Chunk.h"
 
-#include <random>
 
 // set inital value for static variables
 Chunk*** Chunk::chunks = NULL;
@@ -158,7 +157,7 @@ Chunk::Chunk(vec2 locationIn)
 	}
 }
 
-GLvoid Chunk::drawChunk()
+GLvoid Chunk::drawChunk(std::vector<ActorData>& data)
 {
 	if (this != persistentChunk)
 	{
@@ -218,6 +217,11 @@ GLvoid Chunk::drawChunk()
 		glDisableVertexAttribArray(0);
 		glDisableVertexAttribArray(1);
 	}
+
+	for (auto& elem : actors)
+	{
+		data.push_back(elem->data);
+	}
 }
 
 void Chunk::draw(vec2 characterLoc)
@@ -235,16 +239,17 @@ void Chunk::draw(vec2 characterLoc)
 		return;
 	}
 
+
+	std::vector<ActorData> data;
+
 	// always draw the persistent chunk
-	persistentChunk->drawChunk();
+	persistentChunk->drawChunk(data);
 
 	uvec2 chunkoffset(characterLoc / vec2((GLfloat)CHUNK_WIDTH));
 
 	ivec2 chunksInEachDir = glm::uvec2( 1 / (*viewMat)[0][0], 1 / (*viewMat)[1][1]);
 
 	// finds out how much we need to reach in each direction -- find an equation in the future
-
-	
 
 	for (int x = -chunksInEachDir.x; x < chunksInEachDir.x; x++)
 	{
@@ -254,7 +259,7 @@ void Chunk::draw(vec2 characterLoc)
 			if (0 <= (x - chunkoffset.x) && (x - chunkoffset.x) < chunksSize.x && 
 				0 <= (y - chunkoffset.y) && (y - chunkoffset.y) < chunksSize.y)
 			{
-				chunks[x - chunkoffset.x][y - chunkoffset.y]->drawChunk();
+				chunks[x - chunkoffset.x][y - chunkoffset.y]->drawChunk(data);
 			}
 		}
 	}

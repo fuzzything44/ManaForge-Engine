@@ -4,8 +4,11 @@
 #include "Helper.h"
 #include "TextureLibrary.h"
 
+#include <random>
+
 class Chunk;
 #include "Actor.h"
+
 
 // the chunk width
 static const GLuint CHUNK_WIDTH = 50;
@@ -52,15 +55,17 @@ protected:
 
 	vec2 location;
 
-	GLvoid drawChunk();
+	// draw a certian chunk
+	GLvoid drawChunk(std::vector<ActorData>& data);
 
 	// a 2D array of pointers to chunks
-	static Chunk*** chunks;
+	static ENGINE_API Chunk*** chunks;
+
+	static ENGINE_API Chunk* persistentChunk;
 
 	// size of the array
 	static uvec2 chunksSize;
 
-	static Chunk* persistentChunk;
 
 	/// <summary> Constructor giving a location </summary>
 	/// <param name='location'> The location of the new Chunk </param>

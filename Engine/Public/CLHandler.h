@@ -4,6 +4,9 @@
 #include "Helper.h"
 #include "Logging.h"
 
+class CLHandler;
+#include "Actor.h"
+
 #include <CL/cl.hpp>
 #include <CL/cl_gl.h>
 
@@ -15,6 +18,9 @@ static const char* UPDATE_LOCATION = "kernels/updateFrame.cl";
 class CLHandler
 {
 public:
+
+	// let actor access the context etc.
+	friend Actor;
 
 	/// <summary> initialize the context, platform and devices. Returns an error code, CL_SUCCESS for success </summary>
 	static ENGINE_API cl_int initCL(GLuint posBuffer, GLuint UVBuffer, GLuint elemBuffer);
@@ -60,4 +66,5 @@ protected:
 	static cl_int CLHandler::loadCLProgram(const GLchar* filepath, cl::Program*& program);
 
 	static cl::Platform getBestPlatform();
+	
 };

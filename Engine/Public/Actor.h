@@ -1,5 +1,10 @@
 #pragma once
 #include "Engine.h"
+#include "TextureLibrary.h"
+
+struct ActorData;
+class Actor;
+#include "CLHandler.h"
 
 
 // you will learn about this later -- ask me if you want to know
@@ -37,21 +42,42 @@ public:
 	// Make Chunk a freind so it can access private methods (namely tick)
 	friend Chunk;
 
-	template <typename T>
-	static ENGINE_API GLvoid addActor(const vec4& bounds, const vec2& velocity, const float& rotation,
-		GLboolean collides, UVData UVs, GLboolean isPersisitent);
+	// let CLHandler access private varibles
+	friend CLHandler;
+
+
 
 	// getters
-	vec2  getLocation();
-	vec2  getSize();
-	float getRotation();
-	vec2  getVelocity();
+	ENGINE_API vec2 getLocation();
+	ENGINE_API vec2 getSize();
+	ENGINE_API float getRotation();
+	ENGINE_API vec2 getVelocity();
 
 	// setters
-	void setLocation(vec2 newLoc);
-	void setSize(vec2 newSize);
-	void setRotation(float newRot);
-	void setVelocity(vec2 newVelocity);
+	ENGINE_API void setLocation(vec2 newLoc);
+	ENGINE_API void setSize(vec2 newSize);
+	ENGINE_API void setRotation(float newRot);
+	ENGINE_API void setVelocity(vec2 newVelocity);
+
+
+	template <typename T>
+	static Actor* addActor(vec2 locationIn, vec2 sizeIn, vec2 velocityIn, float rotationIn,
+		bool collides, UVData UVs, bool isPersisitent)
+	{
+		ActorData newDat(locationIn, sizeIn, velocityIn, rotationIn, UVs, NULL, collides);
+
+
+		if (isPersisitent)
+		{
+
+			return new Actor(newDat, Chunk::persistentChunk);
+
+		}
+		else
+		{
+			return new Actor(newDat, Chunk::chunks[(GLuint)floorf(locationIn.x / (GLfloat)CHUNK_WIDTH)][(GLuint)floorf(locationIn.y / (GLfloat)CHUNK_WIDTH)]);
+		}
+	}
 
 protected:
 
@@ -64,7 +90,8 @@ protected:
 	/// <param name='deltaTime'> the time in milliseconds since the previous time. </param>
 	virtual void tick(GLfloat deltaTime);
 
-	Actor(const ActorData& dataIn, Chunk* chunkIn);
+	
+	ENGINE_API Actor(const ActorData& dataIn, Chunk* chunkIn);
 
 	/// <summary> called when this actor overlaps with another actor </summary>
 	/// <param ='otherActor'> the actor that it collides with </param>
@@ -72,5 +99,8 @@ protected:
 
 	// holds all of the data for the class
 	ActorData data;
+
+	// buffer for the ActorData
+	cl::Buffer buff;
 	
 };
