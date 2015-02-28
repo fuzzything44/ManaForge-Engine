@@ -1,16 +1,8 @@
 RPG-Simulator 
 =============
 Setting up the development envrionment:
-Open worspace /RPG-Simulator/ in eclipse 
-Create a project called RPG -- it will recognise it and open it
-Refresh the project (F5)
-Open project properties
-Go to Java build path
-Go to libraries
-Click add Jars
-navagate to RPG/libs and add both the jars
-press OK and you are setup!!
-*Also, if you get errors you may need to set the build path for the library to .../RPG-Simulator/RPG/lib/lwjgl-2.9.1/native/windows
+Use CMAKE to build glew and glfw and put binaries created in the bin/<CONFIGURATION> folder
+use CMAKE to create project files for RPG-Simulator
 
 Overview:
 
