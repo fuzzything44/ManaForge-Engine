@@ -74,4 +74,9 @@ protected:
 	static GLint texUniformHandle;
 	static GLint characterLocUniformHandle;
 
+	static GLuint vertexArrayActors;
+	static GLuint locBufferActors;
+	static GLuint UVBufferActors;
+	static GLuint elemBufferActors;
+
 };

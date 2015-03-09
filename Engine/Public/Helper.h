@@ -46,6 +46,7 @@ inline ENGINE_API cl_bool errChkCL(cl_int error, const char* name)
 	if (error != CL_SUCCESS)
 	{
 		ENG_LOG("Error: " << name << "(" << error << ")" << std::endl);
+		//std::cin.get();
 		return false;
 	}
 	else

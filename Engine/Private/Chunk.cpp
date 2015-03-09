@@ -11,6 +11,11 @@ GLint Chunk::characterLocUniformHandle = -1;
 GLuint Chunk::program = 0;
 mat4* Chunk::viewMat = NULL;
 
+GLuint Chunk::vertexArrayActors = 0;
+GLuint Chunk::locBufferActors = 0;
+GLuint Chunk::UVBufferActors = 0;
+GLuint Chunk::elemBufferActors = 0;
+
 
 GLvoid Chunk::initChunks(GLuint programIn, mat4* viewMatIn, const uvec2& chunksSizeIn)
 {
@@ -41,6 +46,25 @@ GLvoid Chunk::initChunks(GLuint programIn, mat4* viewMatIn, const uvec2& chunksS
 
 	// initalize all handles
 	texUniformHandle = glGetUniformLocation(program, "texArray");
+
+
+	// init actor buffers
+	glGenVertexArrays(1, &vertexArrayActors);
+	glBindVertexArray(vertexArrayActors);
+
+	glGenBuffers(1, &locBufferActors);
+	glBindBuffer(GL_ARRAY_BUFFER, locBufferActors);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * 4 * 100, (void*)0, GL_DYNAMIC_DRAW);
+
+	glGenBuffers(1, &UVBufferActors);
+	glBindBuffer(GL_ARRAY_BUFFER, UVBufferActors);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * 4 * 100, (void*)0, GL_DYNAMIC_DRAW);
+
+	glGenBuffers(1, &elemBufferActors);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elemBufferActors);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6 * 100, (void*)0, GL_DYNAMIC_DRAW);
+
+	CLHandler::initCL(locBufferActors, UVBufferActors, elemBufferActors);
 }
 
 Chunk::Chunk(vec2 locationIn)
@@ -225,6 +249,8 @@ GLvoid Chunk::drawChunk(std::vector<ActorData>& data)
 	{
 		data.push_back(elem->data);
 	}
+
+
 }
 
 void Chunk::draw(vec2 characterLoc)
@@ -267,6 +293,7 @@ void Chunk::draw(vec2 characterLoc)
 		}
 	}
 	
+	CLHandler::updateCL(characterLoc, data);
 }
 
 vec2 Chunk::getLocation()

@@ -16,8 +16,9 @@ Actor::Actor(const ActorData& dataIn, Chunk* chunkIn)
 	cl_int err;
 	buff = cl::Buffer(*CLHandler::context, CL_MEM_READ_WRITE, sizeof(ActorData), &data, &err);
 
+#ifdef _DEBUG
 	errChkCL(err, "Create Buffer");
-
+#endif
 
 }
 

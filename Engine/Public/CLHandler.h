@@ -28,7 +28,7 @@ public:
 	/// <param name = 'locBuffer'> the buffer to write to </param>
 	/// <param name = 'characterLocation'> the current location of the character </param>
 	/// <summary> called each frame. </summary>
-	static ENGINE_API cl_int updateCL(cl_float2 characterLocation);
+	static ENGINE_API cl_int updateCL(vec2 characterLocation, std::vector<ActorData>& data);
 
 	/// <summary> Called upon exit -- cleans up openCL resoruces. </summary>
 	static ENGINE_API void exitCL();
