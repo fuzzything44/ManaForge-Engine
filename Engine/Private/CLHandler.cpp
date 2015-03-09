@@ -26,23 +26,11 @@ cl_int CLHandler::updateCL(vec2 characterLocation, std::vector<ActorData>& data)
 	// acquire GL objects
 	err = queue->enqueueAcquireGLObjects(&objects);
 
-#ifdef _DEBUG
-	if (!errChkCL(err, "Acquire GL objects"))
-	{
-		return err;
-	}
-#endif
+	errChkCL(err, "Acquire GL objects");
 
 	err = queue->enqueueWriteBuffer(actors, true, 0, sizeof(ActorData) * data.size(), &data[0]);
 
-#ifdef _DEBUG
-	if (!errChkCL(err, "Write Buffer"))
-	{
-		return err;
-	}
-#endif
-
-
+	errChkCL(err, "Write Buffer");
 
 	return CL_SUCCESS;
 }
@@ -55,12 +43,8 @@ cl_int CLHandler::initCL(GLuint posBuffer, GLuint UVBuffer, GLuint elemBuffer)
 	ENG_LOG("Using Platform: " << platform.getInfo<CL_PLATFORM_NAME>() << std::endl);
 
 	platform.getDevices(CL_DEVICE_TYPE_ALL, &devices);
-#ifdef _DEBUG
-	if (!errChkCL(devices.size() != 0 ? CL_SUCCESS : CL_DEVICE_NOT_AVAILABLE, "platform.getDevices"))
-	{
-		return CL_DEVICE_NOT_AVAILABLE;
-	}
-#endif
+
+	errChkCL(devices.size() != 0 ? CL_SUCCESS : CL_DEVICE_NOT_AVAILABLE, "platform.getDevices");
 
 
 	ENG_LOG("Using Device: " << devices[0].getInfo<CL_DEVICE_NAME>() << std::endl);
@@ -79,13 +63,8 @@ cl_int CLHandler::initCL(GLuint posBuffer, GLuint UVBuffer, GLuint elemBuffer)
 	cl_int err = CL_SUCCESS;
 	context = new cl::Context(devices, context_properties, NULL, NULL, &err);
 
-#ifdef _DEBUG
 	// make sure the context was created successfully
-	if (!errChkCL(err, "Create Context"))
-	{
-		return err;
-	}
-#endif
+	errChkCL(err, "Create Context");
 
 	// load the program
 	err = loadCLProgram(UPDATE_LOCATION, updateProgram);
@@ -95,69 +74,40 @@ cl_int CLHandler::initCL(GLuint posBuffer, GLuint UVBuffer, GLuint elemBuffer)
 	// load the kernel from the program
 	cl::Kernel Kern(*updateProgram, "collide", &err);
 
-#ifdef _DEBUG
 	// do error checking
-	if (!errChkCL(err, "Load Kernel collide"))
-	{
-		return err;
-	}
-	else
-	{
-		ENG_LOG("Kernel Loading completed" << std::endl);
-	}
-#endif
+	errChkCL(err, "Load Kernel collide");
+
+
+	ENG_LOG("Kernel Loading completed" << std::endl);
+	
 
 	// init the queue
 	queue = new cl::CommandQueue(*context, NULL, &err);
 
-#ifdef _DEBUG
 	// do error checking
-	if (!errChkCL(err, "Init command queue"))
-	{
-		return err;
-	}
-#endif
+	errChkCL(err, "Init command queue");
 
 	// init the buffer
 	actors = cl::Buffer(*context, (cl_mem_flags)CL_MEM_READ_WRITE, NULL, &err);	
 	
-#ifdef _DEBUG
 	// do error checking
-	if (!errChkCL(err, "Create Actor Buffer"))
-	{
-		return err;
-	}
-#endif
+	errChkCL(err, "Create Actor Buffer");
 
 	posCLBuffer = cl::BufferGL(*context, CL_MEM_WRITE_ONLY, posBuffer, &err);
 
-#ifdef _DEBUG
 	// do error checking
-	if (!errChkCL(err, "Create posCL buffer"))
-	{
-		return err;
-	}
-#endif
+	errChkCL(err, "Create posCL buffer");
+
 
 	UVCLBuffer = cl::BufferGL(*context, CL_MEM_WRITE_ONLY, UVBuffer, &err);
 
-#ifdef _DEBUG
 	// do error checking
-	if (!errChkCL(err, "Create UV buffer"))
-	{
-		return err;
-	}
-#endif
+	errChkCL(err, "Create UV buffer");
 
 	elemCLBuffer = cl::BufferGL(*context, CL_MEM_WRITE_ONLY, elemBuffer, &err);
 
-#ifdef _DEBUG
 	// do error checking
-	if (!errChkCL(err, "Create elem buffer"))
-	{
-		return err;
-	}
-#endif
+	errChkCL(err, "Create elem buffer");
 
 	posCLBuffer = cl::BufferGL();
 
@@ -182,11 +132,9 @@ cl::Platform CLHandler::getBestPlatform()
 
 	cl::Platform::get(&platforms);
 
-#ifdef _DEBUG
 	// make sure there is a platform
-	errChkCL(platforms.size() == 0 ? -1 : CL_SUCCESS, "cl::Platform::get");
-#endif
-
+	errChkCL(platforms.size(), "");
+	
 	cl_int fastestNum = 0;
 
 	for (auto& p : platforms)
@@ -228,12 +176,7 @@ cl_int CLHandler::loadCLProgram(const GLchar* filepath, cl::Program*& program)
 	program = new cl::Program();
 	*program = cl::Program(*context, source, false, &err);
 
-#ifdef _DEBUG
-	if (!errChkCL(err, "Create Program"))
-	{
-		return err;
-	}
-#endif
+	errChkCL(err, "Create Program");
 
 	err = program->build(devices);
 
