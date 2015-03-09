@@ -198,12 +198,15 @@ inline ENGINE_API cl_bool clchk(cl_int error)
 		case CL_INVALID_PROPERTY:
 			errstring = "CL_INVALID_PROPERTY";
 			break;
+		case CL_PLATFORM_NOT_FOUND_KHR:
+			errstring = "CL_PLATFORM_NOT_FOUND";
+			break;
+		default:
+			errstring = "Unspecified error";
 		}
 
 		ENG_LOG("Error: " << errstring << "(" << error << ") In file " << __FILE__ << " line " << __LINE__ << std::endl);
-#ifdef STOP_ON_ERR
-		std::cin.get();
-#endif
+
 		return false;
 	}
 	else
@@ -213,8 +216,8 @@ inline ENGINE_API cl_bool clchk(cl_int error)
 
 }
 
-#define errChkCL(err, nam) if(!clchk(err, nam)) exit(err)
+#define errChkCL(err) if(!clchk(err)) exit(err)
 	
 #else
-#define errChkCL(err, nam)
+#define errChkCL(err)
 #endif
