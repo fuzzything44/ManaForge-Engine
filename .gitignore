@@ -60,3 +60,4 @@ Resource/log.txt
 *.pch.codeanalysis
 Game/Debug/Game.pch.codeanalysis
 log.txt
+*.cfg
