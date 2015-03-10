@@ -62,7 +62,7 @@ GLvoid Chunk::initChunks(GLuint programIn, mat4* viewMatIn, const uvec2& chunksS
 
 	glGenBuffers(1, &elemBufferActors);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elemBufferActors);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6 * 100, (void*)0, GL_DYNAMIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(float) * 6 * 100, (void*)0, GL_DYNAMIC_DRAW);
 
 	CLHandler::initCL(locBufferActors, UVBufferActors, elemBufferActors);
 }
@@ -294,6 +294,38 @@ void Chunk::draw(vec2 characterLoc)
 	}
 	
 	CLHandler::updateCL(characterLoc, data);
+
+	glBindVertexArray(vertexArrayActors);
+
+	glEnableVertexAttribArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, locBufferActors);
+	glVertexAttribPointer(
+		0, // location 0 (see shader)
+		3, // three elements per vertex (x,y)
+		GL_FLOAT, // they are floats
+		GL_FALSE, // not normalized (look up vector normalization)
+		sizeof(GLfloat) * 3, // the next element is 3 floats later
+		0 // dont copy -- use the GL_ARRAY_BUFFER instead
+		);
+
+	glEnableVertexAttribArray(1);
+	glBindBuffer(GL_ARRAY_BUFFER, UVBufferActors);
+	glVertexAttribPointer(
+		0, // location 1 (see shader)
+		2, // two elements per vertex (x,y)
+		GL_FLOAT, // they are floats
+		GL_FALSE, // not normalized (look up vector normalization)
+		sizeof(GLfloat) * 2, // the next element is 2 floats later
+		0 // dont copy -- use the GL_ARRAY_BUFFER instead
+		);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elemBufferActors);
+
+	glDrawElements(GL_TRIANGLES, 0, GL_UNSIGNED_INT, 0);
+
+	// disable vertex pointers 
+	glDisableVertexAttribArray(0);
+	glDisableVertexAttribArray(1);
 }
 
 vec2 Chunk::getLocation()

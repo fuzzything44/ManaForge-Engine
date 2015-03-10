@@ -28,6 +28,7 @@ struct ActorData
 	vec2 size;
 	vec2 velocity;
 	float rotation;
+	int renderOrder;
 	UVData UVs;
 	Actor* actorPtr;
 	bool collides;

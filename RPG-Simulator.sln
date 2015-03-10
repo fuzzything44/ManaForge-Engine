@@ -40,6 +40,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Kernels", "Kernels", "{2D93
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shaders", "Shaders", "{922DBDA2-2FEF-4153-9B2B-51AFD603A4E3}"
 	ProjectSection(SolutionItems) = preProject
+		Resource\shaders\actorfrag.glsl = Resource\shaders\actorfrag.glsl
+		Resource\shaders\actorvert.glsl = Resource\shaders\actorvert.glsl
 		Resource\shaders\chunkfrag.glsl = Resource\shaders\chunkfrag.glsl
 		Resource\shaders\chunkvert.glsl = Resource\shaders\chunkvert.glsl
 	EndProjectSection

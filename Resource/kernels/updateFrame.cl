@@ -10,11 +10,13 @@ struct UVData
 // redefination of the one in Actor.h so the data is aligned correctly -- order matters!
 struct ActorData
 {
-	float4 bounds;
+	float2 location;
+	float2 size;
 	float2 velocity;
 	float rotation;
+	int renderOrder;
 	struct UVData UVs;
-	void* loc; // pointer to the actor
+	int loc; // pointer to the actor
 	bool collides;
 	// TODO: add collision channels -- need to make
 };
@@ -45,15 +47,15 @@ __kernel void collide(
 	float Vy1 = dataA.velocity.y;
 	float Vy2 = dataB.velocity.y;
 
-	float xi1 = dataA.bounds.x;	// Initial locations.
-	float xi2 = dataB.bounds.x;
-	float yi1 = dataA.bounds.y;
-	float yi2 = dataB.bounds.y;
+	float xi1 = dataA.location.x;	// Initial locations.
+	float xi2 = dataB.location.x;
+	float yi1 = dataA.location.y;
+	float yi2 = dataB.location.y;
 
-	float L1 = dataA.bounds.z;	// Lengths and widths.
-	float L2 = dataB.bounds.w;
-	float W1 = dataA.bounds.z;
-	float W2 = dataB.bounds.w;
+	float L1 = dataA.size.x;	// Lengths and widths.
+	float L2 = dataB.size.x;
+	float W1 = dataA.size.y;
+	float W2 = dataB.size.x;
 
 	float r1 = dataA.rotation;	//Rotations.
 	float r2 = dataB.rotation;
@@ -105,6 +107,63 @@ __kernel void collide(
 		didCollide[id.y] = 1;
 	}
 
+}
+
+__kernel void update(
+	__global float* outLoc,
+	__global float* outUV,
+	__global uint* outElem,
+	__global struct ActorData* data,
+	__private float2 characterLoc,
+	__private float deltaTime)
+{
+	int id = get_global_id(0);
+
+	struct ActorData localDat = data[id];
+
+	float2 locXY = localDat.velocity * deltaTime + localDat.location - characterLoc;
+	float3 finalLoc = (float3)(locXY.x, locXY.y, localDat.renderOrder);
+
+	// wirte to location
+	outLoc[id * 12] = finalLoc.x;
+	outLoc[id * 12 + 1] = finalLoc.y;
+	outLoc[id * 12 + 2] = finalLoc.z;
+
+	outLoc[id * 12 + 3] = finalLoc.x;
+	outLoc[id * 12 + 4] = finalLoc.y + localDat.size.y;
+	outLoc[id * 12 + 5] = finalLoc.z;
+
+	outLoc[id * 12 + 6] = finalLoc.x + localDat.size.x;
+	outLoc[id * 12 + 7] = finalLoc.y;
+	outLoc[id * 12 + 8] = finalLoc.z;
+
+	outLoc[id * 12 + 9] = finalLoc.x + localDat.size.x;
+	outLoc[id * 12 + 10] = finalLoc.y + localDat.size.y;
+	outLoc[id * 12 + 11] = finalLoc.z;
+
+	// write UV data
+	outUV[id * 8]		= localDat.UVs.bottomLeft.x;
+	outUV[id * 8 + 1]	= localDat.UVs.bottomLeft.y;
+
+	outUV[id * 8 + 2]	= localDat.UVs.topLeft.x;
+	outUV[id * 8 + 3]	= localDat.UVs.topLeft.y;
+
+	outUV[id * 8 + 4]	= localDat.UVs.bottomRight.x;
+	outUV[id * 8 + 5]	= localDat.UVs.bottomRight.y;
+	
+	outUV[id * 8 + 6]	= localDat.UVs.topRight.x;
+	outUV[id * 8 + 7]	= localDat.UVs.topRight.y;
+
+	// write elem data
+	outElem[id * 6] = id * 4;
+	outElem[id * 6 + 1] = id * 4 + 1;
+	outElem[id * 6 + 2] = id * 4 + 2;
+
+
+	outElem[id * 6 + 3] = id * 4 + 1;
+	outElem[id * 6 + 4] = id * 4 + 2;
+	outElem[id * 6 + 5] = id * 4 + 3;
+	
 }
 
 __kernel void belloch_scan(

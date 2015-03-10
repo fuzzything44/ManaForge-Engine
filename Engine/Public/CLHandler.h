@@ -56,8 +56,8 @@ protected:
 	// the program the contains the entire code for updating the frame
 	static cl::Program* updateProgram;
 
-	// the kernel used for collision
-	static cl::Kernel collideKern;
+	// the kernel used for collision and update
+	static cl::Kernel collideKern, updateKern;
 
 
 	/// <summary> loads a CL program and returns the error code </summary>

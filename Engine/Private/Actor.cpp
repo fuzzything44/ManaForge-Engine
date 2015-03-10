@@ -13,10 +13,10 @@ Actor::Actor(const ActorData& dataIn, Chunk* chunkIn)
 
 	ENG_LOG("\nCreate Buffer For Actor" << std::endl);
 
-	cl_int err;
-	buff = cl::Buffer(*CLHandler::context, CL_MEM_READ_WRITE, sizeof(ActorData), &data, &err);
+//	cl_int err;
+	//buff = cl::Buffer(*CLHandler::context, CL_MEM_READ_WRITE, sizeof(ActorData), &data, &err);
 
-	errChkCL(err);
+//	errChkCL(err)
 
 }
 
