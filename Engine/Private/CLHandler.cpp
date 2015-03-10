@@ -32,13 +32,17 @@ cl_int CLHandler::updateCL(vec2 characterLocation, std::vector<ActorData>& data)
 	queue->finish();
 	errChkCL(err);
 
+
 	// copy the actor data -- will later only copy needed.
 	err = queue->enqueueWriteBuffer(actors, true, 0, sizeof(ActorData) * data.size(), &data[0]);
 	queue->finish();
 	errChkCL(err);
 
+	// create an event 
+	cl::Event ev;
 
-	err = queue->enqueueNDRangeKernel(updateKern, cl::NullRange, cl::NDRange(data.size()), cl::NDRange(1), NULL, );
+	err = queue->enqueueNDRangeKernel(updateKern, cl::NullRange, cl::NDRange(data.size()), cl::NDRange(1), NULL, &ev);
+	ev.wait();
 	queue->finish();
 	errChkCL(err);
 
