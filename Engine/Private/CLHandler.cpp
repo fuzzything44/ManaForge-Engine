@@ -37,7 +37,8 @@ cl_int CLHandler::updateCL(vec2 characterLocation, std::vector<ActorData>& data)
 	queue->finish();
 	errChkCL(err);
 
-	err = queue->enqueueNDRangeKernel(updateKern, cl::NullRange, cl::NDRange(data.size()), cl::NDRange(1));
+
+	err = queue->enqueueNDRangeKernel(updateKern, cl::NullRange, cl::NDRange(data.size()), cl::NDRange(1), NULL, );
 	queue->finish();
 	errChkCL(err);
 
