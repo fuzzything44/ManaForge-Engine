@@ -21,15 +21,49 @@ public:
 	// freind the actor class so we can share private methods
 	friend Actor;
 
-	/// <summary> Initalizes all the chunks. </summary>
-	/// <param name='programIn'> The program to use </param>
-	/// <param name='viewMatIn'> A pointer to the view matrix to be used </param>
-	/// <param name='chunksSizeIn'> The amount of chunks to initalize </param>
-	static GLvoid ENGINE_API initChunks(GLuint programIn, mat4* viewMatIn, const uvec2& chunksSizeIn);
+	/**
+	 * \fn	static GLvoid ENGINE_API Chunk::initChunks(GLuint programIn, mat4* viewMatIn, const uvec2& chunksSizeIn);
+	 *
+	 * \brief	Initialises the chunks.
+	 *
+	 * \author	Russell
+	 * \date	3/12/2015
+	 *
+	 * \param	programIn		 	The program in.
+	 * \param [in,out]	viewMatIn	If non-null, the view matrix in.
+	 * \param	chunksSizeIn	 	The chunks size in.
+	 *
+	 * \return	An ENGINE_API.
+	 */
 
-	static void ENGINE_API draw(vec2 characterLoc);
+	static GLvoid ENGINE_API initChunks(GLuint chunkProgramIn, GLuint actorProgramIn, mat4* viewMatIn, const uvec2& chunksSizeIn);
 
-	// getter for location
+	/**
+	 * \fn	static void ENGINE_API Chunk::draw(vec2 characterLoc);
+	 *
+	 * \brief	Draws the given character location.
+	 *
+	 * \author	Russell
+	 * \date	3/12/2015
+	 *
+	 * \param	characterLoc	The character location.
+	 *
+	 * \return	An ENGINE_API.
+	 */
+
+	static void ENGINE_API draw(vec2 characterLoc, float deltaTime);
+
+	/**
+	 * \fn	vec2 ENGINE_API Chunk::getLocation();
+	 *
+	 * \brief	getter for location.
+	 *
+	 * \author	Russell
+	 * \date	3/12/2015
+	 *
+	 * \return	The location.
+	 */
+
 	vec2 ENGINE_API getLocation();
 
 protected:
@@ -39,10 +73,11 @@ protected:
 	// opengl handles
 	GLuint locBufferID, UVBufferID, eboID, vaoID;
 
-	static GLuint program;
+	static GLuint chunkProgram;
+	static GLuint actorProgram;
 
 	// location of the uniform variables so we can set them
-	GLint renderOrderUniID, viewMatUniID;
+	GLint viewMatUniID;
 
 	// the amount of elemetns
 	size_t elementCount;
@@ -51,7 +86,6 @@ protected:
 	std::vector<Actor*> actors;
 
 	static mat4* viewMat;
-	GLuint renderOrder = 0;
 
 	vec2 location;
 
@@ -67,8 +101,6 @@ protected:
 	static uvec2 chunksSize;
 
 
-	/// <summary> Constructor giving a location </summary>
-	/// <param name='location'> The location of the new Chunk </param>
 	Chunk(vec2 locationIn = vec2(0.f, 0.f));
 
 	static GLint texUniformHandle;

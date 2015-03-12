@@ -6,7 +6,6 @@ layout(location = 0) in vec2 in_location;
 layout(location = 1) in vec2 in_UV;
 
 // uniforms
-uniform int renderOrder;
 uniform vec2 characterLoc = vec2(0, 0);
 uniform mat4 viewMat;
 
@@ -17,11 +16,11 @@ out vec2 UV;
 // entry point
 void main()
 {
-	// gl_Position is a special vec3 that defines the location in space.
+	// gl_Position is a special vec4 that defines the location in space.
 
 	// set the final position
-	vec4 location = vec4(in_location, (9.f - renderOrder) / 9.f, 1.f);
-	gl_Position = viewMat * (location - vec4(characterLoc, 0, 0));
+	vec4 location = vec4(in_location, 1.f, 1.f);
+	gl_Position = viewMat * (location - vec4(characterLoc, 0.f, 0.f));
 
 	// send the data to the fragment shader and interpolates it so it has the correct value
 	UV = in_UV;

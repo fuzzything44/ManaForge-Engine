@@ -22,9 +22,13 @@ GLint MainWindow::init()
 	// enable the depth buffer so the trianges in front are in front
 	glEnable(GL_DEPTH_TEST);
 
+	glDepthFunc(GL_LESS);
+
+
 	// enable transparency
-	glEnable(GL_BLEND);
+	glEnable (GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	
 
 
 	TextureLibrary::addTexture("0", "textures\\0.dds");
@@ -55,19 +59,40 @@ GLint MainWindow::init()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
 
-	GLuint program = LoadShaders("shaders\\chunkvert.glsl", "shaders\\chunkfrag.glsl");
+	GLuint chunkProgram = LoadShaders("shaders\\chunkvert.glsl", "shaders\\chunkfrag.glsl");
+	GLuint actorProgram = LoadShaders("shaders\\actorvert.glsl", "shaders\\actorfrag.glsl");
 	
 	ENG_LOG("\nShaders Loaded!\n");
 
 	// init 1 * 3 chunks of CHUNK_SIZE * CHUNK_SIZE 
-	Chunk::initChunks(program, &viewMat, glm::uvec2(2, 10));
+	Chunk::initChunks(chunkProgram, actorProgram, &viewMat, glm::uvec2(1, 1));
 
 	float aspectRatio = (float)getSize().x / (float)getSize().y;
 
 	// make the projection so there is no distortion based on aspect ratio.
 	projection = glm::ortho(-aspectRatio, aspectRatio, -1.f, 1.f);
 
-	Actor* act = Actor::addActor<Actor>(vec2(1.f, 1.f), vec2(1.f, 1.f), vec2(0.f, 0.f), 0, false, UVData(), true);
+	Actor* act = Actor::addActor<Actor>(
+		vec2(-1.f, -1.f),				// Location
+		vec2(1.f, 1.f),					// Size
+		vec2(0.f, 0.f),					// Velocity
+		0.f,							// Rotation
+		2,								// Render Order
+		false,							// Collides	
+		TextureLibrary::getUVData("0"),	// UVs
+		true							// Persistent
+		);							
+
+	Actor::addActor<Actor>(
+		vec2(-2.f, -2.f),				  // Location
+		vec2(4.f, 4.f),					  // Size
+		vec2(0.f, 0.f), 				  // Velocity
+		0.f, 							  // Rotation
+		2, 								  // Render Order
+		false, 							  // Collides	
+		TextureLibrary::getUVData("1"),	  // UVs
+		true							  // Persistent
+		);
 
 	// return error code. Zero for success
 	return 0;
@@ -101,7 +126,7 @@ void MainWindow::draw(float deltaTime)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// temp -- will actually have player location
-	Chunk::draw(vec2(0.f));
+	Chunk::draw(vec2(0.f), deltaTime);
 }
 
 

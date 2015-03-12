@@ -14,12 +14,12 @@ cl::BufferGL CLHandler::UVCLBuffer = cl::BufferGL();
 cl::BufferGL CLHandler::elemCLBuffer = cl::BufferGL();
 std::vector<cl::Device> CLHandler::devices = std::vector<cl::Device>();
 
-
-/// <param name = 'locBuffer'> the buffer to write to </param>
-/// <param name = 'characterLocation'> the current location of the character </param>
-/// <summary> called each frame. </summary>
-cl_int CLHandler::updateCL(vec2 characterLocation, std::vector<ActorData>& data)
+cl_int CLHandler::updateCL(vec2 characterLocation, float deltaTime, std::vector<ActorData>& data)
 {
+
+	check(context);
+	check(updateProgram);
+
 	std::vector<cl::Memory>* objects = new std::vector<cl::Memory>();
 	objects->push_back(posCLBuffer);
 	objects->push_back(UVCLBuffer);
@@ -34,11 +34,20 @@ cl_int CLHandler::updateCL(vec2 characterLocation, std::vector<ActorData>& data)
 
 	// copy the actor data -- will later only copy needed.
 	err = queue->enqueueWriteBuffer(actors, true, 0, sizeof(ActorData) * data.size(), &data[0]);
-	queue->finish();
+	errChkCL(err);
+	err = queue->finish();
 	errChkCL(err);
 
-	err = queue->enqueueNDRangeKernel(updateKern, cl::NullRange, cl::NDRange(data.size()), cl::NDRange(1));
-	queue->finish();
+	updateKern.setArg(0, posCLBuffer);
+	updateKern.setArg(1, UVCLBuffer);
+	updateKern.setArg(2, elemCLBuffer);
+	updateKern.setArg(3, actors);
+	updateKern.setArg(4, characterLocation);
+	updateKern.setArg(5, deltaTime);
+
+	err = queue->enqueueNDRangeKernel(updateKern, cl::NullRange, cl::NDRange(data.size()), cl::NullRange);
+	errChkCL(err);
+	err = queue->finish();
 	errChkCL(err);
 
 	// release objects back to opnegl
@@ -100,27 +109,39 @@ cl_int CLHandler::initCL(GLuint posBuffer, GLuint UVBuffer, GLuint elemBuffer)
 	// make sure the context was created successfully
 	errChkCL(err);
 
+	ENG_LOG(std::endl << "Loading Program updateProgram");
+
 	// load the program
 	err = loadCLProgram(UPDATE_LOCATION, updateProgram);
 
-	ENG_LOG(std::endl << "Loading kernel: collide from program" << std::endl);
+	ENG_LOG(std::endl << "Program Loaded" << std::endl;)
+
+	ENG_LOG(std::endl << "Loading kernel: collide from program: ");
 
 	// load the kernel from the program
 	collideKern = cl::Kernel(*updateProgram, "collide", &err);
 
 	errChkCL(err);
 
+	ENG_LOG("Completed" << std::endl);
+
+	ENG_LOG(std::endl << "Loading kernel: update from program" << std::endl);
+
+
 	updateKern = cl::Kernel(*updateProgram, "update", &err);
+
+
+	ENG_LOG("Kernel Loading completed" << std::endl);
 
 	// do error checking
 	errChkCL(err);
 
-
-	ENG_LOG("Kernel Loading completed" << std::endl);
-	
+	ENG_LOG(std::endl << "Creating Command Queue: ");
 
 	// init the queue
 	queue = new cl::CommandQueue(*context, NULL, &err);
+
+	ENG_LOG("completed" << std::endl;);
 
 	// do error checking
 	errChkCL(err);
@@ -152,7 +173,6 @@ cl_int CLHandler::initCL(GLuint posBuffer, GLuint UVBuffer, GLuint elemBuffer)
 	return CL_SUCCESS;
 }
 
-/// <summary> Called upon exit -- cleans up openCL resoruces. </summary>
 void CLHandler::exitCL()
 {
 	clReleaseCommandQueue((*queue)());
@@ -168,7 +188,6 @@ cl::Platform CLHandler::getBestPlatform()
 	cl::Platform ret;
 
 	cl::Platform::get(&platforms);
-	//return platforms[1];
 	
 	cl_int fastestNum = 0;
 
@@ -191,14 +210,11 @@ cl::Platform CLHandler::getBestPlatform()
 	return ret;
 }
 
-/// <summary> loads a CL program and returns the error code </summary>
-/// <param name='filepath'> The path to the file that contains the kernels. Must have an extension. </param>
-/// <param name='program'> 
-/// <para> refrence to the pointer to the program to write to <para>
-/// <para> -- this way it saves the memory address back to the pointer given <para>
-/// </param>
+
 cl_int CLHandler::loadCLProgram(const GLchar* filepath, cl::Program*& program)
 {
+	
+
 	ENG_LOG(std::endl << std::endl);
 
 	int err = CL_SUCCESS;

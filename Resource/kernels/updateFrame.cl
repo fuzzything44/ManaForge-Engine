@@ -122,7 +122,7 @@ __kernel void update(
 	struct ActorData localDat = data[id];
 
 	float2 locXY = localDat.velocity * deltaTime + localDat.location - characterLoc;
-	float3 finalLoc = (float3)(locXY.x, locXY.y, localDat.renderOrder);
+	float3 finalLoc = (float3)(locXY.x, locXY.y, (9 - localDat.renderOrder) / 9);
 
 	// wirte to location
 	outLoc[id * 12] = finalLoc.x;

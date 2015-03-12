@@ -18,6 +18,14 @@ static const GLuint IMAGE_WIDTH = 256;
 // amount of textures in one direction. Size of texture is (IMAGE_WIDTH * TEXTURE_WIDTH)^2
 static const GLuint TEXTURE_WIDTH = 16;
 
+/**
+ * \struct	UVData
+ *
+ * \brief	An uv data.
+ *
+ * \author	Russell
+ * \date	3/12/2015
+ */
 
 struct UVData
 {
@@ -35,33 +43,96 @@ struct UVData
 	vec2 topRight;
 };
 
-// handles the texture libraries
+/**
+ * \class	TextureLibrary
+ *
+ * \brief	handles the texture libraries.
+ *
+ * \author	Russell
+ * \date	3/12/2015
+ */
+
 class TextureLibrary
 {
 public:
-	
+
+	/**
+	 * \fn	static ENGINE_API UVData TextureLibrary::getUVData(std::string key);
+	 *
+	 * \brief	Gets uv data.
+	 *
+	 * \author	Russell
+	 * \date	3/12/2015
+	 *
+	 * \param	key	The key.
+	 *
+	 * \return	The uv data.
+	 */
+
 	static ENGINE_API UVData getUVData(std::string key);
 
+	/**
+	 * \fn	static ENGINE_API void TextureLibrary::addTexture(std::string key, const char* filename);
+	 *
+	 * \brief	Adds a texture to 'filename'.
+	 *
+	 * \author	Russell
+	 * \date	3/12/2015
+	 *
+	 * \param	key			The key.
+	 * \param	filename	Filename of the file.
+	 */
+
 	static ENGINE_API void addTexture(std::string key, const char* filename);
-	
+
+	/**
+	 * \fn	static ENGINE_API GLuint TextureLibrary::getTextureHandle();
+	 *
+	 * \brief	Gets texture handle.
+	 *
+	 * \author	Russell
+	 * \date	3/12/2015
+	 *
+	 * \return	The texture handle.
+	 */
+
 	static ENGINE_API GLuint getTextureHandle();
 
 private:
 	
 
 	static std::unordered_map<std::string, UVData> UVDataMap;
-	
-	/// <summary> load a DSS format to the texture specified at the location specified </summary>
-	/// <param name='texToAppend'> The handle for the texture to append the image to </param>
-	/// <param name='Xoffset'> The X offset of the original texture to place the image </param>
-	/// <param name='Yoffset'> The Y offset of the original texture to place the image </param>
-	/// <param name='filepath'> The path to the DDS file. </param>
+
+	/**
+	 * \fn	static void TextureLibrary::appendDDS(GLuint texToAppend, GLuint Xoffset, GLuint Yoffset, const GLchar* filepath);
+	 *
+	 * \brief	Appends the DDS.
+	 *
+	 * \author	Russell
+	 * \date	3/12/2015
+	 *
+	 * \param	texToAppend	The tex to append.
+	 * \param	Xoffset	   	The xoffset.
+	 * \param	Yoffset	   	The yoffset.
+	 * \param	filepath   	The filepath.
+	 */
+
 	static void appendDDS(GLuint texToAppend, GLuint Xoffset, GLuint Yoffset, const GLchar* filepath);
 
+	/**
+	 * \fn	static GLuint TextureLibrary::allocateCompressedTextureLibraryFromDDS(GLuint num, const char* filepath);
+	 *
+	 * \brief	Allocate compressed texture library from DDS.
+	 *
+	 * \author	Russell
+	 * \date	3/12/2015
+	 *
+	 * \param	num			Number of.
+	 * \param	filepath	The filepath.
+	 *
+	 * \return	A GLuint.
+	 */
 
-	/// <summary> allocates an empty texture library from the format of the given DDS file </summary>
-	/// <param name='num'> The amount of textures in one direction. total textures is up to num ^ 2 </param>
-	/// <param name='filepath'> The path to the DDS file to load </param>
 	static GLuint allocateCompressedTextureLibraryFromDDS(GLuint num, const char* filepath);
 
 	// the location of the next image.

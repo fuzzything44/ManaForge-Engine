@@ -15,6 +15,5 @@ private:
 
 };
 
-#define ENG_LOG(ans)			\
-	logging::logfile << ans;	\
-	std::cout << ans;			
+
+#define ENG_LOG(ans)logging::logfile << ans;std::cout << ans;			

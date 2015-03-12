@@ -14,57 +14,114 @@ class CLHandler;
 
 static const char* UPDATE_LOCATION = "kernels/updateFrame.cl";
 
-// Class to do all the OpenCL calculations. 
+/**
+ * \class	CLHandler
+ *
+ * \brief	Class to do all the OpenCL calculations.
+ *
+ * \author	Russell
+ * \date	3/12/2015
+ */
+
 class CLHandler
 {
 public:
 
-	// let actor access the context etc.
 	friend Actor;
 
-	/// <summary> initialize the context, platform and devices. Returns an error code, CL_SUCCESS for success </summary>
+	/**
+	 * \fn	static ENGINE_API cl_int CLHandler::initCL(GLuint posBuffer, GLuint UVBuffer, GLuint elemBuffer);
+	 *
+	 * \brief	Initialises the cl.
+	 *
+	 * \author	Russell
+	 * \date	3/12/2015
+	 *
+	 * \param	posBuffer 	Buffer for position data.
+	 * \param	UVBuffer  	Buffer for uv data.
+	 * \param	elemBuffer	Buffer for element data.
+	 *
+	 * \return	A cl_int.
+	 */
 	static ENGINE_API cl_int initCL(GLuint posBuffer, GLuint UVBuffer, GLuint elemBuffer);
+	
+	/**
+	 * \fn	static ENGINE_API cl_int CLHandler::updateCL(vec2 characterLocation, std::vector<ActorData>& data);
+	 *
+	 * \brief	Updates CL and calls kernels to the data specified.
+	 *
+	 * \author	Russell
+	 * \date	3/12/2015
+	 *
+	 * \param	characterLocation	The character location.
+	 * \param deltaTime             Delta Time
+	 * \param [in,out]	data	 	The data.
+	 *
+	 * \return	A cl_int.
+	 */
+	static ENGINE_API cl_int updateCL(vec2 characterLocation, float deltaTime,  std::vector<ActorData>& data);
 
-	/// <param name = 'locBuffer'> the buffer to write to </param>
-	/// <param name = 'characterLocation'> the current location of the character </param>
-	/// <summary> called each frame. </summary>
-	static ENGINE_API cl_int updateCL(vec2 characterLocation, std::vector<ActorData>& data);
-
-	/// <summary> Called upon exit -- cleans up openCL resoruces. </summary>
+	/**
+	 * \fn	static ENGINE_API void CLHandler::exitCL();
+	 *
+	 * \brief	Exit cl.
+	 *
+	 * \author	Russell
+	 * \date	3/12/2015
+	 */
 	static ENGINE_API void exitCL();
 
 protected:
 
-	// a buffer for the actorData
+	/** \brief	a buffer for the actorData. */
 	static cl::Buffer actors;
 
-	// the GL buffers
 	static cl::BufferGL posCLBuffer, UVCLBuffer, elemCLBuffer;
 
 	// pointer to the context -- needs to be a pointer or else it will freeze on exit . Will be null before initCL();
+	/** \brief	The context. */
 	static cl::Context* context;
 
-	// the platform to use. Will be null before initCL()
+	/** \brief	the platform to use. Will be null before initCL() */
 	static cl::Platform platform;
 
-	// the queue to use. Wil be invalid before initCL()
+	/** \brief	the queue to use. Wil be invalid before initCL() */
 	static cl::CommandQueue* queue;
 
-	// a list of the devices of platform
+	/** \brief	a list of the devices of platform. */
 	static std::vector<cl::Device> devices;
 
-	// the program the contains the entire code for updating the frame
+	/** \brief	the program the contains the entire code for updating the frame. */
 	static cl::Program* updateProgram;
 
-	// the kernel used for collision and update
 	static cl::Kernel collideKern, updateKern;
 
-
-	/// <summary> loads a CL program and returns the error code </summary>
-	/// <param name='filepath'> The path to the file that contains the kernels. Must have an extension. </param>
-	/// <param name='program'> Pointer to the program to write to </param>
+	/**
+	 * \fn	static cl_int CLHandler::loadCLProgram(const GLchar* filepath, cl::Program*& program);
+	 *
+	 * \brief	Loads cl program.
+	 *
+	 * \author	Russell
+	 * \date	3/12/2015
+	 *
+	 * \param	filepath	   	The filepath.
+	 * \param [in,out]	program	[in,out] If non-null, the program.
+	 *
+	 * \return	The cl program.
+	 */
 	static cl_int CLHandler::loadCLProgram(const GLchar* filepath, cl::Program*& program);
 
+
+	/**
+	 * \fn	static cl::Platform CLHandler::getBestPlatform();
+	 *
+	 * \brief	Gets best platform.
+	 *
+	 * \author	Russell
+	 * \date	3/12/2015
+	 *
+	 * \return	The best platform.
+	 */
 	static cl::Platform getBestPlatform();
 	
 };
