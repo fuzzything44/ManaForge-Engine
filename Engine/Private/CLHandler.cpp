@@ -32,6 +32,7 @@ cl_int CLHandler::updateCL(vec2 characterLocation, float deltaTime, std::vector<
 	queue->finish();
 	errChkCL(err);
 
+
 	// copy the actor data -- will later only copy needed.
 	err = queue->enqueueWriteBuffer(actors, true, 0, sizeof(ActorData) * data.size(), &data[0]);
 	errChkCL(err);
@@ -137,7 +138,7 @@ cl_int CLHandler::initCL(GLuint posBuffer, GLuint UVBuffer, GLuint elemBuffer)
 	errChkCL(err);
 
 	ENG_LOG(std::endl << "Creating Command Queue: ");
-
+	
 	// init the queue
 	queue = new cl::CommandQueue(*context, NULL, &err);
 
