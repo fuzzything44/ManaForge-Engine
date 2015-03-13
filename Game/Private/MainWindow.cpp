@@ -76,7 +76,7 @@ GLint MainWindow::init()
 		vec2(-1.f, -1.f),				// Location
 		vec2(1.f, 1.f),					// Size
 		vec2(0.f, 0.f),					// Velocity
-		0.f,							// Rotation
+		0.f,							// Rotation in deg
 		2,								// Render Order
 		false,							// Collides	
 		TextureLibrary::getUVData("0"),	// UVs
@@ -84,10 +84,10 @@ GLint MainWindow::init()
 		);							
 
 	Actor::addActor<Actor>(
-		vec2(-2.f, -2.f),				  // Location
+		vec2(-10.f, -10.f),				  // Location
 		vec2(4.f, 4.f),					  // Size
 		vec2(0.f, 0.f), 				  // Velocity
-		0.f, 							  // Rotation
+		45, 							  // Rotation in deg
 		2, 								  // Render Order
 		false, 							  // Collides	
 		TextureLibrary::getUVData("1"),	  // UVs

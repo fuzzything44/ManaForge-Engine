@@ -103,8 +103,10 @@ protected:
 
 	Chunk(vec2 locationIn = vec2(0.f, 0.f));
 
-	static GLint texUniformHandle;
-	static GLint characterLocUniformHandle;
+	static GLint texUniformHandleChunk;
+	static GLint characterLocUniformHandleChunk;
+
+	static GLint texUniformHandleActor;
 
 	static GLuint vertexArrayActors;
 	static GLuint locBufferActors;

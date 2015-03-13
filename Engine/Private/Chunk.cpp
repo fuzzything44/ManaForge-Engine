@@ -6,8 +6,9 @@
 Chunk*** Chunk::chunks = NULL;
 Chunk* Chunk::persistentChunk = NULL;
 uvec2 Chunk::chunksSize = uvec2(0, 0);
-GLint Chunk::texUniformHandle = -1;
-GLint Chunk::characterLocUniformHandle = -1;
+GLint Chunk::characterLocUniformHandleChunk = -1;
+GLint Chunk::texUniformHandleChunk = -1;
+GLint Chunk::texUniformHandleActor = -1;
 GLuint Chunk::chunkProgram = 0;
 GLuint Chunk::actorProgram = 0;
 mat4* Chunk::viewMat = NULL;
@@ -44,10 +45,10 @@ GLvoid Chunk::initChunks(GLuint chunkProgramIn, GLuint actorProgramIn, mat4* vie
 
 	persistentChunk = new Chunk();
 
-	characterLocUniformHandle = glGetUniformLocation(chunkProgram, "characterLoc");
-
 	// initalize all handles
-	texUniformHandle = glGetUniformLocation(chunkProgram, "texArray");
+	texUniformHandleChunk = glGetUniformLocation(chunkProgram, "texArray");
+	characterLocUniformHandleChunk = glGetUniformLocation(chunkProgram, "characterLoc");
+	texUniformHandleActor = glGetUniformLocation(actorProgram, "tex");
 
 	float* empty = (float*)malloc(sizeof(float) * 2 * 4 * 1000);
 
@@ -201,7 +202,10 @@ GLvoid Chunk::drawChunk(std::vector<ActorData>& data)
 
 		glUseProgram(chunkProgram);
 		
-		glUniform1i(glGetUniformLocation(chunkProgram, "texArray"), 0);
+		if (texUniformHandleChunk != 0)
+		{
+			glUniform1i(texUniformHandleChunk, 0);
+		}
 
 
 		glActiveTexture(GL_TEXTURE0);
@@ -261,9 +265,11 @@ GLvoid Chunk::drawChunk(std::vector<ActorData>& data)
 
 void Chunk::draw(vec2 characterLoc, float deltaTime)
 {
-	if (characterLocUniformHandle != -1)
+	glUseProgram(chunkProgram);
+
+	if (characterLocUniformHandleChunk != -1)
 	{
-		glUniform2f(characterLocUniformHandle, characterLoc.x, characterLoc.y);
+		glUniform2f(characterLocUniformHandleChunk, characterLoc.x, characterLoc.y);
 	}
 
 	// return if there is no persistent chunk
@@ -305,7 +311,7 @@ void Chunk::draw(vec2 characterLoc, float deltaTime)
 	glUseProgram(actorProgram);
 
 
-	glUniform1i(glGetUniformLocation(chunkProgram, "tex"), 0);
+	glUniform1i(texUniformHandleActor, 0);
 
 	// set the texture
 	glActiveTexture(GL_TEXTURE0);

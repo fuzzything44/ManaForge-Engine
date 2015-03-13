@@ -109,9 +109,11 @@ __kernel void collide(
 
 }
 
+
+
 __kernel void update(
 	__global float* outLoc,
-	__global float* outUV,
+	__global float2* outUV,
 	__global uint* outElem,
 	__global struct ActorData* data,
 	__private float2 characterLoc,
@@ -121,45 +123,91 @@ __kernel void update(
 
 	struct ActorData localDat = data[id];
 
-	float2 locXY = localDat.velocity * deltaTime + localDat.location - characterLoc;
+	// set rotation to be between 0 and 360
+	for (localDat.rotation; localDat.rotation < 0; localDat.rotation += 360);
+	for (localDat.rotation; localDat.rotation > 360; localDat.rotation -= 360);
+
+	float2 locXY = (localDat.velocity * deltaTime) + localDat.location - characterLoc;
 	float3 finalLoc = (float3)(locXY.x, locXY.y, (9 - localDat.renderOrder) / 9);
 
-	// wirte to location
+	// the scale factor from degrees to radians
+	// pi / 180
+	float pi180 = M_PI / 180.f;
+
+	///////////////////////////////////////////////////
+	///////////////// LOCATION DATA ///////////////////
+	///////////////////////////////////////////////////
 	outLoc[id * 12] = finalLoc.x;
-	outLoc[id * 12 + 1] = finalLoc.y;
+	outLoc[id * 12 + 1] = finalLoc.y;	// LOWER LEFT -- origin
 	outLoc[id * 12 + 2] = finalLoc.z;
 
-	outLoc[id * 12 + 3] = finalLoc.x;
-	outLoc[id * 12 + 4] = finalLoc.y + localDat.size.y;
+	////////////////// UPPER LEFT ////////////////////
+	float2 upperLeft = (float2)(0.f, localDat.size.y);
+
+	// compute rotation
+	if (localDat.rotation != 0.f)
+	{
+		upperLeft.x *= cos(localDat.rotation * pi180);
+		upperLeft.y *= sin(localDat.rotation * pi180);
+	}
+
+	// set upper left coordinates
+	outLoc[id * 12 + 3] = finalLoc.x + upperLeft.x;
+	outLoc[id * 12 + 4] = finalLoc.y + upperLeft.y;
 	outLoc[id * 12 + 5] = finalLoc.z;
 
-	outLoc[id * 12 + 6] = finalLoc.x + localDat.size.x;
-	outLoc[id * 12 + 7] = finalLoc.y;
+
+	////////////// LOWER RIGHT /////////////////////
+	float2 lowerRight = (float2)(localDat.size.x, 0.f);
+
+	// compute rotation
+	if (localDat.rotation != 0.f)
+	{
+		lowerRight.x *= cos(localDat.rotation * pi180);
+		lowerRight.y *= sin(localDat.rotation * pi180);
+	}
+
+	// set upper left coordinates
+	outLoc[id * 12 + 6] = finalLoc.x + lowerRight.x;
+	outLoc[id * 12 + 7] = finalLoc.y + lowerRight.y;
 	outLoc[id * 12 + 8] = finalLoc.z;
 
-	outLoc[id * 12 + 9] = finalLoc.x + localDat.size.x;
-	outLoc[id * 12 + 10] = finalLoc.y + localDat.size.y;
+	//////////////// UPPER RIGHT ///////////////////
+	float2 upperRight = (float2)(localDat.size.x, localDat.size.y);
+
+	// compute rotation
+	if (localDat.rotation != 0.f)
+	{
+		upperRight.x *= cos(localDat.rotation * pi180);
+		upperRight.y *= sin(localDat.rotation * pi180);
+	}
+
+	// set upper left coordinates
+	outLoc[id * 12 + 9] = finalLoc.x + upperRight.x;
+	outLoc[id * 12 + 10] = finalLoc.y + upperRight.y;
 	outLoc[id * 12 + 11] = finalLoc.z;
 
-	// write UV data
-	outUV[id * 8]		= localDat.UVs.bottomLeft.x;
-	outUV[id * 8 + 1]	= localDat.UVs.bottomLeft.y;
+	//////////////////////////////////////////////
+	////////////////// UV DATA ///////////////////
+	//////////////////////////////////////////////
+	outUV[id * 4]		= localDat.UVs.bottomLeft;
 
-	outUV[id * 8 + 2]	= localDat.UVs.topLeft.x;
-	outUV[id * 8 + 3]	= localDat.UVs.topLeft.y;
+	outUV[id * 4 + 1]	= localDat.UVs.topLeft;
 
-	outUV[id * 8 + 4]	= localDat.UVs.bottomRight.x;
-	outUV[id * 8 + 5]	= localDat.UVs.bottomRight.y;
+	outUV[id * 4 + 2]	= localDat.UVs.bottomRight;
 	
-	outUV[id * 8 + 6]	= localDat.UVs.topRight.x;
-	outUV[id * 8 + 7]	= localDat.UVs.topRight.y;
+	outUV[id * 4 + 3]	= localDat.UVs.topRight;
 
-	// write elem data
+
+	//////////////////////////////////////////////
+	////////////////// ELEM DATA /////////////////
+	//////////////////////////////////////////////
+	// first tri
 	outElem[id * 6] = id * 4;
 	outElem[id * 6 + 1] = id * 4 + 1;
 	outElem[id * 6 + 2] = id * 4 + 2;
 
-
+	// second tri
 	outElem[id * 6 + 3] = id * 4 + 1;
 	outElem[id * 6 + 4] = id * 4 + 2;
 	outElem[id * 6 + 5] = id * 4 + 3;

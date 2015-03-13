@@ -20,6 +20,21 @@ Actor::Actor(const ActorData& dataIn, Chunk* chunkIn)
 
 }
 
+GLint Actor::init()
+{
+
+
+	return EXIT_SUCCESS;
+}
+
+
+void Actor::drawActors(int num)
+{
+
+}
+
+
+
 void Actor::tick(float deltaTime)
 {
 	needsUpdate = false;

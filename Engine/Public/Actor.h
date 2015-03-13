@@ -76,6 +76,9 @@ public:
 	// let CLHandler access private varibles
 	friend CLHandler;
 
+
+	ENGINE_API GLint init();
+
 	/**
 	 * \fn	ENGINE_API vec2 Actor::getLocation();
 	 *
@@ -234,6 +237,8 @@ protected:
 	 *
 	 * \return	An ENGINE_API.
 	 */
+
+	static void drawActors(int num);
 
 	ENGINE_API Actor(const ActorData& dataIn, Chunk* chunkIn);
 
