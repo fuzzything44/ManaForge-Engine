@@ -36,7 +36,7 @@ public:
 	 * \return	An ENGINE_API.
 	 */
 
-	static GLvoid ENGINE_API initChunks(GLuint chunkProgramIn, GLuint actorProgramIn, mat4* viewMatIn, const uvec2& chunksSizeIn);
+	static GLvoid ENGINE_API initChunks(GLuint programIn, mat4* viewMatIn, const uvec2& chunksSizeIn);
 
 	/**
 	 * \fn	static void ENGINE_API Chunk::draw(vec2 characterLoc);
@@ -73,8 +73,7 @@ protected:
 	// opengl handles
 	GLuint locBufferID, UVBufferID, eboID, vaoID;
 
-	static GLuint chunkProgram;
-	static GLuint actorProgram;
+	static GLuint program;
 
 	// location of the uniform variables so we can set them
 	GLint viewMatUniID;
@@ -106,11 +105,5 @@ protected:
 	static GLint texUniformHandleChunk;
 	static GLint characterLocUniformHandleChunk;
 
-	static GLint texUniformHandleActor;
-
-	static GLuint vertexArrayActors;
-	static GLuint locBufferActors;
-	static GLuint UVBufferActors;
-	static GLuint elemBufferActors;
 
 };

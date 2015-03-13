@@ -65,7 +65,8 @@ GLint MainWindow::init()
 	ENG_LOG("\nShaders Loaded!\n");
 
 	// init 1 * 3 chunks of CHUNK_SIZE * CHUNK_SIZE 
-	Chunk::initChunks(chunkProgram, actorProgram, &viewMat, glm::uvec2(1, 1));
+	Chunk::initChunks(chunkProgram, &viewMat, glm::uvec2(1, 1));
+	Actor::init(actorProgram, &viewMat);
 
 	float aspectRatio = (float)getSize().x / (float)getSize().y;
 

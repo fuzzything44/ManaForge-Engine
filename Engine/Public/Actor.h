@@ -77,7 +77,7 @@ public:
 	friend CLHandler;
 
 
-	ENGINE_API GLint init();
+	static ENGINE_API GLint init(GLuint programIn, mat4* viewMatIn);
 
 	/**
 	 * \fn	ENGINE_API vec2 Actor::getLocation();
@@ -238,7 +238,7 @@ protected:
 	 * \return	An ENGINE_API.
 	 */
 
-	static void drawActors(int num);
+	static void drawActors(std::vector<ActorData>& data, float deltaTime, vec2 characterLoc);
 
 	ENGINE_API Actor(const ActorData& dataIn, Chunk* chunkIn);
 
@@ -252,4 +252,16 @@ protected:
 	/** \brief	buffer for the ActorData. */
 	cl::Buffer buff;
 	
+	static mat4* viewMat;
+
+	static GLuint program;
+
+	static GLint texUniformHandle;
+	static GLint viewMatUniformHandle;
+
+	static GLuint vertexArray;
+	static GLuint locBuffer;
+	static GLuint UVBuffer;
+	static GLuint elemBuffer;
+
 };

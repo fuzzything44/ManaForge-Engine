@@ -8,22 +8,15 @@ Chunk* Chunk::persistentChunk = NULL;
 uvec2 Chunk::chunksSize = uvec2(0, 0);
 GLint Chunk::characterLocUniformHandleChunk = -1;
 GLint Chunk::texUniformHandleChunk = -1;
-GLint Chunk::texUniformHandleActor = -1;
-GLuint Chunk::chunkProgram = 0;
-GLuint Chunk::actorProgram = 0;
+GLuint Chunk::program = 0;
 mat4* Chunk::viewMat = NULL;
 
-GLuint Chunk::vertexArrayActors = 0;
-GLuint Chunk::locBufferActors = 0;
-GLuint Chunk::UVBufferActors = 0;
-GLuint Chunk::elemBufferActors = 0;
 
 
-GLvoid Chunk::initChunks(GLuint chunkProgramIn, GLuint actorProgramIn, mat4* viewMatIn, const uvec2& chunksSizeIn)
+GLvoid Chunk::initChunks(GLuint programIn, mat4* viewMatIn, const uvec2& chunksSizeIn)
 {
 	chunksSize = chunksSizeIn;
-	chunkProgram = chunkProgramIn;
-	actorProgram = actorProgramIn;
+	program = programIn;
 	viewMat = viewMatIn;
 
 	ENG_LOG("\nInitalizing Chunks:")
@@ -46,44 +39,16 @@ GLvoid Chunk::initChunks(GLuint chunkProgramIn, GLuint actorProgramIn, mat4* vie
 	persistentChunk = new Chunk();
 
 	// initalize all handles
-	texUniformHandleChunk = glGetUniformLocation(chunkProgram, "texArray");
-	characterLocUniformHandleChunk = glGetUniformLocation(chunkProgram, "characterLoc");
-	texUniformHandleActor = glGetUniformLocation(actorProgram, "tex");
+	texUniformHandleChunk = glGetUniformLocation(program, "texArray");
+	characterLocUniformHandleChunk = glGetUniformLocation(program, "characterLoc");
 
-	float* empty = (float*)malloc(sizeof(float) * 2 * 4 * 1000);
-
-	memset(empty, 0, sizeof(float) * 2 * 4 * 1000);
-
-	// init actor buffers
-	glGenVertexArrays(1, &vertexArrayActors);
-	glBindVertexArray(vertexArrayActors);
-
-
-	glGenBuffers(1, &locBufferActors);
-	glBindBuffer(GL_ARRAY_BUFFER, locBufferActors);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * 4 * 100, (void*)empty, GL_DYNAMIC_DRAW);
-
-	glGenBuffers(1, &UVBufferActors);
-	glBindBuffer(GL_ARRAY_BUFFER, UVBufferActors);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * 4 * 100, (void*)empty, GL_DYNAMIC_DRAW);
-
-	glGenBuffers(1, &elemBufferActors);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elemBufferActors);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * 6 * 100, (void*)empty, GL_DYNAMIC_DRAW);
-
-
-	free(empty);
-
-	CLHandler::initCL(locBufferActors, UVBufferActors, elemBufferActors);
 
 }
 
 Chunk::Chunk(vec2 locationIn)
 	: location(locationIn)
 {
-	glUseProgram(chunkProgram);
-
-
+	
 	// the persistent chunk doesn't get anything
 	if (this != persistentChunk)
 	{
@@ -191,7 +156,7 @@ Chunk::Chunk(vec2 locationIn)
 		elementCount = eboData.size();
 
 
-		viewMatUniID = glGetUniformLocation(chunkProgram, "viewMat");
+		viewMatUniID = glGetUniformLocation(program, "viewMat");
 	}
 }
 
@@ -200,7 +165,7 @@ GLvoid Chunk::drawChunk(std::vector<ActorData>& data)
 	if (this != persistentChunk)
 	{
 
-		glUseProgram(chunkProgram);
+		glUseProgram(program);
 		
 		if (texUniformHandleChunk != 0)
 		{
@@ -265,7 +230,7 @@ GLvoid Chunk::drawChunk(std::vector<ActorData>& data)
 
 void Chunk::draw(vec2 characterLoc, float deltaTime)
 {
-	glUseProgram(chunkProgram);
+	glUseProgram(program);
 
 	if (characterLocUniformHandleChunk != -1)
 	{
@@ -304,54 +269,7 @@ void Chunk::draw(vec2 characterLoc, float deltaTime)
 			}
 		}
 	}
-	
-	CLHandler::updateCL(characterLoc, deltaTime, data);
-	
-	// use the correct program
-	glUseProgram(actorProgram);
-
-
-	glUniform1i(texUniformHandleActor, 0);
-
-	// set the texture
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, TextureLibrary::getTextureHandle());
-
-
-	// set the view matrix
-	glUniformMatrix4fv(glGetUniformLocation(actorProgram, "viewMat"), 1, GL_FALSE, &(*viewMat)[0][0]);
-
-	glBindVertexArray(vertexArrayActors);
-
-	glEnableVertexAttribArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, locBufferActors);
-	glVertexAttribPointer(
-		0, // location 0 (see shader)
-		3, // three elements per vertex (x,y,z)
-		GL_FLOAT, // they are floats
-		GL_FALSE, // not normalized (look up vector normalization)
-		sizeof(GLfloat) * 3, // the next element is 3 floats later
-		0 // dont copy -- use the GL_ARRAY_BUFFER instead
-		);
-
-	glEnableVertexAttribArray(1);
-	glBindBuffer(GL_ARRAY_BUFFER, UVBufferActors);
-	glVertexAttribPointer(
-		1, // location 1 (see shader)
-		2, // two elements per vertex (x,y)
-		GL_FLOAT, // they are floats
-		GL_FALSE, // not normalized (look up vector normalization)
-		sizeof(GLfloat) * 2, // the next element is 2 floats later
-		0 // dont copy -- use the GL_ARRAY_BUFFER instead
-		);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elemBufferActors);
-	
-	glDrawElements(GL_TRIANGLES, data.size() * 6, GL_UNSIGNED_INT, 0);
-
-	// disable vertex pointers 
-	glDisableVertexAttribArray(0);
-	glDisableVertexAttribArray(1); 
+	Actor::drawActors(data, deltaTime, characterLoc);
 }
 
 vec2 Chunk::getLocation()
