@@ -17,6 +17,7 @@
 #include <fstream>
 #include <fstream>
 #include <sstream>
+#include <ios>
 #include <map>
 
 #include <Logging.h>

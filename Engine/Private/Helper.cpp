@@ -351,3 +351,114 @@ std::string clGetErrorString(int error)
 		return "Unspecified error";
 	}
 }
+
+// custom vector printing
+std::ostream& operator<<(std::ostream& os, const vec2& vec)
+{
+	os << "X: " << vec.x << "  Y: " << vec.y;
+	return os;
+}
+
+// custom vector printing
+std::ostream& operator<<(std::ostream& os, const vec3& vec)
+{
+	os << "X: " << vec.x << "  Y: " << vec.y << "  X: " << vec.z;
+	return os;
+}
+
+// custom vector printing
+std::ostream& operator<<(std::ostream& os, const vec4& vec)
+{
+	os << "X: " << vec.x << "  Y: " << vec.y << "  X: " << vec.z << "  W: " << vec.w;
+	return os;
+}
+
+
+
+// custom vector printing
+std::ostream& operator<<(std::ostream& os, const ivec2& vec)
+{
+	os << "X: " << vec.x << "  Y: " << vec.y;
+	return os;
+}
+
+// custom vector printing
+std::ostream& operator<<(std::ostream& os, const ivec3& vec)
+{
+	os << "X: " << vec.x << "  Y: " << vec.y << "  X: " << vec.z;
+	return os;
+}
+
+// custom vector printing
+std::ostream& operator<<(std::ostream& os, const ivec4& vec)
+{
+	os << "X: " << vec.x << "  Y: " << vec.y << "  X: " << vec.z << "  W: " << vec.w;
+	return os;
+}
+
+
+
+// custom vector printing
+std::ostream& operator<<(std::ostream& os, const uvec2& vec)
+{
+	os << "X: " << vec.x << "  Y: " << vec.y;
+	return os;
+}
+
+// custom vector printing
+std::ostream& operator<<(std::ostream& os, const uvec3& vec)
+{
+	os << "X: " << vec.x << "  Y: " << vec.y << "  X: " << vec.z;
+	return os;
+}
+
+// custom vector printing
+std::ostream& operator<<(std::ostream& os, const uvec4& vec)
+{
+	os << "X: " << vec.x << "  Y: " << vec.y << "  X: " << vec.z << "  W: " << vec.w;
+	return os;
+}
+
+
+
+std::ostream& operator<<(std::ostream& os, const mat3& mat)
+{
+	auto originalPrecison = os.precision();
+
+	os.precision(4);
+	os.setf(std::ios::fixed, std::ios::floatfield); // floatfield set to fixed
+
+	for (int x = 0; x < 3; x++)
+	{
+		for (int y = 0; y < 3; y++)
+		{
+			os << mat[x][y] << " ";
+		}
+		os << std::endl;
+	}
+
+	// reset the precision
+	os.precision(originalPrecison);
+	return os;
+}
+
+std::ostream& operator<<(std::ostream& os, const mat4& mat)
+{
+	auto originalPrecison = os.precision();
+
+	os.precision(4);
+	os.setf(std::ios::fixed, std::ios::floatfield); // floatfield set to fixed
+
+	for (int x = 0; x < 4; x++)
+	{
+		for (int y = 0; y < 4; y++)
+		{
+			os << mat[x][y] << " ";
+		}
+		os << std::endl;
+	}
+
+	// reset the precision
+	os.precision(originalPrecison);
+	return os;
+}

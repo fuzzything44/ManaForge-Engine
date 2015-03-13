@@ -8,7 +8,6 @@ public:
 	MainWindow(const char* title, WindowMode mode, uvec2 size);
 
 	glm::mat4 viewMat;
-	glm::mat4 projection;
 
 
 	// 1/sclae * 2 is how many units fit vertically
@@ -16,7 +15,7 @@ public:
 
 	const GLfloat minScale = .00625f;
 	const GLfloat maxScale = 1.f;
-
+	GLfloat aspectRatio;
 
 private:
 	virtual GLint init() override;

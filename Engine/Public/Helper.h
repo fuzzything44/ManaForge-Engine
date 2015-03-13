@@ -14,7 +14,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
-
+#include <ios>
 
 #define FOURCC_DXT1 0x31545844 // Equivalent to "DXT1" in ASCII
 #define FOURCC_DXT3 0x33545844 // Equivalent to "DXT3" in ASCII
@@ -81,6 +81,42 @@ ENGINE_API GLuint loadDDS(const char * imagepath);
 
 ENGINE_API std::string clGetErrorString(cl_int error);
 
+// custom vector printing
+ENGINE_API std::ostream& operator<<(std::ostream& os, const vec2& vec);
+
+// custom vector printing
+ENGINE_API std::ostream& operator<<(std::ostream& os, const vec3& vec);
+
+// custom vector printing
+ENGINE_API std::ostream& operator<<(std::ostream& os, const vec4& vec);
+
+
+// custom vector printing
+ENGINE_API std::ostream& operator<<(std::ostream& os, const ivec2& vec);
+
+// custom vector printing
+ENGINE_API std::ostream& operator<<(std::ostream& os, const ivec3& vec);
+
+// custom vector printing
+ENGINE_API std::ostream& operator<<(std::ostream& os, const ivec4& vec);
+
+
+// custom vector printing
+ENGINE_API std::ostream& operator<<(std::ostream& os, const uvec2& vec);
+
+// custom vector printing
+ENGINE_API std::ostream& operator<<(std::ostream& os, const uvec3& vec);
+
+// custom vector printing
+ENGINE_API std::ostream& operator<<(std::ostream& os, const uvec4& vec);
+
+
+
+// custom matrix printing
+ENGINE_API std::ostream& operator<<(std::ostream& os, const mat3& mat);
+
+// custom matrix printing
+ENGINE_API std::ostream& operator<<(std::ostream& os, const mat4& mat);
 
 
 #ifdef _DEBUG

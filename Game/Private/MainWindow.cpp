@@ -68,32 +68,19 @@ GLint MainWindow::init()
 	Chunk::initChunks(chunkProgram, &viewMat, glm::uvec2(1, 1));
 	Actor::init(actorProgram, &viewMat);
 
-	float aspectRatio = (float)getSize().x / (float)getSize().y;
-
-	// make the projection so there is no distortion based on aspect ratio.
-	projection = glm::ortho(-aspectRatio, aspectRatio, -1.f, 1.f);
+	aspectRatio = (float)getSize().x / (float)getSize().y;
 
 	Actor* act = Actor::addActor<Actor>(
-		vec2(-1.f, -1.f),				// Location
+		vec2(-4.f, -1.f),				// Location
 		vec2(1.f, 1.f),					// Size
 		vec2(0.f, 0.f),					// Velocity
 		0.f,							// Rotation in deg
-		2,								// Render Order
+		0,								// Render Order
 		false,							// Collides	
 		TextureLibrary::getUVData("0"),	// UVs
 		true							// Persistent
 		);							
 
-	Actor::addActor<Actor>(
-		vec2(-10.f, -10.f),				  // Location
-		vec2(4.f, 4.f),					  // Size
-		vec2(0.f, 0.f), 				  // Velocity
-		45, 							  // Rotation in deg
-		2, 								  // Render Order
-		false, 							  // Collides	
-		TextureLibrary::getUVData("1"),	  // UVs
-		true							  // Persistent
-		);
 
 	// return error code. Zero for success
 	return 0;
@@ -121,8 +108,8 @@ void MainWindow::scroll(GLFWwindow* window, double x, double y)
 void MainWindow::draw(float deltaTime)
 {
 	// compute the viewMat
-	viewMat = glm::scale(projection, glm::vec3(scale, scale, 1));
-
+	viewMat = glm::ortho(-aspectRatio / scale, aspectRatio / scale, -1.f / scale, 1.f / scale, .1f, 1000.f);
+	
 	// clear the color buffer and depth buffer (makes sure the trianges in front get rendered in front
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -170,12 +157,5 @@ GLvoid MainWindow::focus(GLFWwindow* window, int focused)
 
 GLvoid MainWindow::resize(GLFWwindow* window, double x, double y)
 {
-	// compute the aspect ratio
-	GLfloat aspectRatio = (GLfloat)x / (GLfloat)y;
-
-	// update ogl to use entire screen
-	glViewport(0, 0, (GLsizei)x, (GLsizei)y);
-
-	// update the projection matrix with the new aspect ratios
-	projection = glm::ortho(-aspectRatio, aspectRatio, -1.f, 1.f);
+	aspectRatio = float(x / y);
 }
