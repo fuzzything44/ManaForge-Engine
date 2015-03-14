@@ -7,7 +7,7 @@ struct UVData
 	float2 topRight;
 };
 
-// redefination of the one in Actor.h so the data is aligned correctly -- order matters!
+// redefinition of the one in Actor.h so the data is aligned correctly -- order matters!
 struct ActorData
 {
 	float2 location;
@@ -121,15 +121,20 @@ __kernel void update(
 {
 	int id = get_global_id(0);
 
-	struct ActorData localDat = data[id];
 
+	data[id].location += deltaTime * data[id].velocity;
+	
+	struct ActorData localDat = data[id];
+	
 	// set rotation to be between 0 and 360
 	for (localDat.rotation; localDat.rotation < 0; localDat.rotation += 360);
 	for (localDat.rotation; localDat.rotation > 360; localDat.rotation -= 360);
 
-	float2 locXY = (localDat.velocity * deltaTime) + localDat.location - characterLoc;
-	float3 finalLoc = (float3)(locXY.x, locXY.y, (9 - localDat.renderOrder) / 9);
-
+	float2 locXY = localDat.location - characterLoc;
+	float3 finalLoc = (float3)(locXY.x, locXY.y, (-localDat.renderOrder));
+	
+	
+	
 	// the scale factor from degrees to radians
 	// pi / 180
 	float pi180 = M_PI / 180.f;
@@ -147,8 +152,8 @@ __kernel void update(
 	// compute rotation
 	if (localDat.rotation != 0.f)
 	{
-		upperLeft.x *= cos(localDat.rotation * pi180);
-		upperLeft.y *= sin(localDat.rotation * pi180);
+		//upperLeft.x *= cos(localDat.rotation * pi180);
+		//upperLeft.y *= sin(localDat.rotation * pi180);
 	}
 
 	// set upper left coordinates
@@ -163,8 +168,8 @@ __kernel void update(
 	// compute rotation
 	if (localDat.rotation != 0.f)
 	{
-		lowerRight.x *= cos(localDat.rotation * pi180);
-		lowerRight.y *= sin(localDat.rotation * pi180);
+		//lowerRight.x *= cos(localDat.rotation * pi180);
+		//lowerRight.y *= sin(localDat.rotation * pi180);
 	}
 
 	// set upper left coordinates
@@ -178,12 +183,12 @@ __kernel void update(
 	// compute rotation
 	if (localDat.rotation != 0.f)
 	{
-		upperRight.x *= cos(localDat.rotation * pi180);
-		upperRight.y *= sin(localDat.rotation * pi180);
+		//upperRight.x *= cos(localDat.rotation * pi180);
+		//upperRight.y *= sin(localDat.rotation * pi180);
 	}
 
 	// set upper left coordinates
-	outLoc[id * 12 + 9] = finalLoc.x + upperRight.x;
+	outLoc[id * 12 + 9]  = finalLoc.x + upperRight.x;
 	outLoc[id * 12 + 10] = finalLoc.y + upperRight.y;
 	outLoc[id * 12 + 11] = finalLoc.z;
 
