@@ -17,6 +17,8 @@ public:
 	const GLfloat maxScale = 1.f;
 	GLfloat aspectRatio;
 
+	Actor* character;
+
 private:
 	virtual GLint init() override;
 	virtual void scroll(GLFWwindow* window, double x, double y) override;

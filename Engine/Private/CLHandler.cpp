@@ -26,18 +26,18 @@ cl_int CLHandler::updateCL(vec2 characterLocation, float deltaTime, std::vector<
 	objects->push_back(elemCLBuffer);
 
 	cl_int err = CL_SUCCESS;
-	
+
 	// acquire GL objects so we can write to them
 	err = queue->enqueueAcquireGLObjects(objects);
 	queue->finish();
 	errChkCL(err);
-
 
 	// copy the actor data -- will later only copy needed.
 	err = queue->enqueueWriteBuffer(actors, true, 0, sizeof(ActorData) * data.size(), &data[0]);
 	errChkCL(err);
 	err = queue->finish();
 	errChkCL(err);
+
 
 	updateKern.setArg(0, posCLBuffer);
 	updateKern.setArg(1, UVCLBuffer);
@@ -50,6 +50,18 @@ cl_int CLHandler::updateCL(vec2 characterLocation, float deltaTime, std::vector<
 	errChkCL(err);
 	err = queue->finish();
 	errChkCL(err);
+
+	// copy the actor data -- will later only copy needed.
+	err = queue->enqueueReadBuffer(actors, true, 0, sizeof(ActorData) * data.size(), &data[0]);
+	errChkCL(err);
+	err = queue->finish();
+	errChkCL(err);
+
+	// copy data back
+	for (auto& elem : data)
+	{
+		elem.actorPtr->data = elem;
+	}
 
 	// release objects back to opnegl
 	queue->enqueueReleaseGLObjects(objects);

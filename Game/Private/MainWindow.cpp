@@ -16,6 +16,7 @@ MainWindow::MainWindow(const char* title, WindowMode mode, uvec2 size) : Window(
 GLint MainWindow::init()
 {
 
+
 	// set a background color -- it is in 0-1 scale. Pink is the best.
 	glClearColor(1.f, .2f, .5f, 1.f);
 
@@ -70,16 +71,16 @@ GLint MainWindow::init()
 
 	aspectRatio = (float)getSize().x / (float)getSize().y;
 
-	Actor* act = Actor::addActor<Actor>(
-		vec2(-4.f, -1.f),				// Location
-		vec2(1.f, 1.f),					// Size
-		vec2(0.f, 0.f),					// Velocity
-		0.f,							// Rotation in deg
-		0,								// Render Order
-		false,							// Collides	
-		TextureLibrary::getUVData("0"),	// UVs
-		true							// Persistent
-		);							
+	character = Actor::addActor<Actor>(
+		vec2(0.f, 0.f),
+		vec2(2.f, 2.f),
+		vec2(0.f, 0.f),
+		0.f,
+		0,
+		true,
+		TextureLibrary::getUVData("1"),
+		true
+		);
 
 
 	// return error code. Zero for success
@@ -108,25 +109,22 @@ void MainWindow::scroll(GLFWwindow* window, double x, double y)
 void MainWindow::draw(float deltaTime)
 {
 	// compute the viewMat
-	viewMat = glm::ortho(-aspectRatio / scale, aspectRatio / scale, -1.f / scale, 1.f / scale, .1f, 1000.f);
+	viewMat = glm::ortho(-aspectRatio / scale, aspectRatio / scale, -1.f / scale, 1.f / scale, .1f, 100.f);
 	
 	// clear the color buffer and depth buffer (makes sure the trianges in front get rendered in front
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// temp -- will actually have player location
-	Chunk::draw(vec2(0.f), deltaTime);
+	Chunk::draw(character->getLocation(), deltaTime);
 }
 
 
 void MainWindow::input(GLFWwindow* window, float deltaTime)
 {
 	// get the cursor position
-	dvec2 pos;
-	glfwGetCursorPos(window, &pos.x, &pos.y);
-
+	vec2 pos = getCursorLoc();
 	// get the size of the window
-	ivec2 size;
-	glfwGetWindowSize(window, &size.x, &size.y);
+	uvec2 size = getSize();
 
 	// convert to screen corrdinates (-1 to 1)
 	pos /= dvec2(size);
@@ -139,6 +137,28 @@ void MainWindow::input(GLFWwindow* window, float deltaTime)
 
 	// convert back into vec2
 	pos = vec2(pos4.x, pos4.y);
+
+	vec2 vel(0.f);
+
+	if (getKey(GLFW_KEY_A))
+	{
+		vel.x += -1.f;
+	}
+	if (getKey(GLFW_KEY_D))
+	{
+		vel.x += 1.f;
+	}
+	if (getKey(GLFW_KEY_W))
+	{
+		vel.y += 1.f;
+	}
+	if (getKey(GLFW_KEY_S))
+	{
+		vel.y += -1.f;
+	}
+
+	character->setVelocity(vel);
+
 }
 
 

@@ -269,6 +269,7 @@ void Chunk::draw(vec2 characterLoc, float deltaTime)
 			}
 		}
 	}
+
 	Actor::drawActors(data, deltaTime, characterLoc);
 }
 

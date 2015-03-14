@@ -141,13 +141,14 @@ GLint Window::run()
 
 			LastTick = CurrentTick;
 
+
 			input(window, delta);
+
 
 			draw(delta);
 
 			// swap front and back buffers 
 			glfwSwapBuffers(window);
-
 
 
 			// if user is pressing esc, exit the application
@@ -167,6 +168,25 @@ GLint Window::run()
 
 	return exit();
 	
+}
+
+GLint Window::getKey(int key)
+{
+	return glfwGetKey(window, key);
+}
+
+vec2 Window::getCursorLoc()
+{
+	double x, y;
+
+	glfwGetCursorPos(window, &x, &y);
+
+	return vec2((float)x, (float)y);
+}
+
+void Window::setRenderMode(RenderMode newMode)
+{
+	renderMode = newMode;
 }
 
 uvec2 Window::getSize()

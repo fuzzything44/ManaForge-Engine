@@ -9,8 +9,8 @@ out vec2 UV;
 
 void main()
 {
-
-	gl_Position = vec4(in_pos, 1.f) * viewMat;
+	vec4 pos = vec4(in_pos.x, in_pos.y, in_pos.z, 1.f) * viewMat;
+	gl_Position = vec4(pos.x, pos.y, pos.z, 1.f);
 
 	// pass UV data to be interpolated to the fragment shader
 	UV = in_UV;

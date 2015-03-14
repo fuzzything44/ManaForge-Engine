@@ -15,6 +15,12 @@ enum WindowMode
 	WINDOWED
 };
 
+enum RenderMode
+{
+	NORMAL,
+	WIREFRAME
+};
+
 /**
  * \class	Window
  *
@@ -43,6 +49,8 @@ public:
 	 * \return	An ENGINE_API.
 	 */
 
+	ENGINE_API void setRenderMode(RenderMode newMode);
+
 	ENGINE_API Window(std::string title, WindowMode mode, uvec2 size);
 
 	/**
@@ -70,6 +78,9 @@ public:
 	 */
 
 	uvec2 ENGINE_API getSize();
+
+	ENGINE_API GLint getKey(int key);
+	ENGINE_API vec2 getCursorLoc();
 
 protected:
 
@@ -197,6 +208,9 @@ protected:
 			winObj->scroll(window, x, y);
 		}
 	}
+
+	RenderMode renderMode;
+
 
 	/**
 	 * \fn	ENGINE_API static void Window::focusCallback(GLFWwindow* window, int focused)
