@@ -116,7 +116,6 @@ __kernel void update(
 	__global float2* outUV,
 	__global uint* outElem,
 	__global struct ActorData* data,
-	__private float2 characterLoc,
 	__private float deltaTime)
 {
 	int id = get_global_id(0);
@@ -130,8 +129,7 @@ __kernel void update(
 	for (localDat.rotation; localDat.rotation < 0; localDat.rotation += 360);
 	for (localDat.rotation; localDat.rotation > 360; localDat.rotation -= 360);
 
-	float2 locXY = localDat.location - characterLoc;
-	float3 finalLoc = (float3)(locXY.x, locXY.y, (-localDat.renderOrder));
+	float3 finalLoc = (float3)(localDat.location.x, localDat.location.y, (-localDat.renderOrder));
 	
 	
 	

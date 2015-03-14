@@ -59,7 +59,7 @@ public:
 	 *
 	 * \return	A cl_int.
 	 */
-	static ENGINE_API cl_int updateCL(vec2 characterLocation, float deltaTime,  std::vector<ActorData>& data);
+	static ENGINE_API cl_int updateCL(float deltaTime,  std::vector<ActorData>& data);
 
 	/**
 	 * \fn	static ENGINE_API void CLHandler::exitCL();

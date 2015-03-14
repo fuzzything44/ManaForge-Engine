@@ -51,7 +51,7 @@ public:
 	 * \return	An ENGINE_API.
 	 */
 
-	static void ENGINE_API draw(vec2 characterLoc, float deltaTime);
+	static void ENGINE_API draw(Actor* character, float deltaTime);
 
 	/**
 	 * \fn	vec2 ENGINE_API Chunk::getLocation();

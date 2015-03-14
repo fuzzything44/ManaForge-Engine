@@ -5,6 +5,7 @@
 
 GLint Actor::texUniformHandle = -1;
 GLint Actor::viewMatUniformHandle = -1;
+GLint Actor::characterLocUniformHandle = -1;
 
 GLuint Actor::vertexArray = 0;
 GLuint Actor::locBuffer = 0;
@@ -50,6 +51,7 @@ GLint Actor::init(GLuint programIn, mat4* viewMatIn)
 	// set uniform location 
 	texUniformHandle = glGetUniformLocation(program, "tex");
 	viewMatUniformHandle = glGetUniformLocation(program, "viewMat");
+	characterLocUniformHandle = glGetUniformLocation(program, "characterLoc");
 
 
 	// init actor buffers
@@ -79,10 +81,10 @@ GLint Actor::init(GLuint programIn, mat4* viewMatIn)
 }
 
 
-void Actor::drawActors(std::vector<ActorData>& data, float deltaTime, vec2 characterLoc)
+void Actor::drawActors(std::vector<ActorData>& data, float deltaTime, Actor* character)
 {
 
-	CLHandler::updateCL(characterLoc, deltaTime, data);
+	CLHandler::updateCL(deltaTime, data);
 
 	// use the correct program
 	glUseProgram(program);
@@ -99,6 +101,10 @@ void Actor::drawActors(std::vector<ActorData>& data, float deltaTime, vec2 chara
 	if (viewMatUniformHandle != -1)
 	{
 		glUniformMatrix4fv(viewMatUniformHandle, 1, GL_FALSE, &(*viewMat)[0][0]);
+	}
+	if (characterLocUniformHandle != -1)
+	{
+		glUniform2f(characterLocUniformHandle, character->getLocation().x, character->getLocation().y);
 	}
 
 	glBindVertexArray(vertexArray);

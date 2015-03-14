@@ -228,13 +228,13 @@ GLvoid Chunk::drawChunk(std::vector<ActorData>& data)
 
 }
 
-void Chunk::draw(vec2 characterLoc, float deltaTime)
+void Chunk::draw(Actor* character, float deltaTime)
 {
 	glUseProgram(program);
 
 	if (characterLocUniformHandleChunk != -1)
 	{
-		glUniform2f(characterLocUniformHandleChunk, characterLoc.x, characterLoc.y);
+		glUniform2f(characterLocUniformHandleChunk, character->getLocation().x, character->getLocation().y);
 	}
 
 	// return if there is no persistent chunk
@@ -251,7 +251,7 @@ void Chunk::draw(vec2 characterLoc, float deltaTime)
 	// always draw the persistent chunk
 	persistentChunk->drawChunk(data);
 
-	uvec2 chunkoffset(characterLoc / vec2((GLfloat)CHUNK_WIDTH));
+	uvec2 chunkoffset(character->getLocation() / vec2((GLfloat)CHUNK_WIDTH));
 
 	ivec2 chunksInEachDir = glm::uvec2( 1 / (*viewMat)[0][0], 1 / (*viewMat)[1][1]);
 
@@ -270,7 +270,7 @@ void Chunk::draw(vec2 characterLoc, float deltaTime)
 		}
 	}
 
-	Actor::drawActors(data, deltaTime, characterLoc);
+	Actor::drawActors(data, deltaTime, character);
 }
 
 vec2 Chunk::getLocation()

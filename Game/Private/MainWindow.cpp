@@ -115,7 +115,7 @@ void MainWindow::draw(float deltaTime)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// temp -- will actually have player location
-	Chunk::draw(character->getLocation(), deltaTime);
+	Chunk::draw(character, deltaTime);
 }
 
 
@@ -142,19 +142,19 @@ void MainWindow::input(GLFWwindow* window, float deltaTime)
 
 	if (getKey(GLFW_KEY_A))
 	{
-		vel.x += -1.f;
+		vel.x += -10.f;
 	}
 	if (getKey(GLFW_KEY_D))
 	{
-		vel.x += 1.f;
+		vel.x += 10.f;
 	}
 	if (getKey(GLFW_KEY_W))
 	{
-		vel.y += 1.f;
+		vel.y += 10.f;
 	}
 	if (getKey(GLFW_KEY_S))
 	{
-		vel.y += -1.f;
+		vel.y += -10.f;
 	}
 
 	character->setVelocity(vel);

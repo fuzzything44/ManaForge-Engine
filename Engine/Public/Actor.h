@@ -238,7 +238,7 @@ protected:
 	 * \return	An ENGINE_API.
 	 */
 
-	static void drawActors(std::vector<ActorData>& data, float deltaTime, vec2 characterLoc);
+	static void drawActors(std::vector<ActorData>& data, float deltaTime, Actor* characterLoc);
 
 	ENGINE_API Actor(const ActorData& dataIn, Chunk* chunkIn);
 
@@ -258,6 +258,7 @@ protected:
 
 	static GLint texUniformHandle;
 	static GLint viewMatUniformHandle;
+	static GLint characterLocUniformHandle;
 
 	static GLuint vertexArray;
 	static GLuint locBuffer;

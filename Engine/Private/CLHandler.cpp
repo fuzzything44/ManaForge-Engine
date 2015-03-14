@@ -14,7 +14,7 @@ cl::BufferGL CLHandler::UVCLBuffer = cl::BufferGL();
 cl::BufferGL CLHandler::elemCLBuffer = cl::BufferGL();
 std::vector<cl::Device> CLHandler::devices = std::vector<cl::Device>();
 
-cl_int CLHandler::updateCL(vec2 characterLocation, float deltaTime, std::vector<ActorData>& data)
+cl_int CLHandler::updateCL(float deltaTime, std::vector<ActorData>& data)
 {
 
 	check(context);
@@ -43,8 +43,7 @@ cl_int CLHandler::updateCL(vec2 characterLocation, float deltaTime, std::vector<
 	updateKern.setArg(1, UVCLBuffer);
 	updateKern.setArg(2, elemCLBuffer);
 	updateKern.setArg(3, actors);
-	updateKern.setArg(4, characterLocation);
-	updateKern.setArg(5, deltaTime);
+	updateKern.setArg(4, deltaTime);
 
 	err = queue->enqueueNDRangeKernel(updateKern, cl::NullRange, cl::NDRange(data.size()), cl::NullRange);
 	errChkCL(err);
