@@ -108,8 +108,13 @@ void MainWindow::scroll(GLFWwindow* window, double x, double y)
 
 void MainWindow::draw(float deltaTime)
 {
+
+	// clamp scale
+	scale = scale > maxScale ? maxScale : scale;
+	scale = scale < minScale ? minScale : scale;
+
 	// compute the viewMat
-	viewMat = glm::ortho(-aspectRatio / scale, aspectRatio / scale, -1.f / scale, 1.f / scale, .1f, 100.f);
+	viewMat = glm::ortho(-aspectRatio / scale, aspectRatio / scale, -1.f / scale, 1.f / scale, .1f, 23.f);
 	
 	// clear the color buffer and depth buffer (makes sure the trianges in front get rendered in front
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
