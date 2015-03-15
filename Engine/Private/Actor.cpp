@@ -133,7 +133,12 @@ void Actor::drawActors(std::vector<ActorData>& data, float deltaTime, Actor* cha
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elemBuffer);
 
-	glDrawElements(GL_TRIANGLES, data.size() * 6, GL_UNSIGNED_INT, 0);
+	for (unsigned int i = 0; i < data.size(); i++)
+	{
+		glDrawRangeElements(GL_TRIANGLES, 0, data.size() * 6, 6, GL_UNSIGNED_INT, (char*)(NULL) + (sizeof(GLuint) * 6 * i));
+	}
+
+	//glDrawElements(GL_TRIANGLES, data.size() * 6, GL_UNSIGNED_INT, 0);
 
 	// disable vertex pointers 
 	glDisableVertexAttribArray(0);

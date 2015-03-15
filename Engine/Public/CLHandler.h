@@ -29,6 +29,8 @@ public:
 
 	friend Actor;
 
+	static ENGINE_API void wait();
+
 	/**
 	 * \fn	static ENGINE_API cl_int CLHandler::initCL(GLuint posBuffer, GLuint UVBuffer, GLuint elemBuffer);
 	 *

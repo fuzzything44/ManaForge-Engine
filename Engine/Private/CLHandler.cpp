@@ -29,13 +29,13 @@ cl_int CLHandler::updateCL(float deltaTime, std::vector<ActorData>& data)
 
 	// acquire GL objects so we can write to them
 	err = queue->enqueueAcquireGLObjects(objects);
-	queue->finish();
+	//queue->finish();
 	errChkCL(err);
 
 	// copy the actor data -- will later only copy needed.
 	err = queue->enqueueWriteBuffer(actors, true, 0, sizeof(ActorData) * data.size(), &data[0]);
 	errChkCL(err);
-	err = queue->finish();
+	//err = queue->finish();
 	errChkCL(err);
 
 
@@ -47,13 +47,13 @@ cl_int CLHandler::updateCL(float deltaTime, std::vector<ActorData>& data)
 
 	err = queue->enqueueNDRangeKernel(updateKern, cl::NullRange, cl::NDRange(data.size()), cl::NullRange);
 	errChkCL(err);
-	err = queue->finish();
+	//err = queue->finish();
 	errChkCL(err);
 
 	// copy the actor data -- will later only copy needed.
 	err = queue->enqueueReadBuffer(actors, true, 0, sizeof(ActorData) * data.size(), &data[0]);
 	errChkCL(err);
-	err = queue->finish();
+	//err = queue->finish();
 	errChkCL(err);
 
 	// copy data back
@@ -66,6 +66,11 @@ cl_int CLHandler::updateCL(float deltaTime, std::vector<ActorData>& data)
 	queue->enqueueReleaseGLObjects(objects);
 
 	return CL_SUCCESS;
+}
+
+void CLHandler::wait()
+{
+	queue->flush();
 }
 
 cl_int CLHandler::initCL(GLuint posBuffer, GLuint UVBuffer, GLuint elemBuffer)

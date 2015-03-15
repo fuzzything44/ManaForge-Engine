@@ -9,6 +9,10 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
+    <Filter Include="OpenCL Files">
+      <UniqueIdentifier>{D011BB44-1BF7-4113-997B-A081035B40D8}</UniqueIdentifier>
+      <Extensions>cl</Extensions>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Private\RPG-Game.cpp">
@@ -24,5 +28,10 @@
     <ClInclude Include="Public\MainWindow.h">
       <Filter>Public</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <none Include="..\Resource\kernels\updateFrame.cl">
+      <Filter>OpenCL Files</Filter>
+    </none>
   </ItemGroup>
 </Project>

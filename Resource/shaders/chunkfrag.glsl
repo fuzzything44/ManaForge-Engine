@@ -15,5 +15,15 @@ void main()
 {
 	// use the texture2D method to get the color at the corresponding texture location using the filtering method provided.
 	// http://www.arcsynthesis.org/gltut/Texturing/Tut15%20Magnification.html	
-	color = texture2D(tex, UV);	
+	vec4 intColor = texture2D(tex, UV);	
+
+	if (intColor.a == 0.f)
+	{
+		discard;
+	}
+	else
+	{
+		color = intColor;
+	}
+	
 }

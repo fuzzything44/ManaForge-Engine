@@ -16,7 +16,7 @@ struct ActorData
 	float rotation;
 	int renderOrder;
 	struct UVData UVs;
-	int loc; // pointer to the actor
+	int loc; // pointer to the actor. TODO: Add 64-bit support with a long
 	bool collides;
 	// TODO: add collision channels -- need to make
 };
@@ -145,13 +145,15 @@ __kernel void update(
 	outLoc[id * 12 + 2] = finalLoc.z;
 
 	////////////////// UPPER LEFT ////////////////////
-	float2 upperLeft = (float2)(0.f, localDat.size.y);
+	float2 upperLeft;
 
 	// compute rotation
 	if (localDat.rotation != 0.f)
 	{
-		//upperLeft.x *= cos(localDat.rotation * pi180);
-		//upperLeft.y *= sin(localDat.rotation * pi180);
+		float len = localDat.size.y;
+		
+		upperLeft.x = cos(localDat.rotation * pi180 + (M_PI / 2)) * len;
+		upperLeft.y = sin(localDat.rotation * pi180 + (M_PI / 2)) * len;
 	}
 
 	// set upper left coordinates
@@ -161,13 +163,15 @@ __kernel void update(
 
 
 	////////////// LOWER RIGHT /////////////////////
-	float2 lowerRight = (float2)(localDat.size.x, 0.f);
+	float2 lowerRight;
 
 	// compute rotation
 	if (localDat.rotation != 0.f)
 	{
-		//lowerRight.x *= cos(localDat.rotation * pi180);
-		//lowerRight.y *= sin(localDat.rotation * pi180);
+		float len = localDat.size.x;
+		
+		lowerRight.x = cos(localDat.rotation * pi180) * len;
+		lowerRight.y = sin(localDat.rotation * pi180) * len;
 	}
 
 	// set upper left coordinates
@@ -181,8 +185,11 @@ __kernel void update(
 	// compute rotation
 	if (localDat.rotation != 0.f)
 	{
-		//upperRight.x *= cos(localDat.rotation * pi180);
-		//upperRight.y *= sin(localDat.rotation * pi180);
+		float len = sqrt(upperRight.x * upperRight.x + upperRight.y * upperRight.y);
+		
+		// convert to radians and add 45 deg
+		upperRight.x = cos(localDat.rotation * pi180 + (M_PI / 4)) * len;
+		upperRight.y = sin(localDat.rotation * pi180 + (M_PI / 4)) * len;
 	}
 
 	// set upper left coordinates

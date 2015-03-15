@@ -8,5 +8,14 @@ out vec4 fragColor;
 
 void main()
 {
-	fragColor = texture2D(tex, UV);
+	vec4 intfragColor = texture2D(tex, UV);
+
+	if (intfragColor.a < .3f)
+	{
+		discard;
+	}
+	else
+	{
+		fragColor = intfragColor;
+	}
 }

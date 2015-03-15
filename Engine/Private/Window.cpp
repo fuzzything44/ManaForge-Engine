@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Window.h"
 #include <sstream>
+#include "CLHandler.h"
 
 std::map<GLFWwindow*, Window*> Window::windows = std::map<GLFWwindow*, Window*>();
 
@@ -160,6 +161,8 @@ GLint Window::run()
 			// This is analogous for setting it through a function or pressing the close button
 
 		}
+
+		CLHandler::wait();
 
 		// make sure all events are done
 		glfwPollEvents();

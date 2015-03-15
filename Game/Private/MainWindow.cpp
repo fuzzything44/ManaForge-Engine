@@ -75,13 +75,23 @@ GLint MainWindow::init()
 		vec2(0.f, 0.f),
 		vec2(2.f, 2.f),
 		vec2(0.f, 0.f),
-		0.f,
+		200.f,
 		0,
 		true,
 		TextureLibrary::getUVData("1"),
 		true
 		);
 
+	Actor::addActor<Actor>(
+		vec2(-1.f, -1.f),
+		vec2(2.f, 2.f),
+		vec2(0.f, 0.f),
+		32.f,
+		3,
+		true,
+		TextureLibrary::getUVData("4"),
+		true
+	);
 
 	// return error code. Zero for success
 	return 0;
