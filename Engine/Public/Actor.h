@@ -12,6 +12,7 @@ struct ActorData;
 class Actor;
 #include "CLHandler.h"
 
+static const unsigned int MAX_ACTORS = 10001;
 
 // you will learn about this later -- ask me if you want to know
 class Actor;

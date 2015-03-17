@@ -71,6 +71,33 @@ GLint MainWindow::init()
 
 	aspectRatio = (float)getSize().x / (float)getSize().y;
 
+
+	srand((GLuint)this);
+
+	// init the generator -- will remove with loading
+	std::mersenne_twister_engine < std::uint_fast32_t, 32, 624, 397, 31,
+		0x9908b0df, 11,
+		0xffffffff, 7,
+		0x9d2c5680, 15,
+		0xefc60000, 18, 1812433253 > gen(rand());
+
+	for (int i = 0; i < 10000; i++)
+	{
+
+
+		srand(i);
+		Actor::addActor<Actor>(
+			vec2(std::uniform_real_distribution<float>(-100.f, 100.f)(gen), std::uniform_real_distribution<float>(-100.f, 100.f)(gen)),
+			vec2(.5f, .5f),
+			vec2(0.f, 0.f),
+			float(std::uniform_real_distribution<float>(0.f, 360.f)(gen)),
+			3,
+			true,
+			TextureLibrary::getUVData("9"),
+			true
+			);
+	}
+
 	character = Actor::addActor<Actor>(
 		vec2(0.f, 0.f),
 		vec2(2.f, 2.f),
@@ -82,16 +109,6 @@ GLint MainWindow::init()
 		true
 		);
 
-	Actor::addActor<Actor>(
-		vec2(-1.f, -1.f),
-		vec2(2.f, 2.f),
-		vec2(0.f, 0.f),
-		32.f,
-		3,
-		true,
-		TextureLibrary::getUVData("4"),
-		true
-	);
 
 	// return error code. Zero for success
 	return 0;
@@ -172,8 +189,19 @@ void MainWindow::input(GLFWwindow* window, float deltaTime)
 		vel.y += -10.f;
 	}
 
+
 	character->setVelocity(vel);
 
+
+	if (getKey(GLFW_KEY_Q))
+	{
+		character->setRotation(character->getRotation() + (-900.f * deltaTime));
+	}
+
+	if (getKey(GLFW_KEY_E))
+	{
+		character->setRotation(character->getRotation() + (900.f * deltaTime));
+	}
 }
 
 

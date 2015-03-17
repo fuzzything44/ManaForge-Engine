@@ -26,13 +26,6 @@ Actor::Actor(const ActorData& dataIn, Chunk* chunkIn)
 	// add this class to the chunk
 	chunk->actors.push_back(this);
 
-	ENG_LOG("\nCreate Buffer For Actor" << std::endl);
-
-//	cl_int err;
-	//buff = cl::Buffer(*CLHandler::context, CL_MEM_READ_WRITE, sizeof(ActorData), &data, &err);
-
-//	errChkCL(err)
-
 }
 
 GLint Actor::init(GLuint programIn, mat4* viewMatIn)
@@ -44,7 +37,7 @@ GLint Actor::init(GLuint programIn, mat4* viewMatIn)
 
 
 	// create a massive array of zeros for default value
-	float* empty = (float*)malloc(sizeof(float) * 2 * 4 * 1000);
+	float* empty = (float*)malloc(sizeof(float) * 3 * 4 * MAX_ACTORS);
 
 	memset(empty, 0, sizeof(float) * 2 * 4 * 1000);
 
@@ -61,15 +54,15 @@ GLint Actor::init(GLuint programIn, mat4* viewMatIn)
 
 	glGenBuffers(1, &locBuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, locBuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * 4 * 100, (void*)empty, GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 3 * 4 * MAX_ACTORS, (void*)empty, GL_DYNAMIC_DRAW);
 
 	glGenBuffers(1, &UVBuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, UVBuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * 4 * 100, (void*)empty, GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * 4 * MAX_ACTORS, (void*)empty, GL_DYNAMIC_DRAW);
 
 	glGenBuffers(1, &elemBuffer);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elemBuffer);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * 6 * 100, (void*)empty, GL_DYNAMIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * 6 * MAX_ACTORS, (void*)empty, GL_DYNAMIC_DRAW);
 
 
 	free(empty);
@@ -133,12 +126,8 @@ void Actor::drawActors(std::vector<ActorData>& data, float deltaTime, Actor* cha
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elemBuffer);
 
-	for (unsigned int i = 0; i < data.size(); i++)
-	{
-		glDrawRangeElements(GL_TRIANGLES, 0, data.size() * 6, 6, GL_UNSIGNED_INT, (char*)(NULL) + (sizeof(GLuint) * 6 * i));
-	}
 
-	//glDrawElements(GL_TRIANGLES, data.size() * 6, GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLES, data.size() * 6, GL_UNSIGNED_INT, 0);
 
 	// disable vertex pointers 
 	glDisableVertexAttribArray(0);

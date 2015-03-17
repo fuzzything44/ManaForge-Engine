@@ -25,6 +25,8 @@ cl_int CLHandler::updateCL(float deltaTime, std::vector<ActorData>& data)
 	objects->push_back(UVCLBuffer);
 	objects->push_back(elemCLBuffer);
 
+	glFinish();
+
 	cl_int err = CL_SUCCESS;
 
 	// acquire GL objects so we can write to them
@@ -35,7 +37,7 @@ cl_int CLHandler::updateCL(float deltaTime, std::vector<ActorData>& data)
 	// copy the actor data -- will later only copy needed.
 	err = queue->enqueueWriteBuffer(actors, true, 0, sizeof(ActorData) * data.size(), &data[0]);
 	errChkCL(err);
-	//err = queue->finish();
+	err = queue->finish();
 	errChkCL(err);
 
 
@@ -45,15 +47,17 @@ cl_int CLHandler::updateCL(float deltaTime, std::vector<ActorData>& data)
 	updateKern.setArg(3, actors);
 	updateKern.setArg(4, deltaTime);
 
+	queue->finish();
+	errChkCL(err);
 	err = queue->enqueueNDRangeKernel(updateKern, cl::NullRange, cl::NDRange(data.size()), cl::NullRange);
 	errChkCL(err);
-	//err = queue->finish();
+	err = queue->finish();
 	errChkCL(err);
 
 	// copy the actor data -- will later only copy needed.
 	err = queue->enqueueReadBuffer(actors, true, 0, sizeof(ActorData) * data.size(), &data[0]);
 	errChkCL(err);
-	//err = queue->finish();
+	err = queue->finish();
 	errChkCL(err);
 
 	// copy data back
@@ -164,7 +168,7 @@ cl_int CLHandler::initCL(GLuint posBuffer, GLuint UVBuffer, GLuint elemBuffer)
 	errChkCL(err);
 
 	// init the buffer
-	actors = cl::Buffer(*context, (cl_mem_flags)CL_MEM_READ_WRITE, (size_t)sizeof(ActorData) * 100, (void*)0, &err);
+	actors = cl::Buffer(*context, (cl_mem_flags)CL_MEM_READ_WRITE, sizeof(ActorData) * MAX_ACTORS, (void*)0, &err);
 		
 	// do error checking
 	errChkCL(err);

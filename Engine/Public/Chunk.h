@@ -12,7 +12,6 @@ class Chunk;
 
 // the chunk width
 static const GLuint CHUNK_WIDTH = 50;
-static const GLuint MAX_ACTORS = 20;
 
 class Chunk
 {
