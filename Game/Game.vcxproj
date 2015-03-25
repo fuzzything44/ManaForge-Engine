@@ -23,9 +23,6 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
   </ItemGroup>
-  <ItemGroup>
-    <none Include="..\Resource\kernels\updateFrame.cl" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{74F1D888-86D0-47EE-93ED-E7834EC90A5F}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
