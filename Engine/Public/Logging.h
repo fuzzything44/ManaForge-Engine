@@ -3,7 +3,7 @@
 #include <fstream>
 #include <sstream>
 
-
+/// <summary> A logging.</summary>
 class logging
 {
 public:

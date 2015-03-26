@@ -9,10 +9,10 @@
 class Chunk;
 #include "Actor.h"
 
-
-// the chunk width
+/// <summary> Width of the chunk.</summary>
 static const GLuint CHUNK_WIDTH = 50;
 
+/// <summary> A chunk.</summary>
 class Chunk
 {
 public:
@@ -20,49 +20,26 @@ public:
 	// freind the actor class so we can share private methods
 	friend Actor;
 
-	/**
-	 * \fn	static GLvoid ENGINE_API Chunk::initChunks(GLuint programIn, mat4* viewMatIn, const uvec2& chunksSizeIn);
-	 *
-	 * \brief	Initialises the chunks.
-	 *
-	 * \author	Russell
-	 * \date	3/12/2015
-	 *
-	 * \param	programIn		 	The program in.
-	 * \param [in,out]	viewMatIn	If non-null, the view matrix in.
-	 * \param	chunksSizeIn	 	The chunks size in.
-	 *
-	 * \return	An ENGINE_API.
-	 */
-
+	/// <summary> Initialises the chunks.</summary>
+	///
+	/// <param name="programIn">    The program in.</param>
+	/// <param name="viewMatIn">    [in,out] If non-null, the view matrix in.</param>
+	/// <param name="chunksSizeIn"> The chunks size in.</param>
+	///
+	/// <returns> An ENGINE_API.</returns>
 	static GLvoid ENGINE_API initChunks(GLuint programIn, mat4* viewMatIn, const uvec2& chunksSizeIn);
 
-	/**
-	 * \fn	static void ENGINE_API Chunk::draw(vec2 characterLoc);
-	 *
-	 * \brief	Draws the given character location.
-	 *
-	 * \author	Russell
-	 * \date	3/12/2015
-	 *
-	 * \param	characterLoc	The character location.
-	 *
-	 * \return	An ENGINE_API.
-	 */
-
+	/// <summary> Draws.</summary>
+	///
+	/// <param name="character"> [in,out] If non-null, the character.</param>
+	/// <param name="deltaTime"> The delta time.</param>
+	///
+	/// <returns> An ENGINE_API.</returns>
 	static void ENGINE_API draw(Actor* character, float deltaTime);
 
-	/**
-	 * \fn	vec2 ENGINE_API Chunk::getLocation();
-	 *
-	 * \brief	getter for location.
-	 *
-	 * \author	Russell
-	 * \date	3/12/2015
-	 *
-	 * \return	The location.
-	 */
-
+	/// <summary> Gets the location.</summary>
+	///
+	/// <returns> The location.</returns>
 	vec2 ENGINE_API getLocation();
 
 protected:
@@ -72,36 +49,49 @@ protected:
 	// opengl handles
 	GLuint locBufferID, UVBufferID, eboID, vaoID;
 
+	/// <summary> The program.</summary>
 	static GLuint program;
 
-	// location of the uniform variables so we can set them
+	/// <summary> Identifier for the view matrix uni.</summary>
 	GLint viewMatUniID;
 
-	// the amount of elemetns
+	/// <summary> Number of elements.</summary>
 	size_t elementCount;
 
-	// a vector of all of the actors in the scene. Naive implemntation -- will fix later
+	/// <summary> The actors.</summary>
 	std::vector<Actor*> actors;
 
+	/// <summary> The view matrix.</summary>
 	static mat4* viewMat;
 
+	/// <summary> The location.</summary>
 	vec2 location;
 
-	// draw a certian chunk
+	/// <summary> Draw chunk.</summary>
+	///
+	/// <param name="data"> [in,out] The data.</param>
+	///
+	/// <returns> A GLvoid.</returns>
 	GLvoid drawChunk(std::vector<ActorData>& data);
 
-	// a 2D array of pointers to chunks
+	/// <summary> the chunks </summary>
 	static ENGINE_API Chunk*** chunks;
 
+	/// <summary> the persistent chunk.</summary>
 	static ENGINE_API Chunk* persistentChunk;
 
-	// size of the array
+	/// <summary> Size of the chunks.</summary>
 	static uvec2 chunksSize;
 
-
+	/// <summary> Constructor.</summary>
+	///
+	/// <param name="locationIn"> The location in.</param>
 	Chunk(vec2 locationIn = vec2(0.f, 0.f));
 
+	/// <summary> The tex uniform handle chunk.</summary>
 	static GLint texUniformHandleChunk;
+
+	/// <summary> The character location uniform handle chunk.</summary>
 	static GLint characterLocUniformHandleChunk;
 
 

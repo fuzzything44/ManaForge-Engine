@@ -73,6 +73,8 @@ GLint MainWindow::init()
 
 
 	srand((GLuint)this);
+	int seed = rand();
+	ENG_LOG(std::endl << "using seed: " << seed << std::endl)
 
 	// init the generator -- will remove with loading
 	std::mersenne_twister_engine < std::uint_fast32_t, 32, 624, 397, 31,
@@ -81,13 +83,13 @@ GLint MainWindow::init()
 		0x9d2c5680, 15,
 		0xefc60000, 18, 1812433253 > gen(rand());
 
-	for (int i = 0; i < 10000; i++)
+	for (int i = 0; i < 100000; i++)
 	{
 
 
 		srand(i);
 		Actor::addActor<Actor>(
-			vec2(std::uniform_real_distribution<float>(-100.f, 100.f)(gen), std::uniform_real_distribution<float>(-100.f, 100.f)(gen)),
+			vec2(std::uniform_real_distribution<float>(-10.f, 0.f)(gen), std::uniform_real_distribution<float>(-10.f, 0.f)(gen)),
 			vec2(.5f, .5f),
 			vec2(0.f, 0.f),
 			float(std::uniform_real_distribution<float>(0.f, 360.f)(gen)),

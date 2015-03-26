@@ -61,10 +61,11 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <TreatWarningAsError>true</TreatWarningAsError>
+      <TreatWarningAsError>false</TreatWarningAsError>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <AdditionalOptions>/doc %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <TargetMachine>MachineX86</TargetMachine>
@@ -97,6 +98,7 @@
     <ClCompile Include="private\CLHandler.cpp" />
     <ClCompile Include="private\Helper.cpp" />
     <ClCompile Include="Private\Logging.cpp" />
+    <ClCompile Include="Private\ModuleHandler.cpp" />
     <ClCompile Include="private\TextureLibrary.cpp" />
     <ClCompile Include="Private\Window.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -111,6 +113,7 @@
     <ClInclude Include="Public\Engine.h" />
     <ClInclude Include="public\Helper.h" />
     <ClInclude Include="Public\Logging.h" />
+    <ClInclude Include="Public\ModuleHandler.h" />
     <ClInclude Include="public\TextureLibrary.h" />
     <ClInclude Include="Public\Window.h" />
     <ClInclude Include="stdafx.h">
