@@ -36,6 +36,12 @@
     <ClCompile Include="Private\ModuleHandler.cpp">
       <Filter>Private</Filter>
     </ClCompile>
+    <ClCompile Include="Private\Renderer.cpp">
+      <Filter>Private</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\Plugin.cpp">
+      <Filter>Private</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="public\Actor.h">
@@ -64,6 +70,12 @@
       <Filter>Public</Filter>
     </ClInclude>
     <ClInclude Include="Public\ModuleHandler.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\Renderer.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\Plugin.h">
       <Filter>Public</Filter>
     </ClInclude>
   </ItemGroup>

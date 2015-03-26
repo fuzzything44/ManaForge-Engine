@@ -16,7 +16,7 @@ int main()
 
 	std::cin >> className;
 
-	std::string pathToHeader = projectName + "\\Public\\" + className;
+	std::string pathToHeader = projectName + "\\Public\\" + className + ".h";
 	std::ofstream header(pathToHeader);
 
 	header << "#pragma once \n\n";
@@ -25,9 +25,9 @@ int main()
 	header << "{\n\n\n";
 	header << "};\n";
 
-	std::string pathToSource = projectName + "\\Private\\" + className;
+	std::string pathToSource = projectName + "\\Private\\" + className + ".cpp";
 	std::ofstream source(pathToSource);
 
 	source << "#include \"stdafx.h\"\n";
-	source << "#include \"" << className << "\"\n\n";
+	source << "#include \"" << className << ".h\"\n\n";
 }

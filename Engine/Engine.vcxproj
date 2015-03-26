@@ -99,6 +99,8 @@
     <ClCompile Include="private\Helper.cpp" />
     <ClCompile Include="Private\Logging.cpp" />
     <ClCompile Include="Private\ModuleHandler.cpp" />
+    <ClCompile Include="Private\Plugin.cpp" />
+    <ClCompile Include="Private\Renderer.cpp" />
     <ClCompile Include="private\TextureLibrary.cpp" />
     <ClCompile Include="Private\Window.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -114,6 +116,8 @@
     <ClInclude Include="public\Helper.h" />
     <ClInclude Include="Public\Logging.h" />
     <ClInclude Include="Public\ModuleHandler.h" />
+    <ClInclude Include="Public\Plugin.h" />
+    <ClInclude Include="Public\Renderer.h" />
     <ClInclude Include="public\TextureLibrary.h" />
     <ClInclude Include="Public\Window.h" />
     <ClInclude Include="stdafx.h">
