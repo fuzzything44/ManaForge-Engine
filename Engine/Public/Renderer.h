@@ -1,10 +1,13 @@
 #pragma once 
 
 #include "Engine.h"
-#include "Plguin.h"
 
-class Renderer : public Plugin
+class Renderer 
 {
+public:
+
+	Renderer(){ }
+
 
 
 };

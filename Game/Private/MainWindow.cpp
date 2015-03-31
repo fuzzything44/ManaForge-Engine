@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
 #include "MainWindow.h"
-
+#include <ModuleManager.h>
 
 MainWindow::MainWindow(std::string title, WindowMode mode, uvec2 size) : Window(title, mode, size)
 {
@@ -16,9 +16,10 @@ MainWindow::MainWindow(const char* title, WindowMode mode, uvec2 size) : Window(
 GLint MainWindow::init()
 {
 
+	man.LoadModule("OpenGLRenderer");
 
 	// set a background color -- it is in 0-1 scale. Pink is the best.
-	glClearColor(1.f, .2f, .5f, 1.f);
+	glClearColor(1.f, 1.2f, .5f, 1.f);
 
 	// enable the depth buffer so the trianges in front are in front
 	glEnable(GL_DEPTH_TEST);
@@ -83,7 +84,7 @@ GLint MainWindow::init()
 		0x9d2c5680, 15,
 		0xefc60000, 18, 1812433253 > gen(rand());
 
-	for (int i = 0; i < 100000; i++)
+	for (int i = 0; i < 10; i++)
 	{
 
 

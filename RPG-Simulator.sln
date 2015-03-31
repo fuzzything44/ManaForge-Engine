@@ -9,6 +9,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Game", "Game\Game.vcxproj",
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Engine", "Engine\Engine.vcxproj", "{366C8B6A-FC80-421F-9AAA-F3A29F3061F5}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2EFF286E-D346-4D83-9078-7124D559EB88} = {2EFF286E-D346-4D83-9078-7124D559EB88}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resources", "Resources", "{2032E0A9-1EDF-41C9-87FE-45E0157F2A7D}"
 EndProject
@@ -317,6 +320,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "gtx", "gtx", "{312AD231-77D
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AddClass", "AddClass\AddClass.vcxproj", "{65CEEC80-9403-46E4-BB0D-15ABF52FB781}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenGLRenderer", "OpenGLRenderer\OpenGLRenderer.vcxproj", "{2EFF286E-D346-4D83-9078-7124D559EB88}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -335,6 +340,10 @@ Global
 		{65CEEC80-9403-46E4-BB0D-15ABF52FB781}.Debug|Win32.Build.0 = Debug|Win32
 		{65CEEC80-9403-46E4-BB0D-15ABF52FB781}.Release|Win32.ActiveCfg = Release|Win32
 		{65CEEC80-9403-46E4-BB0D-15ABF52FB781}.Release|Win32.Build.0 = Release|Win32
+		{2EFF286E-D346-4D83-9078-7124D559EB88}.Debug|Win32.ActiveCfg = Debug|Win32
+		{2EFF286E-D346-4D83-9078-7124D559EB88}.Debug|Win32.Build.0 = Debug|Win32
+		{2EFF286E-D346-4D83-9078-7124D559EB88}.Release|Win32.ActiveCfg = Release|Win32
+		{2EFF286E-D346-4D83-9078-7124D559EB88}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

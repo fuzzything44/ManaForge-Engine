@@ -1,5 +1,8 @@
 #pragma once
 
+#include <Window.h>
+#include <ModuleManager.h>
+
 class MainWindow : public Window
 {
 public:
@@ -18,6 +21,9 @@ public:
 	GLfloat aspectRatio;
 
 	Actor* character;
+
+
+	ModuleManager man;
 
 private:
 	virtual GLint init() override;

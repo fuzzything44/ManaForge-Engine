@@ -33,13 +33,10 @@
     <ClCompile Include="Private\Window.cpp">
       <Filter>Private</Filter>
     </ClCompile>
-    <ClCompile Include="Private\ModuleHandler.cpp">
+    <ClCompile Include="Private\ModuleManager.cpp">
       <Filter>Private</Filter>
     </ClCompile>
-    <ClCompile Include="Private\Renderer.cpp">
-      <Filter>Private</Filter>
-    </ClCompile>
-    <ClCompile Include="Private\Plugin.cpp">
+    <ClCompile Include="Private\Module.cpp">
       <Filter>Private</Filter>
     </ClCompile>
   </ItemGroup>
@@ -69,13 +66,16 @@
     <ClInclude Include="Public\Window.h">
       <Filter>Public</Filter>
     </ClInclude>
-    <ClInclude Include="Public\ModuleHandler.h">
-      <Filter>Public</Filter>
-    </ClInclude>
     <ClInclude Include="Public\Renderer.h">
       <Filter>Public</Filter>
     </ClInclude>
-    <ClInclude Include="Public\Plugin.h">
+    <ClInclude Include="Public\ModuleManager.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Module.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\Module.h">
       <Filter>Public</Filter>
     </ClInclude>
   </ItemGroup>
