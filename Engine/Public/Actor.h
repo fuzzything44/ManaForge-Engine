@@ -136,10 +136,7 @@ public:
 	/// <param name="collides">		 true to collides.</param>
 	/// <param name="UVs">			 The vs.</param>
 	/// <param name="isPersisitent"> true if this object is persisitent.</param>
-	///
-	/// <returns> null if it fails, else an Actor*.</returns>
-	template <typename T>
-	static Actor* addActor(vec2 locationIn, vec2 sizeIn, vec2 velocityIn, float rotationIn, int renderOrderIn,
+	template <typename T> static Actor* addActor(vec2 locationIn, vec2 sizeIn, vec2 velocityIn, float rotationIn, int renderOrderIn,
 		bool collides, UVData UVs, bool isPersisitent)
 	{
 		ActorData newDat(locationIn, sizeIn, velocityIn, rotationIn, renderOrderIn, UVs, NULL, collides);

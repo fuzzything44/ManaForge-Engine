@@ -113,20 +113,22 @@ Window::Window(std::string title, WindowMode windowmode, uvec2 size)
 
 }
 
-GLint Window::run()
+void Window::run()
 {
 	// if init exists use it and if it doesn't succede return the error code.
 
 	double start = glfwGetTime();
 
-	GLint err = init();
-	if (err != 0)
+	try
 	{
-		return err;
+		init();
+	}
+	catch (std::exception& e)
+	{
+		ENG_LOG(e.what());
 	}
 
 	ENG_LOG("Init finished in " << glfwGetTime() - start << "s");
-
 
 
 	// set initial tick
@@ -169,7 +171,7 @@ GLint Window::run()
 
 	} while (!glfwWindowShouldClose(window));
 
-	return exit();
+	exit();
 	
 }
 

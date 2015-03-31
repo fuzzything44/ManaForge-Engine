@@ -5,16 +5,16 @@
 /// <summary> Values that represent window modes.</summary>
 enum WindowMode
 {
-	FULLSCREEN,
-	FULLSCREEN_WINDOWED,
-	WINDOWED
+	FULLSCREEN,				// Fullscreen - Steals the graphics card to render your game
+	FULLSCREEN_WINDOWED,	// Fullscreen windowed - Creates a borderless window that seems fullscren
+	WINDOWED				// Windowed - Created a decorated window 
 };
 
 /// <summary> Values that represent render modes.</summary>
 enum RenderMode
 {
-	NORMAL,
-	WIREFRAME
+	NORMAL,		// The normal render mode -- shaded polygons
+	WIREFRAME	// Render in wireframe
 };
 
 /// <summary> A window.</summary>
@@ -22,12 +22,22 @@ class Window
 {
 public:
 
-
+	/// <summary> Sets render mode.</summary>
+	///
+	/// <param name="newMode"> The new mode.</param>
 	ENGINE_API void setRenderMode(RenderMode newMode);
 
+	/// <summary> Windows.</summary>
+	///
+	/// <param name="title"> The title.</param>
+	/// <param name="mode">  The mode.</param>
+	/// <param name="size">  The size.</param>
+	///
+	/// <returns> An ENGINE_API.</returns>
 	ENGINE_API Window(std::string title, WindowMode mode, uvec2 size);
 
-	ENGINE_API virtual GLint run();
+	/// <summary> Runs the window. Consumes the thread.</summary>
+	ENGINE_API void run();
 
 	uvec2 ENGINE_API getSize();
 
@@ -46,7 +56,7 @@ protected:
 	GLFWwindow* window;
 
 
-	ENGINE_API virtual GLint init() = 0;
+	ENGINE_API virtual void init() = 0;
 
 
 	ENGINE_API virtual void scroll(GLFWwindow* window, double x, double y) = 0;

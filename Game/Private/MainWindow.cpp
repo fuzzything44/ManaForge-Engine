@@ -13,7 +13,7 @@ MainWindow::MainWindow(const char* title, WindowMode mode, uvec2 size) : Window(
 
 }
 
-GLint MainWindow::init()
+void MainWindow::init()
 {
 
 	man.LoadModule("OpenGLRenderer");
@@ -112,9 +112,6 @@ GLint MainWindow::init()
 		true
 		);
 
-
-	// return error code. Zero for success
-	return 0;
 }
 
 void MainWindow::scroll(GLFWwindow* window, double x, double y)

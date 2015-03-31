@@ -6,6 +6,7 @@ class Renderer
 {
 public:
 
+	/// <summary> Default constructor.</summary>
 	Renderer(){ }
 
 

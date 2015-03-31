@@ -7,7 +7,18 @@ class MainWindow : public Window
 {
 public:
 
+	/// <summary> Constructor.</summary>
+	///
+	/// <param name="title"> The title.</param>
+	/// <param name="mode">  The mode.</param>
+	/// <param name="size">  The size.</param>
 	MainWindow(std::string title, WindowMode mode, uvec2 size);
+
+	/// <summary> Constructor.</summary>
+	///
+	/// <param name="title"> The title.</param>
+	/// <param name="mode">  The mode.</param>
+	/// <param name="size">  The size.</param>
 	MainWindow(const char* title, WindowMode mode, uvec2 size);
 
 	glm::mat4 viewMat;
@@ -26,7 +37,7 @@ public:
 	ModuleManager man;
 
 private:
-	virtual GLint init() override;
+	virtual void init() override;
 	virtual void scroll(GLFWwindow* window, double x, double y) override;
 	virtual void draw(float deltaTime) override;
 	virtual void input(GLFWwindow* window, float deltaTime) override;

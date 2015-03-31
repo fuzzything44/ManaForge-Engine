@@ -80,6 +80,7 @@ void CLHandler::wait()
 cl_int CLHandler::initCL(GLuint posBuffer, GLuint UVBuffer, GLuint elemBuffer)
 {
 
+
 	platform = getBestPlatform();
 
 	ENG_LOG("Using Platform: " << platform.getInfo<CL_PLATFORM_NAME>() << std::endl);

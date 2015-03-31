@@ -42,11 +42,11 @@ ENGINE_API GLuint LoadShaders(const char* vertexFile, const char* fragmentFile);
 /// <returns> The DDS.</returns>
 ENGINE_API GLuint loadDDS(const char * imagepath);
 
-/// <summary> Cl get error string.</summary>
+/// <summary> Gets the string assiociated with the error code.</summary>
 ///
 /// <param name="error"> The error.</param>
 ///
-/// <returns> A std::string.</returns>
+/// <returns> A the string that is the error.</returns>
 ENGINE_API std::string clGetErrorString(cl_int error);
 
 /// <summary> custom vector printing </summary>
@@ -78,25 +78,26 @@ ENGINE_API std::ostream& operator<<(std::ostream& os, const uvec3& vec);
 /// <summary> custom vector printing </summary>
 ENGINE_API std::ostream& operator<<(std::ostream& os, const uvec4& vec);
 
-
-
 /// <summary> custom matrix printing </summary>
 ENGINE_API std::ostream& operator<<(std::ostream& os, const mat3& mat);
 
 /// <summary> custom matrix printing </summary>
 ENGINE_API std::ostream& operator<<(std::ostream& os, const mat4& mat);
 
-
+// ONLY define these macros if we are debugging -- they could be slow
 #ifdef _DEBUG
 
 /// <summary> A macro that defines error check cl.</summary>
 ///
 /// <param name="err"> The error.</param>
-#define errChkCL(err) if(err != CL_SUCCESS){ENG_LOG("Error: " << clGetErrorString(err) << "(" << err << ") in file " << __FILE__ << "(" << __LINE__  << ")" << std::endl);exit(err);} else {err = CL_SUCCESS;}
-	
+#define errChkCL(err) if(err != CL_SUCCESS){std::stringstream ss; ss << "Error: " << clGetErrorString(err) << "(" << err << ") in file " << __FILE__ << "(" << __LINE__ << ")" << std::endl; throw std::runtime_error(ss.str()); }
+
+
+/// <summary> Checks a pointer, and throws an exception if it is null.</summary>
+#define check(ptr) if(!ptr){ std::stringstream ss; ss << "Null Pointer: " << #ptr << " ("<< __FILE__ << " line: " << __LINE__ << ")\n"; throw std::runtime_error(ss.str() ); };
+
+
 #else
 #define errChkCL(err)
+#define check(ptr)
 #endif
-
-/// <summary> .</summary>
-#define check(ptr) if(!ptr) return -1;
