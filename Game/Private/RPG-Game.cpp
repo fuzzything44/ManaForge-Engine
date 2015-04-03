@@ -3,6 +3,7 @@
 // local includes
 #include "MainWindow.h"
 
+
 /*************** P R O T O T Y P E S ***************************************************/
 GLvoid draw(GLfloat delta);
 GLint init();
@@ -58,6 +59,9 @@ int changeDir()
 #endif
 
 #ifdef __linux__
+
+#error "Linux change directory code not implemented"
+
 int changeDir()
 {
 	//TODO write linux code
@@ -108,8 +112,15 @@ GLint main()
 
 	MainWindow window = MainWindow("RPG-Simulator", WindowMode::WINDOWED, uvec2(800, 600));
 
-	// run the window. consumes the thread until it returns
-	return window.run();
+	try{
+
+		// run the window. consumes the thread until it returns
+		window.run();
+	}
+	catch (std::exception&)
+	{
+		return -1;
+	}
 	
 }
 
