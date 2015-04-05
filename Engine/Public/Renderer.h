@@ -37,12 +37,25 @@ public:
 	};
 
 	/// <summary> Default constructor.</summary>
-	Renderer(){ }
+	Renderer() {};
+	
+	/// <summary>
+	virtual void init() = 0;
+	
+	/// <summary> Renders the next frame. </summary>
+	virtual void update() = 0;
+	
+	/// <summary> Sets camera to render at. </summary>
+	///
+	/// <param name="newCamera"> The camera it should render at. </param>
+	virtual void setCamera(Camera* newCamera) = 0;
 
 	/// <summary> Creates a new model.</summary>
 	///
 	/// <returns> null if it fails, else a Model*.</returns>
 	virtual Model* newModel(float* locations, float* UVs, int numVerts, int numElems) = 0;
+
+
 
 	virtual ~Renderer() { }
 
