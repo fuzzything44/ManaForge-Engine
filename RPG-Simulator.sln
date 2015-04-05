@@ -322,6 +322,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AddClass", "AddClass\AddCla
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenGLRenderer", "OpenGLRenderer\OpenGLRenderer.vcxproj", "{2EFF286E-D346-4D83-9078-7124D559EB88}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DefaultWorld", "DefaultWorld\DefaultWorld.vcxproj", "{D21476BC-F2FE-421E-8542-E29C13BA5451}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -344,6 +346,10 @@ Global
 		{2EFF286E-D346-4D83-9078-7124D559EB88}.Debug|Win32.Build.0 = Debug|Win32
 		{2EFF286E-D346-4D83-9078-7124D559EB88}.Release|Win32.ActiveCfg = Release|Win32
 		{2EFF286E-D346-4D83-9078-7124D559EB88}.Release|Win32.Build.0 = Release|Win32
+		{D21476BC-F2FE-421E-8542-E29C13BA5451}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D21476BC-F2FE-421E-8542-E29C13BA5451}.Debug|Win32.Build.0 = Debug|Win32
+		{D21476BC-F2FE-421E-8542-E29C13BA5451}.Release|Win32.ActiveCfg = Release|Win32
+		{D21476BC-F2FE-421E-8542-E29C13BA5451}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
