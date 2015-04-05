@@ -1,8 +1,33 @@
 #define DefaultWorldSource 1
 #include "DefaultWorldConfig.h"
 #include "WorldModule.h"
+#include "lodepng.h"
+#include "Helper.h"
+#include <fstream>
+#include <sstream>
 
-using std::string;
+using namespace std;
+
+// Splits a string on a given character.
+template<char onSplit>
+vector<string> split(string toSplit) {
+	vector<string> ret;
+	string buildstring;
+	for (auto& elem : toSplit) {
+		if (elem == onSplit) {
+			if (buildstring != "") {
+				ret.push_back(buildstring);
+			}
+		}
+		else {
+			buildstring.push_back(elem);
+		}
+	}
+	if (buildstring != "") {
+		ret.push_back(buildstring);
+	}
+	return ret;
+}
 
 class DefaultWorld : public WorldModule
 {
@@ -10,25 +35,112 @@ private:
 	string folderLocation;
 	Chunk*** mainWorld = nullptr;
 	Chunk*** currentWorld = nullptr;
-	int chunkSize = 50;
+	uint8 chunkSize = 50;
+	ModuleManager* manager;
 public:
-	DefaultWorld(string folder = "") {
-		if (folder == "") {
-			FATAL_ERR("No world loaded", 42);
+	DefaultWorld(string folder = "", ModuleManager& mm = ModuleManager() )
+		:manager(&mm),
+		folderLocation(folder) 
+	{
+		// Make sure a world folder was supplied.
+		if (folderLocation == "") {
+			FATAL_ERR("No world loaded", 40);
 		}
-		folderLocation = folder;
-		// Load main world here.
-		currentWorld = mainWorld;
+
+		string currentLine;
+		// Loads .ini file for world system.
+		ifstream world(folderLocation + "world.ini");
+
+		ENG_LOG("Loading .ini file...");
+		if (!world.is_open() ) {
+			FATAL_ERR("World ini file doesn't exist. \n\tFolder:" + folderLocation, 41);
+		}
+		ENG_LOG(".ini Loaded!");
+
+		// Ignore any leading comments
+		do
+		{
+			getline(world, currentLine);
+		} while (currentLine[0] == '#' || isspace(currentLine[0]) );
+		
+		ENG_LOG("Loading chunk size...");
+		// First line should be chunk size.
+		// Parses to int.
+		stringstream parser;
+		parser << currentLine;
+		parser >> chunkSize;
+		ENG_LOG("Chunk size loaded!");
+		ENG_LOG("Loading images...");
+		vector<string> imageNames;
+		// Image loading loop
+		while (getline(world, currentLine)) {
+			if (currentLine[0] != '#' || currentLine[0] != '\n') {
+				imageNames.push_back(currentLine);
+			}
+		}
+		// Give images to renderer
+		manager->getRenderer()->loadTextures(imageNames);
+
+		ENG_LOG("Images loaded!");
+		world.close();
+		
+		loadWorld("main");
+		mainWorld = currentWorld;
 		
 	}	// End constructor
 
 	virtual void loadWorld(string name) override {
-		if (name == "main") {
+		ENG_LOG("Loading world " << name << "...");
+		// Skip re-loading main world if possible.
+		if (name == "main" && mainWorld != nullptr) {
 			currentWorld = mainWorld;
 		}
 		else {
-			// Load world here.
+			// Create world file reader.
+			ifstream worldReader(folderLocation + "/" + name + ".WORLD");
+			string onLine;
+
+			// Ignore leading comments.
+			do
+			{
+				getline(worldReader, onLine);
+			} while (onLine[0] != '#');
+			// First line should be amount of chunks x and y.
+			vector<string> line = split<'_'>(onLine);
+
+			// Parse the line.
+			stringstream parser;
+			parser << line[0];
+			int chunksX;
+			parser >> chunksX;
+			parser << line[1];
+			int chunksY;
+			parser >> chunksY;
+
+			// Initialize all chunks.
+			for (int x = 0; x < chunksX; x++) {
+				for (int y = 0; y < chunksY; y++) {
+					currentWorld[x][y] = new Chunk(ivec2(x, y) );
+				}
+			}
+
+
+
+
+			do
+			{
+				// Read next line.
+				getline(worldReader, onLine);
+				// Make sure it is not a comment or ending line.
+				if (onLine[0] != '#' || onLine != "END") {
+					line = split<'_'>(onLine);
+
+				}
+			} while (onLine != "END");
+			// Finish loading world.
 		}
+
+		ENG_LOG("World Loaded!");
 	}	// End loadWorld
 
 	virtual int getChunkSize() override {

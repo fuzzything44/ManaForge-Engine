@@ -9,7 +9,7 @@ public:
 	/// <summary> Creates and loads a world. </summary>
 	/// <param name="name"> The name of the world folder ex. "worlds/mainworld". 
 	/// <para> It then loads "worlds/mainworld/main.WORLD", "worlds/mainworld/main.png", and "world/mainworld/main.SAVE" </para> </param>
-	WorldModule(std::string folder = "") {}
+	WorldModule(std::string folder = "", ModuleManager& mm = ModuleManager() ) {}
 	
 	/// <summary> loads a subworld with given name. </summary>
 	/// <param name="subWorldName"> Name of subworld ex. "dungeon1".
