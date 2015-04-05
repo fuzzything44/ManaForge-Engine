@@ -93,13 +93,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="private\Actor.cpp" />
+    <ClCompile Include="private\ActorComponent.cpp" />
     <ClCompile Include="private\Chunk.cpp" />
     <ClCompile Include="private\CLHandler.cpp" />
     <ClCompile Include="private\ENGException.cpp" />
     <ClCompile Include="private\Helper.cpp" />
     <ClCompile Include="Private\Logging.cpp" />
     <ClCompile Include="Private\Module.cpp" />
-    <ClCompile Include="Private\ModuleManager.cpp" />
     <ClCompile Include="private\TextureLibrary.cpp" />
     <ClCompile Include="Private\Window.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -108,10 +108,12 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Module.h" />
     <ClInclude Include="public\Actor.h" />
+    <ClInclude Include="public\ActorComponent.h" />
+    <ClInclude Include="Public\Camera.h" />
     <ClInclude Include="public\Chunk.h" />
     <ClInclude Include="public\CLHandler.h" />
+    <ClInclude Include="public\Color.h" />
     <ClInclude Include="Public\ENGException.h" />
     <ClInclude Include="Public\Engine.h" />
     <ClInclude Include="public\Helper.h" />
@@ -122,6 +124,7 @@
     <ClInclude Include="public\TextureLibrary.h" />
     <ClInclude Include="Public\Transform.h" />
     <ClInclude Include="Public\Window.h" />
+    <ClInclude Include="public\WorldModule.h" />
     <ClInclude Include="stdafx.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>

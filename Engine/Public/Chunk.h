@@ -8,7 +8,7 @@
 
 class Chunk;
 #include "Actor.h"
-
+#include "WorldModule.h"
 /// <summary> Width of the chunk.</summary>
 static const GLuint CHUNK_WIDTH = 50;
 
@@ -19,7 +19,6 @@ public:
 
 	// freind the actor class so we can share private methods
 	friend Actor;
-
 	/// <summary> Initialises the chunks.</summary>
 	///
 	/// <param name="programIn">    The program in.</param>
@@ -43,6 +42,11 @@ public:
 	vec2 ENGINE_API getLocation();
 
 	static uvec2 ENGINE_API getChunkSize();
+
+	/// <summary> Constructor.</summary>
+	///
+	/// <param name="locationIn"> The location in.</param>
+	Chunk(ivec2 locationIn = ivec2(0, 0));
 
 protected:
 
@@ -85,10 +89,6 @@ protected:
 	/// <summary> Size of the chunks.</summary>
 	static uvec2 chunksSize;
 
-	/// <summary> Constructor.</summary>
-	///
-	/// <param name="locationIn"> The location in.</param>
-	Chunk(vec2 locationIn = vec2(0.f, 0.f));
 
 	/// <summary> The tex uniform handle chunk.</summary>
 	static GLint texUniformHandleChunk;

@@ -33,13 +33,13 @@
     <ClCompile Include="Private\Window.cpp">
       <Filter>Private</Filter>
     </ClCompile>
-    <ClCompile Include="Private\ModuleManager.cpp">
-      <Filter>Private</Filter>
-    </ClCompile>
     <ClCompile Include="Private\Module.cpp">
       <Filter>Private</Filter>
     </ClCompile>
     <ClCompile Include="private\ENGException.cpp">
+      <Filter>Private</Filter>
+    </ClCompile>
+    <ClCompile Include="private\ActorComponent.cpp">
       <Filter>Private</Filter>
     </ClCompile>
   </ItemGroup>
@@ -75,9 +75,6 @@
     <ClInclude Include="Public\ModuleManager.h">
       <Filter>Public</Filter>
     </ClInclude>
-    <ClInclude Include="Module.h">
-      <Filter>Public</Filter>
-    </ClInclude>
     <ClInclude Include="Public\Module.h">
       <Filter>Public</Filter>
     </ClInclude>
@@ -85,6 +82,18 @@
       <Filter>Public</Filter>
     </ClInclude>
     <ClInclude Include="Public\Transform.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\Camera.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="public\ActorComponent.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="public\WorldModule.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="public\Color.h">
       <Filter>Public</Filter>
     </ClInclude>
   </ItemGroup>

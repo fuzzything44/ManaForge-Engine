@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Helper.h"
-
+#include "World.h"
 
 std::string loadFileToStr(const char* filename)
 {
