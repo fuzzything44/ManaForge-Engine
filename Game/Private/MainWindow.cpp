@@ -114,7 +114,7 @@ void MainWindow::init()
 
 }
 
-void MainWindow::scroll(GLFWwindow* window, double x, double y)
+void MainWindow::scroll(GLfloat x, GLfloat y)
 {
 	if (x != 0 || y != 0)
 	{
@@ -141,7 +141,7 @@ void MainWindow::draw(float deltaTime)
 	scale = scale < minScale ? minScale : scale;
 
 	// compute the viewMat
-	viewMat = glm::ortho(-aspectRatio / scale, aspectRatio / scale, -1.f / scale, 1.f / scale, .1f, 23.f);
+	viewMat = glm::ortho<GLfloat>(-aspectRatio / scale, aspectRatio / scale, -1.f / scale, 1.f / scale, .1f, 23.f);
 	
 	// clear the color buffer and depth buffer (makes sure the trianges in front get rendered in front
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -151,12 +151,12 @@ void MainWindow::draw(float deltaTime)
 }
 
 
-void MainWindow::input(GLFWwindow* window, float deltaTime)
+void MainWindow::input(float deltaTime)
 {
 	// get the cursor position
-	vec2 pos = getCursorLoc();
+	auto pos = getCursorLoc();
 	// get the size of the window
-	uvec2 size = getSize();
+	auto size = getSize();
 
 	// convert to screen corrdinates (-1 to 1)
 	pos /= dvec2(size);
@@ -165,10 +165,12 @@ void MainWindow::input(GLFWwindow* window, float deltaTime)
 	pos -= 1;
 
 	// multiply by the inverse of the view matrix -- we are doing the opposite operation then usual 
-	vec4 pos4 = vec4(pos.x, pos.y, 0.f, 1.f) * glm::inverse(viewMat);
+	auto pos4 = vec4(pos.x, pos.y, 0.f, 1.f) * glm::inverse(viewMat);
 
 	// convert back into vec2
 	pos = vec2(pos4.x, pos4.y);
+
+
 
 	vec2 vel(0.f);
 
@@ -205,20 +207,20 @@ void MainWindow::input(GLFWwindow* window, float deltaTime)
 }
 
 
-GLint MainWindow::exit()
+void MainWindow::exit()
 {
 	CLHandler::exitCL();
 
-	return 0;
+	
 }
 
 
-GLvoid MainWindow::focus(GLFWwindow* window, int focused)
+void MainWindow::focus(int focused)
 {
-
+	
 }
 
-GLvoid MainWindow::resize(GLFWwindow* window, double x, double y)
+void MainWindow::resize(double x, double y)
 {
 	aspectRatio = float(x / y);
 }
