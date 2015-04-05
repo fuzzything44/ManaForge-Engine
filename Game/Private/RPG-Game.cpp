@@ -26,16 +26,16 @@ static const GLfloat maxScale = 1.f;
 cl_int initCL();
 
 #ifdef _WIN32
-int changeDir()
+void changeDir()
 {
 	// changes the path so everything we open will be in Resoruce/
 	char ownPth[MAX_PATH];
 
 	// Will contain exe path
-	HMODULE hModule = GetModuleHandle(NULL);
-	if (hModule == NULL)
+	HMODULE hModule = GetModuleHandle(nullptr);
+	if (hModule == nullptr)
 	{
-		return -293;
+		FATAL_ERR("getModuleHandle failed", -1);
 	}
 	// When passing NULL to GetModuleHandle, it returns handle of exe itself
 	GetModuleFileName(hModule, ownPth, (sizeof(ownPth)));
@@ -52,8 +52,12 @@ int changeDir()
 		} while (path[path.size() - 1] != '\\');
 
 	}
-	return _chdir(path.append("Resource\\").c_str());
+	int err = _chdir(path.append("Resource\\").c_str());
 
+	if (err)
+	{
+		FATAL_ERR("chdir failed", err);
+	}
 	
 }
 #endif
@@ -62,7 +66,7 @@ int changeDir()
 
 #error "Linux change directory code not implemented"
 
-int changeDir()
+void changeDir()
 {
 	//TODO write linux code
 
@@ -71,7 +75,7 @@ int changeDir()
 #endif
 
 #ifdef __APPLE__
-int changeDir()
+void changeDir()
 {
 	char path[1024];
 	uint32_t size = sizeof(path);
@@ -95,18 +99,13 @@ int changeDir()
 
 	chdir(pathStr.c_str());
 
-	return 0;
 }
 #endif
 
 GLint main()
 {
 
-	int err = changeDir();
-	if (err != 0)
-	{
-		return err;
-	}
+	changeDir();
 
 	logging::init();
 

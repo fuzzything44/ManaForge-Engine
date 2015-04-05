@@ -7,9 +7,9 @@
 class ENGException : std::exception
 {
 public:
-	virtual const char* what() const override;
+	virtual ENGINE_API const char* what() const override;
 
-	ENGException(std::string reasonIn, int err, char* file, int line);
+	ENGINE_API ENGException(std::string reasonIn, int err, char* file, int line);
 	
 
 private:

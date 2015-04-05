@@ -70,10 +70,10 @@ void MainWindow::init()
 	Chunk::initChunks(chunkProgram, &viewMat, glm::uvec2(1, 1));
 	Actor::init(actorProgram, &viewMat);
 
-	aspectRatio = (float)getSize().x / (float)getSize().y;
+	aspectRatio = static_cast<float>(getSize().x) / static_cast<float>(getSize().y);
 
 
-	srand((GLuint)this);
+	srand(reinterpret_cast<GLuint>(this));
 	int seed = rand();
 	ENG_LOG(std::endl << "using seed: " << seed << std::endl)
 
