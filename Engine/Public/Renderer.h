@@ -3,6 +3,7 @@
 #include "Engine.h"
 #include "Actor.h"
 #include <Transform.h>
+#include "Camera.h"
 
 class Renderer 
 {
@@ -30,17 +31,13 @@ public:
 		//virtual void addRelativeScale(vec2 scaleToAdd) = 0;
 
 
-	private:
-
-		Transform transform;
-
 	};
 
 	/// <summary> Default constructor.</summary>
 	Renderer() {};
 	
 	/// <summary>
-	virtual void init() = 0;
+	virtual void init(std::string textures) = 0;
 	
 	/// <summary> Renders the next frame. </summary>
 	virtual void update() = 0;
@@ -50,12 +47,14 @@ public:
 	/// <param name="newCamera"> The camera it should render at. </param>
 	virtual void setCamera(Camera* newCamera) = 0;
 
+	virtual Camera*  getCamera() = 0;
+
 	/// <summary> Creates a new model.</summary>
 	///
 	/// <returns> null if it fails, else a Model*.</returns>
 	virtual Model* newModel(float* locations, float* UVs, int numVerts, int numElems) = 0;
 
-
+	
 
 	virtual ~Renderer() { }
 
