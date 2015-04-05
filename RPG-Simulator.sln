@@ -322,7 +322,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AddClass", "AddClass\AddCla
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenGLRenderer", "OpenGLRenderer\OpenGLRenderer.vcxproj", "{2EFF286E-D346-4D83-9078-7124D559EB88}"
 EndProject
+<<<<<<< HEAD
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lodepng", "Lodepng\Lodepng.vcxproj", "{F6469AF9-C1D1-4090-BE15-1EA000DD8102}"
+=======
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DefaultWorld", "DefaultWorld\DefaultWorld.vcxproj", "{D21476BC-F2FE-421E-8542-E29C13BA5451}"
+>>>>>>> origin/master
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -346,10 +350,17 @@ Global
 		{2EFF286E-D346-4D83-9078-7124D559EB88}.Debug|Win32.Build.0 = Debug|Win32
 		{2EFF286E-D346-4D83-9078-7124D559EB88}.Release|Win32.ActiveCfg = Release|Win32
 		{2EFF286E-D346-4D83-9078-7124D559EB88}.Release|Win32.Build.0 = Release|Win32
+<<<<<<< HEAD
 		{F6469AF9-C1D1-4090-BE15-1EA000DD8102}.Debug|Win32.ActiveCfg = Debug|Win32
 		{F6469AF9-C1D1-4090-BE15-1EA000DD8102}.Debug|Win32.Build.0 = Debug|Win32
 		{F6469AF9-C1D1-4090-BE15-1EA000DD8102}.Release|Win32.ActiveCfg = Release|Win32
 		{F6469AF9-C1D1-4090-BE15-1EA000DD8102}.Release|Win32.Build.0 = Release|Win32
+=======
+		{D21476BC-F2FE-421E-8542-E29C13BA5451}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D21476BC-F2FE-421E-8542-E29C13BA5451}.Debug|Win32.Build.0 = Debug|Win32
+		{D21476BC-F2FE-421E-8542-E29C13BA5451}.Release|Win32.ActiveCfg = Release|Win32
+		{D21476BC-F2FE-421E-8542-E29C13BA5451}.Release|Win32.Build.0 = Release|Win32
+>>>>>>> origin/master
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

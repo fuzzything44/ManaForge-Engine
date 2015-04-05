@@ -90,5 +90,8 @@
     <ClInclude Include="public\ActorComponent.h">
       <Filter>Public</Filter>
     </ClInclude>
+    <ClInclude Include="public\WorldModule.h">
+      <Filter>Public</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
