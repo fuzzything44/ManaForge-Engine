@@ -5,6 +5,8 @@
 #include "Helper.h"
 #include <fstream>
 #include <sstream>
+#include <map>
+#include <Color.h>
 
 using namespace std;
 
@@ -123,10 +125,8 @@ public:
 					currentWorld[x][y] = new Chunk(ivec2(x, y) );
 				}
 			}
-
-
-
-
+			// Create color to image map.
+			map<Color, string> imageMap;
 			do
 			{
 				// Read next line.
@@ -134,10 +134,21 @@ public:
 				// Make sure it is not a comment or ending line.
 				if (onLine[0] != '#' || onLine != "END") {
 					line = split<'_'>(onLine);
-
+					
+					// Generate and add color to the map.
+					Color addColor(reinterpret_cast<uint8*>(&line[0]));
+					imageMap[addColor] = line[1];
 				}
 			} while (onLine != "END");
+
+
+
 			// Finish loading world.
+			// PNG loading and actor loading left.
+
+
+
+
 		}
 
 		ENG_LOG("World Loaded!");

@@ -93,5 +93,8 @@
     <ClInclude Include="public\WorldModule.h">
       <Filter>Public</Filter>
     </ClInclude>
+    <ClInclude Include="public\Color.h">
+      <Filter>Public</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

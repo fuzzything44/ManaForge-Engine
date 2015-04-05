@@ -43,6 +43,11 @@ public:
 
 	static uvec2 ENGINE_API getChunkSize();
 
+	/// <summary> Constructor.</summary>
+	///
+	/// <param name="locationIn"> The location in.</param>
+	Chunk(ivec2 locationIn = ivec2(0, 0));
+
 protected:
 
 	
@@ -84,10 +89,6 @@ protected:
 	/// <summary> Size of the chunks.</summary>
 	static uvec2 chunksSize;
 
-	/// <summary> Constructor.</summary>
-	///
-	/// <param name="locationIn"> The location in.</param>
-	Chunk(ivec2 locationIn = ivec2(0, 0));
 
 	/// <summary> The tex uniform handle chunk.</summary>
 	static GLint texUniformHandleChunk;

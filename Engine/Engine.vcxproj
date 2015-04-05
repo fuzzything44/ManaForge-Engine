@@ -113,6 +113,7 @@
     <ClInclude Include="Public\Camera.h" />
     <ClInclude Include="public\Chunk.h" />
     <ClInclude Include="public\CLHandler.h" />
+    <ClInclude Include="public\Color.h" />
     <ClInclude Include="Public\ENGException.h" />
     <ClInclude Include="Public\Engine.h" />
     <ClInclude Include="public\Helper.h" />
