@@ -3,6 +3,7 @@
 #include "OpenGLRendererConfig.h"
 #include <Renderer.h>
 #include <ModuleManager.h>
+#include <Actor.h>
 
 class OpenGLRenderer : public Renderer
 { 
@@ -22,11 +23,17 @@ public:
 			UVs(UVs),
 			numVerts(numVerts),
 			numElems(numElems){ }
+
+
+
 	private:
 		float* locations;
 		float* UVs;
 		int numVerts;
 		int numElems;
+
+		Actor* parent;
+
 	};
 
 	virtual Model* newModel(float* locations, float* UVs, int numVerts, int numElems) override;

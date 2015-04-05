@@ -101,6 +101,7 @@
     <ClCompile Include="Private\Module.cpp" />
     <ClCompile Include="Private\ModuleManager.cpp" />
     <ClCompile Include="private\TextureLibrary.cpp" />
+    <ClCompile Include="Private\Transform.cpp" />
     <ClCompile Include="Private\Window.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -120,6 +121,7 @@
     <ClInclude Include="Public\ModuleManager.h" />
     <ClInclude Include="Public\Renderer.h" />
     <ClInclude Include="public\TextureLibrary.h" />
+    <ClInclude Include="Public\Transform.h" />
     <ClInclude Include="Public\Window.h" />
     <ClInclude Include="stdafx.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
