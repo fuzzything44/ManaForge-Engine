@@ -3,13 +3,13 @@
 
 
 // set inital value for static variables
-Chunk*** Chunk::chunks = NULL;
-Chunk* Chunk::persistentChunk = NULL;
+Chunk*** Chunk::chunks = nullptr;
+Chunk* Chunk::persistentChunk = nullptr;
 uvec2 Chunk::chunksSize = uvec2(0, 0);
 GLint Chunk::characterLocUniformHandleChunk = -1;
 GLint Chunk::texUniformHandleChunk = -1;
 GLuint Chunk::program = 0;
-mat4* Chunk::viewMat = NULL;
+mat4* Chunk::viewMat = nullptr;
 
 
 
@@ -22,12 +22,12 @@ GLvoid Chunk::initChunks(GLuint programIn, mat4* viewMatIn, const uvec2& chunksS
 	ENG_LOG("\nInitalizing Chunks:")
 
 	// allocate the pointer
-	chunks = (Chunk***)malloc(sizeof(Chunk**) * chunksSize.y);
+	chunks = static_cast<Chunk***>(malloc(sizeof(Chunk**) * chunksSize.y));
 
 	for (GLuint x = 0; x < chunksSize.x; x++)
 	{
 		// allocate the column -- you can read about malloc: http://www.cplusplus.com/reference/cstdlib/malloc/
-		chunks[x] = (Chunk**)malloc(sizeof(Chunk*) * chunksSize.y);
+		chunks[x] = static_cast<Chunk**>(malloc(sizeof(Chunk*) * chunksSize.y));
 		for (GLuint y = 0; y < chunksSize.y; y++)
 		{
 			ENG_LOG("\nInit Chunk (" << x << ", " << y << ")");
@@ -52,7 +52,7 @@ Chunk::Chunk(vec2 locationIn)
 	// the persistent chunk doesn't get anything
 	if (this != persistentChunk)
 	{
-		srand((unsigned int)this);
+		srand(reinterpret_cast<unsigned int>(this));
 
 		// init the generator -- will remove with loading
 		std::mersenne_twister_engine < std::uint_fast32_t, 32, 624, 397, 31,
@@ -190,7 +190,7 @@ GLvoid Chunk::drawChunk(std::vector<ActorData>& data)
 			GL_FLOAT, // they are floats
 			GL_FALSE, // not normalized (look up vector normalization)
 			sizeof(GLfloat) * 2, // the next element is 2 floats later
-			0 // dont copy -- use the GL_ARRAY_BUFFER instead
+			nullptr // dont copy -- use the GL_ARRAY_BUFFER instead
 			);
 
 		// bind UV data to the element attrib array so it shows up in our sahders -- the location is  (look in shader)
@@ -202,7 +202,7 @@ GLvoid Chunk::drawChunk(std::vector<ActorData>& data)
 			GL_FLOAT, // they are floats
 			GL_FALSE, // not normalized (look up vector normalization)
 			sizeof(GLfloat) * 2, // the next element is 2 floats later
-			0 // use the GL_ARRAY_BUFFER instead of copying on the spot
+			nullptr // use the GL_ARRAY_BUFFER instead of copying on the spot
 			);
 
 		// bind the element buffer so it is used to make our draw call
@@ -213,7 +213,7 @@ GLvoid Chunk::drawChunk(std::vector<ActorData>& data)
 			GL_TRIANGLES, // they are trianges
 			elementCount, // these many verticies
 			GL_UNSIGNED_INT, // the data is GLuint - unsigned int
-			0 // use the buffer instead of raw data
+			nullptr // use the buffer instead of raw data
 			);
 
 		glDisableVertexAttribArray(0);
@@ -238,7 +238,7 @@ void Chunk::draw(Actor* character, float deltaTime)
 	}
 
 	// return if there is no persistent chunk
-	if (persistentChunk == NULL)
+	if (persistentChunk == nullptr)
 	{
 		ENG_LOG("There is no persistent chunk\n");
 
@@ -251,7 +251,7 @@ void Chunk::draw(Actor* character, float deltaTime)
 	// always draw the persistent chunk
 	persistentChunk->drawChunk(data);
 
-	uvec2 chunkoffset(character->getLocation() / vec2((GLfloat)CHUNK_WIDTH));
+	uvec2 chunkoffset(character->getLocation() / vec2(static_cast<GLfloat>(CHUNK_WIDTH)));
 
 	ivec2 chunksInEachDir = glm::uvec2( 1 / (*viewMat)[0][0], 1 / (*viewMat)[1][1]);
 

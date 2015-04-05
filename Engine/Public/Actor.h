@@ -28,8 +28,8 @@ struct ActorData
 	/// <param name="UVsIn">		 [in,out] (Optional) the vs in.</param>
 	/// <param name="actorPtrIn">    [in,out] (Optional) If non-null, the actor pointer in.</param>
 	/// <param name="collidesIn">    true to collides in.</param>
-	ActorData(vec2 locationIn = vec2(0.f, 0.f), vec2 sizeIn = vec2(0.f, 0.f), vec2 velocityIn = vec2(0.f, 0.f),
-		float rotationIn = 0.f, int renderOrderIn = 0, UVData& UVsIn = UVData(), Actor* actorPtrIn = NULL, bool collidesIn = false)
+	explicit ActorData(vec2 locationIn = vec2(0.f, 0.f), vec2 sizeIn = vec2(0.f, 0.f), vec2 velocityIn = vec2(0.f, 0.f),
+		float rotationIn = 0.f, int renderOrderIn = 0, UVData UVsIn = UVData(), Actor* actorPtrIn = nullptr, bool collidesIn = false)
 		: location(locationIn),
 		size(sizeIn),
 		velocity(velocityIn),
@@ -153,6 +153,8 @@ public:
 			return new Actor(newDat, Chunk::chunks[(GLuint)floorf(locationIn.x / (GLfloat)CHUNK_WIDTH)][(GLuint)floorf(locationIn.y / (GLfloat)CHUNK_WIDTH)]);
 		}
 	}
+
+	virtual ~Actor();
 
 protected:
 

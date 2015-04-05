@@ -1,7 +1,9 @@
 #pragma once
 #include "Engine.h"
+#include "ENGException.h"
+
 #include <fstream>
-#include <sstream>
+#include <iostream>
 
 /// <summary> A logging.</summary>
 class logging
@@ -17,4 +19,7 @@ private:
 };
 
 /// <summary> Loggs the given input to the logfile and to the console.</summary>
-#define ENG_LOG(ans)logging::logfile << ans;std::cout << ans;
+#define ENG_LOG(ans)logging::logfile << ans; std::cout << ans;
+
+/// <summary> Called upon a fatal error.</summary>
+#define FATAL_ERR(message, err) throw ENGException("message", err, __FILE__, __LINE__)

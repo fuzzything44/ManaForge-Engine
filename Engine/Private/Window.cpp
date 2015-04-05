@@ -126,6 +126,7 @@ void Window::run()
 	catch (std::exception& e)
 	{
 		ENG_LOG(e.what());
+		
 	}
 
 	ENG_LOG("Init finished in " << glfwGetTime() - start << "s");
@@ -145,7 +146,7 @@ void Window::run()
 			LastTick = CurrentTick;
 
 
-			input(window, delta);
+			input(delta);
 
 
 			draw(delta);
@@ -175,6 +176,7 @@ void Window::run()
 	
 }
 
+
 GLint Window::getKey(int key)
 {
 	return glfwGetKey(window, key);
@@ -194,7 +196,12 @@ void Window::setRenderMode(RenderMode newMode)
 	renderMode = newMode;
 }
 
-uvec2 Window::getSize()
+RenderMode Window::getRenderMode()
+{
+	return renderMode;
+}
+
+uvec2 Window::getSize() const
 {
 	ivec2 size;
 
@@ -203,7 +210,7 @@ uvec2 Window::getSize()
 	return uvec2(size);
 }
 
-GLvoid Window::focus(GLFWwindow* window, int in)
+GLvoid Window::focus(int in)
 {
 	hasFocus = in == 0 ? false : true;
 }

@@ -27,6 +27,11 @@ public:
 	/// <param name="newMode"> The new mode.</param>
 	ENGINE_API void setRenderMode(RenderMode newMode);
 
+	/// <summary> Gets render mode.</summary>
+	///
+	/// <returns> The render mode.</returns>
+	ENGINE_API RenderMode getRenderMode();
+
 	/// <summary> Windows.</summary>
 	///
 	/// <param name="title"> The title.</param>
@@ -39,60 +44,86 @@ public:
 	/// <summary> Runs the window. Consumes the thread.</summary>
 	ENGINE_API void run();
 
-	uvec2 ENGINE_API getSize();
+	/// <summary> Gets the size.</summary>
+	///
+	/// <returns> The size.</returns>
+	uvec2 ENGINE_API getSize() const;
 
 	ENGINE_API GLint getKey(int key);
 	ENGINE_API vec2 getCursorLoc();
 
 protected:
 
+	/// <summary> The title.</summary>
 	std::string title;
+	/// <summary> The mode.</summary>
 	WindowMode mode;
 
+	/// <summary> Updates the window parameters.</summary>
 	ENGINE_API void updateWindowParameters();
 	 
+	/// <summary> true if this object has focus.</summary>
 	bool hasFocus;
-	 
+	
+	/// <summary> The window.</summary>
 	GLFWwindow* window;
 
+	/// <summary> The render mode.</summary>
+	RenderMode renderMode;
 
+
+	/// <summary> Called upon initalization. Useful for creating graphics buffers and onscreen objects.</summary>
 	ENGINE_API virtual void init() = 0;
 
+	/// <summary> Called when the window is scrolled.</summary>
+	///
+	/// <param name="x"> The amount in x scroll.</param>
+	/// <param name="y"> The y coordinate.</param>
+	ENGINE_API virtual void scroll(GLfloat x, GLfloat y) = 0;
 
-	ENGINE_API virtual void scroll(GLFWwindow* window, double x, double y) = 0;
-
-
+	/// <summary> Called every frame after input.</summary>
+	///
+	/// <param name="deltaTime"> The delta time since last frame.</param>
 	ENGINE_API virtual void draw(float deltaTime) = 0;
 
+	/// <summary> Called every frame before draw.</summary>
+	///
+	/// <param name="deltaTime"> The delta time since last frame.</param>
+	ENGINE_API virtual void input(float deltaTime) = 0;
 
-	ENGINE_API virtual void input(GLFWwindow* window, float deltaTime) = 0;
+	/// <summary> Called when the window is destroyed.</summary>
+	ENGINE_API virtual void exit() = 0;
 
+	/// <summary> Focus.</summary>
+	///
+	/// <param name="focused"> The focused.</param>
+	ENGINE_API virtual void focus(GLint focused) = 0;
 
-	ENGINE_API virtual GLint exit() = 0;
-
-	ENGINE_API virtual GLvoid focus(GLFWwindow* window, int focused) = 0;
-	 
+	/// <summary> All windows sorted by the GLFWwindow pointer.</summary>
 	ENGINE_API static std::map<GLFWwindow*, Window*> windows;
 
-
+	/// <summary> Callback, called on scroll.</summary>
+	///
+	/// <param name="window"> [in,out] If non-null, the window.</param>
+	/// <param name="x">	  The x coordinate.</param>
+	/// <param name="y">	  The y coordinate.</param>
 	ENGINE_API static void scrollCallback(GLFWwindow* window, double x, double y)
 	{
 		if (Window* winObj = windows[window])
 		{
-			winObj->scroll(window, x, y);
+			winObj->scroll((GLfloat)x, (GLfloat)y);
 		}
 	}
 
-	RenderMode renderMode;
-
-
-
-
+	/// <summary> Callback, called when the window receives focus.</summary>
+	///
+	/// <param name="window">  [in,out] If non-null, the window.</param>
+	/// <param name="focused"> The focused.</param>
 	ENGINE_API static void focusCallback(GLFWwindow* window, int focused)
 	{
 		if (Window* winObj = windows[window])
 		{
-			winObj->focus(window, focused);
+			winObj->focus(focused);
 		}
 	}
 };

@@ -95,6 +95,7 @@
     <ClCompile Include="private\Actor.cpp" />
     <ClCompile Include="private\Chunk.cpp" />
     <ClCompile Include="private\CLHandler.cpp" />
+    <ClCompile Include="private\ENGException.cpp" />
     <ClCompile Include="private\Helper.cpp" />
     <ClCompile Include="Private\Logging.cpp" />
     <ClCompile Include="Private\Module.cpp" />
@@ -111,6 +112,7 @@
     <ClInclude Include="public\Actor.h" />
     <ClInclude Include="public\Chunk.h" />
     <ClInclude Include="public\CLHandler.h" />
+    <ClInclude Include="Public\ENGException.h" />
     <ClInclude Include="Public\Engine.h" />
     <ClInclude Include="public\Helper.h" />
     <ClInclude Include="Public\Logging.h" />

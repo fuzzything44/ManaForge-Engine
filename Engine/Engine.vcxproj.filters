@@ -39,6 +39,9 @@
     <ClCompile Include="Private\Module.cpp">
       <Filter>Private</Filter>
     </ClCompile>
+    <ClCompile Include="private\ENGException.cpp">
+      <Filter>Private</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="public\Actor.h">
@@ -76,6 +79,9 @@
       <Filter>Public</Filter>
     </ClInclude>
     <ClInclude Include="Public\Module.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\ENGException.h">
       <Filter>Public</Filter>
     </ClInclude>
   </ItemGroup>

@@ -2,10 +2,10 @@
 #include "CLHandler.h"
 
 // init static variables
-cl::Context* CLHandler::context = NULL;
-cl::Platform CLHandler::platform = NULL;
-cl::CommandQueue* CLHandler::queue = NULL;
-cl::Program* CLHandler::updateProgram = NULL;
+cl::Context* CLHandler::context = nullptr;
+cl::Platform CLHandler::platform = nullptr;
+cl::CommandQueue* CLHandler::queue = nullptr;
+cl::Program* CLHandler::updateProgram = nullptr;
 cl::Kernel CLHandler::collideKern = cl::Kernel();
 cl::Kernel CLHandler::updateKern = cl::Kernel();
 cl::Buffer CLHandler::actors = cl::Buffer();
@@ -20,7 +20,7 @@ cl_int CLHandler::updateCL(float deltaTime, std::vector<ActorData>& data)
 	check(context);
 	check(updateProgram);
 
-	std::vector<cl::Memory>* objects = new std::vector<cl::Memory>();
+	auto objects = new std::vector<cl::Memory>();
 	objects->push_back(posCLBuffer);
 	objects->push_back(UVCLBuffer);
 	objects->push_back(elemCLBuffer);
@@ -97,9 +97,9 @@ cl_int CLHandler::initCL(GLuint posBuffer, GLuint UVBuffer, GLuint elemBuffer)
 	// define properies for the context
 	cl_context_properties context_properties[] =
 	{
-		CL_GL_CONTEXT_KHR, (cl_context_properties)wglGetCurrentContext(), // use the openGL context so we can share buffers
-		CL_WGL_HDC_KHR, (cl_context_properties)wglGetCurrentDC(), // use the openGL DC
-		CL_CONTEXT_PLATFORM, (cl_context_properties)platform(), // use the platform that we decided was fastest
+		CL_GL_CONTEXT_KHR, reinterpret_cast<cl_context_properties>(wglGetCurrentContext()), // use the openGL context so we can share buffers
+		CL_WGL_HDC_KHR, reinterpret_cast<cl_context_properties>(wglGetCurrentDC()),			// use the openGL DC
+		CL_CONTEXT_PLATFORM, reinterpret_cast<cl_context_properties>(platform()),			// use the platform that we decided was fastest
 		NULL // add a null at end so we don't get null ptr exception.
 	};
 
@@ -126,7 +126,7 @@ cl_int CLHandler::initCL(GLuint posBuffer, GLuint UVBuffer, GLuint elemBuffer)
 
 	// create the context --  store error in err
 	cl_int err = CL_SUCCESS;
-	context = new cl::Context(devices, context_properties, NULL, NULL, &err);
+	context = new cl::Context(devices, context_properties, nullptr, nullptr, &err);
 
 	// make sure the context was created successfully
 	errChkCL(err);
@@ -169,7 +169,7 @@ cl_int CLHandler::initCL(GLuint posBuffer, GLuint UVBuffer, GLuint elemBuffer)
 	errChkCL(err);
 
 	// init the buffer
-	actors = cl::Buffer(*context, (cl_mem_flags)CL_MEM_READ_WRITE, sizeof(ActorData) * MAX_ACTORS, (void*)0, &err);
+	actors = cl::Buffer(*context, static_cast<cl_mem_flags>(CL_MEM_READ_WRITE), sizeof(ActorData) * MAX_ACTORS, nullptr, &err);
 		
 	// do error checking
 	errChkCL(err);
@@ -211,7 +211,7 @@ cl::Platform CLHandler::getBestPlatform()
 
 	cl::Platform::get(&platforms);
 	
-	cl_int fastestNum = 0;
+	cl_int fastestPlatform = 0;
 
 	for (auto& p : platforms)
 	{
@@ -222,9 +222,9 @@ cl::Platform CLHandler::getBestPlatform()
 			cl_int speed;
 			d.getInfo(CL_DEVICE_MAX_COMPUTE_UNITS, &speed);
 
-			if (speed > fastestNum)
+			if (speed > fastestPlatform)
 			{
-				fastestNum = speed;
+				fastestPlatform = speed;
 				ret = p;
 			}
 		}
@@ -244,7 +244,7 @@ cl_int CLHandler::loadCLProgram(const GLchar* filepath, cl::Program*& program)
 	// load kernel
 	ENG_LOG("Compiling Program " << filepath << std::endl);
 
-	std::string source = loadFileToStr(filepath);
+	auto source = loadFileToStr(filepath);
 
 	program = new cl::Program();
 	*program = cl::Program(*context, source, false, &err);
@@ -255,6 +255,7 @@ cl_int CLHandler::loadCLProgram(const GLchar* filepath, cl::Program*& program)
 
 	if (err != CL_SUCCESS)
 	{
+		//TODO: Fix
 		ENG_LOG(" Error building: " << program->getBuildInfo<CL_PROGRAM_BUILD_LOG>(devices[0]) << "\t" << err << "\n");
 		return err;
 	}

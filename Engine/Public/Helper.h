@@ -1,6 +1,5 @@
 #pragma once
 #include <Engine.h>
-#include <Logging.h>
 
 // OpenGL include
 #include <GLTools/glew.h>
@@ -10,10 +9,6 @@
 
 
 // standard library includes
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <vector>
 #include <ios>
 
 #define FOURCC_DXT1 0x31545844 // Equivalent to "DXT1" in ASCII
@@ -90,11 +85,11 @@ ENGINE_API std::ostream& operator<<(std::ostream& os, const mat4& mat);
 /// <summary> A macro that defines error check cl.</summary>
 ///
 /// <param name="err"> The error.</param>
-#define errChkCL(err) if(err != CL_SUCCESS){std::stringstream ss; ss << "Error: " << clGetErrorString(err) << "(" << err << ") in file " << __FILE__ << "(" << __LINE__ << ")" << std::endl; throw std::runtime_error(ss.str()); }
+#define errChkCL(err) if(err != CL_SUCCESS){throw ENGException("OpenCL error.", err, __FILE__, __LINE__);}
 
 
 /// <summary> Checks a pointer, and throws an exception if it is null.</summary>
-#define check(ptr) if(!ptr){ std::stringstream ss; ss << "Null Pointer: " << #ptr << " ("<< __FILE__ << " line: " << __LINE__ << ")\n"; throw std::runtime_error(ss.str() ); };
+#define check(ptr) if(!ptr){ throw ENGException(std::string("Null pointer exception caught: ") + std::string(#ptr), -3, __FILE__, __LINE__);};
 
 
 #else

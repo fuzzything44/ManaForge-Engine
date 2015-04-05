@@ -110,7 +110,7 @@ GLint main()
 
 	logging::init();
 
-	MainWindow window = MainWindow("RPG-Simulator", WindowMode::WINDOWED, uvec2(800, 600));
+	auto window = MainWindow("RPG-Simulator", WindowMode::WINDOWED, uvec2(800, 600));
 
 	try{
 

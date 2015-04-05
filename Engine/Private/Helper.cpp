@@ -97,7 +97,7 @@ GLuint LoadShaders(const char * vertex_file_path, const char * fragment_file_pat
 	glGetProgramiv(ProgramID, GL_INFO_LOG_LENGTH, &InfoLogLength);
 	if (InfoLogLength > 0){
 		std::vector<char> ProgramErrorMessage(InfoLogLength + 1);
-		glGetProgramInfoLog(ProgramID, InfoLogLength, NULL, &ProgramErrorMessage[0]);
+		glGetProgramInfoLog(ProgramID, InfoLogLength, nullptr, &ProgramErrorMessage[0]);
 		ENG_LOG("\n" << &ProgramErrorMessage[0]);
 	}
 
@@ -119,7 +119,7 @@ GLuint loadDDS(const char* imagepath)
 
 	/* try to open the file */
 	fopen_s(&fp, imagepath, "rb");
-	if (fp == NULL)
+	if (fp == nullptr)
 		return 0;
 
 	/* verify the type of file */
@@ -133,22 +133,21 @@ GLuint loadDDS(const char* imagepath)
 	/* get the surface desc */
 	fread(&header, 124, 1, fp);
 
-	unsigned int height = *(unsigned int*)&(header[8]);
-	unsigned int width = *(unsigned int*)&(header[12]);
-	unsigned int linearSize = *(unsigned int*)&(header[16]);
-	unsigned int mipMapCount = *(unsigned int*)&(header[24]);
-	unsigned int fourCC = *(unsigned int*)&(header[80]);
+	auto height = reinterpret_cast<unsigned int>(&(header[8]));
+	auto width = reinterpret_cast<unsigned int>(&(header[12]));
+	auto linearSize = reinterpret_cast<unsigned int>(&(header[16]));
+	auto mipMapCount = reinterpret_cast<unsigned int>(&(header[24]));
+	auto fourCC = reinterpret_cast<unsigned int>(&(header[80]));
 
 	unsigned char * buffer;
 	unsigned int bufsize;
 	/* how big is it going to be including all mipmaps? */
 	bufsize = mipMapCount > 1 ? linearSize * 2 : linearSize;
-	buffer = (unsigned char*)malloc(bufsize * sizeof(unsigned char));
+	buffer = static_cast<unsigned char*>(malloc(bufsize * sizeof(unsigned char)));
 	fread(buffer, 1, bufsize, fp);
 	/* close the file pointer */
 	fclose(fp);
 
-	unsigned int components = (fourCC == FOURCC_DXT1) ? 3 : 4;
 	unsigned int format;
 	switch (fourCC)
 	{

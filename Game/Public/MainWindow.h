@@ -38,10 +38,10 @@ public:
 
 private:
 	virtual void init() override;
-	virtual void scroll(GLFWwindow* window, double x, double y) override;
+	virtual void scroll(GLfloat x, GLfloat y) override;
 	virtual void draw(GLfloat deltaTime) override;
-	virtual void input(GLFWwindow* window, GLfloat deltaTime) override;
-	virtual GLint exit() override;
-	virtual GLvoid focus(GLFWwindow* window, int focused) override;
-	virtual GLvoid resize(GLFWwindow* window, double x, double y);
+	virtual void input(GLfloat deltaTime) override;
+	virtual void exit() override;
+	virtual void focus(int focused) override;
+	virtual void resize(double x, double y);
 };
