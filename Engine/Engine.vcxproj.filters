@@ -42,9 +42,6 @@
     <ClCompile Include="private\ENGException.cpp">
       <Filter>Private</Filter>
     </ClCompile>
-    <ClCompile Include="Private\Transform.cpp">
-      <Filter>Private</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="public\Actor.h">

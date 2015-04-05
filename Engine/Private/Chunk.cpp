@@ -278,3 +278,8 @@ vec2 Chunk::getLocation()
 	// return a copy of the location variable
 	return location;
 }
+
+uvec2 Chunk::getChunkSize()
+{
+	return chunksSize;
+}

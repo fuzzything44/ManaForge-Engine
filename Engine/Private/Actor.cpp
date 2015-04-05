@@ -28,16 +28,18 @@ Actor::Actor(const ActorData& dataIn, Chunk* chunkIn)
 
 }
 
-GLint Actor::init(GLuint programIn, mat4* viewMatIn)
+void Actor::init(GLuint programIn, mat4* viewMatIn)
 {
 	program = programIn;
 
 	viewMat = viewMatIn;
 
 
-
 	// create a massive array of zeros for default value
 	float* empty = static_cast<float*>(malloc(sizeof(float) * 3 * 4 * MAX_ACTORS));
+
+	// make sure the pointer was created successfully
+	check(empty);
 
 	memset(empty, 0, sizeof(float) * 2 * 4 * 1000);
 
@@ -54,23 +56,30 @@ GLint Actor::init(GLuint programIn, mat4* viewMatIn)
 
 	glGenBuffers(1, &locBuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, locBuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 3 * 4 * MAX_ACTORS, static_cast<void*>(empty), GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 3 * 4 * MAX_ACTORS, empty, GL_DYNAMIC_DRAW);
 
 	glGenBuffers(1, &UVBuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, UVBuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * 4 * MAX_ACTORS, static_cast<void*>(empty), GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * 4 * MAX_ACTORS, empty, GL_DYNAMIC_DRAW);
 
 	glGenBuffers(1, &elemBuffer);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elemBuffer);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * 6 * MAX_ACTORS, static_cast<void*>(empty), GL_DYNAMIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * 6 * MAX_ACTORS, empty, GL_DYNAMIC_DRAW);
 
-
+	// free the zero buffer
 	free(empty);
 
-	CLHandler::initCL(locBuffer, UVBuffer, elemBuffer);
+	try
+	{
+
+		CLHandler::initCL(locBuffer, UVBuffer, elemBuffer);
 
 
-	return EXIT_SUCCESS;
+	}
+	catch (ENGException& e)
+	{
+		ENG_LOG(e.what());
+	}
 }
 
 

@@ -42,6 +42,8 @@ public:
 	/// <returns> The location.</returns>
 	vec2 ENGINE_API getLocation();
 
+	static uvec2 ENGINE_API getChunkSize();
+
 protected:
 
 	

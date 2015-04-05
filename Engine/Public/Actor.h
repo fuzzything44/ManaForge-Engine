@@ -85,7 +85,7 @@ public:
 	/// <param name="viewMatIn"> [in,out] If non-null, the view matrix in.</param>
 	///
 	/// <returns>  the error code</returns>
-	static ENGINE_API GLint init(GLuint programIn, mat4* viewMatIn);
+	static ENGINE_API void init(GLuint programIn, mat4* viewMatIn);
 
 	/// <summary> Gets the location.</summary>
 	///
@@ -138,7 +138,7 @@ public:
 	/// <param name="collides">		 true to collides.</param>
 	/// <param name="UVs">			 The vs.</param>
 	/// <param name="isPersisitent"> true if this object is persisitent.</param>
-	template <typename T> static Actor* addActor(vec2 locationIn, vec2 sizeIn, vec2 velocityIn, float rotationIn, int renderOrderIn,
+	template <typename T> static Actor* addActor(vec2 locationIn, vec2 sizeIn, vec2 velocityIn, float rotationIn, uint8 renderOrderIn,
 		bool collides, UVData UVs, bool isPersisitent)
 	{
 		ActorData newDat(locationIn, sizeIn, velocityIn, rotationIn, renderOrderIn, UVs, NULL, collides);
@@ -148,11 +148,21 @@ public:
 		{
 
 			return new Actor(newDat, Chunk::persistentChunk);
+		}
+		ivec2 id = uvec2(static_cast<uint16>(floorf(locationIn.x / static_cast<float>(CHUNK_WIDTH))), 
+			static_cast<GLuint>(floorf(locationIn.y / static_cast<float>(CHUNK_WIDTH))));
 
+		// check if the chunk exists
+		if (0 <= id.x && id.x < static_cast<int16>(Chunk::getChunkSize().x), 0 <= id.y && id.y < static_cast<int16>(Chunk::getChunkSize().y))
+		{
+
+
+			return new Actor(newDat, Chunk::chunks[id.x][id.y]);
 		}
 		else
 		{
-			return new Actor(newDat, Chunk::chunks[(GLuint)floorf(locationIn.x / (GLfloat)CHUNK_WIDTH)][(GLuint)floorf(locationIn.y / (GLfloat)CHUNK_WIDTH)]);
+			ENG_LOG("\nChunk couldn't be located at location defined. Adding to persistent chunk.");
+			return new Actor(newDat, Chunk::persistentChunk);
 		}
 	}
 

@@ -3,8 +3,6 @@
 
 struct Transform
 {
-public:
-
 	explicit Transform(vec2 location = vec2(0.f), float rotation = 0.f, vec2 scale = vec2(0.f))
 		: location(location),
 		rotation(rotation),

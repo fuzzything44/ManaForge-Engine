@@ -1,3 +1,4 @@
+
 // redefinition of the one in TextureLibrary.h so the data is aligned correctly
 struct UVData
 {

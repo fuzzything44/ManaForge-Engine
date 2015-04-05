@@ -101,7 +101,6 @@
     <ClCompile Include="Private\Module.cpp" />
     <ClCompile Include="Private\ModuleManager.cpp" />
     <ClCompile Include="private\TextureLibrary.cpp" />
-    <ClCompile Include="Private\Transform.cpp" />
     <ClCompile Include="Private\Window.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
