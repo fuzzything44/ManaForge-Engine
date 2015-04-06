@@ -4,7 +4,7 @@
 #include "Actor.h"
 #include "Camera.h"
 
-class Renderer 
+class ENGINE_API Renderer 
 {
 public:
 

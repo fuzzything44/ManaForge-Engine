@@ -46,9 +46,16 @@ bin/Editor/Debug/
 bin/Debug/Editor.*
 bin/Release/Engine.*
 bin/Release/Game.*
+bin/Debug/OpenGLRenderer.*
+bin/Release/OpenGLRenderer.*
+bin/Release/DefualtWorld.*
+bin/Debug/DefaultWorld.*
+bin/Release/lodepng.*
+bin/Debug/lodepng.*
 
 
-
+Game/Game_*/*.*
+Game/Game_*/*/*.*
 
 ipch/
 
@@ -61,3 +68,5 @@ Resource/log.txt
 Game/Debug/Game.pch.codeanalysis
 log.txt
 *.cfg
+*.xdc
+

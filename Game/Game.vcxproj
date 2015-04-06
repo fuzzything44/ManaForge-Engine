@@ -50,7 +50,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(SolutionDir)/library/;$(TargetDir);$(ProjectDir)</LibraryPath>
+    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(SolutionDir)/library/;$(TargetDir);$(SolutionDir)bin\$(Configuration)</LibraryPath>
     <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
     <IncludePath>$(SolutionDir)/Engine/Public;$(SolutionDir)/include;$(IncludePath);$(ProjectDir)/Public;$(ProjectDir)</IncludePath>
     <IntDir>$(ProjectDir)\$(Configuration)\</IntDir>

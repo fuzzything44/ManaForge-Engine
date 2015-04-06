@@ -4,13 +4,13 @@
 
 #include <stdexcept>
 
-#if WIN32 || _WIN32
+#ifdef _WIN32
 	#include <Windows.h>
 #else
 	#error "OOPS -- win only pls"
 #endif
 
-#if WIN32 || _WIN32
+#ifdef _WIN32
 
 
 class SharedLibrary

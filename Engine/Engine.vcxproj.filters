@@ -39,10 +39,10 @@
     <ClCompile Include="private\ENGException.cpp">
       <Filter>Private</Filter>
     </ClCompile>
-    <ClCompile Include="private\ActorComponent.cpp">
+    <ClCompile Include="Private\Component.cpp">
       <Filter>Private</Filter>
     </ClCompile>
-    <ClCompile Include="Private\SceneComponent.cpp">
+    <ClCompile Include="private\Camera.cpp">
       <Filter>Private</Filter>
     </ClCompile>
   </ItemGroup>
@@ -87,19 +87,16 @@
     <ClInclude Include="Public\Transform.h">
       <Filter>Public</Filter>
     </ClInclude>
-    <ClInclude Include="Public\Camera.h">
-      <Filter>Public</Filter>
-    </ClInclude>
-    <ClInclude Include="public\ActorComponent.h">
-      <Filter>Public</Filter>
-    </ClInclude>
     <ClInclude Include="public\WorldModule.h">
       <Filter>Public</Filter>
     </ClInclude>
     <ClInclude Include="public\Color.h">
       <Filter>Public</Filter>
     </ClInclude>
-    <ClInclude Include="Public\SceneComponent.h">
+    <ClInclude Include="Public\Component.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\Camera.h">
       <Filter>Public</Filter>
     </ClInclude>
   </ItemGroup>

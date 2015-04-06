@@ -81,7 +81,7 @@ public:
 			}
 		}
 		// Give images to renderer
-		manager->getRenderer()->loadTextures(imageNames);
+		manager->getRenderer()->
 
 		ENG_LOG("Images loaded!");
 		world.close();
