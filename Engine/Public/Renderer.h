@@ -38,7 +38,7 @@ public:
 	/// <summary> Initialises the Renderer.</summary>
 	///
 	/// <param name="textures"> The textures.</param>
-	virtual void init(std::string textures) = 0;
+	virtual void init() = 0;
 	
 	/// <summary> Renders the next frame. </summary>
 	virtual void update() = 0;

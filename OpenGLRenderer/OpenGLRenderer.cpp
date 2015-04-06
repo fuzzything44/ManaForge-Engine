@@ -40,7 +40,7 @@ public:
 	virtual Model* newModel(float* locations, float* UVs, int numVerts, int numElems) override;
 
 	/// <summary>
-	virtual void init(std::string textures) override;
+	virtual void init() override;
 
 	/// <summary> Renders the next frame. </summary>
 	virtual void update() override;
@@ -68,7 +68,7 @@ Renderer::Model* OpenGLRenderer::newModel(float* locations, float* UVs, int numV
 	return new OpenGLModel(locations, UVs, numVerts, numElems);
 }
 
-void OpenGLRenderer::init(std::string textures)
+void OpenGLRenderer::init()
 {
 	
 }
