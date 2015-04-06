@@ -7,7 +7,6 @@
 // OpenCL include
 #include <CL/cl.hpp>
 
-
 // standard library includes
 #include <ios>
 
@@ -81,18 +80,18 @@ ENGINE_API std::ostream& operator<<(std::ostream& os, const mat4& mat);
 
 // ONLY define these macros if we are debugging -- they could be slow
 #ifdef _DEBUG
+	
 
-/// <summary> A macro that defines error check cl.</summary>
-///
-/// <param name="err"> The error.</param>
-#define errChkCL(err) if(err != CL_SUCCESS){throw ENGException("OpenCL error.", err, __FILE__, __LINE__);}
+	/// <summary> A macro that defines error check cl.</summary>
+	///
+	/// <param name="err"> The error.</param>
+	#define errChkCL(err) if(err != CL_SUCCESS){throw ENGException("OpenCL error.", err, __FILE__, __LINE__);}
 
-
-/// <summary> Checks a pointer, and throws an exception if it is null.</summary>
-#define check(ptr) if(!ptr){ throw ENGException(std::string("Null pointer exception caught: ") + std::string(#ptr), -3, __FILE__, __LINE__);};
+	/// <summary> Checks a pointer, and throws an exception if it is null.</summary>
+	#define check(ptr) if(!ptr){ throw ENGException(std::string("Null pointer exception caught: ") + std::string(#ptr), -3, __FILE__, __LINE__);};
 
 
 #else
-#define errChkCL(err)
-#define check(ptr)
+	#define errChkCL(err)
+	#define check(ptr)
 #endif

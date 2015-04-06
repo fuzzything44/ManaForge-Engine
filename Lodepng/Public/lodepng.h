@@ -26,6 +26,12 @@ distribution.
 #ifndef LODEPNG_H
 #define LODEPNG_H
 
+#ifdef BUILD_LODEPNG
+#define LODEPNG_API __declspec(dllexport)
+#else
+#define LODEPNG_API __declspec(dllimport)
+#endif
+
 #include <string.h> /*for size_t*/
 
 #ifdef __cplusplus
@@ -199,10 +205,10 @@ namespace lodepng
 #ifdef LODEPNG_COMPILE_DECODER
 	/*Same as lodepng_decode_memory, but decodes to an std::vector. The colortype
 	is the format to output the pixels to. Default is RGBA 8-bit per channel.*/
-	unsigned decode(std::vector<unsigned char>& out, unsigned& w, unsigned& h,
+	unsigned LODEPNG_API decode(std::vector<unsigned char>& out, unsigned& w, unsigned& h,
 		const unsigned char* in, size_t insize,
 		LodePNGColorType colortype = LCT_RGBA, unsigned bitdepth = 8);
-	unsigned decode(std::vector<unsigned char>& out, unsigned& w, unsigned& h,
+	unsigned LODEPNG_API decode(std::vector<unsigned char>& out, unsigned& w, unsigned& h,
 		const std::vector<unsigned char>& in,
 		LodePNGColorType colortype = LCT_RGBA, unsigned bitdepth = 8);
 #ifdef LODEPNG_COMPILE_DISK
@@ -210,7 +216,7 @@ namespace lodepng
 	Converts PNG file from disk to raw pixel data in memory.
 	Same as the other decode functions, but instead takes a filename as input.
 	*/
-	unsigned decode(std::vector<unsigned char>& out, unsigned& w, unsigned& h,
+	unsigned LODEPNG_API decode(std::vector<unsigned char>& out, unsigned& w, unsigned& h,
 		const std::string& filename,
 		LodePNGColorType colortype = LCT_RGBA, unsigned bitdepth = 8);
 #endif /* LODEPNG_COMPILE_DISK */
@@ -219,10 +225,10 @@ namespace lodepng
 #ifdef LODEPNG_COMPILE_ENCODER
 	/*Same as lodepng_encode_memory, but encodes to an std::vector. colortype
 	is that of the raw input data. The output PNG color type will be auto chosen.*/
-	unsigned encode(std::vector<unsigned char>& out,
+	unsigned LODEPNG_API encode(std::vector<unsigned char>& out,
 		const unsigned char* in, unsigned w, unsigned h,
 		LodePNGColorType colortype = LCT_RGBA, unsigned bitdepth = 8);
-	unsigned encode(std::vector<unsigned char>& out,
+	unsigned LODEPNG_API encode(std::vector<unsigned char>& out,
 		const std::vector<unsigned char>& in, unsigned w, unsigned h,
 		LodePNGColorType colortype = LCT_RGBA, unsigned bitdepth = 8);
 #ifdef LODEPNG_COMPILE_DISK
@@ -231,10 +237,10 @@ namespace lodepng
 	Same as the other encode functions, but instead takes a filename as output.
 	NOTE: This overwrites existing files without warning!
 	*/
-	unsigned encode(const std::string& filename,
+	unsigned LODEPNG_API encode(const std::string& filename,
 		const unsigned char* in, unsigned w, unsigned h,
 		LodePNGColorType colortype = LCT_RGBA, unsigned bitdepth = 8);
-	unsigned encode(const std::string& filename,
+	unsigned LODEPNG_API encode(const std::string& filename,
 		const std::vector<unsigned char>& in, unsigned w, unsigned h,
 		LodePNGColorType colortype = LCT_RGBA, unsigned bitdepth = 8);
 #endif /* LODEPNG_COMPILE_DISK */

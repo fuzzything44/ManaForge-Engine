@@ -7,11 +7,11 @@
 
 struct ActorData;
 class Actor;
-#include "CLHandler.h"
 
 static const unsigned int MAX_ACTORS = 100001;
 
 class Actor;
+class CLHandler;
 #include "Chunk.h"
 
 

@@ -46,7 +46,7 @@ public:
 	/// <summary> Constructor.</summary>
 	///
 	/// <param name="locationIn"> The location in.</param>
-	Chunk(ivec2 locationIn = ivec2(0, 0));
+	ENGINE_API explicit Chunk(ivec2 locationIn = ivec2(0, 0));
 
 protected:
 

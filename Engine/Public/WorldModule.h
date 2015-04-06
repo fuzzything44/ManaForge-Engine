@@ -19,6 +19,5 @@ public:
 	/// <summary> Returns the chunk the location falls into. </summary>
 	virtual Chunk* getChunk(vec2 actorLocation) = 0;
 	virtual int getChunkSize() = 0;
-	virtual ~WorldModule() = 0;
-
+	virtual ~WorldModule() { };
 };
