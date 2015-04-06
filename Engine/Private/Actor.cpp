@@ -20,7 +20,8 @@ mat4* Actor::viewMat = 0;
 Actor::Actor(const ActorData& dataIn, Chunk* chunkIn) 
 	: data(dataIn),
 	chunk(chunkIn)
-{
+{STACK
+	
 	// set the pointer to this class
 	data.actorPtr = this;
 
@@ -30,7 +31,7 @@ Actor::Actor(const ActorData& dataIn, Chunk* chunkIn)
 }
 
 void Actor::init(GLuint programIn, mat4* viewMatIn)
-{
+{STACK
 	program = programIn;
 
 	viewMat = viewMatIn;
@@ -85,7 +86,7 @@ void Actor::init(GLuint programIn, mat4* viewMatIn)
 
 
 void Actor::drawActors(std::vector<ActorData>& data, float deltaTime, Actor* character)
-{
+{STACK
 
 	CLHandler::updateCL(deltaTime, data);
 
@@ -147,55 +148,55 @@ void Actor::drawActors(std::vector<ActorData>& data, float deltaTime, Actor* cha
 
 
 void Actor::tick(float deltaTime)
-{
+{STACK
 	needsUpdate = false;
 }
 
 vec2 Actor::getLocation()
-{
+{STACK
 	return data.location;
 }
 
 vec2  Actor::getSize()
-{
+{STACK
 	return data.size;
 }
 
 float Actor::getRotation()
-{
+{STACK
 	return data.rotation;
 }
 
 vec2  Actor::getVelocity()
-{
+{STACK
 	return data.velocity;
 }
 
 void Actor::setLocation(vec2 newLoc)
-{
+{STACK
 	data.location = newLoc;
 	needsUpdate = true;
 }
 
 void Actor::setSize(vec2 newSize)
-{
+{STACK
 	data.size = newSize;
 	needsUpdate = true;
 }
 
 void Actor::setRotation(float newRot)
-{
+{STACK
 	data.rotation = newRot;
 	needsUpdate = true;
 }
 
 void Actor::setVelocity(vec2 newVelocity)
-{
+{STACK
 	data.velocity = newVelocity;
 	needsUpdate = true;
 }
 
 Actor::~Actor()
-{
+{STACK
 
 }

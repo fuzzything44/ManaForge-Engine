@@ -4,6 +4,6 @@
 
 Component::Component(Actor* owner)
 	: owner(owner)
-{
+{STACK
 	
 }

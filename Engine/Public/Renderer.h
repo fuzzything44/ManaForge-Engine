@@ -11,8 +11,8 @@ public:
 	class Model
 	{
 	public:
-		Model() { }
-		Model(float* locations, float* UVs, int numVerts, int numElems) { }
+		Model() {STACK}
+		Model(float* locations, float* UVs, int numVerts, int numElems) {STACK }
 
 		//virtual Transform getTransform() const = 0;
 		//virtual vec2 getLocation() const = 0;
@@ -33,7 +33,7 @@ public:
 	};
 
 	/// <summary> Default constructor.</summary>
-	Renderer() {};
+	Renderer() {STACK};
 
 	/// <summary> Initialises the Renderer.</summary>
 	///
@@ -64,6 +64,6 @@ public:
 	virtual void loadTextures(std::vector<std::string> textures) = 0;
 
 	/// <summary> Destructor.</summary>
-	virtual ~Renderer() { }
+	virtual ~Renderer() {STACK }
 
 };

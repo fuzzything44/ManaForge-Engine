@@ -108,7 +108,7 @@ protected:
 	/// <param name="x">	  The x coordinate.</param>
 	/// <param name="y">	  The y coordinate.</param>
 	ENGINE_API static void scrollCallback(GLFWwindow* window, double x, double y)
-	{
+	{STACK
 		if (Window* winObj = windows[window])
 		{
 			winObj->scroll((GLfloat)x, (GLfloat)y);
@@ -120,7 +120,7 @@ protected:
 	/// <param name="window">  [in,out] If non-null, the window.</param>
 	/// <param name="focused"> The focused.</param>
 	ENGINE_API static void focusCallback(GLFWwindow* window, int focused)
-	{
+	{STACK
 		if (Window* winObj = windows[window])
 		{
 			winObj->focus(focused);

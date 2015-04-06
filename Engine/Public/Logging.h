@@ -22,4 +22,4 @@ private:
 #define ENG_LOG(ans)logging::logfile << ans << std::endl; std::cout << ans << std::endl;
 
 /// <summary> Called upon a fatal error.</summary>
-#define FATAL_ERR(message, err) throw ENGException("message", err, __FILE__, __LINE__)
+#define FATAL_ERR(message, err) throw ENGException(message, Stack::GetTraceString(), err, __FILE__, __LINE__)

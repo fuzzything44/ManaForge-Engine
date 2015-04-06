@@ -32,7 +32,7 @@ struct UVData
 		: bottomLeft(bottomLeftIn),
 		topLeft(topLeftIn),
 		bottomRight(bottomRightIn),
-		topRight(topRightIn) { }
+		topRight(topRightIn) {STACK }
 
 
 	vec2 bottomLeft;

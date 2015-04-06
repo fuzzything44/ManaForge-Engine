@@ -6,7 +6,7 @@
 std::map<GLFWwindow*, Window*> Window::windows = std::map<GLFWwindow*, Window*>();
 
 Window::Window(std::string title, WindowMode windowmode, uvec2 size)
-{
+{STACK
 	hasFocus = true;
 
 	// init GLFW (our window handler)
@@ -114,7 +114,7 @@ Window::Window(std::string title, WindowMode windowmode, uvec2 size)
 }
 
 void Window::run()
-{
+{STACK
 	// if init exists use it and if it doesn't succede return the error code.
 
 	double start = glfwGetTime();
@@ -178,12 +178,12 @@ void Window::run()
 
 
 GLint Window::getKey(int key)
-{
+{STACK
 	return glfwGetKey(window, key);
 }
 
 vec2 Window::getCursorLoc()
-{
+{STACK
 	double x, y;
 
 	glfwGetCursorPos(window, &x, &y);
@@ -192,17 +192,17 @@ vec2 Window::getCursorLoc()
 }
 
 void Window::setRenderMode(RenderMode newMode)
-{
+{STACK
 	renderMode = newMode;
 }
 
 RenderMode Window::getRenderMode()
-{
+{STACK
 	return renderMode;
 }
 
 uvec2 Window::getSize() const
-{
+{STACK
 	ivec2 size;
 
 	glfwGetWindowSize(window, &size.x, &size.y);
@@ -211,7 +211,7 @@ uvec2 Window::getSize() const
 }
 
 GLvoid Window::focus(int in)
-{
+{STACK
 	hasFocus = in == 0 ? false : true;
 }
 

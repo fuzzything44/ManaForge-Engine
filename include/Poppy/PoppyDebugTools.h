@@ -18,12 +18,15 @@
 #include <algorithm>
 #include <iomanip>
 #include <ctime>
+#include <chrono>
 #include <map>
 
 #ifdef __APPLE__
 #include <mach/clock.h>
 #include <mach/mach.h>
 #endif
+
+#include <time.h>
 
 //a general-purpose macro for converting anything to string.
 #define toString(x) dynamic_cast<ostringstream&>(ostringstream() << std::dec << x).str()
@@ -34,6 +37,9 @@ class CallTree;
 
 
 typedef std::map<string, CallTree*> CallTreeChildrenContainer;
+
+#ifdef __APPLE__
+
 
 //returns the time in milliseconds passed since the start of the epoch
 //TODO: this only works on Linux-like operating systems, port it to others. This may help: https://people.gnome.org/~fejj/code/zentimer.h
@@ -47,11 +53,16 @@ inline double CurrentTime(){
 	mach_port_deallocate(mach_task_self(), cclock);
 	ts.tv_sec = mts.tv_sec;
 	ts.tv_nsec = mts.tv_nsec;
+#elif _WIN32
+
 #else
 	clock_gettime(CLOCK_REALTIME, &ts);
+	
 #endif
 	return 1000.0 * ts.tv_sec + (double) ts.tv_nsec / 1e6;
 }
+
+#endif
 
 class Scope;
 class CallTree{
@@ -123,7 +134,7 @@ class CallTree{
 	}
 	
 	inline static void Update(double currentTime){
-		static double currentIntervalStartTime = CurrentTime();
+		static double currentIntervalStartTime = 0.f;// CurrentTime();
 		
 		//if the interval has passed, traverse the call tree and set 
 		//the current interval's data as previous (ready for displaying) 

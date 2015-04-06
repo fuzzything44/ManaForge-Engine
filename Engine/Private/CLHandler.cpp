@@ -15,7 +15,7 @@ cl::BufferGL CLHandler::elemCLBuffer = cl::BufferGL();
 std::vector<cl::Device> CLHandler::devices = std::vector<cl::Device>();
 
 cl_int CLHandler::updateCL(float deltaTime, std::vector<ActorData>& data)
-{
+{STACK
 
 	check(context);
 	check(updateProgram);
@@ -73,12 +73,12 @@ cl_int CLHandler::updateCL(float deltaTime, std::vector<ActorData>& data)
 }
 
 void CLHandler::wait()
-{
+{STACK
 	queue->flush();
 }
 
 cl_int CLHandler::initCL(GLuint posBuffer, GLuint UVBuffer, GLuint elemBuffer)
-{
+{STACK
 
 
 	platform = getBestPlatform();
@@ -196,13 +196,13 @@ cl_int CLHandler::initCL(GLuint posBuffer, GLuint UVBuffer, GLuint elemBuffer)
 }
 
 void CLHandler::exitCL()
-{
+{STACK
 	clReleaseCommandQueue((*queue)());
 	clReleaseContext((*context)());
 }
 
 cl::Platform CLHandler::getBestPlatform()
-{
+{STACK
 
 	std::vector<cl::Platform> platforms;
 	std::vector<cl::Device> devices;
@@ -232,9 +232,8 @@ cl::Platform CLHandler::getBestPlatform()
 	return ret;
 }
 
-
 cl_int CLHandler::loadCLProgram(const GLchar* filepath, cl::Program*& program)
-{
+{STACK
 	
 
 	ENG_LOG(std::endl << std::endl);

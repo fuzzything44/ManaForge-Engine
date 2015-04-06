@@ -37,7 +37,7 @@ struct ActorData
 		renderOrder(renderOrderIn),
 		UVs(UVsIn),
 		actorPtr(actorPtrIn),
-		collides(collidesIn) { }
+		collides(collidesIn) {STACK }
 
 	/// <summary> The location of the actor </summary>
 	vec2 location;
@@ -140,7 +140,7 @@ public:
 	/// <param name="isPersisitent"> true if this object is persisitent.</param>
 	template <typename T> static Actor* addActor(vec2 locationIn, vec2 sizeIn, vec2 velocityIn, float rotationIn, uint8 renderOrderIn,
 		bool collides, UVData UVs, bool isPersisitent)
-	{
+	{STACK
 		ActorData newDat(locationIn, sizeIn, velocityIn, rotationIn, renderOrderIn, UVs, NULL, collides);
 
 

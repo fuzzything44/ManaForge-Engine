@@ -122,6 +122,7 @@
     <ClInclude Include="Public\Module.h" />
     <ClInclude Include="Public\ModuleManager.h" />
     <ClInclude Include="Public\Renderer.h" />
+    <ClInclude Include="Public\SharedLibrary.h" />
     <ClInclude Include="public\TextureLibrary.h" />
     <ClInclude Include="Public\Transform.h" />
     <ClInclude Include="Public\Window.h" />

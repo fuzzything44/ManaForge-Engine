@@ -7,12 +7,12 @@ std::unordered_map<std::string, UVData> TextureLibrary::UVDataMap = std::unorder
 uvec2 TextureLibrary::nextLocation = uvec2(0, 0);
 
 GLuint TextureLibrary::getTextureHandle()
-{
+{STACK
 	return texture;
 }
 
 void TextureLibrary::addTexture(std::string key, const char* filename)
-{
+{STACK
 	// if we need to make a new texture, do it
 	if (texture == 0)
 	{
@@ -58,13 +58,13 @@ void TextureLibrary::addTexture(std::string key, const char* filename)
 }
 
 UVData TextureLibrary::getUVData(std::string key)
-{
+{STACK
 	return UVDataMap[key];
 }
 
 
 void TextureLibrary::appendDDS(GLuint texToAppend, GLuint Xoffset, GLuint Yoffset, const char* filepath)
-{
+{STACK
 
 	unsigned char header[124];
 
@@ -142,7 +142,7 @@ void TextureLibrary::appendDDS(GLuint texToAppend, GLuint Xoffset, GLuint Yoffse
 
 
 GLuint TextureLibrary::allocateCompressedTextureLibraryFromDDS(GLuint num, const char* filepath)
-{
+{STACK
 	unsigned char header[124];
 
 	FILE *fp;

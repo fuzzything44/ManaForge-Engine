@@ -11,7 +11,7 @@ Module::Module(const std::string& filename) :
 	registerModuleFunctionAddress(0),
 	libraryHandle(0),
 	refrenceCount(0)
-{
+{STACK
 	try{
 
 		// load the library
@@ -33,7 +33,7 @@ Module::Module(const Module& other) :
 	libraryHandle(other.libraryHandle),
 	refrenceCount(other.refrenceCount),
 	registerModuleFunctionAddress(other.registerModuleFunctionAddress)
-{
+{STACK
 	if (refrenceCount)
 	{
 		(*refrenceCount)++;
@@ -41,7 +41,7 @@ Module::Module(const Module& other) :
 }
 
 Module::~Module()
-{
+{STACK
 	// deincrement refcount
 	int remainingRefrences = --(*refrenceCount);
 

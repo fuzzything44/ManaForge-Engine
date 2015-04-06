@@ -99,5 +99,8 @@
     <ClInclude Include="Public\Camera.h">
       <Filter>Public</Filter>
     </ClInclude>
+    <ClInclude Include="Public\SharedLibrary.h">
+      <Filter>Public</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

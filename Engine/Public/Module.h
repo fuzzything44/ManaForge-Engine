@@ -18,7 +18,7 @@ public:
 	///
 	/// <param name="mm"> The module manager to register the module with</param>
 	ENGINE_API void registerModule(ModuleManager& mm)
-	{
+	{STACK
 		registerModuleFunctionAddress(mm);
 	}
 

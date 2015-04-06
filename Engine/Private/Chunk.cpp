@@ -14,7 +14,7 @@ mat4* Chunk::viewMat = nullptr;
 
 
 GLvoid Chunk::initChunks(GLuint programIn, mat4* viewMatIn, const uvec2& chunksSizeIn)
-{
+{STACK
 	chunksSize = chunksSizeIn;
 	program = programIn;
 	viewMat = viewMatIn;
@@ -47,7 +47,7 @@ GLvoid Chunk::initChunks(GLuint programIn, mat4* viewMatIn, const uvec2& chunksS
 
 Chunk::Chunk(ivec2 locationIn)
 	: location(locationIn)
-{
+{STACK
 	
 	// the persistent chunk doesn't get anything
 	if (this != persistentChunk)
@@ -161,7 +161,7 @@ Chunk::Chunk(ivec2 locationIn)
 }
 
 GLvoid Chunk::drawChunk(std::vector<ActorData>& data)
-{
+{STACK
 	if (this != persistentChunk)
 	{
 
@@ -229,7 +229,7 @@ GLvoid Chunk::drawChunk(std::vector<ActorData>& data)
 }
 
 void Chunk::draw(Actor* character, float deltaTime)
-{
+{STACK
 	glUseProgram(program);
 
 	if (characterLocUniformHandleChunk != -1)
@@ -274,12 +274,12 @@ void Chunk::draw(Actor* character, float deltaTime)
 }
 
 vec2 Chunk::getLocation()
-{
+{STACK
 	// return a copy of the location variable
 	return location;
 }
 
 uvec2 Chunk::getChunkSize()
-{
+{STACK
 	return chunksSize;
 }

@@ -21,7 +21,7 @@ public:
 	///
 	/// <returns> if it fails, returns null and throws an exception, else the renderer.</returns>
 	Renderer* getRenderer()
-	{
+	{STACK
 		if (renderer)
 		{
 			return renderer;
@@ -34,7 +34,7 @@ public:
 	///
 	/// <param name="filename"> Filename of the module.</param>
 	void LoadModule(const std::string& filename)
-	{
+	{STACK
 		if (loadedModules.find(filename) == loadedModules.end())
 		{
 			loadedModules.insert(std::map<std::string, Module>::value_type(filename, Module(filename))).first->second.registerModule(*this);
@@ -45,7 +45,7 @@ public:
 	///
 	/// <param name="newRenderer"> If non-null, the new renderer.</param>
 	void AddRenderer(Renderer* newRenderer)
-	{
+	{STACK
 		AvaliableRenderers.push_back(newRenderer);
 
 		if (!newRenderer)
@@ -58,7 +58,7 @@ public:
 	///
 	/// <param name="createWorld()"> Function that creates a world </param>
 	void AddWorld(WorldModule* createWorld(std::string))
-	{
+	{STACK
 		// copy to the class's version
 		this->createWorld = createWorld;
 	}

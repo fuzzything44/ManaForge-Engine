@@ -4,17 +4,17 @@
 #include <ModuleManager.h>
 
 MainWindow::MainWindow(std::string title, WindowMode mode, uvec2 size) : Window(title, mode, size)
-{
+{STACK
 	
 }
 
 MainWindow::MainWindow(const char* title, WindowMode mode, uvec2 size) : Window(std::string(title), mode, size)
-{
+{STACK
 
 }
 
 void MainWindow::init()
-{
+{STACK
 
 	man.LoadModule("OpenGLRenderer");
 
@@ -115,7 +115,7 @@ void MainWindow::init()
 }
 
 void MainWindow::scroll(GLfloat x, GLfloat y)
-{
+{STACK
 	if (x != 0 || y != 0)
 	{
 		if (y == 1.f)
@@ -127,6 +127,7 @@ void MainWindow::scroll(GLfloat x, GLfloat y)
 		{
 			// scale the scale variable
 			scale /= 2.f;
+
 		}
 
 	}
@@ -134,7 +135,7 @@ void MainWindow::scroll(GLfloat x, GLfloat y)
 
 
 void MainWindow::draw(float deltaTime)
-{
+{STACK
 
 	// clamp scale
 	scale = scale > maxScale ? maxScale : scale;
@@ -152,7 +153,7 @@ void MainWindow::draw(float deltaTime)
 
 
 void MainWindow::input(float deltaTime)
-{
+{STACK
 	// get the cursor position
 	auto pos = getCursorLoc();
 	// get the size of the window
@@ -208,7 +209,7 @@ void MainWindow::input(float deltaTime)
 
 
 void MainWindow::exit()
-{
+{STACK
 	CLHandler::exitCL();
 
 	
@@ -216,11 +217,11 @@ void MainWindow::exit()
 
 
 void MainWindow::focus(int focused)
-{
+{STACK
 	
 }
 
 void MainWindow::resize(double x, double y)
-{
+{STACK
 	aspectRatio = float(x / y);
 }

@@ -27,7 +27,7 @@ cl_int initCL();
 
 #ifdef _WIN32
 void changeDir()
-{
+{STACK
 	// changes the path so everything we open will be in Resoruce/
 	char ownPth[MAX_PATH];
 
@@ -67,7 +67,7 @@ void changeDir()
 #error "Linux change directory code not implemented"
 
 void changeDir()
-{
+{STACK
 	//TODO write linux code
 
 	return 0;
@@ -76,7 +76,7 @@ void changeDir()
 
 #ifdef __APPLE__
 void changeDir()
-{
+{STACK
 	char path[1024];
 	uint32_t size = sizeof(path);
 	if (_NSGetExecutablePath(path, &size) == 0)
@@ -103,7 +103,7 @@ void changeDir()
 #endif
 
 GLint main()
-{
+{STACK
 
 	changeDir();
 

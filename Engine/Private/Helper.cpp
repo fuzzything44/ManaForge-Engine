@@ -2,7 +2,7 @@
 #include "Helper.h"
 
 std::string loadFileToStr(const char* filename)
-{
+{STACK
 	// stream for the file
 	std::ifstream stream;
 	stream.open(filename);
@@ -28,7 +28,7 @@ std::string loadFileToStr(const char* filename)
 
 // Load Shaders from the files defined
 GLuint LoadShaders(const char * vertex_file_path, const char * fragment_file_path)
-{
+{STACK
 
 	ENG_LOG(std::endl << std::endl);
 
@@ -109,7 +109,7 @@ GLuint LoadShaders(const char * vertex_file_path, const char * fragment_file_pat
 
 
 GLuint loadDDS(const char* imagepath)
-{
+{STACK
 
 	unsigned char header[124];
 
@@ -191,7 +191,7 @@ GLuint loadDDS(const char* imagepath)
 }
 
 std::string clGetErrorString(int error)
-{
+{STACK
 
 	switch (error)
 	{
@@ -352,21 +352,21 @@ std::string clGetErrorString(int error)
 
 // custom vector printing
 std::ostream& operator<<(std::ostream& os, const vec2& vec)
-{
+{STACK
 	os << "X: " << vec.x << "  Y: " << vec.y;
 	return os;
 }
 
 // custom vector printing
 std::ostream& operator<<(std::ostream& os, const vec3& vec)
-{
+{STACK
 	os << "X: " << vec.x << "  Y: " << vec.y << "  X: " << vec.z;
 	return os;
 }
 
 // custom vector printing
 std::ostream& operator<<(std::ostream& os, const vec4& vec)
-{
+{STACK
 	os << "X: " << vec.x << "  Y: " << vec.y << "  X: " << vec.z << "  W: " << vec.w;
 	return os;
 }
@@ -375,21 +375,21 @@ std::ostream& operator<<(std::ostream& os, const vec4& vec)
 
 // custom vector printing
 std::ostream& operator<<(std::ostream& os, const ivec2& vec)
-{
+{STACK
 	os << "X: " << vec.x << "  Y: " << vec.y;
 	return os;
 }
 
 // custom vector printing
 std::ostream& operator<<(std::ostream& os, const ivec3& vec)
-{
+{STACK
 	os << "X: " << vec.x << "  Y: " << vec.y << "  X: " << vec.z;
 	return os;
 }
 
 // custom vector printing
 std::ostream& operator<<(std::ostream& os, const ivec4& vec)
-{
+{STACK
 	os << "X: " << vec.x << "  Y: " << vec.y << "  X: " << vec.z << "  W: " << vec.w;
 	return os;
 }
@@ -398,21 +398,21 @@ std::ostream& operator<<(std::ostream& os, const ivec4& vec)
 
 // custom vector printing
 std::ostream& operator<<(std::ostream& os, const uvec2& vec)
-{
+{STACK
 	os << "X: " << vec.x << "  Y: " << vec.y;
 	return os;
 }
 
 // custom vector printing
 std::ostream& operator<<(std::ostream& os, const uvec3& vec)
-{
+{STACK
 	os << "X: " << vec.x << "  Y: " << vec.y << "  X: " << vec.z;
 	return os;
 }
 
 // custom vector printing
 std::ostream& operator<<(std::ostream& os, const uvec4& vec)
-{
+{STACK
 	os << "X: " << vec.x << "  Y: " << vec.y << "  X: " << vec.z << "  W: " << vec.w;
 	return os;
 }
@@ -420,7 +420,7 @@ std::ostream& operator<<(std::ostream& os, const uvec4& vec)
 
 
 std::ostream& operator<<(std::ostream& os, const mat3& mat)
-{
+{STACK
 	auto originalPrecison = os.precision();
 
 	os.precision(4);
@@ -441,7 +441,7 @@ std::ostream& operator<<(std::ostream& os, const mat3& mat)
 }
 
 std::ostream& operator<<(std::ostream& os, const mat4& mat)
-{
+{STACK
 	auto originalPrecison = os.precision();
 
 	os.precision(4);
