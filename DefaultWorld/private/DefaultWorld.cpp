@@ -81,12 +81,14 @@ public:
 			}
 		}
 		// Give images to renderer
-		manager->getRenderer()->
+		manager->getRenderer()->loadTextures(imageNames);
 
 		ENG_LOG("Images loaded!");
 		world.close();
 		
-		loadWorld("main");
+		// virtual functuion -- call THIS version of it
+		DefaultWorld::loadWorld("main");
+
 		mainWorld = currentWorld;
 		
 	}	// End constructor
@@ -185,7 +187,7 @@ public:
 	}	// End destructor
 };
 
-DefaultWorld* AddWorld(string folder)
+WorldModule* AddWorld(string folder)
 {
 	return new DefaultWorld(folder);
 }

@@ -7,7 +7,6 @@
 
 class OpenGLRenderer : public Renderer
 {
-public:
 
 	class OpenGLModel : public Model
 	{
@@ -36,6 +35,8 @@ public:
 
 	};
 
+public:
+
 	virtual Model* newModel(float* locations, float* UVs, int numVerts, int numElems) override;
 
 	/// <summary>
@@ -49,6 +50,8 @@ public:
 	/// <param name="newCamera"> The camera it should render at. </param>
 	virtual void setCamera(Camera* newCamera) override;
 
+	void loadTextures(std::vector<std::string> textures) override;
+	~OpenGLRenderer() override;
 
 	Camera* getCamera() override;
 
@@ -79,6 +82,16 @@ void OpenGLRenderer::setCamera(Camera* newCamera)
 	check(newCamera);
 
 	currentCamera = newCamera;
+
+}
+
+void OpenGLRenderer::loadTextures(std::vector<std::string> textures)
+{
+
+}
+
+OpenGLRenderer::~OpenGLRenderer()
+{
 
 }
 

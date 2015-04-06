@@ -3,10 +3,12 @@
 #include "Engine.h"
 #include "Module.h"
 #include "Renderer.h"
+#include "WorldModule.h"
 
 #include <map>
 #include <vector>
 
+class WorldModule;
 class Renderer;
 
 class ModuleManager
@@ -52,8 +54,19 @@ public:
 		}
 	}
 
+	/// <summary> Adds a world.</summary>
+	///
+	/// <param name="createWorld()"> Function that creates a world </param>
+	void AddWorld(WorldModule* createWorld(std::string))
+	{
+		// copy to the class's version
+		this->createWorld = createWorld;
+	}
+
 private:
 
+	// function to createWorld
+	WorldModule*(*createWorld)(std::string);
 
 	std::map<std::string, Module> loadedModules;
 

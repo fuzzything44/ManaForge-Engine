@@ -34,8 +34,10 @@ public:
 
 	/// <summary> Default constructor.</summary>
 	Renderer() {};
-	
-	/// <summary>
+
+	/// <summary> Initialises the Renderer.</summary>
+	///
+	/// <param name="textures"> The textures.</param>
 	virtual void init(std::string textures) = 0;
 	
 	/// <summary> Renders the next frame. </summary>
@@ -46,15 +48,22 @@ public:
 	/// <param name="newCamera"> The camera it should render at. </param>
 	virtual void setCamera(Camera* newCamera) = 0;
 
-	virtual Camera*  getCamera() = 0;
+	/// <summary> Gets the camera.</summary>
+	///
+	/// <returns> null if it fails, else the camera.</returns>
+	virtual Camera* getCamera() = 0;
 
 	/// <summary> Creates a new model.</summary>
 	///
 	/// <returns> null if it fails, else a Model*.</returns>
 	virtual Model* newModel(float* locations, float* UVs, int numVerts, int numElems) = 0;
 
-	
+	/// <summary> Loads the textures.</summary>
+	///
+	/// <param name="textures"> The textures.</param>
+	virtual void loadTextures(std::vector<std::string> textures) = 0;
 
+	/// <summary> Destructor.</summary>
 	virtual ~Renderer() { }
 
 };
