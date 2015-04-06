@@ -7,6 +7,8 @@
 #include <map>
 #include <vector>
 
+class Renderer;
+
 class ModuleManager
 {
 
@@ -22,11 +24,8 @@ public:
 		{
 			return renderer;
 		}
-		else
-		{
-			throw std::runtime_error("Renderer is null, please select renderer");
-			return NULL;
-		}
+		throw std::runtime_error("Renderer is null, please select renderer");
+		return nullptr;
 	}
 
 	/// <summary> Loads a module.</summary>

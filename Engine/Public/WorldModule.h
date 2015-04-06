@@ -2,6 +2,7 @@
 #include "Engine.h"
 #include <string>
 #include "Chunk.h"
+#include "ModuleManager.h"
 
 class WorldModule
 {

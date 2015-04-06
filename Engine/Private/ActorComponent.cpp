@@ -9,3 +9,7 @@ ActorComponent::ActorComponent(Actor* owner)
 Actor* ActorComponent::getOwner() {
 	return owner;
 }
+
+ActorComponent::~ActorComponent()
+{
+}

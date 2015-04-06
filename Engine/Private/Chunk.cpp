@@ -45,7 +45,7 @@ GLvoid Chunk::initChunks(GLuint programIn, mat4* viewMatIn, const uvec2& chunksS
 
 }
 
-Chunk::Chunk(vec2 locationIn)
+Chunk::Chunk(ivec2 locationIn)
 	: location(locationIn)
 {
 	

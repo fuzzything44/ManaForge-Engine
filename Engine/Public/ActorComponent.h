@@ -6,9 +6,9 @@
 class ActorComponent
 {
 public:
-	ActorComponent(Actor* owner);
+	explicit ActorComponent(Actor* owner);
 	Actor* getOwner();
-	~ActorComponent();
+	virtual ~ActorComponent();
 private:
 	Actor* owner;
 };

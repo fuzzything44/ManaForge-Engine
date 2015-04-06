@@ -136,7 +136,7 @@ cl_int CLHandler::initCL(GLuint posBuffer, GLuint UVBuffer, GLuint elemBuffer)
 	// load the program
 	err = loadCLProgram(UPDATE_LOCATION, updateProgram);
 
-	ENG_LOG(std::endl << "Program Loaded" << std::endl;)
+	ENG_LOG(std::endl << "Program Loaded" << std::endl)
 
 	ENG_LOG(std::endl << "Loading kernel: collide from program: ");
 
@@ -163,7 +163,7 @@ cl_int CLHandler::initCL(GLuint posBuffer, GLuint UVBuffer, GLuint elemBuffer)
 	// init the queue
 	queue = new cl::CommandQueue(*context, NULL, &err);
 
-	ENG_LOG("completed" << std::endl;);
+	ENG_LOG("completed" << std::endl);
 
 	// do error checking
 	errChkCL(err);

@@ -100,6 +100,7 @@
     <ClCompile Include="private\Helper.cpp" />
     <ClCompile Include="Private\Logging.cpp" />
     <ClCompile Include="Private\Module.cpp" />
+    <ClCompile Include="Private\SceneComponent.cpp" />
     <ClCompile Include="private\TextureLibrary.cpp" />
     <ClCompile Include="Private\Window.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -121,6 +122,7 @@
     <ClInclude Include="Public\Module.h" />
     <ClInclude Include="Public\ModuleManager.h" />
     <ClInclude Include="Public\Renderer.h" />
+    <ClInclude Include="Public\SceneComponent.h" />
     <ClInclude Include="public\TextureLibrary.h" />
     <ClInclude Include="Public\Transform.h" />
     <ClInclude Include="Public\Window.h" />

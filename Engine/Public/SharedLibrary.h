@@ -5,9 +5,9 @@
 #include <stdexcept>
 
 #if WIN32 || _WIN32
-#include <Windows.h>
+	#include <Windows.h>
 #else
-#error "OOPS -- win only pls"
+	#error "OOPS -- win only pls"
 #endif
 
 #if WIN32 || _WIN32

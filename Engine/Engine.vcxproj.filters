@@ -42,6 +42,9 @@
     <ClCompile Include="private\ActorComponent.cpp">
       <Filter>Private</Filter>
     </ClCompile>
+    <ClCompile Include="Private\SceneComponent.cpp">
+      <Filter>Private</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="public\Actor.h">
@@ -94,6 +97,9 @@
       <Filter>Public</Filter>
     </ClInclude>
     <ClInclude Include="public\Color.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\SceneComponent.h">
       <Filter>Public</Filter>
     </ClInclude>
   </ItemGroup>
