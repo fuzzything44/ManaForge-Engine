@@ -135,43 +135,51 @@ void Window::run()
 	// set initial tick
 	GLfloat LastTick = (GLfloat)(glfwGetTime());
 
-	do {
+	try
+	{
+		do {
 
-		if (hasFocus){
+			if (hasFocus){
 
-			// calculate tick time
-			GLfloat CurrentTick = (GLfloat)(glfwGetTime());
-			GLfloat delta = CurrentTick - LastTick;
+				// calculate tick time
+				GLfloat CurrentTick = (GLfloat)(glfwGetTime());
+				GLfloat delta = CurrentTick - LastTick;
 
-			LastTick = CurrentTick;
-
-
-			input(delta);
-
-
-			draw(delta);
-
-			// swap front and back buffers 
-			glfwSwapBuffers(window);
+				LastTick = CurrentTick;
 
 
-			// if user is pressing esc, exit the application
-			if (glfwGetKey(window, GLFW_KEY_ESCAPE))
-			{
-				glfwSetWindowShouldClose(window, GL_TRUE);
+				input(delta);
+
+
+				draw(delta);
+
+				// swap front and back buffers 
+				glfwSwapBuffers(window);
+
+
+				// if user is pressing esc, exit the application
+				if (glfwGetKey(window, GLFW_KEY_ESCAPE))
+				{
+					glfwSetWindowShouldClose(window, GL_TRUE);
+				}
+				// render another frame so long the window shouldn't close. 
+				// This is analogous for setting it through a function or pressing the close button
+
 			}
-			// render another frame so long the window shouldn't close. 
-			// This is analogous for setting it through a function or pressing the close button
 
-		}
+			CLHandler::wait();
 
-		CLHandler::wait();
+			// make sure all events are done
+			glfwPollEvents();
 
-		// make sure all events are done
-		glfwPollEvents();
+		} while (!glfwWindowShouldClose(window));
+	}
+	catch (ENGException& e)
+	{
+		ENG_LOG(e.what());
 
-	} while (!glfwWindowShouldClose(window));
-
+		exit();
+	}
 	exit();
 	
 }

@@ -2,11 +2,11 @@
 
 #include "ENGException.h"
 
-ENGException::ENGException(std::string reasonIn, std::string stack, int err, char* file, int line) 
+ENGException::ENGException(std::string reasonIn, std::string stack) 
 {STACK
 	std::stringstream ss;
 
-	ss << reasonIn << "\tIn file: " << file << " : " << line << "\tError Number: " << err << "\n\nStack: " << stack;
+	ss << reasonIn << "\tStack: " << stack;
 
 	reason = ss.str();
 }

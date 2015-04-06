@@ -205,14 +205,24 @@ void MainWindow::input(float deltaTime)
 	{
 		character->setRotation(character->getRotation() + (900.f * deltaTime));
 	}
+	if (getKey(GLFW_KEY_P))
+	{
+		FATAL_ERR("YOU PRESSED P!", -12);
+	}
 }
 
 
 void MainWindow::exit()
 {STACK
-	CLHandler::exitCL();
 
-	
+	try{
+//		CLHandler::exitCL();
+
+	} catch (ENGException& e)
+	{
+		ENG_LOG(e.what());
+		::exit(-12);
+	}
 }
 
 
