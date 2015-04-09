@@ -46,12 +46,12 @@ public:
 	/// <summary> Sets camera to render at. </summary>
 	///
 	/// <param name="newCamera"> The camera it should render at. </param>
-	virtual void setCamera(int* newCamera) = 0;
+	virtual void setCurrentCamera(Camera* newCamera) = 0;
 
 	/// <summary> Gets the camera.</summary>
 	///
 	/// <returns> null if it fails, else the camera.</returns>
-	//virtual Camera* getCamera() = 0;
+	virtual Camera* getCurrentCamera() = 0;
 
 	/// <summary> Creates a new model.</summary>
 	///

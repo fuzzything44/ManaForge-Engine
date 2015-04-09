@@ -36,7 +36,7 @@ public:
 	/// <summary> Loads a module.</summary>
 	///
 	/// <param name="filename"> Filename of the module.</param>
-	void LoadModule(const std::string& filename)
+	void loadModule(const std::string& filename)
 	{STACK
 		if (loadedModules.find(filename) == loadedModules.end())
 		{
@@ -47,9 +47,9 @@ public:
 	/// <summary> Adds a renderer.</summary>
 	///
 	/// <param name="newRenderer"> If non-null, the new renderer.</param>
-	void AddRenderer(Renderer* newRenderer)
+	void addRenderer(Renderer* newRenderer)
 	{STACK
-		AvaliableRenderers.push_back(newRenderer);
+		avaliableRenderers.push_back(newRenderer);
 
 		if (!newRenderer)
 		{
@@ -60,7 +60,7 @@ public:
 	/// <summary> Adds a world.</summary>
 	///
 	/// <param name="createWorld()"> Function that creates a world </param>
-	void AddWorld(World* createWorld(ModuleManager&, std::string))
+	void addWorld(World* createWorld(ModuleManager&, std::string))
 	{STACK
 		// copy to the class's version
 		this->createWorld = createWorld;
@@ -73,6 +73,6 @@ private:
 
 	std::map<std::string, Module> loadedModules;
 
-	std::vector<Renderer*> AvaliableRenderers;
+	std::vector<Renderer*> avaliableRenderers;
 	Renderer* renderer;
 };

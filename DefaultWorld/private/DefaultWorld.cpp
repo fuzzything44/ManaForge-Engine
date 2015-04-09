@@ -198,5 +198,5 @@ World* AddWorld(ModuleManager& mm, string folder)
 
 extern "C" DefaultWorldPlugin_API void registerModule(ModuleManager& mm) 
 {STACK
-	mm.AddWorld(AddWorld);
+	mm.addWorld(AddWorld);
 }

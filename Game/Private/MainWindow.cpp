@@ -16,8 +16,8 @@ MainWindow::MainWindow(const char* title, WindowMode mode, uvec2 size) : Window(
 void MainWindow::init()
 {STACK
 
-	man.LoadModule("OpenGLRenderer");
-	man.LoadModule("DefaultWorld");	
+	man.loadModule("OpenGLRenderer");
+	man.loadModule("DefaultWorld");	
 
 	// set a background color -- it is in 0-1 scale. Pink is the best.
 	glClearColor(1.f, 1.2f, .5f, 1.f);
