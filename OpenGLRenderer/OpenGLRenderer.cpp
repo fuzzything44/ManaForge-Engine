@@ -48,12 +48,12 @@ public:
 	/// <summary> Sets camera to render at. </summary>
 	///
 	/// <param name="newCamera"> The camera it should render at. </param>
-	virtual void setCamera(Camera* newCamera) override;
+	virtual void setCamera(int* newCamera) override;
 
 	void loadTextures(std::vector<std::string> textures) override;
 	~OpenGLRenderer() override;
 
-	Camera* getCamera() override;
+//	Camera* getCamera() override;
 
 	OpenGLRenderer() { }
 
@@ -77,11 +77,11 @@ void OpenGLRenderer::update()
 {
 }
 
-void OpenGLRenderer::setCamera(Camera* newCamera)
+void OpenGLRenderer::setCamera(int* newCamera)
 {
 	check(newCamera);
 
-	currentCamera = newCamera;
+	currentCamera = reinterpret_cast<Camera*>(newCamera);
 
 }
 
@@ -95,10 +95,10 @@ OpenGLRenderer::~OpenGLRenderer()
 
 }
 
-Camera* OpenGLRenderer::getCamera()
-{
-	return currentCamera;
-}
+//Camera* OpenGLRenderer::getCamera()
+//{
+//	return currentCamera;
+//}
 
 extern "C" OpenGLRendererPlugin_API void registerModule(ModuleManager& mm)
 {

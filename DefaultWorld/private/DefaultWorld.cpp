@@ -1,6 +1,6 @@
 #define DefaultWorldSource 1
 #include "DefaultWorldConfig.h"
-#include "WorldModule.h"
+#include "World.h"
 #include "lodepng.h"
 #include <fstream>
 #include <sstream>
@@ -30,7 +30,7 @@ vector<string> split(string toSplit) {
 	return ret;
 }
 
-class DefaultWorld : public WorldModule
+class DefaultWorld : public World
 {
 private:
 	string folderLocation;
@@ -39,7 +39,7 @@ private:
 	uint8 chunkSize = 50;
 	ModuleManager* manager;
 public:
-	DefaultWorld(string folder = "", ModuleManager& mm = ModuleManager() )
+	explicit DefaultWorld(ModuleManager& mm, string folder = "")
 		:manager(&mm),
 		folderLocation(folder) 
 	{STACK
@@ -191,9 +191,9 @@ public:
 	}	// End destructor
 };
 
-WorldModule* AddWorld(string folder)
+World* AddWorld(ModuleManager& mm, string folder)
 {STACK
-	return new DefaultWorld(folder);
+	return new DefaultWorld(mm, folder);
 }
 
 extern "C" DefaultWorldPlugin_API void registerModule(ModuleManager& mm) 

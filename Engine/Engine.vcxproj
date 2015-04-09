@@ -126,7 +126,7 @@
     <ClInclude Include="public\TextureLibrary.h" />
     <ClInclude Include="Public\Transform.h" />
     <ClInclude Include="Public\Window.h" />
-    <ClInclude Include="public\WorldModule.h" />
+    <ClInclude Include="public\World.h" />
     <ClInclude Include="stdafx.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>

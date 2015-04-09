@@ -10,13 +10,14 @@ MainWindow::MainWindow(std::string title, WindowMode mode, uvec2 size) : Window(
 
 MainWindow::MainWindow(const char* title, WindowMode mode, uvec2 size) : Window(std::string(title), mode, size)
 {STACK
-
+	
 }
 
 void MainWindow::init()
 {STACK
 
 	man.LoadModule("OpenGLRenderer");
+	man.LoadModule("DefaultWorld");	
 
 	// set a background color -- it is in 0-1 scale. Pink is the best.
 	glClearColor(1.f, 1.2f, .5f, 1.f);

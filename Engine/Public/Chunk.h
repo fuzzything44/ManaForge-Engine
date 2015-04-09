@@ -8,7 +8,6 @@
 
 class Chunk;
 #include "Actor.h"
-#include "WorldModule.h"
 /// <summary> Width of the chunk.</summary>
 static const GLuint CHUNK_WIDTH = 50;
 

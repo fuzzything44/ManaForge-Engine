@@ -87,9 +87,6 @@
     <ClInclude Include="Public\Transform.h">
       <Filter>Public</Filter>
     </ClInclude>
-    <ClInclude Include="public\WorldModule.h">
-      <Filter>Public</Filter>
-    </ClInclude>
     <ClInclude Include="public\Color.h">
       <Filter>Public</Filter>
     </ClInclude>
@@ -100,6 +97,9 @@
       <Filter>Public</Filter>
     </ClInclude>
     <ClInclude Include="Public\SharedLibrary.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="public\World.h">
       <Filter>Public</Filter>
     </ClInclude>
   </ItemGroup>

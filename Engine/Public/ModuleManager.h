@@ -3,12 +3,12 @@
 #include "Engine.h"
 #include "Module.h"
 #include "Renderer.h"
-#include "WorldModule.h"
+#include "World.h"
 
 #include <map>
 #include <vector>
 
-class WorldModule;
+class World;
 class Renderer;
 
 class ModuleManager
@@ -16,6 +16,9 @@ class ModuleManager
 
 
 public:
+
+	/// <summary> Default constructor.</summary>
+	ModuleManager() { }
 
 	/// <summary> Gets the renderer./</summary>
 	///
@@ -57,7 +60,7 @@ public:
 	/// <summary> Adds a world.</summary>
 	///
 	/// <param name="createWorld()"> Function that creates a world </param>
-	void AddWorld(WorldModule* createWorld(std::string))
+	void AddWorld(World* createWorld(ModuleManager&, std::string))
 	{STACK
 		// copy to the class's version
 		this->createWorld = createWorld;
@@ -66,7 +69,7 @@ public:
 private:
 
 	// function to createWorld
-	WorldModule*(*createWorld)(std::string);
+	World*(*createWorld)(ModuleManager&, std::string);
 
 	std::map<std::string, Module> loadedModules;
 
