@@ -69,4 +69,6 @@ Game/Debug/Game.pch.codeanalysis
 log.txt
 *.cfg
 *.xdc
+boost.props
+
 
