@@ -1,8 +1,5 @@
 RPG-Simulator 
 =============
-Setting up the development envrionment:
-Use CMAKE to build glew and glfw and put binaries created in the bin/<CONFIGURATION> folder
-use CMAKE to create project files for RPG-Simulator
 
 Overview:
 
