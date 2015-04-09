@@ -1,6 +1,13 @@
 RPG-Simulator 
 =============
 
+SETUP:
+Open the RPG-Simulator.sln in visual studio
+Go to View->Property Manager
+Expand Engine
+Double click boost
+edit the include and library paths to fit with your boost instalation.
+
 Overview:
 
 What do we want to do?
