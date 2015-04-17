@@ -1,5 +1,6 @@
 #include "Engine.h"
 #include "Module.h"
+#include "Logging.h"
 #include <iostream>
 
 Module::Module(const std::string& filename) :

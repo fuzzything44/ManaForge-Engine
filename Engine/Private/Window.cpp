@@ -1,6 +1,7 @@
 #include "Window.h"
 #include <sstream>
 #include "CLHandler.h"
+#include "Logging.h"
 
 std::map<GLFWwindow*, Window*> Window::windows = std::map<GLFWwindow*, Window*>();
 

@@ -1,4 +1,5 @@
 #include "TextureLibrary.h"
+#include "Logging.h"
 
 
 uint32 TextureLibrary::texture = 0;

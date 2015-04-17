@@ -4,6 +4,7 @@
 #include <Helper.h>
 #include <TextureLibrary.h>
 #include <random>
+#include <Logging.h>
 
 MainWindow::MainWindow(std::string title, WindowMode mode, uvec2 size) : Window(title, mode, size)
 {STACK
@@ -54,7 +55,7 @@ void MainWindow::init()
 	TextureLibrary::addTexture("15", "textures\\15.dds");
 	TextureLibrary::addTexture("16", "textures\\16.dds");
 
-	logging::logfile << "Textures Loaded!\n";
+	ENG_LOG("Textures Loaded");
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);

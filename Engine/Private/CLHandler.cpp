@@ -1,4 +1,5 @@
 #include "CLHandler.h"
+#include "Logging.h"
 
 // init static variables
 cl::Context* CLHandler::context = nullptr;

@@ -4,6 +4,7 @@
 #include "lodepng.h"
 #include <fstream>
 #include <sstream>
+#include "Logging.h"
 #include <map>
 #include <Color.h>
 #include <ENGException.h>

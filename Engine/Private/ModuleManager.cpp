@@ -1,6 +1,7 @@
 #include "Engine.h"
 #include "ModuleManager.h"
 #include "Helper.h"
+#include "Logging.h"
 
 ModuleManager* ModuleManager::currentMM = nullptr;
 

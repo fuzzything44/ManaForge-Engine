@@ -1,4 +1,6 @@
 #include "Helper.h"
+#include "Logging.h"
+#include <fstream>
 
 std::string loadFileToStr(const char* filename)
 {STACK
@@ -10,7 +12,7 @@ std::string loadFileToStr(const char* filename)
 	if (stream.bad())
 	{
 		ENG_LOG("Bad stream" << std::endl);
-		return NULL;
+		return nullptr;
 	}
 	// define strings for each line and the final string
 	std::string ret, build;

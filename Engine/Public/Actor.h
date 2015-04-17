@@ -1,6 +1,7 @@
 #pragma once
 #include "Engine.h"
 #include "UVData.h"
+#include "Logging.h"
 
 static const unsigned int MAX_ACTORS = 100001;
 
