@@ -1,9 +1,11 @@
 #include "Actor.h"
 #include "CLHandler.h"
+#include "ModuleManager.h"
 
 ///////////// STATIC VARIBALE INITALIZATION ////////////////////
 Actor::Actor(const ActorData& dataIn, Chunk* chunkIn) 
-	: chunk(chunkIn)
+	: chunk(chunkIn),
+	model(ModuleManager::get()->getRenderer()->newModel(nullptr, nullptr, 3, 3))
 {STACK
 	
 	// add this class to the chunk
@@ -11,7 +13,7 @@ Actor::Actor(const ActorData& dataIn, Chunk* chunkIn)
 
 }
 
-void Actor::init(GLuint programIn, mat4* viewMatIn)
+void Actor::init(uint32 programIn, mat4* viewMatIn)
 {STACK
 	
 

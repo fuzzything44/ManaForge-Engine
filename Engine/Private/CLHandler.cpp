@@ -76,7 +76,7 @@ void CLHandler::wait()
 	queue->flush();
 }
 
-cl_int CLHandler::initCL(GLuint posBuffer, GLuint UVBuffer, GLuint elemBuffer)
+cl_int CLHandler::initCL(uint32 posBuffer, uint32 UVBuffer, uint32 elemBuffer)
 {STACK
 
 

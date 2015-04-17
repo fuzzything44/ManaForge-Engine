@@ -132,7 +132,7 @@ void Window::run()
 
 
 	// set initial tick
-	GLfloat LastTick = static_cast<GLfloat>(glfwGetTime());
+	float LastTick = static_cast<float>(glfwGetTime());
 
 	try
 	{
@@ -141,8 +141,8 @@ void Window::run()
 			if (hasFocus){
 
 				// calculate tick time
-				GLfloat CurrentTick = static_cast<GLfloat>(glfwGetTime());
-				GLfloat delta = CurrentTick - LastTick;
+				float CurrentTick = static_cast<float>(glfwGetTime());
+				float delta = CurrentTick - LastTick;
 
 				LastTick = CurrentTick;
 
@@ -184,7 +184,7 @@ void Window::run()
 }
 
 
-GLint Window::getKey(int key)
+int32 Window::getKey(int key)
 {STACK
 	return glfwGetKey(window, key);
 }
@@ -217,7 +217,7 @@ uvec2 Window::getSize() const
 	return uvec2(size);
 }
 
-GLvoid Window::focus(int in)
+void Window::focus(int in)
 {STACK
 	hasFocus = in == 0 ? false : true;
 }

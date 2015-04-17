@@ -26,14 +26,14 @@ std::string loadFileToStr(const char* filename)
 }
 
 // Load Shaders from the files defined
-GLuint LoadShaders(const char * vertex_file_path, const char * fragment_file_path)
+uint32 LoadShaders(const char * vertex_file_path, const char * fragment_file_path)
 {STACK
 
 	ENG_LOG(std::endl << std::endl);
 
 	// Create the shaders
-	GLuint VertexShaderID = glCreateShader(GL_VERTEX_SHADER);
-	GLuint FragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
+	uint32 VertexShaderID = glCreateShader(GL_VERTEX_SHADER);
+	uint32 FragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
 
 	// Read the Vertex Shader code from the file
 	std::string VertexShaderCode = loadFileToStr(vertex_file_path);
@@ -43,7 +43,7 @@ GLuint LoadShaders(const char * vertex_file_path, const char * fragment_file_pat
 	std::string FragmentShaderCode = loadFileToStr(fragment_file_path);
 
 
-	GLint Result = GL_FALSE;
+	int32 Result = GL_FALSE;
 	int InfoLogLength;
 	
 
@@ -85,7 +85,7 @@ GLuint LoadShaders(const char * vertex_file_path, const char * fragment_file_pat
 
 	// Link the program
 	ENG_LOG("Linking program\n");
-	GLuint ProgramID = glCreateProgram();
+	uint32 ProgramID = glCreateProgram();
 	glAttachShader(ProgramID, VertexShaderID);
 	glAttachShader(ProgramID, FragmentShaderID);
 	glLinkProgram(ProgramID);
@@ -107,7 +107,7 @@ GLuint LoadShaders(const char * vertex_file_path, const char * fragment_file_pat
 }
 
 
-GLuint loadDDS(const char* imagepath)
+uint32 loadDDS(const char* imagepath)
 {STACK
 
 	unsigned char header[124];
@@ -164,7 +164,7 @@ GLuint loadDDS(const char* imagepath)
 	}
 
 	// Create one OpenGL texture
-	GLuint textureID;
+	uint32 textureID;
 	glGenTextures(1, &textureID);
 
 	// "Bind" the newly created texture : all future texture functions will modify this texture

@@ -5,10 +5,11 @@
 namespace logging
 {
 
-	std::ofstream logfile;
+	static std::ofstream logfile = std::ofstream();
 
-	static void init()
+	inline void init()
 	{
+
 		logfile.open("log.txt");
 	}
 

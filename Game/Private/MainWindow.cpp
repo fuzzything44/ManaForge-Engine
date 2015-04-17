@@ -64,8 +64,8 @@ void MainWindow::init()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
 
-	GLuint chunkProgram = LoadShaders("shaders\\chunkvert.glsl", "shaders\\chunkfrag.glsl");
-	GLuint actorProgram = LoadShaders("shaders\\actorvert.glsl", "shaders\\actorfrag.glsl");
+	uint32 chunkProgram = LoadShaders("shaders\\chunkvert.glsl", "shaders\\chunkfrag.glsl");
+	uint32 actorProgram = LoadShaders("shaders\\actorvert.glsl", "shaders\\actorfrag.glsl");
 	
 	ENG_LOG("\nShaders Loaded!\n");
 
@@ -76,7 +76,7 @@ void MainWindow::init()
 	aspectRatio = static_cast<float>(getSize().x) / static_cast<float>(getSize().y);
 
 
-	srand(reinterpret_cast<GLuint>(this));
+	srand(reinterpret_cast<uint32>(this));
 	int seed = rand();
 	ENG_LOG(std::endl << "using seed: " << seed << std::endl)
 
@@ -117,7 +117,7 @@ void MainWindow::init()
 
 }
 
-void MainWindow::scroll(GLfloat x, GLfloat y)
+void MainWindow::scroll(float x, float y)
 {STACK
 	if (x != 0 || y != 0)
 	{
@@ -145,7 +145,7 @@ void MainWindow::draw(float deltaTime)
 	scale = scale < minScale ? minScale : scale;
 
 	// compute the viewMat
-	viewMat = glm::ortho<GLfloat>(-aspectRatio / scale, aspectRatio / scale, -1.f / scale, 1.f / scale, .1f, 23.f);
+	viewMat = glm::ortho<float>(-aspectRatio / scale, aspectRatio / scale, -1.f / scale, 1.f / scale, .1f, 23.f);
 	
 	// clear the color buffer and depth buffer (makes sure the trianges in front get rendered in front
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

@@ -27,7 +27,7 @@ public:
 	/// <param name="viewMatIn"> [in,out] If non-null, the view matrix in.</param>
 	///
 	/// <returns>  the error code</returns>
-	static ENGINE_API void init(GLuint programIn, mat4* viewMatIn);
+	static ENGINE_API void init(uint32 programIn, mat4* viewMatIn);
 
 
 
@@ -107,7 +107,7 @@ protected:
 	/// <summary> Ticks the given delta time.</summary>
 	///
 	/// <param name="deltaTime"> The delta time.</param>
-	virtual void tick(GLfloat deltaTime);
+	virtual void tick(float deltaTime);
 
 	/// <summary> Actors.</summary>
 	///
@@ -199,7 +199,7 @@ template <typename T> Actor* Actor::addActor(vec2 locationIn, vec2 sizeIn, vec2 
 		return new Actor(newDat, Chunk::persistentChunk);
 	}
 	ivec2 id = uvec2(static_cast<uint16>(floorf(locationIn.x / static_cast<float>(CHUNK_WIDTH))),
-		static_cast<GLuint>(floorf(locationIn.y / static_cast<float>(CHUNK_WIDTH))));
+		static_cast<uint32>(floorf(locationIn.y / static_cast<float>(CHUNK_WIDTH))));
 
 	// check if the chunk exists
 	if (0 <= id.x && id.x < static_cast<int16>(Chunk::getChunkSize().x), 0 <= id.y && id.y < static_cast<int16>(Chunk::getChunkSize().y))

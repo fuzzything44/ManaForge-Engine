@@ -2,22 +2,24 @@
 // worldwide typedefs
 
 #ifdef ENGINE
-#define ENGINE_API _declspec(dllexport)
+	#define ENGINE_API _declspec(dllexport)
 #else
-#define ENGINE_API _declspec(dllimport)
+	#define ENGINE_API _declspec(dllimport)
 #endif
 
 
-#include <glm/glm.hpp>
-#include <glm/gtx/transform.hpp>
+#if defined WIN32 || defined _WIN32
+	#include <Windows.h>
+	#include <direct.h>
+#endif
 
 #include <GLTools/glew.h>
 #include <GLTools/glfw3.h>
 
-#include <Poppy/PoppyDebugTools.h>
+#include <glm/glm.hpp>
+#include <glm/gtx/transform.hpp>
 
-#include <iostream>
-#include <fstream>
+#include <Poppy/PoppyDebugTools.h>
 
 typedef int8_t int8;
 typedef int16_t int16;

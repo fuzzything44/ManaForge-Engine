@@ -2,9 +2,6 @@
 #include <Engine.h>
 #include <ENGException.h>
 
-// OpenGL include
-#include <GLTools/glew.h>
-
 // OpenCL include
 #include <CL/cl.hpp>
 
@@ -28,14 +25,14 @@ ENGINE_API std::string loadFileToStr(const char* filename);
 /// <param name="fragmentFile"> The fragment file.</param>
 ///
 /// <returns> The shaders.</returns>
-ENGINE_API GLuint LoadShaders(const char* vertexFile, const char* fragmentFile);
+ENGINE_API uint32 LoadShaders(const char* vertexFile, const char* fragmentFile);
 
 /// <summary> Loads the DDS.</summary>
 ///
 /// <param name="imagepath"> The imagepath.</param>
 ///
 /// <returns> The DDS.</returns>
-ENGINE_API GLuint loadDDS(const char * imagepath);
+ENGINE_API uint32 loadDDS(const char * imagepath);
 
 /// <summary> Gets the string assiociated with the error code.</summary>
 ///

@@ -25,11 +25,11 @@ public:
 
 
 	// 1/sclae * 2 is how many units fit vertically
-	GLfloat scale = 0.1f;
+	float scale = 0.1f;
 
-	const GLfloat minScale = .00625f;
-	const GLfloat maxScale = 1.f;
-	GLfloat aspectRatio;
+	const float minScale = .00625f;
+	const float maxScale = 1.f;
+	float aspectRatio;
 
 	Actor* character;
 
@@ -38,9 +38,9 @@ public:
 
 private:
 	virtual void init() override;
-	virtual void scroll(GLfloat x, GLfloat y) override;
-	virtual void draw(GLfloat deltaTime) override;
-	virtual void input(GLfloat deltaTime) override;
+	virtual void scroll(float x, float y) override;
+	virtual void draw(float deltaTime) override;
+	virtual void input(float deltaTime) override;
 	virtual void exit() override;
 	virtual void focus(int focused) override;
 	virtual void resize(double x, double y);

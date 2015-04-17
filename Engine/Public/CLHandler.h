@@ -32,7 +32,7 @@ public:
 	 /// <param	name='UVBuffer'> Buffer for uv data. </param>
 	 /// <param	name='elemBuffer'> Buffer for element data.
 	 /// <return> the error code </return>
-	static ENGINE_API cl_int initCL(GLuint posBuffer, GLuint UVBuffer, GLuint elemBuffer);
+	static ENGINE_API cl_int initCL(uint32 posBuffer, uint32 UVBuffer, uint32 elemBuffer);
 
 	/// <summary> Updates the cl.</summary>
 	///

@@ -41,6 +41,9 @@
     <ClCompile Include="private\Camera.cpp">
       <Filter>Private</Filter>
     </ClCompile>
+    <ClCompile Include="Private\ModuleManager.cpp">
+      <Filter>Private</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="public\Actor.h">

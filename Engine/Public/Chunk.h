@@ -2,7 +2,7 @@
 #include "Engine.h"
 
 /// <summary> Width of the chunk.</summary>
-static const GLuint CHUNK_WIDTH = 50;
+static const uint32 CHUNK_WIDTH = 50;
 
 // forward declarations
 class Actor;
@@ -22,7 +22,7 @@ public:
 	/// <param name="chunksSizeIn"> The chunks size in.</param>
 	///
 	/// <returns> An ENGINE_API.</returns>
-	static GLvoid ENGINE_API initChunks(GLuint programIn, mat4* viewMatIn, const uvec2& chunksSizeIn);
+	static void ENGINE_API initChunks(uint32 programIn, mat4* viewMatIn, const uvec2& chunksSizeIn);
 
 	/// <summary> Draws.</summary>
 	///
@@ -49,13 +49,13 @@ protected:
 	
 
 	// opengl handles
-	GLuint locBufferID, UVBufferID, eboID, vaoID;
+	uint32 locBufferID, UVBufferID, eboID, vaoID;
 
 	/// <summary> The program.</summary>
-	static GLuint program;
+	static uint32 program;
 
 	/// <summary> Identifier for the view matrix uni.</summary>
-	GLint viewMatUniID;
+	int32 viewMatUniID;
 
 	/// <summary> Number of elements.</summary>
 	size_t elementCount;
@@ -73,8 +73,8 @@ protected:
 	///
 	/// <param name="data"> [in,out] The data.</param>
 	///
-	/// <returns> A GLvoid.</returns>
-	GLvoid drawChunk(std::vector<ActorData>& data);
+	/// <returns> A void.</returns>
+	void drawChunk(std::vector<ActorData>& data);
 
 	/// <summary> the chunks </summary>
 	static ENGINE_API Chunk*** chunks;
@@ -87,10 +87,10 @@ protected:
 
 
 	/// <summary> The tex uniform handle chunk.</summary>
-	static GLint texUniformHandleChunk;
+	static int32 texUniformHandleChunk;
 
 	/// <summary> The character location uniform handle chunk.</summary>
-	static GLint characterLocUniformHandleChunk;
+	static int32 characterLocUniformHandleChunk;
 
 
 };

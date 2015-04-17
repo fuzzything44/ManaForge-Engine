@@ -8,14 +8,14 @@
 Chunk*** Chunk::chunks = nullptr;
 Chunk* Chunk::persistentChunk = nullptr;
 uvec2 Chunk::chunksSize = uvec2(0, 0);
-GLint Chunk::characterLocUniformHandleChunk = -1;
-GLint Chunk::texUniformHandleChunk = -1;
-GLuint Chunk::program = 0;
+int32 Chunk::characterLocUniformHandleChunk = -1;
+int32 Chunk::texUniformHandleChunk = -1;
+uint32 Chunk::program = 0;
 mat4* Chunk::viewMat = nullptr;
 
 
 
-GLvoid Chunk::initChunks(GLuint programIn, mat4* viewMatIn, const uvec2& chunksSizeIn)
+void Chunk::initChunks(uint32 programIn, mat4* viewMatIn, const uvec2& chunksSizeIn)
 {STACK
 	chunksSize = chunksSizeIn;
 	program = programIn;
@@ -26,11 +26,11 @@ GLvoid Chunk::initChunks(GLuint programIn, mat4* viewMatIn, const uvec2& chunksS
 	// allocate the pointer
 	chunks = static_cast<Chunk***>(malloc(sizeof(Chunk**) * chunksSize.y));
 
-	for (GLuint x = 0; x < chunksSize.x; x++)
+	for (uint32 x = 0; x < chunksSize.x; x++)
 	{
 		// allocate the column -- you can read about malloc: http://www.cplusplus.com/reference/cstdlib/malloc/
 		chunks[x] = static_cast<Chunk**>(malloc(sizeof(Chunk*) * chunksSize.y));
-		for (GLuint y = 0; y < chunksSize.y; y++)
+		for (uint32 y = 0; y < chunksSize.y; y++)
 		{
 			ENG_LOG("\nInit Chunk (" << x << ", " << y << ")");
 			chunks[x][y] = new Chunk(vec2(x * CHUNK_WIDTH, y * CHUNK_WIDTH));
@@ -64,7 +64,7 @@ Chunk::Chunk(ivec2 locationIn)
 			0xefc60000, 18, 1812433253 > gen(rand());
 
 		// the data for locations 
-		std::vector<GLfloat> locData;
+		std::vector<float> locData;
 		locData.reserve(8 * CHUNK_WIDTH * CHUNK_WIDTH);
 
 		// allocate the same amount as above for texture coordinates
@@ -72,7 +72,7 @@ Chunk::Chunk(ivec2 locationIn)
 		texCoords.reserve(CHUNK_WIDTH * CHUNK_WIDTH);
 
 		// the element data 
-		std::vector<GLuint> eboData;
+		std::vector<uint32> eboData;
 		eboData.reserve(6 * CHUNK_WIDTH * CHUNK_WIDTH);
 
 		// init vbos, vaos, and textures
@@ -80,8 +80,8 @@ Chunk::Chunk(ivec2 locationIn)
 		{
 			for (int x = 0; x < CHUNK_WIDTH; x++)
 			{
-				GLfloat startX = x + location.x;
-				GLfloat startY = y + location.y;
+				float startX = x + location.x;
+				float startY = y + location.y;
 
 
 				locData.push_back(startX);
@@ -98,14 +98,14 @@ Chunk::Chunk(ivec2 locationIn)
 
 				// use a random texture -- will use loading
 				// currently 17 textures
-				GLuint tex = std::uniform_int_distribution<int>(0, 16)(gen);
+				uint32 tex = std::uniform_int_distribution<int>(0, 16)(gen);
 				std::stringstream stream;
 				stream << tex;
 				texCoords.push_back(TextureLibrary::getUVData(stream.str()));
 
 				
 
-				GLuint startIdx = (y * CHUNK_WIDTH + x) * 4;
+				uint32 startIdx = (y * CHUNK_WIDTH + x) * 4;
 
 				eboData.push_back(startIdx);
 				eboData.push_back(startIdx + 1);
@@ -134,7 +134,7 @@ Chunk::Chunk(ivec2 locationIn)
 		glBindBuffer(GL_ARRAY_BUFFER, locBufferID);
 
 		// bind loc data to be sent to the GPU
-		glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * locData.size(), &locData[0], GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * locData.size(), &locData[0], GL_STATIC_DRAW);
 
 
 		// init UV buffer
@@ -154,7 +154,7 @@ Chunk::Chunk(ivec2 locationIn)
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, eboID);
 
 		// send element data to the GPU
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLfloat) * eboData.size(), &eboData[0], GL_STATIC_DRAW);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(float) * eboData.size(), &eboData[0], GL_STATIC_DRAW);
 
 		elementCount = eboData.size();
 
@@ -163,7 +163,7 @@ Chunk::Chunk(ivec2 locationIn)
 	}
 }
 
-GLvoid Chunk::drawChunk(std::vector<ActorData>& data)
+void Chunk::drawChunk(std::vector<ActorData>& data)
 {STACK
 	if (this != persistentChunk)
 	{
@@ -192,7 +192,7 @@ GLvoid Chunk::drawChunk(std::vector<ActorData>& data)
 			2, // two elements per vertex (x,y)
 			GL_FLOAT, // they are floats
 			GL_FALSE, // not normalized (look up vector normalization)
-			sizeof(GLfloat) * 2, // the next element is 2 floats later
+			sizeof(float) * 2, // the next element is 2 floats later
 			nullptr // dont copy -- use the GL_ARRAY_BUFFER instead
 			);
 
@@ -204,7 +204,7 @@ GLvoid Chunk::drawChunk(std::vector<ActorData>& data)
 			2, // two elements per vertex (u,v)
 			GL_FLOAT, // they are floats
 			GL_FALSE, // not normalized (look up vector normalization)
-			sizeof(GLfloat) * 2, // the next element is 2 floats later
+			sizeof(float) * 2, // the next element is 2 floats later
 			nullptr // use the GL_ARRAY_BUFFER instead of copying on the spot
 			);
 
@@ -215,7 +215,7 @@ GLvoid Chunk::drawChunk(std::vector<ActorData>& data)
 		glDrawElements(
 			GL_TRIANGLES, // they are trianges
 			elementCount, // these many verticies
-			GL_UNSIGNED_INT, // the data is GLuint - unsigned int
+			GL_UNSIGNED_INT, // the data is uint32 - unsigned int
 			nullptr // use the buffer instead of raw data
 			);
 
@@ -254,7 +254,7 @@ void Chunk::draw(Actor* character, float deltaTime)
 	// always draw the persistent chunk
 	persistentChunk->drawChunk(data);
 
-	uvec2 chunkoffset(character->getLocation() / vec2(static_cast<GLfloat>(CHUNK_WIDTH)));
+	uvec2 chunkoffset(character->getLocation() / vec2(static_cast<float>(CHUNK_WIDTH)));
 
 	ivec2 chunksInEachDir = glm::uvec2( 1 / (*viewMat)[0][0], 1 / (*viewMat)[1][1]);
 

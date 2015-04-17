@@ -2,6 +2,7 @@
 #include <Engine.h>
 #include <map>
 
+
 /// <summary> Values that represent window modes.</summary>
 enum WindowMode
 {
@@ -47,9 +48,9 @@ public:
 	/// <summary> Gets the size.</summary>
 	///
 	/// <returns> The size.</returns>
-	uvec2 ENGINE_API getSize() const;
+	ENGINE_API uvec2 getSize() const;
 
-	ENGINE_API GLint getKey(int key);
+	ENGINE_API int32 getKey(int key);
 	ENGINE_API vec2 getCursorLoc();
 
 protected:
@@ -79,7 +80,7 @@ protected:
 	///
 	/// <param name="x"> The amount in x scroll.</param>
 	/// <param name="y"> The y coordinate.</param>
-	ENGINE_API virtual void scroll(GLfloat x, GLfloat y) = 0;
+	ENGINE_API virtual void scroll(float x, float y) = 0;
 
 	/// <summary> Called every frame after input.</summary>
 	///
@@ -97,7 +98,7 @@ protected:
 	/// <summary> Focus.</summary>
 	///
 	/// <param name="focused"> The focused.</param>
-	ENGINE_API virtual void focus(GLint focused) = 0;
+	ENGINE_API virtual void focus(int32 focused) = 0;
 
 	/// <summary> All windows sorted by the GLFWwindow pointer.</summary>
 	ENGINE_API static std::map<GLFWwindow*, Window*> windows;
@@ -111,7 +112,7 @@ protected:
 	{STACK
 		if (Window* winObj = windows[window])
 		{
-			winObj->scroll((GLfloat)x, (GLfloat)y);
+			winObj->scroll((float)x, (float)y);
 		}
 	}
 

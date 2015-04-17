@@ -4,18 +4,13 @@
 #include "Helper.h"
 #include "ENGException.h"
 
-#if defined _WIN32 || defined WIN32
-	#include <Windows.h>
-	#include <direct.h>
-#endif
-
 /*************** P R O T O T Y P E S ***************************************************/
-GLvoid draw(GLfloat delta);
-GLint init();
-GLvoid keyboard(GLFWwindow* window, GLfloat delta);
-GLvoid scroll(GLFWwindow* winodw, GLdouble x, GLdouble y);
-GLvoid resize(GLFWwindow* window, GLint x, GLint y);
-GLint exit();
+void draw(float delta);
+int32 init();
+void keyboard(GLFWwindow* window, float delta);
+void scroll(GLFWwindow* winodw, GLdouble x, GLdouble y);
+void resize(GLFWwindow* window, int32 x, int32 y);
+int32 exit();
 
 
 glm::mat4 viewMat;
@@ -23,10 +18,10 @@ glm::mat4 projection;
 
 
 // 1/sclae * 2 is how many units fit vertically
-GLfloat scale = 0.1f;
+float scale = 0.1f;
 
-static const GLfloat minScale = .00625f;
-static const GLfloat maxScale = 1.f;
+static const float minScale = .00625f;
+static const float maxScale = 1.f;
 
 cl_int initCL();
 
@@ -107,7 +102,7 @@ void changeDir()
 }
 #endif
 
-GLint main()
+int32 main()
 {STACK
 
 	changeDir();

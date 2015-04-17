@@ -4,16 +4,7 @@
 
 #include <stdexcept>
 
-#ifdef _WIN32
-	#pragma message("Windows before defined")
-		#include <Windows.h>
-	#pragma message("Windows after defin")
-#else
-	#error "OOPS -- win only pls"
-#endif
-
-#ifdef _WIN32
-
+#if defined _WIN32 || defined WIN32
 
 class SharedLibrary
 {

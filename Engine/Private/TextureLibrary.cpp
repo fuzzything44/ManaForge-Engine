@@ -1,11 +1,11 @@
 #include "TextureLibrary.h"
 
 
-GLuint TextureLibrary::texture = 0;
+uint32 TextureLibrary::texture = 0;
 std::map<std::string, UVData> TextureLibrary::UVDataMap = std::map<std::string, UVData>();
 uvec2 TextureLibrary::nextLocation = uvec2(0, 0);
 
-GLuint TextureLibrary::getTextureHandle()
+uint32 TextureLibrary::getTextureHandle()
 {STACK
 	return texture;
 }
@@ -62,7 +62,7 @@ UVData TextureLibrary::getUVData(std::string key)
 }
 
 
-void TextureLibrary::appendDDS(GLuint texToAppend, GLuint Xoffset, GLuint Yoffset, const char* filepath)
+void TextureLibrary::appendDDS(uint32 texToAppend, uint32 Xoffset, uint32 Yoffset, const char* filepath)
 {STACK
 
 	unsigned char header[124];
@@ -140,7 +140,7 @@ void TextureLibrary::appendDDS(GLuint texToAppend, GLuint Xoffset, GLuint Yoffse
 }
 
 
-GLuint TextureLibrary::allocateCompressedTextureLibraryFromDDS(GLuint num, const char* filepath)
+uint32 TextureLibrary::allocateCompressedTextureLibraryFromDDS(uint32 num, const char* filepath)
 {STACK
 	unsigned char header[124];
 
@@ -189,15 +189,15 @@ GLuint TextureLibrary::allocateCompressedTextureLibraryFromDDS(GLuint num, const
 	unsigned int blockSize = (format == GL_COMPRESSED_RGBA_S3TC_DXT1_EXT) ? 8 : 16;
 	//unsigned int offset = 0;
 
-	GLuint texture;
+	uint32 texture;
 	glGenTextures(1, &texture);
 	glBindTexture(GL_TEXTURE_2D, texture);
 
 
-	for (GLuint i = 0; i < mipMapCount; i++)
+	for (uint32 i = 0; i < mipMapCount; i++)
 	{
 
-		GLuint size = ((width + 3) / 4)*((height + 3) / 4) * blockSize;
+		uint32 size = ((width + 3) / 4)*((height + 3) / 4) * blockSize;
 
 		glCompressedTexImage2D(GL_TEXTURE_2D, i, format, width * num, height * num, 0, size * num * num, nullptr);
 
