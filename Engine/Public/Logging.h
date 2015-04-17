@@ -2,15 +2,20 @@
 #include <fstream>
 #include <iostream>
 
-namespace logging
+struct logging
 {
 
-	static std::ofstream logfile = std::ofstream();
+	static std::ofstream logfile;
 
-	inline void init()
+	static void init()
 	{
 
 		logfile.open("log.txt");
+		
+		if(logfile.bad())
+		{
+			::exit(-2);
+		}
 	}
 
 };

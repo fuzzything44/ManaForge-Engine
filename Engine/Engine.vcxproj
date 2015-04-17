@@ -104,6 +104,7 @@
     <ClCompile Include="Private\Component.cpp" />
     <ClCompile Include="private\ENGException.cpp" />
     <ClCompile Include="private\Helper.cpp" />
+    <ClCompile Include="Private\Logging.cpp" />
     <ClCompile Include="Private\Module.cpp" />
     <ClCompile Include="Private\ModuleManager.cpp" />
     <ClCompile Include="private\TextureLibrary.cpp" />
@@ -119,6 +120,7 @@
     <ClInclude Include="Public\ENGException.h" />
     <ClInclude Include="Public\Engine.h" />
     <ClInclude Include="public\Helper.h" />
+    <ClInclude Include="Public\Logging.h" />
     <ClInclude Include="Public\Module.h" />
     <ClInclude Include="Public\ModuleManager.h" />
     <ClInclude Include="Public\Renderer.h" />
