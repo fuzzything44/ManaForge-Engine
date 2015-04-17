@@ -18,19 +18,19 @@ public:
 	/// <summary> Sets camera to render at. </summary>
 	///
 	/// <param name="newCamera"> The camera it should render at. </param>
-	virtual void setCurrentCamera(Camera* newCamera) override;
+	virtual void setCurrentCamera(CameraComponent* newCamera) override;
 
 	void loadTextures(std::vector<std::string> textures) override;
 	~OpenGLRenderer() override;
 
-	Camera* getCurrentCamera() override;
+	CameraComponent* getCurrentCamera() override;
 
 	OpenGLRenderer() { }
 
 
 
 private:
-	Camera* currentCamera;
+	CameraComponent* currentCamera;
 };
 
 

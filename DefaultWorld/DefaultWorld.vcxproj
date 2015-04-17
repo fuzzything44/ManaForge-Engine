@@ -43,7 +43,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>$(SolutionDir)include;$(SolutionDir)Engine\public;$(SolutionDir)DefaultWorld\public;$(SolutionDir)Lodepng\public;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Library;$(TargetDir);$(LibraryPath);$(SolutionDir)bin\$(Configuration)</LibraryPath>
-    <OutDir>$(SolutionDir)bin\$(Configuration)\Modules</OutDir>
+    <OutDir>$(SolutionDir)bin\$(Configuration)\Modules\</OutDir>
     <TargetExt>.dll</TargetExt>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

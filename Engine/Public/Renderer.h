@@ -31,7 +31,7 @@ public:
 
 };
 
-class Camera;
+class CameraComponent;
 
 class Renderer 
 {
@@ -53,12 +53,12 @@ public:
 	/// <summary> Sets camera to render at. </summary>
 	///
 	/// <param name="newCamera"> The camera it should render at. </param>
-	virtual void setCurrentCamera(Camera* newCamera) = 0;
+	virtual void setCurrentCamera(CameraComponent* newCamera) = 0;
 
 	/// <summary> Gets the camera.</summary>
 	///
 	/// <returns> null if it fails, else the camera.</returns>
-	virtual Camera* getCurrentCamera() = 0;
+	virtual CameraComponent* getCurrentCamera() = 0;
 
 	/// <summary> Creates a new model.</summary>
 	///

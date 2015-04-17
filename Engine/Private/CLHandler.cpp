@@ -27,7 +27,7 @@ cl_int CLHandler::updateCL(float deltaTime, std::vector<ActorData>& data)
 
 	glFinish();
 
-	cl_int err = CL_SUCCESS;
+	cl_int err;
 
 	// acquire GL objects so we can write to them
 	err = queue->enqueueAcquireGLObjects(objects);

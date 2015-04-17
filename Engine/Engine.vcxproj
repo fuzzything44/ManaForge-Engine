@@ -98,7 +98,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="private\Actor.cpp" />
-    <ClCompile Include="private\Camera.cpp" />
+    <ClCompile Include="private\CameraComponent.cpp" />
     <ClCompile Include="private\Chunk.cpp" />
     <ClCompile Include="private\CLHandler.cpp" />
     <ClCompile Include="Private\Component.cpp" />
@@ -112,7 +112,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="public\Actor.h" />
-    <ClInclude Include="Public\Camera.h" />
+    <ClInclude Include="Public\CameraComponent.h" />
     <ClInclude Include="Public\Component.h" />
     <ClInclude Include="public\Chunk.h" />
     <ClInclude Include="public\CLHandler.h" />
@@ -121,9 +121,11 @@
     <ClInclude Include="Public\Engine.h" />
     <ClInclude Include="public\Helper.h" />
     <ClInclude Include="Public\Logging.h" />
+    <ClInclude Include="Public\MeshComponent.h" />
     <ClInclude Include="Public\Module.h" />
     <ClInclude Include="Public\ModuleManager.h" />
     <ClInclude Include="Public\Renderer.h" />
+    <ClInclude Include="Public\SceneComponent.h" />
     <ClInclude Include="Public\SharedLibrary.h" />
     <ClInclude Include="public\TextureLibrary.h" />
     <ClInclude Include="Public\Transform.h" />

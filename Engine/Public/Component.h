@@ -6,7 +6,7 @@
 class ENGINE_API Component
 {
 public:
-	explicit Component(Actor* owner);
+	explicit Component(Actor* owner = nullptr);
 private:
 	Actor* owner;
 

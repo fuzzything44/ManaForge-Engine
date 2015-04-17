@@ -4,8 +4,7 @@
 
 ///////////// STATIC VARIBALE INITALIZATION ////////////////////
 Actor::Actor(const ActorData& dataIn, Chunk* chunkIn) 
-	: chunk(chunkIn),
-	model(ModuleManager::get()->getRenderer()->newModel(nullptr, nullptr, 3, 3))
+	: chunk(chunkIn)
 {STACK
 	
 	// add this class to the chunk

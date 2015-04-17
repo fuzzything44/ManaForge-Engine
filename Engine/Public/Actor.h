@@ -2,12 +2,11 @@
 #include "Engine.h"
 #include "UVData.h"
 #include "Logging.h"
+#include "Transform.h"
 
 static const unsigned int MAX_ACTORS = 100001;
 
 
-class Renderer;
-class Model;
 class CLHandler;
 class Chunk;
 struct ActorData;
@@ -40,7 +39,7 @@ public:
 	/// <summary> Gets the size.</summary>
 	///
 	/// <returns> The size.</returns>
-	inline vec2 getSize();
+	inline vec2 getScale();
 
 	/// <summary> Gets the rotation.</summary>
 	///
@@ -60,7 +59,7 @@ public:
 	/// <summary> Sets a size.</summary>
 	///
 	/// <param name="newSize"> Size of the new.</param>
-	inline void setSize(vec2 newSize);
+	inline void setScale(vec2 newScale);
 
 	/// <summary> Sets a rotation.</summary>
 	///
@@ -102,8 +101,7 @@ protected:
 	/// <summary> The chunk.</summary>
 	Chunk* chunk;
 
-	/// <summary> The Model </summary>
-	Model* model;
+	Transform trans;
 
 	/// <summary> Ticks the given delta time.</summary>
 	///
@@ -185,7 +183,6 @@ struct ActorData
 ////////////////////////////////////////////////////////////////
 
 #include "Chunk.h"
-#include "Renderer.h"
 
 template <typename T> Actor* Actor::addActor(vec2 locationIn, vec2 sizeIn, vec2 velocityIn, float rotationIn, uint8 renderOrderIn,
 	bool collides, UVData UVs, bool isPersisitent)
@@ -219,19 +216,19 @@ template <typename T> Actor* Actor::addActor(vec2 locationIn, vec2 sizeIn, vec2 
 
 inline vec2 Actor::getLocation()
 {
-	return model->getLocation();
+	return trans.location;
 }
 
 
-inline vec2 Actor::getSize()
+inline vec2 Actor::getScale()
 {
-	return model->getScale();
+	return trans.scale;
 }
 
 
 inline float Actor::getRotation()
 {
-	return model->getRotation();
+	return trans.rotation;
 }
 
 
@@ -243,19 +240,19 @@ inline vec2 Actor::getVelocity()
 
 inline void Actor::setLocation(vec2 newLoc)
 {
-	model->setLocation(newLoc);
+	trans.location = newLoc;
 }
 
 
-inline void Actor::setSize(vec2 newSize)
+inline void Actor::setScale(vec2 newScale)
 {
-	model->setScale(newSize);
+	trans.scale = newScale;
 }
 
 
 inline void Actor::setRotation(float newRot)
 {
-	model->setRotation(newRot);
+	trans.rotation= newRot;
 }
 
 

@@ -76,11 +76,6 @@ void MainWindow::init()
 
 	aspectRatio = static_cast<float>(getSize().x) / static_cast<float>(getSize().y);
 
-
-	srand(reinterpret_cast<uint32>(this));
-	int seed = rand();
-	ENG_LOG(std::endl << "using seed: " << seed << std::endl)
-
 	// init the generator -- will remove with loading
 	std::mersenne_twister_engine < std::uint_fast32_t, 32, 624, 397, 31,
 		0x9908b0df, 11,

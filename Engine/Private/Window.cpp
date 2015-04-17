@@ -167,8 +167,6 @@ void Window::run()
 
 			}
 
-			CLHandler::wait();
-
 			// make sure all events are done
 			glfwPollEvents();
 

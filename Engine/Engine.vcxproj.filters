@@ -38,13 +38,13 @@
     <ClCompile Include="Private\Component.cpp">
       <Filter>Private</Filter>
     </ClCompile>
-    <ClCompile Include="private\Camera.cpp">
-      <Filter>Private</Filter>
-    </ClCompile>
     <ClCompile Include="Private\ModuleManager.cpp">
       <Filter>Private</Filter>
     </ClCompile>
     <ClCompile Include="Private\Logging.cpp">
+      <Filter>Private</Filter>
+    </ClCompile>
+    <ClCompile Include="private\CameraComponent.cpp">
       <Filter>Private</Filter>
     </ClCompile>
   </ItemGroup>
@@ -91,9 +91,6 @@
     <ClInclude Include="Public\Component.h">
       <Filter>Public</Filter>
     </ClInclude>
-    <ClInclude Include="Public\Camera.h">
-      <Filter>Public</Filter>
-    </ClInclude>
     <ClInclude Include="Public\SharedLibrary.h">
       <Filter>Public</Filter>
     </ClInclude>
@@ -104,6 +101,15 @@
       <Filter>Public</Filter>
     </ClInclude>
     <ClInclude Include="Public\Logging.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\CameraComponent.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\SceneComponent.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\MeshComponent.h">
       <Filter>Public</Filter>
     </ClInclude>
   </ItemGroup>

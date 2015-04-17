@@ -1,7 +1,6 @@
 #include "Engine.h"
 #include "ModuleManager.h"
 #include "Helper.h"
-#include "Logging.h"
 
 ModuleManager* ModuleManager::currentMM = nullptr;
 
@@ -39,8 +38,6 @@ void ModuleManager::addRenderer(Renderer* newRenderer)
 	if (!renderer)
 	{
 		renderer = newRenderer;
-
-		ENG_LOG(renderer);
 	}
 }
 

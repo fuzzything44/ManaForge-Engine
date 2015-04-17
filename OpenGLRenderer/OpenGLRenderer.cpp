@@ -18,7 +18,7 @@ void OpenGLRenderer::update()
 {
 }
 
-void OpenGLRenderer::setCurrentCamera(Camera* newCamera)
+void OpenGLRenderer::setCurrentCamera(CameraComponent* newCamera)
 {
 	check(newCamera);
 
@@ -36,7 +36,7 @@ OpenGLRenderer::~OpenGLRenderer()
 
 }
 
-Camera* OpenGLRenderer::getCurrentCamera()
+CameraComponent* OpenGLRenderer::getCurrentCamera()
 {
 	return currentCamera;
 }

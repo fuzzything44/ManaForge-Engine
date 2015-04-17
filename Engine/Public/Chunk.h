@@ -69,13 +69,6 @@ protected:
 	/// <summary> The location.</summary>
 	vec2 location;
 
-	/// <summary> Draw chunk.</summary>
-	///
-	/// <param name="data"> [in,out] The data.</param>
-	///
-	/// <returns> A void.</returns>
-	void drawChunk(std::vector<ActorData>& data);
-
 	/// <summary> the chunks </summary>
 	static ENGINE_API Chunk*** chunks;
 

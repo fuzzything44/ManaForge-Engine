@@ -7,19 +7,21 @@
 Module::Module(const std::string& filename) :
 	registerModuleFunctionAddress(nullptr),
 	getModuleEngineVersionAddress(nullptr),
-	name(std::string("Modules").append(filename)), // Append the modules prefiex
+	name(std::string("Modules\\").append(filename)), // Append the modules prefiex
 	libraryHandle(nullptr),
 	refrenceCount(nullptr)
 {STACK
 	try{
 
 		// load the library
-		libraryHandle = SharedLibrary::Load(filename);
+		libraryHandle = SharedLibrary::Load(name);
 
 		registerModuleFunctionAddress = SharedLibrary::getFunctionPtr<registerModuleFun>(libraryHandle, "registerModule");
 
 		getModuleEngineVersionAddress = SharedLibrary::getFunctionPtr < getModuleEngineVersionFun >
 			(libraryHandle, "getModuleEngineVersion");
+
+
 	}
 	catch (std::exception& e)
 	{
@@ -54,10 +56,10 @@ void Module::registerModule(ModuleManager& mm)
 	{
 		ENG_LOG("Module: " << name << " Needs to be rebuilt -- using old engine");
 	};
-
-
-
+	
 	registerModuleFunctionAddress(mm);
+
+	ENG_LOG("Module loaded: " << name);
 
 }
 
