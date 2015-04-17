@@ -64,9 +64,6 @@
     <ClInclude Include="Public\Engine.h">
       <Filter>Public</Filter>
     </ClInclude>
-    <ClInclude Include="Public\Logging.h">
-      <Filter>Public</Filter>
-    </ClInclude>
     <ClInclude Include="Public\Window.h">
       <Filter>Public</Filter>
     </ClInclude>

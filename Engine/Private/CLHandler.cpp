@@ -72,8 +72,11 @@ cl_int CLHandler::updateCL(float deltaTime, std::vector<ActorData>& data)
 }
 
 void CLHandler::wait()
-{STACK
-	queue->flush();
+{
+	STACK
+
+	check(queue);
+	queue->finish();
 }
 
 cl_int CLHandler::initCL(uint32 posBuffer, uint32 UVBuffer, uint32 elemBuffer)

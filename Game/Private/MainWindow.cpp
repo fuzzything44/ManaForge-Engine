@@ -54,7 +54,7 @@ void MainWindow::init()
 	TextureLibrary::addTexture("15", "textures\\15.dds");
 	TextureLibrary::addTexture("16", "textures\\16.dds");
 
-	ENG_LOG("\nTextures Loaded!\n");
+	logging::logfile << "Textures Loaded!\n";
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);

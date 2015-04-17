@@ -110,6 +110,8 @@ int32 main()
 
 	logging::init();
 
+	logging::logfile << "THE LOGS ARE HERE";
+
 	auto window = MainWindow("RPG-Simulator", WindowMode::WINDOWED, uvec2(800, 600));
 
 	try{

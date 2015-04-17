@@ -7,6 +7,7 @@ ModuleManager* ModuleManager::currentMM = nullptr;
 ModuleManager::ModuleManager()
 	: renderer(nullptr)
 {
+	currentMM = this;
 }
 
 Renderer* ModuleManager::getRenderer()
@@ -51,7 +52,7 @@ void ModuleManager::addWorld(World* createWorld(ModuleManager&, std::string))
 
 ENGINE_API ModuleManager* ModuleManager::get()
 {
-	assert(currentMM);
+	check(currentMM);
 
 	return currentMM;
 }

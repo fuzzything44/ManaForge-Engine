@@ -119,7 +119,6 @@
     <ClInclude Include="Public\ENGException.h" />
     <ClInclude Include="Public\Engine.h" />
     <ClInclude Include="public\Helper.h" />
-    <ClInclude Include="Public\Logging.h" />
     <ClInclude Include="Public\Module.h" />
     <ClInclude Include="Public\ModuleManager.h" />
     <ClInclude Include="Public\Renderer.h" />

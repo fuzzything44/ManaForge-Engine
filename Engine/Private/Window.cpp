@@ -177,7 +177,7 @@ void Window::run()
 	{
 		ENG_LOG(e.what());
 
-		exit();
+		::exit(-2);
 	}
 	exit();
 	
