@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Engine.h"
-
+#include "ENGException.h"
 #include <stdexcept>
 
 #if defined _WIN32 || defined WIN32
@@ -18,10 +18,10 @@ public:
 
 		SharedLibHandle handle = LoadLibraryA(pathWithExt.c_str());
 
-		if (handle == NULL)
+		if (handle == nullptr)
 		{
-			__debugbreak();
-			throw std::runtime_error("Library Failed to load");
+			
+			FATAL_ERR("Failed to load library", 2);
 		}
 
 		return handle;
@@ -43,13 +43,12 @@ public:
 		// gets the pointer to the function name specified
 		FARPROC addr = GetProcAddress(handle, functionName.c_str());
 
-		if (addr == NULL)
+		if (addr == nullptr)
 		{
-			__debugbreak();
-			throw std::runtime_error("Cannot find function" + functionName);
+			FATAL_ERR("Failed to get function address", -2);
 		}
 
-		return reinterpret_cast<T*>(addr);
+		return (T*) (addr);
 	}
 };
 

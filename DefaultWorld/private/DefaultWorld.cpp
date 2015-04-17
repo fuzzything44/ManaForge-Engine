@@ -203,3 +203,8 @@ extern "C" DefaultWorldPlugin_API void registerModule(ModuleManager& mm)
 {STACK
 	mm.addWorld(AddWorld);
 }
+
+extern "C" DefaultWorldPlugin_API float getModuleEngineVersion()
+{
+	return ENGINE_VERSION;
+}

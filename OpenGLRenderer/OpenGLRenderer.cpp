@@ -1,5 +1,3 @@
-#define OpenGLRendererSource 1
-
 #include "OpenGLRendererConfig.h"
 #include <OpenGLRenderer.h>
 #include <Renderer.h>
@@ -46,4 +44,9 @@ Camera* OpenGLRenderer::getCurrentCamera()
 extern "C" OpenGLRendererPlugin_API void registerModule(ModuleManager& mm)
 {
 	mm.addRenderer(new OpenGLRenderer());
+}
+
+extern "C" OpenGLRendererPlugin_API float getModuleEngineVersion()
+{
+	return ENGINE_VERSION;
 }

@@ -1,12 +1,15 @@
 #include "Engine.h"
 #include "Module.h"
 #include "Logging.h"
+#include "Helper.h"
 #include <iostream>
 
 Module::Module(const std::string& filename) :
-	registerModuleFunctionAddress(0),
-	libraryHandle(0),
-	refrenceCount(0)
+	registerModuleFunctionAddress(nullptr),
+	getModuleEngineVersionAddress(nullptr),
+	name(std::string("Modules").append(filename)), // Append the modules prefiex
+	libraryHandle(nullptr),
+	refrenceCount(nullptr)
 {STACK
 	try{
 
@@ -15,6 +18,8 @@ Module::Module(const std::string& filename) :
 
 		registerModuleFunctionAddress = SharedLibrary::getFunctionPtr<registerModuleFun>(libraryHandle, "registerModule");
 
+		getModuleEngineVersionAddress = SharedLibrary::getFunctionPtr < getModuleEngineVersionFun >
+			(libraryHandle, "getModuleEngineVersion");
 	}
 	catch (std::exception& e)
 	{
@@ -26,14 +31,34 @@ Module::Module(const std::string& filename) :
 }
 
 Module::Module(const Module& other) :
+	registerModuleFunctionAddress(other.registerModuleFunctionAddress),
+	getModuleEngineVersionAddress(other.getModuleEngineVersionAddress),
+	name(other.name),
 	libraryHandle(other.libraryHandle),
-	refrenceCount(other.refrenceCount),
-	registerModuleFunctionAddress(other.registerModuleFunctionAddress)
+	refrenceCount(other.refrenceCount)
 {STACK
 	if (refrenceCount)
 	{
 		(*refrenceCount)++;
 	}
+}
+
+void Module::registerModule(ModuleManager& mm)
+{
+	STACK
+
+	check(getModuleEngineVersionAddress);
+	check(registerModuleFunctionAddress);
+
+	if(getModuleEngineVersionAddress() != ENGINE_VERSION)
+	{
+		ENG_LOG("Module: " << name << " Needs to be rebuilt -- using old engine");
+	};
+
+
+
+	registerModuleFunctionAddress(mm);
+
 }
 
 Module::~Module()

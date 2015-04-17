@@ -13,14 +13,12 @@ public:
 
 	// typedef for the register plugin function type
 	typedef void registerModuleFun(ModuleManager&);
+	typedef float getModuleEngineVersionFun();
 
 	/// <summary> Registers the module with the ModuleManager specified</summary>
 	///
 	/// <param name="mm"> The module manager to register the module with</param>
-	ENGINE_API void registerModule(ModuleManager& mm)
-	{STACK
-		registerModuleFunctionAddress(mm);
-	}
+	ENGINE_API void registerModule(ModuleManager& mm);
 
 	/// <summary> Modules the given file.</summary>
 	///
@@ -38,6 +36,9 @@ public:
 private:
 	// address to the function to register the plugin
 	registerModuleFun* registerModuleFunctionAddress;
+	getModuleEngineVersionFun* getModuleEngineVersionAddress;
+
+	std::string name;
 
 	SharedLibrary::SharedLibHandle libraryHandle;
 

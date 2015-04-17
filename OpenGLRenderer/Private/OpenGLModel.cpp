@@ -61,3 +61,9 @@ void OpenGLModel::addRelativeScale(vec2 scaleToAdd)
 {
 	trans.scale += scaleToAdd;
 }
+
+OpenGLModel::OpenGLModel()
+	:locations(nullptr),
+	UVs(nullptr),
+	numVerts(0),
+	numElems(0) { }

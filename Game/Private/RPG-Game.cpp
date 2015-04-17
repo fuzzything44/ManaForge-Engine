@@ -25,7 +25,7 @@ static const float maxScale = 1.f;
 
 cl_int initCL();
 
-#ifdef _WIN32
+#if defined _WIN32 || defined WIN32
 void changeDir()
 {STACK
 	// changes the path so everything we open will be in Resoruce/
@@ -109,8 +109,6 @@ int32 main()
 
 
 	logging::init();
-
-	logging::logfile << "THE LOGS ARE HERE";
 
 	auto window = MainWindow("RPG-Simulator", WindowMode::WINDOWED, uvec2(800, 600));
 

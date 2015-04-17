@@ -37,11 +37,7 @@ private:
 class OpenGLModel : public Model
 {
 public:
-	OpenGLModel()
-		:locations(nullptr),
-		UVs(nullptr),
-		numVerts(0),
-		numElems(0) { }
+	OpenGLModel();
 
 	OpenGLModel(float* locations, float* UVs, int numVerts, int numElems)
 		:locations(locations),

@@ -44,7 +44,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)Engine\Public\;$(SolutionDir)Include;$(SolutionDir)OpenGLRenderer\Public</IncludePath>
-    <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)bin\$(Configuration)\Modules</OutDir>
     <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(SolutionDir)library;$(SolutionDir)bin\$(Configuration);$(SolutionDir)/OpenGLRenderer/Public</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -56,7 +56,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;OPENGLRENDERER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>OpenGLRendererSource;WIN32;_DEBUG;_WINDOWS;_USRDLL;OPENGLRENDERER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
