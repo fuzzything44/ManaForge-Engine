@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "Helper.h"
 
 std::string loadFileToStr(const char* filename)

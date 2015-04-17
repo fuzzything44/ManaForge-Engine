@@ -1,7 +1,9 @@
-#include "stdafx.h"
-
 #include "MainWindow.h"
 #include <ModuleManager.h>
+#include <ENGException.h>
+#include <Helper.h>
+#include <TextureLibrary.h>
+#include <random>
 
 MainWindow::MainWindow(std::string title, WindowMode mode, uvec2 size) : Window(title, mode, size)
 {STACK
@@ -95,7 +97,7 @@ void MainWindow::init()
 			vec2(.5f, .5f),
 			vec2(0.f, 0.f),
 			float(std::uniform_real_distribution<float>(0.f, 360.f)(gen)),
-			3,
+			uint8(3),
 			true,
 			TextureLibrary::getUVData("9"),
 			true

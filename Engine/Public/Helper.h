@@ -1,5 +1,6 @@
 #pragma once
 #include <Engine.h>
+#include <ENGException.h>
 
 // OpenGL include
 #include <GLTools/glew.h>

@@ -1,10 +1,5 @@
-#include "stdafx.h"
-
 #include "Engine.h"
-
 #include "Module.h"
-
-
 #include <iostream>
 
 Module::Module(const std::string& filename) :

@@ -28,6 +28,5 @@ int main()
 	std::string pathToSource = projectName + "\\Private\\" + className + ".cpp";
 	std::ofstream source(pathToSource);
 
-	source << "#include \"stdafx.h\"\n";
 	source << "#include \"" << className << ".h\"\n\n";
 }

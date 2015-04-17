@@ -14,13 +14,11 @@
     <ClCompile Include="Private\RPG-Game.cpp">
       <Filter>Private</Filter>
     </ClCompile>
-    <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="Private\MainWindow.cpp">
       <Filter>Private</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="stdafx.h" />
     <ClInclude Include="Public\MainWindow.h">
       <Filter>Public</Filter>
     </ClInclude>

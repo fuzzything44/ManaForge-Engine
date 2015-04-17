@@ -1,5 +1,7 @@
-#include "stdafx.h"
 #include "Chunk.h"
+#include "TextureLibrary.h"
+#include "UVData.h"
+#include <random>
 
 
 // set inital value for static variables
@@ -102,6 +104,7 @@ Chunk::Chunk(ivec2 locationIn)
 				texCoords.push_back(TextureLibrary::getUVData(stream.str()));
 
 				
+
 				GLuint startIdx = (y * CHUNK_WIDTH + x) * 4;
 
 				eboData.push_back(startIdx);
@@ -141,7 +144,7 @@ Chunk::Chunk(ivec2 locationIn)
 		glBindBuffer(GL_ARRAY_BUFFER, UVBufferID);
 
 		// bind UV data to be sen tot the GPU
-		glBufferData(GL_ARRAY_BUFFER, sizeof(UVData) * texCoords.size(), &texCoords[0].bottomLeft.x, GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(::UVData) * texCoords.size(), &texCoords[0].bottomLeft.x, GL_STATIC_DRAW);
 
 
 		// init element buffer
@@ -220,10 +223,10 @@ GLvoid Chunk::drawChunk(std::vector<ActorData>& data)
 		glDisableVertexAttribArray(1);
 	}
 
-	for (auto& elem : actors)
-	{
-		data.push_back(elem->data);
-	}
+	//for (auto& elem : actors)
+	//{
+	//	data.push_back(elem->data);
+	//}
 
 
 }
@@ -270,7 +273,7 @@ void Chunk::draw(Actor* character, float deltaTime)
 		}
 	}
 
-	Actor::drawActors(data, deltaTime, character);
+//	Actor::drawActors(data, deltaTime, character);
 }
 
 vec2 Chunk::getLocation()

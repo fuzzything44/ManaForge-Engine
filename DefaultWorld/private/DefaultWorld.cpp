@@ -6,6 +6,7 @@
 #include <sstream>
 #include <map>
 #include <Color.h>
+#include <ENGException.h>
 
 using namespace std;
 
@@ -48,7 +49,7 @@ public:
 			FATAL_ERR("No world loaded", 40);
 		}
 		
-
+		
 		string currentLine;
 		// Loads .ini file for world system.
 		ifstream world(folderLocation + "world.ini");
@@ -112,6 +113,7 @@ public:
 			} while (onLine[0] != '#');
 			// First line should be amount of chunks x and y.
 			vector<string> line = split<'_'>(onLine);
+
 
 			// Parse the line.
 			stringstream parser;

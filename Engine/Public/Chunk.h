@@ -1,15 +1,12 @@
 #pragma once
 #include "Engine.h"
-#include "Logging.h"
-#include "Helper.h"
-#include "TextureLibrary.h"
 
-#include <random>
-
-class Chunk;
-#include "Actor.h"
 /// <summary> Width of the chunk.</summary>
 static const GLuint CHUNK_WIDTH = 50;
+
+// forward declarations
+class Actor;
+struct ActorData;
 
 /// <summary> A chunk.</summary>
 class Chunk
@@ -97,3 +94,6 @@ protected:
 
 
 };
+
+#include "Actor.h"
+

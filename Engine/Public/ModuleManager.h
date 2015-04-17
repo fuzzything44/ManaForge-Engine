@@ -33,6 +33,8 @@ public:
 		return nullptr;
 	}
 
+	
+
 	/// <summary> Loads a module.</summary>
 	///
 	/// <param name="filename"> Filename of the module.</param>
@@ -66,7 +68,14 @@ public:
 		this->createWorld = createWorld;
 	}
 
+	ENGINE_API static ModuleManager& get()
+	{
+		return *currentMM;
+	}
+
 private:
+
+	static ModuleManager* currentMM;
 
 	// function to createWorld
 	World*(*createWorld)(ModuleManager&, std::string);

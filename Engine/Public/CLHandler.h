@@ -4,7 +4,6 @@
 #include "Engine.h"
 
 #include "Helper.h"
-#include "Logging.h"
 
 class CLHandler;
 #include "Actor.h"

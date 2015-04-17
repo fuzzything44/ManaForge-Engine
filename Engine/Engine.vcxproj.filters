@@ -26,10 +26,6 @@
     <ClCompile Include="private\TextureLibrary.cpp">
       <Filter>Private</Filter>
     </ClCompile>
-    <ClCompile Include="stdafx.cpp" />
-    <ClCompile Include="Private\Logging.cpp">
-      <Filter>Private</Filter>
-    </ClCompile>
     <ClCompile Include="Private\Window.cpp">
       <Filter>Private</Filter>
     </ClCompile>
@@ -62,7 +58,6 @@
     <ClInclude Include="public\TextureLibrary.h">
       <Filter>Public</Filter>
     </ClInclude>
-    <ClInclude Include="stdafx.h" />
     <ClInclude Include="Public\Engine.h">
       <Filter>Public</Filter>
     </ClInclude>
@@ -100,6 +95,9 @@
       <Filter>Public</Filter>
     </ClInclude>
     <ClInclude Include="public\World.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\UVData.h">
       <Filter>Public</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,6 +1,4 @@
-﻿#include <stdafx.h>
-
-#include "ENGException.h"
+﻿#include "ENGException.h"
 
 ENGException::ENGException(std::string reasonIn, std::string stack) 
 {STACK

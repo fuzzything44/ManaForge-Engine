@@ -1,8 +1,13 @@
-#include "stdafx.h"
-
 // local includes
+#include "Engine.h"
 #include "MainWindow.h"
+#include "Helper.h"
+#include "ENGException.h"
 
+#if defined _WIN32 || defined WIN32
+	#include <Windows.h>
+	#include <direct.h>
+#endif
 
 /*************** P R O T O T Y P E S ***************************************************/
 GLvoid draw(GLfloat delta);
@@ -58,7 +63,7 @@ void changeDir()
 	{
 		FATAL_ERR("chdir failed", err);
 	}
-	
+
 }
 #endif
 
@@ -106,6 +111,7 @@ GLint main()
 {STACK
 
 	changeDir();
+
 
 	logging::init();
 

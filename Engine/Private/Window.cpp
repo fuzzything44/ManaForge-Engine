@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "Window.h"
 #include <sstream>
 #include "CLHandler.h"
@@ -52,14 +51,14 @@ Window::Window(std::string title, WindowMode windowmode, uvec2 size)
 	switch (windowmode)
 	{
 	case FULLSCREEN:
-		window = glfwCreateWindow(size.x, size.y, title.c_str(), mon, NULL);
+		window = glfwCreateWindow(size.x, size.y, title.c_str(), mon, nullptr);
 		break;
 	case FULLSCREEN_WINDOWED:
-		window = glfwCreateWindow(mode->width, mode->height, title.c_str(), NULL, NULL);
+		window = glfwCreateWindow(mode->width, mode->height, title.c_str(), nullptr, nullptr);
 		break;
 
 	case WINDOWED:
-		window = glfwCreateWindow(size.x, size.y, title.c_str(), NULL, NULL);
+		window = glfwCreateWindow(size.x, size.y, title.c_str(), nullptr, nullptr);
 		break;
 
 	default:
@@ -133,7 +132,7 @@ void Window::run()
 
 
 	// set initial tick
-	GLfloat LastTick = (GLfloat)(glfwGetTime());
+	GLfloat LastTick = static_cast<GLfloat>(glfwGetTime());
 
 	try
 	{
@@ -142,7 +141,7 @@ void Window::run()
 			if (hasFocus){
 
 				// calculate tick time
-				GLfloat CurrentTick = (GLfloat)(glfwGetTime());
+				GLfloat CurrentTick = static_cast<GLfloat>(glfwGetTime());
 				GLfloat delta = CurrentTick - LastTick;
 
 				LastTick = CurrentTick;
@@ -196,7 +195,7 @@ vec2 Window::getCursorLoc()
 
 	glfwGetCursorPos(window, &x, &y);
 
-	return vec2((float)x, (float)y);
+	return vec2(static_cast<float>(x), static_cast<float>(y));
 }
 
 void Window::setRenderMode(RenderMode newMode)

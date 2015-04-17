@@ -5,7 +5,9 @@
 #include <stdexcept>
 
 #ifdef _WIN32
-	#include <Windows.h>
+	#pragma message("Windows before defined")
+		#include <Windows.h>
+	#pragma message("Windows after defin")
 #else
 	#error "OOPS -- win only pls"
 #endif

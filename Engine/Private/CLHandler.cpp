@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "CLHandler.h"
 
 // init static variables
@@ -61,10 +60,10 @@ cl_int CLHandler::updateCL(float deltaTime, std::vector<ActorData>& data)
 	errChkCL(err);
 
 	// copy data back
-	for (auto& elem : data)
-	{
-		elem.actorPtr->data = elem;
-	}
+	//for (auto& elem : data)
+	//{
+	//	elem.actorPtr->data = elem;
+	//}
 
 	// release objects back to opnegl
 	queue->enqueueReleaseGLObjects(objects);

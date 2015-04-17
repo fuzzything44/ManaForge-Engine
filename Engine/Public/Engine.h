@@ -9,11 +9,15 @@
 
 
 #include <glm/glm.hpp>
+#include <glm/gtx/transform.hpp>
 
 #include <GLTools/glew.h>
 #include <GLTools/glfw3.h>
 
 #include <Poppy/PoppyDebugTools.h>
+
+#include <iostream>
+#include <fstream>
 
 typedef int8_t int8;
 typedef int16_t int16;
@@ -40,3 +44,5 @@ typedef glm::mat4 mat4;
 typedef glm::dvec2 dvec2;
 typedef glm::dvec3 dvec3;
 typedef glm::dvec4 dvec4;
+
+#include "Logging.h"
