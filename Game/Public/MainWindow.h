@@ -31,8 +31,6 @@ public:
 	const float maxScale = 1.f;
 	float aspectRatio;
 
-	Actor* character;
-
 
 	ModuleManager man;
 

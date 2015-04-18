@@ -13,6 +13,7 @@ public:
 	{
 	}
 
+	ENGINE_API mat4 getViewMat();
 
 protected:
 	

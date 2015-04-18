@@ -10,6 +10,8 @@ class OpenGLRenderer : public Renderer
 
 public:
 
+	uint32 loadShaderProgram(std::string program);
+
 	virtual Model* newModel(vec2* locations, vec2* UVs, uint32* elems, uint32 numVerts, uint32 numElems) override;
 
 	/// <summary>
@@ -89,6 +91,12 @@ protected:
 	uint32 vertexLocationBuffer;
 	uint32 texCoordBuffer;
 	uint32 elemBuffer;
+
+	static int32 viewMatUniformLoc;
+	static int32 texUniformLoc;
+	static uint32 program;
+	
+	uint32 texture;
 
 	OpenGLRenderer* renderer;
 

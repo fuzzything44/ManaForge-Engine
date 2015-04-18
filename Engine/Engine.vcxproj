@@ -100,7 +100,6 @@
     <ClCompile Include="private\Actor.cpp" />
     <ClCompile Include="private\CameraComponent.cpp" />
     <ClCompile Include="private\Chunk.cpp" />
-    <ClCompile Include="private\CLHandler.cpp" />
     <ClCompile Include="Private\Component.cpp" />
     <ClCompile Include="private\ENGException.cpp" />
     <ClCompile Include="private\Helper.cpp" />
@@ -115,7 +114,6 @@
     <ClInclude Include="Public\CameraComponent.h" />
     <ClInclude Include="Public\Component.h" />
     <ClInclude Include="public\Chunk.h" />
-    <ClInclude Include="public\CLHandler.h" />
     <ClInclude Include="public\Color.h" />
     <ClInclude Include="Public\ENGException.h" />
     <ClInclude Include="Public\Engine.h" />

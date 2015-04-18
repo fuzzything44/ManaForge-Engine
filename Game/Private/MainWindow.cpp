@@ -3,7 +3,6 @@
 #include <ENGException.h>
 #include <Helper.h>
 #include <TextureLibrary.h>
-#include <random>
 #include <Logging.h>
 
 MainWindow::MainWindow(std::string title, WindowMode mode, uvec2 size) : Window(title, mode, size)
@@ -72,45 +71,8 @@ void MainWindow::init()
 
 	// init 1 * 3 chunks of CHUNK_SIZE * CHUNK_SIZE 
 	Chunk::initChunks(chunkProgram, &viewMat, glm::uvec2(1, 1));
-	Actor::init(actorProgram, &viewMat);
 
 	aspectRatio = static_cast<float>(getSize().x) / static_cast<float>(getSize().y);
-
-	// init the generator -- will remove with loading
-	std::mersenne_twister_engine < std::uint_fast32_t, 32, 624, 397, 31,
-		0x9908b0df, 11,
-		0xffffffff, 7,
-		0x9d2c5680, 15,
-		0xefc60000, 18, 1812433253 > gen(rand());
-
-	for (int i = 0; i < 10; i++)
-	{
-
-
-		srand(i);
-		Actor::addActor<Actor>(
-			vec2(std::uniform_real_distribution<float>(-10.f, 0.f)(gen), std::uniform_real_distribution<float>(-10.f, 0.f)(gen)),
-			vec2(.5f, .5f),
-			vec2(0.f, 0.f),
-			float(std::uniform_real_distribution<float>(0.f, 360.f)(gen)),
-			uint8(3),
-			true,
-			TextureLibrary::getUVData("9"),
-			true
-			);
-	}
-
-	character = Actor::addActor<Actor>(
-		vec2(0.f, 0.f),
-		vec2(2.f, 2.f),
-		vec2(0.f, 0.f),
-		200.f,
-		0,
-		true,
-		TextureLibrary::getUVData("1"),
-		true
-		);
-
 }
 
 void MainWindow::scroll(float x, float y)
@@ -145,9 +107,6 @@ void MainWindow::draw(float deltaTime)
 	
 	// clear the color buffer and depth buffer (makes sure the trianges in front get rendered in front
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	// temp -- will actually have player location
-	Chunk::draw(character, deltaTime);
 }
 
 
@@ -191,23 +150,6 @@ void MainWindow::input(float deltaTime)
 		vel.y += -10.f;
 	}
 
-
-	character->setVelocity(vel);
-
-
-	if (getKey(GLFW_KEY_Q))
-	{
-		character->setRotation(character->getRotation() + (-900.f * deltaTime));
-	}
-
-	if (getKey(GLFW_KEY_E))
-	{
-		character->setRotation(character->getRotation() + (900.f * deltaTime));
-	}
-	if (getKey(GLFW_KEY_P))
-	{
-		FATAL_ERR("YOU PRESSED P!", -12);
-	}
 }
 
 
@@ -225,7 +167,7 @@ void MainWindow::exit()
 }
 
 
-void MainWindow::focus(int focused)
+void MainWindow::focus(int /*focused*/)
 {STACK
 	
 }

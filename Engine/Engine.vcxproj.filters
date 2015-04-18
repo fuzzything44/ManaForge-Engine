@@ -17,9 +17,6 @@
     <ClCompile Include="private\Chunk.cpp">
       <Filter>Private</Filter>
     </ClCompile>
-    <ClCompile Include="private\CLHandler.cpp">
-      <Filter>Private</Filter>
-    </ClCompile>
     <ClCompile Include="private\Helper.cpp">
       <Filter>Private</Filter>
     </ClCompile>
@@ -53,9 +50,6 @@
       <Filter>Public</Filter>
     </ClInclude>
     <ClInclude Include="public\Chunk.h">
-      <Filter>Public</Filter>
-    </ClInclude>
-    <ClInclude Include="public\CLHandler.h">
       <Filter>Public</Filter>
     </ClInclude>
     <ClInclude Include="public\Helper.h">

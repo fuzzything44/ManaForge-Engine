@@ -1,6 +1,7 @@
 #pragma once
 #include "Engine.h"
 #include "Transform.h"
+#include "Logging.h"
 
 static const unsigned int MAX_ACTORS = 100001;
 
@@ -135,5 +136,7 @@ inline void Actor::setRotation(float newRot)
 
 inline void Actor::setVelocity(vec2 newVelocity)
 {
+	STACK
+		ENG_LOG(Stack::GetTraceString());
 	velocity = newVelocity;
 }

@@ -3,6 +3,7 @@
 #include "MainWindow.h"
 #include "Helper.h"
 #include "ENGException.h"
+#include "Logging.h"
 
 /*************** P R O T O T Y P E S ***************************************************/
 void draw(float delta);
