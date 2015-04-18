@@ -1,13 +1,16 @@
 #pragma once
 #include "Renderer.h"
+#include <forward_list>
+
+class OpenGLModel;
 
 class OpenGLRenderer : public Renderer
 {
-
+	friend class OpenGLModel;
 
 public:
 
-	virtual Model* newModel(float* locations, float* UVs, int numVerts, int numElems) override;
+	virtual Model* newModel(vec2* locations, vec2* UVs, uint32* elems, uint32 numVerts, uint32 numElems) override;
 
 	/// <summary>
 	virtual void init() override;
@@ -21,7 +24,8 @@ public:
 	virtual void setCurrentCamera(CameraComponent* newCamera) override;
 
 	void loadTextures(std::vector<std::string> textures) override;
-	~OpenGLRenderer() override;
+
+	virtual ~OpenGLRenderer() override;
 
 	CameraComponent* getCurrentCamera() override;
 
@@ -31,19 +35,24 @@ public:
 
 private:
 	CameraComponent* currentCamera;
+
+	std::forward_list<OpenGLModel*> models;
 };
 
 
 class OpenGLModel : public Model
 {
 public:
-	OpenGLModel();
 
-	OpenGLModel(float* locations, float* UVs, int numVerts, int numElems)
-		:locations(locations),
-		UVs(UVs),
-		numVerts(numVerts),
-		numElems(numElems){ }
+	friend class OpenGLRenderer;
+
+	explicit OpenGLModel(
+		vec2* locations = nullptr, 
+		vec2* UVs = nullptr,
+		uint32* elems = nullptr,
+		uint32 numVerts = 0, 
+		uint32 numElems = 0, 
+		OpenGLRenderer* renderer = nullptr);
 
 	virtual Transform getTransform() const override;
 
@@ -62,12 +71,26 @@ public:
 	virtual void addRelativeRotation(float rotToAdd) override;
 	virtual void addRelativeScale(vec2 scaleToAdd) override;
 
+	virtual ~OpenGLModel();
 
-private:
-	float* locations;
-	float* UVs;
-	int numVerts;
-	int numElems;
+
+
+protected:
+
+	void draw();
+
+	vec2* locations;
+	vec2* UVs;
+	uint32* elems;
+	uint32 numVerts;
+	uint32 numElems;
+
+	uint32 vertexArray;
+	uint32 vertexLocationBuffer;
+	uint32 texCoordBuffer;
+	uint32 elemBuffer;
+
+	OpenGLRenderer* renderer;
 
 	Transform trans;
 

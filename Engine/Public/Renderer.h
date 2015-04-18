@@ -11,7 +11,7 @@ public:
 	}
 
 	Model() { STACK }
-	Model(Transform /*location*/, float* /*locations*/, float* /*UVs*/, int /*numVerts*/, int /*numElems*/) { STACK }
+	Model(Transform /*location*/, float* /*locations*/, float* /*UVs*/, uint32 /*numVerts*/, uint32 /*numElems*/) { STACK }
 
 	virtual Transform getTransform() const = 0;
 	virtual vec2 getLocation() const = 0;
@@ -63,7 +63,7 @@ public:
 	/// <summary> Creates a new model.</summary>
 	///
 	/// <returns> null if it fails, else a Model*.</returns>
-	virtual Model* newModel(float* locations, float* UVs, int numVerts, int numElems) = 0;
+	virtual Model* newModel(vec2* locations, vec2* UVs, uint32* elems, uint32 numVerts, uint32 numElems) = 0;
 
 	/// <summary> Loads the textures.</summary>
 	///

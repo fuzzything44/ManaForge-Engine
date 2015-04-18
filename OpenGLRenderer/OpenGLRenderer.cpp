@@ -3,10 +3,11 @@
 #include <Renderer.h>
 #include <ModuleManager.h>
 #include <Helper.h>
+#include <functional>
 
-Model* OpenGLRenderer::newModel(float* locations, float* UVs, int numVerts, int numElems)
+Model* OpenGLRenderer::newModel(vec2* locations, vec2* UVs, uint32* elems, uint32 numVerts, uint32 numElems)
 {
-	return new OpenGLModel(locations, UVs, numVerts, numElems);
+	return new OpenGLModel(locations, UVs, elems, numVerts, numElems, this);
 }
 
 void OpenGLRenderer::init()
@@ -16,6 +17,10 @@ void OpenGLRenderer::init()
 
 void OpenGLRenderer::update()
 {
+	// TODO: collision etc
+
+	// call the draw function for all of the models
+	std::for_each(models.begin(), models.end(), std::bind(&OpenGLModel::draw, std::placeholders::_1));
 }
 
 void OpenGLRenderer::setCurrentCamera(CameraComponent* newCamera)
