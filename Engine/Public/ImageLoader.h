@@ -30,7 +30,7 @@ public:
     
     if (loadFunctions.find(extension) == loadFunctions.end())
     {
-      FATAL_ERR("no loader for extension
+      FATAL_ERR("no loader for extension")
     }
 
     auto fun = loadFunctions[extension];
