@@ -23,7 +23,7 @@ public:
 	/// <summary> Gets the renderer./</summary>
 	///
 	/// <returns> if it fails, returns null and throws an exception, else the renderer.</returns>
-	ENGINE_API Renderer* getRenderer();
+	ENGINE_API Renderer& getRenderer();
 		
 	/// <summary> Loads a module.</summary>
 	///
@@ -40,7 +40,7 @@ public:
 	/// <param name="createWorld()"> Function that creates a world </param>
 	ENGINE_API void addWorld(World* createWorld(ModuleManager&, std::string));
 
-	ENGINE_API static ModuleManager* get();
+	ENGINE_API static ModuleManager& get();
 
 private:
 
