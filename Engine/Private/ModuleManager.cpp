@@ -10,14 +10,13 @@ ModuleManager::ModuleManager()
 	currentMM = this;
 }
 
-Renderer* ModuleManager::getRenderer()
+Renderer& ModuleManager::getRenderer()
 {
 
 
-	if (renderer)
-		return renderer;
+       check(renderer);
 
-	return nullptr;
+       return *renderer;
 	
 }
 
