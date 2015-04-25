@@ -6,7 +6,7 @@
 std::map<GLFWwindow*, Window*> Window::windows = std::map<GLFWwindow*, Window*>();
 
 Window::Window(std::string title, WindowMode windowmode, uvec2 size)
-{STACK
+{
 	hasFocus = true;
 
 	// init GLFW (our window handler)
