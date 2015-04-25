@@ -10,7 +10,7 @@ Module::Module(const std::string& filename) :
 	name(std::string("Modules\\").append(filename)), // Append the modules prefiex
 	libraryHandle(nullptr),
 	refrenceCount(nullptr)
-{STACK
+{
 	try{
 
 		// load the library
@@ -38,7 +38,7 @@ Module::Module(const Module& other) :
 	name(other.name),
 	libraryHandle(other.libraryHandle),
 	refrenceCount(other.refrenceCount)
-{STACK
+{
 	if (refrenceCount)
 	{
 		(*refrenceCount)++;
@@ -47,7 +47,7 @@ Module::Module(const Module& other) :
 
 void Module::registerModule(ModuleManager& mm)
 {
-	STACK
+	
 
 	check(getModuleEngineVersionAddress);
 	check(registerModuleFunctionAddress);
@@ -64,7 +64,7 @@ void Module::registerModule(ModuleManager& mm)
 }
 
 Module::~Module()
-{STACK
+{
 	// deincrement refcount
 	int remainingRefrences = --(*refrenceCount);
 
