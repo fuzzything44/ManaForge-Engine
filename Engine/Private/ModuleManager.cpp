@@ -47,7 +47,7 @@ void ModuleManager::addWorld(World* createWorld(ModuleManager&, std::string))
 		this->createWorld = createWorld;
 }
 
-ENGINE_API ModuleManager& ModuleManager::get()
+ModuleManager& ModuleManager::get()
 {
 	check(currentMM);
 
