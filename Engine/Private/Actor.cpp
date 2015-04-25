@@ -2,7 +2,7 @@
 
 
 void Actor::tick(float deltaTime)
-{STACK
+{
 	
 }
 
@@ -14,6 +14,6 @@ Actor::Actor(Transform trans, bool isPersistent)
 }
 
 Actor::~Actor()
-{STACK
+{
 
 }
