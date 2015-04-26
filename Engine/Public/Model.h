@@ -11,8 +11,8 @@ public:
 	{
 	}
 
-	Model() { STACK }
-	Model(Transform /*location*/, float* /*locations*/, float* /*UVs*/, uint32 /*numVerts*/, uint32 /*numElems*/) { STACK }
+	Model() { }
+	Model(Transform /*location*/, float* /*locations*/, float* /*UVs*/, uint32 /*numVerts*/, uint32 /*numElems*/) { }
 
 	virtual Transform getTransform() const = 0;
 	virtual vec2 getLocation() const = 0;

@@ -1,6 +1,5 @@
 ﻿#pragma once
 #include "Engine.h"
-#include <Poppy/PoppyDebugTools.h>
 #include <exception>
 #include <string>
 
