@@ -10,14 +10,13 @@ ModuleManager::ModuleManager()
 	currentMM = this;
 }
 
-Renderer* ModuleManager::getRenderer()
+Renderer& ModuleManager::getRenderer()
 {
 
 
-	if (renderer)
-		return renderer;
+       check(renderer);
 
-	return nullptr;
+       return *renderer;
 	
 }
 
@@ -48,9 +47,9 @@ void ModuleManager::addWorld(World* createWorld(ModuleManager&, std::string))
 		this->createWorld = createWorld;
 }
 
-ENGINE_API ModuleManager* ModuleManager::get()
+ModuleManager& ModuleManager::get()
 {
 	check(currentMM);
 
-	return currentMM;
+	return *currentMM;
 }

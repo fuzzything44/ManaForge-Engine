@@ -154,7 +154,7 @@ inline void Actor::setRotation(float newRot)
 
 inline void Actor::setVelocity(vec2 newVelocity)
 {
-	STACK
-		ENG_LOG(Stack::GetTraceString());
+	
+	ENG_LOG(::GetTraceString());
 	velocity = newVelocity;
 }

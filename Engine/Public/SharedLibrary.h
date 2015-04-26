@@ -13,7 +13,7 @@ public:
 	typedef HINSTANCE SharedLibHandle;
 
 	static SharedLibHandle Load(const std::string& path)
-	{STACK
+	{
 		std::string pathWithExt = path + ".dll";
 
 		SharedLibHandle handle = LoadLibraryA(pathWithExt.c_str());
@@ -28,7 +28,7 @@ public:
 	}
 
 	static void Unload(SharedLibHandle handle)
-	{STACK
+	{
 		BOOL result = FreeLibrary(handle);
 		if (result == FALSE)
 		{
@@ -38,7 +38,7 @@ public:
 
 	template<typename T>
 	static T* getFunctionPtr(SharedLibHandle handle, const std::string& functionName)
-	{STACK
+	{
 		// FARPROC is a generic fucntion pointer
 		// gets the pointer to the function name specified
 		FARPROC addr = GetProcAddress(handle, functionName.c_str());

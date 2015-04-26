@@ -7,12 +7,12 @@ std::map<std::string, UVData> TextureLibrary::UVDataMap = std::map<std::string, 
 uvec2 TextureLibrary::nextLocation = uvec2(0, 0);
 
 uint32 TextureLibrary::getTextureHandle()
-{STACK
+{
 	return texture;
 }
 
 void TextureLibrary::addTexture(std::string key, const char* filename)
-{STACK
+{
 	// if we need to make a new texture, do it
 	if (texture == 0)
 	{
@@ -58,13 +58,13 @@ void TextureLibrary::addTexture(std::string key, const char* filename)
 }
 
 UVData TextureLibrary::getUVData(std::string key)
-{STACK
+{
 	return UVDataMap[key];
 }
 
 
 void TextureLibrary::appendDDS(uint32 texToAppend, uint32 Xoffset, uint32 Yoffset, const char* filepath)
-{STACK
+{
 
 	unsigned char header[124];
 
@@ -142,7 +142,7 @@ void TextureLibrary::appendDDS(uint32 texToAppend, uint32 Xoffset, uint32 Yoffse
 
 
 uint32 TextureLibrary::allocateCompressedTextureLibraryFromDDS(uint32 num, const char* filepath)
-{STACK
+{
 	unsigned char header[124];
 
 	FILE *fp;

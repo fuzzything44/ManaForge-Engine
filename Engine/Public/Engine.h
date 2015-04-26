@@ -21,7 +21,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
 
-#include <Poppy/PoppyDebugTools.h>
+#include <StackWalker/StackWalker.hpp>
 
 typedef int8_t int8;
 typedef int16_t int16;

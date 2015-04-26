@@ -17,7 +17,7 @@ mat4* Chunk::viewMat = nullptr;
 
 
 void Chunk::initChunks(uint32 programIn, mat4* viewMatIn, const uvec2& chunksSizeIn)
-{STACK
+{
 	chunksSize = chunksSizeIn;
 	program = programIn;
 	viewMat = viewMatIn;

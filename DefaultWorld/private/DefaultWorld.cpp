@@ -39,11 +39,9 @@ private:
 	Chunk*** mainWorld = nullptr;
 	Chunk*** currentWorld = nullptr;
 	uint8 chunkSize = 50;
-	ModuleManager* manager;
 public:
-	explicit DefaultWorld(ModuleManager& mm, string folder = "")
-		:manager(&mm),
-		folderLocation(folder) 
+	explicit DefaultWorld(string folder = "")
+		:folderLocation(folder) 
 	{STACK
 		// Make sure a world folder was supplied.
 		if (folderLocation == "") {
@@ -83,7 +81,7 @@ public:
 			}
 		}
 		// Give images to renderer
-		manager->getRenderer()->loadTextures(imageNames);
+		ModuleManager::get().getRenderer().loadTextures(imageNames);
 
 		ENG_LOG("Images loaded!");
 		world.close();
@@ -194,9 +192,9 @@ public:
 	}	// End destructor
 };
 
-World* AddWorld(ModuleManager& mm, string folder)
+World* AddWorld(string folder)
 {STACK
-	return new DefaultWorld(mm, folder);
+	return new DefaultWorld(folder);
 }
 
 extern "C" DefaultWorldPlugin_API void registerModule(ModuleManager& mm) 

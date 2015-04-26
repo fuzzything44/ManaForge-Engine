@@ -6,7 +6,7 @@
 std::map<GLFWwindow*, Window*> Window::windows = std::map<GLFWwindow*, Window*>();
 
 Window::Window(std::string title, WindowMode windowmode, uvec2 size)
-{STACK
+{
 	hasFocus = true;
 
 	// init GLFW (our window handler)
@@ -106,15 +106,15 @@ Window::Window(std::string title, WindowMode windowmode, uvec2 size)
 	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 
 	
-	glfwSetScrollCallback(window, &Window::scrollCallback);
+	glfwSetScrollCallback(window, std::bind(&Window::scroll, this, std::placeholders::_1, std::placeholders::_2));
 	
 
-	glfwSetWindowFocusCallback(window, &Window::focusCallback);
+	glfwSetWindowFocusCallback(window, std::bind(&Window::focus, this, std::placeholders::_1));
 
 }
 
 void Window::run()
-{STACK
+{
 	// if init exists use it and if it doesn't succede return the error code.
 
 	double start = glfwGetTime();
@@ -184,12 +184,12 @@ void Window::run()
 
 
 int32 Window::getKey(int key)
-{STACK
+{
 	return glfwGetKey(window, key);
 }
 
 vec2 Window::getCursorLoc()
-{STACK
+{
 	double x, y;
 
 	glfwGetCursorPos(window, &x, &y);
@@ -198,17 +198,17 @@ vec2 Window::getCursorLoc()
 }
 
 void Window::setRenderMode(RenderMode newMode)
-{STACK
+{
 	renderMode = newMode;
 }
 
 RenderMode Window::getRenderMode()
-{STACK
+{
 	return renderMode;
 }
 
 uvec2 Window::getSize() const
-{STACK
+{
 	ivec2 size;
 
 	glfwGetWindowSize(window, &size.x, &size.y);
@@ -217,7 +217,7 @@ uvec2 Window::getSize() const
 }
 
 void Window::focus(int in)
-{STACK
+{
 	hasFocus = in == 0 ? false : true;
 }
 
