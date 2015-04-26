@@ -14,9 +14,9 @@ class Renderer;
 
 class ModuleManager
 {
-
-
 public:
+
+	ENGINE_API ~ModuleManager();
 
 	/// <summary> Default constructor.</summary>
 	ENGINE_API ModuleManager();
@@ -39,16 +39,17 @@ public:
 	/// <summary> Adds a world.</summary>
 	///
 	/// <param name="createWorld()"> Function that creates a world </param>
-	ENGINE_API void addWorld(std::function<World*(std::string)> createWorld);
+	ENGINE_API void setWorld(std::function<World*(std::string)> createWorld);
 
 	ENGINE_API static ModuleManager& get();
+
 
 private:
 
 	static ModuleManager* currentMM;
 
 	// function to createWorld
-	std::function<World*(std::string)> createWorld;
+	std::function<World*(std::string)>* createWorld;
 
 	std::map<std::string, Module> loadedModules;
 

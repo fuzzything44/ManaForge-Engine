@@ -33,7 +33,7 @@ Window::Window(std::string title, WindowMode windowmode, uvec2 size)
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 
 	// we don't want a border if it is fullscreen windowed, otherwise we do
-	if (windowmode == FULLSCREEN_WINDOWED){
+	if (windowmode == WindowMode::FULLSCREEN_WINDOWED){
 
 		glfwWindowHint(GLFW_DECORATED, false);
 	}
@@ -51,14 +51,14 @@ Window::Window(std::string title, WindowMode windowmode, uvec2 size)
 	// create the winodw
 	switch (windowmode)
 	{
-	case FULLSCREEN:
+	case WindowMode::FULLSCREEN:
 		window = glfwCreateWindow(size.x, size.y, title.c_str(), mon, nullptr);
 		break;
-	case FULLSCREEN_WINDOWED:
+	case WindowMode::FULLSCREEN_WINDOWED:
 		window = glfwCreateWindow(mode->width, mode->height, title.c_str(), nullptr, nullptr);
 		break;
 
-	case WINDOWED:
+	case WindowMode::WINDOWED:
 		window = glfwCreateWindow(size.x, size.y, title.c_str(), nullptr, nullptr);
 		break;
 

@@ -73,6 +73,9 @@ Module::~Module()
 		try{
 
 			SharedLibrary::Unload(libraryHandle);
+
+			delete refrenceCount;
+
 		}
 		catch (std::exception& e)
 		{

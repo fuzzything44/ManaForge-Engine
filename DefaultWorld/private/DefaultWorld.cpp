@@ -199,7 +199,7 @@ World* AddWorld(string folder)
 
 extern "C" DefaultWorldPlugin_API void registerModule(ModuleManager& mm) 
 {
-	mm.addWorld(AddWorld);
+	mm.setWorld(AddWorld);
 }
 
 extern "C" DefaultWorldPlugin_API float getModuleEngineVersion()

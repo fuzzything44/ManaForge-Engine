@@ -1,9 +1,15 @@
 #include "Engine.h"
 #include "ModuleManager.h"
 #include "Helper.h"
-#include <functional>
+
 
 ModuleManager* ModuleManager::currentMM = nullptr;
+
+ModuleManager::~ModuleManager()
+{
+	delete renderer;
+	delete createWorld;
+}
 
 ModuleManager::ModuleManager()
 	: renderer(nullptr)
@@ -13,11 +19,9 @@ ModuleManager::ModuleManager()
 
 Renderer& ModuleManager::getRenderer()
 {
+	check(renderer);
 
-
-       check(renderer);
-
-       return *renderer;
+    return *renderer;
 	
 }
 
@@ -41,11 +45,11 @@ void ModuleManager::addRenderer(Renderer* newRenderer)
 	}
 }
 
-void ModuleManager::addWorld(std::function<World*(std::string)> createWorldFun)
+void ModuleManager::setWorld(std::function<World*(std::string)> createWorldFun)
 {
 	
 	// copy to the class's version
-	createWorld = createWorldFun;
+	createWorld = new std::function<World*(std::string)>(createWorldFun);
 }
 
 ModuleManager& ModuleManager::get()

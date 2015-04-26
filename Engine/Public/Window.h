@@ -4,7 +4,7 @@
 
 
 /// <summary> Values that represent window modes.</summary>
-enum WindowMode
+enum class WindowMode
 {
 	FULLSCREEN,				// Fullscreen - Steals the graphics card to render your game
 	FULLSCREEN_WINDOWED,	// Fullscreen windowed - Creates a borderless window that seems fullscren
@@ -22,6 +22,9 @@ enum RenderMode
 class Window
 {
 public:
+	virtual ~Window()
+	{
+	}
 
 	/// <summary> Sets render mode.</summary>
 	///
