@@ -2,6 +2,7 @@
 
 Component::Component(Actor* owner)
 	: owner(owner)
-{STACK
-	
+{
+	STACK
+		owner->components.push_back(this);
 }

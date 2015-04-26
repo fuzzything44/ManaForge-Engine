@@ -3,10 +3,10 @@
 #include "Engine.h"
 #include "Actor.h"
 
-class ENGINE_API Component
+class Component
 {
 public:
-	explicit Component(Actor* owner = nullptr);
+	explicit ENGINE_API Component(Actor* owner = nullptr);
 private:
 	Actor* owner;
 

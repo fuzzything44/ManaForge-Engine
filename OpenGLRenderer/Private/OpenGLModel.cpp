@@ -171,7 +171,6 @@ void OpenGLModel::draw()
 	// bind the element buffer so it is used to make our draw call
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elemBuffer);
 
-	// draw our chunk -- only one draw call
 	glDrawElements(
 		GL_TRIANGLES, // they are trianges
 		numElems, // these many verticies

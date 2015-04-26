@@ -104,6 +104,7 @@
     <ClCompile Include="private\ENGException.cpp" />
     <ClCompile Include="private\Helper.cpp" />
     <ClCompile Include="Private\Logging.cpp" />
+    <ClCompile Include="Private\MeshComponent.cpp" />
     <ClCompile Include="Private\Module.cpp" />
     <ClCompile Include="Private\ModuleManager.cpp" />
     <ClCompile Include="private\TextureLibrary.cpp" />
@@ -119,10 +120,13 @@
     <ClInclude Include="Public\Engine.h" />
     <ClInclude Include="public\Helper.h" />
     <ClInclude Include="Public\Logging.h" />
+    <ClInclude Include="Public\Material.h" />
     <ClInclude Include="Public\MeshComponent.h" />
+    <ClInclude Include="Public\Model.h" />
     <ClInclude Include="Public\Module.h" />
     <ClInclude Include="Public\ModuleManager.h" />
     <ClInclude Include="Public\Renderer.h" />
+    <ClInclude Include="Public\SaveData.h" />
     <ClInclude Include="Public\SceneComponent.h" />
     <ClInclude Include="Public\SharedLibrary.h" />
     <ClInclude Include="public\TextureLibrary.h" />
@@ -130,6 +134,7 @@
     <ClInclude Include="Public\UVData.h" />
     <ClInclude Include="Public\Window.h" />
     <ClInclude Include="public\World.h" />
+    <ClInclude Include="Serialize_Tuple.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

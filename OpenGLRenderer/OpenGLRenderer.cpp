@@ -5,6 +5,7 @@
 #include <Helper.h>
 #include <functional>
 #include <Logging.h>
+#include "Public/OpenGLMaterial.h"
 
 uint32 OpenGLRenderer::loadShaderProgram(std::string name)
 {
@@ -95,6 +96,11 @@ uint32 OpenGLRenderer::loadShaderProgram(std::string name)
 Model* OpenGLRenderer::newModel(vec2* locations, vec2* UVs, uint32* elems, uint32 numVerts, uint32 numElems)
 {
 	return new OpenGLModel(locations, UVs, elems, numVerts, numElems, this);
+}
+
+Material* OpenGLRenderer::newMaterial()
+{
+	return new OpenGLMaterial();
 }
 
 void OpenGLRenderer::init()

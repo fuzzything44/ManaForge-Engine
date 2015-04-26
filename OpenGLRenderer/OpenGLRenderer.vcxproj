@@ -85,10 +85,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="OpenGLRenderer.cpp" />
+    <ClCompile Include="Private\OpenGLMaterial.cpp" />
     <ClCompile Include="Private\OpenGLModel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="OpenGLRendererConfig.h" />
+    <ClInclude Include="Public\OpenGLMaterial.h" />
+    <ClInclude Include="Public\OpenGLModel.h" />
     <ClInclude Include="Public\OpenGLRenderer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

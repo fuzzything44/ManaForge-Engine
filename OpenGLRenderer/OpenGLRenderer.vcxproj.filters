@@ -17,12 +17,21 @@
     <ClCompile Include="Private\OpenGLModel.cpp">
       <Filter>Private</Filter>
     </ClCompile>
+    <ClCompile Include="Private\OpenGLMaterial.cpp">
+      <Filter>Private</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="OpenGLRendererConfig.h">
       <Filter>Public</Filter>
     </ClInclude>
     <ClInclude Include="Public\OpenGLRenderer.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\OpenGLMaterial.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\OpenGLModel.h">
       <Filter>Public</Filter>
     </ClInclude>
   </ItemGroup>

@@ -65,7 +65,6 @@ void MainWindow::init()
 
 
 	uint32 chunkProgram = LoadShaders("shaders\\chunkvert.glsl", "shaders\\chunkfrag.glsl");
-	uint32 actorProgram = LoadShaders("shaders\\actorvert.glsl", "shaders\\actorfrag.glsl");
 	
 	ENG_LOG("\nShaders Loaded!\n");
 

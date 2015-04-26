@@ -44,6 +44,9 @@
     <ClCompile Include="private\CameraComponent.cpp">
       <Filter>Private</Filter>
     </ClCompile>
+    <ClCompile Include="Private\MeshComponent.cpp">
+      <Filter>Private</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="public\Actor.h">
@@ -104,6 +107,18 @@
       <Filter>Public</Filter>
     </ClInclude>
     <ClInclude Include="Public\MeshComponent.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\SaveData.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Serialize_Tuple.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\Model.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\Material.h">
       <Filter>Public</Filter>
     </ClInclude>
   </ItemGroup>

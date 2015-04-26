@@ -3,6 +3,11 @@
 #include "Transform.h"
 #include "Logging.h"
 
+#include <boost/serialization/access.hpp>
+#include <boost/serialization/nvp.hpp>
+
+#include <tuple>
+
 static const unsigned int MAX_ACTORS = 100001;
 
 class Chunk;
@@ -11,10 +16,13 @@ class Component;
 /// <summary> An actor. </summary>
 class Actor
 {
+	friend class boost::serialization::access;
+
 public:
 
 	// Make Chunk a freind so it can access private methods (namely tick)
 	friend Chunk;
+	friend Component;
 
 	/// <summary> Actors.</summary>
 	///
@@ -82,7 +90,17 @@ protected:
 
 	std::vector<Component*> components;
 
+	// serialization function for boost
+	template<typename Archive>
+	void serialize(Archive& ar, uint32 version)
+	{
+		ar & BOOST_SERIALIZATION_NVP(trans);
+		ar & BOOST_SERIALIZATION_NVP(velocity);
+	}
+
 };
+
+
 
 ////////////////////////////////////////////////////////////////
 ///// INLINE DEFINITIONS ///////////////////////////////////////
