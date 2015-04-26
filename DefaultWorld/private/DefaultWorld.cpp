@@ -42,10 +42,10 @@ private:
 public:
 	explicit DefaultWorld(string folder = "")
 		:folderLocation(folder) 
-	{STACK
+	{
 		// Make sure a world folder was supplied.
 		if (folderLocation == "") {
-			FATAL_ERR("No world loaded", 40);
+			FATAL_ERR("No world loaded");
 		}
 		
 		
@@ -55,7 +55,7 @@ public:
 
 		ENG_LOG("Loading .ini file...");
 		if (!world.is_open() ) {
-			FATAL_ERR("World ini file doesn't exist. \n\tFolder:" + folderLocation, 41);
+			FATAL_ERR("World ini file doesn't exist. \n\tFolder:" + folderLocation);
 		}
 		ENG_LOG(".ini Loaded!");
 
@@ -94,7 +94,7 @@ public:
 	}	// End constructor
 
 	virtual void loadWorld(string name) override 
-	{STACK
+	{
 		ENG_LOG("Loading world " << name << "...");
 		// Skip re-loading main world if possible.
 		if (name == "main" && mainWorld != nullptr) {
@@ -159,17 +159,17 @@ public:
 	}	// End loadWorld
 
 	virtual int getChunkSize() override
-	{STACK
+	{
 		return chunkSize;
 	}
 	virtual Chunk* getChunk(vec2 actorLocation) override
-	{STACK
+	{
 		return currentWorld[0][0];
 		// Actually get correct chunk.
 	}
 
 	virtual ~DefaultWorld() 
-	{STACK
+	{
 		// loops through and frees the main world.
 		for (int x = 0; mainWorld[x] != nullptr; x++) {
 			for (int y = 0; mainWorld[x][y] != nullptr; y++) {
@@ -193,12 +193,12 @@ public:
 };
 
 World* AddWorld(string folder)
-{STACK
+{
 	return new DefaultWorld(folder);
 }
 
 extern "C" DefaultWorldPlugin_API void registerModule(ModuleManager& mm) 
-{STACK
+{
 	mm.addWorld(AddWorld);
 }
 

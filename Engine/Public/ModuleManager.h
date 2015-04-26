@@ -7,6 +7,7 @@
 
 #include <map>
 #include <vector>
+#include <functional>
 
 class World;
 class Renderer;
@@ -38,7 +39,7 @@ public:
 	/// <summary> Adds a world.</summary>
 	///
 	/// <param name="createWorld()"> Function that creates a world </param>
-	ENGINE_API void addWorld(World* createWorld(ModuleManager&, std::string));
+	ENGINE_API void addWorld(std::function<World*(std::string)> createWorld);
 
 	ENGINE_API static ModuleManager& get();
 
@@ -47,7 +48,7 @@ private:
 	static ModuleManager* currentMM;
 
 	// function to createWorld
-	World*(*createWorld)(ModuleManager&, std::string);
+	std::function<World*(std::string)> createWorld;
 
 	std::map<std::string, Module> loadedModules;
 

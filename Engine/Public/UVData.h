@@ -17,8 +17,9 @@ struct UVData
 		: bottomLeft(bottomLeftIn),
 		topLeft(topLeftIn),
 		bottomRight(bottomRightIn),
-		topRight(topRightIn) {
-		STACK
+		topRight(topRightIn) 
+	{
+		
 	}
 
 

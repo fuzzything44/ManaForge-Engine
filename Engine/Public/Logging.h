@@ -3,6 +3,7 @@
 #include <iostream>
 #include <Engine.h>
 
+// logging class with minimal dependencies
 struct logging
 {
 

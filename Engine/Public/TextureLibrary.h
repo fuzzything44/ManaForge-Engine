@@ -1,7 +1,9 @@
 #pragma once
 #include "Engine.h"
 #include "UVData.h"
-#include <glm/glm.hpp>
+
+#include <string>
+#include <map>
 
 // Hex defines for the compression methods.
 #define FOURCC_DXT1 0x31545844 // Equivalent to "DXT1" in ASCII

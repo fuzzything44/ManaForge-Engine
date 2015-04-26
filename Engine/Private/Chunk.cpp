@@ -2,7 +2,9 @@
 #include "TextureLibrary.h"
 #include "UVData.h"
 #include "Logging.h"
+
 #include <random>
+#include <sstream>
 
 
 // set inital value for static variables
@@ -50,7 +52,7 @@ void Chunk::initChunks(uint32 programIn, mat4* viewMatIn, const uvec2& chunksSiz
 
 Chunk::Chunk(ivec2 locationIn)
 	: location(locationIn)
-{STACK
+{
 	
 	// the persistent chunk doesn't get anything
 	if (this != persistentChunk)
@@ -125,17 +127,17 @@ Chunk::Chunk(ivec2 locationIn)
 }
 
 void Chunk::draw(Actor* character, float deltaTime)
-{STACK
+{
 	
 }
 
 vec2 Chunk::getLocation()
-{STACK
+{
 	// return a copy of the location variable
 	return location;
 }
 
 uvec2 Chunk::getChunkSize()
-{STACK
+{
 	return chunksSize;
 }

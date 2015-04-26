@@ -1,12 +1,17 @@
 ﻿#include "ENGException.h"
 
-ENGException::ENGException(std::string reasonIn, std::string stack) 
+#include <sstream>
+
+ENGException::ENGException(std::string reasonIn) 
 {
 	std::stringstream ss;
 
-	ss << reasonIn << "\tStack: " << stack;
+	ss << reasonIn << "\tStack: ";
 
-	reason = ss.str();
+	Stack s;
+	s.ShowCallstack();
+
+	reason = reasonIn + "\nStack: \n\n" + s();
 }
 
 const char* ENGException::what() const

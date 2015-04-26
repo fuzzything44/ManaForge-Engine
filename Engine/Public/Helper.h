@@ -86,7 +86,7 @@ ENGINE_API std::ostream& operator<<(std::ostream& os, const mat4& mat);
 	#define errChkCL(err) if(err != CL_SUCCESS){throw ENGException("OpenCL error.", Stack::GetTraceString());}
 
 	/// <summary> Checks a pointer, and throws an exception if it is null.</summary>
-	#define check(ptr) if(!ptr){ throw ENGException(std::string("Null pointer exception caught: ") + std::string(#ptr), Stack::GetTraceString() ); }
+	#define check(ptr) if(!ptr){  throw ENGException(std::string("Null pointer exception caught: ") + std::string(#ptr)); }
 
 	
 #else

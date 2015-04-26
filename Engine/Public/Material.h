@@ -2,6 +2,8 @@
 
 #include "Engine.h"
 
+#include <string>
+
 class Material
 {
 public:

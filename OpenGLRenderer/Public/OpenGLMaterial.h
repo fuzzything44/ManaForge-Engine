@@ -2,6 +2,8 @@
 
 #include <Material.h>
 
+#include <string>
+
 class OpenGLMaterial : public Material
 {
 public:

@@ -106,10 +106,10 @@ Window::Window(std::string title, WindowMode windowmode, uvec2 size)
 	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 
 	
-	glfwSetScrollCallback(window, std::bind(&Window::scroll, this, std::placeholders::_1, std::placeholders::_2));
+	glfwSetScrollCallback(window, &Window::scrollCallback);
 	
 
-	glfwSetWindowFocusCallback(window, std::bind(&Window::focus, this, std::placeholders::_1));
+	glfwSetWindowFocusCallback(window, &Window::focusCallback);
 
 }
 

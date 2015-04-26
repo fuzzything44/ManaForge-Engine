@@ -21,7 +21,7 @@ public:
 		if (handle == nullptr)
 		{
 			
-			FATAL_ERR("Failed to load library", 2);
+			FATAL_ERR("Failed to load library");
 		}
 
 		return handle;
@@ -45,7 +45,7 @@ public:
 
 		if (addr == nullptr)
 		{
-			FATAL_ERR("Failed to get function address", -2);
+			FATAL_ERR("Failed to get function address");
 		}
 
 		return (T*) (addr);

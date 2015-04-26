@@ -48,7 +48,7 @@
     <LinkIncremental>true</LinkIncremental>
     <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(SolutionDir)/library/;$(TargetDir);$(SolutionDir)bin\$(Configuration)</LibraryPath>
     <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
-    <IncludePath>$(SolutionDir)/Engine/Public;$(SolutionDir)/include;$(IncludePath);$(ProjectDir)/Public;$(ProjectDir)</IncludePath>
+    <IncludePath>$(SolutionDir)/Engine/Public;$(SolutionDir)/include;$(IncludePath);$(ProjectDir)/Public;$(ProjectDir);$(SolutionDir)StackWalker/</IncludePath>
     <IntDir>$(ProjectDir)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -74,7 +74,7 @@
       <TargetMachine>MachineX86</TargetMachine>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>opencl.lib;Engine.lib;glfw3.lib;glew32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opencl.lib;Engine.lib;glfw3.lib;glew32.lib;opengl32.lib;StackWalker.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

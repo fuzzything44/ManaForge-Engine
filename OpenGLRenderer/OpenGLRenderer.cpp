@@ -1,11 +1,15 @@
 #include "OpenGLRendererConfig.h"
-#include <OpenGLRenderer.h>
+
+#include "OpenGLRenderer.h"
+#include "OpenGLMaterial.h"
+
 #include <Renderer.h>
 #include <ModuleManager.h>
 #include <Helper.h>
-#include <functional>
 #include <Logging.h>
-#include "Public/OpenGLMaterial.h"
+
+#include <functional>
+#include <algorithm>
 
 uint32 OpenGLRenderer::loadShaderProgram(std::string name)
 {

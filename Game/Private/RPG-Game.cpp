@@ -28,7 +28,7 @@ cl_int initCL();
 
 #if defined _WIN32 || defined WIN32
 void changeDir()
-{STACK
+{
 	// changes the path so everything we open will be in Resoruce/
 	char ownPth[MAX_PATH];
 
@@ -36,7 +36,7 @@ void changeDir()
 	HMODULE hModule = GetModuleHandle(nullptr);
 	if (hModule == nullptr)
 	{
-		FATAL_ERR("getModuleHandle failed", -1);
+		FATAL_ERR("getModuleHandle failed");
 	}
 	// When passing NULL to GetModuleHandle, it returns handle of exe itself
 	GetModuleFileName(hModule, ownPth, (sizeof(ownPth)));
@@ -57,7 +57,7 @@ void changeDir()
 
 	if (err)
 	{
-		FATAL_ERR("chdir failed", err);
+		FATAL_ERR("chdir failed. Error num: " + err);
 	}
 
 }
@@ -68,7 +68,7 @@ void changeDir()
 #error "Linux change directory code not implemented"
 
 void changeDir()
-{STACK
+{
 	//TODO write linux code
 
 	return 0;
@@ -77,7 +77,7 @@ void changeDir()
 
 #ifdef __APPLE__
 void changeDir()
-{STACK
+{
 	char path[1024];
 	uint32_t size = sizeof(path);
 	if (_NSGetExecutablePath(path, &size) == 0)
@@ -104,7 +104,7 @@ void changeDir()
 #endif
 
 int32 main()
-{STACK
+{
 
 	changeDir();
 

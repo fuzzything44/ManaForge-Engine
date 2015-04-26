@@ -353,14 +353,14 @@ std::string clGetErrorString(int error)
 
 // custom vector printing
 std::ostream& operator<<(std::ostream& os, const vec2& vec)
-{STACK
+{
 	os << "X: " << vec.x << "  Y: " << vec.y;
 	return os;
 }
 
 // custom vector printing
 std::ostream& operator<<(std::ostream& os, const vec3& vec)
-{STACK
+{
 	os << "X: " << vec.x << "  Y: " << vec.y << "  X: " << vec.z;
 	return os;
 }

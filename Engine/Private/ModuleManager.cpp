@@ -1,6 +1,7 @@
 #include "Engine.h"
 #include "ModuleManager.h"
 #include "Helper.h"
+#include <functional>
 
 ModuleManager* ModuleManager::currentMM = nullptr;
 
@@ -22,17 +23,17 @@ Renderer& ModuleManager::getRenderer()
 
 void ModuleManager::loadModule(const std::string& filename)
 {
-	STACK
-		if (loadedModules.find(filename) == loadedModules.end())
-		{
-			loadedModules.insert(std::map<std::string, Module>::value_type(filename, Module(filename))).first->second.registerModule(*this);
-		}
+	
+	if (loadedModules.find(filename) == loadedModules.end())
+	{
+		loadedModules.insert(std::map<std::string, Module>::value_type(filename, Module(filename))).first->second.registerModule(*this);
+	}
 }
 
 void ModuleManager::addRenderer(Renderer* newRenderer)
 {
-	STACK
-		avaliableRenderers.push_back(newRenderer);
+	
+	avaliableRenderers.push_back(newRenderer);
 
 	if (!renderer)
 	{
@@ -40,11 +41,11 @@ void ModuleManager::addRenderer(Renderer* newRenderer)
 	}
 }
 
-void ModuleManager::addWorld(World* createWorld(ModuleManager&, std::string))
+void ModuleManager::addWorld(std::function<World*(std::string)> createWorldFun)
 {
-	STACK
-		// copy to the class's version
-		this->createWorld = createWorld;
+	
+	// copy to the class's version
+	createWorld = createWorldFun;
 }
 
 ModuleManager& ModuleManager::get()

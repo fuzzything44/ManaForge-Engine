@@ -12,7 +12,7 @@ public:
 	
 
 	/// <summary> Default constructor.</summary>
-	Renderer() {STACK};
+	Renderer() { };
 
 	/// <summary> Initialises the Renderer.</summary>
 	///
@@ -45,6 +45,6 @@ public:
 	virtual void loadTextures(std::vector<std::string> textures) = 0;
 
 	/// <summary> Destructor.</summary>
-	virtual ~Renderer() {STACK }
+	virtual ~Renderer() { }
 
 };

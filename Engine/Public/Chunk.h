@@ -1,6 +1,8 @@
 #pragma once
 #include "Engine.h"
 
+#include <vector>
+
 /// <summary> Width of the chunk.</summary>
 static const uint32 CHUNK_WIDTH = 50;
 

@@ -99,5 +99,36 @@ protected:
 	///
 	/// <param name="focused"> The focused.</param>
 	ENGINE_API virtual void focus(int32 focused) = 0;
+
+	// focus callbacks
+	/// <summary> All windows sorted by the GLFWwindow pointer.</summary>
+	ENGINE_API static std::map<GLFWwindow*, Window*> windows;
+
+	/// <summary> Callback, called on scroll.</summary>
+	///
+	/// <param name="window"> [in,out] If non-null, the window.</param>
+	/// <param name="x">	  The x coordinate.</param>
+	/// <param name="y">	  The y coordinate.</param>
+	ENGINE_API static void scrollCallback(GLFWwindow* window, double x, double y)
+	{
+		
+		if (Window* winObj = windows[window])
+		{
+			winObj->scroll((float)x, (float)y);
+		}
+	}
+
+	/// <summary> Callback, called when the window receives focus.</summary>
+	///
+	/// <param name="window">  [in,out] If non-null, the window.</param>
+	/// <param name="focused"> The focused.</param>
+	ENGINE_API static void focusCallback(GLFWwindow* window, int focused)
+	{
+		
+		if (Window* winObj = windows[window])
+		{
+			winObj->focus(focused);
+		}
+	}
 };
 
