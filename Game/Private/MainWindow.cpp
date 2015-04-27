@@ -4,6 +4,7 @@
 #include <Helper.h>
 #include <TextureLibrary.h>
 #include <Logging.h>
+#include <PropertyManager.h>
 
 MainWindow::MainWindow(std::string title, WindowMode mode, uvec2 size) : Window(title, mode, size)
 {

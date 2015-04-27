@@ -1,0 +1,32 @@
+#include "Runtime.h"
+
+#include "Helper.h"
+#include <boost/algorithm/string.hpp>
+
+Runtime* Runtime::currentRuntime = nullptr;
+
+Runtime::Runtime() 
+	: propManager("props.json")
+{
+	
+
+	std::string modulesStr = propManager.queryValue<std::string>("modules");
+
+	std::vector<std::string> modules;
+	boost::algorithm::split(modules, modulesStr, boost::algorithm::is_any_of("\t\n "));
+
+	// load elements from the property sheet
+	for (auto& elem : modules)
+	{
+		if (elem != "" && elem != "\t" && elem != "\n")
+			moduleManager.loadModule(elem);
+	}
+
+
+
+}
+
+Runtime& Runtime::get()
+{
+	return *currentRuntime;
+}

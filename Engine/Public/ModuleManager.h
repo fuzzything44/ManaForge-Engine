@@ -41,12 +41,8 @@ public:
 	/// <param name="createWorld()"> Function that creates a world </param>
 	ENGINE_API void setWorld(std::function<World*(std::string)> createWorld);
 
-	ENGINE_API static ModuleManager& get();
-
 
 private:
-
-	static ModuleManager* currentMM;
 
 	// function to createWorld
 	std::function<World*(std::string)>* createWorld;

@@ -17,7 +17,7 @@ public:
 
 	/// <summary> Registers the module with the ModuleManager specified</summary>
 	///
-	/// <param name="mm"> The module manager to register the module with</param>
+	/// <param name="moduleManager"> The module manager to register the module with</param>
 	ENGINE_API void registerModule(ModuleManager& mm);
 
 	/// <summary> Modules the given file.</summary>

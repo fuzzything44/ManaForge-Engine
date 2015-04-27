@@ -50,6 +50,12 @@
     <ClCompile Include="Private\ImageLoader.cpp">
       <Filter>Private</Filter>
     </ClCompile>
+    <ClCompile Include="Private\PropertyManager.cpp">
+      <Filter>Private</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\Runtime.cpp">
+      <Filter>Private</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="public\Actor.h">
@@ -128,6 +134,12 @@
       <Filter>Public</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\PropertyManager.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\Runtime.h">
       <Filter>Public</Filter>
     </ClInclude>
   </ItemGroup>

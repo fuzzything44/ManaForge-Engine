@@ -5,8 +5,7 @@
 
 #include <random>
 #include <sstream>
-
-
+#include <Runtime.h>
 
 
 Chunk::Chunk(ivec2 locationIn, Model* model)
@@ -87,7 +86,7 @@ Chunk::Chunk(ivec2 locationIn, Model* model)
 }
 
 Chunk::Chunk(ivec2 chunkLocation, vec2* vertexLocations, vec2* UVs, uint32* elems, uint32 numVerts, uint32 numElems) 
-	: model(ModuleManager::get().getRenderer().newModel(vertexLocations, UVs, elems, numVerts, numElems)),
+	: model(Runtime::get().moduleManager.getRenderer().newModel(vertexLocations, UVs, elems, numVerts, numElems)),
 	location(chunkLocation)
 {
 

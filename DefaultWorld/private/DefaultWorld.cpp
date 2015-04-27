@@ -6,6 +6,7 @@
 
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string.hpp>
+#include <Runtime.h>
 
 World* AddWorld(std::string folder)
 {
@@ -59,7 +60,7 @@ DefaultWorld::DefaultWorld(std::string folder):folderLocation(folder)
 		}
 	}
 	// Give images to renderer
-	ModuleManager::get().getRenderer().loadTextures(imageNames);
+	Runtime::get().moduleManager.getRenderer().loadTextures(imageNames);
 
 	ENG_LOG("Images loaded!");
 	world.close();

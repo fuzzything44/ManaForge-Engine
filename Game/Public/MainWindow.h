@@ -2,6 +2,7 @@
 
 #include <Window.h>
 #include <ModuleManager.h>
+#include <Runtime.h>
 
 class MainWindow : public Window
 {
@@ -31,8 +32,7 @@ public:
 	const float maxScale = 1.f;
 	float aspectRatio;
 
-
-	ModuleManager man;
+	Runtime r;
 
 private:
 	virtual void init() override;

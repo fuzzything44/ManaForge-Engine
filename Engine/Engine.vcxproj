@@ -109,6 +109,8 @@
     <ClCompile Include="Private\MeshComponent.cpp" />
     <ClCompile Include="Private\Module.cpp" />
     <ClCompile Include="Private\ModuleManager.cpp" />
+    <ClCompile Include="Private\PropertyManager.cpp" />
+    <ClCompile Include="Private\Runtime.cpp" />
     <ClCompile Include="private\TextureLibrary.cpp" />
     <ClCompile Include="Private\Window.cpp" />
   </ItemGroup>
@@ -128,7 +130,9 @@
     <ClInclude Include="Public\Model.h" />
     <ClInclude Include="Public\Module.h" />
     <ClInclude Include="Public\ModuleManager.h" />
+    <ClInclude Include="Public\PropertyManager.h" />
     <ClInclude Include="Public\Renderer.h" />
+    <ClInclude Include="Public\Runtime.h" />
     <ClInclude Include="Public\SaveData.h" />
     <ClInclude Include="Public\SceneComponent.h" />
     <ClInclude Include="Public\SharedLibrary.h" />

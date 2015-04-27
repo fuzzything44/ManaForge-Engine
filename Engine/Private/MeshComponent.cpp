@@ -1,5 +1,5 @@
 #include "MeshComponent.h"
-#include <ModuleManager.h>
+#include <Runtime.h>
 
 MeshComponent::MeshComponent(Actor* owner,
 	Transform trans,
@@ -9,7 +9,7 @@ MeshComponent::MeshComponent(Actor* owner,
 	uint32 numVerts,
 	uint32 numElems)
 	:	SceneComponent(owner, trans),
-		model(ModuleManager::get().getRenderer().newModel(locations, UVs, elems, numVerts, numElems))
+		model(Runtime::get().moduleManager.getRenderer().newModel(locations, UVs, elems, numVerts, numElems))
 {
 	
 }
