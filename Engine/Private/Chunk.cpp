@@ -7,55 +7,15 @@
 #include <sstream>
 
 
-// set inital value for static variables
-Chunk*** Chunk::chunks = nullptr;
-Chunk* Chunk::persistentChunk = nullptr;
-uvec2 Chunk::chunksSize = uvec2(0, 0);
-int32 Chunk::characterLocUniformHandleChunk = -1;
-int32 Chunk::texUniformHandleChunk = -1;
-uint32 Chunk::program = 0;
-mat4* Chunk::viewMat = nullptr;
 
 
-
-void Chunk::initChunks(uint32 programIn, mat4* viewMatIn, const uvec2& chunksSizeIn)
-{
-	chunksSize = chunksSizeIn;
-	program = programIn;
-	viewMat = viewMatIn;
-
-	ENG_LOG("\nInitalizing Chunks:")
-
-	// allocate the pointer
-	chunks = static_cast<Chunk***>(malloc(sizeof(Chunk**) * chunksSize.y));
-
-	for (uint32 x = 0; x < chunksSize.x; x++)
-	{
-		// allocate the column -- you can read about malloc: http://www.cplusplus.com/reference/cstdlib/malloc/
-		chunks[x] = static_cast<Chunk**>(malloc(sizeof(Chunk*) * chunksSize.y));
-		for (uint32 y = 0; y < chunksSize.y; y++)
-		{
-			ENG_LOG("\nInit Chunk (" << x << ", " << y << ")");
-			chunks[x][y] = new Chunk(vec2(x * CHUNK_WIDTH, y * CHUNK_WIDTH));
-		}
-	}
-	ENG_LOG("\nDone Initalizing Chunks.\n")
-
-	persistentChunk = new Chunk();
-
-	// initalize all handles
-	texUniformHandleChunk = glGetUniformLocation(program, "texArray");
-	characterLocUniformHandleChunk = glGetUniformLocation(program, "characterLoc");
-
-
-}
-
-Chunk::Chunk(ivec2 locationIn)
-	: location(locationIn)
+Chunk::Chunk(ivec2 locationIn, Model* model)
+	: model(model),
+	location(locationIn)
 {
 	
 	// the persistent chunk doesn't get anything
-	if (this != persistentChunk)
+	if (this != &(world->getPersistentChunk()))
 	{
 		srand(reinterpret_cast<unsigned int>(this));
 
@@ -126,18 +86,15 @@ Chunk::Chunk(ivec2 locationIn)
 	}
 }
 
-void Chunk::draw(Actor* character, float deltaTime)
+Chunk::Chunk(ivec2 chunkLocation, vec2* vertexLocations, vec2* UVs, uint32* elems, uint32 numVerts, uint32 numElems) 
+	: model(ModuleManager::get().getRenderer().newModel(vertexLocations, UVs, elems, numVerts, numElems)),
+	location(chunkLocation)
 {
-	
+
 }
 
 vec2 Chunk::getLocation()
 {
 	// return a copy of the location variable
 	return location;
-}
-
-uvec2 Chunk::getChunkSize()
-{
-	return chunksSize;
 }

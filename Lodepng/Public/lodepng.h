@@ -887,6 +887,8 @@ namespace lodepng
 #endif /* LODEPNG_COMPILE_ENCODER */
 #endif /* LODEPNG_COMPILE_ZLIB */
 } /* namespace lodepng */
+
+
 #endif /*LODEPNG_COMPILE_CPP*/
 
 /*

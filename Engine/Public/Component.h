@@ -1,7 +1,8 @@
 #pragma once
 
 #include "Engine.h"
-#include "Actor.h"
+
+class Actor;
 
 class Component
 {
@@ -11,3 +12,5 @@ private:
 	Actor* owner;
 
 };
+
+#include "Actor.h"

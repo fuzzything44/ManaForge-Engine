@@ -2,7 +2,7 @@
 
 
 #include "SceneComponent.h"
-#include "Renderer.h"
+#include "Model.h"
 
 class MeshComponent : public SceneComponent
 {

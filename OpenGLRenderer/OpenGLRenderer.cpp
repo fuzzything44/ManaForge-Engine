@@ -50,7 +50,7 @@ uint32 OpenGLRenderer::loadShaderProgram(std::string name)
 	}
 	else
 	{
-		ENG_LOG("Shader " << vertexPath << " Successfully Compiled\n")
+		ENG_LOG("Shader " << vertexPath << " Successfully Compiled\n");
 	}
 
 
@@ -70,7 +70,7 @@ uint32 OpenGLRenderer::loadShaderProgram(std::string name)
 	}
 	else
 	{
-		ENG_LOG("\nShader " << fragPath << " Successfully Compiled\n")
+		ENG_LOG("\nShader " << fragPath << " Successfully Compiled\n");
 	}
 
 

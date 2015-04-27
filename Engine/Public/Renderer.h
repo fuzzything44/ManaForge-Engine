@@ -2,8 +2,12 @@
 
 #include "Engine.h"
 #include "Model.h"
-#include "CameraComponent.h"
 #include "Material.h"
+
+#include <vector>
+
+// forward declarations
+class CameraComponent;
 
 class Renderer 
 {
@@ -48,3 +52,6 @@ public:
 	virtual ~Renderer() { }
 
 };
+
+
+#include "CameraComponent.h"

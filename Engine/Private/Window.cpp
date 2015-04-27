@@ -1,7 +1,6 @@
 #include "Window.h"
 #include <sstream>
 #include "Logging.h"
-#include <ENGException.h>
 
 std::map<GLFWwindow*, Window*> Window::windows = std::map<GLFWwindow*, Window*>();
 
@@ -119,65 +118,52 @@ void Window::run()
 
 	double start = glfwGetTime();
 
-	try
-	{
-		init();
-	}
-	catch (std::exception& e)
-	{
-		ENG_LOG(e.what());
-		
-	}
-
+	
+	init();
+	
 	ENG_LOG("Init finished in " << glfwGetTime() - start << "s");
 
 
 	// set initial tick
 	float LastTick = static_cast<float>(glfwGetTime());
 
-	try
-	{
-		do {
 
-			if (hasFocus){
+	do {
 
-				// calculate tick time
-				float CurrentTick = static_cast<float>(glfwGetTime());
-				float delta = CurrentTick - LastTick;
+		if (hasFocus){
 
-				LastTick = CurrentTick;
+			// calculate tick time
+			float CurrentTick = static_cast<float>(glfwGetTime());
+			float delta = CurrentTick - LastTick;
 
-
-				input(delta);
+			LastTick = CurrentTick;
 
 
-				draw(delta);
-
-				// swap front and back buffers 
-				glfwSwapBuffers(window);
+			input(delta);
 
 
-				// if user is pressing esc, exit the application
-				if (glfwGetKey(window, GLFW_KEY_ESCAPE))
-				{
-					glfwSetWindowShouldClose(window, GL_TRUE);
-				}
-				// render another frame so long the window shouldn't close. 
-				// This is analogous for setting it through a function or pressing the close button
+			draw(delta);
 
+			// swap front and back buffers 
+			glfwSwapBuffers(window);
+
+
+			// if user is pressing esc, exit the application
+			if (glfwGetKey(window, GLFW_KEY_ESCAPE))
+			{
+				glfwSetWindowShouldClose(window, GL_TRUE);
 			}
+			// render another frame so long the window shouldn't close. 
+			// This is analogous for setting it through a function or pressing the close button
 
-			// make sure all events are done
-			glfwPollEvents();
+		}
 
-		} while (!glfwWindowShouldClose(window));
-	}
-	catch (ENGException& e)
-	{
-		ENG_LOG(e.what());
+		// make sure all events are done
+		glfwPollEvents();
 
-		::exit(-2);
-	}
+	} while (!glfwWindowShouldClose(window));
+	
+
 	exit();
 	
 }

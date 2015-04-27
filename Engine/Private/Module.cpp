@@ -25,7 +25,7 @@ Module::Module(const std::string& filename) :
 	}
 	catch (std::exception& e)
 	{
-		ENG_LOG(e.what())
+		ENG_LOG(e.what());
 
 	}
 

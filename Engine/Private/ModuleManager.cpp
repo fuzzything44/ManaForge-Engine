@@ -2,6 +2,7 @@
 #include "ModuleManager.h"
 #include "Helper.h"
 
+#include <boost/algorithm/string.hpp>
 
 ModuleManager* ModuleManager::currentMM = nullptr;
 
@@ -15,6 +16,19 @@ ModuleManager::ModuleManager()
 	: renderer(nullptr)
 {
 	currentMM = this;
+	
+
+	// load modules form file
+	std::string file = loadFileToStr("modules.txt");
+
+	std::vector<std::string> modules;
+	boost::algorithm::split(modules, file, boost::algorithm::is_any_of("\t\n "));
+
+	for (auto& elem : modules)
+	{
+		if (elem != "" && elem != "\t" && elem !="\n")
+			loadModule(elem);
+	}
 }
 
 Renderer& ModuleManager::getRenderer()

@@ -18,9 +18,6 @@ MainWindow::MainWindow(const char* title, WindowMode mode, uvec2 size) : Window(
 void MainWindow::init()
 {
 
-	man.loadModule("OpenGLRenderer");
-	man.loadModule("DefaultWorld");	
-
 	// set a background color -- it is in 0-1 scale. Pink is the best.
 	glClearColor(1.f, 1.2f, .5f, 1.f);
 
@@ -67,9 +64,6 @@ void MainWindow::init()
 	uint32 chunkProgram = LoadShaders("shaders\\chunkvert.glsl", "shaders\\chunkfrag.glsl");
 	
 	ENG_LOG("\nShaders Loaded!\n");
-
-	// init 1 * 3 chunks of CHUNK_SIZE * CHUNK_SIZE 
-	Chunk::initChunks(chunkProgram, &viewMat, glm::uvec2(1, 1));
 
 	aspectRatio = static_cast<float>(getSize().x) / static_cast<float>(getSize().y);
 }

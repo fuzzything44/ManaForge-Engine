@@ -1,30 +1,8 @@
 // local includes
 #include "Engine.h"
 #include "MainWindow.h"
-#include "Helper.h"
 #include "ENGException.h"
 #include "Logging.h"
-
-/*************** P R O T O T Y P E S ***************************************************/
-void draw(float delta);
-int32 init();
-void keyboard(GLFWwindow* window, float delta);
-void scroll(GLFWwindow* winodw, GLdouble x, GLdouble y);
-void resize(GLFWwindow* window, int32 x, int32 y);
-int32 exit();
-
-
-glm::mat4 viewMat;
-glm::mat4 projection;
-
-
-// 1/sclae * 2 is how many units fit vertically
-float scale = 0.1f;
-
-static const float minScale = .00625f;
-static const float maxScale = 1.f;
-
-cl_int initCL();
 
 #if defined _WIN32 || defined WIN32
 void changeDir()
@@ -61,9 +39,7 @@ void changeDir()
 	}
 
 }
-#endif
-
-#ifdef __linux__
+#elif defined __linux__
 
 #error "Linux change directory code not implemented"
 
@@ -73,9 +49,7 @@ void changeDir()
 
 	return 0;
 }
-#endif
-
-#ifdef __APPLE__
+#elif defined __APPLE__
 void changeDir()
 {
 	char path[1024];
@@ -117,8 +91,10 @@ int32 main()
 		// run the window. consumes the thread until it returns
 		window.run();
 	}
-	catch (std::exception&)
+	catch (std::exception& e)
 	{
+		ENG_LOG(e.what());
+
 		return -1;
 	}
 	

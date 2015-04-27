@@ -64,7 +64,7 @@ uint32 LoadShaders(const char * vertex_file_path, const char * fragment_file_pat
 		glGetShaderInfoLog(VertexShaderID, InfoLogLength, nullptr, &VertexShaderErrorMessage[0]);
 		ENG_LOG("\n" << &VertexShaderErrorMessage[0]);
 	}
-	ENG_LOG("\nShader " << vertex_file_path <<  " Compiled\n")
+	ENG_LOG("\nShader " << vertex_file_path << " Compiled\n");
 
 
 	// Compile Fragment Shader
@@ -82,7 +82,7 @@ uint32 LoadShaders(const char * vertex_file_path, const char * fragment_file_pat
 		ENG_LOG("\n" << &FragmentShaderErrorMessage[0]);
 	}
 
-	ENG_LOG("\nShader " << fragment_file_path << " Compiled\n")
+	ENG_LOG("\nShader " << fragment_file_path << " Compiled\n");
 
 
 	// Link the program

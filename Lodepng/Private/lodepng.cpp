@@ -30,6 +30,9 @@ Rename this file to lodepng.cpp to use it for C++, or to lodepng.c to use it for
 
 #include "lodepng.h"
 
+#include <ModuleManager.h>
+#include <ImageLoader.h>
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -6142,4 +6145,25 @@ namespace lodepng
 #endif /* LODEPNG_COMPILE_ENCODER */
 #endif /* LODEPNG_COMPILE_PNG */
 } /* namespace lodepng */
+
+uvec2 loadWrapper(std::string filename, std::vector<uint8>& data)
+{
+	uvec2 size;
+
+	lodepng::decode(data, size.x, size.y, filename);
+
+	return size;
+}
+
+extern "C" LODEPNG_API void registerModule(ModuleManager& mm)
+{
+	ImageLoader::addLoader("png", loadWrapper);
+}
+
+extern "C" LODEPNG_API float getModuleEngineVersion()
+{
+	return ENGINE_VERSION;
+}
+
+
 #endif /*LODEPNG_COMPILE_CPP*/

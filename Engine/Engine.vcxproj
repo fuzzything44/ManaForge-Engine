@@ -70,6 +70,7 @@
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <EnableParallelCodeGeneration>true</EnableParallelCodeGeneration>
       <OmitDefaultLibName>false</OmitDefaultLibName>
+      <AdditionalOptions>-D_SCL_SECURE_NO_WARNINGS %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <TargetMachine>MachineX86</TargetMachine>
@@ -103,6 +104,7 @@
     <ClCompile Include="Private\Component.cpp" />
     <ClCompile Include="private\ENGException.cpp" />
     <ClCompile Include="private\Helper.cpp" />
+    <ClCompile Include="Private\ImageLoader.cpp" />
     <ClCompile Include="Private\Logging.cpp" />
     <ClCompile Include="Private\MeshComponent.cpp" />
     <ClCompile Include="Private\Module.cpp" />
@@ -119,6 +121,7 @@
     <ClInclude Include="Public\ENGException.h" />
     <ClInclude Include="Public\Engine.h" />
     <ClInclude Include="public\Helper.h" />
+    <ClInclude Include="Public\ImageLoader.h" />
     <ClInclude Include="Public\Logging.h" />
     <ClInclude Include="Public\Material.h" />
     <ClInclude Include="Public\MeshComponent.h" />
@@ -134,7 +137,11 @@
     <ClInclude Include="Public\UVData.h" />
     <ClInclude Include="Public\Window.h" />
     <ClInclude Include="public\World.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Serialize_Tuple.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Engine.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

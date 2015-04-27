@@ -19,7 +19,10 @@ public:
 	virtual void loadWorld(std::string subWorldName) = 0;
 
 	/// <summary> Returns the chunk the location falls into. </summary>
-	virtual Chunk* getChunk(vec2 actorLocation) = 0;
-	virtual int getChunkSize() = 0;
+	virtual const Chunk& getChunk(vec2 actorLocation) const = 0;
+
+	virtual const Chunk& getPersistentChunk() const = 0;
+
+	virtual int getChunkSize() const = 0;
 	virtual ~World() { };
 };

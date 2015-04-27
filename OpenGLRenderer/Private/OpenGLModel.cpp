@@ -11,14 +11,25 @@ int32 OpenGLModel::texUniformLoc = -1;
 uint32 OpenGLModel::program = 0;
 
 
-OpenGLModel::OpenGLModel(vec2* locations, vec2* UVs, uint32* elems, uint32 numVerts, uint32 numElems, OpenGLRenderer* renderer)
-	:locations(locations),
-	UVs(UVs),
-	elems(elems),
-	numVerts(numVerts),
-	numElems(numElems),
-	renderer(renderer)
+OpenGLModel::OpenGLModel(vec2* locationsIn, vec2* UVsIn, uint32* elemsIn, uint32 numVertsIn, uint32 numElemsIn, OpenGLRenderer* rendererIn)
+	:numVerts(numVertsIn),
+	numElems(numElemsIn),
+	renderer(rendererIn)
 {
+	// make sure they aren't zero
+	check(numVerts);
+	check(numElems);
+
+	// allocate data
+	locations = static_cast<vec2*>(malloc(sizeof(vec2) * numVerts));
+	UVs = static_cast<vec2*>(malloc(sizeof(vec2) * numVerts));
+	elems = static_cast<uint32*>(malloc(sizeof(uint32) * numElems));
+
+	// copy data over
+	memcpy(locations, locationsIn, numVerts * sizeof(vec2));
+	memcpy(UVs, UVsIn, numVerts * sizeof(vec2));
+	memcpy(elems, elemsIn, numElems * sizeof(uint32));
+
 	// add model to renderer's list
 	renderer->models.push_front(this);
 
@@ -121,6 +132,10 @@ void OpenGLModel::addRelativeScale(vec2 scaleToAdd)
 OpenGLModel::~OpenGLModel()
 {
 	check(renderer);
+
+	free(locations);
+	free(UVs);
+	free(elems);
 
 	renderer->models.remove(this);
 }
