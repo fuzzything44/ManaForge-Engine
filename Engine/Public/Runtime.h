@@ -8,10 +8,12 @@ class Runtime
 {
 public:
 
-	ENGINE_API Runtime();
+	ENGINE_API explicit Runtime(std::string world = "");
 
 	ModuleManager moduleManager;
 	PropertyManager propManager;
+
+	World* world;
 
 	ENGINE_API static Runtime& get();
 

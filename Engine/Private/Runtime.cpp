@@ -5,7 +5,7 @@
 
 Runtime* Runtime::currentRuntime = nullptr;
 
-Runtime::Runtime() 
+Runtime::Runtime(std::string worldPath)
 	: propManager("props.json")
 {
 	
@@ -22,11 +22,16 @@ Runtime::Runtime()
 			moduleManager.loadModule(elem);
 	}
 
-
+	world = moduleManager.newWorld(worldPath);
 
 }
 
 Runtime& Runtime::get()
 {
+	if (!currentRuntime)
+	{
+		FATAL_ERR("NO RUNTIME OBJECT!");
+	}
+
 	return *currentRuntime;
 }

@@ -48,3 +48,10 @@ void ModuleManager::setWorld(std::function<World*(std::string)> createWorldFun)
 	// copy to the class's version
 	createWorld = new std::function<World*(std::string)>(createWorldFun);
 }
+
+World* ModuleManager::newWorld(std::string path)
+{
+	check(createWorld);
+
+	return (*createWorld)(path);
+}

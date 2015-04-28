@@ -4,6 +4,8 @@
 #include "ENGException.h"
 #include "Logging.h"
 
+#include <fstream>
+
 #if defined _WIN32 || defined WIN32
 void changeDir()
 {

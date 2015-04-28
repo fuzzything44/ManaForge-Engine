@@ -1,23 +1,25 @@
 #include "MainWindow.h"
-#include <ModuleManager.h>
 #include <ENGException.h>
 #include <Helper.h>
 #include <TextureLibrary.h>
 #include <Logging.h>
-#include <PropertyManager.h>
 
-MainWindow::MainWindow(std::string title, WindowMode mode, uvec2 size) : Window(title, mode, size)
+MainWindow::MainWindow(std::string title, WindowMode mode, uvec2 size) 
+	: Window(title, mode, size),
+	runtime("default")
 {
 	
 }
 
-MainWindow::MainWindow(const char* title, WindowMode mode, uvec2 size) : Window(std::string(title), mode, size)
+MainWindow::MainWindow(const char* title, WindowMode mode, uvec2 size) : MainWindow(std::string(title), mode, size)
 {
 	
 }
 
 void MainWindow::init()
 {
+
+
 
 	// set a background color -- it is in 0-1 scale. Pink is the best.
 	glClearColor(1.f, 1.2f, .5f, 1.f);

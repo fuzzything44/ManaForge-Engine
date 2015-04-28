@@ -3,10 +3,18 @@
 
 #include <ImageLoader.h>
 
+#include <PropertyManager.h>
+
+#include <sstream>
 
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string.hpp>
+#include <boost/archive/xml_iarchive.hpp>
+#include <boost/serialization/map.hpp>
+
 #include <Runtime.h>
+#include <Color.h>
+#include <forward_list>
 
 World* AddWorld(std::string folder)
 {
@@ -21,49 +29,37 @@ const Chunk& DefaultWorld::getPersistentChunk() const
 }
 
 
-DefaultWorld::DefaultWorld(std::string folder):folderLocation(folder)
+DefaultWorld::DefaultWorld(std::string folder)
+	:folderLocation(std::string("Worlds/") + folder),
+	propManager(folderLocation + "/world.json")
 {
+
 	// Make sure a world folder was supplied.
 	if (folderLocation == "") {
 		FATAL_ERR("No world loaded");
 	}
 
-
-	std::string currentLine;
-	// Loads .ini file for world system.
-	std::ifstream world(folderLocation + "world.ini");
-
-	ENG_LOG("Loading .ini file...");
-	if (!world.is_open()) {
-		FATAL_ERR("World ini file doesn't exist. \n\tFolder:" + folderLocation);
-	}
-	ENG_LOG(".ini Loaded!");
-
-	// Ignore any leading comments
-	do
-	{
-		getline(world, currentLine);
-	} while (currentLine[0] == '#' || isspace(currentLine[0]));
-
 	ENG_LOG("Loading chunk size...");
 	// First line should be chunk size.
 	// Parses to int.
-	boost::lexical_cast<uint32>(currentLine);
+	chunkSize = propManager.queryValue<uint32>("chunk.size");
 
-	ENG_LOG("Chunk size loaded!");
+	ENG_LOG("Chunk size: " << chunkSize);
+
 	ENG_LOG("Loading images...");
-	std::vector<std::string> imageNames;
-	// Image loading loop
-	while (getline(world, currentLine)) {
-		if (currentLine[0] != '#' || currentLine[0] != '\n') {
-			imageNames.push_back(currentLine);
-		}
-	}
+	
+	std::ifstream stream{ folderLocation + "/images.txt" };
+	boost::archive::xml_iarchive arch{ stream };
+
+	std::map<Color, std::string> valuePairs;
+
+	// load the map from the file
+	arch >> BOOST_SERIALIZATION_NVP(valuePairs);
+
 	// Give images to renderer
-	Runtime::get().moduleManager.getRenderer().loadTextures(imageNames);
+	//Runtime::get().moduleManager.getRenderer().loadTextures(valuePairs);
 
 	ENG_LOG("Images loaded!");
-	world.close();
 
 	// virtual functuion -- call THIS version of it
 	DefaultWorld::loadWorld("main");
@@ -80,62 +76,29 @@ void DefaultWorld::loadWorld(std::string name)
 		currentWorld = mainWorld;
 	}
 	else {
-		// Create world file reader.
-		std::ifstream worldReader(folderLocation + "/" + name + ".WORLD");
-		std::string onLine;
-
-		// Ignore leading comments.
-		do
-		{
-			getline(worldReader, onLine);
-		} while (onLine[0] != '#');
-		// First line should be amount of chunks x and y.
-		std::vector<std::string> line;
-		boost::algorithm::split(line, onLine, boost::algorithm::is_any_of("_"));
-
-		uint32 chunksX = boost::lexical_cast<uint32>(line[0]);
 		
-		uint32 chunksY = boost::lexical_cast<uint32>(line[1]);
-		
+		// load static actors
+		std::ifstream static_stream{ folderLocation + "/static.txt" };
+		boost::archive::xml_iarchive static_arch{ static_stream };
 
-		// Initialize all chunks.
-		for (uint32 x = 0; x < chunksX; x++) {
-			for (uint32 y = 0; y < chunksY; y++) {
-				currentWorld[x][y] = new Chunk(ivec2(x, y));
-			}
-		}
-		std::vector<uint8> imgData;
+		std::forward_list<Actor*> static_actors;
 
-		uvec2 size = ImageLoader::load("world.png", imgData);
+		static_arch >> BOOST_SERIALIZATION_NVP(static_actors);
 
-		//// Create color to image map.
-		//map<Color, string> imageMap;
-		//do
-		//{
-		//	// Read next line.
-		//	getline(worldReader, onLine);
-		//	// Make sure it is not a comment or ending line.
-		//	if (onLine[0] != '#' || onLine != "END") {
-		//		line = split<'_'>(onLine);
-		//		
-		//		// Generate and add color to the map.
-		//		Color addColor(reinterpret_cast<uint8*>(&line[0]));
-		//		imageMap[addColor] = line[1];
-		//	}
-		//} while (onLine != "END");
+		// load dynamic actors
+		std::ifstream dynamic_stream{ folderLocation + "/archive.txt" };
+		boost::archive::xml_iarchive dynamic_arch{ static_stream };
 
+		std::forward_list<Actor*> dynamic_actors;
 
-
-		// Finish loading world.
-		// PNG loading and actor loading left.
-
-
-
+		static_arch >> BOOST_SERIALIZATION_NVP(dynamic_actors);
 
 	}
 
 	ENG_LOG("World Loaded!");
 }
+
+
 
 int DefaultWorld::getChunkSize() const
 {

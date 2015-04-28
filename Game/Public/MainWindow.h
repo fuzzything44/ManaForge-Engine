@@ -32,7 +32,7 @@ public:
 	const float maxScale = 1.f;
 	float aspectRatio;
 
-	Runtime r;
+	Runtime runtime;
 
 private:
 	virtual void init() override;

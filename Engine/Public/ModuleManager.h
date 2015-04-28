@@ -41,6 +41,7 @@ public:
 	/// <param name="createWorld()"> Function that creates a world </param>
 	ENGINE_API void setWorld(std::function<World*(std::string)> createWorld);
 
+	ENGINE_API World* newWorld(std::string path);
 
 private:
 

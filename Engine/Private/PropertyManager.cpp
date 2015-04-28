@@ -7,9 +7,15 @@
 PropertyManager::PropertyManager(std::string path)
 {
 
+	std::string a = loadFileToStr(path.c_str());
+
+	std::ifstream stream{ path };
+
+
+
 	try{
 
-		boost::property_tree::json_parser::read_json(path, props);
+		boost::property_tree::json_parser::read_json(stream, props);
 	} catch (std::exception& e)
 	{
 		ENG_LOG(e.what());
