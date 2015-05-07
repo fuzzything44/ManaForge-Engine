@@ -2,6 +2,8 @@
 #include <Engine.h>
 #include <ENGException.h>
 
+#include <boost/serialization/nvp.hpp>
+
 // OpenCL include
 #include <CL/cl.hpp>
 
@@ -75,6 +77,53 @@ ENGINE_API std::ostream& operator<<(std::ostream& os, const mat3& mat);
 
 /// <summary> custom matrix printing </summary>
 ENGINE_API std::ostream& operator<<(std::ostream& os, const mat4& mat);
+
+// serialization functions for vectors
+namespace boost
+{
+	namespace serialization
+	{
+		template<typename Archive>
+		void serialize(Archive& ar, vec2& dat, const uint32 version)
+		{
+			ar & BOOST_SERIALIZATION_NVP(dat.x);
+			ar & BOOST_SERIALIZATION_NVP(dat.y);
+		}
+		template<typename Archive>
+		void serialize(Archive& ar, vec3& dat, const uint32 version)
+		{
+			ar & BOOST_SERIALIZATION_NVP(dat.x);
+			ar & BOOST_SERIALIZATION_NVP(dat.y);
+			ar & BOOST_SERIALIZATION_NVP(dat.z);
+		}
+		template<typename Archive>
+		void serialize(Archive& ar, ivec2& dat, const uint32 version)
+		{
+			ar & BOOST_SERIALIZATION_NVP(dat.x);
+			ar & BOOST_SERIALIZATION_NVP(dat.y);
+		}
+		template<typename Archive>
+		void serialize(Archive& ar, ivec3& dat, const uint32 version)
+		{
+			ar & BOOST_SERIALIZATION_NVP(dat.x);
+			ar & BOOST_SERIALIZATION_NVP(dat.y);
+			ar & BOOST_SERIALIZATION_NVP(dat.z);
+		}
+		template<typename Archive>
+		void serialize(Archive& ar, uvec2& dat, const uint32 version)
+		{
+			ar & BOOST_SERIALIZATION_NVP(dat.x);
+			ar & BOOST_SERIALIZATION_NVP(dat.y);
+		}
+		template<typename Archive>
+		void serialize(Archive& ar, uvec3& dat, const uint32 version)
+		{
+			ar & BOOST_SERIALIZATION_NVP(dat.x);
+			ar & BOOST_SERIALIZATION_NVP(dat.y);
+			ar & BOOST_SERIALIZATION_NVP(dat.z);
+		}
+	}
+}
 
 // ONLY define these macros if we are debugging -- they could be slow
 #ifdef _DEBUG

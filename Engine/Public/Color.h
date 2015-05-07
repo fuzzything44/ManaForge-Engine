@@ -26,19 +26,41 @@ struct Color
 		ar & BOOST_SERIALIZATION_NVP(alpha);
 	}
 
+	Color&& operator+(Color& other)
+	{
+		Color ret;
+
+		ret.red = red + other.red;
+		ret.green = green + other.green;
+		ret.blue = blue + other.blue;
+		ret.alpha = alpha + other.alpha;
+
+		return std::move(ret);
+	}
+
+	// rvalue refrence for add
+	Color&& operator+(Color&& other)
+	{
+		other.red += red;
+		other.green += green;
+		other.blue += blue;
+		other.alpha += alpha;
+
+		return std::move(other);
+	}
 
 	bool operator <(const Color& other) const
 	{
-		int16 suma = red + green + blue;
-		int16 sumb = other.red + other.green + other.blue;
+		uint16 suma = red + green + blue + alpha;
+		uint16 sumb = other.red + other.green + other.blue + other.alpha;
 
 		return suma < sumb;
 	}
 
 	bool operator >(const Color& other) const
 	{
-		int16 suma = red + green + blue;
-		int16 sumb = other.red + other.green + other.blue;
+		uint16 suma = red + green + blue + alpha;
+		uint16 sumb = other.red + other.green + other.blue + other.alpha;
 
 		return suma > sumb;
 	}
