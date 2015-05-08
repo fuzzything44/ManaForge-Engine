@@ -89,12 +89,28 @@ void DefaultWorld::loadWorld(std::string name)
 		{
 			FATAL_ERR("COULD NOT OPEN STATIC ACTORS");
 		}
-		
-		boost::archive::xml_iarchive static_arch{ static_stream };
 
-		std::forward_list<Actor*> static_actors;
+		try{
 
-		static_arch >> BOOST_SERIALIZATION_NVP(static_actors);
+			boost::archive::xml_iarchive static_arch{ static_stream };
+
+			std::forward_list<Actor*> static_actors;
+
+
+
+			static_arch >> BOOST_SERIALIZATION_NVP(static_actors);
+
+		}
+		catch (boost::archive::archive_exception& e)
+		{
+			ENG_LOG(e.what() << "\t CODE: " << e.code);
+			std::cin.get(); // REAL ERROR HANDLING
+		}
+		catch (std::exception& e)
+		{
+			ENG_LOG(e.what());
+			std::cin.get();
+		}
 
 		// load dynamic actors
 		std::ifstream dynamic_stream{ folderLocation + "/archive.txt" };
@@ -102,7 +118,8 @@ void DefaultWorld::loadWorld(std::string name)
 
 		std::forward_list<Actor*> dynamic_actors;
 
-		static_arch >> BOOST_SERIALIZATION_NVP(dynamic_actors);
+		dynamic_arch >> BOOST_SERIALIZATION_NVP(dynamic_actors);
+
 
 	}
 

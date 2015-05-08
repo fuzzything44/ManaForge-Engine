@@ -113,7 +113,6 @@
     <ClCompile Include="Private\Runtime.cpp" />
     <ClCompile Include="private\TextureLibrary.cpp" />
     <ClCompile Include="Private\Window.cpp" />
-    <ClCompile Include="SavedClass.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="public\Actor.h" />
