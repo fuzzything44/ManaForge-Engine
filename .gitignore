@@ -52,6 +52,8 @@ bin/Release/Modules/DefualtWorld.*
 bin/Debug/Modules/DefaultWorld.*
 bin/Release/Modules/lodepng.*
 bin/Debug/Modules/lodepng.*
+bin/Release/StackWalker.*
+bin/Debug/StackWalker.*
 
 
 Game/Game_*/*.*
@@ -69,6 +71,5 @@ Game/Debug/Game.pch.codeanalysis
 log.txt
 *.cfg
 *.xdc
+
 boost.props
-
-
