@@ -113,6 +113,7 @@
     <ClCompile Include="Private\Runtime.cpp" />
     <ClCompile Include="private\TextureLibrary.cpp" />
     <ClCompile Include="Private\Window.cpp" />
+    <ClCompile Include="SavedClass.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="public\Actor.h" />
@@ -141,6 +142,7 @@
     <ClInclude Include="Public\UVData.h" />
     <ClInclude Include="Public\Window.h" />
     <ClInclude Include="public\World.h" />
+    <ClInclude Include="registerForSerialization.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Serialize_Tuple.h" />
   </ItemGroup>

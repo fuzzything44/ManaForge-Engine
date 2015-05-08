@@ -56,6 +56,9 @@
     <ClCompile Include="Private\Runtime.cpp">
       <Filter>Private</Filter>
     </ClCompile>
+    <ClCompile Include="SavedClass.cpp">
+      <Filter>Public</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="public\Actor.h">
@@ -140,6 +143,9 @@
       <Filter>Public</Filter>
     </ClInclude>
     <ClInclude Include="Public\Runtime.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="registerForSerialization.h">
       <Filter>Public</Filter>
     </ClInclude>
   </ItemGroup>

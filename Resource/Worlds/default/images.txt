@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<!DOCTYPE boost_serialization>
+<boost_serialization signature="serialization::archive" version="11">
+<assoc class_id="0" tracking_level="0" version="0">
+	<count>2</count>
+	<item_version>0</item_version>
+	<item class_id="1" tracking_level="0" version="0">
+		<first class_id="2" tracking_level="0" version="0">
+			<red>23</red>
+			<green>68</green>
+			<blue>34</blue>
+			<alpha>255</alpha>
+		</first>
+		<second>img2.dds</second>
+	</item>
+	<item>
+		<first>
+			<red>255</red>
+			<green>255</green>
+			<blue>255</blue>
+			<alpha>255</alpha>
+		</first>
+		<second>img.dds</second>
+	</item>
+</assoc>
+</boost_serialization>
+

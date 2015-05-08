@@ -50,8 +50,8 @@ bin/Debug/Modules/OpenGLRenderer.*
 bin/Release/Modules/OpenGLRenderer.*
 bin/Release/Modules/DefualtWorld.*
 bin/Debug/Modules/DefaultWorld.*
-bin/Release/lodepng.*
-bin/Debug/lodepng.*
+bin/Release/Modules/lodepng.*
+bin/Debug/Modules/lodepng.*
 
 
 Game/Game_*/*.*

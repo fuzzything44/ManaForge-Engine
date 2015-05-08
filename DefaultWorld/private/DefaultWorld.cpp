@@ -1,19 +1,24 @@
 #define DefaultWorldSource 1
+
 #include "DefaultWorld.h"
+
 #include <Helper.h>
 #include <ImageLoader.h>
 #include <PropertyManager.h>
 #include <Runtime.h>
 #include <Color.h>
-#include <forward_list>
 
+#include <forward_list>
 #include <sstream>
 #include <fstream>
 
 #include <boost/lexical_cast.hpp>
+
 #include <boost/algorithm/string.hpp>
 #include <boost/serialization/map.hpp>
 #include <boost/serialization/forward_list.hpp>
+
+#include <boost/archive/xml_oarchive.hpp>
 #include <boost/archive/xml_iarchive.hpp>
 
 
@@ -85,7 +90,7 @@ void DefaultWorld::loadWorld(std::string name)
 			FATAL_ERR("COULD NOT OPEN STATIC ACTORS");
 		}
 		
-		boost::archive::xml_iarchive static_arch{ std::stringstream() };
+		boost::archive::xml_iarchive static_arch{ static_stream };
 
 		std::forward_list<Actor*> static_actors;
 

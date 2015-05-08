@@ -2,6 +2,7 @@
 // worldwide typedefs
 
 #define ENGINE_VERSION 1.3f
+#define MODULE_NAME Engine
 
 #ifdef ENGINE
 	#define ENGINE_API _declspec(dllexport)
