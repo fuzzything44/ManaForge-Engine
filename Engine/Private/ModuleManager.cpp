@@ -8,7 +8,7 @@ ModuleManager::~ModuleManager()
 	delete createWorld;
 }
 
-ModuleManager::ModuleManager()
+ModuleManager::ModuleManager(Runtime& runtime)
 	: renderer(nullptr)
 {
 
@@ -54,4 +54,24 @@ World* ModuleManager::newWorld(std::string path)
 	check(createWorld);
 
 	return (*createWorld)(path);
+}
+
+void ModuleManager::addInitCallback(const std::function<void()>& function)
+{
+	initCallbacks.push_back(function);
+}
+
+void ModuleManager::addUpdateCallback(const std::function<bool()>& function)
+{
+	updateCallbacks.push_back(function);
+}
+
+std::list<std::function<void()>>& ModuleManager::getInitCallbacks()
+{
+	return initCallbacks;
+}
+
+std::list<std::function<bool()>>& ModuleManager::getUpdateCallbacks()
+{
+	return updateCallbacks;
 }

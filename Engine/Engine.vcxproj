@@ -76,7 +76,8 @@
       <TargetMachine>MachineX86</TargetMachine>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
-      <AdditionalDependencies>glfw3.lib;glew32.lib;opengl32.lib;opencl.lib;StackWalker.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;glew32.lib;opengl32.lib;opencl.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(WindowsSDK_LibraryPath_x86);C:\Program Files (x86)\boost\boost_1_58_0\lib32-msvc-12.0\;</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -112,11 +113,11 @@
     <ClCompile Include="Private\PropertyManager.cpp" />
     <ClCompile Include="Private\Runtime.cpp" />
     <ClCompile Include="private\TextureLibrary.cpp" />
-    <ClCompile Include="Private\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="public\Actor.h" />
     <ClInclude Include="Public\CameraComponent.h" />
+    <ClInclude Include="Public\ChangeDirectory.h" />
     <ClInclude Include="Public\Component.h" />
     <ClInclude Include="public\Chunk.h" />
     <ClInclude Include="public\Color.h" />

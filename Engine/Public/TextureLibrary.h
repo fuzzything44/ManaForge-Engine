@@ -16,7 +16,7 @@ static const uint32 IMAGE_WIDTH = 256;
 // amount of textures in one direction. Size of texture is (IMAGE_WIDTH * TEXTURE_WIDTH)^2
 static const uint32 TEXTURE_WIDTH = 16;
 
-
+// TODO: remove
 class TextureLibrary
 {
 public:
@@ -32,11 +32,6 @@ private:
 	
 
 	static std::map<std::string, UVData> UVDataMap;
-
-	static void appendDDS(uint32 texToAppend, uint32 Xoffset, uint32 Yoffset, const GLchar* filepath);
-
-
-	static uint32 allocateCompressedTextureLibraryFromDDS(uint32 num, const char* filepath);
 
 	// the location of the next image.
 	static uvec2 nextLocation;

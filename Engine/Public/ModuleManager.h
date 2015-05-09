@@ -8,6 +8,7 @@
 #include <map>
 #include <vector>
 #include <functional>
+#include <list>
 
 class Runtime;
 class World;
@@ -16,6 +17,8 @@ class Renderer;
 class ModuleManager
 {
 public:
+
+	friend Runtime;
 
 	ENGINE_API ~ModuleManager();
 
@@ -44,7 +47,16 @@ public:
 
 	ENGINE_API World* newWorld(std::string path);
 
+	ENGINE_API void addInitCallback(const std::function<void()>& function);
+	ENGINE_API void addUpdateCallback(const std::function<bool()>& function);
+
 private:
+
+	std::list<std::function<void()> >& getInitCallbacks();
+	std::list<std::function<bool()> >& getUpdateCallbacks();
+
+	std::list<std::function<void()> > initCallbacks;
+	std::list<std::function<bool()> > updateCallbacks;
 
 	// function to createWorld
 	std::function<World*(std::string)>* createWorld;

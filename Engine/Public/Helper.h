@@ -4,9 +4,6 @@
 
 #include <boost/serialization/nvp.hpp>
 
-// OpenCL include
-#include <CL/cl.hpp>
-
 // standard library includes
 #include <ios>
 
@@ -36,12 +33,12 @@ ENGINE_API uint32 LoadShaders(const char* vertexFile, const char* fragmentFile);
 /// <returns> The DDS.</returns>
 ENGINE_API uint32 loadDDS(const char * imagepath);
 
-/// <summary> Gets the string assiociated with the error code.</summary>
-///
-/// <param name="error"> The error.</param>
-///
-/// <returns> A the string that is the error.</returns>
-ENGINE_API std::string clGetErrorString(cl_int error);
+///// <summary> Gets the string assiociated with the error code.</summary>
+/////
+///// <param name="error"> The error.</param>
+/////
+///// <returns> A the string that is the error.</returns>
+//ENGINE_API std::string clGetErrorString(cl_int error);
 
 /// <summary> custom vector printing </summary>
 ENGINE_API std::ostream& operator<<(std::ostream& os, const vec2& vec);

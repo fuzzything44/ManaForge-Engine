@@ -4,6 +4,8 @@
 #include "Logging.h"
 #include <Runtime.h>
 
+std::map<GLFWwindow*, OpenGLWindow*> OpenGLWindow::windows = std::map<GLFWwindow*, OpenGLWindow*>();
+
 OpenGLWindow::OpenGLWindow(const WindowProps& props) 
 	: Window(),
 	props(props)
@@ -120,77 +122,62 @@ void OpenGLWindow::setRenderMode(RenderMode newMode)
 
 RenderMode OpenGLWindow::getRenderMode()
 {
+	return props.renderMode;
 }
 
 
 
 void OpenGLWindow::init()
 {
-	// if init exists use it and if it doesn't succede return the error code.
-
-	double start = glfwGetTime();
-
-
-	Runtime::get().init();
-
-	ENG_LOG("Init finished in " << glfwGetTime() - start << "s");
-
-
-	// set initial tick
-	float LastTick = static_cast<float>(glfwGetTime());
-
-
-	do {
-
-		if (hasFocus){
-
-			// calculate tick time
-			float CurrentTick = static_cast<float>(glfwGetTime());
-			float delta = CurrentTick - LastTick;
-
-			LastTick = CurrentTick;
-
-
-			Runtime::get().update();
-
-			// swap front and back buffers 
-			glfwSwapBuffers(window);
-
-
-			// if user is pressing esc, exit the application
-			if (glfwGetKey(window, GLFW_KEY_ESCAPE))
-			{
-				glfwSetWindowShouldClose(window, GL_TRUE);
-			}
-			// render another frame so long the window shouldn't close. 
-			// This is analogous for setting it through a function or pressing the close button
-
-		}
-
-		// make sure all events are done
-		glfwPollEvents();
-
-	} while (!glfwWindowShouldClose(window));
+	
 
 }
 
 uvec2 OpenGLWindow::getSize() const
 {
+	ivec2 size;
+	glfwGetWindowSize(window, &size.x, &size.y);
 
+	return static_cast<uvec2>(size);
 }
 
 int32 OpenGLWindow::getKey(Keyboard key)
 {
+	return glfwGetKey(window, static_cast<int>(key));
 }
 
 vec2 OpenGLWindow::getCursorLocPixels()
 {
+	dvec2 locationdouble;
+	glfwGetCursorPos(window, &locationdouble.x, &locationdouble.y);
+
+	return static_cast<vec2>(locationdouble);
 }
 
 void OpenGLWindow::swapBuffers()
 {
+	glfwSwapBuffers(window);
 }
 
 void OpenGLWindow::pollEvents()
 {
+	glfwPollEvents();
+}
+
+void OpenGLWindow::scrollCallback(GLFWwindow* window, double x, double y)
+{
+	auto iter = windows.find(window);
+	if (iter != windows.end())
+	{
+		// iter->second->scroll(x, y);
+	}
+}
+
+void OpenGLWindow::focusCallback(GLFWwindow* window, int x)
+{
+	auto iter = windows.find(window);
+	if (iter != windows.end())
+	{
+		// iter->second->focus(x);
+	}
 }

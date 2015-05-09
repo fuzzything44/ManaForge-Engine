@@ -23,9 +23,6 @@
     <ClCompile Include="private\TextureLibrary.cpp">
       <Filter>Private</Filter>
     </ClCompile>
-    <ClCompile Include="Private\Window.cpp">
-      <Filter>Private</Filter>
-    </ClCompile>
     <ClCompile Include="Private\Module.cpp">
       <Filter>Private</Filter>
     </ClCompile>
@@ -146,6 +143,9 @@
       <Filter>Public</Filter>
     </ClInclude>
     <ClInclude Include="Public\KeyEnum.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\ChangeDirectory.h">
       <Filter>Public</Filter>
     </ClInclude>
   </ItemGroup>

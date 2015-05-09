@@ -45,7 +45,7 @@
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)Engine\Public\;$(SolutionDir)Include;$(SolutionDir)StackWalker/;$(SolutionDir)/OpenGLRenderer/Public;$(SolutionDir)/OpenGLRenderer/Private</IncludePath>
     <OutDir>$(SolutionDir)bin\$(Configuration)\Modules\</OutDir>
-    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(SolutionDir)library;$(SolutionDir)bin\$(Configuration);</LibraryPath>
+    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(SolutionDir)bin\$(Configuration)\;</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -63,7 +63,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>OpenGL32.lib;opencl.lib;Engine.lib;opengl32.lib;glfw3.lib;glew32.lib;StackWalker.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>OpenGL32.lib;opengl32.lib;glfw3.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -91,11 +91,11 @@
     <ClCompile Include="Private\OpenGLWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="OpenGLWindow.h" />
     <ClInclude Include="Private\OpenGLMaterial.h" />
     <ClInclude Include="Private\OpenGLModel.h" />
     <ClInclude Include="Private\OpenGLRenderer.h" />
     <ClInclude Include="Private\OpenGLRendererConfig.h" />
+    <ClInclude Include="Private\OpenGLWindow.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

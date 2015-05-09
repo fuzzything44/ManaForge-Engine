@@ -1,4 +1,5 @@
 #pragma once
+#include "OpenGLRendererConfig.h"
 
 #include "Window.h"
 
@@ -27,7 +28,7 @@ private:
 	/// <summary> The window.</summary>
 	GLFWwindow* window;
 
-	std::map<GLFWwindow*, OpenGLWindow*> windows;
+	static std::map<GLFWwindow*, OpenGLWindow*> windows;
 
 	static void scrollCallback(GLFWwindow* window, double x, double y);
 	static void focusCallback(GLFWwindow* window, int x);

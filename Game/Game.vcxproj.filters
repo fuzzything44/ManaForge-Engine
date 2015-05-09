@@ -14,13 +14,5 @@
     <ClCompile Include="Private\RPG-Game.cpp">
       <Filter>Private</Filter>
     </ClCompile>
-    <ClCompile Include="Private\MainWindow.cpp">
-      <Filter>Private</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Public\MainWindow.h">
-      <Filter>Public</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

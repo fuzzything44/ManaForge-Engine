@@ -1,23 +1,24 @@
 #pragma once
 // worldwide typedefs
 
-#define ENGINE_VERSION 1.3f
+#define ENGINE_VERSION 0.1f
 #define MODULE_NAME Engine
 
 #ifdef ENGINE
-	#define ENGINE_API _declspec(dllexport)
+#	define ENGINE_API _declspec(dllexport)
 #else
-	#define ENGINE_API _declspec(dllimport)
+#	define ENGINE_API _declspec(dllimport)
+// link to Engine.lib if we arn't compiling the engine
+#	pragma comment(lib, "Engine.lib")
 #endif
 
+// ALWAYS link to stackwalker.lib
+#pragma comment(lib, "StackWalker.lib")
 
 #if defined WIN32 || defined _WIN32
 	#include <Windows.h>
 	#include <direct.h>
 #endif
-
-#include <GLTools/glew.h>
-#include <GLTools/glfw3.h>
 
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>

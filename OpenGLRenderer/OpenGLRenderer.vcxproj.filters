@@ -25,9 +25,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="OpenGLWindow.h">
-      <Filter>Private</Filter>
-    </ClInclude>
     <ClInclude Include="Private\OpenGLMaterial.h">
       <Filter>Private</Filter>
     </ClInclude>
@@ -38,6 +35,9 @@
       <Filter>Private</Filter>
     </ClInclude>
     <ClInclude Include="Private\OpenGLRendererConfig.h">
+      <Filter>Private</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\OpenGLWindow.h">
       <Filter>Private</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,4 +1,4 @@
-#define DefaultWorldSource 1
+
 
 #include "DefaultWorld.h"
 

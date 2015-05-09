@@ -11,11 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Private\MainWindow.cpp" />
     <ClCompile Include="Private\RPG-Game.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Public\MainWindow.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{74F1D888-86D0-47EE-93ED-E7834EC90A5F}</ProjectGuid>

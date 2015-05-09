@@ -1,8 +1,11 @@
+#include "OpenGLRendererConfig.h"
+
 #include <OpenGLRenderer.h>
 #include <Transform.h>
 #include <ModuleManager.h>
 #include <Helper.h>
 #include <CameraComponent.h>
+
 
 
 // define static variables

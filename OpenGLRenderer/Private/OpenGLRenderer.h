@@ -11,8 +11,6 @@ class OpenGLRenderer : public Renderer
 
 public:
 
-	uint32 loadShaderProgram(std::string program);
-
 	virtual Model* newModel(vec2* locations, vec2* UVs, uint32* elems, uint32 numVerts, uint32 numElems) override;
 
 	virtual Material* newMaterial() override;
@@ -39,6 +37,12 @@ public:
 
 
 private:
+
+
+	uint32 loadShaderProgram(std::string program);
+	int32 loadDDS(const std::string& filename);
+	void appendDDS(uint32 texToAppend, uint32 Xoffset, uint32 Yoffset, const char* filepath);
+	uint32 allocateCompressedTextureLibraryFromDDS(uint32 num, const char* filepath);
 	CameraComponent* currentCamera;
 
 	std::forward_list<OpenGLModel*> models;

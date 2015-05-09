@@ -7,6 +7,8 @@
 #include "ModuleManager.h"
 #include "WindowProps.h"
 
+#include <chrono>
+
 class Window;
 
 class Runtime :
@@ -27,6 +29,13 @@ public:
 
 	ENGINE_API void run();
 
+	ENGINE_API static void init();
+
 private:
+
+	typedef std::chrono::high_resolution_clock clock;
+
+	static bool isInitalized;
+
 	static Runtime* currentRuntime;
 };
