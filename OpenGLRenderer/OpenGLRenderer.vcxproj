@@ -43,9 +43,9 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)Engine\Public\;$(SolutionDir)Include;$(SolutionDir)OpenGLRenderer\Public;$(SolutionDir)StackWalker/;</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)Engine\Public\;$(SolutionDir)Include;$(SolutionDir)StackWalker/;$(SolutionDir)/OpenGLRenderer/Public;$(SolutionDir)/OpenGLRenderer/Private</IncludePath>
     <OutDir>$(SolutionDir)bin\$(Configuration)\Modules\</OutDir>
-    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(SolutionDir)library;$(SolutionDir)bin\$(Configuration);$(SolutionDir)/OpenGLRenderer/Public</LibraryPath>
+    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(SolutionDir)library;$(SolutionDir)bin\$(Configuration);</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -88,12 +88,14 @@
     <ClCompile Include="OpenGLRenderer.cpp" />
     <ClCompile Include="Private\OpenGLMaterial.cpp" />
     <ClCompile Include="Private\OpenGLModel.cpp" />
+    <ClCompile Include="Private\OpenGLWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="OpenGLRendererConfig.h" />
-    <ClInclude Include="Public\OpenGLMaterial.h" />
-    <ClInclude Include="Public\OpenGLModel.h" />
-    <ClInclude Include="Public\OpenGLRenderer.h" />
+    <ClInclude Include="OpenGLWindow.h" />
+    <ClInclude Include="Private\OpenGLMaterial.h" />
+    <ClInclude Include="Private\OpenGLModel.h" />
+    <ClInclude Include="Private\OpenGLRenderer.h" />
+    <ClInclude Include="Private\OpenGLRendererConfig.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -20,19 +20,25 @@
     <ClCompile Include="Private\OpenGLMaterial.cpp">
       <Filter>Private</Filter>
     </ClCompile>
+    <ClCompile Include="Private\OpenGLWindow.cpp">
+      <Filter>Private</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="OpenGLRendererConfig.h">
-      <Filter>Public</Filter>
+    <ClInclude Include="OpenGLWindow.h">
+      <Filter>Private</Filter>
     </ClInclude>
-    <ClInclude Include="Public\OpenGLRenderer.h">
-      <Filter>Public</Filter>
+    <ClInclude Include="Private\OpenGLMaterial.h">
+      <Filter>Private</Filter>
     </ClInclude>
-    <ClInclude Include="Public\OpenGLMaterial.h">
-      <Filter>Public</Filter>
+    <ClInclude Include="Private\OpenGLModel.h">
+      <Filter>Private</Filter>
     </ClInclude>
-    <ClInclude Include="Public\OpenGLModel.h">
-      <Filter>Public</Filter>
+    <ClInclude Include="Private\OpenGLRenderer.h">
+      <Filter>Private</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\OpenGLRendererConfig.h">
+      <Filter>Private</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

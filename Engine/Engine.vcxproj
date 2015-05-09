@@ -124,6 +124,7 @@
     <ClInclude Include="Public\Engine.h" />
     <ClInclude Include="public\Helper.h" />
     <ClInclude Include="Public\ImageLoader.h" />
+    <ClInclude Include="Public\KeyEnum.h" />
     <ClInclude Include="Public\Logging.h" />
     <ClInclude Include="Public\Material.h" />
     <ClInclude Include="Public\MeshComponent.h" />
@@ -140,13 +141,10 @@
     <ClInclude Include="Public\Transform.h" />
     <ClInclude Include="Public\UVData.h" />
     <ClInclude Include="Public\Window.h" />
+    <ClInclude Include="Public\WindowProps.h" />
     <ClInclude Include="public\World.h" />
     <ClInclude Include="registerForSerialization.h" />
-    <ClInclude Include="resource.h" />
     <ClInclude Include="Serialize_Tuple.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="Engine.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

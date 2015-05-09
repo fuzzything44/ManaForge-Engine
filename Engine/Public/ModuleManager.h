@@ -9,6 +9,7 @@
 #include <vector>
 #include <functional>
 
+class Runtime;
 class World;
 class Renderer;
 
@@ -19,7 +20,7 @@ public:
 	ENGINE_API ~ModuleManager();
 
 	/// <summary> Default constructor.</summary>
-	ENGINE_API ModuleManager();
+	ENGINE_API ModuleManager(Runtime& runtime);
 
 	/// <summary> Gets the renderer./</summary>
 	///

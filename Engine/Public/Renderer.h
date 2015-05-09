@@ -1,5 +1,7 @@
 #pragma once 
 
+#include <boost/core/noncopyable.hpp>
+
 #include "Engine.h"
 #include "Model.h"
 #include "Material.h"
@@ -9,7 +11,9 @@
 // forward declarations
 class CameraComponent;
 
-class Renderer 
+// a non - copyable abstract class that handles rendering
+class Renderer :
+	boost::noncopyable
 {
 public:
 

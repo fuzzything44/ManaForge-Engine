@@ -56,9 +56,6 @@
     <ClCompile Include="Private\Runtime.cpp">
       <Filter>Private</Filter>
     </ClCompile>
-    <ClCompile Include="SavedClass.cpp">
-      <Filter>Public</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="public\Actor.h">
@@ -136,9 +133,6 @@
     <ClInclude Include="Public\ImageLoader.h">
       <Filter>Public</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h">
-      <Filter>Public</Filter>
-    </ClInclude>
     <ClInclude Include="Public\PropertyManager.h">
       <Filter>Public</Filter>
     </ClInclude>
@@ -148,8 +142,11 @@
     <ClInclude Include="registerForSerialization.h">
       <Filter>Public</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="Engine.rc" />
+    <ClInclude Include="Public\WindowProps.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\KeyEnum.h">
+      <Filter>Public</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
