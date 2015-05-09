@@ -35,7 +35,7 @@ void MainWindow::init()
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	
 
-
+	// This should be removed when we have world loading.
 	TextureLibrary::addTexture("0", "textures\\0.dds");
 	TextureLibrary::addTexture("1", "textures\\1.dds");
 	TextureLibrary::addTexture("2", "textures\\2.dds");

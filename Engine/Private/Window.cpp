@@ -149,6 +149,7 @@ void Window::run()
 
 
 			// if user is pressing esc, exit the application
+			// This should be changed to an actual input system.
 			if (glfwGetKey(window, GLFW_KEY_ESCAPE))
 			{
 				glfwSetWindowShouldClose(window, GL_TRUE);

@@ -41,7 +41,7 @@ DefaultWorld::DefaultWorld(std::string folder)
 {
 
 	// Make sure a world folder was supplied.
-	if (folderLocation == "") {
+	if (folder == "") {
 		FATAL_ERR("No world loaded");
 	}
 
@@ -54,6 +54,7 @@ DefaultWorld::DefaultWorld(std::string folder)
 
 	ENG_LOG("Loading images...");
 	
+	// We should probably just have the images we use in the same file as chunk size.
 	std::ifstream stream{ folderLocation + "/images.txt" };
 	boost::archive::xml_iarchive arch{ stream };
 
@@ -84,7 +85,7 @@ void DefaultWorld::loadWorld(std::string name)
 	else {
 		
 		// load static actors
-		std::ifstream static_stream{ folderLocation + "/static.txt" };
+		std::ifstream static_stream{ folderLocation + name + ".WORLD" };
 		if (!static_stream.is_open())
 		{
 			FATAL_ERR("COULD NOT OPEN STATIC ACTORS");
@@ -99,6 +100,7 @@ void DefaultWorld::loadWorld(std::string name)
 
 
 			static_arch >> BOOST_SERIALIZATION_NVP(static_actors);
+			static_arch >> boost::serialization::make_nvp("static_actors", static_actors);
 
 		}
 		catch (boost::archive::archive_exception& e)
@@ -113,7 +115,7 @@ void DefaultWorld::loadWorld(std::string name)
 		}
 
 		// load dynamic actors
-		std::ifstream dynamic_stream{ folderLocation + "/archive.txt" };
+		std::ifstream dynamic_stream{ folderLocation + name + ".SAVE" };
 		boost::archive::xml_iarchive dynamic_arch{ static_stream };
 
 		std::forward_list<Actor*> dynamic_actors;
