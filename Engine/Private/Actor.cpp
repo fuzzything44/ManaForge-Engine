@@ -7,7 +7,7 @@ void Actor::tick(float deltaTime)
 }
 
 
-Actor::Actor(Transform trans, bool isPersistent)
+Actor::Actor(const Transform& trans, bool isPersistent)
 	: trans(trans)
 {
 

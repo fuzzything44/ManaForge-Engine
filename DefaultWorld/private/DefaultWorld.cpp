@@ -8,7 +8,7 @@
 #include <Runtime.h>
 #include <Color.h>
 
-#include <forward_list>
+#include <list>
 #include <sstream>
 #include <fstream>
 
@@ -16,7 +16,7 @@
 
 #include <boost/algorithm/string.hpp>
 #include <boost/serialization/map.hpp>
-#include <boost/serialization/forward_list.hpp>
+#include <boost/serialization/list.hpp>
 
 #include <boost/archive/xml_oarchive.hpp>
 #include <boost/archive/xml_iarchive.hpp>
@@ -83,18 +83,19 @@ void DefaultWorld::loadWorld(std::string name)
 	}
 	else {
 		
-		// load static actors
-		std::ifstream static_stream{ folderLocation + "/static.txt" };
-		if (!static_stream.is_open())
-		{
-			FATAL_ERR("COULD NOT OPEN STATIC ACTORS");
-		}
+		
 
 		try{
+			// load static actors
+			std::ifstream static_stream{ folderLocation + "/static.txt" };
+			if (!static_stream.is_open())
+			{
+				FATAL_ERR("COULD NOT OPEN STATIC ACTORS");
+			}
 
 			boost::archive::xml_iarchive static_arch{ static_stream };
 
-			std::forward_list<Actor*> static_actors;
+			std::list<Actor*> static_actors;
 
 
 
@@ -112,14 +113,32 @@ void DefaultWorld::loadWorld(std::string name)
 			std::cin.get();
 		}
 
-		// load dynamic actors
-		std::ifstream dynamic_stream{ folderLocation + "/archive.txt" };
-		boost::archive::xml_iarchive dynamic_arch{ static_stream };
 
-		std::forward_list<Actor*> dynamic_actors;
+		try{
 
-		dynamic_arch >> BOOST_SERIALIZATION_NVP(dynamic_actors);
+			// load dynamic actors
+			std::ifstream dynamic_stream{ folderLocation + "/dynamic.txt" };
+			if (!dynamic_stream.is_open())
+			{
+				FATAL_ERR("COULD NOT OPEN DYNAMIC ACTORS");
+			}
 
+			boost::archive::xml_iarchive dynamic_arch{ dynamic_stream };
+
+			std::list<Actor*> dynamic_actors;
+
+			dynamic_arch >> BOOST_SERIALIZATION_NVP(dynamic_actors);
+		}
+		catch (boost::archive::archive_exception& e)
+		{
+			ENG_LOG(e.what() << "\t CODE: " << e.code);
+			std::cin.get(); // REAL ERROR HANDLING
+		}
+		catch (std::exception& e)
+		{
+			ENG_LOG(e.what());
+			std::cin.get();
+		}
 
 	}
 

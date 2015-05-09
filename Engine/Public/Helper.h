@@ -86,41 +86,40 @@ namespace boost
 		template<typename Archive>
 		void serialize(Archive& ar, vec2& dat, const uint32 version)
 		{
-			ar & BOOST_SERIALIZATION_NVP(dat.x);
-			ar & BOOST_SERIALIZATION_NVP(dat.y);
+			ar & boost::serialization::make_nvp("x", dat.x);
+			ar & boost::serialization::make_nvp("y", dat.y);
 		}
 		template<typename Archive>
 		void serialize(Archive& ar, vec3& dat, const uint32 version)
 		{
-			ar & BOOST_SERIALIZATION_NVP(dat.x);
-			ar & BOOST_SERIALIZATION_NVP(dat.y);
-			ar & BOOST_SERIALIZATION_NVP(dat.z);
+			ar & boost::serialization::make_nvp("x", dat.x);
+			ar & boost::serialization::make_nvp("y", dat.y);
+			ar & boost::serialization::make_nvp("z", dat.z);
 		}
 		template<typename Archive>
 		void serialize(Archive& ar, ivec2& dat, const uint32 version)
 		{
-			ar & BOOST_SERIALIZATION_NVP(dat.x);
-			ar & BOOST_SERIALIZATION_NVP(dat.y);
+			ar & boost::serialization::make_nvp("x", dat.x);
+			ar & boost::serialization::make_nvp("y", dat.y);
 		}
 		template<typename Archive>
 		void serialize(Archive& ar, ivec3& dat, const uint32 version)
 		{
-			ar & BOOST_SERIALIZATION_NVP(dat.x);
-			ar & BOOST_SERIALIZATION_NVP(dat.y);
-			ar & BOOST_SERIALIZATION_NVP(dat.z);
+			ar & boost::serialization::make_nvp("x", dat.x);
+			ar & boost::serialization::make_nvp("y", dat.y);
+			ar & boost::serialization::make_nvp("z", dat.z);
 		}
 		template<typename Archive>
 		void serialize(Archive& ar, uvec2& dat, const uint32 version)
 		{
-			ar & BOOST_SERIALIZATION_NVP(dat.x);
-			ar & BOOST_SERIALIZATION_NVP(dat.y);
+			ar & boost::serialization::make_nvp("x", dat.x);
+			ar & boost::serialization::make_nvp("y", dat.y);
 		}
 		template<typename Archive>
 		void serialize(Archive& ar, uvec3& dat, const uint32 version)
 		{
-			ar & BOOST_SERIALIZATION_NVP(dat.x);
-			ar & BOOST_SERIALIZATION_NVP(dat.y);
-			ar & BOOST_SERIALIZATION_NVP(dat.z);
+			ar & boost::serialization::make_nvp("x", dat.x);
+			ar & boost::serialization::make_nvp("y", dat.y);
 		}
 	}
 }

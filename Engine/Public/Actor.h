@@ -31,7 +31,7 @@ public:
 	/// <param name="chunkIn"> [in,out] If non-null, the chunk in.</param>
 	///
 	/// <returns> An ENGINE_API.</returns>
-	explicit ENGINE_API Actor(Transform trans = Transform{}, bool isPersistent = false);
+	explicit ENGINE_API Actor(const Transform& trans = Transform{}, bool isPersistent = false);
 
 	/// <summary> Gets the location.</summary>
 	///

@@ -7,7 +7,7 @@
 
 struct Transform
 {
-	explicit Transform(vec2 location = vec2(0.f), float rotation = 0.f, vec2 scale = vec2(0.f))
+	explicit Transform(const vec2& location = vec2(0.f), float rotation = 0.f, const vec2& scale = vec2(0.f))
 		: location(location),
 		rotation(rotation),
 		scale(scale) { }
@@ -24,7 +24,7 @@ struct Transform
 		ar & BOOST_SERIALIZATION_NVP(scale);
 	}
 
-	inline Transform& operator+=(Transform& other)
+	inline Transform& operator+=(const Transform& other)
 	{
 		location += other.location;
 		rotation += other.rotation;
@@ -34,17 +34,17 @@ struct Transform
 	}
 
 
-	inline Transform operator+(Transform& other)
+	inline Transform operator+(const Transform& other) const 
 	{
 		return Transform(location + other.location, rotation + other.rotation, scale + other.scale);
 	}
 
-	inline Transform operator-(Transform& other)
+	inline Transform operator-(const Transform& other) const
 	{
 		return Transform(location - other.location, rotation - other.rotation, scale - other.scale);
 	}
 
-	inline Transform& operator-=(Transform& other)
+	inline Transform& operator-=(const Transform& other) 
 	{
 		location -= other.location;
 		rotation -= other.rotation;
@@ -53,7 +53,7 @@ struct Transform
 		return *this;
 	}
 
-	inline Transform& operator*=(Transform& other)
+	inline Transform& operator*=(const Transform& other)
 	{
 		location *= other.location;
 		rotation *= other.rotation;
@@ -63,7 +63,7 @@ struct Transform
 	}
 
 
-	inline Transform operator*(Transform& other)
+	inline Transform operator*(const Transform& other) const
 	{
 		return Transform(location * other.location, rotation * other.rotation, scale * other.scale);
 	}

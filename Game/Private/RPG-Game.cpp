@@ -4,7 +4,13 @@
 #include "ENGException.h"
 #include "Logging.h"
 
+#include "Helper.h"
+
 #include <fstream>
+
+#include <boost/archive/xml_oarchive.hpp>
+#include <boost/serialization/nvp.hpp>
+#include <boost/serialization/list.hpp>
 
 #if defined _WIN32 || defined WIN32
 void changeDir()
@@ -82,7 +88,21 @@ void changeDir()
 int32 main()
 {
 	changeDir();
+	
+	std::list<Actor*> list;
+	list.push_back(new Actor(Transform(vec2(1.f, 323.f), 425.f, vec2(129.f, 3.33f)), true));
+	list.push_back(new Actor(Transform(vec2(2.f, 63.f), 425.f, vec2(139.f, 23.2133f)), true));
+	list.push_back(new Actor(Transform(vec2(5.f, 32.f), 452.f, vec2(914.f, 123.33f)), true));
+	list.push_back(new Actor(Transform(vec2(6.f, 364.f), 415.f, vec2(139.f, 1233.33f)), true));
+	list.push_back(new Actor(Transform(vec2(11.f, 33.f), 415.f, vec2(139.f, 43.33f)), true));
+	list.push_back(new Actor(Transform(vec2(34.f, 33.f), 455.f, vec2(941.f, 3123.33f)), true));
 
+	std::ofstream ostream{ "file.txt" };
+	boost::archive::xml_oarchive oarch{ ostream };
+	
+	oarch << BOOST_SERIALIZATION_NVP(list);
+
+	ostream.close();
 
 	logging::init();
 
