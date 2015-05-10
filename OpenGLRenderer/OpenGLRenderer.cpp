@@ -2,6 +2,7 @@
 
 #include "OpenGLRenderer.h"
 #include "OpenGLMaterial.h"
+#include "OpenGLWindow.h"
 
 #include <Renderer.h>
 #include <ModuleManager.h>
@@ -10,6 +11,12 @@
 
 #include <functional>
 #include <algorithm>
+
+
+OpenGLRenderer::OpenGLRenderer()
+{
+	window = new OpenGLWindow();
+}
 
 uint32 OpenGLRenderer::loadShaderProgram(std::string name)
 {
@@ -107,17 +114,19 @@ Material* OpenGLRenderer::newMaterial()
 	return new OpenGLMaterial();
 }
 
-void OpenGLRenderer::init()
-{
-	
-}
 
-void OpenGLRenderer::update()
+bool OpenGLRenderer::update()
 {
 	// TODO: collision etc
 
 	// call the draw function for all of the models
 	std::for_each(models.begin(), models.end(), std::bind(&OpenGLModel::draw, std::placeholders::_1));
+
+
+	window->swapBuffers();
+	window->pollEvents();
+
+	return !window->shouldClose();
 }
 
 void OpenGLRenderer::setCurrentCamera(CameraComponent* newCamera)
@@ -376,7 +385,10 @@ uint32 OpenGLRenderer::allocateCompressedTextureLibraryFromDDS(uint32 num, const
 
 extern "C" OpenGLRendererPlugin_API void registerModule(ModuleManager& mm)
 {
-	mm.addRenderer(new OpenGLRenderer());
+	mm.setRenderer(new OpenGLRenderer());
+	mm.addUpdateCallback(
+		std::bind(&OpenGLRenderer::update, 
+			static_cast<OpenGLRenderer*>(&mm.getRenderer())));
 }
 
 extern "C" OpenGLRendererPlugin_API float getModuleEngineVersion()

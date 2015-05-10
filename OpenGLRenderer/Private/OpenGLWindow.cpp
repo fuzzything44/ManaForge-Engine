@@ -164,6 +164,11 @@ void OpenGLWindow::pollEvents()
 	glfwPollEvents();
 }
 
+bool OpenGLWindow::shouldClose()
+{
+	return glfwWindowShouldClose(window);
+}
+
 void OpenGLWindow::scrollCallback(GLFWwindow* window, double x, double y)
 {
 	auto iter = windows.find(window);

@@ -53,6 +53,9 @@
     <ClCompile Include="Private\Runtime.cpp">
       <Filter>Private</Filter>
     </ClCompile>
+    <ClCompile Include="Private\ChangeDirectory.cpp">
+      <Filter>Private</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="public\Actor.h">

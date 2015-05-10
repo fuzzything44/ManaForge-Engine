@@ -18,7 +18,7 @@ public:
 	 
 	virtual void swapBuffers();
 	virtual void pollEvents();
-
+	bool shouldClose();
 private:
 	WindowProps props;
 

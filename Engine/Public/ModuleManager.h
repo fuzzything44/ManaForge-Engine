@@ -38,7 +38,7 @@ public:
 	/// <summary> Adds a renderer.</summary>
 	///
 	/// <param name="newRenderer"> If non-null, the new renderer.</param>
-	ENGINE_API void addRenderer(Renderer* newRenderer);
+	ENGINE_API void setRenderer(Renderer* newRenderer);
 
 	/// <summary> Adds a world.</summary>
 	///
@@ -52,17 +52,16 @@ public:
 
 private:
 
-	std::list<std::function<void()> >& getInitCallbacks();
-	std::list<std::function<bool()> >& getUpdateCallbacks();
+	std::list<std::function<void()>* >& getInitCallbacks();
+	std::list<std::function<bool()>* >& getUpdateCallbacks();
 
-	std::list<std::function<void()> > initCallbacks;
-	std::list<std::function<bool()> > updateCallbacks;
+	std::list<std::function<void()>* > initCallbacks;
+	std::list<std::function<bool()>* > updateCallbacks;
 
 	// function to createWorld
 	std::function<World*(std::string)>* createWorld;
 
 	std::map<std::string, Module> loadedModules;
 
-	std::vector<Renderer*> avaliableRenderers;
 	Renderer* renderer;
 };

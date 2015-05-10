@@ -36,8 +36,8 @@ const Chunk& DefaultWorld::getPersistentChunk() const
 
 
 DefaultWorld::DefaultWorld(std::string folder)
-	:folderLocation(std::string("Worlds/") + folder),
-	propManager(folderLocation + "/world.json")
+	:folderLocation(std::string("Worlds\\") + folder + '\\'),
+	propManager(folderLocation + "world.json")
 {
 
 	// Make sure a world folder was supplied.
@@ -55,7 +55,7 @@ DefaultWorld::DefaultWorld(std::string folder)
 	ENG_LOG("Loading images...");
 	
 	// We should probably just have the images we use in the same file as chunk size.
-	std::ifstream stream{ folderLocation + "/images.txt" };
+	std::ifstream stream{ folderLocation + "images.txt" };
 	boost::archive::xml_iarchive arch{ stream };
 
 	std::map<Color, std::string> valuePairs;
@@ -88,38 +88,37 @@ void DefaultWorld::loadWorld(std::string name)
 
 		try{
 		// load static actors
-		std::ifstream static_stream{ folderLocation + name + ".WORLD" };
-		if (!static_stream.is_open())
-		{
-			FATAL_ERR("COULD NOT OPEN STATIC ACTORS");
-		}
+		
+
+			std::ifstream static_stream{ folderLocation + name + '\\' + name + ".WORLD" };
+			if (!static_stream.is_open())
+			{
+				FATAL_ERR("COULD NOT OPEN STATIC ACTORS");
+			}
 
 			boost::archive::xml_iarchive static_arch{ static_stream };
 
 			std::list<Actor*> static_actors;
 
-
-
 			static_arch >> BOOST_SERIALIZATION_NVP(static_actors);
-			static_arch >> boost::serialization::make_nvp("static_actors", static_actors);
 
 		}
 		catch (boost::archive::archive_exception& e)
 		{
 			ENG_LOG(e.what() << "\t CODE: " << e.code);
-			std::cin.get(); // REAL ERROR HANDLING
+			__debugbreak(); // REAL ERROR HANDLING
 		}
 		catch (std::exception& e)
 		{
 			ENG_LOG(e.what());
-			std::cin.get();
+			__debugbreak();
 		}
 
 
 		try{
 
-		// load dynamic actors
-			std::ifstream dynamic_stream{ folderLocation + "/dynamic.txt" };
+			// load dynamic actors
+			std::ifstream dynamic_stream{ folderLocation + name + '\\' + name + ".SAVE" };
 			if (!dynamic_stream.is_open())
 			{
 				FATAL_ERR("COULD NOT OPEN DYNAMIC ACTORS");
@@ -129,17 +128,17 @@ void DefaultWorld::loadWorld(std::string name)
 
 			std::list<Actor*> dynamic_actors;
 
-		dynamic_arch >> BOOST_SERIALIZATION_NVP(dynamic_actors);
+			dynamic_arch >> BOOST_SERIALIZATION_NVP(dynamic_actors);
 		}
 		catch (boost::archive::archive_exception& e)
 		{
 			ENG_LOG(e.what() << "\t CODE: " << e.code);
-			std::cin.get(); // REAL ERROR HANDLING
+			__debugbreak(); // REAL ERROR HANDLING
 		}
 		catch (std::exception& e)
 		{
 			ENG_LOG(e.what());
-			std::cin.get();
+			__debugbreak();
 		}
 
 	}

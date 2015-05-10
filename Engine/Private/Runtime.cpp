@@ -10,7 +10,7 @@
 #include <chrono>
 
 #include <boost/algorithm/string.hpp>
-#include <boost/timer.hpp>
+#include <boost/timer/timer.hpp>
 
 
 // DEFINE STATIC VARIABLES
@@ -51,15 +51,17 @@ void Runtime::run()
 {
 	{
 		// time the init time
-		boost::timer t;
+		boost::timer::cpu_timer t;
 
-		std::list<std::function<void()> >& initCallbacks = moduleManager.getInitCallbacks();
+		std::list<std::function<void()>* >& initCallbacks = moduleManager.getInitCallbacks();
 
 		for (auto& callback : initCallbacks)
 		{
-			callback();
+			(*callback)();
 		}
-		ENG_LOG("init completed. Timestamp: ");
+		ENG_LOG("init completed. Timestamp: " << t.format());
+
+		
 	}
 	
 
@@ -79,13 +81,13 @@ void Runtime::run()
 		LastTick = CurrentTick;
 
 		// recieve the update callbacks
-		std::list<std::function<bool()> >& updateCallbacks = moduleManager.getUpdateCallbacks();
+		std::list<std::function<bool()>* >& updateCallbacks = moduleManager.getUpdateCallbacks();
 
 		shouldContinue = true;
 
 		for (auto& callback : updateCallbacks)
 		{
-			if(!callback())
+			if(!(*callback)())
 			{
 				shouldContinue = false;
 			}
@@ -99,6 +101,8 @@ void Runtime::init()
 {
 	// change directory to the Resources folder
 	changeDir();
+
+	isInitalized = true;
 }
 
 Runtime& Runtime::get()

@@ -22,13 +22,8 @@ public:
 	/// <summary> Default constructor.</summary>
 	Renderer() { };
 
-	/// <summary> Initialises the Renderer.</summary>
-	///
-	/// <param name="textures"> The textures.</param>
-	virtual void init() = 0;
-	
 	/// <summary> Renders the next frame. </summary>
-	virtual void update() = 0;
+	virtual bool update() = 0;
 	
 	/// <summary> Sets camera to render at. </summary>
 	///

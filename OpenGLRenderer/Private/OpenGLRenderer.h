@@ -2,6 +2,7 @@
 #include "Renderer.h"
 #include <forward_list>
 #include <vector>
+#include "OpenGLWindow.h"
 
 class OpenGLModel;
 
@@ -11,15 +12,17 @@ class OpenGLRenderer : public Renderer
 
 public:
 
+
+	OpenGLRenderer();
+
+
+
 	virtual Model* newModel(vec2* locations, vec2* UVs, uint32* elems, uint32 numVerts, uint32 numElems) override;
 
 	virtual Material* newMaterial() override;
 
-	/// <summary>
-	virtual void init() override;
-
 	/// <summary> Renders the next frame. </summary>
-	virtual void update() override;
+	virtual bool update() override;
 
 	/// <summary> Sets camera to render at. </summary>
 	///
@@ -32,12 +35,9 @@ public:
 
 	CameraComponent* getCurrentCamera() override;
 
-	OpenGLRenderer() { }
-
-
-
 private:
-
+	
+	OpenGLWindow* window;
 
 	uint32 loadShaderProgram(std::string program);
 	int32 loadDDS(const std::string& filename);
