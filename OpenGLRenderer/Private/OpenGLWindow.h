@@ -8,18 +8,23 @@ class OpenGLWindow : public Window
 public:
 
 	explicit OpenGLWindow(const WindowProps& props = WindowProps());
+	virtual ~OpenGLWindow() override;
 
-	virtual void setRenderMode(RenderMode newMode) override;
-	virtual RenderMode getRenderMode() override;
-	virtual void init() override;
-	virtual uvec2 getSize() const override;
-	virtual int32 getKey(Keyboard key) override;
+	virtual const WindowProps& getWindowProps() const override;
+	virtual void setWindowProps(const WindowProps& props) override;
+
+	virtual int32 getIsKeyPressed(Keyboard key) override;
 	virtual vec2 getCursorLocPixels() override;
-	 
+	
+
+
 	virtual void swapBuffers();
 	virtual void pollEvents();
 	bool shouldClose();
 private:
+
+	void updateProps();
+
 	WindowProps props;
 
 	/// <summary> true if this object has focus.</summary>

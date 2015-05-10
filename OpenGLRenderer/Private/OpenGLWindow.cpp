@@ -35,15 +35,7 @@ OpenGLWindow::OpenGLWindow(const WindowProps& props)
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 
-	// we don't want a border if it is fullscreen windowed, otherwise we do
-	if (props.windowMode == WindowMode::FULLSCREEN_WINDOWED){
-
-		glfwWindowHint(GLFW_DECORATED, false);
-	}
-	else
-	{
-		glfwWindowHint(GLFW_DECORATED, true);
-	}
+	
 
 	// set profile to core profile
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -115,33 +107,23 @@ OpenGLWindow::OpenGLWindow(const WindowProps& props)
 	glfwSetWindowFocusCallback(window, &OpenGLWindow::focusCallback);
 }
 
-
-void OpenGLWindow::setRenderMode(RenderMode newMode)
+OpenGLWindow::~OpenGLWindow()
 {
 }
 
-RenderMode OpenGLWindow::getRenderMode()
+const WindowProps& OpenGLWindow::getWindowProps() const
 {
-	return props.renderMode;
+	return props;
 }
 
-
-
-void OpenGLWindow::init()
+void OpenGLWindow::setWindowProps(const WindowProps& props)
 {
-	
+	this->props = props;
 
+	updateProps();
 }
 
-uvec2 OpenGLWindow::getSize() const
-{
-	ivec2 size;
-	glfwGetWindowSize(window, &size.x, &size.y);
-
-	return static_cast<uvec2>(size);
-}
-
-int32 OpenGLWindow::getKey(Keyboard key)
+int OpenGLWindow::getIsKeyPressed(Keyboard key)
 {
 	return glfwGetKey(window, static_cast<int>(key));
 }
@@ -167,6 +149,45 @@ void OpenGLWindow::pollEvents()
 bool OpenGLWindow::shouldClose()
 {
 	return glfwWindowShouldClose(window);
+}
+
+void OpenGLWindow::updateProps()
+{
+	glfwSetWindowSize(window, props.size.x, props.size.y);
+
+	// we don't want a border if it is fullscreen windowed, otherwise we do
+	if (props.windowMode == WindowMode::FULLSCREEN_WINDOWED){
+
+		glfwWindowHint(GLFW_DECORATED, false);
+	}
+	else
+	{
+		glfwWindowHint(GLFW_DECORATED, true);
+	}
+
+	GLFWmonitor* mon = glfwGetPrimaryMonitor();
+	const GLFWvidmode* mode = glfwGetVideoMode(mon);
+
+
+	// create the winodw
+	switch (props.windowMode)
+	{
+	case WindowMode::FULLSCREEN:
+		window = glfwCreateWindow(props.size.x, props.size.y, props.title.c_str(), , nullptr);
+		break;
+	case WindowMode::FULLSCREEN_WINDOWED:
+		window = glfwCreateWindow(mode->width, mode->height, props.title.c_str(), nullptr, nullptr);
+		break;
+
+	case WindowMode::WINDOWED:
+		window = glfwCreateWindow(props.size.x, props.size.y, props.title.c_str(), nullptr, nullptr);
+		break;
+
+	default:
+
+		break;
+	}
+
 }
 
 void OpenGLWindow::scrollCallback(GLFWwindow* window, double x, double y)

@@ -7,6 +7,7 @@
 #include "Material.h"
 
 #include <vector>
+#include "WindowProps.h"
 
 // forward declarations
 class CameraComponent;
@@ -20,7 +21,9 @@ public:
 	
 
 	/// <summary> Default constructor.</summary>
-	Renderer() { };
+	Renderer() { }
+
+	virtual void setWindowProps(const WindowProps& window_props) = 0;
 
 	/// <summary> Renders the next frame. </summary>
 	virtual bool update() = 0;

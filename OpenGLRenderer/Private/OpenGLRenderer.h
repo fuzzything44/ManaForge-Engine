@@ -15,7 +15,7 @@ public:
 
 	OpenGLRenderer();
 
-
+	virtual void setWindowProps(const WindowProps& props) override;
 
 	virtual Model* newModel(vec2* locations, vec2* UVs, uint32* elems, uint32 numVerts, uint32 numElems) override;
 

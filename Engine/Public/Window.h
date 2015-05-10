@@ -21,25 +21,14 @@ public:
 		
 	}
 
-	/// <summary> Sets render mode.</summary>
-	///
-	/// <param name="newMode"> The new mode.</param>
-	virtual void setRenderMode(RenderMode newMode) = 0;
-
-	/// <summary> Gets render mode.</summary>
-	///
-	/// <returns> The render mode.</returns>
-	virtual RenderMode getRenderMode() = 0;
-
+	virtual const WindowProps& getWindowProps() const = 0;
+	virtual void setWindowProps(const WindowProps& props) = 0;
+	
+	
 	/// <summary> initalizes the window.</summary>
 	virtual void init() = 0;
 
-	/// <summary> Gets the size.</summary>
-	///
-	/// <returns> The size.</returns>
-	virtual uvec2 getSize() const = 0;
-
-	virtual int32 getKey(Keyboard key) = 0;
+	virtual int getIsKeyPressed(Keyboard key) = 0;
 	virtual vec2 getCursorLocPixels() = 0;
 
 

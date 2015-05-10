@@ -18,6 +18,11 @@ OpenGLRenderer::OpenGLRenderer()
 	window = new OpenGLWindow();
 }
 
+void OpenGLRenderer::setWindowProps(const WindowProps& props)
+{
+	
+}
+
 uint32 OpenGLRenderer::loadShaderProgram(std::string name)
 {
 	std::string vertexPath = name.append("vert.glsl");
