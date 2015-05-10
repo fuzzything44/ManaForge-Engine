@@ -5,6 +5,7 @@
 
 class OpenGLWindow : public Window
 {
+
 public:
 
 	explicit OpenGLWindow(const WindowProps& props = WindowProps());

@@ -1,6 +1,6 @@
 #pragma once
 #include "Renderer.h"
-#include <forward_list>
+#include <list>
 #include <vector>
 #include "OpenGLWindow.h"
 
@@ -43,9 +43,12 @@ private:
 	int32 loadDDS(const std::string& filename);
 	void appendDDS(uint32 texToAppend, uint32 Xoffset, uint32 Yoffset, const char* filepath);
 	uint32 allocateCompressedTextureLibraryFromDDS(uint32 num, const char* filepath);
+
+
 	CameraComponent* currentCamera;
 
-	std::forward_list<OpenGLModel*> models;
+	// doubley linked list of the models
+	std::list<OpenGLModel*> models;
 };
 
 

@@ -47,6 +47,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shaders", "Shaders", "{922D
 	ProjectSection(SolutionItems) = preProject
 		Resource\shaders\actorfrag.glsl = Resource\shaders\actorfrag.glsl
 		Resource\shaders\actorvert.glsl = Resource\shaders\actorvert.glsl
+		Resource\shaders\boilerplatefrag.glsl = Resource\shaders\boilerplatefrag.glsl
+		Resource\shaders\boilerplatevert.glsl = Resource\shaders\boilerplatevert.glsl
 		Resource\shaders\chunkfrag.glsl = Resource\shaders\chunkfrag.glsl
 		Resource\shaders\chunkvert.glsl = Resource\shaders\chunkvert.glsl
 	EndProjectSection

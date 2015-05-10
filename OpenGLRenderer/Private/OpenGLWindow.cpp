@@ -76,7 +76,7 @@ OpenGLWindow::OpenGLWindow(const WindowProps& props)
 
 	windows[window] = this;
 
-	// make context current
+	// make context current in this thread
 	glfwMakeContextCurrent(window);
 
 	// use newer GL
@@ -154,39 +154,24 @@ bool OpenGLWindow::shouldClose()
 void OpenGLWindow::updateProps()
 {
 	glfwSetWindowSize(window, props.size.x, props.size.y);
+	glfwSetWindowTitle(window, props.title.c_str());
 
-	// we don't want a border if it is fullscreen windowed, otherwise we do
-	if (props.windowMode == WindowMode::FULLSCREEN_WINDOWED){
-
-		glfwWindowHint(GLFW_DECORATED, false);
-	}
-	else
+	switch (props.renderMode)
 	{
-		glfwWindowHint(GLFW_DECORATED, true);
-	}
-
-	GLFWmonitor* mon = glfwGetPrimaryMonitor();
-	const GLFWvidmode* mode = glfwGetVideoMode(mon);
-
-
-	// create the winodw
-	switch (props.windowMode)
-	{
-	case WindowMode::FULLSCREEN:
-		window = glfwCreateWindow(props.size.x, props.size.y, props.title.c_str(), , nullptr);
+	case RenderMode::NORMAL:
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		break;
-	case WindowMode::FULLSCREEN_WINDOWED:
-		window = glfwCreateWindow(mode->width, mode->height, props.title.c_str(), nullptr, nullptr);
+	case RenderMode::WIREFRAME:
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		break;
-
-	case WindowMode::WINDOWED:
-		window = glfwCreateWindow(props.size.x, props.size.y, props.title.c_str(), nullptr, nullptr);
-		break;
-
 	default:
-
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		break;
 	}
+
+	// show the window if it should be visible
+	props.visible ? glfwShowWindow(window) : glfwHideWindow(window);
+	
 
 }
 
