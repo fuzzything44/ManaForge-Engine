@@ -148,7 +148,7 @@ void OpenGLWindow::pollEvents()
 
 bool OpenGLWindow::shouldClose()
 {
-	return glfwWindowShouldClose(window);
+	return static_cast<bool>(glfwWindowShouldClose(window));
 }
 
 void OpenGLWindow::updateProps()

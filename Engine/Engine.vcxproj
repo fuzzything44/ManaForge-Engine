@@ -116,6 +116,7 @@
     <ClCompile Include="private\TextureLibrary.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="MeshActor.h" />
     <ClInclude Include="public\Actor.h" />
     <ClInclude Include="Public\CameraComponent.h" />
     <ClInclude Include="Public\ChangeDirectory.h" />
@@ -126,6 +127,7 @@
     <ClInclude Include="Public\Engine.h" />
     <ClInclude Include="public\Helper.h" />
     <ClInclude Include="Public\ImageLoader.h" />
+    <ClInclude Include="Public\Input.h" />
     <ClInclude Include="Public\KeyEnum.h" />
     <ClInclude Include="Public\Logging.h" />
     <ClInclude Include="Public\Material.h" />

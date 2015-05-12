@@ -2,7 +2,7 @@
 
 #include <Engine.h>
 #include <Model.h>
-#include <Actor.h>
+#include "OpenGLMaterial.h"
 
 class OpenGLModel : public Model
 {
@@ -54,16 +54,14 @@ protected:
 	uint32 texCoordBuffer;
 	uint32 elemBuffer;
 
-	static int32 viewMatUniformLoc;
-	static int32 texUniformLoc;
-	static uint32 program;
-
-	uint32 texture;
+	GLint viewMatUniformLocation;
 
 	OpenGLRenderer* renderer;
 
 	Transform trans;
 
-	Actor* parent;
+	Component* parent;
+
+	OpenGLMaterial* material;
 
 };

@@ -8,11 +8,6 @@
 
 
 
-// define static variables
-int32 OpenGLModel::viewMatUniformLoc = 0;
-int32 OpenGLModel::texUniformLoc = -1;
-uint32 OpenGLModel::program = 0;
-
 
 OpenGLModel::OpenGLModel(vec2* locationsIn, vec2* UVsIn, uint32* elemsIn, uint32 numVertsIn, uint32 numElemsIn, OpenGLRenderer* rendererIn)
 	:numVerts(numVertsIn),
@@ -55,18 +50,9 @@ OpenGLModel::OpenGLModel(vec2* locationsIn, vec2* UVsIn, uint32* elemsIn, uint32
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elemBuffer);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint32) * numElems, elems, GL_STATIC_DRAW);
 
-
-
-	// load program and get uniform locations == only first time
-	if (program == 0)
-	{
-		// TODO: add custom shaders
-
-		program = renderer->loadShaderProgram("actor");
-
-		texUniformLoc = glGetUniformLocation(program, "texture");
-		viewMatUniformLoc = glGetUniformLocation(program, "viewMat");
-	}
+	// get the cameraMat location
+	viewMatUniformLocation = material->getUniformLocation("cameraMat");
+	
 }
 
 
@@ -145,22 +131,12 @@ OpenGLModel::~OpenGLModel()
 
 void OpenGLModel::draw()
 {
-	// use the global program
-	glUseProgram(program);
-
-	if (texUniformLoc != 0)
-	{
-		glUniform1i(texUniformLoc, 0);
-	}
-
-
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, texture);
+	material->use();
 
 	glBindVertexArray(vertexArray);
 
 	// set the viewMat in the shader to the view mat defined by the camera that is current
-	glUniformMatrix4fv(viewMatUniformLoc, 1, GL_FALSE, &(renderer->getCurrentCamera()->getViewMat())[0][0]);
+	glUniformMatrix4fv(viewMatUniformLocation, 1, GL_FALSE, &(renderer->getCurrentCamera()->getViewMat())[0][0]);
 
 	// bind location data to the element attrib array so it shows up in our shaders -- the location is zero (look in shader)
 	glEnableVertexAttribArray(0);

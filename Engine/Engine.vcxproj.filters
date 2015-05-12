@@ -151,5 +151,11 @@
     <ClInclude Include="Public\ChangeDirectory.h">
       <Filter>Public</Filter>
     </ClInclude>
+    <ClInclude Include="MeshActor.h">
+      <Filter>Private</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\Input.h">
+      <Filter>Public</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

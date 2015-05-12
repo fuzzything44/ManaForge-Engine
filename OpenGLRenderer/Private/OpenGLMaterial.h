@@ -16,6 +16,7 @@ public:
 
 	void use();
 
+	int32 getUniformLocation(const char* name);
 
 private:
 
@@ -23,5 +24,5 @@ private:
 
 	// vector of <texture ID>
 	std::vector<GLuint> textures;
-	static std::vector<GLint> uniforms;
+	static GLint startTexUniform;
 };

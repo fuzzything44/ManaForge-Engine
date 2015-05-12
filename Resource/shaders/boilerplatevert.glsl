@@ -3,7 +3,7 @@
 layout(location = 0) in vec2 vertLocationIn;
 layout(location = 1) in vec2 vertTexCoordIn;
 
-uniform mat4 camera;
+uniform mat4 cameraMat;
 uniform float renderOrder;
 
 out vec2 fragTexCoord;
