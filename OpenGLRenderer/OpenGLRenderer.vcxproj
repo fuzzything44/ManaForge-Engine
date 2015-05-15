@@ -45,7 +45,7 @@
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)Engine\Public\;$(SolutionDir)Include;$(SolutionDir)StackWalker/;$(SolutionDir)/OpenGLRenderer/Public;$(SolutionDir)/OpenGLRenderer/Private</IncludePath>
     <OutDir>$(SolutionDir)bin\$(Configuration)\Modules\</OutDir>
-    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(SolutionDir)bin\$(Configuration)\;</LibraryPath>
+    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(SolutionDir)bin\$(Configuration)\;$(SolutionDir)library\</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
