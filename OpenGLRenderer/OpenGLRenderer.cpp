@@ -14,13 +14,15 @@
 
 
 OpenGLRenderer::OpenGLRenderer()
+	: window(new OpenGLWindow())
 {
-	window = new OpenGLWindow();
 }
 
-void OpenGLRenderer::setWindowProps(const WindowProps& props)
+Window& OpenGLRenderer::getWindow()
 {
-	
+	check(window);
+
+	return *window;
 }
 
 uint32 OpenGLRenderer::loadShaderProgram(std::string name)
@@ -109,7 +111,7 @@ uint32 OpenGLRenderer::loadShaderProgram(std::string name)
 	return ProgramID;
 }
 
-Model* OpenGLRenderer::newModel(vec2* locations, vec2* UVs, uint32* elems, uint32 numVerts, uint32 numElems)
+Model* OpenGLRenderer::newModel(const vec2* locations, const vec2* UVs, const uint32* elems, uint32 numVerts, uint32 numElems)
 {
 	return new OpenGLModel(locations, UVs, elems, numVerts, numElems, this);
 }
@@ -134,7 +136,7 @@ bool OpenGLRenderer::update()
 	return !window->shouldClose();
 }
 
-void OpenGLRenderer::setCurrentCamera(CameraComponent* newCamera)
+void OpenGLRenderer::setCurrentCamera(CameraComponent& newCamera)
 {
 	check(newCamera);
 
@@ -152,7 +154,7 @@ OpenGLRenderer::~OpenGLRenderer()
 
 }
 
-CameraComponent* OpenGLRenderer::getCurrentCamera()
+CameraComponent& OpenGLRenderer::getCurrentCamera()
 {
 	return currentCamera;
 }

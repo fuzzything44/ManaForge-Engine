@@ -15,18 +15,12 @@
 
 // DEFINE STATIC VARIABLES
 Runtime* Runtime::currentRuntime = nullptr;
-bool Runtime::isInitalized = false;
 
 Runtime::Runtime(const std::string& worldPath, const WindowProps& windowProps)
-	: moduleManager(*this),
+	:moduleManager((changeDir(), *this)),
 	propManager("props.json")
 {
 	
-	if (!isInitalized)
-	{
-		FATAL_ERR("Runtime needs initalization before spawining one. Call Runtime::init() first");
-	}
-
 	// query the property manager to get the modules
 	std::string modulesStr = propManager.queryValue<std::string>("modules");
 
@@ -44,7 +38,7 @@ Runtime::Runtime(const std::string& worldPath, const WindowProps& windowProps)
 	// load the world
 	world = moduleManager.newWorld(worldPath);
 
-	moduleManager.getRenderer().setWindowProps(windowProps);
+	moduleManager.getRenderer().getWindow()->setWindowProps(windowProps);
 }
 
 void Runtime::run()
@@ -95,14 +89,6 @@ void Runtime::run()
 		
 
 	} while (shouldContinue);
-}
-
-void Runtime::init()
-{
-	// change directory to the Resources folder
-	changeDir();
-
-	isInitalized = true;
 }
 
 Runtime& Runtime::get()

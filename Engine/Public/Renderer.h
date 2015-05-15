@@ -3,14 +3,15 @@
 #include <boost/core/noncopyable.hpp>
 
 #include "Engine.h"
-#include "Model.h"
-#include "Material.h"
-
-#include <vector>
 #include "WindowProps.h"
 
+#include <vector>
+
 // forward declarations
+class Material;
 class CameraComponent;
+class Window;
+class Model;
 
 // a non - copyable abstract class that handles rendering
 class Renderer :
@@ -23,25 +24,27 @@ public:
 	/// <summary> Default constructor.</summary>
 	Renderer() { }
 
-	virtual void setWindowProps(const WindowProps& window_props) = 0;
-
 	/// <summary> Renders the next frame. </summary>
 	virtual bool update() = 0;
 	
 	/// <summary> Sets camera to render at. </summary>
 	///
 	/// <param name="newCamera"> The camera it should render at. </param>
-	virtual void setCurrentCamera(CameraComponent* newCamera) = 0;
+	virtual void setCurrentCamera(CameraComponent& newCamera) = 0;
 
 	/// <summary> Gets the camera.</summary>
 	///
 	/// <returns> null if it fails, else the camera.</returns>
-	virtual CameraComponent* getCurrentCamera() = 0;
+	virtual CameraComponent& getCurrentCamera() = 0;
+	/// <summary> Gets the camera from a const object.</summary>
+	///
+	/// <returns> null if it fails, else the camera.</returns>
+	virtual const CameraComponent& getCurrentCamera() const = 0;
 
 	/// <summary> Creates a new model.</summary>
 	///
 	/// <returns> null if it fails, else a Model*.</returns>
-	virtual Model* newModel(vec2* locations, vec2* UVs, uint32* elems, uint32 numVerts, uint32 numElems) = 0;
+	virtual Model* newModel(const vec2* locations, const vec2* UVs, const uint32* elems, uint32 numVerts, uint32 numElems) = 0;
 
 	virtual Material* newMaterial() = 0;
 
@@ -53,7 +56,14 @@ public:
 	/// <summary> Destructor.</summary>
 	virtual ~Renderer() { }
 
+	// gets the window
+	virtual Window& getWindow() = 0;
+	// and the const version
+	virtual const Window& getWindow() const = 0;
+
 };
 
-
+#include "Window.h"
 #include "CameraComponent.h"
+#include "Model.h"
+#include "Material.h"

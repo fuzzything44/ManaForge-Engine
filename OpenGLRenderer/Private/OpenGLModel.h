@@ -11,9 +11,9 @@ public:
 	friend class OpenGLRenderer;
 
 	explicit OpenGLModel(
-		vec2* locations = nullptr,
-		vec2* UVs = nullptr,
-		uint32* elems = nullptr,
+		const vec2* locations = nullptr,
+		const vec2* UVs = nullptr,
+		const uint32* elems = nullptr,
 		uint32 numVerts = 0,
 		uint32 numElems = 0,
 		OpenGLRenderer* renderer = nullptr);

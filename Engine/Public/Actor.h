@@ -6,6 +6,10 @@
 
 #include <boost/serialization/access.hpp>
 #include <boost/serialization/nvp.hpp>
+#include <boost/serialization/export.hpp>
+
+#include <boost/archive/polymorphic_iarchive.hpp>
+#include <boost/archive/polymorphic_oarchive.hpp>
 
 #include <vector>
 
@@ -93,14 +97,17 @@ protected:
 
 	// serialization function for boost
 	template<typename Archive>
-	void serialize(Archive& ar, uint32 version)
-	{
-		ar & BOOST_SERIALIZATION_NVP(trans);
-		ar & BOOST_SERIALIZATION_NVP(velocity);
-	}
-
+	void serialize(Archive& ar, uint32 version);
 };
 
+template <typename Archive>
+void Actor::serialize(Archive& ar, uint32 version)
+{
+	ar & BOOST_SERIALIZATION_NVP(trans);
+	ar & BOOST_SERIALIZATION_NVP(velocity);
+}
+
+BOOST_CLASS_EXPORT_KEY2(Actor, "Default.Actor");
 
 
 ////////////////////////////////////////////////////////////////

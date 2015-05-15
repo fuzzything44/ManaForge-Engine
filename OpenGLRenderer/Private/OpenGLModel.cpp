@@ -9,7 +9,7 @@
 
 
 
-OpenGLModel::OpenGLModel(vec2* locationsIn, vec2* UVsIn, uint32* elemsIn, uint32 numVertsIn, uint32 numElemsIn, OpenGLRenderer* rendererIn)
+OpenGLModel::OpenGLModel(const vec2* locationsIn, const vec2* UVsIn, const uint32* elemsIn, uint32 numVertsIn, uint32 numElemsIn, OpenGLRenderer* rendererIn)
 	:numVerts(numVertsIn),
 	numElems(numElemsIn),
 	renderer(rendererIn)

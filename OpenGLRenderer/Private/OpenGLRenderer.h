@@ -15,9 +15,9 @@ public:
 
 	OpenGLRenderer();
 
-	virtual void setWindowProps(const WindowProps& props) override;
+	virtual Window& getWindow() override;
 
-	virtual Model* newModel(vec2* locations, vec2* UVs, uint32* elems, uint32 numVerts, uint32 numElems) override;
+	virtual Model* newModel(const vec2* locations, const vec2* UVs, const uint32* elems, uint32 numVerts, uint32 numElems) override;
 
 	virtual Material* newMaterial() override;
 
@@ -27,13 +27,13 @@ public:
 	/// <summary> Sets camera to render at. </summary>
 	///
 	/// <param name="newCamera"> The camera it should render at. </param>
-	virtual void setCurrentCamera(CameraComponent* newCamera) override;
+	virtual void setCurrentCamera(CameraComponent& newCamera) override;
 
 	void loadTextures(std::vector<std::string> textures) override;
 
 	virtual ~OpenGLRenderer() override;
 
-	CameraComponent* getCurrentCamera() override;
+	CameraComponent& getCurrentCamera() override;
 
 private:
 	
