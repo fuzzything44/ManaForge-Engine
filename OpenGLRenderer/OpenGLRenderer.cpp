@@ -25,6 +25,13 @@ Window& OpenGLRenderer::getWindow()
 	return *window;
 }
 
+const Window& OpenGLRenderer::getWindow() const
+{
+	check(window);
+
+	return *window;
+}
+
 uint32 OpenGLRenderer::loadShaderProgram(std::string name)
 {
 	std::string vertexPath = name.append("vert.glsl");
@@ -138,10 +145,7 @@ bool OpenGLRenderer::update()
 
 void OpenGLRenderer::setCurrentCamera(CameraComponent& newCamera)
 {
-	check(newCamera);
-
-	currentCamera = newCamera;
-
+	currentCamera = &newCamera;
 }
 
 void OpenGLRenderer::loadTextures(std::vector<std::string> /*textures*/)
@@ -156,9 +160,17 @@ OpenGLRenderer::~OpenGLRenderer()
 
 CameraComponent& OpenGLRenderer::getCurrentCamera()
 {
-	return currentCamera;
+	check(currentCamera);
+
+	return *currentCamera;
 }
 
+const CameraComponent& OpenGLRenderer::getCurrentCamera() const
+{
+	check(currentCamera);
+
+	return *currentCamera;
+}
 
 int32 OpenGLRenderer::loadDDS(const std::string& filename)
 {

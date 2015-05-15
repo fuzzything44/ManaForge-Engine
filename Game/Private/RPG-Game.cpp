@@ -70,7 +70,6 @@ int32 main()
 	//std::cout << "Saving done\n";
 	//std::cin.get();
 
-	Runtime::init();
 	Runtime runtime{"default", WindowProps(RenderMode::NORMAL, WindowMode::WINDOWED, "RPG-Game", uvec2(800, 600), true)};
 
 	try{

@@ -8,6 +8,7 @@ class OpenGLModel;
 
 class OpenGLRenderer : public Renderer
 {
+
 	friend class OpenGLModel;
 
 public:
@@ -16,6 +17,7 @@ public:
 	OpenGLRenderer();
 
 	virtual Window& getWindow() override;
+	const Window& getWindow() const override;
 
 	virtual Model* newModel(const vec2* locations, const vec2* UVs, const uint32* elems, uint32 numVerts, uint32 numElems) override;
 
@@ -34,6 +36,8 @@ public:
 	virtual ~OpenGLRenderer() override;
 
 	CameraComponent& getCurrentCamera() override;
+	const CameraComponent& getCurrentCamera() const override;
+
 
 private:
 	

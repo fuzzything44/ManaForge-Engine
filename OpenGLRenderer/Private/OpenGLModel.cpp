@@ -136,7 +136,7 @@ void OpenGLModel::draw()
 	glBindVertexArray(vertexArray);
 
 	// set the viewMat in the shader to the view mat defined by the camera that is current
-	glUniformMatrix4fv(viewMatUniformLocation, 1, GL_FALSE, &(renderer->getCurrentCamera()->getViewMat())[0][0]);
+	glUniformMatrix4fv(viewMatUniformLocation, 1, GL_FALSE, &(renderer->getCurrentCamera().getViewMat())[0][0]);
 
 	// bind location data to the element attrib array so it shows up in our shaders -- the location is zero (look in shader)
 	glEnableVertexAttribArray(0);

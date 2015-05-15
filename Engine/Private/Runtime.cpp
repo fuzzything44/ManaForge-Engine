@@ -38,7 +38,7 @@ Runtime::Runtime(const std::string& worldPath, const WindowProps& windowProps)
 	// load the world
 	world = moduleManager.newWorld(worldPath);
 
-	moduleManager.getRenderer().getWindow()->setWindowProps(windowProps);
+	moduleManager.getRenderer().getWindow().setWindowProps(windowProps);
 }
 
 void Runtime::run()
