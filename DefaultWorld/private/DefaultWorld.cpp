@@ -27,14 +27,6 @@ World* AddWorld(std::string folder)
 	return new DefaultWorld(folder);
 }
 
-
-
-const Chunk& DefaultWorld::getPersistentChunk() const
-{
-	return *persistentCurrent;
-}
-
-
 DefaultWorld::DefaultWorld(std::string folder)
 	:folderLocation(std::string("Worlds\\") + folder + '\\'),
 	propManager(folderLocation + "world.json")
@@ -44,13 +36,6 @@ DefaultWorld::DefaultWorld(std::string folder)
 	if (folder == "") {
 		FATAL_ERR("No world loaded");
 	}
-
-	ENG_LOG("Loading chunk size...");
-	// First line should be chunk size.
-	// Parses to int.
-	chunkSize = propManager.queryValue<uint32>("chunk.size");
-
-	ENG_LOG("Chunk size: " << chunkSize);
 
 	ENG_LOG("Loading images...");
 	
@@ -146,52 +131,9 @@ void DefaultWorld::loadWorld(std::string name)
 	ENG_LOG("World Loaded!");
 }
 
-
-
-int DefaultWorld::getChunkSize() const
-{
-	return chunkSize;
-}
-
-const Chunk& DefaultWorld::getChunk(vec2 actorLocation) const
-{
-	// Actually get correct chunk.
-	actorLocation /= chunkSize;
-
-	ivec2 index = floor(actorLocation);
-
-	// if it is in bounds, get that
-	if (0 <= index.x && index.x < (int)numChunks.x && 0 <= index.y && index.y < (int)numChunks.y)
-	{
-		return *currentWorld[index.x][index.y];
-	}
-
-	// if not, return persistent chunk
-	return getPersistentChunk();
-
-}
-
 DefaultWorld::~DefaultWorld()
 {
-	// loops through and frees the main world.
-	for (int x = 0; mainWorld[x] != nullptr; x++) {
-		for (int y = 0; mainWorld[x][y] != nullptr; y++) {
-			free(mainWorld[x][y]);
-		}
-		free(mainWorld[x]);
-	}
-	free(mainWorld);
-	// If you weren't in the main world, free the current world.
-	if (currentWorld != nullptr) {
-		for (int x = 0; currentWorld[x] != nullptr; x++) {
-			for (int y = 0; currentWorld[x][y] != nullptr; y++) {
-				free(currentWorld[x][y]);
-			}
-			free(currentWorld[x]);
-		}
-	}
-
-	free(currentWorld);
+	
 }
 
 extern "C" DefaultWorldPlugin_API void registerModule(ModuleManager& mm)
