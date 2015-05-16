@@ -9,11 +9,11 @@
 
 
 
-OpenGLModel::OpenGLModel(const vec2* locationsIn, const vec2* UVsIn, const uvec3* trisIn, uint32 numVertsIn, uint32 numTrisIn, OpenGLRenderer* rendererIn, OpenGLMaterial* material)
-	:numVerts(numVertsIn),
-	numTris(numTrisIn),
-	renderer(rendererIn),
-	material(material)
+OpenGLModel::OpenGLModel(ModelData data, OpenGLRenderer* renderer)
+	:numVerts(data.numVerts),
+	numTris(data.numTriangles),
+	renderer(renderer),
+	material(static_cast<OpenGLMaterial*>(data.material))
 {
 	// make sure they aren't zero
 	check(numVerts);
@@ -25,9 +25,9 @@ OpenGLModel::OpenGLModel(const vec2* locationsIn, const vec2* UVsIn, const uvec3
 	elems = static_cast<uint32*>(malloc(sizeof(uvec3) * numTris));
 
 	// copy data over
-	memcpy(locations, locationsIn, numVerts * sizeof(vec2));
-	memcpy(UVs, UVsIn, numVerts * sizeof(vec2));
-	memcpy(elems, trisIn, numTris * sizeof(uvec3));
+	memcpy(locations, data.vertexLocations, numVerts * sizeof(vec2));
+	memcpy(UVs, data.UVs, numVerts * sizeof(vec2));
+	memcpy(elems, data.triangles, numTris * sizeof(uvec3));
 
 	// add model to renderer's list
 	renderer->models.push_front(this);

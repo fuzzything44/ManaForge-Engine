@@ -29,12 +29,6 @@ World* AddWorld(std::string folder)
 
 
 
-const Chunk& DefaultWorld::getPersistentChunk() const
-{
-	return *persistentCurrent;
-}
-
-
 DefaultWorld::DefaultWorld(std::string folder)
 	:folderLocation(std::string("Worlds\\") + folder + '\\'),
 	propManager(folderLocation + "world.json")
@@ -147,29 +141,6 @@ void DefaultWorld::loadWorld(std::string name)
 }
 
 
-
-int DefaultWorld::getChunkSize() const
-{
-	return chunkSize;
-}
-
-const Chunk& DefaultWorld::getChunk(vec2 actorLocation) const
-{
-	// Actually get correct chunk.
-	actorLocation /= chunkSize;
-
-	ivec2 index = floor(actorLocation);
-
-	// if it is in bounds, get that
-	if (0 <= index.x && index.x < (int)numChunks.x && 0 <= index.y && index.y < (int)numChunks.y)
-	{
-		return *currentWorld[index.x][index.y];
-	}
-
-	// if not, return persistent chunk
-	return getPersistentChunk();
-
-}
 
 DefaultWorld::~DefaultWorld()
 {

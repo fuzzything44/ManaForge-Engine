@@ -120,7 +120,7 @@ uint32 OpenGLRenderer::loadShaderProgram(std::string name)
 
 Model* OpenGLRenderer::newModel(const ModelData& params = ModelData{})
 {
-	return new OpenGLModel(params);
+	return new OpenGLModel(params, this);
 }
 
 Material* OpenGLRenderer::newMaterial()

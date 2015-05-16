@@ -11,7 +11,7 @@ struct ModelData
 		const Transform& trans = Transform{},
 		vec2* vertexLocations = nullptr,
 		vec2* UVs = nullptr,
-		uvec2* triangles = nullptr,
+		uvec3* triangles = nullptr,
 		uint32 numVerts = 0,
 		uint32 numTriangles = 0,
 		Material* material = nullptr)
@@ -30,7 +30,7 @@ struct ModelData
 	Transform trans;
 	vec2* vertexLocations;
 	vec2* UVs;
-	uvec2* triangles;
+	uvec3* triangles;
 	uint32 numVerts;
 	uint32 numTriangles;
 	Material* material;
