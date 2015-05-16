@@ -1,5 +1,3 @@
-
-
 #include "DefaultWorld.h"
 
 #include <Helper.h>
@@ -17,10 +15,22 @@
 #include <boost/algorithm/string.hpp>
 #include <boost/serialization/map.hpp>
 #include <boost/serialization/list.hpp>
+#include <boost/serialization/nvp.hpp>
 
-#include <boost/archive/xml_oarchive.hpp>
-#include <boost/archive/xml_iarchive.hpp>
+#include <boost/archive/polymorphic_xml_oarchive.hpp>
+#include <boost/archive/polymorphic_xml_iarchive.hpp>
+#include <boost/archive/polymorphic_binary_oarchive.hpp>
+#include <boost/archive/polymorphic_binary_iarchive.hpp>
 
+
+// Defines for in and out streams.
+#ifdef SAVE_TYPE_XML
+typedef boost::archive::polymorphic_xml_oarchive oarchive;
+typedef boost::archive::polymorphic_xml_iarchive iarchive;
+#else
+typedef boost::archive::polymorphic_binary_oarchive oarchive;
+typedef boost::archive::polymorphic_binary_iarchive iarchive;
+#endif
 
 World* AddWorld(std::string folder)
 {
@@ -56,78 +66,52 @@ DefaultWorld::DefaultWorld(std::string folder)
 	// virtual functuion -- call THIS version of it
 	DefaultWorld::loadWorld("main");
 
-	mainWorld = currentWorld;
-
 }
 
 void DefaultWorld::loadWorld(std::string name)
 {
 	ENG_LOG("Loading world " << name << "...");
-	// Skip re-loading main world if possible.
-	if (name == "main" && mainWorld != nullptr) {
-		currentWorld = mainWorld;
+
+	/////////////////////////////////////////////////////
+	// Begin static actor loading.
+	{
+		// File location of static actors
+		std::ifstream i_stream{ folderLocation + "/" + name + ".WORLD" };
+
+		// Create archive.
+		iarchive i_archive{ i_stream };
+
+		// List it will read things into.
+		std::list<Actor*> staticActors;
+		i_archive >> BOOST_SERIALIZATION_NVP(staticActors);
+
+		// Move actors to the map.
+		for (std::list<Actor*>::iterator i = staticActors.begin(); i != staticActors.end(); i++) {
+			(**i).mapKey = index;
+			*(actors[index]) = **i;
+			index++;
+		}
 	}
-	else {
-		
-		
+	// End static actor loading
+	////////////////////////////////////////////////////////
+	// Begin dynamic actor loading
+	{
+		// File location of dynamic actors.
+		std::ifstream i_stream{ folderLocation + "/" + name + ".SAVE" };
+		// Create archive.
+		iarchive i_archive{ i_stream };
 
-		try{
-		// load static actors
-		
+		// List actors will be read into.
+		std::list<Actor*> dynamicActors;
+		i_archive >> BOOST_SERIALIZATION_NVP(dynamicActors);
 
-			std::ifstream static_stream{ folderLocation + name + '\\' + name + ".WORLD" };
-			if (!static_stream.is_open())
-			{
-				FATAL_ERR("COULD NOT OPEN STATIC ACTORS");
-			}
-
-			boost::archive::xml_iarchive static_arch{ static_stream };
-
-			std::list<Actor*> static_actors;
-
-			static_arch >> BOOST_SERIALIZATION_NVP(static_actors);
-
+		// move actors to map.
+		for (std::list<Actor*>::iterator i = dynamicActors.begin(); i != dynamicActors.end(); i++) {
+			(**i).mapKey = index;
+			*(actors[index]) = **i;
+			index++;
 		}
-		catch (boost::archive::archive_exception& e)
-		{
-			ENG_LOG(e.what() << "\t CODE: " << e.code);
-			__debugbreak(); // REAL ERROR HANDLING
-		}
-		catch (std::exception& e)
-		{
-			ENG_LOG(e.what());
-			__debugbreak();
-		}
-
-
-		try{
-
-			// load dynamic actors
-			std::ifstream dynamic_stream{ folderLocation + name + '\\' + name + ".SAVE" };
-			if (!dynamic_stream.is_open())
-			{
-				FATAL_ERR("COULD NOT OPEN DYNAMIC ACTORS");
-			}
-
-			boost::archive::xml_iarchive dynamic_arch{ dynamic_stream };
-
-			std::list<Actor*> dynamic_actors;
-
-			dynamic_arch >> BOOST_SERIALIZATION_NVP(dynamic_actors);
-		}
-		catch (boost::archive::archive_exception& e)
-		{
-			ENG_LOG(e.what() << "\t CODE: " << e.code);
-			__debugbreak(); // REAL ERROR HANDLING
-		}
-		catch (std::exception& e)
-		{
-			ENG_LOG(e.what());
-			__debugbreak();
-		}
-
 	}
-
 	ENG_LOG("World Loaded!");
 }
 

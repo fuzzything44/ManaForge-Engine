@@ -3,12 +3,12 @@
 #include <string>
 #include "Actor.h"
 #include "ModuleManager.h"
-#include <list>
+#include <map>
 
 class World
 {
 protected:
-	std::list<Actor&> actors;
+	std::map<uint64 , Actor*> actors;
 public:
 	/// <summary> Creates and loads a world. </summary>
 	/// <param name="name"> The name of the world folder ex. "worlds/mainworld". 
