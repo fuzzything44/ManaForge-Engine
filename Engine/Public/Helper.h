@@ -75,51 +75,6 @@ ENGINE_API std::ostream& operator<<(std::ostream& os, const mat3& mat);
 /// <summary> custom matrix printing </summary>
 ENGINE_API std::ostream& operator<<(std::ostream& os, const mat4& mat);
 
-// serialization functions for vectors
-namespace boost
-{
-	namespace serialization
-	{
-		template<typename Archive>
-		void serialize(Archive& ar, vec2& dat, const uint32 version)
-		{
-			ar & boost::serialization::make_nvp("x", dat.x);
-			ar & boost::serialization::make_nvp("y", dat.y);
-		}
-		template<typename Archive>
-		void serialize(Archive& ar, vec3& dat, const uint32 version)
-		{
-			ar & boost::serialization::make_nvp("x", dat.x);
-			ar & boost::serialization::make_nvp("y", dat.y);
-			ar & boost::serialization::make_nvp("z", dat.z);
-		}
-		template<typename Archive>
-		void serialize(Archive& ar, ivec2& dat, const uint32 version)
-		{
-			ar & boost::serialization::make_nvp("x", dat.x);
-			ar & boost::serialization::make_nvp("y", dat.y);
-		}
-		template<typename Archive>
-		void serialize(Archive& ar, ivec3& dat, const uint32 version)
-		{
-			ar & boost::serialization::make_nvp("x", dat.x);
-			ar & boost::serialization::make_nvp("y", dat.y);
-			ar & boost::serialization::make_nvp("z", dat.z);
-		}
-		template<typename Archive>
-		void serialize(Archive& ar, uvec2& dat, const uint32 version)
-		{
-			ar & boost::serialization::make_nvp("x", dat.x);
-			ar & boost::serialization::make_nvp("y", dat.y);
-		}
-		template<typename Archive>
-		void serialize(Archive& ar, uvec3& dat, const uint32 version)
-		{
-			ar & boost::serialization::make_nvp("x", dat.x);
-			ar & boost::serialization::make_nvp("y", dat.y);
-		}
-	}
-}
 
 // ONLY define these macros if we are debugging -- they could be slow
 #ifdef _DEBUG

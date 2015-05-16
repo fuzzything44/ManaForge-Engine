@@ -118,9 +118,9 @@ uint32 OpenGLRenderer::loadShaderProgram(std::string name)
 	return ProgramID;
 }
 
-Model* OpenGLRenderer::newModel(const vec2* locations, const vec2* UVs, const uint32* elems, uint32 numVerts, uint32 numElems)
+Model* OpenGLRenderer::newModel(const vec2* vertexLocations, const vec2* UVs, const uvec3* tris, uint32 numVerts, uint32 numTris)
 {
-	return new OpenGLModel(locations, UVs, elems, numVerts, numElems, this);
+	return new OpenGLModel(vertexLocations, UVs, tris, numVerts, numTris, this);
 }
 
 Material* OpenGLRenderer::newMaterial()

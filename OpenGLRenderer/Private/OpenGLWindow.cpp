@@ -148,7 +148,8 @@ void OpenGLWindow::pollEvents()
 
 bool OpenGLWindow::shouldClose()
 {
-	return static_cast<bool>(glfwWindowShouldClose(window));
+	// we need to do this because glfwWindowShouldClose returns an int as a bool -- godda love C libraries
+	return glfwWindowShouldClose(window) != 0;
 }
 
 void OpenGLWindow::updateProps()

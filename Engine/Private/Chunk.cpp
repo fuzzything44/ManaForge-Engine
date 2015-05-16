@@ -85,8 +85,8 @@ Chunk::Chunk(ivec2 locationIn, Model* model)
 	}
 }
 
-Chunk::Chunk(ivec2 chunkLocation, vec2* vertexLocations, vec2* UVs, uint32* elems, uint32 numVerts, uint32 numElems) 
-	: model(Runtime::get().moduleManager.getRenderer().newModel(vertexLocations, UVs, elems, numVerts, numElems)),
+Chunk::Chunk(ivec2 chunkLocation, vec2* vertexLocations, vec2* UVs, uvec3* tris, uint32 numVerts, uint32 numTris) 
+	: model(Runtime::get().moduleManager.getRenderer().newModel(vertexLocations, UVs, tris, numVerts, numTris)),
 	location(chunkLocation)
 {
 

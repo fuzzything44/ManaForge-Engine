@@ -4,7 +4,7 @@
 
 BOOST_CLASS_EXPORT_IMPLEMENT(Actor);
 
-Actor::Actor(const Transform& trans, bool isPersistent)
+Actor::Actor(const Transform& trans)
 	: trans(trans)
 {
 

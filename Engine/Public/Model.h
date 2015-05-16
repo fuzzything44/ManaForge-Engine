@@ -12,7 +12,7 @@ public:
 	}
 
 	Model() { }
-	Model(Transform /*location*/, float* /*locations*/, float* /*UVs*/, uint32 /*numVerts*/, uint32 /*numElems*/) { }
+	Model(Transform /*location*/, float* /*locations*/, float* /*UVs*/, uint32 /*numVerts*/, uint32 /*numTris*/) { }
 
 	virtual Transform getTransform() const = 0;
 	virtual vec2 getLocation() const = 0;

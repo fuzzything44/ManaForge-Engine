@@ -1,11 +1,12 @@
 #pragma once
 
-#include <boost/core/noncopyable.hpp>
-
 #include "Engine.h"
+#include "SaveData.h"
 #include "PropertyManager.h"
 #include "ModuleManager.h"
 #include "WindowProps.h"
+
+#include <boost/core/noncopyable.hpp>
 
 #include <chrono>
 
@@ -28,9 +29,6 @@ public:
 	ENGINE_API static Runtime& get();
 
 	ENGINE_API void run();
-
-	ENGINE_API static void init();
-
 private:
 
 	typedef std::chrono::high_resolution_clock clock;

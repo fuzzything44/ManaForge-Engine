@@ -9,6 +9,7 @@
 #else
 #	define ENGINE_API _declspec(dllimport)
 // link to Engine.lib if we arn't compiling the engine
+#	pragma message("Linking to engine...")
 #	pragma comment(lib, "Engine.lib")
 #endif
 

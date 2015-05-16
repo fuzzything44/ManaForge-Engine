@@ -1,4 +1,4 @@
 {
-	"modules" : "OpenGLRenderer Lodepng DefaultWorld"
+	"modules" : "OpenGLRenderer Lodepng DefaultWorld TestContent"
 	
 }

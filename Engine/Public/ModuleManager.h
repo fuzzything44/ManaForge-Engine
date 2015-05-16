@@ -10,6 +10,8 @@
 #include <functional>
 #include <list>
 
+#include <boost/algorithm/string.hpp>
+
 class Runtime;
 class World;
 class Renderer;
@@ -19,6 +21,8 @@ class ModuleManager
 public:
 
 	friend Runtime;
+
+	typedef std::function<Actor*(const std::string&, const Transform&)> contentModuleSpawnFun;
 
 	ENGINE_API ~ModuleManager();
 
@@ -47,6 +51,10 @@ public:
 
 	ENGINE_API World* newWorld(std::string path);
 
+	ENGINE_API void AddContentModule(contentModuleSpawnFun fun, const std::string& moduleName);
+
+	ENGINE_API Actor* spawnActor(const std::string& name, const Transform& trans = Transform{});
+
 	ENGINE_API void addInitCallback(const std::function<void()>& function);
 	ENGINE_API void addUpdateCallback(const std::function<bool()>& function);
 
@@ -62,6 +70,8 @@ private:
 	std::function<World*(std::string)>* createWorld;
 
 	std::map<std::string, Module> loadedModules;
+
+	std::map<std::string, contentModuleSpawnFun> contentSpawnMethods;
 
 	Renderer* renderer;
 };

@@ -4,12 +4,7 @@
 #include "Transform.h"
 #include "Logging.h"
 
-#include <boost/serialization/access.hpp>
-#include <boost/serialization/nvp.hpp>
-#include <boost/serialization/export.hpp>
-
-#include <boost/archive/polymorphic_iarchive.hpp>
-#include <boost/archive/polymorphic_oarchive.hpp>
+#include "SaveData.h"
 
 #include <vector>
 
@@ -35,7 +30,10 @@ public:
 	/// <param name="chunkIn"> [in,out] If non-null, the chunk in.</param>
 	///
 	/// <returns> An ENGINE_API.</returns>
-	explicit ENGINE_API Actor(const Transform& trans = Transform{}, bool isPersistent = false);
+	explicit ENGINE_API Actor(const Transform& trans = Transform{});
+
+	/// <summary> destructor </summary>
+	ENGINE_API virtual ~Actor();
 
 	/// <summary> Gets the location.</summary>
 	///
@@ -76,8 +74,6 @@ public:
 	///
 	/// <param name="newVelocity"> The new velocity.</param>
 	inline void setVelocity(vec2 newVelocity);
-	
-	virtual ~Actor();
 
 protected:
 
@@ -91,7 +87,7 @@ protected:
 	/// <summary> Ticks the given delta time.</summary>
 	///
 	/// <param name="deltaTime"> The delta time.</param>
-	virtual void tick(float deltaTime);
+	ENGINE_API virtual void tick(float deltaTime);
 
 	std::vector<Component*> components;
 

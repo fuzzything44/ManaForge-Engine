@@ -44,7 +44,7 @@ public:
 	/// <summary> Creates a new model.</summary>
 	///
 	/// <returns> null if it fails, else a Model*.</returns>
-	virtual Model* newModel(const vec2* locations, const vec2* UVs, const uint32* elems, uint32 numVerts, uint32 numElems) = 0;
+	virtual Model* newModel(const vec2* VertexLocations, const vec2* UVs, const uvec3* tris, uint32 numVerts, uint32 numTris) = 0;
 
 	virtual Material* newMaterial() = 0;
 
