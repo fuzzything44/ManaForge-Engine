@@ -4,10 +4,16 @@
 #include "ModuleManager.h"
 #include <map>
 
+typedef uint64 map_ID_type;
+
+class Actor;
+
 class World
 {
 protected:
-	std::map<uint64 , Actor*> actors;
+	// Contains all actors in the world.
+	// !!!!! We also need to clear it when you change worlds. We may need to clear other things too (and we have to keep persistent actors).
+	std::map<map_ID_type, Actor*> actors;
 public:
 	/// <summary> Creates and loads a world. </summary>
 	/// <param name="name"> The name of the world folder ex. "worlds/mainworld". 
@@ -22,5 +28,8 @@ public:
 
 	virtual void addActor(Actor& toAdd) = 0;
 
+	virtual void save() = 0;
+
 	virtual ~World() { };
 };
+#include "Actor.h"

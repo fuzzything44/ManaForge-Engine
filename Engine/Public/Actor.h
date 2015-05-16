@@ -8,9 +8,10 @@
 
 #include <vector>
 
+#include "World.h"
+
 static const unsigned int MAX_ACTORS = 100001;
 
-class Chunk;
 class Component;
 
 /// <summary> An actor. </summary>
@@ -19,11 +20,11 @@ class Actor
 	friend class boost::serialization::access;
 
 public:
-
+	
 	// Make Chunk a freind so it can access private methods (namely tick)
-	friend Chunk;
 	friend Component;
-
+	map_ID_type GUID;
+	static bool needsSave;	// This maybe should be const too.
 	/// <summary> Actors.</summary>
 	///
 	/// <param name="dataIn">  The data in.</param>
@@ -78,9 +79,6 @@ public:
 protected:
 
 	vec2 velocity;
-
-	/// <summary> The chunk.</summary>
-	Chunk* chunk;
 
 	Transform trans;
 

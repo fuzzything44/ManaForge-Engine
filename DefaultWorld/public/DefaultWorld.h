@@ -11,15 +11,17 @@ class DefaultWorld : public World
 {
 private:
 	std::string folderLocation;
+	std::string worldName;
 
 	PropertyManager propManager;
 	
-	uint64 index;
+	map_ID_type index;
+
 public:
 	explicit DefaultWorld(std::string folder = ""); 
 
 	virtual void loadWorld(std::string name) override;
 	virtual void addActor(Actor& toAdd) override;
-
+	virtual void save() override;
 	virtual ~DefaultWorld();
 };

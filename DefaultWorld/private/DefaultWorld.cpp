@@ -23,7 +23,7 @@
 #include <boost/archive/polymorphic_binary_iarchive.hpp>
 
 
-// Defines for in and out streams.
+// Defines for in and out archives. May want to change to defines and include the istreams.
 #ifdef SAVE_TYPE_XML
 typedef boost::archive::polymorphic_xml_oarchive oarchive;
 typedef boost::archive::polymorphic_xml_iarchive iarchive;
@@ -72,6 +72,7 @@ DefaultWorld::DefaultWorld(std::string folder)
 
 void DefaultWorld::loadWorld(std::string name)
 {
+	worldName = name;
 	ENG_LOG("Loading world " << name << "...");
 
 	/////////////////////////////////////////////////////
@@ -89,7 +90,7 @@ void DefaultWorld::loadWorld(std::string name)
 
 		// Move actors to the map.
 		for (std::list<Actor*>::iterator i = staticActors.begin(); i != staticActors.end(); i++) {
-			(**i).mapKey = index;
+			(**i).GUID = index;
 			*(actors[index]) = **i;
 			index++;
 		}
@@ -109,7 +110,7 @@ void DefaultWorld::loadWorld(std::string name)
 
 		// move actors to map.
 		for (std::list<Actor*>::iterator i = dynamicActors.begin(); i != dynamicActors.end(); i++) {
-			(**i).mapKey = index;
+			(**i).GUID = index;
 			*(actors[index]) = **i;
 			index++;
 		}
@@ -117,7 +118,24 @@ void DefaultWorld::loadWorld(std::string name)
 	ENG_LOG("World Loaded!");
 }
 
+void DefaultWorld::save()
+{
+	ENG_LOG("Saving world");
+	// Create list to save
+	std::list<Actor*> toSave;
+	for (std::map<Actor*>::iterator i = actors.begin(); i != actors.end(); i++) {
+		if ((**i).needsSave) {
+			toSave.push_back(*i);
+		}
+	} // End for
 
+	// Create ostream to save to.
+	std::ofstream o_stream{ folderLocation + "/" + worldName + ".SAVE" };
+	// Create archive.
+	oarchive o_archive{ o_stream };
+	// Save.
+	o_archive << BOOST_SERIALIZATION_NVP(toSave);
+}
 
 DefaultWorld::~DefaultWorld()
 {
