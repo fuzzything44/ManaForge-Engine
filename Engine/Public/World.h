@@ -1,11 +1,14 @@
 #pragma once
 #include "Engine.h"
 #include <string>
-#include "Chunk.h"
+#include "Actor.h"
 #include "ModuleManager.h"
+#include <list>
 
 class World
 {
+protected:
+	std::list<Actor&> actors;
 public:
 	/// <summary> Creates and loads a world. </summary>
 	/// <param name="name"> The name of the world folder ex. "worlds/mainworld". 
@@ -18,11 +21,7 @@ public:
 	/// <param name="subWorldName"> Name of subworld ex. "dungeon1".
 	virtual void loadWorld(std::string subWorldName) = 0;
 
-	/// <summary> Returns the chunk the location falls into. </summary>
-	virtual const Chunk& getChunk(vec2 actorLocation) const = 0;
+	virtual void addActor(Actor& toAdd) = 0;
 
-	virtual const Chunk& getPersistentChunk() const = 0;
-
-	virtual int getChunkSize() const = 0;
 	virtual ~World() { };
 };
