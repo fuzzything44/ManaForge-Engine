@@ -37,6 +37,8 @@ World* AddWorld(std::string folder)
 	return new DefaultWorld(folder);
 }
 
+
+
 DefaultWorld::DefaultWorld(std::string folder)
 	:folderLocation(std::string("Worlds\\") + folder + '\\'),
 	propManager(folderLocation + "world.json")
@@ -115,9 +117,11 @@ void DefaultWorld::loadWorld(std::string name)
 	ENG_LOG("World Loaded!");
 }
 
+
+
 DefaultWorld::~DefaultWorld()
 {
-	
+
 }
 
 extern "C" DefaultWorldPlugin_API void registerModule(ModuleManager& mm)

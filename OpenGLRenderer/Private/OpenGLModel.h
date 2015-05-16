@@ -10,14 +10,7 @@ public:
 
 	friend class OpenGLRenderer;
 
-	explicit OpenGLModel(
-		const vec2* vertexLocations = nullptr,
-		const vec2* UVs = nullptr,
-		const uvec3* tris = nullptr,
-		uint32 numVerts = 0,
-		uint32 numTris = 0,
-		OpenGLRenderer* renderer = nullptr,
-		OpenGLMaterial* material = nullptr);
+	explicit OpenGLModel(ModelData data, OpenGLRenderer* renderer);
 
 	virtual Transform getTransform() const override;
 
