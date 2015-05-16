@@ -21,7 +21,9 @@ Runtime::Runtime(const std::string& worldPath, const WindowProps& windowProps)
 	:moduleManager((changeDir(), *this)),
 	propManager("props.json")
 {
-	
+	// update current runtime to be the most recently created one
+	currentRuntime = this;
+
 	// query the property manager to get the modules
 	std::string modulesStr = propManager.queryValue<std::string>("modules");
 
@@ -59,6 +61,7 @@ void Runtime::run()
 		
 	}
 
+	moduleManager.spawnActor("TestContent.Gate");
 
 	// set initial tick
 	float LastTick = static_cast<float>(clock::now().time_since_epoch().count());

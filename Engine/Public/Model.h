@@ -3,6 +3,38 @@
 #include "Engine.h"
 #include "Transform.h"
 
+class Material;
+
+struct ModelData
+{
+	ModelData(
+		const Transform& trans = Transform{},
+		vec2* vertexLocations = nullptr,
+		vec2* UVs = nullptr,
+		uvec2* triangles = nullptr,
+		uint32 numVerts = 0,
+		uint32 numTriangles = 0,
+		Material* material = nullptr)
+		
+		:trans(trans),
+		vertexLocations(vertexLocations),
+		UVs(UVs),
+		triangles(triangles),
+		numVerts(numVerts),
+		numTriangles(numTriangles),
+		material(material)
+	{
+
+	}
+
+	Transform trans;
+	vec2* vertexLocations;
+	vec2* UVs;
+	uvec2* triangles;
+	uint32 numVerts;
+	uint32 numTriangles;
+	Material* material;
+};
 
 class Model
 {
@@ -12,7 +44,6 @@ public:
 	}
 
 	Model() { }
-	Model(Transform /*location*/, float* /*locations*/, float* /*UVs*/, uint32 /*numVerts*/, uint32 /*numTris*/) { }
 
 	virtual Transform getTransform() const = 0;
 	virtual vec2 getLocation() const = 0;

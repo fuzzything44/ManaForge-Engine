@@ -19,7 +19,7 @@ public:
 	virtual Window& getWindow() override;
 	const Window& getWindow() const override;
 
-	virtual Model* newModel(const vec2* vertexLocations, const vec2* UVs, const uvec3* tris, uint32 numVerts, uint32 numTris) override;
+	virtual Model* newModel(const ModelData& params) override;
 
 	virtual Material* newMaterial() override;
 

@@ -16,7 +16,8 @@ public:
 		const uvec3* tris = nullptr,
 		uint32 numVerts = 0,
 		uint32 numTris = 0,
-		OpenGLRenderer* renderer = nullptr);
+		OpenGLRenderer* renderer = nullptr,
+		OpenGLMaterial* material = nullptr);
 
 	virtual Transform getTransform() const override;
 

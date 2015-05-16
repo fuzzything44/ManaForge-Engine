@@ -9,10 +9,11 @@
 
 
 
-OpenGLModel::OpenGLModel(const vec2* locationsIn, const vec2* UVsIn, const uvec3* trisIn, uint32 numVertsIn, uint32 numTrisIn, OpenGLRenderer* rendererIn)
+OpenGLModel::OpenGLModel(const vec2* locationsIn, const vec2* UVsIn, const uvec3* trisIn, uint32 numVertsIn, uint32 numTrisIn, OpenGLRenderer* rendererIn, OpenGLMaterial* material)
 	:numVerts(numVertsIn),
 	numTris(numTrisIn),
-	renderer(rendererIn)
+	renderer(rendererIn),
+	material(material)
 {
 	// make sure they aren't zero
 	check(numVerts);
@@ -50,7 +51,9 @@ OpenGLModel::OpenGLModel(const vec2* locationsIn, const vec2* UVsIn, const uvec3
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elemBuffer);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint32) * numTris, elems, GL_STATIC_DRAW);
 
+
 	// get the cameraMat location
+	check(material);
 	viewMatUniformLocation = material->getUniformLocation("cameraMat");
 	
 }
