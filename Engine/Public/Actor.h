@@ -24,7 +24,7 @@ public:
 	// Make Chunk a freind so it can access private methods (namely tick)
 	friend Component;
 	map_ID_type GUID;
-	static bool needsSave;	// This maybe should be const too.
+	
 	/// <summary> Actors.</summary>
 	///
 	/// <param name="dataIn">  The data in.</param>
@@ -32,6 +32,9 @@ public:
 	///
 	/// <returns> An ENGINE_API.</returns>
 	explicit ENGINE_API Actor(const Transform& trans = Transform{});
+
+	//<summary> returns if the actor should be saved or not.
+	virtual bool needsSave();
 
 	/// <summary> destructor </summary>
 	ENGINE_API virtual ~Actor();

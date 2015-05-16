@@ -123,9 +123,9 @@ void DefaultWorld::save()
 	ENG_LOG("Saving world");
 	// Create list to save
 	std::list<Actor*> toSave;
-	for (std::map<Actor*>::iterator i = actors.begin(); i != actors.end(); i++) {
-		if ((**i).needsSave) {
-			toSave.push_back(*i);
+	for (std::map<map_ID_type, Actor*>::iterator i = actors.begin(); i != actors.end(); i++) {
+		if (i->second->needsSave()) {
+			toSave.push_back(i->second);
 		}
 	} // End for
 
