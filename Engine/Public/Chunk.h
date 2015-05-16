@@ -28,7 +28,7 @@ public:
 	///
 	/// <param name="locationIn"> The location in.</param>
 	ENGINE_API explicit Chunk(ivec2 locationIn = ivec2(0, 0), Model* model = nullptr);
-	ENGINE_API explicit Chunk(ivec2 locationIn, vec2* locations, vec2* UVs, uint32* elems, uint32 numVerts, uint32 numElems);
+	ENGINE_API explicit Chunk(ivec2 locationIn, vec2* locations, vec2* UVs, uvec3* tris, uint32 numVerts, uint32 numTris);
 
 protected:
 

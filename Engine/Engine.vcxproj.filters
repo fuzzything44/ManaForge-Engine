@@ -139,9 +139,6 @@
     <ClInclude Include="Public\Runtime.h">
       <Filter>Public</Filter>
     </ClInclude>
-    <ClInclude Include="registerForSerialization.h">
-      <Filter>Public</Filter>
-    </ClInclude>
     <ClInclude Include="Public\WindowProps.h">
       <Filter>Public</Filter>
     </ClInclude>
@@ -155,6 +152,12 @@
       <Filter>Private</Filter>
     </ClInclude>
     <ClInclude Include="Public\Input.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\SerializeGLM.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\registerForSerialization.h">
       <Filter>Public</Filter>
     </ClInclude>
   </ItemGroup>

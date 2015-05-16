@@ -9,24 +9,24 @@
 
 
 
-OpenGLModel::OpenGLModel(const vec2* locationsIn, const vec2* UVsIn, const uint32* elemsIn, uint32 numVertsIn, uint32 numElemsIn, OpenGLRenderer* rendererIn)
+OpenGLModel::OpenGLModel(const vec2* locationsIn, const vec2* UVsIn, const uvec3* trisIn, uint32 numVertsIn, uint32 numTrisIn, OpenGLRenderer* rendererIn)
 	:numVerts(numVertsIn),
-	numElems(numElemsIn),
+	numTris(numTrisIn),
 	renderer(rendererIn)
 {
 	// make sure they aren't zero
 	check(numVerts);
-	check(numElems);
+	check(numTris);
 
 	// allocate data
 	locations = static_cast<vec2*>(malloc(sizeof(vec2) * numVerts));
 	UVs = static_cast<vec2*>(malloc(sizeof(vec2) * numVerts));
-	elems = static_cast<uint32*>(malloc(sizeof(uint32) * numElems));
+	elems = static_cast<uint32*>(malloc(sizeof(uvec3) * numTris));
 
 	// copy data over
 	memcpy(locations, locationsIn, numVerts * sizeof(vec2));
 	memcpy(UVs, UVsIn, numVerts * sizeof(vec2));
-	memcpy(elems, elemsIn, numElems * sizeof(uint32));
+	memcpy(elems, trisIn, numTris * sizeof(uvec3));
 
 	// add model to renderer's list
 	renderer->models.push_front(this);
@@ -48,7 +48,7 @@ OpenGLModel::OpenGLModel(const vec2* locationsIn, const vec2* UVsIn, const uint3
 	// init elem buffer
 	glGenBuffers(1, &elemBuffer);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elemBuffer);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint32) * numElems, elems, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint32) * numTris, elems, GL_STATIC_DRAW);
 
 	// get the cameraMat location
 	viewMatUniformLocation = material->getUniformLocation("cameraMat");
@@ -167,7 +167,7 @@ void OpenGLModel::draw()
 
 	glDrawElements(
 		GL_TRIANGLES, // they are trianges
-		numElems, // these many verticies
+		numTris, // these many verticies
 		GL_UNSIGNED_INT, // the data is uint32 - unsigned int
 		nullptr // use the buffer instead of raw data
 		);

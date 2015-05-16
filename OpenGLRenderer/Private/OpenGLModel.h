@@ -11,11 +11,11 @@ public:
 	friend class OpenGLRenderer;
 
 	explicit OpenGLModel(
-		const vec2* locations = nullptr,
+		const vec2* vertexLocations = nullptr,
 		const vec2* UVs = nullptr,
-		const uint32* elems = nullptr,
+		const uvec3* tris = nullptr,
 		uint32 numVerts = 0,
-		uint32 numElems = 0,
+		uint32 numTris = 0,
 		OpenGLRenderer* renderer = nullptr);
 
 	virtual Transform getTransform() const override;
@@ -47,7 +47,7 @@ protected:
 	vec2* UVs;
 	uint32* elems;
 	uint32 numVerts;
-	uint32 numElems;
+	uint32 numTris;
 
 	uint32 vertexArray;
 	uint32 vertexLocationBuffer;

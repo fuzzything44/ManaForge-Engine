@@ -1,6 +1,5 @@
 #include "Runtime.h"
 
-#include "Helper.h"
 #include "Window.h"
 #include "ModuleManager.h"
 #include "ChangeDirectory.h"
@@ -10,7 +9,9 @@
 #include <chrono>
 
 #include <boost/algorithm/string.hpp>
+
 #include <boost/timer/timer.hpp>
+
 
 
 // DEFINE STATIC VARIABLES
@@ -57,7 +58,7 @@ void Runtime::run()
 
 		
 	}
-	
+
 
 	// set initial tick
 	float LastTick = static_cast<float>(clock::now().time_since_epoch().count());

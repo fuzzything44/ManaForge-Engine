@@ -5,11 +5,11 @@ MeshComponent::MeshComponent(Actor* owner,
 	Transform trans,
 	vec2* locations,
 	vec2* UVs,
-	uint32* elems,
-	uint32 numVerts,
+	uvec3* tris,
+	uint32 numTris,
 	uint32 numElems)
 	:	SceneComponent(owner, trans),
-		model(Runtime::get().moduleManager.getRenderer().newModel(locations, UVs, elems, numVerts, numElems))
+		model(Runtime::get().moduleManager.getRenderer().newModel(locations, UVs, tris, numTris, numElems))
 {
 	
 }
