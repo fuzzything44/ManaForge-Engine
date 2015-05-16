@@ -39,13 +39,6 @@ DefaultWorld::DefaultWorld(std::string folder)
 		FATAL_ERR("No world loaded");
 	}
 
-	ENG_LOG("Loading chunk size...");
-	// First line should be chunk size.
-	// Parses to int.
-	chunkSize = propManager.queryValue<uint32>("chunk.size");
-
-	ENG_LOG("Chunk size: " << chunkSize);
-
 	ENG_LOG("Loading images...");
 	
 	// We should probably just have the images we use in the same file as chunk size.
@@ -144,25 +137,7 @@ void DefaultWorld::loadWorld(std::string name)
 
 DefaultWorld::~DefaultWorld()
 {
-	// loops through and frees the main world.
-	for (int x = 0; mainWorld[x] != nullptr; x++) {
-		for (int y = 0; mainWorld[x][y] != nullptr; y++) {
-			free(mainWorld[x][y]);
-		}
-		free(mainWorld[x]);
-	}
-	free(mainWorld);
-	// If you weren't in the main world, free the current world.
-	if (currentWorld != nullptr) {
-		for (int x = 0; currentWorld[x] != nullptr; x++) {
-			for (int y = 0; currentWorld[x][y] != nullptr; y++) {
-				free(currentWorld[x][y]);
-			}
-			free(currentWorld[x]);
-		}
-	}
 
-	free(currentWorld);
 }
 
 extern "C" DefaultWorldPlugin_API void registerModule(ModuleManager& mm)
