@@ -54,6 +54,8 @@ bin/Release/Modules/lodepng.*
 bin/Debug/Modules/lodepng.*
 bin/Release/StackWalker.*
 bin/Debug/StackWalker.*
+bin/Release/Modules/TestContent.*
+bin/Debug/Modules/TestContent.*
 
 
 Game/Game_*/*.*

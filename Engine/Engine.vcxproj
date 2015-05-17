@@ -112,7 +112,6 @@
     <ClCompile Include="Private\ModuleManager.cpp" />
     <ClCompile Include="Private\PropertyManager.cpp" />
     <ClCompile Include="Private\Runtime.cpp" />
-    <ClCompile Include="private\TextureLibrary.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MeshActor.h" />
@@ -141,7 +140,6 @@
     <ClInclude Include="Public\SceneComponent.h" />
     <ClInclude Include="Public\SerializeGLM.h" />
     <ClInclude Include="Public\SharedLibrary.h" />
-    <ClInclude Include="public\TextureLibrary.h" />
     <ClInclude Include="Public\Transform.h" />
     <ClInclude Include="Public\UVData.h" />
     <ClInclude Include="Public\Window.h" />

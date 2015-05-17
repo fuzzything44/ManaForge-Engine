@@ -17,9 +17,6 @@
     <ClCompile Include="private\Helper.cpp">
       <Filter>Private</Filter>
     </ClCompile>
-    <ClCompile Include="private\TextureLibrary.cpp">
-      <Filter>Private</Filter>
-    </ClCompile>
     <ClCompile Include="Private\Module.cpp">
       <Filter>Private</Filter>
     </ClCompile>
@@ -59,9 +56,6 @@
       <Filter>Public</Filter>
     </ClInclude>
     <ClInclude Include="public\Helper.h">
-      <Filter>Public</Filter>
-    </ClInclude>
-    <ClInclude Include="public\TextureLibrary.h">
       <Filter>Public</Filter>
     </ClInclude>
     <ClInclude Include="Public\Engine.h">
