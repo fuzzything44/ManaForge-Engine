@@ -141,6 +141,10 @@ void DefaultWorld::loadWorld(std::string name)
 	ENG_LOG("World Loaded!");
 }
 
+void DefaultWorld::addActor(Actor& toAdd)
+{
+}
+
 void DefaultWorld::save()
 {
 	ENG_LOG("Saving world");

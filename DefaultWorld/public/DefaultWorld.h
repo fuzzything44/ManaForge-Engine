@@ -9,7 +9,6 @@
 
 class DefaultWorld : public World
 {
-private:
 	std::string folderLocation;
 	std::string worldName;
 
@@ -17,6 +16,10 @@ private:
 	
 
 	map_ID_t nextIndex;
+
+	// Contains all actors in the world
+	// !!!!! We also need to clear it when you change worlds. We may need to clear other things too (and we have to keep persistent actors).
+	std::map<map_ID_t, Actor*> actors;
 
 public:
 	explicit DefaultWorld(std::string folder = ""); 

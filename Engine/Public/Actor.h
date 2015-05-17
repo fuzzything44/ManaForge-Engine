@@ -23,7 +23,9 @@ public:
 	
 	// Make Chunk a freind so it can access private methods (namely tick)
 	friend Component;
-	map_ID_t GUID;
+
+	// the global ID for this instatnce of the actor -- used mainly for networking
+	World::map_ID_t GUID;
 	
 	/// <summary> Actors.</summary>
 	///
