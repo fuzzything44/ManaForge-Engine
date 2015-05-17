@@ -15,5 +15,7 @@ Gate::Gate(const Transform& trans)
 		uvec3(1, 2, 3) 
 	};
 
-	gateMesh = new MeshComponent(this, Transform{}, ModelData(Transform{}, locations, locations, elems, 4, 6));
+	gateMesh = new MeshComponent(
+		this, Transform{}, ModelData(
+			Transform{}, locations, locations, elems, 4, 6, Runtime::get().moduleManager.getRenderer().newMaterial()));
 }

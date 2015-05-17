@@ -61,10 +61,14 @@ void Runtime::run()
 		
 	}
 
-	moduleManager.spawnActor("TestContent.Gate");
+	// YA WE REALLY NEED PLAYER CONTROLLERS -- the gate shouldn't get to control the camera
+	Actor* gate = moduleManager.spawnActor("TestContent.Gate");
+
+	CameraComponent c{gate, Transform{}, glm::ortho(-10.f, 10.f, -10.f, 10.f, .1f, 100.f)};
+	moduleManager.getRenderer().setCurrentCamera(c);
 
 	// set initial tick
-	float LastTick = static_cast<float>(clock::now().time_since_epoch().count());
+	clock::time_point LastTick = clock::now();
 
 
 	bool shouldContinue = true;
@@ -73,8 +77,8 @@ void Runtime::run()
 
 		
 		// calculate tick time
-		float CurrentTick = static_cast<float>(clock::now().time_since_epoch().count());
-		float delta = CurrentTick - LastTick;
+		clock::time_point CurrentTick = clock::now();
+		float delta = static_cast<float>((CurrentTick - LastTick).count());
 
 		LastTick = CurrentTick;
 

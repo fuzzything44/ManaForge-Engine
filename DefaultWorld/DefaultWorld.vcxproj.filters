@@ -22,5 +22,8 @@
     <ClCompile Include="private\DefaultWorld.cpp">
       <Filter>Private</Filter>
     </ClCompile>
+    <ClCompile Include="Private\DefaultWorldConfig.cpp">
+      <Filter>Private</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

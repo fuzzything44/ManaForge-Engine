@@ -10,6 +10,7 @@
 #include <fstream>
 
 #include <boost/algorithm/string.hpp>
+
 #include <boost/serialization/map.hpp>
 #include <boost/serialization/list.hpp>
 #include <boost/serialization/nvp.hpp>
@@ -33,16 +34,11 @@
 #	define IS_SAVE_BINARY 1
 #endif
 
-World* AddWorld(std::string folder)
-{
-	return new DefaultWorld(folder);
-}
-
-
 
 DefaultWorld::DefaultWorld(std::string folder)
 	:folderLocation(std::string("Worlds\\") + folder + '\\'),
-	propManager(folderLocation + "world.json")
+	propManager(folderLocation + "world.json"),
+	nextIndex(0)
 {
 
 	// Make sure a world folder was supplied.
@@ -75,42 +71,52 @@ void DefaultWorld::loadWorld(std::string name)
 {
 	worldName = name;
 	ENG_LOG("Loading world " << name << "...");
+	
 
 	/////////////////////////////////////////////////////
 	// Begin static actor loading.
 	{
-		// File location of static actors -- if we are binary, then use a binary stream
-#		if IS_SAVE_BINARY
-			std::ifstream i_stream{ folderLocation + "/" + name + ".WORLD", std::ifstream::binary};
-#		else
-			std::ifstream i_stream{ folderLocation + "/" + name + ".WORLD" };
-#		endif
-		
-		// Create archive.
-		iarchive_t i_archive{ i_stream };
+
 
 		// List it will read things into.
 		std::list<Actor*> staticActors;
 
+		// File location of static actors -- if we are binary, then use a binary stream
+#		if IS_SAVE_BINARY
+			std::ifstream i_stream{ folderLocation + name + '\\' + name + ".WORLD", std::ifstream::binary};
+#		else
+			std::ifstream i_stream{ folderLocation + name + '\\' + name + ".WORLD" };
+#		endif
+
+		if (!i_stream.is_open())
+		{
+			FATAL_ERR("SAVE FILE DOESN'T EXIST");
+		}
+
 		// this might fail, so put it into try catch block
 		try{
+
+			// Create archive.
+			iarchive_t i_archive{ i_stream };
+
 
 			i_archive >> BOOST_SERIALIZATION_NVP(staticActors);
 
 		} 
 		catch (boost::archive::archive_exception& e)
 		{
-			ENG_LOG("ARCHIVE ERROR ENCOUNTERED! Reason: " << e.what() << " Error code: " << e.code);
+			ENG_LOG("ARCHIVE ERROR ENCOUNTERED WHILE LOADING WORLD ACTORS! Reason: " << e.what() << " Error code: " << e.code);
 		}
 		catch (std::exception& e)
 		{
-			ENG_LOG("ERROR ENCOUNTERED! Reason: " << e.what());
+			ENG_LOG("ERROR ENCOUNTERED WHILE LOADING WORLD ACTORS! Reason: " << e.what());
 		}
 
 		// Move actors to the map.
-		for (auto i = staticActors.begin(); i != staticActors.end(); ++i) {
-			(*i)->GUID = nextIndex;
-			*(actors[nextIndex]) = **i;
+		for (Actor*& elem : staticActors) 
+		{
+			actors[nextIndex] = elem;
+			elem->GUID = nextIndex;
 			nextIndex++;
 		}
 	}
@@ -120,21 +126,41 @@ void DefaultWorld::loadWorld(std::string name)
 	{
 		// File location of dynamic actors.
 #		if IS_SAVE_BINARY
-		std::ifstream i_stream{ folderLocation + "/" + name + ".SAVE", std::ifstream::binary };
+			std::ifstream i_stream{ folderLocation + name + '\\' + name + ".SAVE", std::ifstream::binary };
 #		else
-		std::ifstream i_stream{ folderLocation + "/" + name + ".SAVE" };
+			std::ifstream i_stream{ folderLocation + name + '\\' + name + ".SAVE" };
 #		endif
-		// Create archive.
-		iarchive_t i_archive{ i_stream };
+
+
+		if (!i_stream.is_open())
+		{
+			FATAL_ERR("SAVE FILE DOESN'T EXIST");
+		}
+
 
 		// List actors will be read into.
 		std::list<Actor*> dynamicActors;
-		i_archive >> BOOST_SERIALIZATION_NVP(dynamicActors);
+
+		try{
+			// Create archive.
+			iarchive_t i_archive{ i_stream };
+			i_archive >> BOOST_SERIALIZATION_NVP(dynamicActors);
+
+		}
+		catch (boost::archive::archive_exception& e)
+		{
+			ENG_LOG("ARCHIVE ERROR WHILE LOADING SAVED ACTORS! Reason: " << e.what() << " Error code: " << e.code);
+		}
+		catch (std::exception& e)
+		{
+			ENG_LOG("ERROR ENCOUNTERED WHILE LOADING SAVED ACTORS! Reason: " << e.what());
+		}
 
 		// move actors to map.
-		for (std::list<Actor*>::iterator i = dynamicActors.begin(); i != dynamicActors.end(); i++) {
-			(**i).GUID = nextIndex;
-			*(actors[nextIndex]) = **i;
+		for (Actor*& elem : dynamicActors)
+		{
+			actors[nextIndex] = elem;
+			elem->GUID = nextIndex;
 			nextIndex++;
 		}
 	}
@@ -169,12 +195,3 @@ DefaultWorld::~DefaultWorld()
 
 }
 
-extern "C" DefaultWorldPlugin_API void registerModule(ModuleManager& mm)
-{
-	mm.setWorld(AddWorld);
-}
-
-extern "C" DefaultWorldPlugin_API float getModuleEngineVersion()
-{
-	return ENGINE_VERSION;
-}
