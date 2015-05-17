@@ -2,6 +2,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <string>
 #include <Engine.h>
 
 // logging class with minimal dependencies
@@ -15,5 +16,6 @@ struct logging
 };
 
 /// <summary> Loggs the given input to the logfile and to the console.</summary>
-#define ENG_LOG(ans) logging::logfile << ans << std::endl; std::cout << ans << std::endl
+#define ENG_LOGLN(ans) logging::logfile << ans << std::endl; std::cout << ans << std::endl
 
+#define ENG_LOG(ans) logging::logfile << ans; std::cout << ans

@@ -5,7 +5,6 @@
 #include "OpenGLWindow.h"
 
 #include <Renderer.h>
-#include <ModuleManager.h>
 #include <Helper.h>
 #include <Logging.h>
 
@@ -37,7 +36,7 @@ uint32 OpenGLRenderer::loadShaderProgram(std::string name)
 	std::string vertexPath = name.append("vert.glsl");
 	std::string fragPath = name.append("frag.glsl");
 
-	ENG_LOG(std::endl << std::endl);
+	ENG_LOGLN(std::endl << std::endl);
 
 	// Create the shaders
 	uint32 VertexShaderID = glCreateShader(GL_VERTEX_SHADER);
@@ -55,7 +54,7 @@ uint32 OpenGLRenderer::loadShaderProgram(std::string name)
 
 
 	// Compile Vertex Shader
-	ENG_LOG("Compiling vertex Shader " << vertexPath);
+	ENG_LOGLN("Compiling vertex Shader " << vertexPath);
 
 	const char* VertexSourcePointer = VertexShaderCode.c_str();
 	glShaderSource(VertexShaderID, 1, &VertexSourcePointer, nullptr);
@@ -67,16 +66,16 @@ uint32 OpenGLRenderer::loadShaderProgram(std::string name)
 	if (InfoLogLength > 0){
 		std::vector<char> VertexShaderErrorMessage(InfoLogLength + 1);
 		glGetShaderInfoLog(VertexShaderID, InfoLogLength, nullptr, &VertexShaderErrorMessage[0]);
-		ENG_LOG("\n" << &VertexShaderErrorMessage[0]);
+		ENG_LOGLN("\n" << &VertexShaderErrorMessage[0]);
 	}
 	else
 	{
-		ENG_LOG("Shader " << vertexPath << " Successfully Compiled\n");
+		ENG_LOGLN("Shader " << vertexPath << " Successfully Compiled\n");
 	}
 
 
 	// Compile Fragment Shader
-	ENG_LOG("\nCompiling fragment Shader " << fragPath);
+	ENG_LOGLN("\nCompiling fragment Shader " << fragPath);
 	const char* FragmentSourcePointer = FragmentShaderCode.c_str();
 	glShaderSource(FragmentShaderID, 1, &FragmentSourcePointer, nullptr);
 	glCompileShader(FragmentShaderID);
@@ -87,16 +86,16 @@ uint32 OpenGLRenderer::loadShaderProgram(std::string name)
 	if (InfoLogLength > 0){
 		std::vector<char> FragmentShaderErrorMessage(InfoLogLength + 1);
 		glGetShaderInfoLog(FragmentShaderID, InfoLogLength, nullptr, &FragmentShaderErrorMessage[0]);
-		ENG_LOG("\n" << &FragmentShaderErrorMessage[0]);
+		ENG_LOGLN("\n" << &FragmentShaderErrorMessage[0]);
 	}
 	else
 	{
-		ENG_LOG("\nShader " << fragPath << " Successfully Compiled\n");
+		ENG_LOGLN("\nShader " << fragPath << " Successfully Compiled\n");
 	}
 
 
 	// Link the program
-	ENG_LOG("Linking program " << name);
+	ENG_LOGLN("Linking program " << name);
 	uint32 ProgramID = glCreateProgram();
 	glAttachShader(ProgramID, VertexShaderID);
 	glAttachShader(ProgramID, FragmentShaderID);
@@ -108,7 +107,7 @@ uint32 OpenGLRenderer::loadShaderProgram(std::string name)
 	if (InfoLogLength > 0){
 		std::vector<char> ProgramErrorMessage(InfoLogLength + 1);
 		glGetProgramInfoLog(ProgramID, InfoLogLength, nullptr, &ProgramErrorMessage[0]);
-		ENG_LOG("\n" << &ProgramErrorMessage[0]);
+		ENG_LOGLN("\n" << &ProgramErrorMessage[0]);
 	}
 
 	// free the sader memory -- it is already in the program
@@ -136,11 +135,10 @@ bool OpenGLRenderer::update()
 	// call the draw function for all of the models
 	std::for_each(models.begin(), models.end(), std::bind(&OpenGLModel::draw, std::placeholders::_1));
 
-	if (window->getIsKeyPressed(Keyboard::KEY_E))
+	if (window->getIsKeyPressed(Keyboard::KEY_S))
 	{
-		Stack s{ 1 | 2 | 0x30 };
+		Stack s;
 		s.ShowCallstack();
-		ENG_LOG(s());
 	}
 
 	window->swapBuffers();
@@ -407,15 +405,3 @@ uint32 OpenGLRenderer::allocateCompressedTextureLibraryFromDDS(uint32 num, const
 }
 
 
-extern "C" OpenGLRenderer_API void registerModule(ModuleManager& mm)
-{
-	mm.setRenderer(new OpenGLRenderer());
-	mm.addUpdateCallback(
-		std::bind(&OpenGLRenderer::update, 
-			static_cast<OpenGLRenderer*>(&mm.getRenderer())));
-}
-
-extern "C" OpenGLRenderer_API float getModuleEngineVersion()
-{
-	return ENGINE_VERSION;
-}

@@ -11,9 +11,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="OpenGLRenderer.cpp">
-      <Filter>Private</Filter>
-    </ClCompile>
     <ClCompile Include="Private\OpenGLModel.cpp">
       <Filter>Private</Filter>
     </ClCompile>
@@ -21,6 +18,12 @@
       <Filter>Private</Filter>
     </ClCompile>
     <ClCompile Include="Private\OpenGLWindow.cpp">
+      <Filter>Private</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\OpenGLRendererConfig.cpp">
+      <Filter>Private</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\OpenGLRenderer.cpp">
       <Filter>Private</Filter>
     </ClCompile>
   </ItemGroup>
@@ -34,10 +37,10 @@
     <ClInclude Include="Private\OpenGLRenderer.h">
       <Filter>Private</Filter>
     </ClInclude>
-    <ClInclude Include="Private\OpenGLRendererConfig.h">
+    <ClInclude Include="Private\OpenGLWindow.h">
       <Filter>Private</Filter>
     </ClInclude>
-    <ClInclude Include="Private\OpenGLWindow.h">
+    <ClInclude Include="Private\OpenGLRendererConfig.h">
       <Filter>Private</Filter>
     </ClInclude>
   </ItemGroup>

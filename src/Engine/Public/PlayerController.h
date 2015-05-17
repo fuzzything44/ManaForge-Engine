@@ -1,13 +1,16 @@
 #pragma once
 
 #include "Engine.h"
+#include "Controller.h"
 
-class PlayerController
+class PlayerController : public Controller
 {
 public:
 	PlayerController();
 
 	virtual ~PlayerController();
+
+private:
 
 	
 };

@@ -46,7 +46,7 @@ DefaultWorld::DefaultWorld(std::string folder)
 		FATAL_ERR("No world specified");
 	}
 
-	ENG_LOG("Loading images...");
+	ENG_LOGLN("Loading images...");
 	
 	// We should probably just have the images we use in the same file as chunk size.
 	std::ifstream stream{ folderLocation + "images.txt" };
@@ -60,7 +60,7 @@ DefaultWorld::DefaultWorld(std::string folder)
 	// Give images to renderer
 	//Runtime::get().moduleManager.getRenderer().loadTextures(valuePairs);
 
-	ENG_LOG("Images loaded!");
+	ENG_LOGLN("Images loaded!");
 
 	// virtual functuion -- call THIS version of it -- we need this because it is inside a constructor
 	DefaultWorld::loadWorld("main");
@@ -70,7 +70,7 @@ DefaultWorld::DefaultWorld(std::string folder)
 void DefaultWorld::loadWorld(std::string name)
 {
 	worldName = name;
-	ENG_LOG("Loading world " << name << "...");
+	ENG_LOGLN("Loading world " << name << "...");
 	
 
 	/////////////////////////////////////////////////////
@@ -105,11 +105,11 @@ void DefaultWorld::loadWorld(std::string name)
 		} 
 		catch (boost::archive::archive_exception& e)
 		{
-			ENG_LOG("ARCHIVE ERROR ENCOUNTERED WHILE LOADING WORLD ACTORS! Reason: " << e.what() << " Error code: " << e.code);
+			ENG_LOGLN("ARCHIVE ERROR ENCOUNTERED WHILE LOADING WORLD ACTORS! Reason: " << e.what() << " Error code: " << e.code);
 		}
 		catch (std::exception& e)
 		{
-			ENG_LOG("ERROR ENCOUNTERED WHILE LOADING WORLD ACTORS! Reason: " << e.what());
+			ENG_LOGLN("ERROR ENCOUNTERED WHILE LOADING WORLD ACTORS! Reason: " << e.what());
 		}
 
 		// Move actors to the map.
@@ -149,11 +149,11 @@ void DefaultWorld::loadWorld(std::string name)
 		}
 		catch (boost::archive::archive_exception& e)
 		{
-			ENG_LOG("ARCHIVE ERROR WHILE LOADING SAVED ACTORS! Reason: " << e.what() << " Error code: " << e.code);
+			ENG_LOGLN("ARCHIVE ERROR WHILE LOADING SAVED ACTORS! Reason: " << e.what() << " Error code: " << e.code);
 		}
 		catch (std::exception& e)
 		{
-			ENG_LOG("ERROR ENCOUNTERED WHILE LOADING SAVED ACTORS! Reason: " << e.what());
+			ENG_LOGLN("ERROR ENCOUNTERED WHILE LOADING SAVED ACTORS! Reason: " << e.what());
 		}
 
 		// move actors to map.
@@ -164,7 +164,7 @@ void DefaultWorld::loadWorld(std::string name)
 			nextIndex++;
 		}
 	}
-	ENG_LOG("World Loaded!");
+	ENG_LOGLN("World Loaded!");
 }
 
 void DefaultWorld::addActor(Actor& toAdd)
@@ -173,7 +173,7 @@ void DefaultWorld::addActor(Actor& toAdd)
 
 void DefaultWorld::save()
 {
-	ENG_LOG("Saving world");
+	ENG_LOGLN("Saving world");
 	// Create list to save
 	std::list<Actor*> toSave;
 	for (auto& pair : actors) 
@@ -200,11 +200,11 @@ void DefaultWorld::save()
 	}
 	catch (boost::archive::archive_exception& e)
 	{
-		ENG_LOG("ARCHIVE ERROR SAVING ACTORS. Reason: " << e.what() << " Code: " << e.code);
+		ENG_LOGLN("ARCHIVE ERROR SAVING ACTORS. Reason: " << e.what() << " Code: " << e.code);
 	}
 	catch (std::exception& e)
 	{
-		ENG_LOG("ERROR SAVING ACTORS. Reason: " << e.what());
+		ENG_LOGLN("ERROR SAVING ACTORS. Reason: " << e.what());
 	}
 }
 

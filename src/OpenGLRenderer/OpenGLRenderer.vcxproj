@@ -87,9 +87,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="OpenGLRenderer.cpp" />
     <ClCompile Include="Private\OpenGLMaterial.cpp" />
     <ClCompile Include="Private\OpenGLModel.cpp" />
+    <ClCompile Include="Private\OpenGLRenderer.cpp" />
+    <ClCompile Include="Private\OpenGLRendererConfig.cpp" />
     <ClCompile Include="Private\OpenGLWindow.cpp" />
   </ItemGroup>
   <ItemGroup>

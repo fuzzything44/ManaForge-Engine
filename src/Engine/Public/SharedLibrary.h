@@ -48,7 +48,7 @@ public:
 			FATAL_ERR("Failed to get function address. Name: " + functionName);
 		}
 
-		return static_cast<T*>(addr);
+		return reinterpret_cast<T*>(addr);
 	}
 };
 

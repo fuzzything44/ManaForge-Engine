@@ -1,6 +1,7 @@
 #include "Helper.h"
 #include "Logging.h"
 #include <fstream>
+#include <string>
 
 std::string loadFileToStr(const char* filename)
 {
@@ -11,7 +12,7 @@ std::string loadFileToStr(const char* filename)
 	// if the steam if bad then return
 	if (stream.bad())
 	{
-		ENG_LOG("Bad stream" << std::endl);
+		ENG_LOGLN("Bad stream" << std::endl);
 		return nullptr;
 	}
 	// define strings for each line and the final string

@@ -30,7 +30,7 @@ inline T PropertyManager::queryValue(std::string key)
 		return (props.get<T>(key));
 	} catch (std::exception& e)
 	{
-		ENG_LOG(e.what());
+		ENG_LOGLN(e.what());
 
 		return T();
 	}

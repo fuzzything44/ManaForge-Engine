@@ -3,31 +3,23 @@
 #include "Logging.h"
 
 #include <exception>
-#include <string>
 
 class Stack : public StackWalker
 {
 public:
 
 	Stack(int options = OptionsAll, // 'int' is by design, to combine the enum-flags
-		LPCSTR szSymPath = NULL,
+		LPCSTR szSymPath = nullptr,
 		DWORD dwProcessId = GetCurrentProcessId(),
 		HANDLE hProcess = GetCurrentProcess()) : StackWalker(options, szSymPath, dwProcessId, hProcess){ }
 
-	std::string operator()()
-	{
-		return val;
-	}
-
 protected:
-	virtual void OnOutput(LPCSTR text) override
-	{
-		val = text;
+	bool hasPrintedMain;
+	bool wasLastExternal;
 
-		StackWalker::OnOutput(text);
-	}
+	ENGINE_API virtual void OnCallstackEntry(CallstackEntryType eType, CallstackEntry& entry) override;
 
-	std::string val;
+	ENGINE_API virtual void OnOutput(LPCSTR text) override;
 };
 
 class ENGException : std::exception

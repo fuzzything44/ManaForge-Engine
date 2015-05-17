@@ -16,7 +16,7 @@ OpenGLWindow::OpenGLWindow(const WindowProps& props)
 	int err = glfwInit();
 	if (err != 1)
 	{
-		ENG_LOG("Failed to init GLFW" << std::endl);
+		ENG_LOGLN("Failed to init GLFW" << std::endl);
 
 		return;
 	}
@@ -67,7 +67,7 @@ OpenGLWindow::OpenGLWindow(const WindowProps& props)
 	// exit if the window wasn't initialized correctly
 	if (!window)
 	{
-		ENG_LOG("\nWindow failed to create. Exiting");
+		ENG_LOGLN("\nWindow failed to create. Exiting");
 		// terminate the glfw session
 		glfwTerminate();
 		return;
@@ -91,7 +91,7 @@ OpenGLWindow::OpenGLWindow(const WindowProps& props)
 	err = glewInit();
 	if (err != GLEW_OK)
 	{
-		ENG_LOG("Failed to init GLEW. err code: ");
+		ENG_LOGLN("Failed to init GLEW. err code: ");
 		// terminate the glfw session
 		glfwTerminate();
 		return;

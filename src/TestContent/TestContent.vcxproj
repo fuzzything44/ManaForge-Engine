@@ -90,7 +90,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Private\Gate.cpp" />
-    <ClCompile Include="Private\TestContent.cpp" />
+    <ClCompile Include="Private\TestContentConfig.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

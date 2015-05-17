@@ -19,10 +19,10 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Private\TestContent.cpp">
+    <ClCompile Include="Private\Gate.cpp">
       <Filter>Private</Filter>
     </ClCompile>
-    <ClCompile Include="Private\Gate.cpp">
+    <ClCompile Include="Private\TestContentConfig.cpp">
       <Filter>Private</Filter>
     </ClCompile>
   </ItemGroup>

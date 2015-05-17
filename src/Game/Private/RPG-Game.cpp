@@ -75,12 +75,12 @@ int32 main()
 	catch (ENGException& e)
 	{
 		std::string reason = e.what();
-		ENG_LOG(reason);
+		ENG_LOGLN(reason);
 		return -1;
 	}
 	catch (std::exception& e)
 	{
-		ENG_LOG(e.what());
+		ENG_LOGLN(e.what());
 
 		return -1;
 	}

@@ -105,6 +105,7 @@
     <ClCompile Include="private\CameraComponent.cpp" />
     <ClCompile Include="Private\ChangeDirectory.cpp" />
     <ClCompile Include="Private\Component.cpp" />
+    <ClCompile Include="Private\Controller.cpp" />
     <ClCompile Include="private\ENGException.cpp" />
     <ClCompile Include="private\Helper.cpp" />
     <ClCompile Include="Private\ImageLoader.cpp" />
@@ -123,6 +124,7 @@
     <ClInclude Include="Public\ChangeDirectory.h" />
     <ClInclude Include="Public\Component.h" />
     <ClInclude Include="public\Color.h" />
+    <ClInclude Include="Public\Controller.h" />
     <ClInclude Include="Public\ENGException.h" />
     <ClInclude Include="Public\Engine.h" />
     <ClInclude Include="public\Helper.h" />

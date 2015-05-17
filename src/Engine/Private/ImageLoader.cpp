@@ -35,7 +35,7 @@ void ImageLoader::addLoader(std::string extension, std::function<uvec2(std::stri
 {
 	if (loadFunctions.find(extension) != loadFunctions.end())
 	{
-		ENG_LOG("Dulplicate loader for " << extension << ". using newest loader.");
+		ENG_LOGLN("Dulplicate loader for " << extension << ". using newest loader.");
 
 	}
 	loadFunctions[extension] = new std::function<uvec2(std::string, std::vector<uint8>) > (function);

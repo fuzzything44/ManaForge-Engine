@@ -18,7 +18,7 @@ PropertyManager::PropertyManager(std::string path)
 		boost::property_tree::json_parser::read_json(stream, props);
 	} catch (std::exception& e)
 	{
-		ENG_LOG(e.what());
+		ENG_LOGLN(e.what());
 	}
 }
 

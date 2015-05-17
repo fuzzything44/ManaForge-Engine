@@ -56,6 +56,9 @@
     <ClCompile Include="Private\Pawn.cpp">
       <Filter>Private</Filter>
     </ClCompile>
+    <ClCompile Include="Private\Controller.cpp">
+      <Filter>Private</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="public\Actor.h">
@@ -155,6 +158,9 @@
       <Filter>Public</Filter>
     </ClInclude>
     <ClInclude Include="Public\Pawn.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\Controller.h">
       <Filter>Public</Filter>
     </ClInclude>
   </ItemGroup>

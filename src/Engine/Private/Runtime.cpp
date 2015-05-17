@@ -56,7 +56,7 @@ void Runtime::run()
 		{
 			(*callback)();
 		}
-		ENG_LOG("init completed. Timestamp: " << t.format());
+		ENG_LOGLN("init completed. Timestamp: " << t.format());
 
 		
 	}

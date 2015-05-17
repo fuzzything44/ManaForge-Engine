@@ -25,7 +25,7 @@ Module::Module(const std::string& filename) :
 	}
 	catch (std::exception& e)
 	{
-		ENG_LOG(e.what());
+		ENG_LOGLN(e.what());
 
 	}
 
@@ -54,12 +54,12 @@ void Module::registerModule(ModuleManager& mm)
 
 	if(getModuleEngineVersionAddress() != ENGINE_VERSION)
 	{
-		ENG_LOG("Module: " << name << " Needs to be rebuilt -- using old engine");
+		ENG_LOGLN("Module: " << name << " Needs to be rebuilt -- using old engine");
 	};
 	
 	registerModuleFunctionAddress(mm);
 
-	ENG_LOG("Module loaded: " << name);
+	ENG_LOGLN("Module loaded: " << name);
 
 }
 
@@ -79,7 +79,7 @@ Module::~Module()
 		}
 		catch (std::exception& e)
 		{
-			ENG_LOG(e.what() << "\n");
+			ENG_LOGLN(e.what() << "\n");
 		}
 	}
 
