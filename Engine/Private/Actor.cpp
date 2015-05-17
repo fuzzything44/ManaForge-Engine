@@ -10,6 +10,11 @@ Actor::Actor(const Transform& trans)
 
 }
 
+bool Actor::needsSave()
+{
+	// by default returns false
+	return false;
+}
 
 void Actor::tick(float deltaTime)
 {

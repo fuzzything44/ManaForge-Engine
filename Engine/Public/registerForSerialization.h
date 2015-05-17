@@ -23,7 +23,7 @@ void CLASS_NAME::serialize(Archive& ar, const unsigned int version)
 
 }
 
-// IF YOU GET A COMPILE TIME ERROR HERE, YOU FORGOT TO PLACE THE INIT_SAVED_CLASS MACRO IN THE BEGINNING OF THE CLASS
+// IF YOU GET A COMPILE TIME ERROR HERE, YOU FORGOT TO PLACE THE INIT_SAVED_ACTOR MACRO IN THE BEGINNING OF THE CLASS
 template void CLASS_NAME::serialize<>(boost::archive::polymorphic_oarchive&, const unsigned int version);
 template void CLASS_NAME::serialize<>(boost::archive::polymorphic_iarchive&, const unsigned int version);
 

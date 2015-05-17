@@ -31,10 +31,10 @@ public:
 	/// <param name="chunkIn"> [in,out] If non-null, the chunk in.</param>
 	///
 	/// <returns> An ENGINE_API.</returns>
-	explicit ENGINE_API Actor(const Transform& trans = Transform{});
+	ENGINE_API explicit Actor(const Transform& trans = Transform{});
 
 	//<summary> returns if the actor should be saved or not.
-	virtual bool needsSave();
+	ENGINE_API virtual bool needsSave();
 
 	/// <summary> destructor </summary>
 	ENGINE_API virtual ~Actor();

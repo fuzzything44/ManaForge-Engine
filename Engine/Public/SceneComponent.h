@@ -21,17 +21,17 @@ public:
 	/// <summary> Gets the location.</summary>
 	///
 	/// <returns> The location.</returns>
-	inline ENGINE_API vec2 getLocation();
+	inline ENGINE_API vec2 getLocation() const;
 
 	/// <summary> Gets the size.</summary>
 	///
 	/// <returns> The size.</returns>
-	inline ENGINE_API vec2 getScale();
+	inline ENGINE_API vec2 getScale() const;
 
 	/// <summary> Gets the rotation.</summary>
 	///
 	/// <returns> The rotation.</returns>
-	inline ENGINE_API float getRotation();
+	inline ENGINE_API float getRotation() const;
 
 	/// <summary> Sets a location.</summary>
 	///
@@ -58,19 +58,19 @@ protected:
 ///// INLINE DEFINITIONS
 ///////////////////////
 
-inline vec2 SceneComponent::getLocation()
+inline vec2 SceneComponent::getLocation() const
 {
 	return trans.location;
 }
 
 
-inline vec2 SceneComponent::getScale()
+inline vec2 SceneComponent::getScale() const
 {
 	return trans.scale;
 }
 
 
-inline float SceneComponent::getRotation()
+inline float SceneComponent::getRotation() const
 {
 	return trans.rotation;
 }

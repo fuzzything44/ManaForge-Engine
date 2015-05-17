@@ -9,7 +9,7 @@
 
 class Gate : public Actor
 {
-	INIT_SAVED_CLASS()
+	INIT_SAVED_ACTOR()
 
 public:
 

@@ -12,5 +12,3 @@ private:
 	Actor* owner;
 
 };
-
-#include "Actor.h"

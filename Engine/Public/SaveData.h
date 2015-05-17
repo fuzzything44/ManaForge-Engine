@@ -37,8 +37,12 @@
 			BOOST_PP_CAT(ModuleName, "."),\
 			BOOST_PP_STRINGIZE(actorName)))
 
-#define INIT_SAVED_CLASS() \
+#define INIT_SAVED_ACTOR() \
 	friend boost::serialization::access; \
 	template <typename Archive>\
 	void serialize(Archive& ar, const unsigned int version); \
-  /**/
+	virtual bool needsSave()\
+	{\
+		return true;\
+	}\
+	/**/

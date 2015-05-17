@@ -7,11 +7,7 @@
 class CameraComponent : public SceneComponent
 {
 public:
-	explicit ENGINE_API CameraComponent(Actor* owner = nullptr, Transform trans = Transform{}, mat4 viewMat = mat4{})
-		: SceneComponent(owner, trans),
-		viewMat(viewMat)
-	{
-	}
+	explicit ENGINE_API CameraComponent(Actor* owner = nullptr, Transform trans = Transform{}, const mat4& viewMat = mat4{});
 
 	ENGINE_API mat4 getViewMat();
 
