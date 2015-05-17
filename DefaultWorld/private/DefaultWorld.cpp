@@ -25,12 +25,12 @@
 
 // Defines for in and out archives. May want to change to defines and include the istreams.
 #ifdef SAVE_TYPE_XML
-	typedef boost::archive::polymorphic_xml_oarchive oarchive;
+	typedef boost::archive::polymorphic_xml_oarchive oarchive_t;
 	typedef boost::archive::polymorphic_xml_iarchive iarchive_t;
 #	define IS_SAVE_BINARY 0
 #else
-	typedef boost::archive::polymorphic_binary_oarchive oarchive;
-	typedef boost::archive::polymorphic_binary_iarchive iarchive;
+	typedef boost::archive::polymorphic_binary_oarchive oarchive_t;
+	typedef boost::archive::polymorphic_binary_iarchive iarchive_t;
 #	define IS_SAVE_BINARY 1
 #endif
 
@@ -125,11 +125,11 @@ void DefaultWorld::loadWorld(std::string name)
 	// Begin dynamic actor loading
 	{
 		// File location of dynamic actors.
-#		if IS_SAVE_BINARY
-			std::ifstream i_stream{ folderLocation + name + '\\' + name + ".SAVE", std::ifstream::binary };
-#		else
-			std::ifstream i_stream{ folderLocation + name + '\\' + name + ".SAVE" };
-#		endif
+#	if IS_SAVE_BINARY
+		std::ifstream i_stream{ folderLocation + name + '\\' + name + ".SAVE", std::ifstream::binary };
+#	else
+		std::ifstream i_stream{ folderLocation + name + '\\' + name + ".SAVE" };
+#	endif
 
 
 		if (!i_stream.is_open())
@@ -176,22 +176,40 @@ void DefaultWorld::save()
 	ENG_LOG("Saving world");
 	// Create list to save
 	std::list<Actor*> toSave;
-	for (std::map<map_ID_t, Actor*>::iterator i = actors.begin(); i != actors.end(); i++) {
-		if (i->second->needsSave()) {
-			toSave.push_back(i->second);
+	for (auto& pair : actors) 
+	{
+		if (pair.second->needsSave()) 
+		{
+			toSave.push_back(pair.second);
 		}
 	} // End for
 
-	// Create ostream to save to.
-	std::ofstream o_stream{ folderLocation + "/" + worldName + ".SAVE" };
-	// Create archive.
-	oarchive o_archive{ o_stream };
-	// Save.
-	o_archive << BOOST_SERIALIZATION_NVP(toSave);
+#if IS_SAVE_BINARY
+	std::ofstream o_stream{ folderLocation + worldName + '\\' + worldName + ".SAVE", std::ifstream::binary };
+#else
+	std::ofstream o_stream{ folderLocation + worldName + '\\' + worldName + ".SAVE" };
+#endif
+
+	try{
+
+		// Create archive.
+		oarchive_t o_archive{ o_stream };
+		// Save.
+		o_archive << BOOST_SERIALIZATION_NVP(toSave);
+
+	}
+	catch (boost::archive::archive_exception& e)
+	{
+		ENG_LOG("ARCHIVE ERROR SAVING ACTORS. Reason: " << e.what() << " Code: " << e.code);
+	}
+	catch (std::exception& e)
+	{
+		ENG_LOG("ERROR SAVING ACTORS. Reason: " << e.what());
+	}
 }
 
 DefaultWorld::~DefaultWorld()
 {
-
+	
 }
 
