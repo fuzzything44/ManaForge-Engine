@@ -18,7 +18,7 @@
 Runtime* Runtime::currentRuntime = nullptr;
 
 Runtime::Runtime(const std::string& worldPath, const WindowProps& windowProps)
-	:moduleManager((changeDir(), *this)),
+	:moduleManager((changeDir(), logging::init(), *this)), 
 	propManager("props.json")
 {
 	// update current runtime to be the most recently created one

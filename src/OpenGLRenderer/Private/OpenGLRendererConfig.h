@@ -11,9 +11,9 @@
 
 #ifdef _MSC_VER
 #	ifdef OpenGLRenderer_Source
-#		define OpenGLRendererPlugin_API __declspec(dllexport)
+#		define OpenGLRenderer_API __declspec(dllexport)
 #	else
-#		define OpenGLRendererPlugin_API __declspec(dllimport)
+#		define OpenGLRenderer_API __declspec(dllimport)
 #		pragma comment(lib, BOOST_PP_CAT(OpenGLRenderer_ModuleName, ".lib"))
 #	endif
 #endif

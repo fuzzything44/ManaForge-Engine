@@ -69,9 +69,14 @@ int32 main()
 	Runtime runtime{"default", WindowProps(RenderMode::NORMAL, WindowMode::WINDOWED, "RPG-Game", uvec2(800, 600), true)};
 
 	try{
-
 		// run the runtime. consumes the thread until it returns
 		runtime.run();
+	}
+	catch (ENGException& e)
+	{
+		std::string reason = e.what();
+		ENG_LOG(reason);
+		return -1;
 	}
 	catch (std::exception& e)
 	{

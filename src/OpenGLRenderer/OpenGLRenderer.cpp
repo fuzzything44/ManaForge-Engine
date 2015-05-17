@@ -136,6 +136,12 @@ bool OpenGLRenderer::update()
 	// call the draw function for all of the models
 	std::for_each(models.begin(), models.end(), std::bind(&OpenGLModel::draw, std::placeholders::_1));
 
+	if (window->getIsKeyPressed(Keyboard::KEY_E))
+	{
+		Stack s{ 1 | 2 | 0x30 };
+		s.ShowCallstack();
+		ENG_LOG(s());
+	}
 
 	window->swapBuffers();
 	window->pollEvents();
@@ -331,7 +337,6 @@ void OpenGLRenderer::appendDDS(uint32 texToAppend, uint32 Xoffset, uint32 Yoffse
 	}
 }
 
-
 uint32 OpenGLRenderer::allocateCompressedTextureLibraryFromDDS(uint32 num, const char* filepath)
 {
 	unsigned char header[124];
@@ -402,7 +407,7 @@ uint32 OpenGLRenderer::allocateCompressedTextureLibraryFromDDS(uint32 num, const
 }
 
 
-extern "C" OpenGLRendererPlugin_API void registerModule(ModuleManager& mm)
+extern "C" OpenGLRenderer_API void registerModule(ModuleManager& mm)
 {
 	mm.setRenderer(new OpenGLRenderer());
 	mm.addUpdateCallback(
@@ -410,7 +415,7 @@ extern "C" OpenGLRendererPlugin_API void registerModule(ModuleManager& mm)
 			static_cast<OpenGLRenderer*>(&mm.getRenderer())));
 }
 
-extern "C" OpenGLRendererPlugin_API float getModuleEngineVersion()
+extern "C" OpenGLRenderer_API float getModuleEngineVersion()
 {
 	return ENGINE_VERSION;
 }

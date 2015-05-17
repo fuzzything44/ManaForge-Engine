@@ -8,6 +8,12 @@
 class Stack : public StackWalker
 {
 public:
+
+	Stack(int options = OptionsAll, // 'int' is by design, to combine the enum-flags
+		LPCSTR szSymPath = NULL,
+		DWORD dwProcessId = GetCurrentProcessId(),
+		HANDLE hProcess = GetCurrentProcess()) : StackWalker(options, szSymPath, dwProcessId, hProcess){ }
+
 	std::string operator()()
 	{
 		return val;
@@ -17,6 +23,8 @@ protected:
 	virtual void OnOutput(LPCSTR text) override
 	{
 		val = text;
+
+		StackWalker::OnOutput(text);
 	}
 
 	std::string val;
@@ -37,5 +45,5 @@ private:
 
 /// <summary> Called upon a fatal error.</summary>
 #define FATAL_ERR(message) \
-	Stack st;\
-	throw ENGException(message)
+	throw ENGException(message)\
+	/**/
