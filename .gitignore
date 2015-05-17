@@ -69,7 +69,8 @@ Resource/log.txt
 
 *.pch.codeanalysisast
 *.pch.codeanalysis
-Game/Debug/Game.pch.codeanalysis
+src/Game/Debug/Game.pch.codeanalysis
+src/Game/Game_*/
 log.txt
 *.cfg
 *.xdc
