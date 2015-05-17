@@ -5,7 +5,7 @@
 #include <boost/preprocessor.hpp>
 
 #ifdef _MSC_VER
-#	ifdef DefaultWorldSource
+#	ifdef DefaultWorld_Source
 #		define DefualtWorld_API __declspec(dllexport)
 #	else
 #		define DefaultWorldPlugin_API __declspec(dllimport)

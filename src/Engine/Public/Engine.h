@@ -17,8 +17,8 @@
 #pragma comment(lib, "StackWalker.lib")
 
 #if defined WIN32 || defined _WIN32
-	#include <Windows.h>
-	#include <direct.h>
+#	include <Windows.h>
+#	include <direct.h>
 #endif
 
 #include <glm/glm.hpp>
