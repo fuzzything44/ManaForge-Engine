@@ -23,7 +23,7 @@ public:
 	
 	// Make Chunk a freind so it can access private methods (namely tick)
 	friend Component;
-	map_ID_type GUID;
+	map_ID_t GUID;
 	
 	/// <summary> Actors.</summary>
 	///

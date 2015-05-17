@@ -29,7 +29,7 @@
 // put in the source file
 #define ACTOR_REGISTER_FOR_SAVING_SOURCE() "registerForSerialization.h"
 
-// put this in the header after the definition of the class
+// put this in the header after the definition of the class -- this isn't an include
 #define ACTOR_REGISTER_FOR_SAVING_HEADER(actorName, ModuleName)\
 	BOOST_CLASS_EXPORT_KEY2(\
 		actorName, \
