@@ -50,6 +50,12 @@
     <ClCompile Include="Private\ChangeDirectory.cpp">
       <Filter>Private</Filter>
     </ClCompile>
+    <ClCompile Include="Private\PlayerController.cpp">
+      <Filter>Private</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\Pawn.cpp">
+      <Filter>Private</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="public\Actor.h">
@@ -136,9 +142,6 @@
     <ClInclude Include="Public\ChangeDirectory.h">
       <Filter>Public</Filter>
     </ClInclude>
-    <ClInclude Include="MeshActor.h">
-      <Filter>Private</Filter>
-    </ClInclude>
     <ClInclude Include="Public\Input.h">
       <Filter>Public</Filter>
     </ClInclude>
@@ -146,6 +149,12 @@
       <Filter>Public</Filter>
     </ClInclude>
     <ClInclude Include="Public\registerForSerialization.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\PlayerController.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\Pawn.h">
       <Filter>Public</Filter>
     </ClInclude>
   </ItemGroup>

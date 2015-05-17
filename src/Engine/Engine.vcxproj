@@ -112,11 +112,12 @@
     <ClCompile Include="Private\MeshComponent.cpp" />
     <ClCompile Include="Private\Module.cpp" />
     <ClCompile Include="Private\ModuleManager.cpp" />
+    <ClCompile Include="Private\Pawn.cpp" />
+    <ClCompile Include="Private\PlayerController.cpp" />
     <ClCompile Include="Private\PropertyManager.cpp" />
     <ClCompile Include="Private\Runtime.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MeshActor.h" />
     <ClInclude Include="public\Actor.h" />
     <ClInclude Include="Public\CameraComponent.h" />
     <ClInclude Include="Public\ChangeDirectory.h" />
@@ -134,6 +135,8 @@
     <ClInclude Include="Public\Model.h" />
     <ClInclude Include="Public\Module.h" />
     <ClInclude Include="Public\ModuleManager.h" />
+    <ClInclude Include="Public\Pawn.h" />
+    <ClInclude Include="Public\PlayerController.h" />
     <ClInclude Include="Public\PropertyManager.h" />
     <ClInclude Include="Public\registerForSerialization.h" />
     <ClInclude Include="Public\Renderer.h" />
