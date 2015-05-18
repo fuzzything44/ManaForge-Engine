@@ -129,7 +129,7 @@
     <ClInclude Include="Public\Engine.h" />
     <ClInclude Include="public\Helper.h" />
     <ClInclude Include="Public\ImageLoader.h" />
-    <ClInclude Include="Public\Input.h" />
+    <ClInclude Include="Public\InputManager.h" />
     <ClInclude Include="Public\KeyEnum.h" />
     <ClInclude Include="Public\Logging.h" />
     <ClInclude Include="Public\Material.h" />

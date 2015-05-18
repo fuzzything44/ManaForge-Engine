@@ -3,6 +3,7 @@
 #include "Engine.h"
 #include "SceneComponent.h"
 
+#include <glm/gtx/type_aligned.hpp>
 
 class CameraComponent : public SceneComponent
 {
@@ -15,6 +16,6 @@ public:
 
 protected:
 	
-	//mat4* viewMat;
+	float viewMat[16];
 };
 

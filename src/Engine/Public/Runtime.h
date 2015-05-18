@@ -9,6 +9,7 @@
 #include <boost/core/noncopyable.hpp>
 
 #include <chrono>
+#include "Input.h"
 
 class Window;
 
@@ -21,6 +22,7 @@ public:
 
 	ModuleManager moduleManager;
 	PropertyManager propManager;
+	InputManager inputManager;
 	
 	bool renders;
 

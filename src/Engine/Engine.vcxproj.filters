@@ -145,9 +145,6 @@
     <ClInclude Include="Public\ChangeDirectory.h">
       <Filter>Public</Filter>
     </ClInclude>
-    <ClInclude Include="Public\Input.h">
-      <Filter>Public</Filter>
-    </ClInclude>
     <ClInclude Include="Public\SerializeGLM.h">
       <Filter>Public</Filter>
     </ClInclude>
@@ -161,6 +158,9 @@
       <Filter>Public</Filter>
     </ClInclude>
     <ClInclude Include="Public\Controller.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\InputManager.h">
       <Filter>Public</Filter>
     </ClInclude>
   </ItemGroup>
