@@ -2,6 +2,8 @@
 
 #include <sstream>
 
+#include <boost/algorithm/string.hpp>
+
 ENGException::ENGException(std::string reasonIn) 
 {
 	std::stringstream ss;
@@ -36,7 +38,7 @@ void Stack::OnCallstackEntry(CallstackEntryType eType, CallstackEntry& entry)
 	if (!hasPrintedMain)
 	{
 
-		if ((name[0] == 's' && name[1] == 't' && name[2] == 'd') ||
+		if (boost::starts_with(name, "std") ||
 			name == "RtlInitializeExceptionChain" || name == "BaseThreadInitThunk" ||
 			name == "mainCRTStartup" || name == "__tmainCRTStartup" ||
 			name == "")
@@ -76,7 +78,7 @@ void Stack::OnCallstackEntry(CallstackEntryType eType, CallstackEntry& entry)
 				std::swap(fileOut[i], fileOut[fileOut.size() - i - 1]);
 			}
 
-			ENG_LOGLN("Name: " << entry.undFullName << "\n\tFile: " << fileOut << "\n\t\tLine: " << entry.lineNumber);
+			ENG_LOGLN("Name: " << entry.undFullName << "\n\tFile: " << fileOut << "\n\tLine: " << entry.lineNumber);
 
 
 
@@ -88,7 +90,12 @@ void Stack::OnCallstackEntry(CallstackEntryType eType, CallstackEntry& entry)
 	if (name == "main" && !hasPrintedMain) hasPrintedMain = true;
 }
 
-void Stack::OnOutput(LPCSTR text)
+void Stack::OnLoadModule(LPCSTR img, LPCSTR mod, DWORD64 baseAddr, DWORD size, DWORD result, LPCSTR symType, LPCSTR pdbName, ULONGLONG fileVersion)
 {
-	StackWalker::OnOutput(text);
+	std::string name = img;
+
+	if(!boost::starts_with(name, "C:\\Windows\\"))
+	{
+		ENG_LOGLN("Module Loaded: " << mod);
+	}
 }

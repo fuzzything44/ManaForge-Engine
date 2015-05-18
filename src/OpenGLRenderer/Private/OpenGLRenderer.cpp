@@ -137,8 +137,14 @@ bool OpenGLRenderer::update()
 
 	if (window->getIsKeyPressed(Keyboard::KEY_S))
 	{
-		Stack s;
-		s.ShowCallstack();
+		static bool hasDone = false;
+		if (!hasDone)
+		{
+			Stack s;
+			s.ShowCallstack();
+
+			hasDone = true;
+		}
 	}
 
 	window->swapBuffers();
