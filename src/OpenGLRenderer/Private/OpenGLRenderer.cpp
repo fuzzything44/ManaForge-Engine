@@ -135,18 +135,6 @@ bool OpenGLRenderer::update()
 	// call the draw function for all of the models
 	std::for_each(models.begin(), models.end(), std::bind(&OpenGLModel::draw, std::placeholders::_1));
 
-	if (window->getIsKeyPressed(Keyboard::KEY_S))
-	{
-		static bool hasDone = false;
-		if (!hasDone)
-		{
-			Stack s;
-			s.ShowCallstack();
-
-			hasDone = true;
-		}
-	}
-
 	window->swapBuffers();
 	window->pollEvents();
 

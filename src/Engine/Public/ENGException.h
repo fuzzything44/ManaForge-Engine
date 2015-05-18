@@ -22,6 +22,8 @@ protected:
 	ENGINE_API virtual void OnLoadModule(LPCSTR img, LPCSTR mod, DWORD64 baseAddr, DWORD size,
 		DWORD result, LPCSTR symType, LPCSTR pdbName, ULONGLONG fileVersion) override;
 
+	
+
 };
 
 class ENGException : std::exception
