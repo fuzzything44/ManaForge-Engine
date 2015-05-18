@@ -6,9 +6,8 @@
 
 ENGException::ENGException(std::string reasonIn) 
 {
-	std::stringstream ss;
-
-	ss << reasonIn << "\tStack: ";
+	
+	ENG_LOG(reason << " Stack:\n\n");
 
 	Stack s;
 	s.ShowCallstack();
@@ -33,7 +32,7 @@ void Stack::OnCallstackEntry(CallstackEntryType eType, CallstackEntry& entry)
 		wasLastExternal = false;
 	}
 
-	if (name == "StackWalker::ShowCallstack") return;
+	if (name == "StackWalker::ShowCallstack" || name == "ENGException::ENGException") return;
 
 	if (!hasPrintedMain)
 	{

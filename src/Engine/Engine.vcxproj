@@ -109,6 +109,7 @@
     <ClCompile Include="private\ENGException.cpp" />
     <ClCompile Include="private\Helper.cpp" />
     <ClCompile Include="Private\ImageLoader.cpp" />
+    <ClCompile Include="Private\InputManager.cpp" />
     <ClCompile Include="Private\Logging.cpp" />
     <ClCompile Include="Private\MeshComponent.cpp" />
     <ClCompile Include="Private\Module.cpp" />

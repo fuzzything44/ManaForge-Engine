@@ -59,6 +59,9 @@
     <ClCompile Include="Private\Controller.cpp">
       <Filter>Private</Filter>
     </ClCompile>
+    <ClCompile Include="Private\InputManager.cpp">
+      <Filter>Private</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="public\Actor.h">

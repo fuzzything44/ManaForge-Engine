@@ -5,11 +5,11 @@
 #include "PropertyManager.h"
 #include "ModuleManager.h"
 #include "WindowProps.h"
+#include "InputManager.h"
 
 #include <boost/core/noncopyable.hpp>
 
 #include <chrono>
-#include "Input.h"
 
 class Window;
 

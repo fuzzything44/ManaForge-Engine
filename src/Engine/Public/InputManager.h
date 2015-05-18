@@ -8,92 +8,92 @@
 #include <vector>
 #include <functional>
 
+#include <boost/foreach.hpp>
+
+#include <boost/serialization/access.hpp>
+#include <boost/serialization/nvp.hpp>
+
+
+class Runtime;
+
 class InputManager
 {
+public:
+
+	ENGINE_API explicit InputManager(Window* window = nullptr);
+
+	ENGINE_API void setWindow(Window& newWindow);
+
+private:
+
+	bool update();
 
 	Window* window;
 
 	struct ActionMapping
 	{
+		friend class boost::serialization::access;
+
 		// default constructor
-		explicit ActionMapping(InputManager* manager = nullptr, const std::vector<Keyboard>& keys = std::vector<Keyboard>())
-			: manager(manager),
-			keysUsed(keys)
-		{
-			
-		}
+		ENGINE_API explicit ActionMapping(const std::vector<Keyboard>& keys = std::vector<Keyboard>());
 
-		~ActionMapping()
-		{
-			if (pressed)
-				delete pressed;
+		ENGINE_API ~ActionMapping();
 
-			if (released)
-				delete released;
-		}
+		void setPressedCallback(std::function<void()> fun);
 
-		void setPressedCallback(const std::function<void()>& fun)
-		{
-			pressed = new std::function<void()>(fun);
-		}
-
-		void setReleasedCallback(const std::function<void()>& fun)
-		{
-			released = new std::function<void()>(fun);
-		}
-
-		InputManager* manager;
+		void setReleasedCallback(std::function<void()> fun);
 
 		std::vector<Keyboard> keysUsed;
 
 		// function pointers -- they are pointers to make sure they are all allocated and freed in the same module.
-		std::function<void()>* pressed;
-		std::function<void()>* released;
+		std::function<void()> pressed;
+		std::function<void()> released;
 
 		bool isPressed;
 
-		void operator()()
+		void operator()();
+
+		template<typename Archive>
+		void serialize(Archive& ar, const uint32 version)
 		{
-			// if neither of the events exist, return.
-			if (!pressed && !released)
-			{
-				return;
-			}
-
-			// loop through the keys until we get one that is pressed
-			bool isPressedNew = false;
-			for (auto& elem : keysUsed)
-			{
-				// if there is one that is pressed, the entire binding is pressed,
-				// so break
-				if (manager->window->getIsKeyPressed(elem))
-				{
-					isPressedNew = true;
-					break;
-				}
-			}
-
-			// if there is no change, return
-			if (isPressedNew == isPressed) return;
-
-			// if isPressedNew is true and isPressed is false, then we just pressed the key.
-			// also checks the pressed function pointer
-			if (isPressedNew && !isPressed && pressed) (*pressed)();
-
-			if (!isPressedNew && isPressed && released) (*released)();
+			ar & BOOST_SERIALIZATION_NVP(keysUsed);
 		}
-
 	};
 
 	struct AxisMapping
 	{
+		friend class boost::serialization::access;
+
+		ENGINE_API AxisMapping(const std::vector<std::pair<Keyboard, float> >& values = std::vector<std::pair<Keyboard, float> >());
+
+		ENGINE_API ~AxisMapping();
+
 		// vector of the values of the keys
 		std::vector < std::pair<Keyboard, float> > values;
 
+		std::function<void(float)> callback;
 
+		void setCallback(std::function<void(float)> newCallback);
+
+		void operator()();
+
+		template<typename Archive>
+		void serialize(Archive& ar, const uint32 version)
+		{
+			ar & BOOST_SERIALIZATION_NVP(values);
+		}
 	};
+
+
+	std::map<std::string, ActionMapping> actionMappings; 
+	std::map<std::string, AxisMapping> axisMappings;
 
 	friend AxisMapping;
 	friend ActionMapping;
+	friend Runtime;
+
+	friend boost::serialization::access;
 	
 };
+
+

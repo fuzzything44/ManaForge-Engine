@@ -21,6 +21,7 @@ Runtime::Runtime(const std::string& worldPath, const WindowProps& windowProps)
 	:moduleManager((changeDir(), logging::init(), *this)), 
 	propManager("props.json")
 {
+
 	// update current runtime to be the most recently created one
 	currentRuntime = this;
 
@@ -41,7 +42,11 @@ Runtime::Runtime(const std::string& worldPath, const WindowProps& windowProps)
 	// load the world
 	world = moduleManager.newWorld(worldPath);
 
-	moduleManager.getRenderer().getWindow().setWindowProps(windowProps);
+	Window& window = moduleManager.getRenderer().getWindow();
+
+	window.setWindowProps(windowProps);
+
+	inputManager.setWindow(window);
 }
 
 void Runtime::run()
@@ -83,6 +88,8 @@ void Runtime::run()
 
 		LastTick = CurrentTick;
 
+		inputManager.update();
+
 		// recieve the update callbacks
 		std::list<std::function<bool()>* >& updateCallbacks = moduleManager.getUpdateCallbacks();
 
@@ -96,6 +103,7 @@ void Runtime::run()
 			}
 		}
 		
+
 
 	} while (shouldContinue);
 }
