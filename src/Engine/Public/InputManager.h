@@ -24,9 +24,15 @@ public:
 
 	ENGINE_API void setWindow(Window& newWindow);
 
+
+	ENGINE_API void bindActionMappingPressed(const std::string& name, std::function<void()> callback);
+	ENGINE_API void bindActionMappingReleased(const std::string& name, std::function<void()> callback);
+
+	ENGINE_API void bindAxisMapping(const std::string& name, std::function<void(float)> callback);
+
 private:
 
-	bool update();
+	ENGINE_API bool update();
 
 	Window* window;
 

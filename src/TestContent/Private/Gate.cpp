@@ -21,4 +21,6 @@ Gate::Gate(const Transform& trans)
 	gateMesh = new MeshComponent(
 		this, Transform{}, ModelData(
 			Transform{}, locations, locations, elems, 4, 6, mat));
+
 }
+

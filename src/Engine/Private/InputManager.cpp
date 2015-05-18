@@ -37,6 +37,48 @@ void InputManager::setWindow(Window& newWindow)
 	window = &newWindow;
 }
 
+void InputManager::bindActionMappingPressed(const std::string& name, std::function<void()> callback)
+{
+	auto iter = actionMappings.find(name);
+
+	if (iter != actionMappings.end())
+	{
+		iter->second.pressed = callback;
+	}
+	else
+	{
+		ENG_LOGLN("Warning - action mapping \"" << name << "\" not found");
+	}
+}
+
+void InputManager::bindActionMappingReleased(const std::string& name, std::function<void()> callback)
+{
+	auto iter = actionMappings.find(name);
+
+	if (iter != actionMappings.end())
+	{
+		iter->second.released = callback;
+	}
+	else
+	{
+		ENG_LOGLN("Warning - action mapping \"" << name << "\" not found");
+	}
+}
+
+void InputManager::bindAxisMapping(const std::string& name, std::function<void(float)> callback)
+{
+	auto iter = axisMappings.find(name);
+
+	if (iter != axisMappings.end())
+	{
+		iter->second.callback = callback;
+	}
+	else
+	{
+		ENG_LOGLN("Warning - axis mapping \"" << name << "\" not found");
+	}
+}
+
 bool InputManager::update()
 {
 
@@ -125,8 +167,11 @@ void InputManager::AxisMapping::operator()()
 	float totalValue = 0.f;
 
 	BOOST_FOREACH(auto& elem, values)
-		{
-			// compute the amount to add -- without branches
-			totalValue += Runtime::get().inputManager.window->getIsKeyPressed(elem.first) * elem.second;
-		}
+	{
+		// compute the amount to add -- without branches
+		totalValue += Runtime::get().inputManager.window->getIsKeyPressed(elem.first) * elem.second;
+	}
+
+	if (callback)
+		callback(totalValue);
 }
