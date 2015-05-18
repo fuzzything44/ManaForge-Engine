@@ -56,8 +56,8 @@ void Stack::OnCallstackEntry(CallstackEntryType eType, CallstackEntry& entry)
 			std::string fileOut;
 
 			char lastThree[4] = "   ";
-
-			// go up to source
+			
+			// go up to source -- this will be backwards
 			for (std::string::reverse_iterator iter = startFile.rbegin(); iter != startFile.rend(); ++iter)
 			{
 				if (lastThree[0] == 'c' && lastThree[1] == 'r' && lastThree[2] == 's') // src backward
@@ -72,11 +72,8 @@ void Stack::OnCallstackEntry(CallstackEntryType eType, CallstackEntry& entry)
 				fileOut.push_back(*iter);
 			}
 
-			// reverse it 
-			for (int i = 0; i < floor(fileOut.size() / 2); ++i)
-			{
-				std::swap(fileOut[i], fileOut[fileOut.size() - i - 1]);
-			}
+			// reverse it
+			std::reverse(fileOut.begin(), fileOut.end());
 
 			ENG_LOGLN("Name: " << entry.undFullName << "\n\tFile: " << fileOut << "\n\tLine: " << entry.lineNumber);
 

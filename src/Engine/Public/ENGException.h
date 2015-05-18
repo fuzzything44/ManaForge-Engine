@@ -8,7 +8,7 @@ class Stack : public StackWalker
 {
 public:
 
-	Stack(int options = OptionsAll, // 'int' is by design, to combine the enum-flags
+	explicit Stack(int options = OptionsAll, // 'int' is by design, to combine the enum-flags
 		LPCSTR szSymPath = nullptr,
 		DWORD dwProcessId = GetCurrentProcessId(),
 		HANDLE hProcess = GetCurrentProcess()) : StackWalker(options, szSymPath, dwProcessId, hProcess){ }
