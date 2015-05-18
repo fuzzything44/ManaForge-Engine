@@ -29,7 +29,7 @@ public:
 	/// <summary> Sets camera to render at. </summary>
 	///
 	/// <param name="newCamera"> The camera it should render at. </param>
-	virtual void setCurrentCamera(CameraComponent& newCamera) override;
+	virtual void setCurrentCamera(CameraComponent* newCamera) override;
 
 	void loadTextures(std::vector<std::string> textures) override;
 
@@ -43,7 +43,6 @@ private:
 	
 	OpenGLWindow* window;
 
-	uint32 loadShaderProgram(std::string program);
 	int32 loadDDS(const std::string& filename);
 	void appendDDS(uint32 texToAppend, uint32 Xoffset, uint32 Yoffset, const char* filepath);
 	uint32 allocateCompressedTextureLibraryFromDDS(uint32 num, const char* filepath);

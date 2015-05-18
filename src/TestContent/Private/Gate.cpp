@@ -15,7 +15,10 @@ Gate::Gate(const Transform& trans)
 		uvec3(1, 2, 3) 
 	};
 
+	Material* mat = Runtime::get().moduleManager.getRenderer().newMaterial();
+	mat->addShaderProgramFromFile("boilerplate");
+
 	gateMesh = new MeshComponent(
 		this, Transform{}, ModelData(
-			Transform{}, locations, locations, elems, 4, 6, Runtime::get().moduleManager.getRenderer().newMaterial()));
+			Transform{}, locations, locations, elems, 4, 6, mat));
 }

@@ -64,7 +64,8 @@ void Runtime::run()
 	// YA WE REALLY NEED PLAYER CONTROLLERS -- the gate shouldn't get to control the camera
 	Actor* gate = moduleManager.spawnActor("TestContent.Gate");
 
-	CameraComponent c{gate, Transform{}, glm::ortho(-10.f, 10.f, -10.f, 10.f, .1f, 100.f)};
+	mat4 mat = glm::ortho(-10.f, 10.f, -10.f, 10.f, .1f, 100.f);
+	CameraComponent* c = new CameraComponent{gate, Transform{}, mat};
 	moduleManager.getRenderer().setCurrentCamera(c);
 
 	// set initial tick

@@ -31,7 +31,7 @@ public:
 	/// <summary> Sets camera to render at. </summary>
 	///
 	/// <param name="newCamera"> The camera it should render at. </param>
-	virtual void setCurrentCamera(CameraComponent& newCamera) = 0;
+	virtual void setCurrentCamera(CameraComponent* newCamera) = 0;
 
 	/// <summary> Gets the camera.</summary>
 	///

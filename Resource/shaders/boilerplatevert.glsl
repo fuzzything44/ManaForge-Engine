@@ -10,7 +10,7 @@ out vec2 fragTexCoord;
 
 void main()
 {
-	gl_Location = vec4(vertLocationIn, renderOrder, 1.0) * camera;
+	gl_Position = vec4(vertLocationIn, renderOrder, 1.0) * cameraMat;
 
 	fragTexCoord = vertTexCoordIn;
 }

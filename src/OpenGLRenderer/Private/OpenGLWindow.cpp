@@ -13,8 +13,7 @@ OpenGLWindow::OpenGLWindow(const WindowProps& props)
 	hasFocus = true;
 
 	// init GLFW (our window handler)
-	int err = glfwInit();
-	if (err != 1)
+	if (int err = glfwInit() != 1)
 	{
 		ENG_LOGLN("Failed to init GLFW" << std::endl);
 
@@ -88,14 +87,16 @@ OpenGLWindow::OpenGLWindow(const WindowProps& props)
 
 
 	// init GL (glew is an extension that does this for us)
-	err = glewInit();
-	if (err != GLEW_OK)
+	
+	if (int err = glewInit() != GLEW_OK)
 	{
 		ENG_LOGLN("Failed to init GLEW. err code: ");
 		// terminate the glfw session
 		glfwTerminate();
 		return;
 	}
+	// for some reason there is already an error, so clear that
+	glGetError();
 
 	// Ensure we can capture the escape key being pressed below
 	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);

@@ -14,7 +14,7 @@ OpenGLModel::OpenGLModel(ModelData data, OpenGLRenderer* renderer)
 	numTris(data.numTriangles),
 	renderer(renderer),
 	material(static_cast<OpenGLMaterial*>(data.material))
-{
+{	
 	// make sure they aren't zero
 	check(numVerts);
 	check(numTris);
@@ -54,8 +54,7 @@ OpenGLModel::OpenGLModel(ModelData data, OpenGLRenderer* renderer)
 
 	// get the cameraMat location
 	check(material);
-	viewMatUniformLocation = material->getUniformLocation("cameraMat");
-	
+	viewMatUniformLocation = glGetUniformLocation((*material)(), "cameraMat");
 }
 
 
@@ -134,10 +133,12 @@ OpenGLModel::~OpenGLModel()
 
 void OpenGLModel::draw()
 {
+
 	material->use();
 
 	glBindVertexArray(vertexArray);
 
+	
 	// set the viewMat in the shader to the view mat defined by the camera that is current
 	glUniformMatrix4fv(viewMatUniformLocation, 1, GL_FALSE, &(renderer->getCurrentCamera().getViewMat())[0][0]);
 
