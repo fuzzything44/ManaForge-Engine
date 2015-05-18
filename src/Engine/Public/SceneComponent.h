@@ -11,12 +11,9 @@ public:
 	/// <summary> Default constructor. </summary>
 	/// <param name="owner"> The owner actor. Will usaually be this </param>
 	/// <param name="trans"> The transform, relative to the owner actor </param>
-	explicit ENGINE_API SceneComponent(Actor* owner = nullptr, Transform trans = Transform{})
-		:Component(owner),
-		trans(trans)
-	{
-		
-	}
+	explicit ENGINE_API SceneComponent(Actor* owner = nullptr, Transform trans = Transform{});
+
+	ENGINE_API virtual ~SceneComponent() override;
 
 	/// <summary> Gets the location.</summary>
 	///
@@ -57,6 +54,17 @@ protected:
 ///////////////////////
 ///// INLINE DEFINITIONS
 ///////////////////////
+
+inline SceneComponent::SceneComponent(Actor* owner, Transform trans):Component(owner),
+                                                                     trans(trans)
+{
+		
+}
+
+inline SceneComponent::~SceneComponent()
+{
+
+}
 
 inline vec2 SceneComponent::getLocation() const
 {

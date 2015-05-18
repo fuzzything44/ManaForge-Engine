@@ -6,3 +6,7 @@ Component::Component(Actor* owner)
 {
 		owner->components.push_back(this);
 }
+
+Component::~Component()
+{
+}
