@@ -1,10 +1,11 @@
 #pragma once
 #include "Engine.h"
+
 #include <string>
-#include "ModuleManager.h"
 #include <map>
 
 class Actor;
+class ModuleManager;
 
 class World
 {
@@ -33,4 +34,3 @@ public:
 
 	virtual ~World() { };
 };
-#include "Actor.h"

@@ -7,7 +7,7 @@
 
 struct Transform
 {
-	explicit Transform(const vec2& location = vec2(0.f), float rotation = 0.f, const vec2& scale = vec2(0.f))
+	explicit Transform(const vec2& location = vec2(0.f), float rotation = 0.f, const vec2& scale = vec2(1.f, 1.f))
 		: location(location),
 		rotation(rotation),
 		scale(scale) { }

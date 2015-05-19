@@ -5,7 +5,7 @@ MeshComponent::MeshComponent(Actor* owner,
 	Transform trans,
 	ModelData data)
 	:	SceneComponent(owner, trans),
-		model(Runtime::get().moduleManager.getRenderer().newModel(data))
+		model(Runtime::get().moduleManager.getRenderer().newModel(data, this))
 {
 	
 }

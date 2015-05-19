@@ -8,6 +8,8 @@
 #include <vector>
 
 // forward declarations
+class MeshComponent;
+class Texture;
 class Material;
 class CameraComponent;
 class Window;
@@ -45,8 +47,8 @@ public:
 	/// <summary> Creates a new model.</summary>
 	///
 	/// <returns> null if it fails, else a Model*.</returns>
-	virtual Model* newModel(const ModelData& data) = 0;
-
+	virtual Model* newModel(const ModelData& data, MeshComponent* owner) = 0;
+	virtual Texture* newTexture(const std::string& name) = 0;
 	virtual Material* newMaterial() = 0;
 
 	/// <summary> Loads the textures.</summary>

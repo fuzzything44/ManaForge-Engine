@@ -3,6 +3,8 @@
 #include "Engine.h"
 #include "Transform.h"
 
+// forward declarations
+class MeshComponent;
 class Material;
 
 struct ModelData
@@ -49,6 +51,8 @@ public:
 	virtual vec2 getLocation() const = 0;
 	virtual float getRotation() const = 0;
 	virtual vec2 getScale() const = 0;
+
+	virtual MeshComponent* getOwnerComponent() = 0;
 
 	virtual void setTransform(Transform newTransform) = 0;
 	virtual void setLocation(vec2 newLocation) = 0;

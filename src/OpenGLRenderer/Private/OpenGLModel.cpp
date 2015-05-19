@@ -5,14 +5,16 @@
 #include <ModuleManager.h>
 #include <Helper.h>
 #include <CameraComponent.h>
+#include <MeshComponent.h>
 
 
 
 
-OpenGLModel::OpenGLModel(ModelData data, OpenGLRenderer* renderer)
+OpenGLModel::OpenGLModel(ModelData data, MeshComponent* owner, OpenGLRenderer* renderer)
 	:numVerts(data.numVerts),
 	numTris(data.numTriangles),
 	renderer(renderer),
+	parent(owner),
 	material(static_cast<OpenGLMaterial*>(data.material))
 {	
 	// make sure they aren't zero
@@ -54,7 +56,7 @@ OpenGLModel::OpenGLModel(ModelData data, OpenGLRenderer* renderer)
 
 	// get the cameraMat location
 	check(material);
-	viewMatUniformLocation = glGetUniformLocation((*material)(), "cameraMat");
+	viewMatUniformLocation = glGetUniformLocation((*material)(), "MVPmat");
 }
 
 
@@ -100,6 +102,11 @@ void OpenGLModel::setScale(vec2 newScale)
 	trans.scale = newScale;
 }
 
+MeshComponent* OpenGLModel::getOwnerComponent()
+{
+	return parent;
+}
+
 void OpenGLModel::addRelativeTransform(Transform add)
 {
 	trans += add;
@@ -138,9 +145,20 @@ void OpenGLModel::draw()
 
 	glBindVertexArray(vertexArray);
 
+	Transform worldTrans = trans + parent->getWorldTransform();
+
+	mat4 camera = (renderer->getCurrentCamera().getViewMat());
+	mat4 translation = glm::translate(vec3(worldTrans.location.x, worldTrans.location.y, 0.f));
+	mat4 rotation = glm::rotate(worldTrans.rotation, vec3(0.f, 0.f, 1.f));
+	mat4 scale = glm::scale(vec3(worldTrans.scale.x, worldTrans.scale.y, 1.f));
 	
+	mat4 model = translation * rotation * scale;
+
+	mat4 MVP = model * camera;
+
 	// set the viewMat in the shader to the view mat defined by the camera that is current
-	glUniformMatrix4fv(viewMatUniformLocation, 1, GL_FALSE, &(renderer->getCurrentCamera().getViewMat())[0][0]);
+	glUniformMatrix4fv(viewMatUniformLocation, 1, GL_FALSE, &MVP[0][0]);
+	glUniform1f(glGetUniformLocation((*material)(), "renderOrder"), 1.f);
 
 	// bind location data to the element attrib array so it shows up in our shaders -- the location is zero (look in shader)
 	glEnableVertexAttribArray(0);
@@ -149,7 +167,7 @@ void OpenGLModel::draw()
 		0, // location 0 (see shader)
 		2, // two elements per vertex (x,y)
 		GL_FLOAT, // they are floats
-		GL_FALSE, // not normalized (look up vector normalization)
+		GL_FALSE, // not normalized 
 		sizeof(float) * 2, // the next element is 2 floats later
 		nullptr // dont copy -- use the GL_ARRAY_BUFFER instead
 		);
@@ -161,7 +179,7 @@ void OpenGLModel::draw()
 		1, // location 1 (see shader)
 		2, // two elements per vertex (u,v)
 		GL_FLOAT, // they are floats
-		GL_FALSE, // not normalized (look up vector normalization)
+		GL_FALSE, // not normalized 
 		sizeof(float) * 2, // the next element is 2 floats later
 		nullptr // use the GL_ARRAY_BUFFER instead of copying on the spot
 		);

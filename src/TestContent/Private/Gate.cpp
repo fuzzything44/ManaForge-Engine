@@ -8,7 +8,13 @@
 Gate::Gate(const Transform& trans)
 	: Actor(trans)
 {
-	vec2 locations[] = { vec2(0.f, 0.f), vec2(0.f, 1.f), vec2(1.f, 0.f), vec2(1.f, 1.f) };
+	vec2 locations[] = {
+		vec2(-1.f, -1.f),
+		vec2(-1.f, +1.f),
+		vec2(+1.f, -1.f),
+		vec2(+1.f, +1.f) 
+	};
+
 	uvec3 elems[] =
 	{	
 		uvec3(0, 1, 2),

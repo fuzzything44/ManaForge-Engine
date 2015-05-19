@@ -19,8 +19,8 @@ public:
 	virtual Window& getWindow() override;
 	const Window& getWindow() const override;
 
-	virtual Model* newModel(const ModelData& params) override;
-
+	virtual Model* newModel(const ModelData& params, MeshComponent* owner) override;
+	virtual Texture* newTexture(const std::string& name) override;
 	virtual Material* newMaterial() override;
 
 	/// <summary> Renders the next frame. </summary>
@@ -42,10 +42,6 @@ public:
 private:
 	
 	OpenGLWindow* window;
-
-	int32 loadDDS(const std::string& filename);
-	void appendDDS(uint32 texToAppend, uint32 Xoffset, uint32 Yoffset, const char* filepath);
-	uint32 allocateCompressedTextureLibraryFromDDS(uint32 num, const char* filepath);
 
 
 	CameraComponent* currentCamera;

@@ -3,12 +3,11 @@
 #include "Engine.h"
 #include "Transform.h"
 #include "Logging.h"
+#include "World.h"
 
 #include "SaveData.h"
 
 #include <vector>
-
-#include "World.h"
 
 static const unsigned int MAX_ACTORS = 100001;
 
@@ -41,45 +40,47 @@ public:
 	/// <summary> destructor </summary>
 	ENGINE_API virtual ~Actor();
 
+	ENGINE_API inline Transform getWorldTransform() const;
+
 	/// <summary> Gets the location.</summary>
 	///
 	/// <returns> The location.</returns>
-	inline vec2 getLocation(); 
+	ENGINE_API inline vec2 getWorldLocation() const;
 
 	/// <summary> Gets the size.</summary>
 	///
 	/// <returns> The size.</returns>
-	inline vec2 getScale();
+	ENGINE_API inline vec2 getScale() const;
 
 	/// <summary> Gets the rotation.</summary>
 	///
 	/// <returns> The rotation.</returns>
-	inline float getRotation();
+	ENGINE_API inline float getWorldRotation() const;
 
 	/// <summary> Gets the velocity.</summary>
 	///
 	/// <returns> The velocity.</returns>
-	inline vec2 getVelocity();
+	ENGINE_API inline vec2 getVelocity() const;
 
 	/// <summary> Sets a location.</summary>
 	///
 	/// <param name="newLoc"> The new location.</param>
-	inline void setLocation(vec2 newLoc);
+	ENGINE_API inline void setLocation(vec2 newLoc);
 
 	/// <summary> Sets a size.</summary>
 	///
 	/// <param name="newSize"> Size of the new.</param>
-	inline void setScale(vec2 newScale);
+	ENGINE_API inline void setScale(vec2 newScale);
 
 	/// <summary> Sets a rotation.</summary>
 	///
 	/// <param name="newRot"> The new rot.</param>
-	inline void setRotation(float newRot);
+	ENGINE_API inline void setRotation(float newRot);
 
 	/// <summary> Sets a velocity.</summary>
 	///
 	/// <param name="newVelocity"> The new velocity.</param>
-	inline void setVelocity(vec2 newVelocity);
+	ENGINE_API inline void setVelocity(vec2 newVelocity);
 
 protected:
 
@@ -116,25 +117,31 @@ BOOST_CLASS_EXPORT_KEY2(Actor, "Default.Actor");
 #include "Component.h"
 
 
-inline vec2 Actor::getLocation()
+inline Transform Actor::getWorldTransform() const
+{
+	return trans;
+}
+
+
+inline vec2 Actor::getWorldLocation() const
 {
 	return trans.location;
 }
 
 
-inline vec2 Actor::getScale()
+inline vec2 Actor::getScale() const
 {
 	return trans.scale;
 }
 
 
-inline float Actor::getRotation()
+inline float Actor::getWorldRotation() const
 {
 	return trans.rotation;
 }
 
 
-inline vec2 Actor::getVelocity()
+inline vec2 Actor::getVelocity() const
 {
 	return velocity;
 }

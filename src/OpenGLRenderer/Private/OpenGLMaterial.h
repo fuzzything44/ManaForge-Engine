@@ -2,18 +2,20 @@
 #include "OpenGLRendererConfig.h"
 
 #include <Material.h>
+#include <Texture.h>
 
 #include <string>
 #include <vector>
+
 
 class OpenGLMaterial : public Material
 {
 public:
 	~OpenGLMaterial() override;
 
-	void addShaderProgramFromFile(std::string filename) override;
-	void addShaderProgramFromSource(std::string shader) override;
-	void setTexture(uint32 ID, std::string texture) override;
+	void virtual addShaderProgramFromFile(std::string filename) override;
+	void virtual addShaderProgramFromSource(std::string shader) override;
+	void virtual setTexture(uint32 ID, Texture* texture) override;
 
 	void use();
 

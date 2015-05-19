@@ -166,5 +166,8 @@
     <ClInclude Include="Public\InputManager.h">
       <Filter>Public</Filter>
     </ClInclude>
+    <ClInclude Include="Public\Texture.h">
+      <Filter>Public</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

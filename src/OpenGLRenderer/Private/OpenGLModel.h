@@ -10,7 +10,7 @@ public:
 
 	friend class OpenGLRenderer;
 
-	explicit OpenGLModel(ModelData data, OpenGLRenderer* renderer);
+	explicit OpenGLModel(ModelData data, MeshComponent* owner, OpenGLRenderer* renderer);
 
 	virtual Transform getTransform() const override;
 
@@ -23,6 +23,7 @@ public:
 	virtual void setRotation(float newRotation) override;
 	virtual void setScale(vec2 newScale) override;
 
+	MeshComponent* getOwnerComponent() override;
 
 	virtual void addRelativeTransform(Transform add) override;
 	virtual void addRelativeLocation(vec2 locToAdd) override;
@@ -54,7 +55,7 @@ protected:
 
 	Transform trans;
 
-	Component* parent;
+	MeshComponent* parent;
 
 	OpenGLMaterial* material;
 

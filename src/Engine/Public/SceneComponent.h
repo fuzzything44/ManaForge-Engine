@@ -2,6 +2,7 @@
 
 #include "Component.h"
 #include "Transform.h"
+#include <glm/detail/type_mat.hpp>
 
 /// <summary> a component that has a transform </summary>
 class SceneComponent : public Component
@@ -15,10 +16,18 @@ public:
 
 	ENGINE_API virtual ~SceneComponent() override;
 
+	inline ENGINE_API Transform getLocalTransform() const;
+	inline ENGINE_API Transform getWorldTransform() const;
+
 	/// <summary> Gets the location.</summary>
 	///
 	/// <returns> The location.</returns>
-	inline ENGINE_API vec2 getLocation() const;
+	inline ENGINE_API vec2 getLocalLocation() const;
+
+	/// <summary> Gets the location.</summary>
+	///
+	/// <returns> The location.</returns>
+	inline ENGINE_API vec2 getWorldLocation() const;
 
 	/// <summary> Gets the size.</summary>
 	///
@@ -28,7 +37,12 @@ public:
 	/// <summary> Gets the rotation.</summary>
 	///
 	/// <returns> The rotation.</returns>
-	inline ENGINE_API float getRotation() const;
+	inline ENGINE_API float getLocalRotation() const;
+
+	/// <summary> Gets the rotation.</summary>
+	///
+	/// <returns> The rotation.</returns>
+	inline ENGINE_API float getWorldRotation() const;
 
 	/// <summary> Sets a location.</summary>
 	///
@@ -54,9 +68,11 @@ protected:
 ///////////////////////
 ///// INLINE DEFINITIONS
 ///////////////////////
+#include "Actor.h"
 
-inline SceneComponent::SceneComponent(Actor* owner, Transform trans):Component(owner),
-                                                                     trans(trans)
+inline SceneComponent::SceneComponent(Actor* owner, Transform trans)
+	: Component(owner),
+	trans(trans)
 {
 		
 }
@@ -66,7 +82,17 @@ inline SceneComponent::~SceneComponent()
 
 }
 
-inline vec2 SceneComponent::getLocation() const
+inline Transform SceneComponent::getLocalTransform() const
+{
+	return trans;
+}
+
+inline Transform SceneComponent::getWorldTransform() const
+{
+	return trans + owner->getWorldTransform();
+}
+
+inline vec2 SceneComponent::getLocalLocation() const
 {
 	return trans.location;
 }
@@ -78,7 +104,7 @@ inline vec2 SceneComponent::getScale() const
 }
 
 
-inline float SceneComponent::getRotation() const
+inline float SceneComponent::getLocalRotation() const
 {
 	return trans.rotation;
 }

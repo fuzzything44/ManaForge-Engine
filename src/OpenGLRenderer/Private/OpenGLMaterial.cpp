@@ -1,6 +1,9 @@
 #include "OpenGLMaterial.h"
+#include "OpenGLTexture.h"
+
 #include <Logging.h>
 #include <Helper.h>
+#include <Texture.h>
 
 GLint OpenGLMaterial::startTexUniform = -1;
 
@@ -105,9 +108,14 @@ void OpenGLMaterial::addShaderProgramFromSource(std::string shader)
 {
 }
 
-void OpenGLMaterial::setTexture(uint32 ID, std::string texture)
+void OpenGLMaterial::setTexture(uint32 ID, Texture* texture)
 {
+	OpenGLTexture* texGL = static_cast<OpenGLTexture*>(texture);
+
+	textures[ID] = texGL->ID;
 }
+
+
 
 void OpenGLMaterial::use()
 {
