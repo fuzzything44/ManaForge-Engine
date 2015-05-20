@@ -1,6 +1,6 @@
 
 #ifndef ACTOR_SAVE_DATA
-#	error please define ACTOR_SAVE_DATA in the format <name_of_class>, <name_of_parent_class>, savedval1, savedval2, savedval2, ...
+#	error please define ACTOR_SAVE_DATA in the format <name_of_class>, <name_of_parent_class or 0 if no parent>, savedval1, savedval2, savedval2, ...
 #endif
 
 #if BOOST_PP_VARIADIC_SIZE(ACTOR_SAVE_DATA) >= 1
@@ -13,7 +13,9 @@
 template<typename Archive>
 void CLASS_NAME::serialize(Archive& ar, const unsigned int version)
 {
-	ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(PARENT_NAME);
+#	if PARENT_NAME != 0
+		ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(PARENT_NAME);
+#	endif
 
 #	define BOOST_PP_LOCAL_MACRO(n)\
 			ar & BOOST_SERIALIZATION_NVP(BOOST_PP_VARIADIC_ELEM(n, ACTOR_SAVE_DATA)); \
