@@ -89,7 +89,16 @@ inline Transform SceneComponent::getLocalTransform() const
 
 inline Transform SceneComponent::getWorldTransform() const
 {
-	return trans + owner->getWorldTransform();
+	
+	vec2 start = trans.location;
+	
+	start.x *= cos(owner->getWorldTransform().rotation) * owner->getWorldTrasform().scale.x;
+	start.y *= sin(owner->getWorldTransform().rotation) * owner->getWorldTrasform().scale.y;
+	
+	// MEBBE RIGHT
+	return Transform(start + owner->getWorldTransform().location, trans.rotation, trans.sclae);
+	
+	
 }
 
 inline vec2 SceneComponent::getLocalLocation() const
