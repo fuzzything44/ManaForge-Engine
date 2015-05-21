@@ -17,7 +17,7 @@
 // DEFINE STATIC VARIABLES
 Runtime* Runtime::currentRuntime = nullptr;
 
-Runtime::Runtime(const std::string& worldPath, const WindowProps& windowProps)
+Runtime::Runtime(const std::string& worldPath)
 	:moduleManager((changeDir(), logging::init(), *this)), 
 	propManager("props.json")
 {
@@ -43,9 +43,6 @@ Runtime::Runtime(const std::string& worldPath, const WindowProps& windowProps)
 	world = moduleManager.newWorld(worldPath);
 
 	Window& window = moduleManager.getRenderer().getWindow();
-
-	window.setWindowProps(windowProps);
-
 	inputManager.setWindow(window);
 }
 

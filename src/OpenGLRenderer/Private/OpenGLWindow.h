@@ -5,14 +5,14 @@
 
 class OpenGLWindow : public Window
 {
-
 public:
 
-	explicit OpenGLWindow(const WindowProps& props = WindowProps());
+	explicit OpenGLWindow();
 	virtual ~OpenGLWindow() override;
 
 	virtual const WindowProps& getWindowProps() const override;
 	virtual void setWindowProps(const WindowProps& props) override;
+	void saveWindowProps() override;
 
 	virtual int32 getIsKeyPressed(Keyboard key) override;
 	virtual vec2 getCursorLocPixels() override;

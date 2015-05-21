@@ -21,9 +21,3 @@ PropertyManager::PropertyManager(std::string path)
 		ENG_LOGLN(e.what());
 	}
 }
-
-
-const boost::property_tree::ptree& PropertyManager::getSubTree(std::string path)
-{
-	return props.get_child(path);
-}

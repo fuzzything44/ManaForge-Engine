@@ -6,10 +6,19 @@
 
 std::map<GLFWwindow*, OpenGLWindow*> OpenGLWindow::windows = std::map<GLFWwindow*, OpenGLWindow*>();
 
-OpenGLWindow::OpenGLWindow(const WindowProps& props) 
-	: Window(),
-	props(props)
+OpenGLWindow::OpenGLWindow() 
+	: Window()
 {
+	PropertyManager& propManager = Runtime::get().propManager;
+
+	props.size.x = propManager.queryValue<uint32>("window.size.x");
+	props.size.y = propManager.queryValue<uint32>("window.size.y");
+
+	props.renderMode = static_cast<RenderMode>(propManager.queryValue<uint8>("window.renderMode"));
+	props.windowMode = static_cast<WindowMode>(propManager.queryValue<uint8>("window.windowMode"));
+
+	props.title = propManager.queryValue<std::string>("window.title");
+
 	hasFocus = true;
 
 	// init GLFW (our window handler)
@@ -122,6 +131,16 @@ void OpenGLWindow::setWindowProps(const WindowProps& props)
 	this->props = props;
 
 	updateProps();
+}
+
+void OpenGLWindow::saveWindowProps()
+{
+	Runtime::get().propManager.saveValue("window.size.x", props.size.x);
+	Runtime::get().propManager.saveValue("window.size.y", props.size.y);
+
+	Runtime::get().propManager.saveValue("window.renderMode", static_cast<uint8>(props.renderMode));
+	Runtime::get().propManager.saveValue("window.windowMode", static_cast<uint8>(props.windowMode));
+	Runtime::get().propManager.saveValue("window.title", props.title);
 }
 
 int OpenGLWindow::getIsKeyPressed(Keyboard key)

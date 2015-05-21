@@ -92,11 +92,12 @@ inline Transform SceneComponent::getWorldTransform() const
 	
 	vec2 start = trans.location;
 	
-	start.x *= cos(owner->getWorldTransform().rotation) * owner->getWorldTrasform().scale.x;
-	start.y *= sin(owner->getWorldTransform().rotation) * owner->getWorldTrasform().scale.y;
+	start.x *= cos(owner->getWorldTransform().rotation) * owner->getWorldTransform().scale.x;
+	start.y *= sin(owner->getWorldTransform().rotation) * owner->getWorldTransform().scale.y;
+	
 	
 	// MEBBE RIGHT
-	return Transform(start + owner->getWorldTransform().location, trans.rotation, trans.sclae);
+	return Transform(start + owner->getWorldTransform().location, trans.rotation, trans.scale);
 	
 	
 }

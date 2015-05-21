@@ -18,7 +18,7 @@ class Runtime :
 {
 public:
 
-	ENGINE_API explicit Runtime(const std::string& world = "", const WindowProps& windowProps = WindowProps());
+	ENGINE_API explicit Runtime(const std::string& world = "");
 
 	ModuleManager moduleManager;
 	PropertyManager propManager;

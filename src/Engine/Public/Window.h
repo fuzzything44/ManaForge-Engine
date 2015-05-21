@@ -23,7 +23,7 @@ public:
 
 	virtual const WindowProps& getWindowProps() const = 0;
 	virtual void setWindowProps(const WindowProps& props) = 0;
-
+	virtual void saveWindowProps() = 0;
 
 	virtual int getIsKeyPressed(Keyboard key) = 0;
 	virtual vec2 getCursorLocPixels() = 0;

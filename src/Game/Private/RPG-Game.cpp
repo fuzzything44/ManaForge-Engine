@@ -66,7 +66,7 @@ int32 main()
 	//std::cout << "Saving done\n";
 	//std::cin.get();
 
-	Runtime runtime{"default", WindowProps(RenderMode::NORMAL, WindowMode::WINDOWED, "RPG-Game", uvec2(800, 600), true)};
+	Runtime runtime{ "default" };
 
 	try{
 		// run the runtime. consumes the thread until it returns

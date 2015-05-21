@@ -1,4 +1,17 @@
 {
-	"modules" : "OpenGLRenderer Lodepng DefaultWorld TestContent"
+	"modules" : "OpenGLRenderer Lodepng DefaultWorld TestContent",
+	
+	"window" :
+	{
+		"size" : 
+		{
+			"x" : "800",
+			"y" : "600"
+		},
+		"renderMode" : 0,
+		"windowMode" : 2,
+		"title" : "RPG-Prop Simulator"
+		
+	}
 	
 }

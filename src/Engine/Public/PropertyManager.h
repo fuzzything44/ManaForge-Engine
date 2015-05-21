@@ -16,7 +16,8 @@ public:
 	template <typename T>
 	inline T queryValue(std::string key);
 
-	ENGINE_API const boost::property_tree::ptree& getSubTree(std::string path);
+	template <typename T>
+	inline void saveValue(std::string key, const T& value);
 
 private:
 	boost::property_tree::ptree props;
@@ -34,4 +35,10 @@ inline T PropertyManager::queryValue(std::string key)
 
 		return T();
 	}
+}
+
+template <typename T>
+inline void PropertyManager::saveValue(std::string key, const T& value)
+{
+	props.put(key, value);
 }

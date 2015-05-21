@@ -6,16 +6,16 @@
 /// <summary> Values that represent window modes.</summary>
 enum class WindowMode : uint8
 {
-	FULLSCREEN,				// Fullscreen - Steals the graphics card to render your game
-	FULLSCREEN_WINDOWED,	// Fullscreen windowed - Creates a borderless window that seems fullscren
-	WINDOWED				// Windowed - Created a decorated window 
+	FULLSCREEN = 0,				// Fullscreen - Steals the graphics card to render your game
+	FULLSCREEN_WINDOWED = 1,	// Fullscreen windowed - Creates a borderless window that seems fullscren
+	WINDOWED = 2				// Windowed - Created a decorated window 
 };
 
 /// <summary> Values that represent render modes.</summary>
 enum class RenderMode : uint8
 {
-	NORMAL,		// The normal render mode -- shaded polygons
-	WIREFRAME	// Render in wireframe
+	NORMAL = 0,		// The normal render mode -- shaded polygons
+	WIREFRAME = 1	// Render in wireframe
 };
 
 
