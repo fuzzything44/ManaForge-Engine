@@ -19,14 +19,14 @@ OpenGLWindow::OpenGLWindow()
 
 	props.title = propManager.queryValue<std::string>("window.title");
 
+	
+
 	hasFocus = true;
 
 	// init GLFW (our window handler)
 	if (int err = glfwInit() != 1)
 	{
-		ENG_LOGLN("Failed to init GLFW" << std::endl);
-
-		return;
+		FATAL_ERR("Failed to init GLFW. Error code: " + err);
 	}
 
 	GLFWmonitor* mon = glfwGetPrimaryMonitor();
@@ -38,18 +38,15 @@ OpenGLWindow::OpenGLWindow()
 	glfwWindowHint(GL_DOUBLEBUFFER, false);
 
 
-
 	// set GL version
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-
-	
 
 	// set profile to core profile
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	// set the window to non-resizable
-	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+	glfwWindowHint(GLFW_RESIZABLE, false);
 
 	// create the winodw
 	switch (props.windowMode)
@@ -58,6 +55,7 @@ OpenGLWindow::OpenGLWindow()
 		window = glfwCreateWindow(props.size.x, props.size.y, props.title.c_str(), mon, nullptr);
 		break;
 	case WindowMode::FULLSCREEN_WINDOWED:
+		glfwWindowHint(GLFW_DECORATED, false);
 		window = glfwCreateWindow(mode->width, mode->height, props.title.c_str(), nullptr, nullptr);
 		break;
 
@@ -75,10 +73,8 @@ OpenGLWindow::OpenGLWindow()
 	// exit if the window wasn't initialized correctly
 	if (!window)
 	{
-		ENG_LOGLN("\nWindow failed to create. Exiting");
-		// terminate the glfw session
 		glfwTerminate();
-		return;
+		FATAL_ERR("\nWindow failed to create.");
 	}
 
 
@@ -99,10 +95,8 @@ OpenGLWindow::OpenGLWindow()
 	
 	if (int err = glewInit() != GLEW_OK)
 	{
-		ENG_LOGLN("Failed to init GLEW. err code: ");
-		// terminate the glfw session
 		glfwTerminate();
-		return;
+		FATAL_ERR("GLEW failed to init. Error code: " + err);
 	}
 	// for some reason there is already an error, so clear that
 	glGetError();

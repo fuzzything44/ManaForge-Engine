@@ -29,12 +29,6 @@ void CLASS_NAME::serialize(Archive& ar, const unsigned int version)
 template void CLASS_NAME::serialize<>(boost::archive::polymorphic_oarchive&, const unsigned int version);
 template void CLASS_NAME::serialize<>(boost::archive::polymorphic_iarchive&, const unsigned int version);
 
-
-// Make sure MODULE_NAME is defined
-#	ifndef MODULE_NAME
-#		error MODULE_NAME undefined -- it must be defined
-#	endif
-
 BOOST_CLASS_EXPORT_IMPLEMENT(CLASS_NAME)
 
 #	undef CLASS_NAME

@@ -1,8 +1,8 @@
 #pragma once
-// worldwide typedefs
-
 #define ENGINE_VERSION 0.1f
-#define MODULE_NAME Engine
+#define Engine_ModuleName "Engine"
+
+#define BOOST_SERIALIZATION_DYN_LINK 1
 
 #ifdef ENGINE
 #	define ENGINE_API _declspec(dllexport)
@@ -26,6 +26,10 @@
 
 #include <StackWalker.h>
 
+#include <boost/preprocessor/cat.hpp>
+
+
+// worldwide typedefs
 typedef int8_t			int8;
 typedef int16_t			int16;
 typedef int32_t			int32;
