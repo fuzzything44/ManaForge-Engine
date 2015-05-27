@@ -33,9 +33,6 @@ public:
 
 	ENGINE_API explicit ENGException(std::string reasonIn);
 	
-
-private:
-	std::string reason;
 };
 
 

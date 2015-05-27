@@ -7,7 +7,7 @@
 ENGException::ENGException(std::string reasonIn) 
 {
 	
-	ENG_LOG(reason << " Stack:\n\n");
+	ENG_LOG(reasonIn << " Stack:\n\n");
 
 	Stack s;
 	s.ShowCallstack();
@@ -15,7 +15,7 @@ ENGException::ENGException(std::string reasonIn)
 
 const char* ENGException::what() const
 {
-	return reason.c_str();
+	return "";
 }
 
 

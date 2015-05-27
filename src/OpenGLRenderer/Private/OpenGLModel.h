@@ -49,7 +49,8 @@ protected:
 	uint32 texCoordBuffer;
 	uint32 elemBuffer;
 
-	GLint viewMatUniformLocation;
+	GLint cameraUniformLocation;
+	GLint modelUniformLocation;
 
 	OpenGLRenderer* renderer;
 

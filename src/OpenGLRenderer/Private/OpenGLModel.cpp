@@ -7,7 +7,7 @@
 #include <CameraComponent.h>
 #include <MeshComponent.h>
 
-
+#include <glm/gtx/matrix_transform_2d.hpp>
 
 
 OpenGLModel::OpenGLModel(ModelData data, MeshComponent* owner, OpenGLRenderer* renderer)
@@ -56,7 +56,8 @@ OpenGLModel::OpenGLModel(ModelData data, MeshComponent* owner, OpenGLRenderer* r
 
 	// get the cameraMat location
 	check(material);
-	viewMatUniformLocation = glGetUniformLocation((*material)(), "MVPmat");
+	cameraUniformLocation = glGetUniformLocation((*material)(), "camera");
+	modelUniformLocation = glGetUniformLocation((*material)(), "model");
 }
 
 
@@ -148,16 +149,39 @@ void OpenGLModel::draw()
 	Transform worldTrans = trans + parent->getWorldTransform();
 
 	mat4 camera = (renderer->getCurrentCamera().getViewMat());
-	mat4 translation = glm::translate(vec3(worldTrans.location.x, worldTrans.location.y, 0.f));
-	mat4 rotation = glm::rotate(worldTrans.rotation, vec3(0.f, 0.f, 1.f));
-	mat4 scale = glm::scale(vec3(worldTrans.scale.x, worldTrans.scale.y, 1.f));
-	
-	mat4 model = translation * rotation * scale;
 
-	mat4 MVP = model * camera;
+	camera = glm::ortho(-1.f, 1.f, -1.f, 1.f, .1f, 100.f);
 
-	// set the viewMat in the shader to the view mat defined by the camera that is current
-	glUniformMatrix4fv(viewMatUniformLocation, 1, GL_FALSE, &MVP[0][0]);
+	vec4 a{ -1.f, -1.f, 1.f, 1.f };
+	a = a * camera;
+
+	mat3 rotation = glm::rotate(mat3{ }, worldTrans.rotation);
+	mat3 scale = glm::scale(mat3{ }, worldTrans.scale);
+	mat3 translation = glm::translate(mat3{ }, worldTrans.location);
+
+	mat3 model = translation * rotation * scale;
+
+	if (cameraUniformLocation != -1)
+	{
+		// set the viewMat in the shader to the view mat defined by the camera that is current
+		glUniformMatrix4fv(cameraUniformLocation, 1, GL_FALSE, &camera[0][0]);
+		
+	}
+	else
+	{
+		FATAL_ERR("could not find camera uniform in shader");
+	}
+
+	if (modelUniformLocation != -1)
+	{
+		glUniformMatrix3fv(modelUniformLocation, 1, GL_FALSE, &model[0][0]);
+	}
+	else
+	{
+		FATAL_ERR("could not find model uniform in shader");
+	}
+
+
 	glUniform1f(glGetUniformLocation((*material)(), "renderOrder"), 1.f);
 
 	// bind location data to the element attrib array so it shows up in our shaders -- the location is zero (look in shader)
