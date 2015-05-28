@@ -97,7 +97,7 @@ inline Transform SceneComponent::getWorldTransform() const
 	
 	
 	// MEBBE RIGHT
-	return Transform(start + owner->getWorldTransform().location, trans.rotation, trans.scale);
+	return Transform(start + owner->getWorldLocation(), trans.rotation + owner->getWorldRotation(), trans.scale);
 	
 	
 }

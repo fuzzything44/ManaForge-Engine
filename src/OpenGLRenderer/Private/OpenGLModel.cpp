@@ -7,8 +7,6 @@
 #include <CameraComponent.h>
 #include <MeshComponent.h>
 
-#include <glm/gtx/matrix_transform_2d.hpp>
-
 
 OpenGLModel::OpenGLModel(ModelData data, MeshComponent* owner, OpenGLRenderer* renderer)
 	:numVerts(data.numVerts),
@@ -150,21 +148,22 @@ void OpenGLModel::draw()
 
 	mat4 camera = (renderer->getCurrentCamera().getViewMat());
 
-	camera = glm::ortho(-1.f, 1.f, -1.f, 1.f, .1f, 100.f);
+	// create an identity matrix
+	mat3 model{1.f};
 
-	vec4 a{ -1.f, -1.f, 1.f, 1.f };
-	a = a * camera;
+	model = glm::rotate(model, worldTrans.rotation);		// apply rotation
+	model = glm::scale(model, worldTrans.scale);			// apply scaling
+	model = glm::translate(model, worldTrans.location);	// apply translation
 
-	mat3 rotation = glm::rotate(mat3{ }, worldTrans.rotation);
-	mat3 scale = glm::scale(mat3{ }, worldTrans.scale);
-	mat3 translation = glm::translate(mat3{ }, worldTrans.location);
-
-	mat3 model = translation * rotation * scale;
 
 	if (cameraUniformLocation != -1)
 	{
-		// set the viewMat in the shader to the view mat defined by the camera that is current
-		glUniformMatrix4fv(cameraUniformLocation, 1, GL_FALSE, &camera[0][0]);
+		// set the camera matrix in the shader to the view mat defined by the camera that is current
+		glUniformMatrix4fv(
+			cameraUniformLocation,	// location of the uniform
+			1,						// only one matrix
+			GL_FALSE,				// don't transpose it
+			&camera[0][0]);			// pointer to the first element
 		
 	}
 	else

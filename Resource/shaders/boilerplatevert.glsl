@@ -11,10 +11,9 @@ out vec2 fragTexCoord;
 
 void main()
 {
-	vec3 locationBeforeCamera = vec3(vertLocationIn, 1.f) * model;
-	vec4 locationAfterCamera = vec4(locationBeforeCamera.x, locationBeforeCamera.y, 1.f, 1.f) * camera;
-
-	gl_Position = vec4(locationAfterCamera.x, locationAfterCamera.y, locationAfterCamera.z, 1.f);
-
+	vec3 locationBeforeCamera = model * vec3(vertLocationIn, 1.f);
+	
+	gl_Position = camera * vec4(locationBeforeCamera.x, locationBeforeCamera.y, -1.f, 1.f);
+	
 	fragTexCoord = vertTexCoordIn;
 }
