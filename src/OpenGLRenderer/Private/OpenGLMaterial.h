@@ -24,9 +24,11 @@ public:
 
 private:
 
+	const static uint32 maxTextures = 32;
+
 	GLuint program;
 
 	// vector of <texture ID>
-	std::vector<GLuint> textures;
+	GLuint textures[maxTextures];
 	static GLint startTexUniform;
 };

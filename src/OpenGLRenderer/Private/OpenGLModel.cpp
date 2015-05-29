@@ -44,7 +44,7 @@ OpenGLModel::OpenGLModel(ModelData data, MeshComponent* owner, OpenGLRenderer* r
 	// init UV buffer
 	glGenBuffers(1, &texCoordBuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, texCoordBuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vec2) * numVerts, locations, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vec2) * numVerts, UVs, GL_STATIC_DRAW);
 
 	// init elem buffer
 	glGenBuffers(1, &elemBuffer);

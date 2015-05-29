@@ -26,7 +26,7 @@ private:
 
 	std::string path;
 
-	std::map<std::string, OpenGLTexture> textures;
+	std::map<std::string, OpenGLTexture*> textures;
 
 
 

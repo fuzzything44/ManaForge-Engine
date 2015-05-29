@@ -121,14 +121,17 @@ void OpenGLMaterial::use()
 {
 	glUseProgram(program);
 
-	for (uint32 i = 0; i < textures.size(); i++)
-	{
-		glUniform1i(startTexUniform + i, i);
+	//for (uint32 i = 0; i < maxTextures; i++)
+	//{
+	//	glUniform1i(startTexUniform + i, i);
 
-		glActiveTexture(GL_TEXTURE0 + i);
-		glBindTexture(GL_TEXTURE_2D, textures[i]);
-	}
+	//	glActiveTexture(GL_TEXTURE0 + i);
+	//	glBindTexture(GL_TEXTURE_2D, textures[i]);
+	//}
+	glUniform1i(startTexUniform, 0);
 
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, textures[0]);
 
 }
 

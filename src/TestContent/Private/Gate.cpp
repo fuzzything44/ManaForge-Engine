@@ -28,8 +28,13 @@ Gate::Gate(const Transform& trans)
 		uvec3(1, 2, 3) 
 	};
 
+
+	Texture* tex = Runtime::get().moduleManager.getRenderer().newTexture("13");
+
 	Material* mat = Runtime::get().moduleManager.getRenderer().newMaterial();
+	mat->setTexture(0, tex);
 	mat->addShaderProgramFromFile("boilerplate");
+
 
 	gateMesh = new MeshComponent(
 		this, Transform{}, ModelData(
