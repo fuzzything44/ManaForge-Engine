@@ -28,6 +28,14 @@ void OpenGLTextureLibrary::addImage(const std::string& name)
 {
 	appendDDS(texHandle, nextLocation.x * individualSize, nextLocation.y * individualSize, ("textures\\" + name + ".dds").c_str());
 
+	QuadUVCoords data;
+	data.upperLeft = nextLocation / uvec2(width);
+	data.upperRight = vec2(nextLocation.x + 1, nextLocation.y) / vec2(width);
+	data.lowerLeft = vec2(nextLocation.x, nextLocation.y + 1) / vec2(width);
+	data.lowerRight = vec2(nextLocation.x + 1, nextLocation.y + 1) / vec2(width);
+
+	UVs[name] = data;
+
 	++nextLocation.x;
 
 	if (nextLocation.x >= width)
@@ -35,6 +43,21 @@ void OpenGLTextureLibrary::addImage(const std::string& name)
 		++nextLocation.y;
 		nextLocation.x = 0;
 	}
+}
+
+QuadUVCoords OpenGLTextureLibrary::getUVCoords(const std::string& name)
+{
+	auto iter = UVs.find(name);
+
+	// if it exists
+	if (iter != UVs.end())
+	{
+		return iter->second;
+	}
+
+	// and if not -- return a defualt one
+	return QuadUVCoords{ };
+	
 }
 
 uint32 OpenGLTextureLibrary::getID()
@@ -125,7 +148,6 @@ void OpenGLTextureLibrary::appendDDS(uint32 texToAppend, uint32 Xoffset, uint32 
 	}
 }
 
-
 uint32 OpenGLTextureLibrary::allocateCompressedTextureLibraryFromDDS(uint32 num, const char* filepath)
 {
 	unsigned char header[124];
@@ -179,7 +201,7 @@ uint32 OpenGLTextureLibrary::allocateCompressedTextureLibraryFromDDS(uint32 num,
 	glGenTextures(1, &texture);
 	glBindTexture(GL_TEXTURE_2D, texture);
 
-	int extraMips = log2(width);
+	int extraMips = floor(log2(width));
 	mipMapCount += extraMips;
 
 	width *= num;

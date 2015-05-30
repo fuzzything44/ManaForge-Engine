@@ -4,6 +4,8 @@
 
 #include <TextureLibrary.h>
 
+#include <map>
+
 class OpenGLTextureLibrary : public TextureLibrary
 {
 public:
@@ -12,6 +14,8 @@ public:
 	virtual ~OpenGLTextureLibrary() override;
 
 	void addImage(const std::string& name) override;
+
+	virtual QuadUVCoords getUVCoords(const std::string& name) override;
 
 	virtual uint32 getID() override;
 
@@ -24,6 +28,8 @@ private:
 	uint16 individualSize;
 	uint16 maxElements;
 	uint16 width;
+
+	std::map<std::string, QuadUVCoords> UVs;
 
 
 	void appendDDS(uint32 texToAppend, uint32 Xoffset, uint32 Yoffset, const char* filepath);

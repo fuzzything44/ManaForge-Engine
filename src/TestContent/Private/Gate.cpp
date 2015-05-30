@@ -16,13 +16,6 @@ Gate::Gate(const Transform& trans)
 		vec2(+1.f, +1.f) 
 	};
 
-	vec2 uvs[] = {
-		vec2( 0.f,  0.f),
-		vec2( 0.f, +1.f),
-		vec2(+1.f,  0.f),
-		vec2(+1.f, +1.f)
-	};
-
 	uvec3 elems[] =
 	{	
 		uvec3(0, 1, 2),
@@ -34,6 +27,7 @@ Gate::Gate(const Transform& trans)
 	tex->addImage("2");
 	tex->addImage("3");
 	tex->addImage("4");
+
 	
 
 	Material* mat = Runtime::get().moduleManager.getRenderer().newMaterial("boilerplate");
@@ -42,7 +36,7 @@ Gate::Gate(const Transform& trans)
 
 	gateMesh = new MeshComponent(
 		this, Transform{}, ModelData(
-			Transform{}, locations, uvs, elems, 4, 6, mat));
+			Transform{}, locations, tex->getUVCoords("1").toPtr(), elems, 4, 6, mat));
 
 }
 
