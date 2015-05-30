@@ -13,7 +13,7 @@ void main()
 {
 	vec3 locationBeforeCamera = model * vec3(vertLocationIn, 1.f);
 	
-	gl_Position = camera * vec4(locationBeforeCamera.x, locationBeforeCamera.y, -1.f, 1.f);
+	gl_Position = camera * vec4(locationBeforeCamera.x, locationBeforeCamera.y, -renderOrder, 1.f);
 	
 	fragTexCoord = vertTexCoordIn;
 }

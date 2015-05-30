@@ -9,15 +9,17 @@
 
 class Gate : public Actor
 {
-	INIT_SAVED_ACTOR()
+	INIT_SAVED_CLASS()
 
 public:
 
 	explicit Gate(const Transform& trans = Transform{});
+
+	virtual ~Gate() override;
 
 	MeshComponent* gateMesh;
 
 	bool isOpen;
 };
 
-ACTOR_REGISTER_FOR_SAVING_HEADER(Gate, TestContent_ModuleName)
+REGISTER_FOR_SAVING_HEADER(Gate, TestContent_ModuleName)

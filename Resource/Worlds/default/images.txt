@@ -11,7 +11,7 @@
 			<blue>34</blue>
 			<alpha>255</alpha>
 		</first>
-		<second>img2.dds</second>
+		<second>4</second>
 	</item>
 	<item>
 		<first>
@@ -20,7 +20,7 @@
 			<blue>255</blue>
 			<alpha>255</alpha>
 		</first>
-		<second>img.dds</second>
+		<second>2</second>
 	</item>
 </assoc>
 </boost_serialization>

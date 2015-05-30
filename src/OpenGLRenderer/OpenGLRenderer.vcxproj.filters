@@ -29,6 +29,9 @@
     <ClCompile Include="Private\OpenGLTexture.cpp">
       <Filter>Private</Filter>
     </ClCompile>
+    <ClCompile Include="Private\OpenGLTextureLibrary.cpp">
+      <Filter>Private</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Private\OpenGLMaterial.h">
@@ -47,6 +50,9 @@
       <Filter>Private</Filter>
     </ClInclude>
     <ClInclude Include="Private\OpenGLTexture.h">
+      <Filter>Private</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\OpenGLTextureLibrary.h">
       <Filter>Private</Filter>
     </ClInclude>
   </ItemGroup>

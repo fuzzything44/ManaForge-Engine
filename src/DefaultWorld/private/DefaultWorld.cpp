@@ -5,6 +5,7 @@
 #include <PropertyManager.h>
 #include <Runtime.h>
 #include <Color.h>
+#include <TextureLibrary.h>
 
 #include <list>
 #include <fstream>
@@ -42,7 +43,9 @@ using namespace std;
 DefaultWorld::DefaultWorld(std::string folder)
 	:folderLocation(std::string("Worlds\\") + folder + '\\'),
 	propManager(folderLocation + "world.json"),
-	nextIndex(0)
+	nextIndex(0),
+	backgroundImages(Runtime::get().moduleManager.getRenderer().newTextureLibrary(32, 256)), // TODO: less hardcoded values
+	drawMaterial(Runtime::get().moduleManager.getRenderer().newMaterial("boilerplate"))
 {
 
 	// Make sure a world folder was supplied.
@@ -65,8 +68,14 @@ DefaultWorld::DefaultWorld(std::string folder)
 	// load the map from the file
 	arch >> BOOST_SERIALIZATION_NVP(valuePairs);
 
-	// Give images to renderer
-	//Runtime::get().moduleManager.getRenderer().loadTextures(valuePairs);
+	// load the images to the backgroundImages textureLibrary
+	for (auto& elem : valuePairs)
+	{
+		backgroundImages->addImage(elem.second);
+	}
+
+	// set the material
+	drawMaterial->setTexture(0, reinterpret_cast<Texture*>(backgroundImages));
 
 	ENG_LOGLN("Images loaded!");
 

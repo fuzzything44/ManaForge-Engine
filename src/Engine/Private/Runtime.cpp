@@ -64,11 +64,21 @@ void Runtime::run()
 	}
 
 	// YA WE REALLY NEED PLAYER CONTROLLERS -- the gate shouldn't get to control the camera
-	Actor* gate = moduleManager.spawnActor("TestContent.Gate", Transform{vec2(2.f, 1.f)});
+	Actor* gate = moduleManager.spawnActor("TestContent.Gate", Transform{ });
 
-	mat4 mat = glm::ortho(-10.f, 10.f, -10.f, 10.f, .1f, 100.f);
+	uvec2 windowSize = moduleManager.getRenderer().getWindow().getWindowProps().size;
+
+	float aspectRatio = static_cast<float>(windowSize.x) / static_cast<float>(windowSize.y);
+	aspectRatio *= 10;
+
+	mat4 mat = glm::ortho(-aspectRatio, aspectRatio, -10.f, 10.f, .1f, 100.f);
 	CameraComponent* c = new CameraComponent{ gate, Transform{}, mat };
 	moduleManager.getRenderer().setCurrentCamera(c);
+
+	
+
+
+
 
 	// set initial tick
 	clock::time_point LastTick = clock::now();
@@ -77,8 +87,7 @@ void Runtime::run()
 	bool shouldContinue = true;
 
 	do {
-
-		
+				
 		// calculate tick time
 		clock::time_point CurrentTick = clock::now();
 		float delta = static_cast<float>((CurrentTick - LastTick).count());

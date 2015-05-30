@@ -169,5 +169,11 @@
     <ClInclude Include="Public\Texture.h">
       <Filter>Public</Filter>
     </ClInclude>
+    <ClInclude Include="Public\TextureLibrary.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\QuadUVCoords.h">
+      <Filter>Public</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -45,7 +45,7 @@
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(IncludePath)</IncludePath>
     <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86)</LibraryPath>
-    <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
+    <OutDir>$(DefaultOutputDir)</OutDir>
     <TargetExt>.dll</TargetExt>
     <IntDir>$(ProjectDir)\$(Configuration)\</IntDir>
   </PropertyGroup>
@@ -141,6 +141,7 @@
     <ClInclude Include="Public\Pawn.h" />
     <ClInclude Include="Public\PlayerController.h" />
     <ClInclude Include="Public\PropertyManager.h" />
+    <ClInclude Include="Public\QuadUVCoords.h" />
     <ClInclude Include="Public\registerForSerialization.h" />
     <ClInclude Include="Public\Renderer.h" />
     <ClInclude Include="Public\Runtime.h" />
@@ -149,6 +150,7 @@
     <ClInclude Include="Public\SerializeGLM.h" />
     <ClInclude Include="Public\SharedLibrary.h" />
     <ClInclude Include="Public\Texture.h" />
+    <ClInclude Include="Public\TextureLibrary.h" />
     <ClInclude Include="Public\Transform.h" />
     <ClInclude Include="Public\UVData.h" />
     <ClInclude Include="Public\Window.h" />

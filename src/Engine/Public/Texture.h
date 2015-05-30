@@ -6,10 +6,10 @@
 class Texture
 {
 public:
-	explicit Texture(const std::string& name = std::string()){}
+	explicit Texture(){ }
+
+	virtual uint32 getID() = 0;
 
 	virtual ~Texture(){ }
-
-	virtual std::string getPath() const = 0;
 
 };

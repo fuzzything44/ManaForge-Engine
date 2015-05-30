@@ -1,14 +1,14 @@
 
-#ifndef ACTOR_SAVE_DATA
-#	error please define ACTOR_SAVE_DATA in the format <name_of_class>, <name_of_parent_class or 0 if no parent>, savedval1, savedval2, savedval2, ...
+#ifndef SAVE_DATA
+#	error please define SAVE_DATA in the format <name_of_class>, <name_of_parent_class or 0 if no parent>, savedval1, savedval2, savedval2, ...
 #endif
 
-#if BOOST_PP_VARIADIC_SIZE(ACTOR_SAVE_DATA) >= 1
+#if BOOST_PP_VARIADIC_SIZE(SAVE_DATA) >= 1
 
-#	define BOOST_PP_LOCAL_LIMITS (2, BOOST_PP_VARIADIC_SIZE(ACTOR_SAVE_DATA) - 1)
+#	define BOOST_PP_LOCAL_LIMITS (2, BOOST_PP_VARIADIC_SIZE(SAVE_DATA) - 1)
 
-#	define CLASS_NAME BOOST_PP_VARIADIC_ELEM(0, ACTOR_SAVE_DATA)
-#	define PARENT_NAME BOOST_PP_VARIADIC_ELEM(1, ACTOR_SAVE_DATA)
+#	define CLASS_NAME BOOST_PP_VARIADIC_ELEM(0, SAVE_DATA)
+#	define PARENT_NAME BOOST_PP_VARIADIC_ELEM(1, SAVE_DATA)
 
 template<typename Archive>
 void CLASS_NAME::serialize(Archive& ar, const unsigned int version)
@@ -18,7 +18,7 @@ void CLASS_NAME::serialize(Archive& ar, const unsigned int version)
 #	endif
 
 #	define BOOST_PP_LOCAL_MACRO(n)\
-			ar & BOOST_SERIALIZATION_NVP(BOOST_PP_VARIADIC_ELEM(n, ACTOR_SAVE_DATA)); \
+			ar & BOOST_SERIALIZATION_NVP(BOOST_PP_VARIADIC_ELEM(n, SAVE_DATA)); \
 		/**/
 
 #	include BOOST_PP_LOCAL_ITERATE()
@@ -37,4 +37,4 @@ BOOST_CLASS_EXPORT_IMPLEMENT(CLASS_NAME)
 #endif
 
 
-#undef ACTOR_SAVE_DATA
+#undef SAVE_DATA

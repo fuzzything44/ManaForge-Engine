@@ -83,13 +83,13 @@ OpenGLWindow::OpenGLWindow()
 	// make context current in this thread
 	glfwMakeContextCurrent(window);
 
-	// use newer GL
-	glewExperimental = GL_TRUE;
 
 	// make sure the cursor is shown. Most likely want to change this in the future
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 
 
+	// use newer GL
+	glewExperimental = GL_TRUE;
 
 	// init GL (glew is an extension that does this for us)
 	
