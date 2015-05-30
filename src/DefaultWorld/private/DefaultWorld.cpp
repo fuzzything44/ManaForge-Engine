@@ -9,6 +9,9 @@
 
 #include <list>
 #include <fstream>
+#include <functional>
+#include <map>
+#include <vector>
 
 #include <boost/algorithm/string.hpp>
 
@@ -35,6 +38,7 @@
 #	define IS_SAVE_BINARY 1
 #endif
 
+using namespace std;
 
 DefaultWorld::DefaultWorld(std::string folder)
 	:folderLocation(std::string("Worlds\\") + folder + '\\'),
@@ -48,6 +52,10 @@ DefaultWorld::DefaultWorld(std::string folder)
 	if (folder == "") {
 		FATAL_ERR("No world specified");
 	}
+	ENG_LOGLN("Setting up console commands...");
+	// Code for console commands goes here.
+	// We probably want addActor, save, loadWorld.
+
 
 	ENG_LOGLN("Loading images...");
 	
@@ -220,6 +228,19 @@ void DefaultWorld::save()
 	catch (std::exception& e)
 	{
 		ENG_LOGLN("ERROR SAVING ACTORS. Reason: " << e.what());
+	}
+}
+
+void DefaultWorld::consoleCommand(std::string& command)
+{
+	string giveCommand;
+	string args;
+	try {
+		commandMap[giveCommand](args);
+	}
+	catch (exception e) {
+		ENG_LOGLN("Error in command " << command << ": " << e.what() );
+		// We also may want to tell the UI it went wrong.
 	}
 }
 
