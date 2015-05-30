@@ -21,7 +21,9 @@ public:
 
 	virtual Model* newModel(const ModelData& params, MeshComponent* owner) override;
 	virtual Texture* newTexture(const std::string& name) override;
-	virtual Material* newMaterial() override;
+	virtual TextureLibrary* newTextureLibrary(uint16, uint16) override;
+	virtual Material* newMaterial(const std::string& name) override;
+	
 
 	/// <summary> Renders the next frame. </summary>
 	virtual bool update() override;

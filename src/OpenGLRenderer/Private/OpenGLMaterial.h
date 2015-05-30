@@ -11,10 +11,13 @@
 class OpenGLMaterial : public Material
 {
 public:
-	~OpenGLMaterial() override;
+	OpenGLMaterial(const std::string& name);
+	virtual ~OpenGLMaterial() override;
 
-	void virtual addShaderProgramFromFile(std::string filename) override;
-	void virtual addShaderProgramFromSource(std::string shader) override;
+	void addShaderProgramFromFile(std::string filename);
+	void addShaderProgramFromSource(std::string shader);
+
+
 	void virtual setTexture(uint32 ID, Texture* texture) override;
 
 	void use();
@@ -30,5 +33,5 @@ private:
 
 	// vector of <texture ID>
 	GLuint textures[maxTextures];
-	static GLint startTexUniform;
+	GLint startTexUniform;
 };

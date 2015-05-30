@@ -16,9 +16,9 @@ public:
 
 	explicit OpenGLTexture(const std::string& path);
 
-	~OpenGLTexture() override;
+	virtual uint32 getID() override;
 
-	std::string getPath() const override;
+	~OpenGLTexture() override;
 
 private:
 
@@ -32,6 +32,6 @@ private:
 
 
 	int32 loadDDS(const std::string& filename);
-	void appendDDS(uint32 texToAppend, uint32 Xoffset, uint32 Yoffset, const char* filepath);
-	uint32 allocateCompressedTextureLibraryFromDDS(uint32 num, const char* filepath);
+	//void appendDDS(uint32 texToAppend, uint32 Xoffset, uint32 Yoffset, const char* filepath);
+	//uint32 allocateCompressedTextureLibraryFromDDS(uint32 num, const char* filepath);			// keeping just in case
 };

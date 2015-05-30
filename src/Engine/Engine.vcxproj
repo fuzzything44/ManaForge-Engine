@@ -149,6 +149,7 @@
     <ClInclude Include="Public\SerializeGLM.h" />
     <ClInclude Include="Public\SharedLibrary.h" />
     <ClInclude Include="Public\Texture.h" />
+    <ClInclude Include="Public\TextureLibrary.h" />
     <ClInclude Include="Public\Transform.h" />
     <ClInclude Include="Public\UVData.h" />
     <ClInclude Include="Public\Window.h" />

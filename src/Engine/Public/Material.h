@@ -9,14 +9,12 @@ class Texture;
 class Material
 {
 public:
+	Material() {};
+
 	virtual ~Material()
 	{
 	}
 
-	Material() {} ;
-
-	virtual void addShaderProgramFromFile(std::string filename) = 0;
-	virtual void addShaderProgramFromSource(std::string shader) = 0;
 
 	virtual void setTexture(uint32 ID, Texture* texture) = 0;
 

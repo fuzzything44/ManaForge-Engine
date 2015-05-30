@@ -12,6 +12,7 @@
 
 #include <functional>
 #include <algorithm>
+#include "OpenGLTextureLibrary.h"
 
 OpenGLRenderer::OpenGLRenderer()
 	: window(new OpenGLWindow())
@@ -42,9 +43,14 @@ Texture* OpenGLRenderer::newTexture(const std::string& name)
 	return new OpenGLTexture(name);
 }
 
-Material* OpenGLRenderer::newMaterial()
+TextureLibrary* OpenGLRenderer::newTextureLibrary(uint16 maxElems, uint16 individualSize)
 {
-	return new OpenGLMaterial();
+	return new OpenGLTextureLibrary(maxElems, individualSize);
+}
+
+Material* OpenGLRenderer::newMaterial(const std::string& name)
+{
+	return new OpenGLMaterial(name);
 }
 
 

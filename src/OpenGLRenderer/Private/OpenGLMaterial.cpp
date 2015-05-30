@@ -5,14 +5,17 @@
 #include <Helper.h>
 #include <Texture.h>
 
-GLint OpenGLMaterial::startTexUniform = -1;
+
+OpenGLMaterial::OpenGLMaterial(const std::string& name)
+{
+	addShaderProgramFromFile(name);
+
+	startTexUniform = glGetUniformLocation(program, "textures");
+}
 
 OpenGLMaterial::~OpenGLMaterial()
 {
-	if (startTexUniform == -1)
-	{
-		startTexUniform = glGetUniformLocation(program, "textures");
-	}
+
 }
 
 void OpenGLMaterial::addShaderProgramFromFile(std::string name)
@@ -82,17 +85,17 @@ void OpenGLMaterial::addShaderProgramFromFile(std::string name)
 
 	// Link the program
 	ENG_LOGLN("Linking program " << name);
-	uint32 ProgramID = glCreateProgram();
-	glAttachShader(ProgramID, VertexShaderID);
-	glAttachShader(ProgramID, FragmentShaderID);
-	glLinkProgram(ProgramID);
+	program = glCreateProgram();
+	glAttachShader(program, VertexShaderID);
+	glAttachShader(program, FragmentShaderID);
+	glLinkProgram(program);
 
 	// Check the program
-	glGetProgramiv(ProgramID, GL_LINK_STATUS, &Result);
-	glGetProgramiv(ProgramID, GL_INFO_LOG_LENGTH, &InfoLogLength);
+	glGetProgramiv(program, GL_LINK_STATUS, &Result);
+	glGetProgramiv(program, GL_INFO_LOG_LENGTH, &InfoLogLength);
 	if (InfoLogLength > 0){
 		char* ProgramErrorMessage = new char[InfoLogLength + 1]();
-		glGetProgramInfoLog(ProgramID, InfoLogLength, nullptr, ProgramErrorMessage);
+		glGetProgramInfoLog(program, InfoLogLength, nullptr, ProgramErrorMessage);
 		ENG_LOGLN(ProgramErrorMessage);
 		delete[] ProgramErrorMessage;
 	}
@@ -101,7 +104,6 @@ void OpenGLMaterial::addShaderProgramFromFile(std::string name)
 	glDeleteShader(VertexShaderID);
 	glDeleteShader(FragmentShaderID);
 
-	program = ProgramID;
 }
 
 void OpenGLMaterial::addShaderProgramFromSource(std::string shader)
@@ -110,9 +112,9 @@ void OpenGLMaterial::addShaderProgramFromSource(std::string shader)
 
 void OpenGLMaterial::setTexture(uint32 ID, Texture* texture)
 {
-	OpenGLTexture* texGL = static_cast<OpenGLTexture*>(texture);
+	textures[ID] = texture->getID();
 
-	textures[ID] = texGL->ID;
+
 }
 
 
@@ -132,6 +134,8 @@ void OpenGLMaterial::use()
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, textures[0]);
+
+	
 
 }
 

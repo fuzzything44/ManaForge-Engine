@@ -15,6 +15,8 @@ public:
 
 	explicit Gate(const Transform& trans = Transform{});
 
+	virtual ~Gate() override;
+
 	MeshComponent* gateMesh;
 
 	bool isOpen;

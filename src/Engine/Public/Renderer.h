@@ -14,6 +14,7 @@ class Material;
 class CameraComponent;
 class Window;
 class Model;
+class TextureLibrary;
 struct ModelData;
 
 // a non - copyable abstract class that handles rendering
@@ -49,7 +50,8 @@ public:
 	/// <returns> null if it fails, else a Model*.</returns>
 	virtual Model* newModel(const ModelData& data, MeshComponent* owner) = 0;
 	virtual Texture* newTexture(const std::string& name) = 0;
-	virtual Material* newMaterial() = 0;
+	virtual TextureLibrary* newTextureLibrary(uint16, uint16) = 0;
+	virtual Material* newMaterial(const std::string& name) = 0;
 
 	/// <summary> Loads the textures.</summary>
 	///

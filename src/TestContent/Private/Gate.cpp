@@ -1,5 +1,6 @@
 #include "Gate.h"
 #include <Runtime.h>
+#include <TextureLibrary.h>
 
 #define ACTOR_SAVE_DATA Gate, Actor, isOpen
 
@@ -28,12 +29,15 @@ Gate::Gate(const Transform& trans)
 		uvec3(1, 2, 3) 
 	};
 
+	TextureLibrary* tex = Runtime::get().moduleManager.getRenderer().newTextureLibrary(4, 256);
+	tex->addImage("1");
+	tex->addImage("2");
+	tex->addImage("3");
+	tex->addImage("4");
+	
 
-	Texture* tex = Runtime::get().moduleManager.getRenderer().newTexture("13");
-
-	Material* mat = Runtime::get().moduleManager.getRenderer().newMaterial();
-	mat->setTexture(0, tex);
-	mat->addShaderProgramFromFile("boilerplate");
+	Material* mat = Runtime::get().moduleManager.getRenderer().newMaterial("boilerplate");
+	mat->setTexture(0, reinterpret_cast<Texture*>(tex));
 
 
 	gateMesh = new MeshComponent(
@@ -42,3 +46,7 @@ Gate::Gate(const Transform& trans)
 
 }
 
+Gate::~Gate()
+{
+
+}

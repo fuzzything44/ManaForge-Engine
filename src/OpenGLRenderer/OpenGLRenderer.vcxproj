@@ -92,6 +92,7 @@
     <ClCompile Include="Private\OpenGLRenderer.cpp" />
     <ClCompile Include="Private\OpenGLRendererConfig.cpp" />
     <ClCompile Include="Private\OpenGLTexture.cpp" />
+    <ClCompile Include="Private\OpenGLTextureLibrary.cpp" />
     <ClCompile Include="Private\OpenGLWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -100,6 +101,7 @@
     <ClInclude Include="Private\OpenGLRenderer.h" />
     <ClInclude Include="Private\OpenGLRendererConfig.h" />
     <ClInclude Include="Private\OpenGLTexture.h" />
+    <ClInclude Include="Private\OpenGLTextureLibrary.h" />
     <ClInclude Include="Private\OpenGLWindow.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
