@@ -32,5 +32,7 @@ public:
 
 	virtual void save() = 0;
 
+	virtual void consoleCommand(std::string& command) = 0;
+
 	virtual ~World() { };
 };
