@@ -21,6 +21,9 @@ class DefaultWorld : public World
 	// !!!!! We also need to clear it when you change worlds. We may need to clear other things too (and we have to keep persistent actors).
 	std::map<map_ID_t, Actor*> actors;
 
+	TextureLibrary* backgroundImages;
+	Material* drawMaterial;
+
 public:
 	explicit DefaultWorld(std::string folder = ""); 
 

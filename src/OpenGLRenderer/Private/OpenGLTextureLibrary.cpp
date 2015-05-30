@@ -1,6 +1,7 @@
 #include "OpenGLTextureLibrary.h"
 
 #include <Logging.h>
+#include <ENGException.h>
 
 #include "SOIL/SOIL.h"
 
@@ -80,14 +81,14 @@ void OpenGLTextureLibrary::appendDDS(uint32 texToAppend, uint32 Xoffset, uint32 
 	/* try to open the file */
 	fopen_s(&fp, filepath, "rb");
 	if (fp == nullptr)
-		return;
+		FATAL_ERR(std::string("cannot open file: ") + filepath);
 
 	/* verify the type of file */
 	char filecode[4];
 	fread(filecode, 1, 4, fp);
 	if (strncmp(filecode, "DDS ", 4) != 0) {
 		fclose(fp);
-		return;
+		FATAL_ERR(std::string("file not a dds: ") + filepath);
 	}
 
 	/* get the surface desc */
@@ -123,7 +124,7 @@ void OpenGLTextureLibrary::appendDDS(uint32 texToAppend, uint32 Xoffset, uint32 
 		break;
 	default:
 		free(buffer);
-		return;
+		FATAL_ERR(std::string("unrecgnized compressed DDS format: ") + filepath);
 	}
 
 	unsigned int blockSize = (format == GL_COMPRESSED_RGBA_S3TC_DXT1_EXT) ? 8 : 16;
