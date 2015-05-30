@@ -10,9 +10,6 @@
 #include <boost/preprocessor/cat.hpp>
 #include <boost/preprocessor/stringize.hpp>
 
-#include <boost/archive/xml_iarchive.hpp>
-#include <boost/archive/xml_oarchive.hpp>
-
 #include <boost/archive/polymorphic_iarchive.hpp>
 #include <boost/archive/polymorphic_oarchive.hpp>
 
@@ -24,20 +21,20 @@
 #include "SerializeGLM.h"
 
 // before using this please define ACTOR_SAVE_DATA in the format:
-// #define ACTOR_SAVE_DATA <this_class>, <parent_class>, <saved val 1>, <saved val 2>, etc **** NOTE WHITESPACE BETWEEN ACTOR_SAVE_DATA and <this_class>, IT IS VITAL
-// USAGE: #include ACTOR_REGISTER_FOR_SAVING()
+// #define SAVE_DATA <this_class>, <parent_class>, <saved val 1>, <saved val 2>, etc **** NOTE WHITESPACE BETWEEN ACTOR_SAVE_DATA and <this_class>, IT IS VITAL
+// USAGE: #include REGISTER_FOR_SAVING_SOURCE()
 // put in the source file
-#define ACTOR_REGISTER_FOR_SAVING_SOURCE() "registerForSerialization.h"
+#define REGISTER_FOR_SAVING_SOURCE() "registerForSerialization.h"
 
 // put this in the header after the definition of the class -- this isn't an include
-#define ACTOR_REGISTER_FOR_SAVING_HEADER(actorName, ModuleName)\
+#define REGISTER_FOR_SAVING_HEADER(actorName, ModuleName)\
 	BOOST_CLASS_EXPORT_KEY2(\
 		actorName, \
 		BOOST_PP_CAT(\
 			BOOST_PP_CAT(ModuleName, "."),\
 			BOOST_PP_STRINGIZE(actorName)))
 
-#define INIT_SAVED_ACTOR() \
+#define INIT_SAVED_CLASS() \
 	friend boost::serialization::access; \
 	template <typename Archive>\
 	void serialize(Archive& ar, const unsigned int version); \

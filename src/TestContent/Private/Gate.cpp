@@ -2,9 +2,8 @@
 #include <Runtime.h>
 #include <TextureLibrary.h>
 
-#define ACTOR_SAVE_DATA Gate, Actor, isOpen
-
-#include ACTOR_REGISTER_FOR_SAVING_SOURCE()
+#define SAVE_DATA Gate, Actor, isOpen
+#include REGISTER_FOR_SAVING_SOURCE()
 
 Gate::Gate(const Transform& trans)
 	: Actor(trans)

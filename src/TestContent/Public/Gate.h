@@ -9,7 +9,7 @@
 
 class Gate : public Actor
 {
-	INIT_SAVED_ACTOR()
+	INIT_SAVED_CLASS()
 
 public:
 
@@ -22,4 +22,4 @@ public:
 	bool isOpen;
 };
 
-ACTOR_REGISTER_FOR_SAVING_HEADER(Gate, TestContent_ModuleName)
+REGISTER_FOR_SAVING_HEADER(Gate, TestContent_ModuleName)
