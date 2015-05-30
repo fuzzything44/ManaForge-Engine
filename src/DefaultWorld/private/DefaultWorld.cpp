@@ -40,6 +40,7 @@
 
 using namespace std;
 
+
 DefaultWorld::DefaultWorld(std::string folder)
 	:folderLocation(std::string("Worlds\\") + folder + '\\'),
 	propManager(folderLocation + "world.json"),
@@ -60,7 +61,7 @@ DefaultWorld::DefaultWorld(std::string folder)
 	ENG_LOGLN("Loading images...");
 	
 	// We should probably just have the images we use in the same file as chunk size.
-	std::ifstream stream{ folderLocation + "images.txt" };
+	std::ifstream stream{ folderLocation + "images.txt", std::ifstream::app };
 
 	if (!stream.is_open())
 	{

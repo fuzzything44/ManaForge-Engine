@@ -16,8 +16,8 @@ class DefaultWorld : public World
 
 	PropertyManager propManager;
 	
-	// Map of console commands. Maps from a string to function. Function takes in a string vector.
-	static std::map<std::string, std::function<void(const string s)> > commandMap;
+	// Map of console commands. Maps from a string to function. Function takes in a string.
+	std::map<std::string, std::function<void(const std::string)> > commandMap;
 
 	map_ID_t nextIndex;
 
@@ -34,6 +34,8 @@ public:
 	virtual void loadWorld(std::string name) override;
 	virtual void addActor(Actor& toAdd) override; 
 	virtual void save() override;
+
 	virtual void consoleCommand(std::string& command) override;
+
 	virtual ~DefaultWorld();
 };
