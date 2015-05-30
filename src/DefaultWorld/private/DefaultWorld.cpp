@@ -53,6 +53,12 @@ DefaultWorld::DefaultWorld(std::string folder)
 	
 	// We should probably just have the images we use in the same file as chunk size.
 	std::ifstream stream{ folderLocation + "images.txt" };
+
+	if (!stream.is_open())
+	{
+		FATAL_ERR("Could not open images.txt file for world: " + worldName);
+	}
+
 	boost::archive::xml_iarchive arch{ stream }; // this might want to be not xml, maybe text or binary
 
 	std::map<Color, std::string> valuePairs;
