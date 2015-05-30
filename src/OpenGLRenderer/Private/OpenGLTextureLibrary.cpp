@@ -1,5 +1,7 @@
 #include "OpenGLTextureLibrary.h"
 
+#include <Logging.h>
+
 #include "SOIL/SOIL.h"
 
 OpenGLTextureLibrary::OpenGLTextureLibrary(uint16 maxElements, uint16 individualSize)
@@ -113,6 +115,8 @@ void OpenGLTextureLibrary::appendDDS(uint32 texToAppend, uint32 Xoffset, uint32 
 
 		glCompressedTexSubImage2D(GL_TEXTURE_2D, level, Xoffset, Yoffset, width, height, format, size, buffer + offset);
 
+		ENG_LOGLN(glGetError());
+
 		offset += size;
 		width /= 2;
 		height /= 2;
@@ -175,13 +179,19 @@ uint32 OpenGLTextureLibrary::allocateCompressedTextureLibraryFromDDS(uint32 num,
 	glGenTextures(1, &texture);
 	glBindTexture(GL_TEXTURE_2D, texture);
 
+	int extraMips = log2(width);
+	mipMapCount += extraMips;
+
+	width *= num;
+	height *= num;
 
 	for (uint32 i = 0; i < mipMapCount; i++)
 	{
 
 		uint32 size = ((width + 3) / 4)*((height + 3) / 4) * blockSize;
 
-		glCompressedTexImage2D(GL_TEXTURE_2D, i, format, width * num, height * num, 0, size * num * num, nullptr);
+		glCompressedTexImage2D(GL_TEXTURE_2D, i, format, width, height, 0, size, nullptr);
+
 
 		width /= 2;
 		height /= 2;
