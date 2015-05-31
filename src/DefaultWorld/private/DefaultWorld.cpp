@@ -188,6 +188,73 @@ void DefaultWorld::loadWorld(std::string name)
 			nextIndex++;
 		}
 	}
+	ENG_LOGLN("Actors Loaded!");
+
+	///////////////////////////
+	// begin background loading
+	{
+		backgroundChunkSize = propManager.queryValue<uint32>("chunk.size");
+
+		std::vector<uint8> data;
+		uvec2 size = ImageLoader::load(folderLocation + name + "\\" + name + ".png", data);
+		numBackgroundChunks = size / backgroundChunkSize;
+
+		
+		background = static_cast<Model**>(malloc(sizeof(Model*) * numBackgroundChunks.x * numBackgroundChunks.y));
+
+		std::vector<vec2> locations{ backgroundChunkSize * backgroundChunkSize * 4};
+		std::vector<vec2> UVs{ backgroundChunkSize * backgroundChunkSize * 4};
+		std::vector<uvec3> elems{ backgroundChunkSize * backgroundChunkSize * 2 };
+
+		// generate location data -- all the same
+		for (uint16 yTiles = 0; yTiles < backgroundChunkSize; ++yTiles)
+		{
+			for (uint16 xTiles = 0; xTiles < backgroundChunkSize; ++xTiles)
+			{
+				locations[yTiles * backgroundChunkSize + xTiles] = vec2(yTiles, xTiles);
+			}
+		}
+
+		// generate UV 
+		for (uint16 yChunks = 0; yChunks < numBackgroundChunks.y; ++yChunks)
+		{
+			for (uint16 xChunks = 0; xChunks < numBackgroundChunks.x; ++xChunks)
+			{
+				// get the starting index for the chunk
+				uint32 startIndex = yChunks * numBackgroundChunks.x + xChunks;
+				
+				for (uint16 yTiles = 0; yTiles < backgroundChunkSize; ++yTiles)
+				{
+					for (uint16 xTiles = 0; xTiles < backgroundChunkSize; ++xTiles)
+					{
+
+					}
+				}
+
+				
+				
+				background[yChunks * numBackgroundChunks.x * xChunks] = 
+					Runtime::get().moduleManager.getRenderer().newModel(
+						ModelData(
+							Transform{
+								vec2(xChunks * backgroundChunkSize, yChunks * backgroundChunkSize)
+							},
+							&locations[0],
+							&UVs[0], 
+							&elems[0],
+							backgroundChunkSize * backgroundChunkSize * 4,
+							backgroundChunkSize * backgroundChunkSize * 2,
+							drawMaterial
+						), nullptr);
+
+			}
+		}
+
+
+	}
+	// end background loading
+
+
 	ENG_LOGLN("World Loaded!");
 }
 

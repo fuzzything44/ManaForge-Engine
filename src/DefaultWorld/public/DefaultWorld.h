@@ -28,6 +28,13 @@ class DefaultWorld : public World
 	TextureLibrary* backgroundImages;
 	Material* drawMaterial;
 
+	// array of models -- in row major order
+	Model** background;
+
+	uvec2 numBackgroundChunks;
+
+	uint32 backgroundChunkSize;
+
 public:
 	explicit DefaultWorld(std::string folder = ""); 
 

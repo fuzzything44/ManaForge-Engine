@@ -4,7 +4,7 @@
 
 #include <boost/property_tree/json_parser.hpp>
 
-PropertyManager::PropertyManager(std::string path)
+PropertyManager::PropertyManager(const std::string& path)
 {
 
 	std::string a = loadFileToStr(path.c_str());

@@ -11,10 +11,10 @@ class PropertyManager
 
 public:
 
-	ENGINE_API explicit PropertyManager(std::string location);
+	ENGINE_API explicit PropertyManager(const std::string& location);
 
 	template <typename T>
-	inline T queryValue(std::string key);
+	inline T queryValue(const std::string& key);
 
 	template <typename T>
 	inline void saveValue(std::string key, const T& value);
@@ -25,7 +25,7 @@ private:
 };
 
 template <typename T>
-inline T PropertyManager::queryValue(std::string key)
+inline T PropertyManager::queryValue(const std::string& key)
 {
 	try{
 		return (props.get<T>(key));
