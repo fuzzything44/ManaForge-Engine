@@ -90,16 +90,23 @@ inline Transform SceneComponent::getLocalTransform() const
 inline Transform SceneComponent::getWorldTransform() const
 {
 	
-	vec2 start = trans.location;
+	if (owner)
+	{
+
+		vec2 start = trans.location;
+
+		start.x *= cos(owner->getWorldTransform().rotation) * owner->getWorldTransform().scale.x;
+		start.y *= sin(owner->getWorldTransform().rotation) * owner->getWorldTransform().scale.y;
+
+
+		// MEBBE RIGHT
+		return Transform(start + owner->getWorldLocation(), trans.rotation + owner->getWorldRotation(), trans.scale);
+
+
+	}
 	
-	start.x *= cos(owner->getWorldTransform().rotation) * owner->getWorldTransform().scale.x;
-	start.y *= sin(owner->getWorldTransform().rotation) * owner->getWorldTransform().scale.y;
-	
-	
-	// MEBBE RIGHT
-	return Transform(start + owner->getWorldLocation(), trans.rotation + owner->getWorldRotation(), trans.scale);
-	
-	
+	return trans;
+
 }
 
 inline vec2 SceneComponent::getLocalLocation() const

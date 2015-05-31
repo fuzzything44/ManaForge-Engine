@@ -1,7 +1,7 @@
 #include "ImageLoader.h"
 
-std::map<std::string, std::function<uvec2(std::string, std::vector<uint8>) >* > ImageLoader::loadFunctions = 
-		std::map<std::string, std::function<uvec2(std::string, std::vector<uint8>) >* >();
+std::map<std::string, std::function<uvec2(std::string, std::vector<uint8>&)>* > 
+	ImageLoader::loadFunctions = std::map<std::string, loadFun* >();
 
 uvec2 ImageLoader::load(std::string filename, std::vector<uint8>& data)
 {
@@ -13,32 +13,30 @@ uvec2 ImageLoader::load(std::string filename, std::vector<uint8>& data)
 
 	}
 
-	// flip
-	for (uint8 elem = 0; elem < floor(static_cast<float>(extension.size()) / 2.f); elem++)
-	{
-		std::swap(extension[elem], extension[extension.size() - elem]);
-	}
+	std::reverse(extension.begin(), extension.end());
 
-	if (loadFunctions.find(extension) == loadFunctions.end())
+	auto foundIter = loadFunctions.find(extension);
+
+	if (foundIter == loadFunctions.end())
 	{
 		FATAL_ERR("no loader for extension");
 	}
 
-	auto fun = *loadFunctions[extension];
+	auto fun = *foundIter->second;
 
 	check(fun);
 
 	return fun(filename, data);
 }
 
-void ImageLoader::addLoader(std::string extension, std::function<uvec2(std::string, std::vector<uint8>)> function)
+void ImageLoader::addLoader(std::string extension, loadFun function)
 {
 	if (loadFunctions.find(extension) != loadFunctions.end())
 	{
 		ENG_LOGLN("Dulplicate loader for " << extension << ". using newest loader.");
 
 	}
-	loadFunctions[extension] = new std::function<uvec2(std::string, std::vector<uint8>) > (function);
+	loadFunctions[extension] = new std::function<uvec2(std::string, std::vector<uint8>& ) > (function);
 
 
 }

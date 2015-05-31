@@ -144,7 +144,18 @@ void OpenGLModel::draw()
 
 	glBindVertexArray(vertexArray);
 
-	Transform worldTrans = trans + parent->getWorldTransform();
+
+
+	Transform worldTrans;
+
+	if (parent)
+	{
+		worldTrans = trans + parent->getWorldTransform(); // todo fix this
+	}
+	else
+	{
+		worldTrans = trans;
+	}
 
 	mat4 camera = (renderer->getCurrentCamera().getViewMat());
 

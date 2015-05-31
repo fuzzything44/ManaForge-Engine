@@ -70,13 +70,13 @@ DefaultWorld::DefaultWorld(std::string folder)
 
 	boost::archive::xml_iarchive arch{ stream }; // this might want to be not xml, maybe text or binary
 
-	std::map<Color, std::string> valuePairs;
+	
 
 	// load the map from the file
-	arch >> BOOST_SERIALIZATION_NVP(valuePairs);
+	arch >> BOOST_SERIALIZATION_NVP(imageToTextureAssoc);
 
 	// load the images to the backgroundImages textureLibrary
-	for (auto& elem : valuePairs)
+	for (auto& elem : imageToTextureAssoc)
 	{
 		backgroundImages->addImage(elem.second);
 	}
@@ -206,12 +206,20 @@ void DefaultWorld::loadWorld(std::string name)
 		std::vector<vec2> UVs{ backgroundChunkSize * backgroundChunkSize * 4};
 		std::vector<uvec3> elems{ backgroundChunkSize * backgroundChunkSize * 2 };
 
-		// generate location data -- all the same
+		// generate location and elem data -- all the same
 		for (uint16 yTiles = 0; yTiles < backgroundChunkSize; ++yTiles)
 		{
 			for (uint16 xTiles = 0; xTiles < backgroundChunkSize; ++xTiles)
 			{
-				locations[yTiles * backgroundChunkSize + xTiles] = vec2(yTiles, xTiles);
+				uint32 startIndex = yTiles * backgroundChunkSize * 4 + xTiles * 4;
+
+				locations[startIndex    ] = vec2(xTiles    , yTiles    );
+				locations[startIndex + 1] = vec2(xTiles    , yTiles + 1);
+				locations[startIndex + 2] = vec2(xTiles + 1, yTiles    );
+				locations[startIndex + 3] = vec2(xTiles + 1, yTiles + 1);
+
+				elems[yTiles * backgroundChunkSize * 2 + xTiles * 2    ] = uvec3(startIndex    , startIndex + 1, startIndex + 2);
+				elems[yTiles * backgroundChunkSize * 2 + xTiles * 2 + 1] = uvec3(startIndex + 1, startIndex + 2, startIndex + 3);
 			}
 		}
 
@@ -227,6 +235,26 @@ void DefaultWorld::loadWorld(std::string name)
 				{
 					for (uint16 xTiles = 0; xTiles < backgroundChunkSize; ++xTiles)
 					{
+						Color col = Color(data[startIndex * 4 + (yTiles * backgroundChunkSize * 4) + (4 * xTiles)],
+							data[startIndex * 4 + (yTiles * backgroundChunkSize * 4) + (4 * xTiles) + 1],
+							data[startIndex * 4 + (yTiles * backgroundChunkSize * 4) + (4 * xTiles) + 2],
+							data[startIndex * 4 + (yTiles * backgroundChunkSize * 4) + (4 * xTiles) + 3]);
+
+						auto imageIter = imageToTextureAssoc.find(col);
+
+						// if it exists
+						if (imageIter != imageToTextureAssoc.end())
+						{
+							std::string imageName = imageIter->second;
+
+							QuadUVCoords coords = backgroundImages->getUVCoords(imageName);
+
+							UVs[startIndex * 4 + (yTiles * backgroundChunkSize) + (xTiles * 4)	  ] = coords.lowerLeft;
+							UVs[startIndex * 4 + (yTiles * backgroundChunkSize) + (xTiles * 4) + 1] = coords.upperLeft;
+							UVs[startIndex * 4 + (yTiles * backgroundChunkSize) + (xTiles * 4) + 2] = coords.lowerRight;
+							UVs[startIndex * 4 + (yTiles * backgroundChunkSize) + (xTiles * 4) + 3] = coords.upperRight;
+						}
+
 
 					}
 				}

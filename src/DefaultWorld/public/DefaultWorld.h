@@ -8,6 +8,7 @@
 #include <map>
 
 #define SAVE_TYPE_XML
+#include <Color.h>
 
 class DefaultWorld : public World
 {
@@ -24,6 +25,9 @@ class DefaultWorld : public World
 	// Contains all actors in the world
 	// !!!!! We also need to clear it when you change worlds. We may need to clear other things too (and we have to keep persistent actors).
 	std::map<map_ID_t, Actor*> actors;
+
+
+	std::map<Color, std::string> imageToTextureAssoc;
 
 	TextureLibrary* backgroundImages;
 	Material* drawMaterial;
