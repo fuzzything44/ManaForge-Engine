@@ -13,11 +13,14 @@ public:
 
 	virtual ~OpenGLTextureLibrary() override;
 
+	// from TextureLibrary
 	void addImage(const std::string& name) override;
-
 	virtual QuadUVCoords getUVCoords(const std::string& name) override;
 
+	// from Texture
 	virtual uint32 getID() override;
+	virtual void setFilterMode(FilterMode mode) override;
+	virtual FilterMode getFilterMode() const override;
 
 private:
 

@@ -30,7 +30,7 @@ void OpenGLTextureLibrary::addImage(const std::string& name)
 	appendDDS(texHandle, nextLocation.x * individualSize, nextLocation.y * individualSize, ("textures\\" + name + ".dds").c_str());
 
 	QuadUVCoords data;
-	data.upperLeft = nextLocation / uvec2(width);
+	data.upperLeft = vec2(nextLocation) / vec2(width);
 	data.upperRight = vec2(nextLocation.x + 1, nextLocation.y) / vec2(width);
 	data.lowerLeft = vec2(nextLocation.x, nextLocation.y + 1) / vec2(width);
 	data.lowerRight = vec2(nextLocation.x + 1, nextLocation.y + 1) / vec2(width);
@@ -64,6 +64,61 @@ QuadUVCoords OpenGLTextureLibrary::getUVCoords(const std::string& name)
 uint32 OpenGLTextureLibrary::getID()
 {
 	return texHandle;
+}
+
+void OpenGLTextureLibrary::setFilterMode(FilterMode newMode)
+{
+	glBindTexture(GL_TEXTURE_2D, texHandle);
+
+	switch (newMode)
+	{
+	case FilterMode::LINEAR:
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		break;
+	case FilterMode::NEAREST:
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		break;
+	case FilterMode::MIPMAP_LINEAR:
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		break;
+	case FilterMode::MIPMAP_NEAREST:
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		break;
+	default:
+		break;
+
+	}
+}
+
+Texture::FilterMode OpenGLTextureLibrary::getFilterMode() const
+{
+	glBindTexture(GL_TEXTURE_2D, texHandle);
+
+	int mode;
+	glGetTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, &mode);
+
+	switch (mode)
+	{
+	case GL_LINEAR:
+		return Texture::FilterMode::LINEAR;
+		break;
+	case GL_NEAREST:
+		return Texture::FilterMode::NEAREST;
+		break;
+	case GL_LINEAR_MIPMAP_LINEAR:
+		return Texture::FilterMode::MIPMAP_LINEAR;
+		break;
+	case GL_NEAREST_MIPMAP_NEAREST:
+		return Texture::FilterMode::MIPMAP_NEAREST;
+		break;
+	default:
+		return Texture::FilterMode::LINEAR; // IDK
+		break;
+	}
 }
 
 #define FOURCC_DXT1 0x31545844 // Equivalent to "DXT1" in ASCII
@@ -139,14 +194,14 @@ void OpenGLTextureLibrary::appendDDS(uint32 texToAppend, uint32 Xoffset, uint32 
 
 		glCompressedTexSubImage2D(GL_TEXTURE_2D, level, Xoffset, Yoffset, width, height, format, size, buffer + offset);
 
-		ENG_LOGLN(glGetError());
-
 		offset += size;
 		width /= 2;
 		height /= 2;
 		Xoffset /= 2;
 		Yoffset /= 2;
 	}
+
+	
 }
 
 uint32 OpenGLTextureLibrary::allocateCompressedTextureLibraryFromDDS(uint32 num, const char* filepath)
@@ -202,8 +257,15 @@ uint32 OpenGLTextureLibrary::allocateCompressedTextureLibraryFromDDS(uint32 num,
 	glGenTextures(1, &texture);
 	glBindTexture(GL_TEXTURE_2D, texture);
 
-	int extraMips = floor(log2(width));
+
+	int extraMips = static_cast<int>(floorf(log2f(static_cast<float>(num))));
 	mipMapCount += extraMips;
+
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, mipMapCount - 1);
+
+
 
 	width *= num;
 	height *= num;

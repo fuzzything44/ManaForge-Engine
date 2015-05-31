@@ -38,9 +38,6 @@ protected:
 
 	void draw();
 
-	vec2* locations;
-	vec2* UVs;
-	uint32* elems;
 	uint32 numVerts;
 	uint32 numTris;
 

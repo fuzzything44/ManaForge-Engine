@@ -4,7 +4,7 @@
 
 #define BOOST_SERIALIZATION_DYN_LINK 1
 
-#ifdef ENGINE
+#ifdef Engine_Source
 #	define ENGINE_API _declspec(dllexport)
 #else
 #	define ENGINE_API _declspec(dllimport)

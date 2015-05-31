@@ -6,9 +6,9 @@
 	<item_version>0</item_version>
 	<item class_id="1" tracking_level="0" version="0">
 		<first class_id="2" tracking_level="0" version="0">
-			<red>23</red>
-			<green>68</green>
-			<blue>34</blue>
+			<red>0</red>
+			<green>0</green>
+			<blue>0</blue>
 			<alpha>255</alpha>
 		</first>
 		<second>4</second>

@@ -18,6 +18,9 @@ public:
 
 	virtual uint32 getID() override;
 
+	virtual void setFilterMode(FilterMode mode) override;
+	virtual FilterMode getFilterMode() const override;
+
 	~OpenGLTexture() override;
 
 private:

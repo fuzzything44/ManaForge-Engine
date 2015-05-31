@@ -17,8 +17,6 @@ public:
 
 	virtual ~Gate() override;
 
-	MeshComponent* gateMesh;
-
 	bool isOpen;
 };
 

@@ -45,7 +45,7 @@ DefaultWorld::DefaultWorld(std::string folder)
 	:folderLocation(std::string("Worlds\\") + folder + '\\'),
 	propManager(folderLocation + "world.json"),
 	nextIndex(0),
-	backgroundImages(Runtime::get().moduleManager.getRenderer().newTextureLibrary(32, 256)), // TODO: less hardcoded values
+	backgroundImages(Runtime::get().moduleManager.getRenderer().newTextureLibrary(4, 256)), // TODO: less hardcoded values
 	drawMaterial(Runtime::get().moduleManager.getRenderer().newMaterial("boilerplate"))
 {
 
@@ -74,6 +74,8 @@ DefaultWorld::DefaultWorld(std::string folder)
 
 	// load the map from the file
 	arch >> BOOST_SERIALIZATION_NVP(imageToTextureAssoc);
+
+	backgroundImages->setFilterMode(Texture::FilterMode::MIPMAP_LINEAR);
 
 	// load the images to the backgroundImages textureLibrary
 	for (auto& elem : imageToTextureAssoc)
@@ -228,17 +230,18 @@ void DefaultWorld::loadWorld(std::string name)
 		{
 			for (uint16 xChunks = 0; xChunks < numBackgroundChunks.x; ++xChunks)
 			{
-				// get the starting index for the chunk
-				uint32 startIndex = yChunks * numBackgroundChunks.x + xChunks;
-				
 				for (uint16 yTiles = 0; yTiles < backgroundChunkSize; ++yTiles)
 				{
 					for (uint16 xTiles = 0; xTiles < backgroundChunkSize; ++xTiles)
 					{
-						Color col = Color(data[startIndex * 4 + (yTiles * backgroundChunkSize * 4) + (4 * xTiles)],
-							data[startIndex * 4 + (yTiles * backgroundChunkSize * 4) + (4 * xTiles) + 1],
-							data[startIndex * 4 + (yTiles * backgroundChunkSize * 4) + (4 * xTiles) + 2],
-							data[startIndex * 4 + (yTiles * backgroundChunkSize * 4) + (4 * xTiles) + 3]);
+
+						uint32 startColIndex = (yChunks * numBackgroundChunks.x + xChunks) * 4 * backgroundChunkSize * backgroundChunkSize + (yTiles * backgroundChunkSize * 4) + (4 * xTiles);
+
+						Color col = Color(
+							data[startColIndex],
+							data[startColIndex + 1],
+							data[startColIndex + 2],
+							data[startColIndex + 3]);
 
 						auto imageIter = imageToTextureAssoc.find(col);
 
@@ -247,12 +250,19 @@ void DefaultWorld::loadWorld(std::string name)
 						{
 							std::string imageName = imageIter->second;
 
+
 							QuadUVCoords coords = backgroundImages->getUVCoords(imageName);
 
-							UVs[startIndex * 4 + (yTiles * backgroundChunkSize) + (xTiles * 4)	  ] = coords.lowerLeft;
-							UVs[startIndex * 4 + (yTiles * backgroundChunkSize) + (xTiles * 4) + 1] = coords.upperLeft;
-							UVs[startIndex * 4 + (yTiles * backgroundChunkSize) + (xTiles * 4) + 2] = coords.lowerRight;
-							UVs[startIndex * 4 + (yTiles * backgroundChunkSize) + (xTiles * 4) + 3] = coords.upperRight;
+							uint32 startTileIndex = (yTiles * backgroundChunkSize * 4) + (xTiles * 4);
+
+							UVs[startTileIndex    ] = coords.lowerLeft;
+							UVs[startTileIndex + 1] = coords.upperLeft;
+							UVs[startTileIndex + 2] = coords.lowerRight;
+							UVs[startTileIndex + 3] = coords.upperRight;
+						}
+						else
+						{
+							ENG_LOGLN("Warining: could not find image name in imageAssoc map in DefaultWorld");
 						}
 
 

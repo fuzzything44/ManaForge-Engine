@@ -26,7 +26,7 @@ distribution.
 #ifndef LODEPNG_H
 #define LODEPNG_H
 
-#ifdef BUILD_LODEPNG
+#ifdef Lodepng_Source
 #define LODEPNG_API __declspec(dllexport)
 #else
 #define LODEPNG_API __declspec(dllimport)

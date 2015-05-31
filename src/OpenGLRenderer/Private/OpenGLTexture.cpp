@@ -35,14 +35,69 @@ OpenGLTexture::OpenGLTexture(const std::string& path)
 	}
 }
 
+OpenGLTexture::~OpenGLTexture()
+{
+
+}
+
 uint32 OpenGLTexture::getID()
 {
 	return ID;
 }
 
-OpenGLTexture::~OpenGLTexture()
+void OpenGLTexture::setFilterMode(FilterMode newMode)
 {
+	glBindTexture(GL_TEXTURE_2D, ID);
 
+	switch (newMode)
+	{
+	case FilterMode::LINEAR:
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		break;
+	case FilterMode::NEAREST:
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		break;
+	case FilterMode::MIPMAP_LINEAR:
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		break;
+	case FilterMode::MIPMAP_NEAREST:
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		break;
+	default:
+		break;
+
+	}
+}
+
+Texture::FilterMode OpenGLTexture::getFilterMode() const
+{
+	glBindTexture(GL_TEXTURE_2D, ID);
+
+	int mode;
+	glGetTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, &mode);
+
+	switch (mode)
+	{
+	case GL_LINEAR:
+		return Texture::FilterMode::LINEAR;
+		break;
+	case GL_NEAREST:
+		return Texture::FilterMode::NEAREST;
+		break;
+	case GL_LINEAR_MIPMAP_LINEAR:
+		return Texture::FilterMode::MIPMAP_LINEAR;
+		break;
+	case GL_NEAREST_MIPMAP_NEAREST:
+		return Texture::FilterMode::MIPMAP_NEAREST;
+		break;
+	default:
+		return Texture::FilterMode::LINEAR; // IDK
+		break;
+	}
 }
 
 int32 OpenGLTexture::loadDDS(const std::string& filename)

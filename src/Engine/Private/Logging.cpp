@@ -2,7 +2,7 @@
 
 std::ofstream logging::logfile = std::ofstream();
 
-ENGINE_API void logging::init()
+void logging::init()
 {
 
 	logfile.open("log.txt");

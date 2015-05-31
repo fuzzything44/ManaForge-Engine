@@ -13,21 +13,12 @@ OpenGLModel::OpenGLModel(ModelData data, MeshComponent* owner, OpenGLRenderer* r
 	numTris(data.numTriangles),
 	renderer(renderer),
 	parent(owner),
+	trans(data.trans),
 	material(static_cast<OpenGLMaterial*>(data.material))
 {	
 	// make sure they aren't zero
 	check(numVerts);
 	check(numTris);
-
-	// allocate data
-	locations = static_cast<vec2*>(malloc(sizeof(vec2) * numVerts));
-	UVs = static_cast<vec2*>(malloc(sizeof(vec2) * numVerts));
-	elems = static_cast<uint32*>(malloc(sizeof(uvec3) * numTris));
-
-	// copy data over
-	memcpy(locations, data.vertexLocations, numVerts * sizeof(vec2));
-	memcpy(UVs, data.UVs, numVerts * sizeof(vec2));
-	memcpy(elems, data.triangles, numTris * sizeof(uvec3));
 
 	// add model to renderer's list
 	renderer->models.push_front(this);
@@ -39,17 +30,17 @@ OpenGLModel::OpenGLModel(ModelData data, MeshComponent* owner, OpenGLRenderer* r
 	// init location buffer
 	glGenBuffers(1, &vertexLocationBuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexLocationBuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vec2) * numVerts, locations, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vec2) * numVerts, data.vertexLocations, GL_STATIC_DRAW);
 
 	// init UV buffer
 	glGenBuffers(1, &texCoordBuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, texCoordBuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vec2) * numVerts, UVs, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vec2) * numVerts, data.UVs, GL_STATIC_DRAW);
 
 	// init elem buffer
 	glGenBuffers(1, &elemBuffer);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elemBuffer);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint32) * numTris, elems, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uvec3) * numTris, data.triangles, GL_STATIC_DRAW);
 
 
 	// get the cameraMat location
@@ -130,9 +121,11 @@ OpenGLModel::~OpenGLModel()
 {
 	check(renderer);
 
-	free(locations);
-	free(UVs);
-	free(elems);
+	glDeleteBuffers(1, &vertexLocationBuffer);
+	glDeleteBuffers(1, &texCoordBuffer);
+	glDeleteBuffers(1, &elemBuffer);
+
+	glDeleteVertexArrays(1, &vertexArray);
 
 	renderer->models.remove(this);
 }
@@ -223,7 +216,7 @@ void OpenGLModel::draw()
 
 	glDrawElements(
 		GL_TRIANGLES, // they are trianges
-		numTris, // these many verticies
+		numTris * 3, // these many trainges - three verts / triangle
 		GL_UNSIGNED_INT, // the data is uint32 - unsigned int
 		nullptr // use the buffer instead of raw data
 		);
