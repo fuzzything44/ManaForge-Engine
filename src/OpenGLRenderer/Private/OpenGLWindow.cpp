@@ -57,6 +57,8 @@ OpenGLWindow::OpenGLWindow()
 	case WindowMode::FULLSCREEN_WINDOWED:
 		glfwWindowHint(GLFW_DECORATED, false);
 		window = glfwCreateWindow(mode->width, mode->height, props.title.c_str(), nullptr, nullptr);
+
+		props.size = uvec2(mode->width, mode->height);
 		break;
 
 	case WindowMode::WINDOWED:

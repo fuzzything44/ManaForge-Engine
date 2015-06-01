@@ -20,7 +20,7 @@
 			<blue>255</blue>
 			<alpha>255</alpha>
 		</first>
-		<second>2</second>
+		<second>12</second>
 	</item>
 </assoc>
 </boost_serialization>

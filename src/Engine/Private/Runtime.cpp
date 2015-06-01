@@ -88,6 +88,7 @@ void Runtime::run()
 
 	float scale = 1.f;
 	vec2 location{ 0.f, 0.f };
+	float baseSpeed = 100.f;
 
 	do {
 
@@ -100,7 +101,12 @@ void Runtime::run()
 
 		inputManager.update();
 
+
 		Window& window = moduleManager.getRenderer().getWindow();
+
+
+		float speedUpdated = window.getIsKeyPressed(Keyboard::KEY_LEFT_SHIFT) || window.getIsKeyPressed(Keyboard::KEY_RIGHT_SHIFT) ?
+			5.f * baseSpeed : baseSpeed;
 
 		if (window.getIsKeyPressed(Keyboard::KEY_Q))
 		{
@@ -112,19 +118,19 @@ void Runtime::run()
 		}
 		if (window.getIsKeyPressed(Keyboard::KEY_A))
 		{
-			location += vec2(100.f * delta, 0.f);
+			location += vec2(speedUpdated * delta, 0.f);
 		}
 		if (window.getIsKeyPressed(Keyboard::KEY_D))
 		{
-			location += vec2(-100.f * delta, 0.f);
+			location += vec2(-speedUpdated * delta, 0.f);
 		}
 		if (window.getIsKeyPressed(Keyboard::KEY_W))
 		{
-			location += vec2(0.f, -100.f * delta);
+			location += vec2(0.f, -speedUpdated * delta);
 		}
 		if (window.getIsKeyPressed(Keyboard::KEY_S))
 		{
-			location += vec2(0.f, 100.f * delta);
+			location += vec2(0.f, speedUpdated * delta);
 		}
 
 		mat4 view = glm::ortho(-aspectRatio, aspectRatio, -10.f, 10.f, .1f, 100.f);
