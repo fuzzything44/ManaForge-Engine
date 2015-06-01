@@ -202,7 +202,7 @@ void DefaultWorld::loadWorld(std::string name)
 		numBackgroundChunks = size / backgroundChunkSize;
 
 		
-		background = static_cast<Model**>(malloc(sizeof(Model*) * numBackgroundChunks.x * numBackgroundChunks.y));
+		background = new Model*[numBackgroundChunks.x * numBackgroundChunks.y];
 
 		std::vector<vec2> locations{ backgroundChunkSize * backgroundChunkSize * 4};
 		std::vector<vec2> UVs{ backgroundChunkSize * backgroundChunkSize * 4};
@@ -235,7 +235,7 @@ void DefaultWorld::loadWorld(std::string name)
 					for (uint16 xTiles = 0; xTiles < backgroundChunkSize; ++xTiles)
 					{
 
-						uint32 startColIndex = (yChunks * numBackgroundChunks.x + xChunks) * 4 * backgroundChunkSize * backgroundChunkSize + (yTiles * backgroundChunkSize * 4) + (4 * xTiles);
+						uint32 startColIndex = ((numBackgroundChunks.y - yChunks - 1) * numBackgroundChunks.x + xChunks) * 4 * backgroundChunkSize * backgroundChunkSize + ((backgroundChunkSize - yTiles - 1) * backgroundChunkSize * 4) + (4 * xTiles);
 
 						Color col = Color(
 							data[startColIndex],

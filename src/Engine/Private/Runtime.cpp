@@ -86,15 +86,53 @@ void Runtime::run()
 
 	bool shouldContinue = true;
 
+	float scale = 1.f;
+	vec2 location{ 0.f, 0.f };
+
 	do {
-				
+
 		// calculate tick time
 		clock::time_point CurrentTick = clock::now();
-		float delta = static_cast<float>((CurrentTick - LastTick).count());
+		float delta = static_cast<float>((CurrentTick - LastTick).count()) * 
+			((float)clock::time_point::duration::period::num / (float)clock::time_point::duration::period::den);
 
 		LastTick = CurrentTick;
 
 		inputManager.update();
+
+		Window& window = moduleManager.getRenderer().getWindow();
+
+		if (window.getIsKeyPressed(Keyboard::KEY_Q))
+		{
+			scale *= 1.01f;
+		}
+		if (window.getIsKeyPressed(Keyboard::KEY_E))
+		{
+			scale *= 1.f / 1.01f;
+		}
+		if (window.getIsKeyPressed(Keyboard::KEY_A))
+		{
+			location += vec2(100.f * delta, 0.f);
+		}
+		if (window.getIsKeyPressed(Keyboard::KEY_D))
+		{
+			location += vec2(-100.f * delta, 0.f);
+		}
+		if (window.getIsKeyPressed(Keyboard::KEY_W))
+		{
+			location += vec2(0.f, -100.f * delta);
+		}
+		if (window.getIsKeyPressed(Keyboard::KEY_S))
+		{
+			location += vec2(0.f, 100.f * delta);
+		}
+
+		mat4 view = glm::ortho(-aspectRatio, aspectRatio, -10.f, 10.f, .1f, 100.f);
+
+		view = glm::scale(view, vec3(scale, scale, 1.f));
+		view = glm::translate(view, vec3(location.x, location.y, 0.f));
+
+		c->setViewMat(view);
 
 		// recieve the update callbacks
 		std::list<std::function<bool()>* >& updateCallbacks = moduleManager.getUpdateCallbacks();

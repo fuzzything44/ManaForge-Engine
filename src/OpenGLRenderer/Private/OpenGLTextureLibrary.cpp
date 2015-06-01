@@ -277,7 +277,6 @@ uint32 OpenGLTextureLibrary::allocateCompressedTextureLibraryFromDDS(uint32 num,
 
 		glCompressedTexImage2D(GL_TEXTURE_2D, i, format, width, height, 0, size, nullptr);
 
-
 		width /= 2;
 		height /= 2;
 

@@ -1,7 +1,7 @@
 {
     "modules" : " ",
     "chunk": {
-        "size" : "100"
+        "size" : "1000"
     },
 	"PlayerController" : "PlayerController",
 	"Pawn" : "Pawn"
