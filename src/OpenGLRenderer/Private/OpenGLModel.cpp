@@ -14,6 +14,7 @@ OpenGLModel::OpenGLModel(ModelData data, MeshComponent* owner, OpenGLRenderer* r
 	renderer(renderer),
 	parent(owner),
 	trans(data.trans),
+	bounds(data.bounds),
 	material(static_cast<OpenGLMaterial*>(data.material))
 {	
 	// make sure they aren't zero
@@ -49,6 +50,19 @@ OpenGLModel::OpenGLModel(ModelData data, MeshComponent* owner, OpenGLRenderer* r
 	modelUniformLocation = glGetUniformLocation((*material)(), "model");
 }
 
+
+OpenGLModel::~OpenGLModel()
+{
+	check(renderer);
+
+	glDeleteBuffers(1, &vertexLocationBuffer);
+	glDeleteBuffers(1, &texCoordBuffer);
+	glDeleteBuffers(1, &elemBuffer);
+
+	glDeleteVertexArrays(1, &vertexArray);
+
+	renderer->models.remove(this);
+}
 
 
 Transform OpenGLModel::getTransform() const
@@ -117,28 +131,28 @@ void OpenGLModel::addRelativeScale(vec2 scaleToAdd)
 	trans.scale += scaleToAdd;
 }
 
-OpenGLModel::~OpenGLModel()
+bool OpenGLModel::isInBounds(const mat3& model, const mat4& camera) // TODO: ACTUAL COLLUISION
 {
-	check(renderer);
+	
+	vec3 locBeforeCamera = model * vec3(bounds.lowerLeft, 1.f);
+	vec4 posLowerLeft = camera * vec4(locBeforeCamera.x, locBeforeCamera.y, -1.f, 1.f);
 
-	glDeleteBuffers(1, &vertexLocationBuffer);
-	glDeleteBuffers(1, &texCoordBuffer);
-	glDeleteBuffers(1, &elemBuffer);
+	locBeforeCamera = model * vec3(bounds.upperLeft, 1.f);
+	vec4 posUpperLeft = camera * vec4(locBeforeCamera.x, locBeforeCamera.y, -1.f, 1.f);
 
-	glDeleteVertexArrays(1, &vertexArray);
+	locBeforeCamera = model * vec3(bounds.lowerRight, 1.f);
+	vec4 posLowerRight = camera * vec4(locBeforeCamera.x, locBeforeCamera.y, -1.f, 1.f);
 
-	renderer->models.remove(this);
+	locBeforeCamera = model * vec3(bounds.upperRight, 1.f);
+	vec4 posUpperRight = camera * vec4(locBeforeCamera.x, locBeforeCamera.y, -1.f, 1.f);
+	
+
+	return true; // for now
 }
 
 void OpenGLModel::draw()
 {
-
-	material->use();
-
-	glBindVertexArray(vertexArray);
-
-
-
+	// generate the transform stuff
 	Transform worldTrans;
 
 	if (parent)
@@ -153,11 +167,20 @@ void OpenGLModel::draw()
 	mat4 camera = (renderer->getCurrentCamera().getViewMat());
 
 	// create an identity matrix
-	mat3 model{1.f};
+	mat3 model{ 1.f };
 
 	model = glm::rotate(model, worldTrans.rotation);		// apply rotation
 	model = glm::scale(model, worldTrans.scale);			// apply scaling
 	model = glm::translate(model, worldTrans.location);	// apply translation
+
+
+	// check if it is in bounds
+	if (!isInBounds(model, camera))
+		return;
+
+	material->use();
+
+	glBindVertexArray(vertexArray);
 
 
 	if (cameraUniformLocation != -1)

@@ -9,10 +9,13 @@ class Material;
 class MeshComponent : public SceneComponent
 {
 public:
-	explicit ENGINE_API MeshComponent(
+
+	ENGINE_API explicit MeshComponent(
 		Actor* owner = nullptr,
 		Transform trans = Transform{},
 		ModelData data = ModelData{});
+
+	ENGINE_API virtual ~MeshComponent();
 
 
 protected:

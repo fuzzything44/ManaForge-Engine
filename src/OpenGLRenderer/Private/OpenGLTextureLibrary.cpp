@@ -2,6 +2,7 @@
 
 #include <Logging.h>
 #include <ENGException.h>
+#include <vector>
 
 #include "SOIL/SOIL.h"
 
@@ -22,6 +23,7 @@ OpenGLTextureLibrary::OpenGLTextureLibrary(uint16 maxElements, uint16 individual
 
 OpenGLTextureLibrary::~OpenGLTextureLibrary()
 {
+	glDeleteTextures(1, &texHandle);
 }
 
 
@@ -192,7 +194,11 @@ void OpenGLTextureLibrary::appendDDS(uint32 texToAppend, uint32 Xoffset, uint32 
 
 		unsigned int size = ((width + 3) / 4)*((height + 3) / 4)*blockSize;
 
-		glCompressedTexSubImage2D(GL_TEXTURE_2D, level, Xoffset, Yoffset, width, height, format, size, buffer + offset);
+		if (Xoffset % 4 == 0 && Yoffset % 4 == 0 && width % 4 == 0 && height % 4 == 0)
+		{
+			glCompressedTexSubImage2D(GL_TEXTURE_2D, level, Xoffset, Yoffset, width, height, format, size, buffer + offset);
+
+		}
 
 		offset += size;
 		width /= 2;
@@ -269,13 +275,19 @@ uint32 OpenGLTextureLibrary::allocateCompressedTextureLibraryFromDDS(uint32 num,
 
 	width *= num;
 	height *= num;
+	uint32 size = ((width + 3) / 4)*((height + 3) / 4) * blockSize;
+
+	std::vector<GLubyte> zeros(size);
 
 	for (uint32 i = 0; i < mipMapCount; i++)
 	{
 
-		uint32 size = ((width + 3) / 4)*((height + 3) / 4) * blockSize;
+		size = ((width + 3) / 4)*((height + 3) / 4) * blockSize;
 
-		glCompressedTexImage2D(GL_TEXTURE_2D, i, format, width, height, 0, size, nullptr);
+
+		glCompressedTexImage2D(GL_TEXTURE_2D, i, format, width, height, 0, size, &zeros[0]);
+
+		
 
 		width /= 2;
 		height /= 2;

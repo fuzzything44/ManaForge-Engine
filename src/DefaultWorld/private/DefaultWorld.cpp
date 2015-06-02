@@ -225,6 +225,12 @@ void DefaultWorld::loadWorld(std::string name)
 			}
 		}
 
+		ModelBounds bounds{ 
+			vec2(0.f, 0.f), 
+			vec2(0.f, backgroundChunkSize),
+			vec2(backgroundChunkSize, 0.f), 
+			vec2(backgroundChunkSize, backgroundChunkSize) };
+
 		// generate UV 
 		for (uint16 yChunks = 0; yChunks < numBackgroundChunks.y; ++yChunks)
 		{
@@ -282,7 +288,8 @@ void DefaultWorld::loadWorld(std::string name)
 							&elems[0],
 							backgroundChunkSize * backgroundChunkSize * 4,
 							backgroundChunkSize * backgroundChunkSize * 2,
-							drawMaterial
+							drawMaterial,
+							bounds
 						), nullptr);
 
 			}

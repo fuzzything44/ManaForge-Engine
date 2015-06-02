@@ -9,3 +9,8 @@ MeshComponent::MeshComponent(Actor* owner,
 {
 	
 }
+
+MeshComponent::~MeshComponent()
+{
+	Runtime::get().moduleManager.getRenderer().removeModel(model);
+}

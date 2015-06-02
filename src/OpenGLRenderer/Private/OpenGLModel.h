@@ -38,6 +38,8 @@ protected:
 
 	void draw();
 
+	bool isInBounds(const mat3& model, const mat4& camera);
+
 	uint32 numVerts;
 	uint32 numTris;
 
@@ -52,6 +54,7 @@ protected:
 	OpenGLRenderer* renderer;
 
 	Transform trans;
+	ModelBounds bounds;
 
 	MeshComponent* parent;
 

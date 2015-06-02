@@ -15,7 +15,7 @@ OpenGLMaterial::OpenGLMaterial(const std::string& name)
 
 OpenGLMaterial::~OpenGLMaterial()
 {
-
+	glDeleteShader(program);
 }
 
 void OpenGLMaterial::addShaderProgramFromFile(std::string name)

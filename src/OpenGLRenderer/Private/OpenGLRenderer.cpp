@@ -22,6 +22,8 @@ OpenGLRenderer::OpenGLRenderer()
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	glClearColor(.2f, .2f, .2f, 1.f);
 }
 
 Window& OpenGLRenderer::getWindow()
@@ -58,13 +60,26 @@ Material* OpenGLRenderer::newMaterial(const std::string& name)
 	return new OpenGLMaterial(name);
 }
 
+void OpenGLRenderer::deleteTextureLibrary(TextureLibrary* library)
+{
+	delete library;
+}
+void OpenGLRenderer::deleteMaterial(Material* material)
+{
+	delete material;
+}
+
+
+
+void OpenGLRenderer::removeModel(Model* model)
+{
+	delete model;
+}
 
 bool OpenGLRenderer::update()
 {
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glViewport(0, 0, window->getWindowProps().size.x, window->getWindowProps().size.y);
-	glClearColor(.2f, .2f, .2f, 1.f);
 
 	// call the draw function for all of the models
 	std::for_each(models.begin(), models.end(), std::bind(&OpenGLModel::draw, std::placeholders::_1));
@@ -87,7 +102,12 @@ void OpenGLRenderer::loadTextures(std::vector<std::string> /*textures*/)
 
 OpenGLRenderer::~OpenGLRenderer()
 {
+	for (auto& elem : models)
+	{
+		delete elem;
+	}
 
+	delete window;
 }
 
 CameraComponent& OpenGLRenderer::getCurrentCamera()

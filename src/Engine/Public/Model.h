@@ -7,6 +7,26 @@
 class MeshComponent;
 class Material;
 
+struct ModelBounds
+{
+	ModelBounds(
+		const vec2& lowerLeft  = vec2{ 0.f },
+		const vec2& upperLeft  = vec2{ 0.f },
+		const vec2& lowerRight = vec2{ 0.f },
+		const vec2& upperRight = vec2{ 0.f })
+
+		:lowerLeft(lowerLeft),
+		upperLeft(upperLeft),
+		lowerRight(lowerRight),
+		upperRight(upperRight)
+	{ }
+
+	vec2 lowerLeft;
+	vec2 upperLeft;
+	vec2 lowerRight;
+	vec2 upperRight;
+};
+
 struct ModelData
 {
 	ModelData(
@@ -16,7 +36,8 @@ struct ModelData
 		uvec3* triangles = nullptr,
 		uint32 numVerts = 0,
 		uint32 numTriangles = 0,
-		Material* material = nullptr)
+		Material* material = nullptr,
+		const ModelBounds& bounds = ModelBounds{})
 		
 		:trans(trans),
 		vertexLocations(vertexLocations),
@@ -24,7 +45,8 @@ struct ModelData
 		triangles(triangles),
 		numVerts(numVerts),
 		numTriangles(numTriangles),
-		material(material)
+		material(material),
+		bounds(bounds)
 	{
 
 	}
@@ -36,6 +58,7 @@ struct ModelData
 	uint32 numVerts;
 	uint32 numTriangles;
 	Material* material;
+	ModelBounds bounds;
 };
 
 class Model

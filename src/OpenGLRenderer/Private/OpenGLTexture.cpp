@@ -37,7 +37,7 @@ OpenGLTexture::OpenGLTexture(const std::string& path)
 
 OpenGLTexture::~OpenGLTexture()
 {
-
+	glDeleteTextures(1, &ID);
 }
 
 uint32 OpenGLTexture::getID()

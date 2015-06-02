@@ -5,6 +5,12 @@
 #include <boost/foreach.hpp>
 #include <map>
 
+ModuleManager::ModuleManager(Runtime& runtime)
+	: renderer(nullptr)
+{
+
+}
+
 ModuleManager::~ModuleManager()
 {
 	BOOST_FOREACH(auto& elem, initCallbacks)
@@ -17,14 +23,8 @@ ModuleManager::~ModuleManager()
 		delete elem;
 	}
 
-	delete renderer;
+	(*deleteRendererFunction)(renderer); // delete the renderer
 	delete createWorld;
-}
-
-ModuleManager::ModuleManager(Runtime& runtime)
-	: renderer(nullptr)
-{
-
 }
 
 Renderer& ModuleManager::getRenderer()
@@ -51,6 +51,12 @@ void ModuleManager::setRenderer(Renderer* newRenderer)
 	renderer = newRenderer;
 	
 }
+
+void ModuleManager::setRendererDeleteFun(std::function<void(Renderer*)> fun)
+{
+	deleteRendererFunction = new deleteRendererFun(fun);
+}
+
 
 void ModuleManager::setWorld(std::function<World*(std::string)> createWorldFun)
 {

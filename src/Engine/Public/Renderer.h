@@ -53,6 +53,11 @@ public:
 	virtual TextureLibrary* newTextureLibrary(uint16, uint16) = 0;
 	virtual Material* newMaterial(const std::string& name) = 0;
 
+	virtual void deleteTextureLibrary(TextureLibrary* library) = 0;
+	virtual void deleteMaterial(Material* material) = 0;
+
+	virtual void removeModel(Model* model) = 0;
+
 	/// <summary> Loads the textures.</summary>
 	///
 	/// <param name="textures"> The textures.</param>

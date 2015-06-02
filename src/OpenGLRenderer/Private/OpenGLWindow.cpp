@@ -115,6 +115,12 @@ OpenGLWindow::OpenGLWindow()
 
 OpenGLWindow::~OpenGLWindow()
 {
+
+	glfwDestroyWindow(window);
+
+	glfwTerminate();
+	
+
 }
 
 const WindowProps& OpenGLWindow::getWindowProps() const
@@ -172,6 +178,8 @@ void OpenGLWindow::updateProps()
 {
 	glfwSetWindowSize(window, props.size.x, props.size.y);
 	glfwSetWindowTitle(window, props.title.c_str());
+
+	glViewport(0, 0, props.size.x, props.size.y);
 
 	switch (props.renderMode)
 	{

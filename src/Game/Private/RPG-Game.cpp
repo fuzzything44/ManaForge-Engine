@@ -8,8 +8,7 @@
 
 int32 main()
 {
-
-
+	
 	Runtime runtime{ "default" };
 
 	try{

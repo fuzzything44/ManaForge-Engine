@@ -16,6 +16,8 @@ public:
 
 	OpenGLRenderer();
 
+	virtual ~OpenGLRenderer() override;
+
 	virtual Window& getWindow() override;
 	const Window& getWindow() const override;
 
@@ -23,7 +25,11 @@ public:
 	virtual Texture* newTexture(const std::string& name) override;
 	virtual TextureLibrary* newTextureLibrary(uint16, uint16) override;
 	virtual Material* newMaterial(const std::string& name) override;
-	
+
+	virtual void deleteTextureLibrary(TextureLibrary* library) override;
+	virtual void deleteMaterial(Material* material) override;
+
+	virtual void removeModel(Model* model) override;
 
 	/// <summary> Renders the next frame. </summary>
 	virtual bool update() override;
@@ -35,7 +41,6 @@ public:
 
 	void loadTextures(std::vector<std::string> textures) override;
 
-	virtual ~OpenGLRenderer() override;
 
 	CameraComponent& getCurrentCamera() override;
 	const CameraComponent& getCurrentCamera() const override;

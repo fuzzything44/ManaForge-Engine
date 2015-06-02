@@ -23,6 +23,7 @@ public:
 	friend Runtime;
 
 	typedef std::function<Actor*(const std::string&, const Transform&)> contentModuleSpawnFun;
+	typedef std::function<void(Renderer*)> deleteRendererFun;
 
 	ENGINE_API ~ModuleManager();
 
@@ -43,6 +44,8 @@ public:
 	///
 	/// <param name="newRenderer"> If non-null, the new renderer.</param>
 	ENGINE_API void setRenderer(Renderer* newRenderer);
+
+	ENGINE_API void setRendererDeleteFun(std::function<void(Renderer*)> fun);
 
 	/// <summary> Adds a world.</summary>
 	///
@@ -68,6 +71,8 @@ private:
 
 	// function to createWorld
 	std::function<World*(std::string)>* createWorld;
+
+	deleteRendererFun* deleteRendererFunction;
 
 	std::map<std::string, Module> loadedModules;
 
