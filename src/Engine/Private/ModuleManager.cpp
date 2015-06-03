@@ -2,10 +2,9 @@
 #include "ModuleManager.h"
 #include "Helper.h"
 
-#include <boost/foreach.hpp>
 #include <map>
 
-ModuleManager::ModuleManager(Runtime& runtime)
+ModuleManager::ModuleManager(void)
 	: renderer(nullptr)
 {
 
@@ -13,20 +12,8 @@ ModuleManager::ModuleManager(Runtime& runtime)
 
 ModuleManager::~ModuleManager()
 {
-	BOOST_FOREACH(auto& elem, initCallbacks)
-	{
-		delete elem;
-	}
-
-	BOOST_FOREACH(auto& elem, updateCallbacks)
-	{
-		delete elem;
-	}
-
-	(*deleteRendererFunction)(renderer); // delete the renderer
-	delete deleteRendererFunction;
-	delete deleteWorldFunction;
-	delete createWorld;
+	
+	delete renderer;
 }
 
 Renderer& ModuleManager::getRenderer()
@@ -35,11 +22,6 @@ Renderer& ModuleManager::getRenderer()
 
     return *renderer;
 	
-}
-
-void ModuleManager::deleteWorld(World* world)
-{
-	(*deleteWorldFunction)(world);
 }
 
 void ModuleManager::loadModule(const std::string& filename)
@@ -59,29 +41,21 @@ void ModuleManager::setRenderer(Renderer* newRenderer)
 	
 }
 
-void ModuleManager::setRendererDeleteFun(deleteRendererFun fun)
-{
-	deleteRendererFunction = new deleteRendererFun(fun);
-}
-
-void ModuleManager::setDeleteWorldFun(deleteWorldFun fun)
-{
-	deleteWorldFunction = new deleteWorldFun(fun);
-}
-
-
-void ModuleManager::setWorld(std::function<World*(std::string)> createWorldFun)
+void ModuleManager::setCreateWorldFun(newWorldFun createWorldFun)
 {
 	
 	// copy to the class's version
-	createWorld = new std::function<World*(std::string)>(createWorldFun);
+	newWorldFunction =  createWorldFun;
 }
 
 World* ModuleManager::newWorld(std::string path)
 {
-	check(createWorld);
+	if (newWorldFunction._Empty())
+	{
+		FATAL_ERR("Failed to create world -- the function was empty");
+	}
 
-	return (*createWorld)(path);
+	return newWorldFunction(path);
 }
 
 void ModuleManager::AddContentModule(contentModuleSpawnFun fun, const std::string& moduleName)
@@ -124,12 +98,12 @@ void ModuleManager::addUpdateCallback(const std::function<bool()>& function)
 	updateCallbacks.push_back(new std::function<bool()>(function));
 }
 
-std::list<std::function<void()>* >& ModuleManager::getInitCallbacks()
+std::list<std::function<void()> >& ModuleManager::getInitCallbacks()
 {
 	return initCallbacks;
 }
 
-std::list<std::function<bool()>* >& ModuleManager::getUpdateCallbacks()
+std::list<std::function<bool()> >& ModuleManager::getUpdateCallbacks()
 {
 	return updateCallbacks;
 }

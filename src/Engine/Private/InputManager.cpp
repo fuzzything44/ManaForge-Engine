@@ -2,10 +2,9 @@
 
 #include "Runtime.h"
 
-#include <boost/serialization/map.hpp>
-#include <boost/serialization/vector.hpp>
+#include <SaveData.h>
 
-#include <boost/archive/xml_oarchive.hpp>
+
 #include <boost/archive/xml_iarchive.hpp>
 
 
@@ -82,13 +81,13 @@ void InputManager::bindAxisMapping(const std::string& name, std::function<void(f
 bool InputManager::update()
 {
 
-	BOOST_FOREACH(auto& elem, actionMappings)
+	for (auto& elem : actionMappings)
 	{
 		// call the operator() function
 		elem.second();
 	}
 
-	BOOST_FOREACH(auto& elem, axisMappings)
+	for (auto& elem : axisMappings)
 	{
 		// call the operator() function
 		elem.second();
@@ -98,7 +97,7 @@ bool InputManager::update()
 }
 
 InputManager::ActionMapping::ActionMapping(const std::vector<Keyboard>& keys)
-	: keysUsed(keys)
+	: keysBound(keys)
 {
 			
 }
@@ -127,7 +126,7 @@ void InputManager::ActionMapping::operator()()
 	}
 
 	bool isPressedNew = false;
-	BOOST_FOREACH(auto& elem, keysUsed)
+	for(auto& elem : keysBound)
 	{
 		// if there is one that is pressed, the entire binding is pressed,
 		// so break
@@ -166,7 +165,7 @@ void InputManager::AxisMapping::operator()()
 {
 	float totalValue = 0.f;
 
-	BOOST_FOREACH(auto& elem, values)
+	for (auto& elem : values)
 	{
 		// compute the amount to add -- without branches
 		totalValue += Runtime::get().inputManager.window->getIsKeyPressed(elem.first) * elem.second;

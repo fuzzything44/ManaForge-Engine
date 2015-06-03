@@ -40,3 +40,11 @@ void ImageLoader::addLoader(std::string extension, loadFun function)
 
 
 }
+
+void ImageLoader::cleanUp()
+{
+	for (auto& elem : loadFunctions)
+	{
+		delete elem.second;
+	}
+}

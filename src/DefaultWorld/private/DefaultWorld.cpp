@@ -15,9 +15,8 @@
 
 #include <boost/algorithm/string.hpp>
 
-#include <boost/serialization/map.hpp>
-#include <boost/serialization/list.hpp>
-#include <boost/serialization/nvp.hpp>
+#include <SaveData.h>
+
 
 #ifdef SAVE_TYPE_XML
 #	include <boost/archive/polymorphic_xml_oarchive.hpp>
@@ -26,6 +25,7 @@
 #	include <boost/archive/polymorphic_binary_oarchive.hpp>
 #	include <boost/archive/polymorphic_binary_iarchive.hpp>
 #endif
+
 
 // Defines for in and out archives. May want to change to defines and include the istreams.
 #ifdef SAVE_TYPE_XML
@@ -98,6 +98,12 @@ DefaultWorld::~DefaultWorld()
 {
 	Runtime::get().moduleManager.getRenderer().deleteTextureLibrary(backgroundImages);
 	Runtime::get().moduleManager.getRenderer().deleteMaterial(drawMaterial);
+
+
+	for (auto& elem : actors)
+	{
+		delete elem.second;
+	}
 }
 
 

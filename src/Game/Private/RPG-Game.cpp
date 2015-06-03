@@ -7,8 +7,7 @@
 
 
 int32 main()
-{
-	
+{	
 	Runtime* runtime = new Runtime("default");
 
 	try{
@@ -28,7 +27,8 @@ int32 main()
 
 		return -1;
 	}
-	
+
+	_CrtDumpMemoryLeaks();
 }
 
 

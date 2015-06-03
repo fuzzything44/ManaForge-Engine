@@ -19,6 +19,9 @@ public:
 
 	// returns size
 	ENGINE_API static uvec2 load(std::string filename, std::vector<uint8>& data);
+
+	ENGINE_API static void cleanUp();
+
 private:
 	static std::map<std::string, loadFun* > loadFunctions;
 

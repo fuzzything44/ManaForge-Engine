@@ -8,10 +8,7 @@
 #include <vector>
 #include <functional>
 
-#include <boost/foreach.hpp>
-
-#include <boost/serialization/access.hpp>
-#include <boost/serialization/nvp.hpp>
+#include <SaveData.h>
 
 
 class Runtime;
@@ -49,7 +46,7 @@ private:
 
 		void setReleasedCallback(std::function<void()> fun);
 
-		std::vector<Keyboard> keysUsed;
+		std::vector<Keyboard> keysBound;
 
 		// function pointers -- they are pointers to make sure they are all allocated and freed in the same module.
 		std::function<void()> pressed;

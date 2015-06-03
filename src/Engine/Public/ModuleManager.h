@@ -12,24 +12,26 @@
 
 #include <boost/algorithm/string.hpp>
 
+#include <boost/core/noncopyable.hpp>
+
 class Runtime;
 class World;
 class Renderer;
 
 class ModuleManager
+	: boost::noncopyable
 {
 public:
 
 	friend Runtime;
 
 	typedef std::function<Actor*(const std::string&, const Transform&)> contentModuleSpawnFun;
-	typedef std::function<void(Renderer*)> deleteRendererFun;
-	typedef std::function<void(World*)> deleteWorldFun;
+	typedef std::function<World*(const std::string&)> newWorldFun;
 
 	ENGINE_API ~ModuleManager();
 
 	/// <summary> Default constructor.</summary>
-	ENGINE_API ModuleManager(Runtime& runtime);
+	ENGINE_API ModuleManager(void); // workaround for using comma operator in constructor
 
 	/// <summary> Gets the renderer./</summary>
 	///
@@ -46,18 +48,14 @@ public:
 	/// <param name="newRenderer"> If non-null, the new renderer.</param>
 	ENGINE_API void setRenderer(Renderer* newRenderer);
 
-	ENGINE_API void setRendererDeleteFun(deleteRendererFun fun);
-
-	ENGINE_API void setDeleteWorldFun(deleteWorldFun fun);
-
-	/// <summary> Adds a world.</summary>
+	/// <summary> .</summary>
 	///
 	/// <param name="createWorld()"> Function that creates a world </param>
-	ENGINE_API void setWorld(std::function<World*(std::string)> createWorld);
+	ENGINE_API void setCreateWorldFun(newWorldFun createWorld);
 
+	/// <summary> Creates a new world using the function set in setCreateWorldFun </summary>
+	/// <param name="path"> the name of the world to create </param>
 	ENGINE_API World* newWorld(std::string path);
-
-	ENGINE_API void deleteWorld(World* world);
 
 	ENGINE_API void AddContentModule(contentModuleSpawnFun fun, const std::string& moduleName);
 
@@ -68,17 +66,14 @@ public:
 
 private:
 
-	std::list<std::function<void()>* >& getInitCallbacks();
-	std::list<std::function<bool()>* >& getUpdateCallbacks();
+	std::list<std::function<void()> >& getInitCallbacks();
+	std::list<std::function<bool()> >& getUpdateCallbacks();
 
-	std::list<std::function<void()>* > initCallbacks;
-	std::list<std::function<bool()>* > updateCallbacks;
+	std::list<std::function<void()> > initCallbacks;
+	std::list<std::function<bool()> > updateCallbacks;
 
 	// function to createWorld
-	std::function<World*(std::string)>* createWorld;
-
-	deleteRendererFun* deleteRendererFunction;
-	deleteWorldFun* deleteWorldFunction;
+	newWorldFun newWorldFunction;
 
 	std::map<std::string, Module> loadedModules;
 

@@ -8,7 +8,7 @@
 Gate::Gate(const Transform& trans)
 	: Actor(trans)
 {
-
+	
 }
 
 Gate::~Gate()

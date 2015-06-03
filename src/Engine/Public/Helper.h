@@ -2,7 +2,7 @@
 #include <Engine.h>
 #include <ENGException.h>
 
-#include <boost/serialization/nvp.hpp>
+#include <SaveData.h>
 
 // standard library includes
 #include <ios>

@@ -2,14 +2,10 @@
 #define ENGINE_VERSION 0.1f
 #define Engine_ModuleName "Engine"
 
-#define BOOST_SERIALIZATION_DYN_LINK 1
-
 #ifdef Engine_Source
 #	define ENGINE_API _declspec(dllexport)
 #else
 #	define ENGINE_API _declspec(dllimport)
-// link to Engine.lib if we arn't compiling the engine
-#	pragma message("Linking to engine...")
 #	pragma comment(lib, "Engine.lib")
 #endif
 
@@ -17,6 +13,7 @@
 #pragma comment(lib, "StackWalker.lib")
 
 #if defined WIN32 || defined _WIN32
+#	define WIN32_LEAN_AND_MEAN 
 #	include <Windows.h>
 #	include <direct.h>
 #endif

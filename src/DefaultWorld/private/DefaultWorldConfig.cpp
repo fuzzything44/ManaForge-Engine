@@ -4,19 +4,15 @@
 #include <DefaultWorld.h>
 
 
-World* AddWorld(std::string folder)
-{
-	return new DefaultWorld(folder);
-}
-
-
 extern "C" DefualtWorld_API void registerModule(ModuleManager& mm)
 {
-	mm.setWorld(AddWorld);
-	mm.setDeleteWorldFun([](World* world)
+	mm.setCreateWorldFun(
+		[](const std::string& name)
 	{
-		delete world;
+		return new DefaultWorld(name);
 	});
+
+
 }
 
 extern "C" DefualtWorld_API float getModuleEngineVersion()

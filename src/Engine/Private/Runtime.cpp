@@ -8,9 +8,12 @@
 #include <list>
 #include <chrono>
 
+#include <boost/timer/timer.hpp>
+
+#include "ImageLoader.h"
+
 #include <boost/algorithm/string.hpp>
 
-#include <boost/timer/timer.hpp>
 
 
 
@@ -18,7 +21,7 @@
 Runtime* Runtime::currentRuntime = nullptr;
 
 Runtime::Runtime(const std::string& worldPath)
-	:moduleManager((changeDir(), logging::init(), *this)), 
+	:moduleManager((changeDir(), logging::init())), 
 	propManager("props.json")
 {
 
@@ -48,7 +51,9 @@ Runtime::Runtime(const std::string& worldPath)
 
 Runtime::~Runtime()
 {
-	moduleManager.deleteWorld(world);
+	ImageLoader::cleanUp();
+	//moduleManager.deleteWorld(world);
+	delete world;
 }
 
 void Runtime::run()
@@ -57,11 +62,16 @@ void Runtime::run()
 		// time the init time
 		boost::timer::cpu_timer t;
 
-		std::list<std::function<void()>* >& initCallbacks = moduleManager.getInitCallbacks();
+		std::list<std::function<void()> >& initCallbacks = moduleManager.getInitCallbacks();
 
 		for (auto& callback : initCallbacks)
 		{
-			(*callback)();
+			if (callback._Empty())
+			{
+				ENG_LOGLN("Warning: init callback empty.");
+			}
+
+			callback();
 		}
 		ENG_LOGLN("init completed. Timestamp: " << t.format());
 
@@ -81,7 +91,7 @@ void Runtime::run()
 	moduleManager.getRenderer().setCurrentCamera(c);
 
 	
-
+	
 
 
 
@@ -146,7 +156,7 @@ void Runtime::run()
 		c->setViewMat(view);
 
 		// recieve the update callbacks
-		std::list<std::function<bool()>* >& updateCallbacks = moduleManager.getUpdateCallbacks();
+		std::list<std::function<bool()> >& updateCallbacks = moduleManager.getUpdateCallbacks();
 
 		shouldContinue = true;
 

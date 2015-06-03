@@ -12,5 +12,6 @@ MeshComponent::MeshComponent(Actor* owner,
 
 MeshComponent::~MeshComponent()
 {
-	Runtime::get().moduleManager.getRenderer().removeModel(model);
+	//Runtime::get().moduleManager.getRenderer().removeModel(model);
+	delete model;
 }
