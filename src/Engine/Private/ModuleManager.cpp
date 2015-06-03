@@ -4,7 +4,7 @@
 
 #include <map>
 
-ModuleManager::ModuleManager(void)
+ModuleManager::ModuleManager()
 	: renderer(nullptr)
 {
 
@@ -12,7 +12,24 @@ ModuleManager::ModuleManager(void)
 
 ModuleManager::~ModuleManager()
 {
-	
+	newWorldFunction.~function();
+
+
+	for (auto& elem : contentSpawnMethods)
+	{
+		elem.second.~function();
+	}
+
+	for (auto& elem : initCallbacks)
+	{
+		elem.~function();
+	}
+
+	for (auto& elem : updateCallbacks)
+	{
+		elem.~function();
+	}
+
 	delete renderer;
 }
 
@@ -41,7 +58,7 @@ void ModuleManager::setRenderer(Renderer* newRenderer)
 	
 }
 
-void ModuleManager::setCreateWorldFun(newWorldFun createWorldFun)
+void ModuleManager::setCreateWorldFun(const newWorldFun& createWorldFun)
 {
 	
 	// copy to the class's version
@@ -90,12 +107,12 @@ Actor* ModuleManager::spawnActor(const std::string& name, const Transform& trans
 
 void ModuleManager::addInitCallback(const std::function<void()>& function)
 {
-	initCallbacks.push_back(new std::function<void()>(function));
+	initCallbacks.push_back(function);
 }
 
 void ModuleManager::addUpdateCallback(const std::function<bool()>& function)
 {
-	updateCallbacks.push_back(new std::function<bool()>(function));
+	updateCallbacks.push_back(function);
 }
 
 std::list<std::function<void()> >& ModuleManager::getInitCallbacks()

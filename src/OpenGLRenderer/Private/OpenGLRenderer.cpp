@@ -89,7 +89,8 @@ bool OpenGLRenderer::update()
 	window->swapBuffers();
 	window->pollEvents();
 
-	return !window->shouldClose();
+	bool ret = !window->shouldClose();
+	return ret;
 }
 
 void OpenGLRenderer::setCurrentCamera(CameraComponent* newCamera)

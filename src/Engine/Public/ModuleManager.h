@@ -31,7 +31,7 @@ public:
 	ENGINE_API ~ModuleManager();
 
 	/// <summary> Default constructor.</summary>
-	ENGINE_API ModuleManager(void); // workaround for using comma operator in constructor
+	ENGINE_API ModuleManager(); 
 
 	/// <summary> Gets the renderer./</summary>
 	///
@@ -51,7 +51,7 @@ public:
 	/// <summary> .</summary>
 	///
 	/// <param name="createWorld()"> Function that creates a world </param>
-	ENGINE_API void setCreateWorldFun(newWorldFun createWorld);
+	ENGINE_API void setCreateWorldFun(const newWorldFun& createWorld);
 
 	/// <summary> Creates a new world using the function set in setCreateWorldFun </summary>
 	/// <param name="path"> the name of the world to create </param>

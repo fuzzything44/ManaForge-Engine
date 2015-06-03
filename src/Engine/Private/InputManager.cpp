@@ -7,6 +7,8 @@
 
 #include <boost/archive/xml_iarchive.hpp>
 
+#include <boost/lexical_cast.hpp>
+
 
 InputManager::InputManager(Window* window): window(window)
 {
@@ -24,6 +26,11 @@ InputManager::InputManager(Window* window): window(window)
 		i_archive >> BOOST_SERIALIZATION_NVP(actionMappings);
 		i_archive >> BOOST_SERIALIZATION_NVP(axisMappings);
 
+	}
+	catch (boost::archive::archive_exception& e)
+	{
+		ENG_LOGLN(e.what());
+		FATAL_ERR(std::string("ARCHIVE EXCEPTION OCCURED IN LOADING INPUT MANAGER. Code: ") + boost::lexical_cast<std::string>(e.code) + " Error message: " + e.what());
 	}
 	catch (std::exception& e)
 	{

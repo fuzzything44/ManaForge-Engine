@@ -59,7 +59,7 @@ private:
 		template<typename Archive>
 		void serialize(Archive& ar, const uint32 version)
 		{
-			ar & BOOST_SERIALIZATION_NVP(keysUsed);
+			ar & BOOST_SERIALIZATION_NVP(keysBound);
 		}
 	};
 

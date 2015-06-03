@@ -27,8 +27,6 @@ int32 main()
 
 		return -1;
 	}
-
-	_CrtDumpMemoryLeaks();
 }
 
 

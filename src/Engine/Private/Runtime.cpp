@@ -21,8 +21,8 @@
 Runtime* Runtime::currentRuntime = nullptr;
 
 Runtime::Runtime(const std::string& worldPath)
-	:moduleManager((changeDir(), logging::init())), 
-	propManager("props.json")
+	:propManager((changeDir(), logging::init(), "props.json")),
+	moduleManager()
 {
 
 	// update current runtime to be the most recently created one
@@ -52,7 +52,7 @@ Runtime::Runtime(const std::string& worldPath)
 Runtime::~Runtime()
 {
 	ImageLoader::cleanUp();
-	//moduleManager.deleteWorld(world);
+
 	delete world;
 }
 
@@ -162,7 +162,12 @@ void Runtime::run()
 
 		for (auto& callback : updateCallbacks)
 		{
-			if(!(*callback)())
+			if (callback._Empty())
+			{
+				ENG_LOGLN("Warning: Update callback empty");
+			}
+
+			if(!callback()) // it would return true if we should coninue
 			{
 				shouldContinue = false;
 			}

@@ -7,42 +7,42 @@
 	<item class_id="1" tracking_level="0" version="0">
 		<first>doop</first>
 		<second class_id="2" tracking_level="0" version="0">
-			<keysUsed class_id="3" tracking_level="0" version="0">
+			<keysBound class_id="3" tracking_level="0" version="0">
 				<count>1</count>
 				<item_version>0</item_version>
 				<item>77</item>
-			</keysUsed>
+			</keysBound>
 		</second>
 	</item>
 	<item>
 		<first>fire</first>
 		<second>
-			<keysUsed>
+			<keysBound>
 				<count>2</count>
 				<item_version>0</item_version>
 				<item>76</item>
 				<item>52</item>
-			</keysUsed>
+			</keysBound>
 		</second>
 	</item>
 	<item>
 		<first>fun</first>
 		<second>
-			<keysUsed>
+			<keysBound>
 				<count>1</count>
 				<item_version>0</item_version>
 				<item>75</item>
-			</keysUsed>
+			</keysBound>
 		</second>
 	</item>
 	<item>
 		<first>smart</first>
 		<second>
-			<keysUsed>
+			<keysBound>
 				<count>1</count>
 				<item_version>0</item_version>
 				<item>322</item>
-			</keysUsed>
+			</keysBound>
 		</second>
 	</item>
 </actionMappings>

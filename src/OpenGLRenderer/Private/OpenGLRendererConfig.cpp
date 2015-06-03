@@ -7,12 +7,6 @@
 extern "C" OpenGLRenderer_API void registerModule(ModuleManager& mm)
 {
 	mm.setRenderer(new OpenGLRenderer());
-	mm.setRendererDeleteFun(
-		[](Renderer* renderer)
-	{
-		delete renderer;
-	});
-
 
 	mm.addUpdateCallback(
 		std::bind(&OpenGLRenderer::update,

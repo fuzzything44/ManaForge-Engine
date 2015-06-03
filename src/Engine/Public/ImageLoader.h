@@ -23,6 +23,6 @@ public:
 	ENGINE_API static void cleanUp();
 
 private:
-	static std::map<std::string, loadFun* > loadFunctions;
+	static std::map<std::string, loadFun > loadFunctions;
 
 };

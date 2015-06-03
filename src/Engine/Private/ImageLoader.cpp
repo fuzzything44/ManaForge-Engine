@@ -1,7 +1,7 @@
 #include "ImageLoader.h"
 
-std::map<std::string, std::function<uvec2(std::string, std::vector<uint8>&)>* > 
-	ImageLoader::loadFunctions = std::map<std::string, loadFun* >();
+std::map<std::string, std::function<uvec2(std::string, std::vector<uint8>&)> > 
+	ImageLoader::loadFunctions = std::map<std::string, loadFun >();
 
 uvec2 ImageLoader::load(std::string filename, std::vector<uint8>& data)
 {
@@ -19,10 +19,14 @@ uvec2 ImageLoader::load(std::string filename, std::vector<uint8>& data)
 
 	if (foundIter == loadFunctions.end())
 	{
-		FATAL_ERR("no loader for extension");
+		ENG_LOGLN("no loader for extension, returning nullvector");
+
+		data.clear();
+
+		return uvec2(0);
 	}
 
-	auto fun = *foundIter->second;
+	auto fun = foundIter->second;
 
 	check(fun);
 
@@ -36,7 +40,8 @@ void ImageLoader::addLoader(std::string extension, loadFun function)
 		ENG_LOGLN("Dulplicate loader for " << extension << ". using newest loader.");
 
 	}
-	loadFunctions[extension] = new std::function<uvec2(std::string, std::vector<uint8>& ) > (function);
+
+	loadFunctions[extension] = function;
 
 
 }
@@ -45,6 +50,6 @@ void ImageLoader::cleanUp()
 {
 	for (auto& elem : loadFunctions)
 	{
-		delete elem.second;
+		elem.second.~function();
 	}
 }
