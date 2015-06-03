@@ -24,6 +24,7 @@ public:
 
 	typedef std::function<Actor*(const std::string&, const Transform&)> contentModuleSpawnFun;
 	typedef std::function<void(Renderer*)> deleteRendererFun;
+	typedef std::function<void(World*)> deleteWorldFun;
 
 	ENGINE_API ~ModuleManager();
 
@@ -45,7 +46,9 @@ public:
 	/// <param name="newRenderer"> If non-null, the new renderer.</param>
 	ENGINE_API void setRenderer(Renderer* newRenderer);
 
-	ENGINE_API void setRendererDeleteFun(std::function<void(Renderer*)> fun);
+	ENGINE_API void setRendererDeleteFun(deleteRendererFun fun);
+
+	ENGINE_API void setDeleteWorldFun(deleteWorldFun fun);
 
 	/// <summary> Adds a world.</summary>
 	///
@@ -53,6 +56,8 @@ public:
 	ENGINE_API void setWorld(std::function<World*(std::string)> createWorld);
 
 	ENGINE_API World* newWorld(std::string path);
+
+	ENGINE_API void deleteWorld(World* world);
 
 	ENGINE_API void AddContentModule(contentModuleSpawnFun fun, const std::string& moduleName);
 
@@ -73,6 +78,7 @@ private:
 	std::function<World*(std::string)>* createWorld;
 
 	deleteRendererFun* deleteRendererFunction;
+	deleteWorldFun* deleteWorldFunction;
 
 	std::map<std::string, Module> loadedModules;
 

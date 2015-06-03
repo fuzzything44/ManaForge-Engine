@@ -53,7 +53,6 @@ OpenGLModel::OpenGLModel(ModelData data, MeshComponent* owner, OpenGLRenderer* r
 
 OpenGLModel::~OpenGLModel()
 {
-	check(renderer);
 
 	glDeleteBuffers(1, &vertexLocationBuffer);
 	glDeleteBuffers(1, &texCoordBuffer);
@@ -61,7 +60,12 @@ OpenGLModel::~OpenGLModel()
 
 	glDeleteVertexArrays(1, &vertexArray);
 
-	renderer->models.remove(this);
+	if (!OpenGLRenderer::isDestroying)
+	{
+		check(renderer);
+
+		renderer->models.remove(this);
+	}
 }
 
 

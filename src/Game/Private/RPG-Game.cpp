@@ -9,11 +9,12 @@
 int32 main()
 {
 	
-	Runtime runtime{ "default" };
+	Runtime* runtime = new Runtime("default");
 
 	try{
 		// run the runtime. consumes the thread until it returns
-		runtime.run();
+		runtime->run();
+		delete runtime;
 	}
 	catch (ENGException& e)
 	{

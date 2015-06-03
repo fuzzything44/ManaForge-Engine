@@ -15,7 +15,9 @@ OpenGLMaterial::OpenGLMaterial(const std::string& name)
 
 OpenGLMaterial::~OpenGLMaterial()
 {
-	glDeleteShader(program);
+
+	glDeleteProgram(program);
+
 }
 
 void OpenGLMaterial::addShaderProgramFromFile(std::string name)
@@ -26,8 +28,8 @@ void OpenGLMaterial::addShaderProgramFromFile(std::string name)
 	ENG_LOGLN(std::endl << std::endl);
 
 	// Create the shaders
-	uint32 VertexShaderID = glCreateShader(GL_VERTEX_SHADER);
-	uint32 FragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
+	GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
+	GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 
 	// Read the Vertex Shader code from the file
 	std::string VertexShaderCode = loadFileToStr(vertexPath.c_str());
@@ -44,15 +46,15 @@ void OpenGLMaterial::addShaderProgramFromFile(std::string name)
 	ENG_LOGLN("Compiling vertex Shader " << vertexPath);
 
 	const char* VertexSourcePointer = VertexShaderCode.c_str();
-	glShaderSource(VertexShaderID, 1, &VertexSourcePointer, nullptr);
-	glCompileShader(VertexShaderID);
+	glShaderSource(vertexShader, 1, &VertexSourcePointer, nullptr);
+	glCompileShader(vertexShader);
 
 	// Check Vertex Shader
-	glGetShaderiv(VertexShaderID, GL_COMPILE_STATUS, &Result);
-	glGetShaderiv(VertexShaderID, GL_INFO_LOG_LENGTH, &InfoLogLength);
+	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &Result);
+	glGetShaderiv(vertexShader, GL_INFO_LOG_LENGTH, &InfoLogLength);
 	if (InfoLogLength > 0){
 		char* VertexShaderErrorMessage = new char[InfoLogLength + 1]();
-		glGetShaderInfoLog(VertexShaderID, InfoLogLength, nullptr, &VertexShaderErrorMessage[0]);
+		glGetShaderInfoLog(vertexShader, InfoLogLength, nullptr, &VertexShaderErrorMessage[0]);
 		ENG_LOGLN("\n" << &VertexShaderErrorMessage[0]);
 		delete[] VertexShaderErrorMessage;
 	}
@@ -65,15 +67,15 @@ void OpenGLMaterial::addShaderProgramFromFile(std::string name)
 	// Compile Fragment Shader
 	ENG_LOGLN("\nCompiling fragment Shader " << fragPath);
 	const char* FragmentSourcePointer = FragmentShaderCode.c_str();
-	glShaderSource(FragmentShaderID, 1, &FragmentSourcePointer, nullptr);
-	glCompileShader(FragmentShaderID);
+	glShaderSource(fragmentShader, 1, &FragmentSourcePointer, nullptr);
+	glCompileShader(fragmentShader);
 
 	// Check Fragment Shader
-	glGetShaderiv(FragmentShaderID, GL_COMPILE_STATUS, &Result);
-	glGetShaderiv(FragmentShaderID, GL_INFO_LOG_LENGTH, &InfoLogLength);
+	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &Result);
+	glGetShaderiv(fragmentShader, GL_INFO_LOG_LENGTH, &InfoLogLength);
 	if (InfoLogLength > 0){
 		char* FragmentShaderErrorMessage = new char[InfoLogLength + 1]();
-		glGetShaderInfoLog(FragmentShaderID, InfoLogLength, nullptr, FragmentShaderErrorMessage);
+		glGetShaderInfoLog(fragmentShader, InfoLogLength, nullptr, FragmentShaderErrorMessage);
 		ENG_LOGLN("\n" << FragmentShaderErrorMessage);
 		delete[] FragmentShaderErrorMessage;
 	}
@@ -86,8 +88,8 @@ void OpenGLMaterial::addShaderProgramFromFile(std::string name)
 	// Link the program
 	ENG_LOGLN("Linking program " << name);
 	program = glCreateProgram();
-	glAttachShader(program, VertexShaderID);
-	glAttachShader(program, FragmentShaderID);
+	glAttachShader(program, vertexShader);
+	glAttachShader(program, fragmentShader);
 	glLinkProgram(program);
 
 	// Check the program
@@ -100,10 +102,8 @@ void OpenGLMaterial::addShaderProgramFromFile(std::string name)
 		delete[] ProgramErrorMessage;
 	}
 
-	// free the sader memory -- it is already in the program
-	glDeleteShader(VertexShaderID);
-	glDeleteShader(FragmentShaderID);
-
+	glDeleteShader(vertexShader);
+	glDeleteShader(fragmentShader);
 }
 
 void OpenGLMaterial::addShaderProgramFromSource(std::string shader)

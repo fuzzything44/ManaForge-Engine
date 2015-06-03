@@ -14,6 +14,8 @@
 #include <algorithm>
 #include "OpenGLTextureLibrary.h"
 
+bool OpenGLRenderer::isDestroying = false;
+
 OpenGLRenderer::OpenGLRenderer()
 	: window(new OpenGLWindow())
 {
@@ -102,12 +104,20 @@ void OpenGLRenderer::loadTextures(std::vector<std::string> /*textures*/)
 
 OpenGLRenderer::~OpenGLRenderer()
 {
+	isDestroying = true;
+
 	for (auto& elem : models)
 	{
 		delete elem;
 	}
 
+
+	OpenGLTexture::deleteAll();
+
+	glFinish();
+
 	delete window;
+
 }
 
 CameraComponent& OpenGLRenderer::getCurrentCamera()

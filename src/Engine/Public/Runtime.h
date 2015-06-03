@@ -20,6 +20,8 @@ public:
 
 	ENGINE_API explicit Runtime(const std::string& world = "");
 
+	ENGINE_API ~Runtime();
+
 	ModuleManager moduleManager;
 	PropertyManager propManager;
 	InputManager inputManager;

@@ -6,6 +6,8 @@
 #define FOURCC_DXT3 0x33545844 // Equivalent to "DXT3" in ASCII
 #define FOURCC_DXT5 0x35545844 // Equivalent to "DXT5" in ASCII
 
+std::map<std::string, OpenGLTexture*> OpenGLTexture::textures = std::map<std::string, OpenGLTexture*>();
+
 OpenGLTexture::OpenGLTexture(const std::string& path)
 	: path(path)
 {
@@ -97,6 +99,14 @@ Texture::FilterMode OpenGLTexture::getFilterMode() const
 	default:
 		return Texture::FilterMode::LINEAR; // IDK
 		break;
+	}
+}
+
+void OpenGLTexture::deleteAll()
+{
+	for (auto& elem : textures)
+	{
+		delete elem.second;
 	}
 }
 

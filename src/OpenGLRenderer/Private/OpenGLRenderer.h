@@ -55,6 +55,8 @@ private:
 
 	// doubley linked list of the models
 	std::list<OpenGLModel*> models;
+
+	static bool isDestroying;
 };
 
 

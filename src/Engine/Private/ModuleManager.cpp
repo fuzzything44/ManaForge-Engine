@@ -24,6 +24,8 @@ ModuleManager::~ModuleManager()
 	}
 
 	(*deleteRendererFunction)(renderer); // delete the renderer
+	delete deleteRendererFunction;
+	delete deleteWorldFunction;
 	delete createWorld;
 }
 
@@ -33,6 +35,11 @@ Renderer& ModuleManager::getRenderer()
 
     return *renderer;
 	
+}
+
+void ModuleManager::deleteWorld(World* world)
+{
+	(*deleteWorldFunction)(world);
 }
 
 void ModuleManager::loadModule(const std::string& filename)
@@ -52,9 +59,14 @@ void ModuleManager::setRenderer(Renderer* newRenderer)
 	
 }
 
-void ModuleManager::setRendererDeleteFun(std::function<void(Renderer*)> fun)
+void ModuleManager::setRendererDeleteFun(deleteRendererFun fun)
 {
 	deleteRendererFunction = new deleteRendererFun(fun);
+}
+
+void ModuleManager::setDeleteWorldFun(deleteWorldFun fun)
+{
+	deleteWorldFunction = new deleteWorldFun(fun);
 }
 
 

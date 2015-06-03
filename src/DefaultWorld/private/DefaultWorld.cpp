@@ -93,6 +93,14 @@ DefaultWorld::DefaultWorld(std::string folder)
 
 }
 
+
+DefaultWorld::~DefaultWorld()
+{
+	Runtime::get().moduleManager.getRenderer().deleteTextureLibrary(backgroundImages);
+	Runtime::get().moduleManager.getRenderer().deleteMaterial(drawMaterial);
+}
+
+
 void DefaultWorld::loadWorld(std::string name)
 {
 	worldName = name;
@@ -355,10 +363,5 @@ void DefaultWorld::consoleCommand(std::string& command)
 		ENG_LOGLN("Error in command " << command << ": " << e.what() );
 		// We also may want to tell the UI it went wrong.
 	}
-}
-
-DefaultWorld::~DefaultWorld()
-{
-	
 }
 

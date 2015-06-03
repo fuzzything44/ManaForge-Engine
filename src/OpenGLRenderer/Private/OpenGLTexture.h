@@ -8,10 +8,12 @@
 
 // forward declaration
 class OpenGLMaterial;
+class OpenGLRenderer;
 
 class OpenGLTexture : public Texture
 {
 	friend OpenGLMaterial;
+	friend OpenGLRenderer;
 public:
 
 	explicit OpenGLTexture(const std::string& path);
@@ -29,9 +31,9 @@ private:
 
 	std::string path;
 
-	std::map<std::string, OpenGLTexture*> textures;
+	static std::map<std::string, OpenGLTexture*> textures;
 
-
+	static void deleteAll();
 
 
 	int32 loadDDS(const std::string& filename);

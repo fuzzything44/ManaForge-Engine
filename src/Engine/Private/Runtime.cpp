@@ -46,6 +46,11 @@ Runtime::Runtime(const std::string& worldPath)
 	inputManager.setWindow(window);
 }
 
+Runtime::~Runtime()
+{
+	moduleManager.deleteWorld(world);
+}
+
 void Runtime::run()
 {
 	{
@@ -156,6 +161,7 @@ void Runtime::run()
 
 
 	} while (shouldContinue);
+
 }
 
 Runtime& Runtime::get()

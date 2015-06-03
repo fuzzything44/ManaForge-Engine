@@ -10,10 +10,7 @@ extern "C" OpenGLRenderer_API void registerModule(ModuleManager& mm)
 	mm.setRendererDeleteFun(
 		[](Renderer* renderer)
 	{
-		OpenGLRenderer* glRenderer = dynamic_cast<OpenGLRenderer*>(renderer);
-		check(glRenderer);
-
-
+		delete renderer;
 	});
 
 
