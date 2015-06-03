@@ -3,9 +3,14 @@
 #include <Engine.h>
 
 // link to required libs
-#pragma comment(lib, "glfw3.lib")
+#pragma comment(lib, "glfw3dll.lib")
 #pragma comment(lib, "OpenGL32.lib")
-#pragma comment(lib, "glew32.lib")
+
+#ifdef _DEBUG
+#	pragma comment(lib, "glew32d.lib")
+#else 
+#	pragma comment(lib, "glew32.lib")
+#endif
 
 #define OpenGLRenderer_ModuleName "OpenGLRenderer"
 
@@ -17,5 +22,6 @@
 #endif
 #
 
-#include <GLTools/glew.h>
+#include <GL/glew.h>
+
 #include <GLTools/glfw3.h>
