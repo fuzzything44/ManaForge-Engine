@@ -6,10 +6,13 @@
 
 #include <Actor.h>
 #include <MeshComponent.h>
+#include <AudioComponent.h>
 
 class Gate : public Actor
 {
 	INIT_SAVED_CLASS()
+
+		AudioComponent* audioComp;
 
 public:
 

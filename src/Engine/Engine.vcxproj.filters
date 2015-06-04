@@ -62,6 +62,9 @@
     <ClCompile Include="Private\InputManager.cpp">
       <Filter>Private</Filter>
     </ClCompile>
+    <ClCompile Include="Private\AudioComponent.cpp">
+      <Filter>Private</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="public\Actor.h">
@@ -121,9 +124,6 @@
     <ClInclude Include="Public\SaveData.h">
       <Filter>Public</Filter>
     </ClInclude>
-    <ClInclude Include="Serialize_Tuple.h">
-      <Filter>Public</Filter>
-    </ClInclude>
     <ClInclude Include="Public\Model.h">
       <Filter>Public</Filter>
     </ClInclude>
@@ -173,6 +173,18 @@
       <Filter>Public</Filter>
     </ClInclude>
     <ClInclude Include="Public\QuadUVCoords.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\AudioSystem.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\SoundSource.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\SoundCue.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\AudioComponent.h">
       <Filter>Public</Filter>
     </ClInclude>
   </ItemGroup>

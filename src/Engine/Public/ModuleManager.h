@@ -17,6 +17,7 @@
 class Runtime;
 class World;
 class Renderer;
+class AudioSystem;
 
 class ModuleManager
 	: boost::noncopyable
@@ -35,18 +36,30 @@ public:
 
 	/// <summary> Gets the renderer./</summary>
 	///
-	/// <returns> if it fails, returns null and throws an exception, else the renderer.</returns>
+	/// <returns> if it fails, throws an exception, else the renderer.</returns>
 	ENGINE_API Renderer& getRenderer();
-		
-	/// <summary> Loads a module.</summary>
-	///
-	/// <param name="filename"> Filename of the module.</param>
-	ENGINE_API 	void loadModule(const std::string& filename);
 
+	/// <summary> Gets the audio system./</summary>
+	///
+	/// <returns> if it fails, throws an exception, else the audio system.</returns>
+	ENGINE_API AudioSystem& getAudioSystem();
+		
 	/// <summary> Adds a renderer.</summary>
 	///
 	/// <param name="newRenderer"> If non-null, the new renderer.</param>
 	ENGINE_API void setRenderer(Renderer* newRenderer);
+
+
+	/// <summary> Adds a renderer.</summary>
+	///
+	/// <param name="newRenderer"> If non-null, the new renderer.</param>
+	ENGINE_API void setAudioSystem(AudioSystem* newRenderer);
+
+
+	/// <summary> Loads a module.</summary>
+	///
+	/// <param name="filename"> Filename of the module.</param>
+	ENGINE_API 	void loadModule(const std::string& filename);
 
 	/// <summary> .</summary>
 	///
@@ -80,4 +93,5 @@ private:
 	std::map<std::string, contentModuleSpawnFun> contentSpawnMethods;
 
 	Renderer* renderer;
+	AudioSystem* audioSystem;
 };

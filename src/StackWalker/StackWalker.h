@@ -48,7 +48,7 @@ typedef unsigned long SIZE_T, *PSIZE_T;
 #endif
 #endif  // _MSC_VER < 1300
 
-#ifdef STACK_WALKER_SRC
+#ifdef StackWalker_Source
 	#define STACK_WALKER_API __declspec(dllexport)
 #else
 	#define STACK_WALKER_API __declspec(dllimport)

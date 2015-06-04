@@ -6,7 +6,7 @@
 
 std::map<GLFWwindow*, OpenGLWindow*> OpenGLWindow::windows = std::map<GLFWwindow*, OpenGLWindow*>();
 
-OpenGLWindow::OpenGLWindow() 
+OpenGLWindow::OpenGLWindow()
 	: Window()
 {
 	PropertyManager& propManager = Runtime::get().propManager;
@@ -18,8 +18,6 @@ OpenGLWindow::OpenGLWindow()
 	props.windowMode = static_cast<WindowMode>(propManager.queryValue<uint8>("window.windowMode"));
 
 	props.title = propManager.queryValue<std::string>("window.title");
-
-	
 
 	hasFocus = true;
 

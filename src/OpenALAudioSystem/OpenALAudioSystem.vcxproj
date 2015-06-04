@@ -11,23 +11,22 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{2EFF286E-D346-4D83-9078-7124D559EB88}</ProjectGuid>
-    <Keyword>Win32Proj</Keyword>
-    <RootNamespace>OpenGLRenderer</RootNamespace>
+    <ProjectGuid>{4E4F8707-4B18-4877-8EA6-627FE176E629}</ProjectGuid>
+    <RootNamespace>OpenALAudioSystem</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v120</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v120</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -43,67 +42,48 @@
     <Import Project="..\Engine.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(ProjectDir);$(IncludePath);$(ProjectDir)\glew\include\</IncludePath>
-    <OutDir>$(ModuleOutputDir)</OutDir>
-    <LibraryPath>$(LibraryPath)</LibraryPath>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LinkIncremental>false</LinkIncremental>
     <OutDir>$(ModuleOutputDir)</OutDir>
-    <IncludePath>$(ProjectDir);$(IncludePath);$(ProjectDir)\glew\include\;</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(ModuleOutputDir)</OutDir>
+    <TargetExt>.dll</TargetExt>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;OPENGLRENDERER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalOptions>-D_SCL_SECURE_NO_WARNINGS %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;OPENGLRENDERER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Private\OpenGLMaterial.cpp" />
-    <ClCompile Include="Private\OpenGLModel.cpp" />
-    <ClCompile Include="Private\OpenGLRenderer.cpp" />
-    <ClCompile Include="Private\OpenGLRendererConfig.cpp" />
-    <ClCompile Include="Private\OpenGLTexture.cpp" />
-    <ClCompile Include="Private\OpenGLTextureLibrary.cpp" />
-    <ClCompile Include="Private\OpenGLWindow.cpp" />
+    <ClCompile Include="Private\OpenALAudioSystem.cpp" />
+    <ClCompile Include="Private\OpenALAudioSystemConfig.cpp" />
+    <ClCompile Include="Private\OpenALSoundCue.cpp" />
+    <ClCompile Include="Private\OpenALSoundSource.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Private\OpenGLMaterial.h" />
-    <ClInclude Include="Private\OpenGLModel.h" />
-    <ClInclude Include="Private\OpenGLRenderer.h" />
-    <ClInclude Include="Private\OpenGLRendererConfig.h" />
-    <ClInclude Include="Private\OpenGLTexture.h" />
-    <ClInclude Include="Private\OpenGLTextureLibrary.h" />
-    <ClInclude Include="Private\OpenGLWindow.h" />
+    <ClInclude Include="Private\OpenALAudioSystem.h" />
+    <ClInclude Include="Private\OpenALAudioSystemConfig.h" />
+    <ClInclude Include="Private\OpenALSoundCue.h" />
+    <ClInclude Include="Private\OpenALSoundSource.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

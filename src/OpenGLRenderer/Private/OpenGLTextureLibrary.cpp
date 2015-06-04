@@ -194,7 +194,8 @@ void OpenGLTextureLibrary::appendDDS(uint32 texToAppend, uint32 Xoffset, uint32 
 
 		unsigned int size = ((width + 3) / 4)*((height + 3) / 4)*blockSize;
 
-		if (Xoffset % 4 == 0 && Yoffset % 4 == 0 && width % 4 == 0 && height % 4 == 0)
+		// these need to be a multiple of 4 according to the S3TC spec
+		if (Xoffset % 4 == 0 && Yoffset % 4 == 0 && width % 4 == 0 && height % 4 == 0) 
 		{
 			glCompressedTexSubImage2D(GL_TEXTURE_2D, level, Xoffset, Yoffset, width, height, format, size, buffer + offset);
 

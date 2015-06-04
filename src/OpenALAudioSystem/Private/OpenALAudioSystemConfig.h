@@ -1,0 +1,12 @@
+#pragma once
+
+#include <Engine.h>
+
+#ifdef OpenALAudioSystem_Source
+#	define OpenALAudioSystem_API __declspec(dllexport)
+#	pragma comment(lib, "OpenAL32.lib")
+#	pragma comment(lib, "alut.lib")
+#else
+#	define OpenALAudioSystem_API __declspec(dllimport)
+#	pragma comment(lib, "OpenALAudioSystem.lib")
+#endif

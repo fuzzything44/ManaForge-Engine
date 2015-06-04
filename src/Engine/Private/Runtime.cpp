@@ -59,8 +59,6 @@ Runtime::~Runtime()
 void Runtime::run()
 {
 	{
-		// time the init time
-		boost::timer::cpu_timer t;
 
 		std::list<std::function<void()> >& initCallbacks = moduleManager.getInitCallbacks();
 
@@ -73,7 +71,7 @@ void Runtime::run()
 
 			callback();
 		}
-		ENG_LOGLN("init completed. Timestamp: " << t.format());
+		ENG_LOGLN("init completed.");
 
 		
 	}
@@ -89,12 +87,7 @@ void Runtime::run()
 	mat4 mat = glm::ortho(-aspectRatio, aspectRatio, -10.f, 10.f, .1f, 100.f);
 	CameraComponent* c = new CameraComponent{ gate, Transform{}, mat };
 	moduleManager.getRenderer().setCurrentCamera(c);
-
 	
-	
-
-
-
 	// set initial tick
 	clock::time_point LastTick = clock::now();
 

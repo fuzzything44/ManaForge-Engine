@@ -50,7 +50,7 @@
     <IntDir>$(ProjectDir)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LinkIncremental>true</LinkIncremental>
+    <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ProjectDir)/Public;$(SolutionDir)/include</IncludePath>
     <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(SolutionDir)/library/</LibraryPath>
     <TargetExt>.dll</TargetExt>
@@ -103,6 +103,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="private\Actor.cpp" />
+    <ClCompile Include="Private\AudioComponent.cpp" />
     <ClCompile Include="private\CameraComponent.cpp" />
     <ClCompile Include="Private\ChangeDirectory.cpp" />
     <ClCompile Include="Private\Component.cpp" />
@@ -122,6 +123,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="public\Actor.h" />
+    <ClInclude Include="Public\AudioComponent.h" />
+    <ClInclude Include="Public\AudioSystem.h" />
     <ClInclude Include="Public\CameraComponent.h" />
     <ClInclude Include="Public\ChangeDirectory.h" />
     <ClInclude Include="Public\Component.h" />
@@ -150,6 +153,8 @@
     <ClInclude Include="Public\SceneComponent.h" />
     <ClInclude Include="Public\SerializeGLM.h" />
     <ClInclude Include="Public\SharedLibrary.h" />
+    <ClInclude Include="Public\SoundCue.h" />
+    <ClInclude Include="Public\SoundSource.h" />
     <ClInclude Include="Public\Texture.h" />
     <ClInclude Include="Public\TextureLibrary.h" />
     <ClInclude Include="Public\Transform.h" />
@@ -157,7 +162,6 @@
     <ClInclude Include="Public\Window.h" />
     <ClInclude Include="Public\WindowProps.h" />
     <ClInclude Include="public\World.h" />
-    <ClInclude Include="Serialize_Tuple.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

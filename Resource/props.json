@@ -1,5 +1,5 @@
 {
-	"modules" : "OpenGLRenderer Lodepng DefaultWorld TestContent",
+	"modules" : "OpenGLRenderer Lodepng DefaultWorld TestContent OpenALAudioSystem",
 	
 	"window" :
 	{

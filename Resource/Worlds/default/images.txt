@@ -2,7 +2,7 @@
 <!DOCTYPE boost_serialization>
 <boost_serialization signature="serialization::archive" version="11">
 <assoc class_id="0" tracking_level="0" version="0">
-	<count>2</count>
+	<count>3</count>
 	<item_version>0</item_version>
 	<item class_id="1" tracking_level="0" version="0">
 		<first class_id="2" tracking_level="0" version="0">
@@ -21,6 +21,15 @@
 			<alpha>255</alpha>
 		</first>
 		<second>12</second>
+	</item>
+	<item>
+		<first>
+			<red>255</red>
+			<green>0</green>
+			<blue>0</blue>
+			<alpha>255</alpha>
+		</first>
+		<second>8</second>
 	</item>
 </assoc>
 </boost_serialization>

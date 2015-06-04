@@ -32,8 +32,6 @@ public:
 
 	virtual ~OpenGLModel();
 
-
-
 protected:
 
 	void draw();

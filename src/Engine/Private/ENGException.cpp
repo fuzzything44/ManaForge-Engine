@@ -4,26 +4,35 @@
 
 #include <boost/algorithm/string.hpp>
 
-ENGException::ENGException(std::string reasonIn) 
+
+class Stack : public StackWalker
 {
-	
-	ENG_LOG(reasonIn << " Stack:\n\n");
+public:
 
-	Stack s;
-	s.ShowCallstack();
-}
+	explicit Stack(int options = OptionsAll, // 'int' is by design, to combine the enum-flags
+		LPCSTR szSymPath = nullptr,
+		DWORD dwProcessId = GetCurrentProcessId(),
+		HANDLE hProcess = GetCurrentProcess()) : StackWalker(options, szSymPath, dwProcessId, hProcess){ }
 
-const char* ENGException::what() const
-{
-	return "";
-}
+	virtual ~Stack() { }
+
+protected:
+	bool hasPrintedMain;
+	bool wasLastExternal;
+
+	virtual void OnCallstackEntry(CallstackEntryType eType, CallstackEntry& entry) override;
+
+	virtual void OnLoadModule(LPCSTR img, LPCSTR mod, DWORD64 baseAddr, DWORD size,
+		DWORD result, LPCSTR symType, LPCSTR pdbName, ULONGLONG fileVersion) override;
 
 
+
+};
 
 
 void Stack::OnCallstackEntry(CallstackEntryType eType, CallstackEntry& entry)
 {
-		
+
 	std::string name = entry.name;
 
 	if (eType == firstEntry)
@@ -55,7 +64,7 @@ void Stack::OnCallstackEntry(CallstackEntryType eType, CallstackEntry& entry)
 			std::string fileOut;
 
 			char lastThree[4] = "   ";
-			
+
 			// go up to source -- this will be backwards
 			for (std::string::reverse_iterator iter = startFile.rbegin(); iter != startFile.rend(); ++iter)
 			{
@@ -90,8 +99,24 @@ void Stack::OnLoadModule(LPCSTR img, LPCSTR mod, DWORD64 baseAddr, DWORD size, D
 {
 	std::string name = img;
 
-	if(!boost::starts_with(name, "C:\\Windows\\"))
+	if (!boost::starts_with(name, "C:\\Windows\\"))
 	{
 		ENG_LOGLN("Module Loaded: " << mod);
 	}
+}
+
+//////////////////////////////////////////////////////////////////////////////
+
+ENGException::ENGException(std::string reasonIn) 
+{
+	
+	ENG_LOG(reasonIn << " Stack:\n\n");
+
+	Stack s;
+	s.ShowCallstack();
+}
+
+const char* ENGException::what() const
+{
+	return "";
 }

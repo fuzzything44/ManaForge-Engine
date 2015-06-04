@@ -249,7 +249,7 @@
       <Optimization>Full</Optimization>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>$(INCLUDE_DIR)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(INCLUDE_DIR);..\Include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;WIN32_LEAN_AND_MEAN;VC_EXTRALEAN;GLEW_BUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <WholeProgramOptimization>true</WholeProgramOptimization>

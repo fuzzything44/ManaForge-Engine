@@ -41,14 +41,13 @@ Renderer& ModuleManager::getRenderer()
 	
 }
 
-void ModuleManager::loadModule(const std::string& filename)
+AudioSystem& ModuleManager::getAudioSystem()
 {
-	
-	if (loadedModules.find(filename) == loadedModules.end())
-	{
-		loadedModules.insert(std::map<std::string, Module>::value_type(filename, Module(filename))).first->second.registerModule(*this);
-	}
+	check(audioSystem);
+
+	return *audioSystem;
 }
+
 
 void ModuleManager::setRenderer(Renderer* newRenderer)
 {
@@ -56,6 +55,22 @@ void ModuleManager::setRenderer(Renderer* newRenderer)
 
 	renderer = newRenderer;
 	
+}
+
+void ModuleManager::setAudioSystem(AudioSystem* newAudioSystem)
+{
+	check(newAudioSystem);
+
+	audioSystem = newAudioSystem;
+}
+
+void ModuleManager::loadModule(const std::string& filename)
+{
+
+	if (loadedModules.find(filename) == loadedModules.end())
+	{
+		loadedModules.insert(std::map<std::string, Module>::value_type(filename, Module(filename))).first->second.registerModule(*this);
+	}
 }
 
 void ModuleManager::setCreateWorldFun(const newWorldFun& createWorldFun)
