@@ -19,8 +19,7 @@ class World;
 class Renderer;
 class AudioSystem;
 
-class ModuleManager
-	: boost::noncopyable
+class ModuleManager : boost::noncopyable
 {
 public:
 
@@ -32,7 +31,7 @@ public:
 	ENGINE_API ~ModuleManager();
 
 	/// <summary> Default constructor.</summary>
-	ENGINE_API ModuleManager(); 
+	ENGINE_API ModuleManager();
 
 	/// <summary> Gets the renderer./</summary>
 	///
@@ -59,7 +58,7 @@ public:
 	/// <summary> Loads a module.</summary>
 	///
 	/// <param name="filename"> Filename of the module.</param>
-	ENGINE_API 	void loadModule(const std::string& filename);
+	ENGINE_API void loadModule(const std::string& filename);
 
 	/// <summary> .</summary>
 	///

@@ -1,3 +1,4 @@
+#define SAVE_TYPE_XML
 #include "DefaultWorld.h"
 
 #include <Helper.h>
@@ -216,7 +217,7 @@ void DefaultWorld::loadWorld(std::string name)
 		numBackgroundChunks = size / backgroundChunkSize;
 
 		
-		background = new Model*[numBackgroundChunks.x * numBackgroundChunks.y];
+		background = new ChunkActor*[numBackgroundChunks.x * numBackgroundChunks.y];
 
 		std::vector<vec2> locations{ backgroundChunkSize * backgroundChunkSize * 4};
 		std::vector<vec2> UVs{ backgroundChunkSize * backgroundChunkSize * 4};
@@ -292,11 +293,11 @@ void DefaultWorld::loadWorld(std::string name)
 				
 				
 				background[yChunks * numBackgroundChunks.x * xChunks] = 
-					Runtime::get().moduleManager.getRenderer().newModel(
+					new ChunkActor(
+						Transform{
+							vec2(xChunks * backgroundChunkSize, yChunks * backgroundChunkSize)
+						},
 						ModelData(
-							Transform{
-								vec2(xChunks * backgroundChunkSize, yChunks * backgroundChunkSize)
-							},
 							&locations[0],
 							&UVs[0], 
 							&elems[0],
@@ -304,7 +305,7 @@ void DefaultWorld::loadWorld(std::string name)
 							backgroundChunkSize * backgroundChunkSize * 2,
 							drawMaterial,
 							bounds
-						), nullptr);
+						));
 
 			}
 		}

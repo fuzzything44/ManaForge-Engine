@@ -3,6 +3,7 @@
 #include <Logging.h>
 
 OpenALSoundCue::OpenALSoundCue(const std::string& name)
+	:name(name)
 {
 	std::string path = "sounds\\" + name + ".wav";
 
@@ -15,4 +16,9 @@ OpenALSoundCue::OpenALSoundCue(const std::string& name)
 	{
 		ENG_LOGLN("Warining, using stereo buffer: " << name << ". The sound will not be location based");
 	}
+}
+
+std::string OpenALSoundCue::getName() const
+{
+	return name;
 }

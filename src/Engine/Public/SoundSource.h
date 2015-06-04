@@ -2,6 +2,8 @@
 
 #include "Engine.h"
 
+class AudioComponent;
+
 class SoundSource
 {
 public:
@@ -14,5 +16,7 @@ public:
 	virtual void play() = 0; 
 	virtual void pause() = 0;
 	virtual void stop() = 0;
+
+	virtual AudioComponent* getOwnerComponent() = 0;
 
 };

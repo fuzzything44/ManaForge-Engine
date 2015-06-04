@@ -81,11 +81,9 @@ void Runtime::run()
 
 	uvec2 windowSize = moduleManager.getRenderer().getWindow().getWindowProps().size;
 
-	float aspectRatio = static_cast<float>(windowSize.x) / static_cast<float>(windowSize.y);
-	aspectRatio *= 10;
+	float aspectRatio = static_cast<float>(windowSize.y) / static_cast<float>(windowSize.x);
 
-	mat4 mat = glm::ortho(-aspectRatio, aspectRatio, -10.f, 10.f, .1f, 100.f);
-	CameraComponent* c = new CameraComponent{ gate, Transform{}, mat };
+	CameraComponent* c = new CameraComponent{ gate, Transform{}, aspectRatio, 1.f };
 	moduleManager.getRenderer().setCurrentCamera(c);
 	
 	// set initial tick
@@ -94,8 +92,6 @@ void Runtime::run()
 
 	bool shouldContinue = true;
 
-	float scale = 1.f;
-	vec2 location{ 0.f, 0.f };
 	float baseSpeed = 100.f;
 
 	do {
@@ -118,35 +114,29 @@ void Runtime::run()
 
 		if (window.getIsKeyPressed(Keyboard::KEY_Q))
 		{
-			scale *= 1.01f;
+			c->setZoom(c->getZoom() * 1.01f);
 		}
 		if (window.getIsKeyPressed(Keyboard::KEY_E))
 		{
-			scale *= 1.f / 1.01f;
+			c->setZoom(c->getZoom() * (1.f / 1.01f));
 		}
 		if (window.getIsKeyPressed(Keyboard::KEY_A))
 		{
-			location += vec2(speedUpdated * delta, 0.f);
+			c->setLocation(c->getLocalLocation() + vec2(speedUpdated * delta, 0.f));
 		}
 		if (window.getIsKeyPressed(Keyboard::KEY_D))
 		{
-			location += vec2(-speedUpdated * delta, 0.f);
+			c->setLocation(c->getLocalLocation() + vec2(-speedUpdated * delta, 0.f));
 		}
 		if (window.getIsKeyPressed(Keyboard::KEY_W))
 		{
-			location += vec2(0.f, -speedUpdated * delta);
+			c->setLocation(c->getLocalLocation() + vec2(0.f, -speedUpdated * delta));
 		}
 		if (window.getIsKeyPressed(Keyboard::KEY_S))
 		{
-			location += vec2(0.f, speedUpdated * delta);
+			c->setLocation(c->getLocalLocation() + vec2(0.f, speedUpdated * delta));
 		}
 
-		mat4 view = glm::ortho(-aspectRatio, aspectRatio, -10.f, 10.f, .1f, 100.f);
-
-		view = glm::scale(view, vec3(scale, scale, 1.f));
-		view = glm::translate(view, vec3(location.x, location.y, 0.f));
-
-		c->setViewMat(view);
 
 		// recieve the update callbacks
 		std::list<std::function<bool()> >& updateCallbacks = moduleManager.getUpdateCallbacks();

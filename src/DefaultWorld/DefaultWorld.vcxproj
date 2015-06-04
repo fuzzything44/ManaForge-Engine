@@ -80,6 +80,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Public\ChunkActor.h" />
     <ClInclude Include="Public\DefaultWorld.h" />
     <ClInclude Include="public\DefaultWorldConfig.h" />
   </ItemGroup>

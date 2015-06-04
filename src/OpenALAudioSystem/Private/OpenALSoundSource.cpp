@@ -40,6 +40,11 @@ void OpenALSoundSource::stop()
 	alSourceRewind(sourceHandle);
 }
 
+AudioComponent* OpenALSoundSource::getOwnerComponent()
+{
+	return ownerComponent;
+}
+
 
 void OpenALSoundSource::update()
 {

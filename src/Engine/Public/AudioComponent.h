@@ -10,6 +10,6 @@ class AudioComponent : public SceneComponent
 {
 public:
 	ENGINE_API explicit AudioComponent(Actor* owner = nullptr, Transform trans = Transform{}, SoundCue* cue = nullptr);
-private:
+protected:
 	SoundSource* source;
 };

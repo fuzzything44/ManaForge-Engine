@@ -17,57 +17,16 @@ struct Transform
 	vec2 scale;
 
 	template <typename Archive>
-	void serialize(Archive& ar, const uint32 version)
-	{
-		ar & BOOST_SERIALIZATION_NVP(location);
-		ar & BOOST_SERIALIZATION_NVP(rotation);
-		ar & BOOST_SERIALIZATION_NVP(scale);
-	}
+	void serialize(Archive& ar, const uint32 version);
 
-	inline Transform& operator+=(const Transform& other)
-	{
-		location += other.location;
-		rotation += other.rotation;
-		scale += other.scale;
-
-		return *this;
-	}
-
-
-	inline Transform operator+(const Transform& other) const 
-	{
-		return Transform(location + other.location, rotation + other.rotation, scale + other.scale);
-	}
-
-	inline Transform operator-(const Transform& other) const
-	{
-		return Transform(location - other.location, rotation - other.rotation, scale - other.scale);
-	}
-
-	inline Transform& operator-=(const Transform& other) 
-	{
-		location -= other.location;
-		rotation -= other.rotation;
-		scale -= other.scale;
-
-		return *this;
-	}
-
-	inline Transform& operator*=(const Transform& other)
-	{
-		location *= other.location;
-		rotation *= other.rotation;
-		scale *= other.scale;
-
-		return *this;
-	}
-
-
-	inline Transform operator*(const Transform& other) const
-	{
-		return Transform(location * other.location, rotation * other.rotation, scale * other.scale);
-	}
+	
 
 };
 
-
+template <typename Archive>
+void Transform::serialize(Archive& ar, const uint32 version)
+{
+	ar & BOOST_SERIALIZATION_NVP(location);
+	ar & BOOST_SERIALIZATION_NVP(rotation);
+	ar & BOOST_SERIALIZATION_NVP(scale);
+}

@@ -29,7 +29,7 @@ public:
 
 private:
 
-	ENGINE_API bool update();
+	bool update();
 
 	Window* window;
 
@@ -38,9 +38,9 @@ private:
 		friend class boost::serialization::access;
 
 		// default constructor
-		ENGINE_API explicit ActionMapping(const std::vector<Keyboard>& keys = std::vector<Keyboard>());
+		explicit ActionMapping(const std::vector<Keyboard>& keys = std::vector<Keyboard>());
 
-		ENGINE_API ~ActionMapping();
+		~ActionMapping();
 
 		void setPressedCallback(std::function<void()> fun);
 
@@ -67,9 +67,9 @@ private:
 	{
 		friend class boost::serialization::access;
 
-		ENGINE_API AxisMapping(const std::vector<std::pair<Keyboard, float> >& values = std::vector<std::pair<Keyboard, float> >());
+		AxisMapping(const std::vector<std::pair<Keyboard, float> >& values = std::vector<std::pair<Keyboard, float> >());
 
-		ENGINE_API ~AxisMapping();
+		~AxisMapping();
 
 		// vector of the values of the keys
 		std::vector < std::pair<Keyboard, float> > values;

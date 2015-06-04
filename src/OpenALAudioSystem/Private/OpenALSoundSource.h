@@ -21,6 +21,9 @@ public:
 	virtual void pause() override;
 	virtual void stop() override;
 
+	virtual AudioComponent* getOwnerComponent() override;
+
+
 	void update();
 
 private:

@@ -1,9 +1,12 @@
 ﻿#include "CameraComponent.h"
 
-CameraComponent::CameraComponent(Actor* owner, Transform trans, const mat4& viewMatIn)
-	: SceneComponent(owner, trans)
+#include "Helper.h"
+
+CameraComponent::CameraComponent(Actor* owner, Transform trans, float aspectRatio, float zoom)
+	: SceneComponent(owner, trans),
+	aspectRatio(aspectRatio),
+	zoom(zoom)
 {
-	memcpy(viewMat, &viewMatIn[0][0], sizeof(float) * 16);
 	
 }
 
@@ -12,30 +15,35 @@ CameraComponent::~CameraComponent()
 	
 }
 
-mat4 CameraComponent::getViewMat() const
+void CameraComponent::setAspectRatio(float newAsepctRatio)
 {
-	return mat4(
-		viewMat[0],
-		viewMat[1],
-		viewMat[2],
-		viewMat[3],
-		viewMat[4],
-		viewMat[5],
-		viewMat[6],
-		viewMat[7],
-		viewMat[8],
-		viewMat[9],
-		viewMat[10],
-		viewMat[11],
-		viewMat[12],
-		viewMat[13],
-		viewMat[14],
-		viewMat[15]
-		);
+	aspectRatio = newAsepctRatio;
 }
 
-void CameraComponent::setViewMat(const mat4& newMat)
+void CameraComponent::setZoom(float newZoom)
 {
+	zoom = newZoom;
+}
 
-	memcpy(viewMat, &newMat[0][0], sizeof(float) * 16);
+
+float CameraComponent::getAspectRatio() const
+{
+	return aspectRatio;
+}
+
+float CameraComponent::getZoom() const
+{
+	return zoom;
+}
+
+
+mat4 CameraComponent::getViewMat() const
+{
+	mat4 ret = glm::ortho(-1.f, 1.f, -aspectRatio, aspectRatio, .1f, 100.f);
+	ret = glm::scale(ret, vec3(zoom, zoom, 1.f));
+	ret = glm::translate(ret, vec3(trans.location.x, trans.location.y, 0.f));
+
+	ENG_LOGLN(aspectRatio);
+
+	return ret;
 }

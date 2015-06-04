@@ -7,7 +7,8 @@
 #include <functional>
 #include <map>
 
-#define SAVE_TYPE_XML
+#include "ChunkActor.h"
+
 #include <Color.h>
 
 class DefaultWorld : public World
@@ -33,7 +34,7 @@ class DefaultWorld : public World
 	Material* drawMaterial;
 
 	// array of models -- in row major order
-	Model** background;
+	ChunkActor** background;
 
 	uvec2 numBackgroundChunks;
 

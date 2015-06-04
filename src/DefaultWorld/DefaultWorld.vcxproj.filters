@@ -17,6 +17,9 @@
     <ClInclude Include="Public\DefaultWorld.h">
       <Filter>Public</Filter>
     </ClInclude>
+    <ClInclude Include="Public\ChunkActor.h">
+      <Filter>Public</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="private\DefaultWorld.cpp">

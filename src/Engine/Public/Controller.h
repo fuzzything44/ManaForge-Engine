@@ -8,8 +8,8 @@ class Pawn;
 class Controller
 {
 public:
-	Controller();
-	virtual ~Controller();
+	ENGINE_API Controller();
+	ENGINE_API virtual ~Controller();
 
 private:
 	Pawn* controlledPawn;

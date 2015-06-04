@@ -13,7 +13,6 @@ OpenGLModel::OpenGLModel(ModelData data, MeshComponent* owner, OpenGLRenderer* r
 	numTris(data.numTriangles),
 	renderer(renderer),
 	parent(owner),
-	trans(data.trans),
 	bounds(data.bounds),
 	material(static_cast<OpenGLMaterial*>(data.material))
 {	
@@ -68,71 +67,9 @@ OpenGLModel::~OpenGLModel()
 	}
 }
 
-
-Transform OpenGLModel::getTransform() const
-{
-	return trans;
-}
-
-vec2 OpenGLModel::getLocation() const
-{
-	return trans.location;
-}
-
-float OpenGLModel::getRotation() const
-{
-	return trans.rotation;
-}
-
-vec2 OpenGLModel::getScale() const
-{
-	return trans.scale;
-}
-
-void OpenGLModel::setTransform(Transform newTransform)
-{
-	trans = newTransform;
-}
-
-
-void OpenGLModel::setLocation(vec2 newLocation)
-{
-	trans.location = newLocation;
-}
-
-void OpenGLModel::setRotation(float newRotation)
-{
-	trans.rotation = newRotation;
-}
-
-void OpenGLModel::setScale(vec2 newScale)
-{
-	trans.scale = newScale;
-}
-
 MeshComponent* OpenGLModel::getOwnerComponent()
 {
 	return parent;
-}
-
-void OpenGLModel::addRelativeTransform(Transform add)
-{
-	trans += add;
-}
-
-void OpenGLModel::addRelativeLocation(vec2 locToAdd)
-{
-	trans.location += locToAdd;
-}
-
-void OpenGLModel::addRelativeRotation(float rotToAdd)
-{
-	trans.rotation += rotToAdd;
-}
-
-void OpenGLModel::addRelativeScale(vec2 scaleToAdd)
-{
-	trans.scale += scaleToAdd;
 }
 
 bool OpenGLModel::isInBounds(const mat3& model, const mat4& camera) // TODO: ACTUAL COLLUISION
@@ -156,18 +93,10 @@ bool OpenGLModel::isInBounds(const mat3& model, const mat4& camera) // TODO: ACT
 
 void OpenGLModel::draw()
 {
-	// generate the transform stuff
-	Transform worldTrans;
-
-	if (parent)
-	{
-		worldTrans = trans + parent->getWorldTransform(); // todo fix this
-	}
-	else
-	{
-		worldTrans = trans;
-	}
-
+	check(parent);
+	
+	Transform worldTrans = parent->getWorldTransform(); // todo fix this
+	
 	mat4 camera = (renderer->getCurrentCamera().getViewMat());
 
 	// create an identity matrix

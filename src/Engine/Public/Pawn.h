@@ -10,8 +10,8 @@ class Controller;
 class Pawn : public Actor
 {
 public:
-	explicit Pawn(const Transform& trans);
-	virtual ~Pawn() override;
+	ENGINE_API explicit Pawn(const Transform& trans);
+	ENGINE_API virtual ~Pawn() override;
 
 private:
 

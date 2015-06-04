@@ -6,9 +6,9 @@
 class PlayerController : public Controller
 {
 public:
-	PlayerController();
+	ENGINE_API PlayerController();
 
-	virtual ~PlayerController();
+	ENGINE_API virtual ~PlayerController();
 
 private:
 

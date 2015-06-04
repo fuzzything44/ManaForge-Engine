@@ -13,8 +13,7 @@
 
 class Window;
 
-class Runtime :
-	boost::noncopyable
+class Runtime : boost::noncopyable
 {
 public:
 
@@ -22,22 +21,18 @@ public:
 
 	ENGINE_API ~Runtime();
 
+	ENGINE_API void run();
+
+	ENGINE_API static Runtime& get();
+
 	ModuleManager moduleManager;
 	PropertyManager propManager;
 	InputManager inputManager;
 	
-	bool renders;
-
 	World* world;
-
-	ENGINE_API static Runtime& get();
-
-	ENGINE_API void run();
 private:
 
 	typedef std::chrono::high_resolution_clock clock;
-
-	static bool isInitalized;
 
 	static Runtime* currentRuntime;
 };
