@@ -32,9 +32,6 @@
     <ClCompile Include="Private\Logging.cpp">
       <Filter>Private</Filter>
     </ClCompile>
-    <ClCompile Include="private\CameraComponent.cpp">
-      <Filter>Private</Filter>
-    </ClCompile>
     <ClCompile Include="Private\MeshComponent.cpp">
       <Filter>Private</Filter>
     </ClCompile>

@@ -32,7 +32,7 @@ public:
 	/// <param name="chunkIn"> [in,out] If non-null, the chunk in.</param>
 	///
 	/// <returns> An ENGINE_API.</returns>
-	ENGINE_API explicit Actor(const Transform& trans = Transform{});
+	ENGINE_API explicit Actor();
 
 	//<summary> returns if the actor should be saved or not.
 	ENGINE_API virtual bool needsSave();
@@ -177,9 +177,9 @@ inline mat3 Actor::getModelMatrix()
 {
 	mat3 ret;
 
-	ret = glm::scale(ret, trans.scale);
-	ret = glm::rotate(ret, trans.rotation);
 	ret = glm::translate(ret, trans.location);
+	ret = glm::rotate(ret, trans.rotation);
+	ret = glm::scale(ret, trans.scale);
 
 	return ret;
 }

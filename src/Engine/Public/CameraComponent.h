@@ -2,23 +2,23 @@
 
 #include "Engine.h"
 #include "SceneComponent.h"
+#include "glm-ortho-2d.h"
 
-#include <glm/gtx/type_aligned.hpp>
 
 class CameraComponent : public SceneComponent
 {
 public:
 	// aspect ratio is (WINDOW Y)/(WINDOW X)
-	ENGINE_API explicit CameraComponent(Actor* owner = nullptr, Transform trans = Transform{}, float aspectRatio = 1.f, float zoom = 1.f);
-	ENGINE_API virtual ~CameraComponent() override;
+	ENGINE_API inline explicit CameraComponent(Actor* owner = nullptr, Transform trans = Transform{}, float aspectRatio = 1.f, float zoom = 1.f);
+	ENGINE_API inline virtual ~CameraComponent() override;
 
-	ENGINE_API mat3 getViewMat() const;
+	ENGINE_API inline mat3 getViewMat() const;
 
-	ENGINE_API void setAspectRatio(float newAsepctRatio);
-	ENGINE_API void setZoom(float newZoom);
+	ENGINE_API inline void setAspectRatio(float newAsepctRatio);
+	ENGINE_API inline void setZoom(float newZoom);
 
-	ENGINE_API float getAspectRatio() const;
-	ENGINE_API float getZoom() const;
+	ENGINE_API inline float getAspectRatio() const;
+	ENGINE_API inline float getZoom() const;
 
 
 protected:
@@ -26,3 +26,51 @@ protected:
 	float zoom;
 };
 
+//////////////////////////////////////////////////////////////////////////
+/////////// INLINE DEFINITIONS
+
+
+inline CameraComponent::CameraComponent(Actor* owner, Transform trans, float aspectRatio, float zoom)
+	: SceneComponent(owner, trans),
+	aspectRatio(aspectRatio),
+	zoom(zoom)
+{
+
+}
+
+inline CameraComponent::~CameraComponent()
+{
+
+}
+
+
+inline void CameraComponent::setAspectRatio(float newAsepctRatio)
+{
+	aspectRatio = newAsepctRatio;
+}
+
+inline void CameraComponent::setZoom(float newZoom)
+{
+	zoom = newZoom;
+}
+
+
+inline float CameraComponent::getAspectRatio() const
+{
+	return aspectRatio;
+}
+
+inline float CameraComponent::getZoom() const
+{
+	return zoom;
+}
+
+inline mat3 CameraComponent::getViewMat() const
+{
+	mat3 ret = glm::ortho2d(-1.f, 1.f, -aspectRatio, aspectRatio);
+	ret = glm::scale(ret, vec2(zoom, zoom));
+	ret = glm::rotate(ret, trans.rotation);
+	ret = glm::translate(ret, vec2(trans.location.x, trans.location.y));
+
+	return ret;
+}

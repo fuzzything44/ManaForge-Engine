@@ -104,7 +104,6 @@
   <ItemGroup>
     <ClCompile Include="private\Actor.cpp" />
     <ClCompile Include="Private\AudioComponent.cpp" />
-    <ClCompile Include="private\CameraComponent.cpp" />
     <ClCompile Include="Private\ChangeDirectory.cpp" />
     <ClCompile Include="Private\Component.cpp" />
     <ClCompile Include="Private\Controller.cpp" />

@@ -45,8 +45,8 @@ bool OpenALAudioSystem::update()
 
 	float orientation[] = 
 	{
-		0.f, 0.f, -1.f, // forward vector
-		0.f, 1.f, 0.f	// up vector
+		0.f, 1.f, 0.f, // forward vector	Facing positive Y
+		0.f, 0.f, -1.f	// up vector		Z-up
 	};
 
 	alListenerfv(AL_ORIENTATION, orientation);

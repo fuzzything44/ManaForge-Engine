@@ -3,7 +3,7 @@
 #include "Engine.h"
 
 // enum for all possible keys
-// that conviently lign up with the GLFW keys
+// that conviently line up with the GLFW keys
 enum class Keyboard : int32
 {
 

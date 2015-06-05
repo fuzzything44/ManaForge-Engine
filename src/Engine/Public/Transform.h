@@ -13,7 +13,7 @@ struct Transform
 		scale(scale) { }
 
 	vec2 location;
-	float rotation;
+	float rotation; // in radians, counter-clockwise
 	vec2 scale;
 
 	template <typename Archive>

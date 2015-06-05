@@ -4,8 +4,7 @@
 
 BOOST_CLASS_EXPORT_IMPLEMENT(Actor);
 
-Actor::Actor(const Transform& trans)
-	: trans(trans)
+Actor::Actor()
 {
 
 }

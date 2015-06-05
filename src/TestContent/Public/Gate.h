@@ -17,7 +17,7 @@ class Gate : public Actor
 
 public:
 
-	explicit Gate(const Transform& trans = Transform{});
+	explicit Gate();
 
 	virtual ~Gate() override;
 

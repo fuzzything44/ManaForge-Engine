@@ -20,6 +20,8 @@ public:
 
 	ENGINE_API inline Transform getWorldTransform() const;
 
+	ENGINE_API inline vec2 getWorldLocation() const;
+
 	/// <summary> Gets the location.</summary>
 	///
 	/// <returns> The location.</returns>
@@ -63,7 +65,7 @@ public:
 	/// <param name="rotToAdd"> the roatation to add in radiands </param>
 	ENGINE_API inline void addRelativeRotation(float rotToAdd);
 	
-	ENGINE_API inline mat3 getModelMatrix();
+	ENGINE_API inline mat3 getModelMatrix() const;
 
 protected:
 	Transform trans;
@@ -95,23 +97,26 @@ inline Transform SceneComponent::getRelativeTransform() const
 inline Transform SceneComponent::getWorldTransform() const
 {
 	
-	if (owner)
-	{
+	mat3 model = getModelMatrix();
 
-		vec2 start = trans.location;
-
-		start.x *= cos(owner->getWorldTransform().rotation) * owner->getWorldTransform().scale.x;
-		start.y *= sin(owner->getWorldTransform().rotation) * owner->getWorldTransform().scale.y;
-
-
-		// MEBBE RIGHT
-		return Transform(start + owner->getWorldLocation(), trans.rotation + owner->getWorldRotation(), trans.scale);
-
-
-	}
+	Transform worldTrans;
 	
-	return trans;
+	vec3 loc3 = model * vec3(trans.location.x, trans.location.y, 1.f);
+	worldTrans.location = vec2(loc3.x, loc3.y);
+	worldTrans.rotation = owner->getWorldRotation() + trans.rotation;
+	worldTrans.scale = owner->getScale() + trans.scale;
 
+	return worldTrans;
+
+}
+
+
+inline vec2 SceneComponent::getWorldLocation() const
+{
+	mat3 model = getModelMatrix();
+
+	vec3 loc3 = model * vec3(trans.location.x, trans.location.y, 1.f);
+	return vec2(loc3.x, loc3.y);
 }
 
 inline vec2 SceneComponent::getRelativeLocation() const
@@ -163,13 +168,13 @@ inline void SceneComponent::addRelativeRotation(float rotToAdd)
 	trans.rotation += rotToAdd;
 }
 
-inline mat3 SceneComponent::getModelMatrix()
+inline mat3 SceneComponent::getModelMatrix() const
 {
 	mat3 ret = owner->getModelMatrix();
 
-	ret = glm::scale(ret, trans.scale);
-	ret = glm::rotate(ret, trans.rotation);
 	ret = glm::translate(ret, trans.location);
+	ret = glm::rotate(ret, trans.rotation);
+	ret = glm::scale(ret, trans.scale);			// I REALLY DON'T GET THIS ORDER -- TO ME IT SHOULD BE THE OTHER WAY AROUND BUT IT WORKS
 	
 	return ret;
 }

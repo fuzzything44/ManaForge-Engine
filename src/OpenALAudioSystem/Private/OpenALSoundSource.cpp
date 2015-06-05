@@ -48,9 +48,9 @@ AudioComponent* OpenALSoundSource::getOwnerComponent()
 
 void OpenALSoundSource::update()
 {
-	Transform trans = ownerComponent->getWorldTransform();
+	vec2 loc = ownerComponent->getWorldLocation();
 
-	alSource3f(sourceHandle, AL_POSITION, trans.location.x, trans.location.y, 0.f);
+	alSource3f(sourceHandle, AL_POSITION, loc.x, loc.y, 0.f);
 
 	// TODO: set velocity
 }
