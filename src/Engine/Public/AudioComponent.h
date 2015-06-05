@@ -18,6 +18,15 @@ public:
 	inline void pause();
 	inline void stop();
 
+	inline void setMaxDistance(float maxDistacne);
+	inline float getMaxDistance() const;
+
+	inline void setRolloffFactor(float rolloffFactor);
+	inline float getRolloffFactor() const;
+
+	inline void setReferenceDistance(float refrenceDistance);
+	inline float getReferenceDistance() const;
+
 protected:
 	SoundSource* source;
 };
@@ -49,4 +58,34 @@ inline void AudioComponent::pause()
 inline void AudioComponent::stop()
 {
 	source->stop();
+}
+
+inline void AudioComponent::setMaxDistance(float maxDistacne)
+{
+	source->setMaxDistance(maxDistacne);
+}
+
+inline float AudioComponent::getMaxDistance() const
+{
+	source->getMaxDistance();
+}
+
+inline void AudioComponent::setRolloffFactor(float rolloffFactor)
+{
+	source->setRolloffFactor(rolloffFactor);
+}
+
+inline float AudioComponent::getRolloffFactor() const
+{
+	return source->getRolloffFactor();
+}
+
+inline void AudioComponent::setReferenceDistance(float refrenceDistance)
+{
+	source->setReferenceDistance(refrenceDistance);
+}
+
+inline float AudioComponent::getReferenceDistance() const
+{
+	return source->getReferenceDistance();
 }

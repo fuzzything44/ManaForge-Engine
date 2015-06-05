@@ -77,12 +77,13 @@ void Runtime::run()
 	// YA WE REALLY NEED PLAYER CONTROLLERS -- the gate shouldn't get to control the camera
 	Actor* gate = moduleManager.spawnClass<Actor>("TestContent.Gate");
 
-
 	uvec2 windowSize = moduleManager.getRenderer().getWindow().getWindowProps().size;
 
 	float aspectRatio = static_cast<float>(windowSize.y) / static_cast<float>(windowSize.x);
 
-	CameraComponent* c = new CameraComponent{ gate, Transform{}, aspectRatio, .1f };
+	Actor* player = new Actor();
+
+	CameraComponent* c = new CameraComponent{ player, Transform{}, aspectRatio, .1f };
 	moduleManager.getRenderer().setCurrentCamera(c);
 	
 	// set initial tick
@@ -121,19 +122,19 @@ void Runtime::run()
 		}
 		if (window.getIsKeyPressed(Keyboard::KEY_A))
 		{
-			c->addRelativeLocation(vec2(speedUpdated * delta, 0.f));
+			c->addRelativeLocation(vec2(-speedUpdated * delta, 0.f));
 		}
 		if (window.getIsKeyPressed(Keyboard::KEY_D))
 		{
-			c->addRelativeLocation(vec2(-speedUpdated * delta, 0.f));
+			c->addRelativeLocation(vec2(speedUpdated * delta, 0.f));
 		}
 		if (window.getIsKeyPressed(Keyboard::KEY_W))
 		{
-			c->addRelativeLocation(vec2(0.f, -speedUpdated * delta));
+			c->addRelativeLocation(vec2(0.f, speedUpdated * delta));
 		}
 		if (window.getIsKeyPressed(Keyboard::KEY_S))
 		{
-			c->addRelativeLocation(vec2(0.f, speedUpdated * delta));
+			c->addRelativeLocation(vec2(0.f, -speedUpdated * delta));
 		}
 
 		// recieve the update callbacks

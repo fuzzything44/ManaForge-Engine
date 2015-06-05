@@ -101,7 +101,7 @@ inline Transform SceneComponent::getWorldTransform() const
 
 	Transform worldTrans;
 	
-	vec3 loc3 = model * vec3(trans.location.x, trans.location.y, 1.f);
+	vec3 loc3 = model * vec3(0.f, 0.f, 1.f);
 	worldTrans.location = vec2(loc3.x, loc3.y);
 	worldTrans.rotation = owner->getWorldRotation() + trans.rotation;
 	worldTrans.scale = owner->getScale() + trans.scale;
@@ -115,7 +115,7 @@ inline vec2 SceneComponent::getWorldLocation() const
 {
 	mat3 model = getModelMatrix();
 
-	vec3 loc3 = model * vec3(trans.location.x, trans.location.y, 1.f);
+	vec3 loc3 = model * vec3(0.f, 0.f, 1.f);
 	return vec2(loc3.x, loc3.y);
 }
 
@@ -172,7 +172,7 @@ inline mat3 SceneComponent::getModelMatrix() const
 {
 	mat3 ret = owner->getModelMatrix();
 
-	ret = glm::translate(ret, trans.location);
+	ret = glm::translate(ret, trans.location); 
 	ret = glm::rotate(ret, trans.rotation);
 	ret = glm::scale(ret, trans.scale);			// I REALLY DON'T GET THIS ORDER -- TO ME IT SHOULD BE THE OTHER WAY AROUND BUT IT WORKS
 	

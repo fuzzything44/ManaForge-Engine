@@ -3,7 +3,7 @@
 #include <TextureLibrary.h>
 #include <AudioSystem.h>
 
-#include <math.h>
+#include <cmath>
 
 #define SAVE_DATA Gate, Actor, isOpen
 #include REGISTER_FOR_SAVING_SOURCE()
@@ -11,11 +11,15 @@
 Gate::Gate()
 	: Actor()
 {
+	
 
-	trans = Transform(vec2(4.f, 4.f), .25 * M_PI, vec2(4.f, 4.f));
+	trans = Transform(vec2(4.f, 4.f), .25 * (float)M_PI, vec2(.1f, .1f));
 
 	SoundCue* cue = Runtime::get().moduleManager.getAudioSystem().newSoundCue("test");
 	audioComp = new AudioComponent(this, Transform{}, cue, true);
+	audioComp->setMaxDistance(30.f);
+	audioComp->setRolloffFactor(10.f);
+	audioComp->setReferenceDistance(0.01f);
 	audioComp->play();
 
 	vec2 vertLocs[] =
@@ -49,6 +53,7 @@ Gate::Gate()
 
 	meshComp = new MeshComponent(this, Transform{ }, ModelData
 		(vertLocs, UVs, tris, 6, 2, mat));
+
 }
 
 Gate::~Gate()

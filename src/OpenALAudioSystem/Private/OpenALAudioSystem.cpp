@@ -5,6 +5,7 @@
 
 #include <ENGException.h>
 #include <Runtime.h>
+#include <Helper.h>
 
 #include "AL/alut.h"
 
@@ -32,21 +33,21 @@ SoundSource* OpenALAudioSystem::newSoundSource(SoundCue* cue, AudioComponent* ow
 {
 	OpenALSoundCue* ALcue = static_cast<OpenALSoundCue*>(cue);
 
-	return new OpenALSoundSource(ALcue, owner);
+	return new OpenALSoundSource(ALcue, owner, this);
 }
 
 
 bool OpenALAudioSystem::update()
 {
-	Transform cameraTrans = Runtime::get().moduleManager.getRenderer().getCurrentCamera().getWorldTransform();
+	vec2 cameraLoc = Runtime::get().moduleManager.getRenderer().getCurrentCamera().getWorldLocation();
 
 	// setup listener properities
-	alListener3f(AL_POSITION, cameraTrans.location.x, cameraTrans.location.y, 0.f);
+	alListener3f(AL_POSITION, cameraLoc.x, cameraLoc.y, 0.f);
 
 	float orientation[] = 
 	{
 		0.f, 1.f, 0.f, // forward vector	Facing positive Y
-		0.f, 0.f, -1.f	// up vector		Z-up
+		0.f, 0.f, 1.f	// up vector		Z-up
 	};
 
 	alListenerfv(AL_ORIENTATION, orientation);

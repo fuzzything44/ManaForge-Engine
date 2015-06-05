@@ -4,10 +4,9 @@
 #include "Actor.h"
 #include "Runtime.h"
 
-
-
 int32 main()
 {	
+
 	Runtime* runtime = new Runtime("default");
 
 	try{
