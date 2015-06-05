@@ -26,6 +26,10 @@ public:
 	virtual void setReferenceDistance(float refrenceDistance) = 0;
 	virtual float getReferenceDistance() const = 0;
 
+	virtual void setConeParams(vec2 direction, float innerAngle, float outerAngle, float outerGain) = 0;
+
+	virtual void setGainBounds(float min, float max) = 0;
+
 	virtual AudioComponent* getOwnerComponent() = 0;
 
 };

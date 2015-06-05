@@ -32,6 +32,12 @@ public:
 	virtual void setReferenceDistance(float refrenceDistance) override;
 	virtual float getReferenceDistance() const override;
 
+
+	virtual void setConeParams(vec2 direction, float innerAngle, float outerAngle, float outerGain) override;
+
+
+	virtual void setGainBounds(float min, float max) override;
+
 	virtual AudioComponent* getOwnerComponent() override;
 
 

@@ -98,4 +98,17 @@ void OpenALSoundSource::update()
 	// TODO: set velocity
 }
 
+void OpenALSoundSource::setConeParams(vec2 direction, float innerAngle, float outerAngle, float outerGain)
+{
+	alSource3f(sourceHandle, AL_DIRECTION, direction.x, direction.y, 0.f);
+	alSourcef(sourceHandle, AL_CONE_INNER_ANGLE, innerAngle);
+	alSourcef(sourceHandle, AL_CONE_OUTER_ANGLE, outerAngle);
+	alSourcef(sourceHandle, AL_CONE_OUTER_GAIN, outerGain);
+}
 
+
+void OpenALSoundSource::setGainBounds(float min, float max)
+{
+	alSourcef(sourceHandle, AL_MIN_GAIN, min);
+	alSourcef(sourceHandle, AL_MAX_GAIN, max);
+}

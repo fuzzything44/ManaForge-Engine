@@ -27,6 +27,10 @@ public:
 	inline void setReferenceDistance(float refrenceDistance);
 	inline float getReferenceDistance() const;
 
+	inline void setConeParams(vec2 direction = vec2(), float innerAngle = 360.f, float outerAngle = 360.f, float outerGain = 0.f);
+
+	inline void setGainBounds(float min, float max);
+
 protected:
 	SoundSource* source;
 };
@@ -89,3 +93,14 @@ inline float AudioComponent::getReferenceDistance() const
 {
 	return source->getReferenceDistance();
 }
+
+inline void AudioComponent::setConeParams(vec2 direction, float innerAngle, float outerAngle, float outerGain)
+{
+	source->setConeParams(direction, innerAngle, outerAngle, outerGain);
+}
+
+inline void AudioComponent::setGainBounds(float min, float max)
+{
+	source->setGainBounds(min, max);
+}
+

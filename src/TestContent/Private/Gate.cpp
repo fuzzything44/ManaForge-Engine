@@ -13,13 +13,12 @@ Gate::Gate()
 {
 	
 
-	trans = Transform(vec2(4.f, 4.f), .25 * (float)M_PI, vec2(.1f, .1f));
+	trans = Transform(vec2(4.f, 4.f), .25f * (float)M_PI, vec2(.1f, .1f));
 
 	SoundCue* cue = Runtime::get().moduleManager.getAudioSystem().newSoundCue("test");
 	audioComp = new AudioComponent(this, Transform{}, cue, true);
-	audioComp->setMaxDistance(30.f);
-	audioComp->setRolloffFactor(10.f);
-	audioComp->setReferenceDistance(0.01f);
+	audioComp->setReferenceDistance(.1f);
+	audioComp->setConeParams(vec2(1.f, 0.f), 45.f, 90.f, .05f);
 	audioComp->play();
 
 	vec2 vertLocs[] =
