@@ -3,12 +3,27 @@
 
 #include <ModuleManager.h>
 
+#include <map>
+
+typedef std::map<std::string, std::function<void*() > > spawnFuncMapType;
+
+const/*expr*/ spawnFuncMapType spawnFuncs = 
+{
+	spawnFuncMapType::value_type("Gate", []() 
+	{
+		return new Gate(); 
+	}),
+
+
+};
 
 void* spawnClass(std::string qualifier)
 {
-	if (qualifier == "Gate")
+	auto iter = spawnFuncs.find(qualifier);
+
+	if (iter != spawnFuncs.end())
 	{
-		return new Gate();
+		return iter->second();
 	}
 
 	return nullptr;

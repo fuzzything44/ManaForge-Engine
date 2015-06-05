@@ -11,11 +11,11 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Public\TestContentConfig.h">
-      <Filter>Public</Filter>
-    </ClInclude>
     <ClInclude Include="Public\Gate.h">
       <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\TestContentConfig.h">
+      <Filter>Private</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

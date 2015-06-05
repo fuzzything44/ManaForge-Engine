@@ -15,8 +15,6 @@
 #include <boost/algorithm/string.hpp>
 
 
-
-
 // DEFINE STATIC VARIABLES
 Runtime* Runtime::currentRuntime = nullptr;
 
@@ -123,21 +121,20 @@ void Runtime::run()
 		}
 		if (window.getIsKeyPressed(Keyboard::KEY_A))
 		{
-			c->setLocation(c->getLocalLocation() + vec2(speedUpdated * delta, 0.f));
+			c->addRelativeLocation(vec2(speedUpdated * delta, 0.f));
 		}
 		if (window.getIsKeyPressed(Keyboard::KEY_D))
 		{
-			c->setLocation(c->getLocalLocation() + vec2(-speedUpdated * delta, 0.f));
+			c->addRelativeLocation(vec2(-speedUpdated * delta, 0.f));
 		}
 		if (window.getIsKeyPressed(Keyboard::KEY_W))
 		{
-			c->setLocation(c->getLocalLocation() + vec2(0.f, -speedUpdated * delta));
+			c->addRelativeLocation(vec2(0.f, -speedUpdated * delta));
 		}
 		if (window.getIsKeyPressed(Keyboard::KEY_S))
 		{
-			c->setLocation(c->getLocalLocation() + vec2(0.f, speedUpdated * delta));
+			c->addRelativeLocation(vec2(0.f, speedUpdated * delta));
 		}
-
 
 		// recieve the update callbacks
 		std::list<std::function<bool()> >& updateCallbacks = moduleManager.getUpdateCallbacks();

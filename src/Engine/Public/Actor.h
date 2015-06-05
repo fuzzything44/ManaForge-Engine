@@ -82,6 +82,8 @@ public:
 	/// <param name="newVelocity"> The new velocity.</param>
 	ENGINE_API inline void setVelocity(vec2 newVelocity);
 
+	ENGINE_API inline mat3 getModelMatrix();
+
 protected:
 
 	vec2 velocity;
@@ -170,3 +172,15 @@ inline void Actor::setVelocity(vec2 newVelocity)
 {
 	velocity = newVelocity;
 }
+
+inline mat3 Actor::getModelMatrix()
+{
+	mat3 ret;
+
+	ret = glm::scale(ret, trans.scale);
+	ret = glm::rotate(ret, trans.rotation);
+	ret = glm::translate(ret, trans.location);
+
+	return ret;
+}
+

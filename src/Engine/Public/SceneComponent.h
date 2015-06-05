@@ -16,30 +16,26 @@ public:
 
 	virtual ~SceneComponent() override;
 
-	ENGINE_API inline Transform getLocalTransform() const;
+	ENGINE_API inline Transform getRelativeTransform() const;
+
 	ENGINE_API inline Transform getWorldTransform() const;
 
 	/// <summary> Gets the location.</summary>
 	///
 	/// <returns> The location.</returns>
-	ENGINE_API inline vec2 getLocalLocation() const;
-
-	/// <summary> Gets the location.</summary>
-	///
-	/// <returns> The location.</returns>
-	ENGINE_API inline vec2 getWorldLocation() const;
+	ENGINE_API inline vec2 getRelativeLocation() const;
 
 	/// <summary> Gets the size.</summary>
 	///
 	/// <returns> The size.</returns>
 	ENGINE_API inline vec2 getScale() const;
 
-	/// <summary> Gets the rotation.</summary>
+	/// <summary> Gets the rotation in radians.</summary>
 	///
 	/// <returns> The rotation.</returns>
-	ENGINE_API inline float getLocalRotation() const;
+	ENGINE_API inline float getRelativeRotation() const;
 
-	/// <summary> Gets the rotation.</summary>
+	/// <summary> Gets the rotation in radians.</summary>
 	///
 	/// <returns> The rotation.</returns>
 	ENGINE_API inline float getWorldRotation() const;
@@ -47,7 +43,7 @@ public:
 	/// <summary> Sets a location.</summary>
 	///
 	/// <param name="newLoc"> The new location.</param>
-	ENGINE_API inline void setLocation(vec2 newLoc);
+	ENGINE_API inline void setRelativeLocation(vec2 newLoc);
 
 	/// <summary> Sets a size.</summary>
 	///
@@ -57,8 +53,17 @@ public:
 	/// <summary> Sets a rotation.</summary>
 	///
 	/// <param name="newRot"> The new rot.</param>
-	ENGINE_API inline void setRotation(float newRot);
+	ENGINE_API inline void setRelativeRotation(float newRot);
 
+	ENGINE_API inline void setRelativeTransform(const Transform& newTrans);
+
+	ENGINE_API inline void addRelativeLocation(vec2 locToAdd);
+
+	/// <summray> Add a rotation (in radians) to the current rotation </summary>
+	/// <param name="rotToAdd"> the roatation to add in radiands </param>
+	ENGINE_API inline void addRelativeRotation(float rotToAdd);
+	
+	ENGINE_API inline mat3 getModelMatrix();
 
 protected:
 	Transform trans;
@@ -82,7 +87,7 @@ inline SceneComponent::~SceneComponent()
 
 }
 
-inline Transform SceneComponent::getLocalTransform() const
+inline Transform SceneComponent::getRelativeTransform() const
 {
 	return trans;
 }
@@ -109,7 +114,7 @@ inline Transform SceneComponent::getWorldTransform() const
 
 }
 
-inline vec2 SceneComponent::getLocalLocation() const
+inline vec2 SceneComponent::getRelativeLocation() const
 {
 	return trans.location;
 }
@@ -121,12 +126,12 @@ inline vec2 SceneComponent::getScale() const
 }
 
 
-inline float SceneComponent::getLocalRotation() const
+inline float SceneComponent::getRelativeRotation() const
 {
 	return trans.rotation;
 }
 
-inline void SceneComponent::setLocation(vec2 newLoc)
+inline void SceneComponent::setRelativeLocation(vec2 newLoc)
 {
 	trans.location = newLoc;
 }
@@ -138,8 +143,33 @@ inline void SceneComponent::setScale(vec2 newScale)
 }
 
 
-inline void SceneComponent::setRotation(float newRot)
+inline void SceneComponent::setRelativeRotation(float newRot)
 {
 	trans.rotation = newRot;
 }
 
+inline void SceneComponent::setRelativeTransform(const Transform& newTrans)
+{
+	trans = newTrans;
+}
+
+inline void SceneComponent::addRelativeLocation(vec2 locToAdd)
+{
+	trans.location += locToAdd;
+}
+
+inline void SceneComponent::addRelativeRotation(float rotToAdd)
+{
+	trans.rotation += rotToAdd;
+}
+
+inline mat3 SceneComponent::getModelMatrix()
+{
+	mat3 ret = owner->getModelMatrix();
+
+	ret = glm::scale(ret, trans.scale);
+	ret = glm::rotate(ret, trans.rotation);
+	ret = glm::translate(ret, trans.location);
+	
+	return ret;
+}
