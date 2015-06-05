@@ -22,6 +22,9 @@ public:
 	virtual void setFilterMode(FilterMode mode) override;
 	virtual FilterMode getFilterMode() const override;
 
+	virtual void setWrapMode(WrapMode newMode) override;
+	virtual WrapMode getWrapMode() const override;
+
 private:
 
 	GLuint texHandle;

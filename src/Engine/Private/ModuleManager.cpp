@@ -96,29 +96,7 @@ void ModuleManager::AddContentModule(contentModuleSpawnFun fun, const std::strin
 	contentSpawnMethods.insert(std::pair<std::string, contentModuleSpawnFun>(moduleName, fun));
 }
 
-Actor* ModuleManager::spawnActor(const std::string& name, const Transform& trans)
-{
 
-	std::vector<std::string> brokenName;
-	boost::algorithm::split(brokenName, name, boost::algorithm::is_any_of("."));
-
-	// make sure we have at least two elements
-	if (brokenName.size() < 2) return nullptr;
-
-	auto iter = contentSpawnMethods.find(brokenName[0]);
-
-	// if it existes call it
-	if (iter != contentSpawnMethods.end())
-	{
-		// call the function
-		return iter->second(brokenName[1], trans);
-	}
-	else
-	{
-		// and if not then return nullptr
-		return nullptr;
-	}
-}
 
 void ModuleManager::addInitCallback(const std::function<void()>& function)
 {

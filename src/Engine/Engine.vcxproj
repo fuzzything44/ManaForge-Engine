@@ -132,6 +132,7 @@
     <ClInclude Include="Public\Controller.h" />
     <ClInclude Include="Public\ENGException.h" />
     <ClInclude Include="Public\Engine.h" />
+    <ClInclude Include="Public\glm-ortho-2d.h" />
     <ClInclude Include="public\Helper.h" />
     <ClInclude Include="Public\ImageLoader.h" />
     <ClInclude Include="Public\InputManager.h" />

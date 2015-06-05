@@ -372,3 +372,12 @@ void DefaultWorld::consoleCommand(std::string& command)
 	}
 }
 
+PlayerController* DefaultWorld::makePlayerController()
+{
+	return nullptr; // TODO: fix
+}
+
+Pawn* DefaultWorld::makePawn()
+{
+	return nullptr; // TODO: fix
+}

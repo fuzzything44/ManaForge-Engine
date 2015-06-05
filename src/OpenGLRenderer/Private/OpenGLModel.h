@@ -30,8 +30,7 @@ protected:
 	uint32 texCoordBuffer;
 	uint32 elemBuffer;
 
-	GLint cameraUniformLocation;
-	GLint modelUniformLocation;
+	GLint MVPUniformLocation;
 
 	ModelBounds bounds;
 

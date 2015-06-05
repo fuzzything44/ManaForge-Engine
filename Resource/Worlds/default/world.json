@@ -3,6 +3,6 @@
     "chunk": {
         "size" : "250"
     },
-	"PlayerController" : "PlayerController",
-	"Pawn" : "Pawn"
+	"PlayerController" : "Core.PlayerController",
+	"Pawn" : "Core.Pawn"
 }

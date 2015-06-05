@@ -13,6 +13,7 @@ class Gate : public Actor
 	INIT_SAVED_CLASS()
 
 		AudioComponent* audioComp;
+	MeshComponent* meshComp;
 
 public:
 

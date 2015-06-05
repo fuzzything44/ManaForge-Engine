@@ -25,7 +25,7 @@ public:
 
 	friend Runtime;
 
-	typedef std::function<Actor*(const std::string&, const Transform&)> contentModuleSpawnFun;
+	typedef std::function<void*(const std::string&)> contentModuleSpawnFun;
 	typedef std::function<World*(const std::string&)> newWorldFun;
 
 	ENGINE_API ~ModuleManager();
@@ -71,10 +71,12 @@ public:
 
 	ENGINE_API void AddContentModule(contentModuleSpawnFun fun, const std::string& moduleName);
 
-	ENGINE_API Actor* spawnActor(const std::string& name, const Transform& trans = Transform{});
 
 	ENGINE_API void addInitCallback(const std::function<void()>& function);
 	ENGINE_API void addUpdateCallback(const std::function<bool()>& function);
+
+	template <typename T>
+	T* spawnClass(const std::string& name);
 
 private:
 
@@ -94,3 +96,29 @@ private:
 	Renderer* renderer;
 	AudioSystem* audioSystem;
 };
+
+
+template <typename T>
+T* ModuleManager::spawnClass(const std::string& name)
+{
+
+	std::vector<std::string> brokenName;
+	boost::algorithm::split(brokenName, name, boost::algorithm::is_any_of("."));
+
+	// make sure we have at least two elements
+	if (brokenName.size() < 2) return nullptr;
+
+	auto iter = contentSpawnMethods.find(brokenName[0]);
+
+	// if it existes call it
+	if (iter != contentSpawnMethods.end())
+	{
+		// call the function
+		return static_cast<T*>(iter->second(brokenName[1]));
+	}
+	else
+	{
+		// and if not then return nullptr
+		return nullptr;
+	}
+}

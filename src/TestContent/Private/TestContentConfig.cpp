@@ -4,11 +4,11 @@
 #include <ModuleManager.h>
 
 
-Actor* spawnActor(std::string qualifier, const Transform& trans)
+void* spawnClass(std::string qualifier)
 {
 	if (qualifier == "Gate")
 	{
-		return new Gate(trans);
+		return new Gate();
 	}
 
 	return nullptr;
@@ -16,7 +16,7 @@ Actor* spawnActor(std::string qualifier, const Transform& trans)
 
 extern "C" TestContent_API void registerModule(ModuleManager& mm)
 {
-	mm.AddContentModule(spawnActor, TestContent_ModuleName);
+	mm.AddContentModule(spawnClass, TestContent_ModuleName);
 }
 
 extern "C" TestContent_API float getModuleEngineVersion()

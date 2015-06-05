@@ -24,7 +24,7 @@ Runtime::Runtime(const std::string& worldPath)
 	:propManager((changeDir(), logging::init(), "props.json")),
 	moduleManager()
 {
-
+	
 	// update current runtime to be the most recently created one
 	currentRuntime = this;
 
@@ -77,13 +77,14 @@ void Runtime::run()
 	}
 
 	// YA WE REALLY NEED PLAYER CONTROLLERS -- the gate shouldn't get to control the camera
-	Actor* gate = moduleManager.spawnActor("TestContent.Gate", Transform{ });
+	Actor* gate = moduleManager.spawnClass<Actor>("TestContent.Gate");
+
 
 	uvec2 windowSize = moduleManager.getRenderer().getWindow().getWindowProps().size;
 
 	float aspectRatio = static_cast<float>(windowSize.y) / static_cast<float>(windowSize.x);
 
-	CameraComponent* c = new CameraComponent{ gate, Transform{}, aspectRatio, 1.f };
+	CameraComponent* c = new CameraComponent{ gate, Transform{}, aspectRatio, .1f };
 	moduleManager.getRenderer().setCurrentCamera(c);
 	
 	// set initial tick
@@ -170,4 +171,9 @@ Runtime& Runtime::get()
 	}
 
 	return *currentRuntime;
+}
+
+PlayerController* Runtime::addPlayerController()
+{
+	return world->makePlayerController();
 }

@@ -12,7 +12,7 @@ public:
 	ENGINE_API explicit CameraComponent(Actor* owner = nullptr, Transform trans = Transform{}, float aspectRatio = 1.f, float zoom = 1.f);
 	ENGINE_API virtual ~CameraComponent() override;
 
-	ENGINE_API mat4 getViewMat() const;
+	ENGINE_API mat3 getViewMat() const;
 
 	ENGINE_API void setAspectRatio(float newAsepctRatio);
 	ENGINE_API void setZoom(float newZoom);

@@ -49,5 +49,9 @@ public:
 
 	virtual void consoleCommand(std::string& command) override;
 
+	virtual PlayerController* makePlayerController() override;
+	virtual Pawn* makePawn() override;
+
+
 	virtual ~DefaultWorld();
 };

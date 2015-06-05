@@ -2,6 +2,8 @@
 
 #include "Helper.h"
 
+#include "glm-ortho-2d.h"
+
 CameraComponent::CameraComponent(Actor* owner, Transform trans, float aspectRatio, float zoom)
 	: SceneComponent(owner, trans),
 	aspectRatio(aspectRatio),
@@ -37,13 +39,13 @@ float CameraComponent::getZoom() const
 }
 
 
-mat4 CameraComponent::getViewMat() const
+mat3 CameraComponent::getViewMat() const
 {
-	mat4 ret = glm::ortho(-1.f, 1.f, -aspectRatio, aspectRatio, .1f, 100.f);
-	ret = glm::scale(ret, vec3(zoom, zoom, 1.f));
-	ret = glm::translate(ret, vec3(trans.location.x, trans.location.y, 0.f));
-
-	ENG_LOGLN(aspectRatio);
+	mat3 ret = glm::ortho2d(-1.f, 1.f, -aspectRatio, aspectRatio);
+	ret = glm::scale(ret, vec2(zoom, zoom));
+	ret = glm::rotate(ret, trans.rotation);
+	ret = glm::translate(ret, vec2(trans.location.x, trans.location.y));
+	
 
 	return ret;
 }

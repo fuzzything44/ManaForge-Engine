@@ -123,6 +123,51 @@ Texture::FilterMode OpenGLTextureLibrary::getFilterMode() const
 	}
 }
 
+
+void OpenGLTextureLibrary::setWrapMode(WrapMode newMode)
+{
+	glBindTexture(GL_TEXTURE_2D, texHandle);
+	switch (newMode)
+	{
+	case WrapMode::CLAMP_TO_EDGE:
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		break;
+	case WrapMode::MIRRORED_REPEAT:
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+		break;
+	case WrapMode::REPEAT:
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		break;
+	default:
+		break;
+	}
+}
+
+Texture::WrapMode OpenGLTextureLibrary::getWrapMode() const
+{
+	glBindTexture(GL_TEXTURE_2D, texHandle);
+
+	GLint wrap;
+
+	glGetTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, &wrap); // retreive the data
+
+	switch (wrap)
+	{
+	case GL_CLAMP_TO_EDGE:
+		return WrapMode::CLAMP_TO_EDGE;
+	case GL_MIRRORED_REPEAT:
+		return WrapMode::MIRRORED_REPEAT;
+	case GL_REPEAT:
+		return WrapMode::REPEAT;
+	default:
+		return WrapMode::REPEAT; // just a deault fallback
+	}
+}
+
+
 #define FOURCC_DXT1 0x31545844 // Equivalent to "DXT1" in ASCII
 #define FOURCC_DXT3 0x33545844 // Equivalent to "DXT3" in ASCII
 #define FOURCC_DXT5 0x35545844 // Equivalent to "DXT5" in ASCII

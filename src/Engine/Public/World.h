@@ -6,6 +6,8 @@
 
 class Actor;
 class ModuleManager;
+class Pawn;
+class PlayerController;
 
 class World
 {
@@ -27,6 +29,9 @@ public:
 	/// <summary> loads a subworld with given name. </summary>
 	/// <param name="subWorldName"> Name of subworld ex. "dungeon1".
 	virtual void loadWorld(std::string subWorldName) = 0;
+
+	virtual PlayerController* makePlayerController() = 0;
+	virtual Pawn* makePawn() = 0;
 
 	virtual void addActor(Actor& toAdd) = 0;
 

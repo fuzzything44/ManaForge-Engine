@@ -187,5 +187,8 @@
     <ClInclude Include="Public\AudioComponent.h">
       <Filter>Public</Filter>
     </ClInclude>
+    <ClInclude Include="Public\glm-ortho-2d.h">
+      <Filter>Public</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -11,6 +11,7 @@
 
 #include <chrono>
 
+class PlayerController;
 class Window;
 
 class Runtime : boost::noncopyable
@@ -24,6 +25,8 @@ public:
 	ENGINE_API void run();
 
 	ENGINE_API static Runtime& get();
+
+	ENGINE_API PlayerController* addPlayerController();
 
 	ModuleManager moduleManager;
 	PropertyManager propManager;

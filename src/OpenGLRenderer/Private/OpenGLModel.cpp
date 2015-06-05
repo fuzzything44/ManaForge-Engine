@@ -7,6 +7,7 @@
 #include <CameraComponent.h>
 #include <MeshComponent.h>
 
+#include <glm-ortho-2d.h>
 
 OpenGLModel::OpenGLModel(ModelData data, MeshComponent* owner, OpenGLRenderer* renderer)
 	:numVerts(data.numVerts),
@@ -45,8 +46,7 @@ OpenGLModel::OpenGLModel(ModelData data, MeshComponent* owner, OpenGLRenderer* r
 
 	// get the cameraMat location
 	check(material);
-	cameraUniformLocation = glGetUniformLocation((*material)(), "camera");
-	modelUniformLocation = glGetUniformLocation((*material)(), "model");
+	MVPUniformLocation = glGetUniformLocation((*material)(), "MVPmat");
 }
 
 
@@ -97,47 +97,30 @@ void OpenGLModel::draw()
 	
 	Transform worldTrans = parent->getWorldTransform(); // todo fix this
 	
-	mat4 camera = (renderer->getCurrentCamera().getViewMat());
+	// start with the camera
+	mat3 MVPmat = renderer->getCurrentCamera().getViewMat();
 
-	// create an identity matrix
-	mat3 model{ 1.f };
-
-	model = glm::rotate(model, worldTrans.rotation);		// apply rotation
-	model = glm::scale(model, worldTrans.scale);			// apply scaling
-	model = glm::translate(model, worldTrans.location);	// apply translation
+	MVPmat = glm::scale(MVPmat, worldTrans.scale);			// apply scaling
+	MVPmat = glm::rotate(MVPmat, worldTrans.rotation);		// apply rotation
+	MVPmat = glm::translate(MVPmat, worldTrans.location);	// apply translation
 
 
 	// check if it is in bounds
-	if (!isInBounds(model, camera))
-		return;
+	//if (!isInBounds(model, camera))
+	//	return;
 
 	material->use();
 
 	glBindVertexArray(vertexArray);
 
 
-	if (cameraUniformLocation != -1)
+	if (MVPUniformLocation != -1)
 	{
-		// set the camera matrix in the shader to the view mat defined by the camera that is current
-		glUniformMatrix4fv(
-			cameraUniformLocation,	// location of the uniform
-			1,						// only one matrix
-			GL_FALSE,				// don't transpose it
-			&camera[0][0]);			// pointer to the first element
-		
+		glUniformMatrix3fv(MVPUniformLocation, 1, GL_FALSE, &MVPmat[0][0]);
 	}
 	else
 	{
-		FATAL_ERR("could not find camera uniform in shader");
-	}
-
-	if (modelUniformLocation != -1)
-	{
-		glUniformMatrix3fv(modelUniformLocation, 1, GL_FALSE, &model[0][0]);
-	}
-	else
-	{
-		FATAL_ERR("could not find model uniform in shader");
+		FATAL_ERR("could not find MVPmat uniform in shader");
 	}
 
 
