@@ -3,6 +3,8 @@
 #include "Module.h"
 #include "Renderer.h"
 #include "World.h"
+#include "AudioSystem.h"
+#include "PhysicsSystem.h"
 
 #include <map>
 #include <vector>
@@ -15,8 +17,7 @@
 
 class Runtime;
 class World;
-class Renderer;
-class AudioSystem;
+
 
 class ModuleManager : boost::noncopyable
 {
@@ -26,33 +27,22 @@ public:
 
 	typedef std::function<void*(const std::string&)> contentModuleSpawnFun;
 	typedef std::function<World*(const std::string&)> newWorldFun;
+	typedef std::function<bool(float)> updateFun;
+	typedef std::function<void()> initFun;
 
 	ENGINE_API ~ModuleManager();
 
 	/// <summary> Default constructor.</summary>
 	ENGINE_API ModuleManager();
 
-	/// <summary> Gets the renderer./</summary>
-	///
-	/// <returns> if it fails, throws an exception, else the renderer.</returns>
+
 	ENGINE_API Renderer& getRenderer();
-
-	/// <summary> Gets the audio system./</summary>
-	///
-	/// <returns> if it fails, throws an exception, else the audio system.</returns>
 	ENGINE_API AudioSystem& getAudioSystem();
-		
-	/// <summary> Adds a renderer.</summary>
-	///
-	/// <param name="newRenderer"> If non-null, the new renderer.</param>
+	ENGINE_API PhysicsSystem& getPhysicsSystem();
+	
 	ENGINE_API void setRenderer(Renderer* newRenderer);
-
-
-	/// <summary> Adds a renderer.</summary>
-	///
-	/// <param name="newRenderer"> If non-null, the new renderer.</param>
-	ENGINE_API void setAudioSystem(AudioSystem* newRenderer);
-
+	ENGINE_API void setAudioSystem(AudioSystem* newAudioSystem);
+	ENGINE_API void setPhysicsSystem(PhysicsSystem* newPhysicsSystem);
 
 	/// <summary> Loads a module.</summary>
 	///
@@ -71,19 +61,19 @@ public:
 	ENGINE_API void AddContentModule(contentModuleSpawnFun fun, const std::string& moduleName);
 
 
-	ENGINE_API void addInitCallback(const std::function<void()>& function);
-	ENGINE_API void addUpdateCallback(const std::function<bool()>& function);
+	ENGINE_API void addInitCallback(const initFun& function);
+	ENGINE_API void addUpdateCallback(const updateFun& function);
 
 	template <typename T>
 	T* spawnClass(const std::string& name);
 
 private:
 
-	std::list<std::function<void()> >& getInitCallbacks();
-	std::list<std::function<bool()> >& getUpdateCallbacks();
+	std::list<initFun>& getInitCallbacks();
+	std::list<updateFun>& getUpdateCallbacks();
 
-	std::list<std::function<void()> > initCallbacks;
-	std::list<std::function<bool()> > updateCallbacks;
+	std::list<initFun> initCallbacks;
+	std::list<updateFun> updateCallbacks;
 
 	// function to createWorld
 	newWorldFun newWorldFunction;
@@ -94,6 +84,8 @@ private:
 
 	Renderer* renderer;
 	AudioSystem* audioSystem;
+	PhysicsSystem* physicsSystem;
+
 };
 
 

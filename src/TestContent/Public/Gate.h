@@ -7,12 +7,13 @@
 #include <Actor.h>
 #include <MeshComponent.h>
 #include <AudioComponent.h>
+#include <RectangleCollisionComponent.h>
 
 class Gate : public Actor
 {
 	INIT_SAVED_CLASS()
 
-	AudioComponent* audioComp;
+	RectangleCollisionComponent* collision;
 	MeshComponent* meshComp;
 
 public:

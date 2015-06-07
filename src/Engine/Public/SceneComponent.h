@@ -118,6 +118,11 @@ inline vec2 SceneComponent::getWorldLocation() const
 	return vec2(loc3.x, loc3.y);
 }
 
+inline float SceneComponent::getWorldRotation() const
+{
+	return owner->getWorldRotation() + trans.rotation;
+}
+
 inline vec2 SceneComponent::getRelativeLocation() const
 {
 	return trans.location;

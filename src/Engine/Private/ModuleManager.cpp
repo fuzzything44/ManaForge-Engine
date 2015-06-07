@@ -3,6 +3,7 @@
 #include "ModuleManager.h"
 
 #include "Helper.h"
+#include "AudioSystem.h"
 
 #include <map>
 
@@ -14,9 +15,9 @@ ModuleManager::ModuleManager()
 
 ModuleManager::~ModuleManager()
 {
+	// explicitly call the destructors -- we get an error otherwise
 	newWorldFunction.~function();
-
-
+	
 	for (auto& elem : contentSpawnMethods)
 	{
 		elem.second.~function();
@@ -33,6 +34,8 @@ ModuleManager::~ModuleManager()
 	}
 
 	delete renderer;
+	delete audioSystem;
+	delete physicsSystem;
 }
 
 Renderer& ModuleManager::getRenderer()
@@ -50,6 +53,11 @@ AudioSystem& ModuleManager::getAudioSystem()
 	return *audioSystem;
 }
 
+PhysicsSystem& ModuleManager::getPhysicsSystem()
+{
+	check(physicsSystem);
+	return *physicsSystem;
+}
 
 void ModuleManager::setRenderer(Renderer* newRenderer)
 {
@@ -64,6 +72,13 @@ void ModuleManager::setAudioSystem(AudioSystem* newAudioSystem)
 	check(newAudioSystem);
 
 	audioSystem = newAudioSystem;
+}
+
+void ModuleManager::setPhysicsSystem(PhysicsSystem* newPhysicsSystem)
+{
+	check(newPhysicsSystem);
+
+	physicsSystem = newPhysicsSystem;
 }
 
 void ModuleManager::loadModule(const std::string& filename)
@@ -100,22 +115,22 @@ void ModuleManager::AddContentModule(contentModuleSpawnFun fun, const std::strin
 
 
 
-void ModuleManager::addInitCallback(const std::function<void()>& function)
+void ModuleManager::addInitCallback(const initFun& function)
 {
 	initCallbacks.push_back(function);
 }
 
-void ModuleManager::addUpdateCallback(const std::function<bool()>& function)
+void ModuleManager::addUpdateCallback(const updateFun& function)
 {
 	updateCallbacks.push_back(function);
 }
 
-std::list<std::function<void()> >& ModuleManager::getInitCallbacks()
+std::list<ModuleManager::initFun>& ModuleManager::getInitCallbacks()
 {
 	return initCallbacks;
 }
 
-std::list<std::function<bool()> >& ModuleManager::getUpdateCallbacks()
+std::list<ModuleManager::updateFun>& ModuleManager::getUpdateCallbacks()
 {
 	return updateCallbacks;
 }

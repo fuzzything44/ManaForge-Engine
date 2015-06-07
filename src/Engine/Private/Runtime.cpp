@@ -59,7 +59,7 @@ void Runtime::run()
 {
 	{
 
-		std::list<std::function<void()> >& initCallbacks = moduleManager.getInitCallbacks();
+		std::list<ModuleManager::initFun>& initCallbacks = moduleManager.getInitCallbacks();
 
 		for (auto& callback : initCallbacks)
 		{
@@ -77,6 +77,7 @@ void Runtime::run()
 
 	// YA WE REALLY NEED PLAYER CONTROLLERS -- the gate shouldn't get to control the camera
 	Actor* gate = moduleManager.spawnClass<Actor>("TestContent.Gate");
+	gate->setLocation(vec2(2.f, 2.f));
 
 	uvec2 windowSize = moduleManager.getRenderer().getWindow().getWindowProps().size;
 
@@ -86,6 +87,8 @@ void Runtime::run()
 
 	CameraComponent* c = new CameraComponent{ player, Transform{}, aspectRatio, .1f };
 	moduleManager.getRenderer().setCurrentCamera(c);
+	
+	moduleManager.getPhysicsSystem().setGravity(vec2(0.f, -10.f));
 	
 	// set initial tick
 	clock::time_point LastTick = clock::now();
@@ -139,7 +142,7 @@ void Runtime::run()
 		}
 
 		// recieve the update callbacks
-		std::list<std::function<bool()> >& updateCallbacks = moduleManager.getUpdateCallbacks();
+		std::list<ModuleManager::updateFun>& updateCallbacks = moduleManager.getUpdateCallbacks();
 
 		shouldContinue = true;
 
@@ -150,7 +153,7 @@ void Runtime::run()
 				ENG_LOGLN("Warning: Update callback empty");
 			}
 
-			if(!callback()) // it would return true if we should coninue
+			if(!callback(delta)) // it would return true if we should coninue
 			{
 				shouldContinue = false;
 			}

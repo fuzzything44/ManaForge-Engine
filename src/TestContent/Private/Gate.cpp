@@ -12,14 +12,7 @@ Gate::Gate()
 	: Actor()
 {
 	
-
-	trans = Transform(vec2(4.f, 4.f), .25f * (float)M_PI, vec2(.1f, .1f));
-
-	SoundCue* cue = Runtime::get().moduleManager.getAudioSystem().newSoundCue("test");
-	audioComp = new AudioComponent(this, Transform{}, cue, true);
-	audioComp->setReferenceDistance(.1f);
-	audioComp->setConeParams(vec2(1.f, 0.f), 45.f, 90.f, .05f);
-	audioComp->play();
+	collision = new RectangleCollisionComponent(this);
 
 	vec2 vertLocs[] =
 	{
