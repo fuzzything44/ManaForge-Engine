@@ -1,4 +1,7 @@
+#include "EnginePCH.h"
+
 #include "ChangeDirectory.h"
+
 #include "Logging.h"
 #include "ENGException.h"
 

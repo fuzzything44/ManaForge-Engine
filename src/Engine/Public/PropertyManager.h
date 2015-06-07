@@ -1,8 +1,7 @@
 #pragma once
-
 #include "Engine.h"
-#include "Logging.h"
 
+#include "Logging.h"
 
 #include <boost/property_tree/ptree.hpp>
 #include <boost/lexical_cast.hpp>

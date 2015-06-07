@@ -1,3 +1,5 @@
+#include "EnginePCH.h"
+
 #include "ImageLoader.h"
 
 std::map<std::string, std::function<uvec2(std::string, std::vector<uint8>&)> > 

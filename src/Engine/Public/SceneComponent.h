@@ -2,7 +2,6 @@
 
 #include "Component.h"
 #include "Transform.h"
-#include <glm/detail/type_mat.hpp>
 
 /// <summary> a component that has a transform </summary>
 class SceneComponent : public Component

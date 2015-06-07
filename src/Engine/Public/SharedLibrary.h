@@ -1,7 +1,8 @@
 #pragma once
-
 #include "Engine.h"
+
 #include "ENGException.h"
+
 #include <stdexcept>
 
 #if defined _WIN32 || defined WIN32

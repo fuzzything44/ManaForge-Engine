@@ -1,3 +1,5 @@
+#include "EnginePCH.h"
+
 #include "Logging.h"
 
 std::ofstream logging::logfile = std::ofstream();

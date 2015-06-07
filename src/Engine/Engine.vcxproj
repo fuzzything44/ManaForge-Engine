@@ -64,11 +64,11 @@
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <TreatWarningAsError>true</TreatWarningAsError>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
-      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>EnginePCH.h</PrecompiledHeaderFile>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <EnableParallelCodeGeneration>true</EnableParallelCodeGeneration>
       <OmitDefaultLibName>false</OmitDefaultLibName>
@@ -108,6 +108,9 @@
     <ClCompile Include="Private\Component.cpp" />
     <ClCompile Include="Private\Controller.cpp" />
     <ClCompile Include="private\ENGException.cpp" />
+    <ClCompile Include="Private\EnginePCH.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="private\Helper.cpp" />
     <ClCompile Include="Private\ImageLoader.cpp" />
     <ClCompile Include="Private\InputManager.cpp" />
@@ -121,6 +124,7 @@
     <ClCompile Include="Private\Runtime.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Private\EnginePCH.h" />
     <ClInclude Include="public\Actor.h" />
     <ClInclude Include="Public\AudioComponent.h" />
     <ClInclude Include="Public\AudioSystem.h" />
@@ -143,6 +147,7 @@
     <ClInclude Include="Public\Module.h" />
     <ClInclude Include="Public\ModuleManager.h" />
     <ClInclude Include="Public\Pawn.h" />
+    <ClInclude Include="Public\PhysicsSystem.h" />
     <ClInclude Include="Public\PlayerController.h" />
     <ClInclude Include="Public\PropertyManager.h" />
     <ClInclude Include="Public\QuadUVCoords.h" />

@@ -1,11 +1,12 @@
 #pragma once 
-
-#include <boost/core/noncopyable.hpp>
-
 #include "Engine.h"
+
 #include "WindowProps.h"
 
 #include <vector>
+
+#include <boost/core/noncopyable.hpp>
+
 
 // forward declarations
 class MeshComponent;

@@ -1,3 +1,5 @@
+#include "EnginePCH.h"
+
 #include "AudioComponent.h"
 
 #include "SoundCue.h"

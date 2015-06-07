@@ -1,4 +1,8 @@
-﻿#include "ENGException.h"
+﻿#include "EnginePCH.h"
+
+#include "ENGException.h"
+
+#include "Logging.h"
 
 #include <sstream>
 

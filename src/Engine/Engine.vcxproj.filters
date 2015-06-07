@@ -62,6 +62,9 @@
     <ClCompile Include="Private\AudioComponent.cpp">
       <Filter>Private</Filter>
     </ClCompile>
+    <ClCompile Include="Private\EnginePCH.cpp">
+      <Filter>Private</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="public\Actor.h">
@@ -185,6 +188,12 @@
       <Filter>Public</Filter>
     </ClInclude>
     <ClInclude Include="Public\glm-ortho-2d.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\EnginePCH.h">
+      <Filter>Private</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\PhysicsSystem.h">
       <Filter>Public</Filter>
     </ClInclude>
   </ItemGroup>
