@@ -196,10 +196,16 @@
     <ClInclude Include="Public\PhysicsSystem.h">
       <Filter>Public</Filter>
     </ClInclude>
-    <ClInclude Include="Public\RectangleCollisionBody.h">
+    <ClInclude Include="Public\PhysicsBody.h">
       <Filter>Public</Filter>
     </ClInclude>
-    <ClInclude Include="Public\RectangleCollisionComponent.h">
+    <ClInclude Include="Public\PhysicsComponent.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\PhysicsShape.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\ActorTransformController.h">
       <Filter>Public</Filter>
     </ClInclude>
   </ItemGroup>

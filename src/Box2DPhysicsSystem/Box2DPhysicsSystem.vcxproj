@@ -49,6 +49,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(ModuleOutputDir)</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -80,17 +81,22 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <TreatLinkerWarningAsErrors>true</TreatLinkerWarningAsErrors>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Private\Box2DActorTransformController.h" />
+    <ClInclude Include="Private\Box2DPhysicsBody.h" />
+    <ClInclude Include="Private\Box2DPhysicsShape.h" />
     <ClInclude Include="Private\Box2DPhysicsSystem.h" />
     <ClInclude Include="Private\Box2DPhysicsSystemConfig.h" />
-    <ClInclude Include="Private\Box2DRectangleCollisionBody.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Private\Box2DActorTransformController.cpp" />
+    <ClCompile Include="Private\Box2DPhysicsBody.cpp" />
+    <ClCompile Include="Private\Box2DPhysicsShape.cpp" />
     <ClCompile Include="Private\Box2DPhysicsSystem.cpp" />
     <ClCompile Include="Private\Box2DPhysicsSystemConfig.cpp" />
-    <ClCompile Include="Private\Box2DRectangleCollisionBody.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -12,7 +12,6 @@ Gate::Gate()
 	: Actor()
 {
 	
-	collision = new RectangleCollisionComponent(this);
 
 	vec2 vertLocs[] =
 	{
@@ -45,6 +44,16 @@ Gate::Gate()
 
 	meshComp = new MeshComponent(this, Transform{ }, ModelData
 		(vertLocs, UVs, tris, 6, 2, mat));
+
+
+
+	PhysicsShape* shape = Runtime::get().moduleManager.getPhysicsSystem().newPhysicsShape();
+
+	shape->asRectangle(1.f, 1.f);
+
+	physComp = new PhysicsComponent(this, Transform{}, shape);
+
+
 
 }
 

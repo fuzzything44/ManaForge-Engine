@@ -49,13 +49,14 @@ typedef unsigned long SIZE_T, *PSIZE_T;
 #endif  // _MSC_VER < 1300
 
 #ifdef StackWalker_Source
-	#define STACK_WALKER_API __declspec(dllexport)
+#	define STACK_WALKER_API __declspec(dllexport)
+#	pragma message("Exporting symbols")
 #else
-	#define STACK_WALKER_API __declspec(dllimport)
+#	define STACK_WALKER_API __declspec(dllimport)
 #endif
 
 class StackWalkerInternal;  // forward
-class STACK_WALKER_API StackWalker
+class StackWalker
 {
 public:
   typedef enum StackWalkOptions
@@ -92,14 +93,14 @@ public:
     OptionsAll = 0x3F
   } StackWalkOptions;
 
-  StackWalker(
+  STACK_WALKER_API StackWalker(
     int options = OptionsAll, // 'int' is by design, to combine the enum-flags
     LPCSTR szSymPath = NULL, 
     DWORD dwProcessId = GetCurrentProcessId(), 
     HANDLE hProcess = GetCurrentProcess()
     );
-  StackWalker(DWORD dwProcessId, HANDLE hProcess);
-  virtual ~StackWalker();
+  STACK_WALKER_API StackWalker(DWORD dwProcessId, HANDLE hProcess);
+  STACK_WALKER_API  virtual ~StackWalker();
 
   typedef BOOL (__stdcall *PReadProcessMemoryRoutine)(
     HANDLE      hProcess,
@@ -110,9 +111,9 @@ public:
     LPVOID      pUserData  // optional data, which was passed in "ShowCallstack"
     );
 
-  BOOL LoadModules();
+  STACK_WALKER_API  BOOL LoadModules();
 
-  BOOL ShowCallstack(
+  STACK_WALKER_API  BOOL ShowCallstack(
     HANDLE hThread = GetCurrentThread(), 
     const CONTEXT *context = NULL, 
     PReadProcessMemoryRoutine readMemoryFunction = NULL,
@@ -147,11 +148,11 @@ protected:
 
   typedef enum CallstackEntryType {firstEntry, nextEntry, lastEntry};
 
-  virtual void OnSymInit(LPCSTR szSearchPath, DWORD symOptions, LPCSTR szUserName);
-  virtual void OnLoadModule(LPCSTR img, LPCSTR mod, DWORD64 baseAddr, DWORD size, DWORD result, LPCSTR symType, LPCSTR pdbName, ULONGLONG fileVersion);
-  virtual void OnCallstackEntry(CallstackEntryType eType, CallstackEntry &entry);
-  virtual void OnDbgHelpErr(LPCSTR szFuncName, DWORD gle, DWORD64 addr);
-  virtual void OnOutput(LPCSTR szText);
+  STACK_WALKER_API virtual void OnSymInit(LPCSTR szSearchPath, DWORD symOptions, LPCSTR szUserName);
+  STACK_WALKER_API virtual void OnLoadModule(LPCSTR img, LPCSTR mod, DWORD64 baseAddr, DWORD size, DWORD result, LPCSTR symType, LPCSTR pdbName, ULONGLONG fileVersion);
+  STACK_WALKER_API virtual void OnCallstackEntry(CallstackEntryType eType, CallstackEntry &entry);
+  STACK_WALKER_API virtual void OnDbgHelpErr(LPCSTR szFuncName, DWORD gle, DWORD64 addr);
+  STACK_WALKER_API virtual void OnOutput(LPCSTR szText);
 
   StackWalkerInternal *m_sw;
   HANDLE m_hProcess;
@@ -162,7 +163,7 @@ protected:
   int m_options;
   int m_MaxRecursionCount;
 
-  static BOOL __stdcall myReadProcMem(HANDLE hProcess, DWORD64 qwBaseAddress, PVOID lpBuffer, DWORD nSize, LPDWORD lpNumberOfBytesRead);
+  STACK_WALKER_API static BOOL __stdcall myReadProcMem(HANDLE hProcess, DWORD64 qwBaseAddress, PVOID lpBuffer, DWORD nSize, LPDWORD lpNumberOfBytesRead);
 
   friend StackWalkerInternal;
 };  // class StackWalker

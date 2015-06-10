@@ -3,12 +3,12 @@
 #include "Actor.h"
 
 #include "Helper.h"
+#include "Runtime.h"
 
 BOOST_CLASS_EXPORT_IMPLEMENT(Actor);
 
 Actor::Actor()
 {
-
 }
 
 bool Actor::needsSave()

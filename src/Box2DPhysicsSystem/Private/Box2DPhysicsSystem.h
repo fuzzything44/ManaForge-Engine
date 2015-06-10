@@ -1,14 +1,17 @@
 #pragma once
 #include "Box2DPhysicsSystemConfig.h"
-#include "Box2DRectangleCollisionBody.h"
 
 #include <PhysicsSystem.h>
-#include <RectangleCollisionBody.h>
+#include <Actor.h>
 
-#include <list>
+#include <map>
+
+class PhysicsComponent;
+class Box2DActorTransformController;
 
 class Box2DPhysicsSystem : public PhysicsSystem
 {
+	friend class Box2DPhysicsBody;
 public:
 
 	Box2DPhysicsSystem();
@@ -16,17 +19,17 @@ public:
 
 	virtual void setGravity(vec2 newGravity) override;
 
-	virtual RectangleCollisionBody* newRectangeCollisonBody(RectangleCollisionComponent* owner) override;
-	
+
+	virtual PhysicsBody* newPhysicsBody(PhysicsShape* shape, PhysicsComponent* owner) override;
+	virtual PhysicsShape* newPhysicsShape() override;
+
 	bool update(float deltaTime);
 
-	b2World* getWorld();
-	void addBody(Box2DRectangleCollisionBody* newBody);
 
 private:
 	
-	std::list<Box2DRectangleCollisionBody*> bodies;
-
+	std::map<Actor*, Box2DActorTransformController*> bodies;
+	
 	b2World* world;
 	b2Vec2 gravity;
 };

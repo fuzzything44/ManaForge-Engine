@@ -1,6 +1,7 @@
 #include "Box2DPhysicsSystem.h"
 
-#include "Box2DRectangleCollisionBody.h"
+#include "Box2DPhysicsShape.h"
+#include "Box2DPhysicsBody.h"
 
 Box2DPhysicsSystem::Box2DPhysicsSystem()
 {
@@ -19,30 +20,24 @@ void Box2DPhysicsSystem::setGravity(vec2 newGravity)
 
 }
 
-RectangleCollisionBody* Box2DPhysicsSystem::newRectangeCollisonBody(RectangleCollisionComponent* owner)
+
+PhysicsBody* Box2DPhysicsSystem::newPhysicsBody(PhysicsShape* shape, PhysicsComponent* owner)
 {
-	return new Box2DRectangleCollisionBody(owner, this);
+	return new Box2DPhysicsBody(static_cast<Box2DPhysicsShape*>(shape), owner, this);
 }
+
+PhysicsShape* Box2DPhysicsSystem::newPhysicsShape()
+{
+	return new Box2DPhysicsShape();
+}
+
 
 bool Box2DPhysicsSystem::update(float deltaTime)
 {
 	world->Step(deltaTime, 1, 1); // step once
 
-	for (auto& elem : bodies)
-	{
-		elem->update();
-	}
 
 	return true;
 }
 
 
-void Box2DPhysicsSystem::addBody(Box2DRectangleCollisionBody* newBody)
-{
-	bodies.push_back(newBody);
-}
-
-b2World* Box2DPhysicsSystem::getWorld()
-{
-	return world;
-}

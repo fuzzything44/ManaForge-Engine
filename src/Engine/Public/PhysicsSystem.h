@@ -1,11 +1,12 @@
 #pragma once
 
 #include "Engine.h"
+#include "PhysicsBody.h"
+#include "PhysicsShape.h"
 
 #include <boost/noncopyable.hpp>
 
-class RectangleCollisionComponent;
-class RectangleCollisionBody;
+class PhysicsComponent;
 
 class PhysicsSystem : boost::noncopyable
 {
@@ -15,6 +16,7 @@ public:
 
 	virtual void setGravity(vec2 newGravity) = 0;
 
-	virtual RectangleCollisionBody* newRectangeCollisonBody(RectangleCollisionComponent* owner) = 0;
+	virtual PhysicsBody* newPhysicsBody(PhysicsShape* shape, PhysicsComponent* owner) = 0;
+	virtual PhysicsShape* newPhysicsShape() = 0;
 
 };

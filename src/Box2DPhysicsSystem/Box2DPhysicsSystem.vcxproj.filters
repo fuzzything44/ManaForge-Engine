@@ -17,7 +17,13 @@
     <ClInclude Include="Private\Box2DPhysicsSystem.h">
       <Filter>Private</Filter>
     </ClInclude>
-    <ClInclude Include="Private\Box2DRectangleCollisionBody.h">
+    <ClInclude Include="Private\Box2DPhysicsShape.h">
+      <Filter>Private</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\Box2DPhysicsBody.h">
+      <Filter>Private</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\Box2DActorTransformController.h">
       <Filter>Private</Filter>
     </ClInclude>
   </ItemGroup>
@@ -28,7 +34,13 @@
     <ClCompile Include="Private\Box2DPhysicsSystem.cpp">
       <Filter>Private</Filter>
     </ClCompile>
-    <ClCompile Include="Private\Box2DRectangleCollisionBody.cpp">
+    <ClCompile Include="Private\Box2DPhysicsShape.cpp">
+      <Filter>Private</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\Box2DPhysicsBody.cpp">
+      <Filter>Private</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\Box2DActorTransformController.cpp">
       <Filter>Private</Filter>
     </ClCompile>
   </ItemGroup>
