@@ -22,7 +22,14 @@ public:
 	virtual PhysicsType getType() override;
 	virtual void setType(PhysicsType) override;
 
-	virtual void applyForce(vec2 force, vec2 point) override;
+	virtual void applyLocalForce(vec2 localForce, vec2 localPoint) override;
+	virtual void applyWorldForce(vec2 localForce, vec2 localPoint) override;
+
+	virtual void applyTorque(float magnituede) override;
+
+
+	virtual void setAngularVelocity(float newVelocity) override;
+	virtual float getAngularVelocity() override;
 
 	virtual Actor* getOwner() const override;
 

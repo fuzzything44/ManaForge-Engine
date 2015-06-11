@@ -2,6 +2,7 @@
 #include "Engine.h"
 
 #include "WindowProps.h"
+#include "Color.h"
 
 #include <vector>
 
@@ -71,6 +72,14 @@ public:
 	virtual Window& getWindow() = 0;
 	// and the const version
 	virtual const Window& getWindow() const = 0;
+
+
+	virtual void drawDebugOutlinePolygon(vec2* verts, uint32 numVerts, Color color) = 0;
+	virtual void drawDebugLine(vec2* locs, uint32 numLocs, Color color) = 0;	
+	virtual void drawDebugSolidPolygon(vec2* verts, uint32 numVerts, Color color) = 0;
+	virtual void drawDebugOutlineCircle(vec2 center, float radius, Color color) = 0;
+	virtual void drawDebugSolidCircle(vec2 center, float radius, Color color) = 0;
+	virtual void drawDebugSegment(vec2 p1, vec2 p2, Color color) = 0;
 
 };
 

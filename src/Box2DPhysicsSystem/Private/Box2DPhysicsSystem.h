@@ -24,6 +24,7 @@ public:
 	virtual PhysicsBody* newPhysicsBody(PhysicsShape* shape, PhysicsComponent* owner) override;
 	virtual PhysicsShape* newPhysicsShape() override;
 	virtual ActorTransformController* newActorTransformController(Actor* actor) override;
+	virtual void drawDebugPoints() override;
 
 	bool update(float deltaTime);
 

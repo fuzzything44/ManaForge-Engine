@@ -1,6 +1,8 @@
 #include "OpenGLTexture.h"
 #include "SOIL/SOIL.h"
 
+#include <Helper.h>
+
 
 #define FOURCC_DXT1 0x31545844 // Equivalent to "DXT1" in ASCII
 #define FOURCC_DXT3 0x33545844 // Equivalent to "DXT3" in ASCII
@@ -189,6 +191,7 @@ int32 OpenGLTexture::loadDDS(const std::string& filename)
 	/* how big is it going to be including all mipmaps? */
 	bufsize = mipMapCount > 1 ? linearSize * 2 : linearSize;
 	buffer = static_cast<unsigned char*>(malloc(bufsize * sizeof(unsigned char)));
+	check(buffer);
 	fread(buffer, 1, bufsize, fp);
 	/* close the file pointer */
 	fclose(fp);

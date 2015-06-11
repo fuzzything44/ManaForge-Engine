@@ -2,6 +2,7 @@
 
 #include <Logging.h>
 #include <ENGException.h>
+#include <Helper.h>
 #include <vector>
 
 #include "SOIL/SOIL.h"
@@ -207,6 +208,7 @@ void OpenGLTextureLibrary::appendDDS(uint32 texToAppend, uint32 Xoffset, uint32 
 	/* how big is it going to be including all mipmaps? */
 	bufsize = mipMapCount > 1 ? linearSize * 2 : linearSize;
 	buffer = static_cast<unsigned char*>(malloc(bufsize * sizeof(unsigned char)));
+	check(buffer);
 	fread(buffer, 1, bufsize, fp);
 	/* close the file pointer */
 	fclose(fp);

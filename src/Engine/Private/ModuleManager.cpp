@@ -39,25 +39,13 @@ ModuleManager::~ModuleManager()
 }
 
 Renderer& ModuleManager::getRenderer()
-{
-	check(renderer);
-
-    return *renderer;
-	
-}
+{ check(renderer); return *renderer; }
 
 AudioSystem& ModuleManager::getAudioSystem()
-{
-	check(audioSystem);
-
-	return *audioSystem;
-}
+{ check(audioSystem); return *audioSystem; }
 
 PhysicsSystem& ModuleManager::getPhysicsSystem()
-{
-	check(physicsSystem);
-	return *physicsSystem;
-}
+{ check(physicsSystem); return *physicsSystem; }
 
 void ModuleManager::setRenderer(Renderer* newRenderer)
 {

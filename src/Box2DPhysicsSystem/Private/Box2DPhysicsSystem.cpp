@@ -3,10 +3,21 @@
 #include "Box2DPhysicsShape.h"
 #include "Box2DPhysicsBody.h"
 #include "Box2DActorTransformController.h"
+#include "Box2DDebugDraw.h"
 
 Box2DPhysicsSystem::Box2DPhysicsSystem()
 {
 	world = new b2World(gravity);
+
+	DebugDraw* dd = new DebugDraw();
+	uint32 flags = 0;
+	flags += b2Draw::e_shapeBit;
+	flags += b2Draw::e_aabbBit;
+
+	dd->SetFlags(flags);
+	world->SetDebugDraw(dd);
+
+	
 }
 
 Box2DPhysicsSystem::~Box2DPhysicsSystem()
@@ -40,10 +51,13 @@ ActorTransformController* Box2DPhysicsSystem::newActorTransformController(Actor*
 
 bool Box2DPhysicsSystem::update(float deltaTime)
 {
-	world->Step(deltaTime, 1, 1); // step once
-
+	world->Step(deltaTime, 8, 3); // step once
 
 	return true;
 }
 
 
+void Box2DPhysicsSystem::drawDebugPoints()
+{
+	world->DrawDebugData();
+}

@@ -5,6 +5,7 @@
 #include "OpenGLWindow.h"
 
 class OpenGLModel;
+class OpenGLMaterial;
 
 class OpenGLRenderer : public Renderer
 {
@@ -45,11 +46,19 @@ public:
 	CameraComponent& getCurrentCamera() override;
 	const CameraComponent& getCurrentCamera() const override;
 
+	virtual void drawDebugOutlinePolygon(vec2* verts, uint32 numVerts, Color color) override;
+	virtual void drawDebugLine(vec2* locs, uint32 numLocs, Color color) override;
+	virtual void drawDebugSolidPolygon(vec2* verts, uint32 numVerts, Color color) override;
+	virtual void drawDebugOutlineCircle(vec2 center, float radius, Color color) override;
+	virtual void drawDebugSolidCircle(vec2 center, float radius, Color color) override;
+	virtual void drawDebugSegment(vec2 p1, vec2 p2, Color color) override;
 
 private:
 	
+
 	OpenGLWindow* window;
 
+	OpenGLMaterial* debugDraw;
 
 	CameraComponent* currentCamera;
 

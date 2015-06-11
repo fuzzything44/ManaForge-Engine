@@ -80,7 +80,7 @@ void Runtime::run()
 	// YA WE REALLY NEED PLAYER CONTROLLERS -- the gate shouldn't get to control the camera
 	Actor* gate = moduleManager.spawnClass<Actor>("TestContent.Gate");
 	gate->setWorldLocation(vec2(2.f, 2.f));
-	gate->setWorldRotation(.5f * (float)M_PI);
+	gate->setWorldRotation(.25f * (float)M_PI);
 	
 	uvec2 windowSize = moduleManager.getRenderer().getWindow().getWindowProps().size;
 
@@ -119,10 +119,12 @@ void Runtime::run()
 	MeshComponent* meshComp = new MeshComponent(player, Transform{}, ModelData(locations, UVs, tris, 4, 2, mat));
 
 	PhysicsShape* shape = moduleManager.getPhysicsSystem().newPhysicsShape();
-	shape->asRectangle(1.f, 1.f);
+	shape->setPosition(vec2(.5f, .5f));
+	shape->asRectangle(.5f, .5f);
 
 	PhysicsComponent* physComp = new PhysicsComponent(player, Transform{}, shape);
 	player->setPhysicsType(PhysicsType::DYNAMIC);
+	physComp->setDensity(1.f);
 	
 	// set initial tick
 	clock::time_point LastTick = clock::now();
@@ -133,9 +135,6 @@ void Runtime::run()
 	float baseSpeed = 10.f;
 
 	do {
-
-		ENG_LOGLN(static_cast<uint32>(gate->getPhysicsType()));
-
 		// calculate tick time
 		clock::time_point CurrentTick = clock::now();
 		float delta = static_cast<float>((CurrentTick - LastTick).count()) * 
@@ -151,10 +150,17 @@ void Runtime::run()
 
 		float speedUpdated = window.getIsKeyPressed(Keyboard::KEY_LEFT_SHIFT) || window.getIsKeyPressed(Keyboard::KEY_RIGHT_SHIFT) ?
 			5.f * baseSpeed : baseSpeed;
+	
 
-		speedUpdated /= 100.f;
+		vec2 vel = player->getVelocity();
+		if (glm::length(vel) >= 20.f)
+		{
+			vel = 20.f / glm::length(vel) * vel;
+		}
 
-		vec2 velocity = player->getVelocity();
+		vel *= .99f;
+
+		player->setVelocity(vel);
 
 		if (window.getIsKeyPressed(Keyboard::KEY_Q))
 		{
@@ -166,35 +172,34 @@ void Runtime::run()
 		}
 		if (window.getIsKeyPressed(Keyboard::KEY_A))
 		{
-			//player->addWorldLocation(vec2(-speedUpdated * delta, 0.f));
-			velocity.x -= speedUpdated;
+			player->applyLocalForce(vec2(-speedUpdated, 0.f), vec2());
 		}
 		if (window.getIsKeyPressed(Keyboard::KEY_D))
 		{
-			//player->addWorldLocation(vec2(speedUpdated * delta, 0.f));
-			velocity.x += speedUpdated;
+			player->applyLocalForce(vec2(speedUpdated, 0.f), vec2());
 
 		}
 		if (window.getIsKeyPressed(Keyboard::KEY_W))
 		{
-			//player->addWorldLocation(vec2(0.f, speedUpdated * delta));
-			velocity.y += speedUpdated;
+			player->applyLocalForce(vec2(0.f, speedUpdated), vec2());
+
 		}
 		if (window.getIsKeyPressed(Keyboard::KEY_S))
 		{
-			//player->addWorldLocation(vec2(0.f, -speedUpdated * delta));
-			velocity.y -= speedUpdated;
+			player->applyLocalForce(vec2(0.f, -speedUpdated), vec2());
 
 		}
-
-		if (glm::length(velocity) > 15.f)
+		if (window.getIsKeyPressed(Keyboard::KEY_TAB))
 		{
-			velocity = glm::normalize(velocity) * 15.f;
+			player->setWorldRotation(player->getWorldRotation() + .01f);
+		}
+		if (window.getIsKeyPressed(Keyboard::KEY_R))
+		{
+			player->setWorldRotation(player->getWorldRotation() - .01f);
 		}
 
-		velocity *= .99f;
+		gate->applyTorque(-10.f);
 
-		player->setVelocity(velocity);
 
 		// recieve the update callbacks
 		std::list<ModuleManager::updateFun>& updateCallbacks = moduleManager.getUpdateCallbacks();
@@ -221,14 +226,7 @@ void Runtime::run()
 }
 
 Runtime& Runtime::get()
-{
-	if (!currentRuntime)
-	{
-		FATAL_ERR("NO RUNTIME OBJECT!");
-	}
-
-	return *currentRuntime;
-}
+{ if (!currentRuntime) { FATAL_ERR("NO RUNTIME OBJECT!"); } return *currentRuntime; }
 
 PlayerController* Runtime::addPlayerController()
 {

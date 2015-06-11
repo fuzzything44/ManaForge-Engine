@@ -32,7 +32,7 @@ void Box2DPhysicsShape::asPolygon(vec2* verts, uint32 numVerts)
 	b2Vec2* vec = new b2Vec2[numVerts];
 
 	// translate the points
-	for (int i = 0; i < numVerts; ++i)
+	for (uint32 i = 0; i < numVerts; ++i)
 	{
 		vec[i] = convertVec(verts[i] + location);
 	}
@@ -47,7 +47,7 @@ void Box2DPhysicsShape::asRectangle(float halfWidth, float halfHeight)
 {
 	b2PolygonShape* box = new b2PolygonShape();
 
-	box->SetAsBox(halfWidth, halfHeight, b2Vec2(convertVec(-location)), 0.f); // todo
+	box->SetAsBox(halfWidth, halfHeight, b2Vec2(convertVec(location)), 0.f); // todo
 	
 	shape = box;
 }

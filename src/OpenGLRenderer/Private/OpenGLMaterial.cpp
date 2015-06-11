@@ -130,10 +130,16 @@ void OpenGLMaterial::use()
 	//	glActiveTexture(GL_TEXTURE0 + i);
 	//	glBindTexture(GL_TEXTURE_2D, textures[i]);
 	//}
-	glUniform1i(startTexUniform, 0);
 
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, textures[0]);
+	if (startTexUniform != -1)
+	{
+
+		glUniform1i(startTexUniform, 0);
+
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, textures[0]);
+
+	}
 
 	
 

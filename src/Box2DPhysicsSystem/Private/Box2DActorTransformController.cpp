@@ -12,6 +12,7 @@ Box2DActorTransformController::Box2DActorTransformController(Actor* owner, Box2D
 	bodyDef.type = b2_staticBody;
 	bodyDef.position = b2Vec2(0.f, 0.f);
 	bodyDef.angle = 0.f;
+	bodyDef.fixedRotation = false;
 
 	body = system->world->CreateBody(&bodyDef);
 }
@@ -21,7 +22,6 @@ Transform Box2DActorTransformController::getTransform() const
 	Transform ret;
 	ret.location = convertVec(body->GetPosition());
 	ret.rotation = body->GetAngle();
-	
 
 	return ret;
 }
@@ -78,12 +78,33 @@ void Box2DActorTransformController::setType(PhysicsType newType)
 	ENG_LOGLN("Warning -- trying to set PhysicsType to an unknown type. Using previous type");
 }
 
-void Box2DActorTransformController::applyForce(vec2 force, vec2 point)
+void Box2DActorTransformController::applyLocalForce(vec2 localForce, vec2 localPoint)
 {
-	body->ApplyForce(convertVec(force), convertVec(point), true);
+	body->ApplyForce(body->GetWorldVector(convertVec(localForce)), body->GetWorldPoint(convertVec(localPoint)), true);
+}
+void Box2DActorTransformController::applyWorldForce(vec2 localForce, vec2 localPoint)
+{
+	body->ApplyForce(convertVec(localForce), convertVec(localPoint), true);
+}
+
+
+void Box2DActorTransformController::applyTorque(float magnituede)
+{
+	body->ApplyTorque(magnituede, true);
 }
 
 Actor* Box2DActorTransformController::getOwner() const
 {
 	return owner;
+}
+
+
+void Box2DActorTransformController::setAngularVelocity(float newVelocity)
+{
+	body->SetAngularVelocity(newVelocity);
+}
+float Box2DActorTransformController::getAngularVelocity()
+{
+	return body->GetAngularVelocity();
+	
 }

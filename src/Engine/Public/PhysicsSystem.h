@@ -22,5 +22,5 @@ public:
 	virtual PhysicsBody* newPhysicsBody(PhysicsShape* shape, PhysicsComponent* owner) = 0;
 	virtual PhysicsShape* newPhysicsShape() = 0;
 	virtual ActorTransformController* newActorTransformController(Actor* actor) = 0;
-
+	virtual void drawDebugPoints() = 0;
 };

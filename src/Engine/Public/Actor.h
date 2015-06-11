@@ -65,7 +65,13 @@ public:
 	inline vec2 getVelocity() const;
 	inline void setVelocity(const vec2& newVelocity);
 
-	inline void applyForce(vec2 force, vec2 point);
+	inline void applyLocalForce(vec2 localForce, vec2 localPoint);
+	inline void applyWorldForce(vec2 worldForce, vec2 worldPoint);
+
+	inline void setAngularVelocity(float newVelocity);
+	inline float getAngularVelocity();
+
+	inline void applyTorque(float magnituede);
 
 protected:
 
@@ -193,7 +199,7 @@ inline mat3 Actor::getModelMatrix()
 	ret = glm::translate(ret, trans.location);
 	ret = glm::rotate(ret, trans.rotation);
 	ret = glm::scale(ret, trans.scale);
-
+	
 	return ret;
 }
 
@@ -219,7 +225,27 @@ inline void Actor::setVelocity(const vec2& newVelocity)
 }
 
 
-inline void Actor::applyForce(vec2 force, vec2 point)
+inline void Actor::applyLocalForce(vec2 force, vec2 point)
 {
-	transController->applyForce(force, point);
+	transController->applyLocalForce(force, point);
+}
+
+inline void Actor::applyWorldForce(vec2 worldForce, vec2 worldPoint)
+{
+	transController->applyWorldForce(worldForce, worldPoint);
+}
+
+inline void Actor::applyTorque(float magnitude)
+{
+	transController->applyTorque(magnitude);
+}
+
+
+inline void Actor::setAngularVelocity(float newVelocity)
+{
+	transController->setAngularVelocity(newVelocity);
+}
+inline float Actor::getAngularVelocity()
+{
+	return transController->getAngularVelocity();
 }

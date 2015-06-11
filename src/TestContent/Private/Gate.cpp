@@ -51,10 +51,10 @@ Gate::Gate()
 
 	setPhysicsType(PhysicsType::DYNAMIC);
 
-	shape->asRectangle(1.f, 1.f);
+	shape->asRectangle(.75f, .75f);
 
 	physComp = new PhysicsComponent(this, Transform{}, shape);
-	physComp->setDensity(10000.f);
+	physComp->setDensity(1.f);
 	
 
 }
