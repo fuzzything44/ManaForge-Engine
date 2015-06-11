@@ -12,6 +12,7 @@ class Box2DActorTransformController;
 class Box2DPhysicsSystem : public PhysicsSystem
 {
 	friend class Box2DPhysicsBody;
+	friend Box2DActorTransformController;
 public:
 
 	Box2DPhysicsSystem();
@@ -22,6 +23,7 @@ public:
 
 	virtual PhysicsBody* newPhysicsBody(PhysicsShape* shape, PhysicsComponent* owner) override;
 	virtual PhysicsShape* newPhysicsShape() override;
+	virtual ActorTransformController* newActorTransformController(Actor* actor) override;
 
 	bool update(float deltaTime);
 

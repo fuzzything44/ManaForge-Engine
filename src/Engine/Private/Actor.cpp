@@ -5,9 +5,13 @@
 #include "Helper.h"
 #include "Runtime.h"
 
+
+
+
 BOOST_CLASS_EXPORT_IMPLEMENT(Actor);
 
 Actor::Actor()
+	:transController(Runtime::get().moduleManager.getPhysicsSystem().newActorTransformController(this))
 {
 }
 

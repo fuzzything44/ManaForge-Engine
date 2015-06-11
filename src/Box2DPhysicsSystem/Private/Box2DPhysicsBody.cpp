@@ -1,6 +1,7 @@
 #include "Box2DPhysicsBody.h"
 
 #include "Box2DPhysicsSystem.h"
+#include "Box2DActorTransformController.h"
 
 #include <Helper.h>
 
@@ -13,36 +14,57 @@ Box2DPhysicsBody::Box2DPhysicsBody(Box2DPhysicsShape* shape, PhysicsComponent* o
 
 	auto iter = system->bodies.find(owner->getOwner());
 
-	b2Body* body;
+	if (iter == system->bodies.end()) FATAL_ERR("could not find actor in ActorTransformController map");
 
-	// if it hasn't been created, create it.
-	if (iter == system->bodies.end())
-	{
-
-		b2BodyDef bodyDef;
-		bodyDef.position = convertVec(owner->getOwner()->getWorldLocation());
-		bodyDef.angle = owner->getOwner()->getWorldRotation();
-		bodyDef.userData = owner->getOwner();
-		bodyDef.type = b2BodyType::b2_dynamicBody; // TODO: set this
-
-		body = system->world->CreateBody(&bodyDef);
-		system->addActor(owner->getOwner(), body);
-	}
-	else
-	{
-		body = iter->second;
-	}
+	
 
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = shape->shape;
 	fixtureDef.userData = owner;
-	// TODO: params
+	
 
-	fixture = body->CreateFixture(&fixtureDef);
+	fixture = iter->second->body->CreateFixture(&fixtureDef);
 
 }
 
 Box2DPhysicsBody::~Box2DPhysicsBody()
 {
 
+}
+
+
+void Box2DPhysicsBody::setRestitution(float newRestitution)
+{
+	fixture->SetRestitution(newRestitution);
+}
+float Box2DPhysicsBody::getRestitution() const
+{
+	return fixture->GetRestitution();
+}
+
+void Box2DPhysicsBody::setDensity(float newDensity)
+{
+	fixture->SetDensity(newDensity);
+}
+float Box2DPhysicsBody::getDensity() const
+{
+	return fixture->GetDensity();
+}
+
+void Box2DPhysicsBody::setFriction(float newFriction)
+{
+	fixture->SetFriction(newFriction);
+}
+float Box2DPhysicsBody::getFriction() const
+{
+	return fixture->GetFriction();
+}
+
+void Box2DPhysicsBody::setIsSensor(bool newIsSensor)
+{
+	fixture->SetSensor(newIsSensor);
+}
+bool Box2DPhysicsBody::getIsSensor() const
+{
+	return fixture->IsSensor();
 }

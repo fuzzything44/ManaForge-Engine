@@ -12,7 +12,19 @@ class Box2DPhysicsBody : public PhysicsBody
 	
 public:
 	Box2DPhysicsBody(Box2DPhysicsShape* shape, PhysicsComponent* owner, Box2DPhysicsSystem* system);
-	~Box2DPhysicsBody();
+	virtual ~Box2DPhysicsBody();
+
+	virtual void setRestitution(float newRestitution) override;
+	virtual float getRestitution() const override;
+
+	virtual void setDensity(float newDensity) override;
+	virtual float getDensity() const override;
+
+	virtual void setFriction(float newFriction) override;
+	virtual float getFriction() const override;
+
+	virtual void setIsSensor(bool newIsSensor) override;
+	virtual bool getIsSensor() const override;
 
 private:
 	PhysicsComponent* ownerComponent;

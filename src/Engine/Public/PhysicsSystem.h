@@ -3,8 +3,11 @@
 #include "Engine.h"
 #include "PhysicsBody.h"
 #include "PhysicsShape.h"
+#include "ActorTransformController.h"
 
 #include <boost/noncopyable.hpp>
+
+
 
 class PhysicsComponent;
 
@@ -18,5 +21,6 @@ public:
 
 	virtual PhysicsBody* newPhysicsBody(PhysicsShape* shape, PhysicsComponent* owner) = 0;
 	virtual PhysicsShape* newPhysicsShape() = 0;
+	virtual ActorTransformController* newActorTransformController(Actor* actor) = 0;
 
 };

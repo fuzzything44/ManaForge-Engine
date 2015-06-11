@@ -11,7 +11,8 @@ class ChunkActor : public Actor
 public:
 	ChunkActor(const Transform& trans = Transform{}, const ModelData& data = ModelData{})
 	{
-		this->trans = trans;
+		setWorldTransform(trans);
+
 		meshComp = new MeshComponent(this, Transform{}, data);
 	}
 

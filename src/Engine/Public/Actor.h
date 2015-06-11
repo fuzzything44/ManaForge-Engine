@@ -4,6 +4,7 @@
 #include "Transform.h"
 #include "Logging.h"
 #include "World.h"
+#include "ActorTransformController.h"
 
 #include "SaveData.h"
 
@@ -40,55 +41,35 @@ public:
 	/// <summary> destructor </summary>
 	ENGINE_API virtual ~Actor();
 
-	ENGINE_API inline Transform getWorldTransform() const;
 
-	/// <summary> Gets the location.</summary>
-	///
-	/// <returns> The location.</returns>
-	ENGINE_API inline vec2 getWorldLocation() const;
+	//////////////////////// TRANSFORM MODIFICATION START ///////////////////
+	inline Transform getWorldTransform() const;
+	inline vec2 getWorldLocation() const;
+	inline vec2 getScale() const;
+	inline float getWorldRotation() const;
 
-	/// <summary> Gets the size.</summary>
-	///
-	/// <returns> The size.</returns>
-	ENGINE_API inline vec2 getScale() const;
+	inline void setScale(const vec2& newScale);
+	inline void setWorldLocation(const vec2& newLoc);
+	inline void setWorldRotation(float newRot);
+	inline void setWorldTransform(const Transform& newTrans);
 
-	/// <summary> Gets the rotation.</summary>
-	///
-	/// <returns> The rotation.</returns>
-	ENGINE_API inline float getWorldRotation() const;
+	inline void addWorldLocation(vec2 locToAdd);
+	inline void addWorldRotation(float rotToAdd);
+	//////////////////////// TRANSFORM MODIFICATION END /////////////////////
 
-	/// <summary> Gets the velocity.</summary>
-	///
-	/// <returns> The velocity.</returns>
-	ENGINE_API inline vec2 getVelocity() const;
+	inline mat3 getModelMatrix();
 
-	/// <summary> Sets a location.</summary>
-	///
-	/// <param name="newLoc"> The new location.</param>
-	ENGINE_API inline void setLocation(vec2 newLoc);
+	inline PhysicsType getPhysicsType() const;
+	inline void setPhysicsType(PhysicsType newType);
 
-	/// <summary> Sets a size.</summary>
-	///
-	/// <param name="newSize"> Size of the new.</param>
-	ENGINE_API inline void setScale(vec2 newScale);
+	inline vec2 getVelocity() const;
+	inline void setVelocity(const vec2& newVelocity);
 
-	/// <summary> Sets a rotation.</summary>
-	///
-	/// <param name="newRot"> The new rot.</param>
-	ENGINE_API inline void setRotation(float newRot);
-
-	/// <summary> Sets a velocity.</summary>
-	///
-	/// <param name="newVelocity"> The new velocity.</param>
-	ENGINE_API inline void setVelocity(vec2 newVelocity);
-
-	ENGINE_API inline mat3 getModelMatrix();
+	inline void applyForce(vec2 force, vec2 point);
 
 protected:
 
-	vec2 velocity;
-
-	Transform trans;
+	ActorTransformController* transController;
 
 	/// <summary> Ticks the given delta time.</summary>
 	///
@@ -97,9 +78,16 @@ protected:
 
 	std::vector<Component*> components;
 
-	// serialization function for boost
-	template<typename Archive>
-	void serialize(Archive& ar, uint32 version);
+
+	// save and load functions    
+	template<class Archive>
+	inline void save(Archive & ar, const unsigned int version) const;
+
+	template<class Archive>
+	inline void load(Archive & ar, const unsigned int version);
+
+	BOOST_SERIALIZATION_SPLIT_MEMBER();
+
 };
 
 
@@ -108,11 +96,24 @@ protected:
 ////////////////////////////////////////////////////////////////
 
 
-template <typename Archive>
-void Actor::serialize(Archive& ar, uint32 version)
+template<class Archive>
+inline void Actor::save(Archive & ar, const unsigned int version) const
 {
-	ar & BOOST_SERIALIZATION_NVP(trans);
-	ar & BOOST_SERIALIZATION_NVP(velocity);
+	Transform trans = transController->getTransform();
+	vec2 velocity = transController->getVelocity();
+	ar  & BOOST_SERIALIZATION_NVP(trans);
+	ar  & BOOST_SERIALIZATION_NVP(velocity);
+}
+template<class Archive>
+inline void Actor::load(Archive & ar, const unsigned int version)
+{
+	Transform trans;
+	vec2 velocity;
+	ar  & BOOST_SERIALIZATION_NVP(trans);
+	ar  & BOOST_SERIALIZATION_NVP(velocity);
+
+	transController->setTransform(trans);
+	transController->setVelocity(velocity);
 }
 
 BOOST_CLASS_EXPORT_KEY2(Actor, "Default.Actor");
@@ -120,62 +121,74 @@ BOOST_CLASS_EXPORT_KEY2(Actor, "Default.Actor");
 #include "Component.h"
 
 
+/////////////////// START TRANSFORM MANIPULATION ///////////////////////////
+
 inline Transform Actor::getWorldTransform() const
-{
-	return trans;
+{ 
+	return transController->getTransform();
 }
-
-
 inline vec2 Actor::getWorldLocation() const
 {
+	const Transform& trans = transController->getTransform();
 	return trans.location;
+
 }
-
-
 inline vec2 Actor::getScale() const
 {
+
+	const Transform& trans = transController->getTransform();
 	return trans.scale;
 }
-
-
 inline float Actor::getWorldRotation() const
 {
+
+	const Transform& trans = transController->getTransform();
 	return trans.rotation;
 }
 
-
-inline vec2 Actor::getVelocity() const
+inline void Actor::setScale(const vec2& newScale)
 {
-	return velocity;
-}
-
-
-inline void Actor::setLocation(vec2 newLoc)
-{
-	trans.location = newLoc;
-}
-
-
-inline void Actor::setScale(vec2 newScale)
-{
+	Transform trans = transController->getTransform();
 	trans.scale = newScale;
+	transController->setTransform(trans);
 }
-
-
-inline void Actor::setRotation(float newRot)
+inline void Actor::setWorldLocation(const vec2& newLoc)
 {
-	trans.rotation= newRot;
+	Transform trans = transController->getTransform();
+	trans.location = newLoc;
+	transController->setTransform(trans);
 }
-
-
-inline void Actor::setVelocity(vec2 newVelocity)
+inline void Actor::setWorldRotation(float newRot)
 {
-	velocity = newVelocity;
+	Transform trans = transController->getTransform();
+	trans.rotation = newRot;
+	transController->setTransform(trans);
 }
+inline void Actor::setWorldTransform(const Transform& newTrans)
+{
+	transController->setTransform(newTrans);
+}
+
+inline void Actor::addWorldLocation(vec2 locToAdd)
+{
+	Transform trans = transController->getTransform();
+	trans.location += locToAdd;
+	transController->setTransform(trans);
+}
+inline void Actor::addWorldRotation(float rotToAdd)
+{
+	Transform trans = transController->getTransform();
+	trans.rotation += rotToAdd;
+	transController->setTransform(trans);
+}
+
+/////////////////// END TRANSFORM MANIPULATION ///////////////////////////
 
 inline mat3 Actor::getModelMatrix()
 {
 	mat3 ret;
+
+	const Transform trans = transController->getTransform();
 
 	ret = glm::translate(ret, trans.location);
 	ret = glm::rotate(ret, trans.rotation);
@@ -184,3 +197,29 @@ inline mat3 Actor::getModelMatrix()
 	return ret;
 }
 
+
+
+inline PhysicsType Actor::getPhysicsType() const
+{
+	return transController->getType();
+}
+inline void Actor::setPhysicsType(PhysicsType newType)
+{
+	transController->setType(newType);
+}
+
+
+inline vec2 Actor::getVelocity() const
+{
+	return transController->getVelocity();
+}
+inline void Actor::setVelocity(const vec2& newVelocity)
+{
+	return transController->setVelocity(newVelocity);
+}
+
+
+inline void Actor::applyForce(vec2 force, vec2 point)
+{
+	transController->applyForce(force, point);
+}

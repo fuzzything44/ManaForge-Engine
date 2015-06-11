@@ -49,11 +49,13 @@ Gate::Gate()
 
 	PhysicsShape* shape = Runtime::get().moduleManager.getPhysicsSystem().newPhysicsShape();
 
+	setPhysicsType(PhysicsType::DYNAMIC);
+
 	shape->asRectangle(1.f, 1.f);
 
 	physComp = new PhysicsComponent(this, Transform{}, shape);
-
-
+	physComp->setDensity(10000.f);
+	
 
 }
 

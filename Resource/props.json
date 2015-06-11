@@ -5,11 +5,11 @@
 	{
 		"size" : 
 		{
-			"x" : 1680,
-			"y" : 1050
+			"x" : 1280,
+			"y" : 720
 		},
 		"renderMode" : 0,
-		"windowMode" : 0,
+		"windowMode" : 2,
 		"title" : "RPG-Prop Simulator"
 		
 	}

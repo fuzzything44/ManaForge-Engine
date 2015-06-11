@@ -2,6 +2,7 @@
 
 #include "Box2DPhysicsShape.h"
 #include "Box2DPhysicsBody.h"
+#include "Box2DActorTransformController.h"
 
 Box2DPhysicsSystem::Box2DPhysicsSystem()
 {
@@ -29,6 +30,11 @@ PhysicsBody* Box2DPhysicsSystem::newPhysicsBody(PhysicsShape* shape, PhysicsComp
 PhysicsShape* Box2DPhysicsSystem::newPhysicsShape()
 {
 	return new Box2DPhysicsShape();
+}
+
+ActorTransformController* Box2DPhysicsSystem::newActorTransformController(Actor* actor)
+{
+	return new Box2DActorTransformController(actor, this);
 }
 
 

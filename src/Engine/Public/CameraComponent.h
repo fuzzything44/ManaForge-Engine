@@ -67,10 +67,12 @@ inline float CameraComponent::getZoom() const
 
 inline mat3 CameraComponent::getViewMat() const
 {
+	Transform worldTrans = getWorldTransform();
+
 	mat3 ret = glm::ortho2d(-1.f, 1.f, -aspectRatio, aspectRatio); 
 	ret = glm::scale(ret, vec2(zoom, zoom));
-	ret = glm::rotate(ret, trans.rotation);
-	ret = glm::translate(ret, -trans.location); // we are translating the camera - so we change the sign
+	ret = glm::rotate(ret, worldTrans.rotation);
+	ret = glm::translate(ret, -worldTrans.location); // we are translating the camera - so we change the sign
 
 	return ret;
 }
