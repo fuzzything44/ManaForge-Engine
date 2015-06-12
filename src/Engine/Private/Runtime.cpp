@@ -162,6 +162,7 @@ void Runtime::run()
 
 		player->setVelocity(vel);
 
+
 		if (window.getIsKeyPressed(Keyboard::KEY_Q))
 		{
 			c->setZoom(c->getZoom() * 1.001f);
@@ -191,15 +192,14 @@ void Runtime::run()
 		}
 		if (window.getIsKeyPressed(Keyboard::KEY_TAB))
 		{
-			player->setWorldRotation(player->getWorldRotation() + .01f);
+			player->applyTorque(-1.f);
 		}
 		if (window.getIsKeyPressed(Keyboard::KEY_R))
 		{
-			player->setWorldRotation(player->getWorldRotation() - .01f);
+			player->applyTorque(1.f);
 		}
 
-		gate->applyTorque(-10.f);
-
+		gate->applyTorque(1.f);
 
 		// recieve the update callbacks
 		std::list<ModuleManager::updateFun>& updateCallbacks = moduleManager.getUpdateCallbacks();

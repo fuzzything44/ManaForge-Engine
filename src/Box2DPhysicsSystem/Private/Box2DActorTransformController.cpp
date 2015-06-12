@@ -13,7 +13,7 @@ Box2DActorTransformController::Box2DActorTransformController(Actor* owner, Box2D
 	bodyDef.position = b2Vec2(0.f, 0.f);
 	bodyDef.angle = 0.f;
 	bodyDef.fixedRotation = false;
-
+	
 	body = system->world->CreateBody(&bodyDef);
 }
 

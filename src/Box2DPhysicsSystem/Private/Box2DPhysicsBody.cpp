@@ -15,7 +15,7 @@ Box2DPhysicsBody::Box2DPhysicsBody(Box2DPhysicsShape* shape, PhysicsComponent* o
 	auto iter = system->bodies.find(owner->getOwner());
 
 	if (iter == system->bodies.end()) FATAL_ERR("could not find actor in ActorTransformController map");
-
+	ownerController = iter->second;
 	
 
 	b2FixtureDef fixtureDef;
@@ -23,7 +23,7 @@ Box2DPhysicsBody::Box2DPhysicsBody(Box2DPhysicsShape* shape, PhysicsComponent* o
 	fixtureDef.userData = owner;
 	
 
-	fixture = iter->second->body->CreateFixture(&fixtureDef);
+	fixture = ownerController->body->CreateFixture(&fixtureDef);
 
 }
 
@@ -36,6 +36,7 @@ Box2DPhysicsBody::~Box2DPhysicsBody()
 void Box2DPhysicsBody::setRestitution(float newRestitution)
 {
 	fixture->SetRestitution(newRestitution);
+	ownerController->body->ResetMassData();
 }
 float Box2DPhysicsBody::getRestitution() const
 {
@@ -45,6 +46,8 @@ float Box2DPhysicsBody::getRestitution() const
 void Box2DPhysicsBody::setDensity(float newDensity)
 {
 	fixture->SetDensity(newDensity);
+	ownerController->body->ResetMassData();
+	
 }
 float Box2DPhysicsBody::getDensity() const
 {

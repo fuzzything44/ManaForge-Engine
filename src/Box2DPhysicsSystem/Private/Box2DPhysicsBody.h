@@ -5,6 +5,7 @@
 #include <PhysicsBody.h>
 #include <PhysicsComponent.h>
 
+class Box2DActorTransformController;
 class Box2DPhysicsSystem;
 
 class Box2DPhysicsBody : public PhysicsBody
@@ -28,7 +29,8 @@ public:
 
 private:
 	PhysicsComponent* ownerComponent;
-	Box2DPhysicsSystem* system;
+	Box2DPhysicsSystem* system; 
+	Box2DActorTransformController* ownerController;
 	
 	b2Fixture* fixture;
 
