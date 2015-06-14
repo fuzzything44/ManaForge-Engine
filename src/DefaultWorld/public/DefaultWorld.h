@@ -13,6 +13,16 @@
 
 class TextureLibrary;
 
+struct defaultWorldLocation : public actorLocation
+{
+public:
+	defaultWorldLocation(uint64 loc = 0) : location(loc) {};
+	virtual Actor* getActor() override;
+	virtual void remove() override;
+private:
+	uint64 location;
+};
+
 class DefaultWorld : public World
 {
 	std::string folderLocation;
@@ -23,12 +33,11 @@ class DefaultWorld : public World
 	// Map of console commands. Maps from a string to function. Function takes in a string.
 	std::map<std::string, std::function<void(const std::string)> > commandMap;
 
-	map_ID_t nextIndex;
 
 	// Contains all actors in the world
 	// !!!!! We also need to clear it when you change worlds. We may need to clear other things too (and we have to keep persistent actors).
-	std::map<map_ID_t, Actor*> actors;
-
+	std::map<uint64, Actor*> actors;
+	uint64 nextIndex = 0;
 
 	std::map<Color, std::string> imageToTextureAssoc;
 

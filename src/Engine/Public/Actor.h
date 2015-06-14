@@ -25,7 +25,7 @@ public:
 	friend Component;
 
 	// the global ID for this instatnce of the actor -- used mainly for networking
-	World::map_ID_t GUID;
+	actorLocation* GUID;
 	
 	/// <summary> Actors.</summary>
 	///

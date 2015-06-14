@@ -167,7 +167,7 @@ void DefaultWorld::loadWorld(std::string name)
 		for (auto& elem : staticActors) 
 		{
 			actors[nextIndex] = elem;
-			elem->GUID = nextIndex;
+			elem->GUID = &defaultWorldLocation(nextIndex);
 			nextIndex++;
 		}
 	}
@@ -212,7 +212,7 @@ void DefaultWorld::loadWorld(std::string name)
 		for (Actor*& elem : dynamicActors)
 		{
 			actors[nextIndex] = elem;
-			elem->GUID = nextIndex;
+			elem->GUID = &defaultWorldLocation(nextIndex);
 			nextIndex++;
 		}
 	}
@@ -331,8 +331,9 @@ void DefaultWorld::loadWorld(std::string name)
 
 void DefaultWorld::addActor(Actor* toAdd)
 {
-	actors.insert(std::map<map_ID_t, Actor*>::value_type(nextIndex++, toAdd));
-
+	actors.insert(std::map<uint64, Actor*>::value_type(nextIndex, toAdd));
+	toAdd->GUID = &defaultWorldLocation(nextIndex);
+	nextIndex++;
 }
 
 void DefaultWorld::save()

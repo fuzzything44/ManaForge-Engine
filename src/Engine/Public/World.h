@@ -2,21 +2,25 @@
 #include "Engine.h"
 
 #include <string>
-#include <map>
 
 class Actor;
 class ModuleManager;
 class Pawn;
 class PlayerController;
 
+// Struct used to find actor in the world. remove removes it from the world, getActor returns the actor or nullptr if not set.
+struct actorLocation
+{
+	virtual Actor* getActor() { return nullptr; };
+	virtual void remove() {};
+};
+
 class World
 {
-protected:
-
 public:
+	
+	
 
-	// global typedef for the mapID type
-	typedef uint64 map_ID_t;
 
 
 	/// <summary> Creates and loads a world. </summary>
