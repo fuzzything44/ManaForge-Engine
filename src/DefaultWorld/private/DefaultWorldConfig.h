@@ -1,8 +1,8 @@
 #pragma once
 
-#define DefaultWorld_ModuleName "DefaultWorld"
+#include <Engine.h>
 
-#include <boost/preprocessor.hpp>
+#define DefaultWorld_ModuleName "DefaultWorld"
 
 #ifdef _MSC_VER
 #	ifdef DefaultWorld_Source

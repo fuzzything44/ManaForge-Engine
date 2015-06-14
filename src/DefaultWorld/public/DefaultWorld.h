@@ -13,16 +13,6 @@
 
 class TextureLibrary;
 
-struct defaultWorldLocation : public actorLocation
-{
-public:
-	defaultWorldLocation(uint64 loc = 0) : location(loc) {};
-	virtual Actor* getActor() override;
-	virtual void remove() override;
-private:
-	uint64 location;
-};
-
 class DefaultWorld : public World
 {
 	std::string folderLocation;

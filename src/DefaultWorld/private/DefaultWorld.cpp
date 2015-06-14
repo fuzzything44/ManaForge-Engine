@@ -3,6 +3,7 @@
 #endif
 
 #include "DefaultWorld.h"
+#include "DefaultWorldLocation.h"
 
 #include <Helper.h>
 #include <ImageLoader.h>
@@ -167,7 +168,7 @@ void DefaultWorld::loadWorld(std::string name)
 		for (auto& elem : staticActors) 
 		{
 			actors[nextIndex] = elem;
-			elem->GUID = &defaultWorldLocation(nextIndex);
+			elem->GUID = new DefaultWorldLocation(nextIndex);
 			nextIndex++;
 		}
 	}
@@ -212,7 +213,7 @@ void DefaultWorld::loadWorld(std::string name)
 		for (Actor*& elem : dynamicActors)
 		{
 			actors[nextIndex] = elem;
-			elem->GUID = &defaultWorldLocation(nextIndex);
+			elem->GUID = new DefaultWorldLocation(nextIndex);
 			nextIndex++;
 		}
 	}
@@ -332,7 +333,7 @@ void DefaultWorld::loadWorld(std::string name)
 void DefaultWorld::addActor(Actor* toAdd)
 {
 	actors.insert(std::map<uint64, Actor*>::value_type(nextIndex, toAdd));
-	toAdd->GUID = &defaultWorldLocation(nextIndex);
+	toAdd->GUID = new DefaultWorldLocation(nextIndex); 
 	nextIndex++;
 }
 

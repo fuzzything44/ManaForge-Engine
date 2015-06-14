@@ -25,7 +25,7 @@ public:
 	friend Component;
 
 	// the global ID for this instatnce of the actor -- used mainly for networking
-	actorLocation* GUID;
+	ActorLocation* GUID;
 	
 	/// <summary> Actors.</summary>
 	///

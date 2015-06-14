@@ -9,7 +9,7 @@ class Pawn;
 class PlayerController;
 
 // Struct used to find actor in the world. remove removes it from the world, getActor returns the actor or nullptr if not set.
-struct actorLocation
+struct ActorLocation
 {
 	virtual Actor* getActor() { return nullptr; };
 	virtual void remove() {};

@@ -11,14 +11,17 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="public\DefaultWorldConfig.h">
-      <Filter>Public</Filter>
-    </ClInclude>
     <ClInclude Include="Public\DefaultWorld.h">
       <Filter>Public</Filter>
     </ClInclude>
     <ClInclude Include="Public\ChunkActor.h">
       <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\DefaultWorldLocation.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="private\DefaultWorldConfig.h">
+      <Filter>Private</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -26,6 +29,9 @@
       <Filter>Private</Filter>
     </ClCompile>
     <ClCompile Include="Private\DefaultWorldConfig.cpp">
+      <Filter>Private</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\DefaultWorldLocation.cpp">
       <Filter>Private</Filter>
     </ClCompile>
   </ItemGroup>
