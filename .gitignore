@@ -3,17 +3,11 @@
 *.lo
 *.o
 *.obj
+*.exp
 
 # Precompiled Headers
 *.gch
 *.pch
-
-# Compiled Dynamic libraries
-*.so
-*.dylib
-
-# Fortran module files
-*.mod
 
 # Compiled Static libraries
 *.lai
@@ -48,7 +42,7 @@ bin/Release/Engine.*
 bin/Release/Game.*
 bin/Debug/Modules/OpenGLRenderer.*
 bin/Release/Modules/OpenGLRenderer.*
-bin/Release/Modules/DefualtWorld.*
+bin/Release/Modules/DefaultWorld.*
 bin/Debug/Modules/DefaultWorld.*
 bin/Release/Modules/lodepng.*
 bin/Debug/Modules/lodepng.*
@@ -56,6 +50,18 @@ bin/Release/StackWalker.*
 bin/Debug/StackWalker.*
 bin/Release/Modules/TestContent.*
 bin/Debug/Modules/TestContent.*
+bin/Debug/glew32d.dll
+bin/Debug/glew32sd.lib
+bin/Release/glew32.dll
+bin/Release/glew32s.lib
+bin/Debug/Modules/Box2dPhysicsSystem.*
+bin/Release/Modules/Box2dPhysicsSystem.*
+bin/Debug/Modules/OpenALAudioSystem.*
+bin/Release/Modules/OpenALAudioSystem.*
+bin/Debug/Soil.*
+bin/Release/Soil.*
+src/*/lib/*/*/*.*
+
 
 
 Game/Game_*/*.*
