@@ -135,6 +135,7 @@
     <ClCompile Include="Private\Module.cpp" />
     <ClCompile Include="Private\ModuleManager.cpp" />
     <ClCompile Include="Private\Pawn.cpp" />
+    <ClCompile Include="Private\PhysicsComponent.cpp" />
     <ClCompile Include="Private\PlayerController.cpp" />
     <ClCompile Include="Private\PropertyManager.cpp" />
     <ClCompile Include="Private\Runtime.cpp" />

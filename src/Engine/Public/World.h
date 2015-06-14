@@ -33,7 +33,7 @@ public:
 	virtual PlayerController* makePlayerController() = 0;
 	virtual Pawn* makePawn() = 0;
 
-	virtual void addActor(Actor& toAdd) = 0;
+	virtual void addActor(Actor* toAdd) = 0;
 
 	virtual void save() = 0;
 

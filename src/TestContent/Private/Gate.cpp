@@ -2,6 +2,9 @@
 #include <Runtime.h>
 #include <TextureLibrary.h>
 #include <AudioSystem.h>
+#include <Texture.h>
+#include <Renderer.h>
+#include <Material.h>
 
 #include <cmath>
 
@@ -38,7 +41,7 @@ Gate::Gate()
 	Texture* tex = Runtime::get().moduleManager.getRenderer().newTexture("0");
 	tex->setFilterMode(Texture::FilterMode::MIPMAP_LINEAR);
 
-	Material* mat = Runtime::get().moduleManager.getRenderer().newMaterial("boilerplate");
+	mat = Runtime::get().moduleManager.getRenderer().newMaterial("boilerplate");
 
 	mat->setTexture(0, tex);
 
@@ -61,5 +64,5 @@ Gate::Gate()
 
 Gate::~Gate()
 {
-
+	delete mat;
 }

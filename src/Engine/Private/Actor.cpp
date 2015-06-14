@@ -4,7 +4,7 @@
 
 #include "Helper.h"
 #include "Runtime.h"
-
+#include "PhysicsSystem.h"
 
 
 
@@ -13,7 +13,21 @@ BOOST_CLASS_EXPORT_IMPLEMENT(Actor);
 Actor::Actor()
 	:transController(Runtime::get().moduleManager.getPhysicsSystem().newActorTransformController(this))
 {
+	
 }
+
+/// <summary> destructor </summary>
+Actor::~Actor()
+{
+	delete transController;
+
+	for (auto elem : components)
+	{
+		delete elem;
+	}
+}
+
+
 
 bool Actor::needsSave()
 {
@@ -24,11 +38,4 @@ bool Actor::needsSave()
 void Actor::tick(float deltaTime)
 {
 	
-}
-
-
-
-Actor::~Actor()
-{
-
 }

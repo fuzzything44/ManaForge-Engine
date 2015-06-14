@@ -8,6 +8,9 @@
 #include "ImageLoader.h"
 #include "MeshComponent.h"
 #include "PhysicsComponent.h"
+#include "Renderer.h"
+#include "PhysicsSystem.h"
+#include "Texture.h"
 
 #include <functional>
 #include <list>
@@ -55,6 +58,7 @@ Runtime::~Runtime()
 	ImageLoader::cleanUp();
 
 	delete world;
+
 }
 
 void Runtime::run()
@@ -173,21 +177,21 @@ void Runtime::run()
 		}
 		if (window.getIsKeyPressed(Keyboard::KEY_A))
 		{
-			player->applyLocalForce(vec2(-speedUpdated, 0.f), vec2());
+			player->applyLocalForce(vec2(-speedUpdated, 0.f), vec2(0.f, 0.f));
 		}
 		if (window.getIsKeyPressed(Keyboard::KEY_D))
 		{
-			player->applyLocalForce(vec2(speedUpdated, 0.f), vec2());
+			player->applyLocalForce(vec2(speedUpdated, 0.f), vec2(0.f, 0.f));
 
 		}
 		if (window.getIsKeyPressed(Keyboard::KEY_W))
 		{
-			player->applyLocalForce(vec2(0.f, speedUpdated), vec2());
+			player->applyLocalForce(vec2(0.f, speedUpdated), vec2(0.f, 0.f));
 
 		}
 		if (window.getIsKeyPressed(Keyboard::KEY_S))
 		{
-			player->applyLocalForce(vec2(0.f, -speedUpdated), vec2());
+			player->applyLocalForce(vec2(0.f, -speedUpdated), vec2(0.f, 0.f));
 
 		}
 		if (window.getIsKeyPressed(Keyboard::KEY_TAB))
@@ -223,6 +227,10 @@ void Runtime::run()
 
 	} while (shouldContinue);
 
+	delete mat;
+	delete tex;
+	delete player;
+	delete gate;
 }
 
 Runtime& Runtime::get()

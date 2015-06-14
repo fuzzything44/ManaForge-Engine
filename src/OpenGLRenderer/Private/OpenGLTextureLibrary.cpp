@@ -254,7 +254,7 @@ void OpenGLTextureLibrary::appendDDS(uint32 texToAppend, uint32 Xoffset, uint32 
 		Xoffset /= 2;
 		Yoffset /= 2;
 	}
-
+	free(buffer);
 	
 }
 
@@ -341,7 +341,6 @@ uint32 OpenGLTextureLibrary::allocateCompressedTextureLibraryFromDDS(uint32 num,
 		height /= 2;
 
 	}
-
 	return texture;
 }
 

@@ -5,6 +5,8 @@
 #include "Runtime.h"
 #include "SaveData.h"
 #include "Logging.h"
+#include "Window.h"
+#include "ENGException.h"
 
 #include <boost/archive/xml_iarchive.hpp>
 

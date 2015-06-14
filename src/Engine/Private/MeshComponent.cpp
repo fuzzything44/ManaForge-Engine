@@ -3,6 +3,8 @@
 #include "MeshComponent.h"
 
 #include "Runtime.h"
+#include "Window.h"
+#include "Renderer.h"
 
 MeshComponent::MeshComponent(Actor* owner,
 	Transform trans,

@@ -2,6 +2,7 @@
 
 #include <Color.h>
 #include <Runtime.h>
+#include <Renderer.h>
 
 void DebugDraw::DrawPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color)
 {
@@ -13,6 +14,8 @@ void DebugDraw::DrawPolygon(const b2Vec2* vertices, int32 vertexCount, const b2C
 	Color col = Color(uint8(color.r * 255.f), uint8(color.g * 255.f), uint8(color.b * 255.f), 255);
 
 	Runtime::get().moduleManager.getRenderer().drawDebugOutlinePolygon(verts, vertexCount, col);
+
+	delete[] verts;
 }
 
 void DebugDraw::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color)
@@ -26,6 +29,7 @@ void DebugDraw::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, cons
 
 	Runtime::get().moduleManager.getRenderer().drawDebugSolidPolygon(verts, vertexCount, col);
 
+	delete[] verts;
 }
 
 void DebugDraw::DrawCircle(const b2Vec2& center, float32 radius, const b2Color& color)
@@ -89,4 +93,5 @@ void DebugDraw::DrawAABB(b2AABB* aabb, const b2Color& c)
 	Runtime::get().moduleManager.getRenderer().drawDebugOutlinePolygon(points, 4, 
 		Color(uint8(c.r * 255.f), uint8(c.g * 255.f), uint8(c.b * 255.f), 255));
 
+	delete[] points;
 }

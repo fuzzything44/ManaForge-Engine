@@ -11,6 +11,8 @@
 
 #include <Color.h>
 
+class TextureLibrary;
+
 class DefaultWorld : public World
 {
 	std::string folderLocation;
@@ -44,7 +46,7 @@ public:
 	explicit DefaultWorld(std::string folder = ""); 
 
 	virtual void loadWorld(std::string name) override;
-	virtual void addActor(Actor& toAdd) override; 
+	virtual void addActor(Actor* toAdd) override; 
 	virtual void save() override;
 
 	virtual void consoleCommand(std::string& command) override;

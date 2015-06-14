@@ -9,6 +9,10 @@
 #	pragma comment(lib, "Engine.lib")
 #endif
 
+#ifdef USE_VLD
+#	include <vld.h>
+#endif
+
 // ALWAYS link to stackwalker.lib
 #pragma comment(lib, "StackWalker.lib")
 

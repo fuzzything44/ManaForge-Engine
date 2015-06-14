@@ -1,4 +1,7 @@
-#define SAVE_TYPE_XML
+#ifndef SAVE_TYPE_XML
+#	define SAVE_TYPE_XML 0
+#endif
+
 #include "DefaultWorld.h"
 
 #include <Helper.h>
@@ -7,6 +10,8 @@
 #include <Runtime.h>
 #include <Color.h>
 #include <TextureLibrary.h>
+#include <Renderer.h>
+#include <SaveData.h>
 
 #include <list>
 #include <fstream>
@@ -16,10 +21,9 @@
 
 #include <boost/algorithm/string.hpp>
 
-#include <SaveData.h>
 
 
-#ifdef SAVE_TYPE_XML
+#if SAVE_TYPE_XML
 #	include <boost/archive/polymorphic_xml_oarchive.hpp>
 #	include <boost/archive/polymorphic_xml_iarchive.hpp>
 #else
@@ -29,7 +33,7 @@
 
 
 // Defines for in and out archives. May want to change to defines and include the istreams.
-#ifdef SAVE_TYPE_XML
+#if SAVE_TYPE_XML
 	typedef boost::archive::polymorphic_xml_oarchive oarchive_t;
 	typedef boost::archive::polymorphic_xml_iarchive iarchive_t;
 #	define IS_SAVE_BINARY 0
@@ -57,7 +61,7 @@ DefaultWorld::DefaultWorld(std::string folder)
 	ENG_LOGLN("Setting up console commands...");
 	// Code for console commands goes here.
 	// We probably want addActor, save, loadWorld.
-
+	// Should this actually go here..?? 
 
 	ENG_LOGLN("Loading images...");
 	
@@ -97,13 +101,17 @@ DefaultWorld::DefaultWorld(std::string folder)
 
 DefaultWorld::~DefaultWorld()
 {
-	Runtime::get().moduleManager.getRenderer().deleteTextureLibrary(backgroundImages);
-	Runtime::get().moduleManager.getRenderer().deleteMaterial(drawMaterial);
 
+	if (backgroundImages)
+		delete backgroundImages;
+	
+	if (drawMaterial)
+		delete drawMaterial;
 
 	for (auto& elem : actors)
 	{
-		delete elem.second;
+		if (elem.second)
+			delete elem.second;
 	}
 }
 
@@ -123,11 +131,13 @@ void DefaultWorld::loadWorld(std::string name)
 		std::list<Actor*> staticActors;
 
 		// File location of static actors -- if we are binary, then use a binary stream
-#		if IS_SAVE_BINARY
-			std::ifstream i_stream{ folderLocation + name + '\\' + name + ".WORLD", std::ifstream::binary};
-#		else
-			std::ifstream i_stream{ folderLocation + name + '\\' + name + ".WORLD" };
-#		endif
+		std::ifstream i_stream{ folderLocation + name + '\\' + name + ".WORLD",
+#	if IS_SAVE_BINARY
+		std::ifstream::binary
+#	endif
+		};
+
+		
 
 		if (!i_stream.is_open())
 		{
@@ -154,7 +164,7 @@ void DefaultWorld::loadWorld(std::string name)
 		}
 
 		// Move actors to the map.
-		for (Actor*& elem : staticActors) 
+		for (auto& elem : staticActors) 
 		{
 			actors[nextIndex] = elem;
 			elem->GUID = nextIndex;
@@ -166,11 +176,12 @@ void DefaultWorld::loadWorld(std::string name)
 	// Begin dynamic actor loading
 	{
 		// File location of dynamic actors.
+		// File location of static actors -- if we are binary, then use a binary stream
+		std::ifstream i_stream{ folderLocation + name + '\\' + name + ".SAVE",
 #	if IS_SAVE_BINARY
-		std::ifstream i_stream{ folderLocation + name + '\\' + name + ".SAVE", std::ifstream::binary };
-#	else
-		std::ifstream i_stream{ folderLocation + name + '\\' + name + ".SAVE" };
+			std::ifstream::binary
 #	endif
+	};
 
 
 		if (!i_stream.is_open())
@@ -318,8 +329,10 @@ void DefaultWorld::loadWorld(std::string name)
 	ENG_LOGLN("World Loaded!");
 }
 
-void DefaultWorld::addActor(Actor& toAdd)
+void DefaultWorld::addActor(Actor* toAdd)
 {
+	actors.insert(std::map<map_ID_t, Actor*>::value_type(nextIndex++, toAdd));
+
 }
 
 void DefaultWorld::save()
@@ -335,11 +348,12 @@ void DefaultWorld::save()
 		}
 	} // End for
 
-#if IS_SAVE_BINARY
-	std::ofstream o_stream{ folderLocation + worldName + '\\' + worldName + ".SAVE", std::ifstream::binary };
-#else
-	std::ofstream o_stream{ folderLocation + worldName + '\\' + worldName + ".SAVE" };
-#endif
+	// File location of static actors -- if we are binary, then use a binary stream
+	std::ofstream o_stream{ folderLocation + worldName + '\\' + worldName + ".SAVE",
+#	if IS_SAVE_BINARY
+		std::ifstream::binary
+#	endif
+	};
 
 	try{
 

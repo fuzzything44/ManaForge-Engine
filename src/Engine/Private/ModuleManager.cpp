@@ -4,6 +4,10 @@
 
 #include "Helper.h"
 #include "AudioSystem.h"
+#include "Module.h"
+#include "PhysicsSystem.h"
+#include "AudioSystem.h"
+#include "Renderer.h"
 
 #include <map>
 

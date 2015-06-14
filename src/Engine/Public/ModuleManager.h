@@ -1,10 +1,5 @@
 #pragma once 
 #include "Engine.h"
-#include "Module.h"
-#include "Renderer.h"
-#include "World.h"
-#include "AudioSystem.h"
-#include "PhysicsSystem.h"
 
 #include <map>
 #include <vector>
@@ -17,6 +12,10 @@
 
 class Runtime;
 class World;
+class Renderer;
+class PhysicsSystem;
+class AudioSystem;
+class Module;
 
 
 class ModuleManager : boost::noncopyable

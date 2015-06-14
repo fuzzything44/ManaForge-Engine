@@ -1,6 +1,8 @@
 #include "OpenGLWindow.h"
-#include "Logging.h"
+
+#include <Logging.h>
 #include <Runtime.h>
+#include <ENGException.h>
 
 std::map<GLFWwindow*, OpenGLWindow*> OpenGLWindow::windows = std::map<GLFWwindow*, OpenGLWindow*>();
 

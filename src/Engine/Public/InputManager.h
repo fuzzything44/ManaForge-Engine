@@ -2,7 +2,6 @@
 
 #include "Engine.h"
 #include "KeyEnum.h"
-#include "Window.h"
 
 #include <map>
 #include <vector>
@@ -12,6 +11,7 @@
 
 
 class Runtime;
+class Window;
 
 class InputManager
 {

@@ -2,15 +2,16 @@
 #include "Engine.h"
 
 #include "SceneComponent.h"
-#include "PhysicsShape.h"
-#include "Runtime.h"
 
+class PhysicsBody;
+class PhysicsShape;
 
 class PhysicsComponent : public SceneComponent
 {
 public:
 
 	inline PhysicsComponent(Actor* owner = nullptr, const Transform& trans = Transform(), PhysicsShape* shape = nullptr);
+	ENGINE_API virtual ~PhysicsComponent();
 
 	inline void setRestitution(float newRestitution);
 	inline float getRestitution() const;
@@ -31,6 +32,12 @@ private:
 };
 
 
+#include "Runtime.h"
+#include "PhysicsBody.h"
+#include "PhysicsShape.h"
+#include "PhysicsSystem.h"
+
+/////////// INLINE DEFINITIONS /////////
 
 inline PhysicsComponent::PhysicsComponent(Actor* owner, const Transform& trans, PhysicsShape* shape)
 	:SceneComponent(owner, trans)

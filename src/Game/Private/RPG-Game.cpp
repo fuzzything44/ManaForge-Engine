@@ -3,6 +3,7 @@
 
 #include "Actor.h"
 #include "Runtime.h"
+#include "ENGException.h"
 
 int32 main()
 {	

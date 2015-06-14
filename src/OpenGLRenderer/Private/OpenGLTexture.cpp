@@ -8,7 +8,7 @@
 #define FOURCC_DXT3 0x33545844 // Equivalent to "DXT3" in ASCII
 #define FOURCC_DXT5 0x35545844 // Equivalent to "DXT5" in ASCII
 
-std::map<std::string, OpenGLTexture*> OpenGLTexture::textures = std::map<std::string, OpenGLTexture*>();
+OpenGLTexture::MapType OpenGLTexture::textures = OpenGLTexture::MapType();
 
 OpenGLTexture::OpenGLTexture(const std::string& path)
 	: path(path)
@@ -29,19 +29,29 @@ OpenGLTexture::OpenGLTexture(const std::string& path)
 			);
 
 
-			textures[path] = this;
+			// if its new, add it to the map
+			textures[path] = std::pair<int, GLuint>(1, ID);
 		}
 		else
 		{
 			// copy it from the other already existing one
-			*this = *(iter->second);
+			ID = (iter->second).second;
+			iter->second.first++; // increment the refrence count
 		}
 	}
 }
 
 OpenGLTexture::~OpenGLTexture()
 {
-	glDeleteTextures(1, &ID);
+	auto iter = textures.find(path);
+	iter->second.first--; // reduce the refrence count by 1
+
+	if (iter->second.first == 0) // if the refrence count is zero
+	{
+		glDeleteTextures(1, &ID);
+		textures.erase(path);
+	}
+
 }
 
 uint32 OpenGLTexture::getID()
@@ -152,7 +162,7 @@ void OpenGLTexture::deleteAll()
 {
 	for (auto& elem : textures)
 	{
-		delete elem.second;
+		glDeleteTextures(1, &elem.second.second);
 	}
 }
 

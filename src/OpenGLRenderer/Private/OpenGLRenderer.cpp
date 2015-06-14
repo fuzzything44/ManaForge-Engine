@@ -4,15 +4,16 @@
 #include "OpenGLMaterial.h"
 #include "OpenGLWindow.h"
 #include "OpenGLTexture.h"
+#include "OpenGLTextureLibrary.h"
 
 #include <Runtime.h>
 #include <Renderer.h>
 #include <Helper.h>
 #include <Logging.h>
+#include <PhysicsSystem.h>
 
 #include <functional>
 #include <algorithm>
-#include "OpenGLTextureLibrary.h"
 
 bool OpenGLRenderer::isDestroying = false;
 
