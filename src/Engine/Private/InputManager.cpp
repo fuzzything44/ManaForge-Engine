@@ -32,7 +32,6 @@ InputManager::InputManager(Window* window): window(window)
 	}
 	catch (boost::archive::archive_exception& e)
 	{
-		ENG_LOGLN(e.what());
 		FATAL_ERR(std::string("ARCHIVE EXCEPTION OCCURED IN LOADING INPUT MANAGER. Code: ") + boost::lexical_cast<std::string>(e.code) + " Error message: " + e.what());
 	}
 	catch (std::exception& e)
@@ -56,7 +55,7 @@ void InputManager::bindActionMappingPressed(const std::string& name, std::functi
 	}
 	else
 	{
-		ENG_LOGLN("Warning - action mapping \"" << name << "\" not found");
+		ENG_LOGLN(Warning) << "action mapping \"" << name << "\" not found";
 	}
 }
 
@@ -70,7 +69,7 @@ void InputManager::bindActionMappingReleased(const std::string& name, std::funct
 	}
 	else
 	{
-		ENG_LOGLN("Warning - action mapping \"" << name << "\" not found");
+		ENG_LOGLN(Warning) << "action mapping \"" << name << "\" not found";
 	}
 }
 
@@ -84,7 +83,7 @@ void InputManager::bindAxisMapping(const std::string& name, std::function<void(f
 	}
 	else
 	{
-		ENG_LOGLN("Warning - axis mapping \"" << name << "\" not found");
+		ENG_LOGLN(Warning) << "axis mapping \"" << name << "\" not found";
 	}
 }
 

@@ -25,8 +25,6 @@ void OpenGLMaterial::addShaderProgramFromFile(std::string name)
 	std::string vertexPath	= "shaders\\" + name + "vert.glsl";
 	std::string fragPath	= "shaders\\" + name + "frag.glsl";
 
-	ENG_LOGLN(std::endl << std::endl);
-
 	// Create the shaders
 	GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
 	GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
@@ -43,7 +41,7 @@ void OpenGLMaterial::addShaderProgramFromFile(std::string name)
 
 
 	// Compile Vertex Shader
-	ENG_LOGLN("Compiling vertex Shader " << vertexPath);
+	ENG_LOGLN(Trace) << "Compiling vertex Shader " << vertexPath;
 
 	const char* VertexSourcePointer = VertexShaderCode.c_str();
 	glShaderSource(vertexShader, 1, &VertexSourcePointer, nullptr);
@@ -52,20 +50,20 @@ void OpenGLMaterial::addShaderProgramFromFile(std::string name)
 	// Check Vertex Shader
 	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &Result);
 	glGetShaderiv(vertexShader, GL_INFO_LOG_LENGTH, &InfoLogLength);
-	if (InfoLogLength > 0){
+	if (InfoLogLength > 1){
 		char* VertexShaderErrorMessage = new char[InfoLogLength + 1]();
 		glGetShaderInfoLog(vertexShader, InfoLogLength, nullptr, &VertexShaderErrorMessage[0]);
-		ENG_LOGLN("\n" << &VertexShaderErrorMessage[0]);
+		ENG_LOGLN(Error) << &VertexShaderErrorMessage[0];
 		delete[] VertexShaderErrorMessage;
 	}
 	else
 	{
-		ENG_LOGLN("Shader " << vertexPath << " Successfully Compiled\n");
+		ENG_LOGLN(Trace) << "Shader " << vertexPath << " Successfully Compiled\n";
 	}
 
 
 	// Compile Fragment Shader
-	ENG_LOGLN("\nCompiling fragment Shader " << fragPath);
+	ENG_LOGLN(Trace) << "\nCompiling fragment Shader " << fragPath;
 	const char* FragmentSourcePointer = FragmentShaderCode.c_str();
 	glShaderSource(fragmentShader, 1, &FragmentSourcePointer, nullptr);
 	glCompileShader(fragmentShader);
@@ -73,20 +71,20 @@ void OpenGLMaterial::addShaderProgramFromFile(std::string name)
 	// Check Fragment Shader
 	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &Result);
 	glGetShaderiv(fragmentShader, GL_INFO_LOG_LENGTH, &InfoLogLength);
-	if (InfoLogLength > 0){
+	if (InfoLogLength > 1){
 		char* FragmentShaderErrorMessage = new char[InfoLogLength + 1]();
 		glGetShaderInfoLog(fragmentShader, InfoLogLength, nullptr, FragmentShaderErrorMessage);
-		ENG_LOGLN("\n" << FragmentShaderErrorMessage);
+		ENG_LOGLN(Error) << FragmentShaderErrorMessage;
 		delete[] FragmentShaderErrorMessage;
 	}
 	else
 	{
-		ENG_LOGLN("\nShader " << fragPath << " Successfully Compiled\n");
+		ENG_LOGLN(Trace) << "Shader " << fragPath << " Successfully Compiled\n";
 	}
 
 
 	// Link the program
-	ENG_LOGLN("Linking program " << name);
+	ENG_LOGLN(Trace) << "\tLinking program " << name;
 	program = glCreateProgram();
 	glAttachShader(program, vertexShader);
 	glAttachShader(program, fragmentShader);
@@ -95,10 +93,10 @@ void OpenGLMaterial::addShaderProgramFromFile(std::string name)
 	// Check the program
 	glGetProgramiv(program, GL_LINK_STATUS, &Result);
 	glGetProgramiv(program, GL_INFO_LOG_LENGTH, &InfoLogLength);
-	if (InfoLogLength > 0){
+	if (InfoLogLength > 1){
 		char* ProgramErrorMessage = new char[InfoLogLength + 1]();
 		glGetProgramInfoLog(program, InfoLogLength, nullptr, ProgramErrorMessage);
-		ENG_LOGLN(ProgramErrorMessage);
+		ENG_LOGLN(Error) << ProgramErrorMessage;
 		delete[] ProgramErrorMessage;
 	}
 

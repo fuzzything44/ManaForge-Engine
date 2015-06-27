@@ -11,6 +11,23 @@ enum class WindowMode : uint8
 	WINDOWED = 2				// Windowed - Created a decorated window 
 };
 
+template<typename char_t, typename traits>
+std::basic_ostream<char_t, traits>& operator<<(std::basic_ostream<char_t, traits>& stream, WindowMode mode)
+{
+	stream << static_cast<int>(mode);
+	return stream;
+}
+
+template<typename char_t, typename traits>
+std::basic_istream<char_t, traits>& operator>>(std::basic_istream<char_t, traits>& stream, WindowMode& mode)
+{
+	int index;
+	stream >> index;
+	mode = static_cast<WindowMode>(index);
+
+	return stream;
+}
+
 /// <summary> Values that represent render modes.</summary>
 enum class RenderMode : uint8
 {
@@ -18,6 +35,22 @@ enum class RenderMode : uint8
 	WIREFRAME = 1	// Render in wireframe
 };
 
+template<typename char_t, typename traits>
+std::basic_ostream<char_t, traits>& operator<<(std::basic_ostream<char_t, traits>& stream, RenderMode mode)
+{
+	stream << static_cast<int>(mode);
+	return stream;
+}
+
+template<typename char_t, typename traits>
+std::basic_istream<char_t, traits>& operator>>(std::basic_istream<char_t, traits>& stream, RenderMode& mode)
+{
+	int index;
+	stream >> index;
+	mode = static_cast<RenderMode>(index);
+
+	return stream;
+}
 
 // the propertys that a window has
 struct WindowProps

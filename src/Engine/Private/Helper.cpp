@@ -14,10 +14,10 @@ std::string loadFileToStr(const char* filename)
 	stream.open(filename);
 
 	// if the steam if bad then return
-	if (stream.bad())
+	if (!stream.is_open())
 	{
-		ENG_LOGLN("Bad stream" << std::endl);
-		return nullptr;
+		ENG_LOGLN(Warning) << "file doens't exist: " << filename;
+		return std::string();
 	}
 	// define strings for each line and the final string
 	std::string ret, build;

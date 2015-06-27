@@ -75,7 +75,7 @@ void Box2DActorTransformController::setType(PhysicsType newType)
 
 	}
 
-	ENG_LOGLN("Warning -- trying to set PhysicsType to an unknown type. Using previous type");
+	ENG_LOGLN(Warning) << "trying to set PhysicsType to an unknown type. Using previous type";
 }
 
 void Box2DActorTransformController::applyLocalForce(vec2 localForce, vec2 localPoint)

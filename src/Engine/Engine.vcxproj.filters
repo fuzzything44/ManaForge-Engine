@@ -29,9 +29,6 @@
     <ClCompile Include="Private\ModuleManager.cpp">
       <Filter>Private</Filter>
     </ClCompile>
-    <ClCompile Include="Private\Logging.cpp">
-      <Filter>Private</Filter>
-    </ClCompile>
     <ClCompile Include="Private\MeshComponent.cpp">
       <Filter>Private</Filter>
     </ClCompile>

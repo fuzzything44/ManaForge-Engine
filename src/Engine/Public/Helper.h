@@ -90,3 +90,29 @@ ENGINE_API std::ostream& operator<<(std::ostream& os, const mat4& mat);
 	#define errChkCL(err)
 	#define check(ptr)
 #endif
+
+#define LOAD_PROPERTY_WITH_WARNING(propertyManager, key, value, defaultValue)						\
+	if(::boost::optional<decltype(value)> tempOptional =											\
+		propertyManager.queryValue<decltype(value)>(key))											\
+	{																								\
+		value = *tempOptional;																		\
+	}																								\
+	else																							\
+	{																								\
+		ENG_LOGLN(Warning) << "Value from key " << BOOST_PP_STRINGIZE(key)							\
+			<< " doesn't exist. Using default"														\
+			<< "value of: " << defaultValue;														\
+	}																								\
+	/**/
+
+#define LOAD_PROPERTY_WITH_ERROR(propertyManager, key, value)										\
+	if(::boost::optional<decltype(value)> tempOptional =											\
+		propertyManager.queryValue<decltype(value)>(key))											\
+	{																								\
+		value = *tempOptional;																		\
+	}																								\
+	else																							\
+	{																								\
+		FATAL_ERR(std::string() + "Value from key " + BOOST_PP_STRINGIZE(key) + " doesn't exist.");	\
+	}																								\
+	/**/

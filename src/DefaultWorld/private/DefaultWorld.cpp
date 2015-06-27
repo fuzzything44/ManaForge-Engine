@@ -59,13 +59,18 @@ DefaultWorld::DefaultWorld(std::string folder)
 	if (folder == "") {
 		FATAL_ERR("No world specified");
 	}
-	ENG_LOGLN("Setting up console commands...");
+	ENG_LOGLN(Trace) << "Setting up console commands...";
 	// Code for console commands goes here.
 	// We probably want addActor, save, loadWorld.
 	// Should this actually go here..?? 
 
-	ENG_LOGLN("Loading images...");
+	ENG_LOGLN(Trace) << "Loading images...";
 	
+
+	LOAD_PROPERTY_WITH_WARNING(propManager, "DefaultPlayerController", playerControllerClassName, "Core.PlayerController");
+	LOAD_PROPERTY_WITH_WARNING(propManager, "DefaultPawn", pawnClassName, "Core.Pawn");
+
+
 	// We should probably just have the images we use in the same file as chunk size.
 	std::ifstream stream{ folderLocation + "images.txt", std::ifstream::app };
 
@@ -92,7 +97,7 @@ DefaultWorld::DefaultWorld(std::string folder)
 	// set the material
 	drawMaterial->setTexture(0, reinterpret_cast<Texture*>(backgroundImages));
 
-	ENG_LOGLN("Images loaded!");
+	ENG_LOGLN(Trace) << "Images loaded!";
 
 	// virtual functuion -- call THIS version of it -- we need this because it is inside a constructor
 	DefaultWorld::loadWorld("main");
@@ -120,8 +125,7 @@ DefaultWorld::~DefaultWorld()
 void DefaultWorld::loadWorld(std::string name)
 {
 	worldName = name;
-	ENG_LOGLN("Loading world " << name << "...");
-	
+	ENG_LOGLN(Trace) << "Loading world " << name << "...";
 
 	/////////////////////////////////////////////////////
 	// Begin static actor loading.
@@ -142,7 +146,7 @@ void DefaultWorld::loadWorld(std::string name)
 
 		if (!i_stream.is_open())
 		{
-			FATAL_ERR("SAVE FILE DOESN'T EXIST");
+			FATAL_ERR("WORLD FILE DOESN'T EXIST");
 		}
 
 		// this might fail, so put it into try catch block
@@ -157,11 +161,12 @@ void DefaultWorld::loadWorld(std::string name)
 		} 
 		catch (boost::archive::archive_exception& e)
 		{
-			ENG_LOGLN("ARCHIVE ERROR ENCOUNTERED WHILE LOADING WORLD ACTORS! Reason: " << e.what() << " Error code: " << e.code);
+			FATAL_ERR(std::string("ARCHIVE ERROR ENCOUNTERED WHILE LOADING WORLD ACTORS! Reason: ") + e.what() + // do this for stack tracing
+				" Error code: " + boost::lexical_cast<std::string>(e.code));
 		}
 		catch (std::exception& e)
 		{
-			ENG_LOGLN("ERROR ENCOUNTERED WHILE LOADING WORLD ACTORS! Reason: " << e.what());
+			FATAL_ERR(std::string("ERROR ENCOUNTERED WHILE LOADING WORLD ACTORS! Reason: ") + e.what());
 		}
 
 		// Move actors to the map.
@@ -184,7 +189,6 @@ void DefaultWorld::loadWorld(std::string name)
 #	endif
 	};
 
-
 		if (!i_stream.is_open())
 		{
 			FATAL_ERR("SAVE FILE DOESN'T EXIST");
@@ -202,11 +206,11 @@ void DefaultWorld::loadWorld(std::string name)
 		}
 		catch (boost::archive::archive_exception& e)
 		{
-			ENG_LOGLN("ARCHIVE ERROR WHILE LOADING SAVED ACTORS! Reason: " << e.what() << " Error code: " << e.code);
+			ENG_LOGLN(Fatal) << "ARCHIVE ERROR WHILE LOADING SAVED ACTORS! Reason: " << e.what() << " Error code: " << e.code;
 		}
 		catch (std::exception& e)
 		{
-			ENG_LOGLN("ERROR ENCOUNTERED WHILE LOADING SAVED ACTORS! Reason: " << e.what());
+			ENG_LOGLN(Fatal) << "ERROR ENCOUNTERED WHILE LOADING SAVED ACTORS! Reason: " << e.what();
 		}
 
 		// move actors to map.
@@ -217,12 +221,13 @@ void DefaultWorld::loadWorld(std::string name)
 			nextIndex++;
 		}
 	}
-	ENG_LOGLN("Actors Loaded!");
+	ENG_LOGLN(Trace) << "Actors Loaded!";
 
 	///////////////////////////
 	// begin background loading
 	{
-		backgroundChunkSize = propManager.queryValue<uint32>("chunk.size");
+
+		LOAD_PROPERTY_WITH_ERROR(propManager, "chunk.size", backgroundChunkSize);
 
 		std::vector<uint8> data;
 		uvec2 size = ImageLoader::load(folderLocation + name + "\\" + name + ".png", data);
@@ -295,7 +300,7 @@ void DefaultWorld::loadWorld(std::string name)
 						}
 						else
 						{
-							ENG_LOGLN("Warining: could not find image name in imageAssoc map in DefaultWorld");
+							ENG_LOGLN(Warning) << "Warining: could not find image name in imageAssoc map in DefaultWorld";
 						}
 
 
@@ -327,7 +332,7 @@ void DefaultWorld::loadWorld(std::string name)
 	// end background loading
 
 
-	ENG_LOGLN("World Loaded!");
+	ENG_LOGLN(Trace) << "World Loaded!";
 }
 
 void DefaultWorld::addActor(Actor* toAdd)
@@ -339,7 +344,7 @@ void DefaultWorld::addActor(Actor* toAdd)
 
 void DefaultWorld::save()
 {
-	ENG_LOGLN("Saving world");
+	ENG_LOGLN(Trace) << "Saving world";
 	// Create list to save
 	std::list<Actor*> toSave;
 	for (auto& pair : actors) 
@@ -367,11 +372,11 @@ void DefaultWorld::save()
 	}
 	catch (boost::archive::archive_exception& e)
 	{
-		ENG_LOGLN("ARCHIVE ERROR SAVING ACTORS. Reason: " << e.what() << " Code: " << e.code);
+		ENG_LOGLN(Error) << "ARCHIVE ERROR SAVING ACTORS. Reason: " << e.what() << " Code: " << e.code;
 	}
 	catch (std::exception& e)
 	{
-		ENG_LOGLN("ERROR SAVING ACTORS. Reason: " << e.what());
+		ENG_LOGLN(Error) << "ERROR SAVING ACTORS. Reason: " << e.what();
 	}
 }
 
@@ -383,7 +388,7 @@ void DefaultWorld::consoleCommand(std::string& command)
 		commandMap[giveCommand](args);
 	}
 	catch (exception e) {
-		ENG_LOGLN("Error in command " << command << ": " << e.what() );
+		ENG_LOGLN(Error) << "Error in command " << command << ": " << e.what();
 		// We also may want to tell the UI it went wrong.
 	}
 }

@@ -57,7 +57,7 @@ void Stack::OnCallstackEntry(CallstackEntryType eType, CallstackEntry& entry)
 		{
 			if (!wasLastExternal)
 			{
-				ENG_LOGLN("External code");
+				ENG_LOGLN(Info) << "External code";
 			}
 			wasLastExternal = true;
 
@@ -87,7 +87,7 @@ void Stack::OnCallstackEntry(CallstackEntryType eType, CallstackEntry& entry)
 			// reverse it
 			std::reverse(fileOut.begin(), fileOut.end());
 
-			ENG_LOGLN("Name: " << entry.undFullName << "\n\tFile: " << fileOut << "\n\tLine: " << entry.lineNumber);
+			ENG_LOGLN(Info) << "Name: " << entry.undFullName << "\n\tFile: " << fileOut << "\n\tLine: " << entry.lineNumber;
 
 
 
@@ -105,7 +105,7 @@ void Stack::OnLoadModule(LPCSTR img, LPCSTR mod, DWORD64 baseAddr, DWORD size, D
 
 	if (!boost::starts_with(name, "C:\\Windows\\"))
 	{
-		ENG_LOGLN("Module Loaded: " << mod);
+		ENG_LOGLN(Trace) << "Module Loaded: " << mod;
 	}
 }
 
@@ -114,7 +114,7 @@ void Stack::OnLoadModule(LPCSTR img, LPCSTR mod, DWORD64 baseAddr, DWORD size, D
 ENGException::ENGException(std::string reasonIn) 
 {
 	
-	ENG_LOG(reasonIn << " Stack:\n\n");
+	ENG_LOGLN(Error) << reasonIn << " Stack:\n";
 
 	Stack s;
 	s.ShowCallstack();

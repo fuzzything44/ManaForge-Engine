@@ -7,6 +7,8 @@
 #include <functional>
 #include <map>
 
+#include <array>
+
 #include "ChunkActor.h"
 
 #include <Color.h>
@@ -18,7 +20,7 @@ class DefaultWorld : public World
 	std::string folderLocation;
 	std::string worldName;
 
-	PropertyManager propManager;
+	PropertyManager propManager; // for world specific properties
 	
 	// Map of console commands. Maps from a string to function. Function takes in a string.
 	std::map<std::string, std::function<void(const std::string)> > commandMap;
@@ -41,9 +43,13 @@ class DefaultWorld : public World
 
 	uint32 backgroundChunkSize;
 
-public:
+	std::string playerControllerClassName;
+	std::string pawnClassName;
+
+public: 
 	explicit DefaultWorld(std::string folder = ""); 
 
+	// World Interface
 	virtual void loadWorld(std::string name) override;
 	virtual void addActor(Actor* toAdd) override; 
 	virtual void save() override;
@@ -52,7 +58,7 @@ public:
 
 	virtual PlayerController* makePlayerController() override;
 	virtual Pawn* makePawn() override;
-
+	// End World Interface
 
 	virtual ~DefaultWorld();
 };

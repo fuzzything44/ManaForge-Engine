@@ -14,7 +14,7 @@ public:
 	ENGINE_API explicit PropertyManager(const std::string& location);
 
 	template <typename T>
-	inline T queryValue(const std::string& key);
+	inline boost::optional<T> queryValue(const std::string& key);
 
 	template <typename T>
 	inline void saveValue(std::string key, const T& value);
@@ -25,15 +25,15 @@ private:
 };
 
 template <typename T>
-inline T PropertyManager::queryValue(const std::string& key)
+inline boost::optional<T> PropertyManager::queryValue(const std::string& key)
 {
 	try{
 		return (props.get<T>(key));
 	} catch (std::exception& e)
 	{
-		ENG_LOGLN(e.what());
+		ENG_LOGLN(Error) << e.what();
 
-		return T();
+		return boost::optional<T>(); // return "null"
 	}
 }
 

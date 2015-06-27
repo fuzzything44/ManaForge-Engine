@@ -14,7 +14,7 @@ OpenALSoundCue::OpenALSoundCue(const std::string& name)
 
 	if (amtChannels == 2)
 	{
-		ENG_LOGLN("Warining, using stereo buffer: " << name << ". The sound will not be location based");
+		ENG_LOGLN(Info) << "using stereo buffer: " << name << ". The sound will not be location based";
 	}
 }
 

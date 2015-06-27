@@ -11,6 +11,7 @@
 #include "Renderer.h"
 #include "PhysicsSystem.h"
 #include "Texture.h"
+#include "Logging.h"
 
 #include <functional>
 #include <list>
@@ -25,15 +26,15 @@
 Runtime* Runtime::currentRuntime = nullptr;
 
 Runtime::Runtime(const std::string& worldPath)
-	:propManager((changeDir(), logging::init(), "props.json")),
+	:propManager((changeDir(), "props.json")),
 	moduleManager()
 {
 	
 	// update current runtime to be the most recently created one
 	currentRuntime = this;
 
-	// query the property manager to get the modules
-	std::string modulesStr = propManager.queryValue<std::string>("modules");
+	std::string modulesStr;	
+	LOAD_PROPERTY_WITH_ERROR(propManager, "modules", modulesStr)
 
 	// split into the individual modules
 	std::vector<std::string> modules;
@@ -71,12 +72,12 @@ void Runtime::run()
 		{
 			if (callback._Empty())
 			{
-				ENG_LOGLN("Warning: init callback empty.");
+				ENG_LOGLN(Warning) << "init callback empty.";
 			}
 
 			callback();
 		}
-		ENG_LOGLN("init completed.");
+		ENG_LOGLN(Trace) << "init completed.";
 
 		
 	}
@@ -214,7 +215,7 @@ void Runtime::run()
 		{
 			if (callback._Empty())
 			{
-				ENG_LOGLN("Warning: Update callback empty");
+				ENG_LOGLN(Warning) << "Update callback empty";
 			}
 
 			if(!callback(delta)) // it would return true if we should coninue

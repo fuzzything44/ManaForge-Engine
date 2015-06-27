@@ -18,12 +18,12 @@ int32 main()
 	catch (ENGException& e)
 	{
 		std::string reason = e.what();
-		ENG_LOGLN(reason);
+		ENG_LOGLN(Error) << reason;
 		return -1;
 	}
 	catch (std::exception& e)
 	{
-		ENG_LOGLN(e.what());
+		ENG_LOGLN(Error) << e.what();
 
 		return -1;
 	}

@@ -1,6 +1,7 @@
 #include "OpenGLWindow.h"
 
 #include <Logging.h>
+#include <Helper.h>
 #include <Runtime.h>
 #include <ENGException.h>
 
@@ -11,13 +12,15 @@ OpenGLWindow::OpenGLWindow()
 {
 	PropertyManager& propManager = Runtime::get().propManager;
 
-	props.size.x = propManager.queryValue<uint32>("window.size.x");
-	props.size.y = propManager.queryValue<uint32>("window.size.y");
 
-	props.renderMode = static_cast<RenderMode>(propManager.queryValue<uint8>("window.renderMode"));
-	props.windowMode = static_cast<WindowMode>(propManager.queryValue<uint8>("window.windowMode"));
+	LOAD_PROPERTY_WITH_WARNING(propManager, "window.size.x", props.size.x, 800);
+	LOAD_PROPERTY_WITH_WARNING(propManager, "window.size.y", props.size.y, 600);
 
-	props.title = propManager.queryValue<std::string>("window.title");
+	LOAD_PROPERTY_WITH_WARNING(propManager, "window.renderMode", props.renderMode, RenderMode::NORMAL);
+	LOAD_PROPERTY_WITH_WARNING(propManager, "window.windowMode", props.windowMode, WindowMode::FULLSCREEN);
+
+	LOAD_PROPERTY_WITH_WARNING(propManager, "window.title", props.title, "WARNING- NO TITLE GIVEN");
+
 
 	hasFocus = true;
 

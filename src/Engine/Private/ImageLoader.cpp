@@ -21,7 +21,7 @@ uvec2 ImageLoader::load(std::string filename, std::vector<uint8>& data)
 
 	if (foundIter == loadFunctions.end())
 	{
-		ENG_LOGLN("no loader for extension, returning nullvector");
+		ENG_LOGLN(Warning) << "no loader for extension, returning nullvector";
 
 		data.clear();
 
@@ -39,7 +39,7 @@ void ImageLoader::addLoader(std::string extension, loadFun function)
 {
 	if (loadFunctions.find(extension) != loadFunctions.end())
 	{
-		ENG_LOGLN("Dulplicate loader for " << extension << ". using newest loader.");
+		ENG_LOGLN(Info) << "Dulplicate loader for " << extension << ". using newest loader.";
 
 	}
 
