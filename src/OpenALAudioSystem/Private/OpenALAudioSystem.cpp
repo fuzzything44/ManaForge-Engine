@@ -14,9 +14,13 @@
 
 OpenALAudioSystem::OpenALAudioSystem()
 {
-	if (alutInit(0, nullptr) == AL_FALSE)	// catch errors
+	if (alutInit(nullptr, nullptr) == AL_FALSE)	// catch errors
 	{
-		FATAL_ERR("Failed to initalize alut!");
+		ALenum err = alutGetError();
+		FATAL_ERR(std::string("Failed to initalize alut with error: ") 
+			+ alutGetErrorString(err) 
+			+  " And error number: " 
+			+ boost::lexical_cast<std::string>(err));
 	}
 }
 
