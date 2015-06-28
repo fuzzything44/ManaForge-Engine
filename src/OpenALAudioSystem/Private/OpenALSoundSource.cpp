@@ -92,10 +92,10 @@ float OpenALSoundSource::getReferenceDistance() const
 void OpenALSoundSource::update()
 {
 	vec2 loc = ownerComponent->getWorldLocation();
+	vec2 velocity = ownerComponent->getOwner()->getVelocity();
 
 	alSource3f(sourceHandle, AL_POSITION, loc.x, loc.y, 0.f);
-
-	// TODO: set velocity
+	alSource3f(sourceHandle, AL_VELOCITY, velocity.x, velocity.y, 0.f);
 }
 
 void OpenALSoundSource::setConeParams(vec2 direction, float innerAngle, float outerAngle, float outerGain)
