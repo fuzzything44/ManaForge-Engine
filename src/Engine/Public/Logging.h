@@ -29,13 +29,29 @@ enum class severity_t
 template<typename char_t, typename traits>
 inline std::basic_ostream<char_t, traits>& operator<<(std::basic_ostream<char_t, traits>& stream, severity_t sev)
 {
-	if (sev == severity_t::Trace) stream << "Trace";
-	else if (sev == severity_t::Debug) stream << "Debug";
-	else if (sev == severity_t::Info) stream << "Info";
-	else if (sev == severity_t::Warning) stream << "Warning";
-	else if (sev == severity_t::Error) stream << "Error";
-	else if (sev == severity_t::Fatal) stream << "Fatal";
-	else stream << static_cast<int>(sev);
+	switch (sev)
+	{
+	case severity_t::Trace:
+		stream << "Trace";
+		break;
+	case severity_t::Debug:
+		stream << "Debug";
+		break;
+	case severity_t::Info:
+		stream << "Info";
+		break;
+	case severity_t::Warning:
+		stream << "Warning";
+		break;
+	case severity_t::Error:
+		stream << "Error";
+		break;
+	case severity_t::Fatal:
+		stream << "Fatal";
+		break;
+	default:
+		stream << static_cast<int>(sev);
+	}
 
 	return stream;
 	
