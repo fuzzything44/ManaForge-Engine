@@ -50,10 +50,8 @@ bin/Release/StackWalker.*
 bin/Debug/StackWalker.*
 bin/Release/Modules/TestContent.*
 bin/Debug/Modules/TestContent.*
-bin/Debug/glew32d.dll
-bin/Debug/glew32sd.lib
-bin/Release/glew32.dll
-bin/Release/glew32s.lib
+bin/Debug/glew32d.*
+bin/Release/glew32.*
 bin/Debug/Modules/Box2dPhysicsSystem.*
 bin/Release/Modules/Box2dPhysicsSystem.*
 bin/Debug/Modules/OpenALAudioSystem.*
