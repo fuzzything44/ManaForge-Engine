@@ -94,6 +94,7 @@ void OpenALSoundSource::update()
 	vec2 loc = ownerComponent->getWorldLocation();
 	vec2 velocity = ownerComponent->getOwner()->getVelocity();
 
+	// update runtime variables
 	alSource3f(sourceHandle, AL_POSITION, loc.x, loc.y, 0.f);
 	alSource3f(sourceHandle, AL_VELOCITY, velocity.x, velocity.y, 0.f);
 }
