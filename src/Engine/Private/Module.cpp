@@ -93,9 +93,16 @@ Module::~Module()
 	{
 		try{
 
+			// make sure that these are deleted before the code is unloaded
+			for (auto& elem : classes)
+			{
+				elem.second.~function();
+			}
+
 			SharedLibrary::Unload(libraryHandle);
 
 			delete refrenceCount;
+
 
 		}
 		catch (std::exception& e)
