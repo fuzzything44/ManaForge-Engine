@@ -4,6 +4,7 @@
 
 struct DefaultWorldLocation : public ActorLocation
 {
+	friend class DefaultWorld;
 public:
 	DefaultWorldLocation(uint64 loc = 0) : location(loc) {};
 	virtual Actor* getActor() override;

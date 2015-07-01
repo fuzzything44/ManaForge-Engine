@@ -5,6 +5,7 @@
 #include <Runtime.h>
 #include <Actor.h>
 #include <functional>
+#include <TextureLibrary.h>
 #include <map>
 
 #include <array>
@@ -13,7 +14,6 @@
 
 #include <Color.h>
 
-class TextureLibrary;
 
 class DefaultWorld : public World
 {
@@ -54,7 +54,7 @@ public:
 
 	// World Interface
 	virtual void loadWorld(std::string name) override;
-	virtual void addActor(Actor* toAdd) override; 
+	ActorLocation* addActor(Actor* toAdd) override; 
 	virtual void save() override;
 
 	virtual void consoleCommand(std::string& command) override;

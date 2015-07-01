@@ -12,7 +12,7 @@ class PlayerController;
 struct ActorLocation
 {
 	virtual Actor* getActor() { return nullptr; };
-	virtual void remove() {};
+	virtual void remove() = 0;
 };
 
 class World
@@ -30,7 +30,7 @@ public:
 	virtual PlayerController* makePlayerController() = 0;
 	virtual Pawn* makePawn() = 0;
 
-	virtual void addActor(Actor* toAdd) = 0;
+	virtual ActorLocation* addActor(Actor* toAdd) = 0;
 
 	virtual void save() = 0;
 

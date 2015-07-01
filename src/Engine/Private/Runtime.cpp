@@ -66,7 +66,7 @@ Runtime::~Runtime()
 void Runtime::run()
 {
 	{
-
+		// get the callbacks
 		std::list<ModuleManager::initFun>& initCallbacks = moduleManager.getInitCallbacks();
 
 		for (auto& callback : initCallbacks)
@@ -231,8 +231,6 @@ void Runtime::run()
 
 	delete mat;
 	delete tex;
-	delete player;
-	delete gate;
 }
 
 Runtime& Runtime::get()
