@@ -5,9 +5,10 @@
 #include <vector>
 #include <functional>
 #include <list>
+#include <typeinfo>
+
 
 #include <boost/algorithm/string.hpp>
-
 #include <boost/core/noncopyable.hpp>
 
 class Runtime;
@@ -25,7 +26,6 @@ public:
 	friend Runtime;
 
 	typedef std::function<void*(const std::string&)> contentModuleSpawnFun;
-	typedef std::function<World*(const std::string&)> newWorldFun;
 	typedef std::function<bool(float)> updateFun;
 	typedef std::function<void()> initFun;
 
@@ -35,36 +35,27 @@ public:
 	ENGINE_API ModuleManager();
 
 
-	ENGINE_API Renderer& getRenderer();
-	ENGINE_API AudioSystem& getAudioSystem();
-	ENGINE_API PhysicsSystem& getPhysicsSystem();
+	inline Renderer& getRenderer();
+	inline AudioSystem& getAudioSystem();
+	inline PhysicsSystem& getPhysicsSystem();
 	
-	ENGINE_API void setRenderer(Renderer* newRenderer);
-	ENGINE_API void setAudioSystem(AudioSystem* newAudioSystem);
-	ENGINE_API void setPhysicsSystem(PhysicsSystem* newPhysicsSystem);
+	inline void setRenderer(Renderer* newRenderer);
+	inline void setAudioSystem(AudioSystem* newAudioSystem);
+	inline void setPhysicsSystem(PhysicsSystem* newPhysicsSystem);
 
 	/// <summary> Loads a module.</summary>
 	///
 	/// <param name="filename"> Filename of the module.</param>
 	ENGINE_API void loadModule(const std::string& filename);
 
-	/// <summary> .</summary>
-	///
-	/// <param name="createWorld()"> Function that creates a world </param>
-	ENGINE_API void setCreateWorldFun(const newWorldFun& createWorld);
-
-	/// <summary> Creates a new world using the function set in setCreateWorldFun </summary>
-	/// <param name="path"> the name of the world to create </param>
-	ENGINE_API World* newWorld(std::string path);
-
-	ENGINE_API void AddContentModule(contentModuleSpawnFun fun, const std::string& moduleName);
-
-
+	template<typename T>
+	inline void registerClass(const std::string& moduleName, T* ptr = nullptr);
+	
 	ENGINE_API void addInitCallback(const initFun& function);
 	ENGINE_API void addUpdateCallback(const updateFun& function);
 
 	template <typename T>
-	T* spawnClass(const std::string& name);
+	inline T* spawnClass(const std::string& name);
 
 private:
 
@@ -74,12 +65,7 @@ private:
 	std::list<initFun> initCallbacks;
 	std::list<updateFun> updateCallbacks;
 
-	// function to createWorld
-	newWorldFun newWorldFunction;
-
 	std::map<std::string, Module> loadedModules;
-
-	std::map<std::string, contentModuleSpawnFun> contentSpawnMethods;
 
 	Renderer* renderer;
 	AudioSystem* audioSystem;
@@ -87,28 +73,90 @@ private:
 
 };
 
+#include "Helper.h"
+#include "Module.h"
+
+
+template<typename T>
+inline void ModuleManager::registerClass(const std::string& moduleName, T* ptr)
+{
+	std::string nameWithClass = typeid(T).name();
+	auto iterAtSpace = nameWithClass.rbegin();
+	while (iterAtSpace != nameWithClass.rend() && *iterAtSpace != ' ') iterAtSpace++;
+
+	std::string name;
+	std::copy(iterAtSpace.base(), nameWithClass.end(), std::back_inserter(name));
+	
+	auto moduleIter = loadedModules.find(moduleName);
+	if (moduleIter != loadedModules.end())
+	{
+		moduleIter->second.addClass(name, 
+			[]()
+			{
+				return new T(); 
+			}
+		);
+	}
+
+}
 
 template <typename T>
-T* ModuleManager::spawnClass(const std::string& name)
+inline T* ModuleManager::spawnClass(const std::string& name)
 {
+	auto iterWhereDot = name.begin();
+	while (iterWhereDot != name.end() && *iterWhereDot != '.') ++iterWhereDot;
 
-	std::vector<std::string> brokenName;
-	boost::algorithm::split(brokenName, name, boost::algorithm::is_any_of("."));
+	std::string moduleName;
+	std::copy(name.begin(), iterWhereDot, std::back_inserter(moduleName));
 
-	// make sure we have at least two elements
-	if (brokenName.size() < 2) return nullptr;
+	std::string className;
+	std::copy(iterWhereDot + 1, name.end(), std::back_inserter(className));
 
-	auto iter = contentSpawnMethods.find(brokenName[0]);
+	auto moduleIter = loadedModules.find(moduleName);
 
-	// if it existes call it
-	if (iter != contentSpawnMethods.end())
+	if (moduleIter != loadedModules.end())
 	{
-		// call the function
-		return static_cast<T*>(iter->second(brokenName[1]));
+
+		return static_cast<T*>(moduleIter->second.spawnClass(className));
 	}
-	else
-	{
-		// and if not then return nullptr
-		return nullptr;
-	}
+	// if we didn't return already, it wasn't found.
+	return nullptr;
+}
+
+
+Renderer& ModuleManager::getRenderer()
+{
+	check(renderer); return *renderer;
+}
+
+AudioSystem& ModuleManager::getAudioSystem()
+{
+	check(audioSystem); return *audioSystem;
+}
+
+PhysicsSystem& ModuleManager::getPhysicsSystem()
+{
+	check(physicsSystem); return *physicsSystem;
+}
+
+void ModuleManager::setRenderer(Renderer* newRenderer)
+{
+	check(newRenderer);
+
+	renderer = newRenderer;
+
+}
+
+void ModuleManager::setAudioSystem(AudioSystem* newAudioSystem)
+{
+	check(newAudioSystem);
+
+	audioSystem = newAudioSystem;
+}
+
+void ModuleManager::setPhysicsSystem(PhysicsSystem* newPhysicsSystem)
+{
+	check(newPhysicsSystem);
+
+	physicsSystem = newPhysicsSystem;
 }

@@ -47,16 +47,40 @@
 using namespace std;
 
 
-DefaultWorld::DefaultWorld(std::string folder)
-	:folderLocation(std::string("Worlds\\") + folder + '\\'),
-	propManager(folderLocation + "world.json"),
-	nextIndex(0),
-	backgroundImages(Runtime::get().moduleManager.getRenderer().newTextureLibrary(4, 256)), // TODO: less hardcoded values
-	drawMaterial(Runtime::get().moduleManager.getRenderer().newMaterial("boilerplate"))
+DefaultWorld::DefaultWorld()
+{
+}
+
+
+DefaultWorld::~DefaultWorld()
 {
 
+	if (backgroundImages)
+		delete backgroundImages;
+	
+	if (drawMaterial)
+		delete drawMaterial;
+
+	for (auto& elem : actors)
+	{
+		if (elem.second)
+			delete elem.second;
+	}
+}
+
+
+void DefaultWorld::init(const std::string& name)
+{
+
+	folderLocation = std::string("Worlds\\") + name + '\\';
+	propManager.init(folderLocation + "world.json");
+	nextIndex = 0;
+	backgroundImages = Runtime::get().moduleManager.getRenderer().newTextureLibrary(4, 256); // TODO: less hardcoded values
+	drawMaterial = Runtime::get().moduleManager.getRenderer().newMaterial("boilerplate");
+
+
 	// Make sure a world folder was supplied.
-	if (folder == "") {
+	if (name == "") {
 		FATAL_ERR("No world specified");
 	}
 	ENG_LOGLN(Trace) << "Setting up console commands...";
@@ -65,7 +89,7 @@ DefaultWorld::DefaultWorld(std::string folder)
 	// Should this actually go here..?? 
 
 	ENG_LOGLN(Trace) << "Loading images...";
-	
+
 
 	LOAD_PROPERTY_WITH_WARNING(propManager, "DefaultPlayerController", playerControllerClassName, "Core.PlayerController");
 	LOAD_PROPERTY_WITH_WARNING(propManager, "DefaultPawn", pawnClassName, "Core.Pawn");
@@ -81,7 +105,7 @@ DefaultWorld::DefaultWorld(std::string folder)
 
 	boost::archive::xml_iarchive arch{ stream }; // this might want to be not xml, maybe text or binary
 
-	
+
 
 	// load the map from the file
 	arch >> BOOST_SERIALIZATION_NVP(imageToTextureAssoc);
@@ -101,24 +125,6 @@ DefaultWorld::DefaultWorld(std::string folder)
 
 	// virtual functuion -- call THIS version of it -- we need this because it is inside a constructor
 	DefaultWorld::loadWorld("main");
-
-}
-
-
-DefaultWorld::~DefaultWorld()
-{
-
-	if (backgroundImages)
-		delete backgroundImages;
-	
-	if (drawMaterial)
-		delete drawMaterial;
-
-	for (auto& elem : actors)
-	{
-		if (elem.second)
-			delete elem.second;
-	}
 }
 
 

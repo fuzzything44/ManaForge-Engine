@@ -2,7 +2,6 @@
 
 #include <Engine.h>
 
-#define DefaultWorld_ModuleName "DefaultWorld"
 
 #ifdef _MSC_VER
 #	ifdef DefaultWorld_Source

@@ -9,6 +9,14 @@
 
 PropertyManager::PropertyManager(const std::string& path)
 {
+	if (path != "")
+	{
+		init(path);
+	}
+}
+
+void PropertyManager::init(const std::string& path)
+{
 
 	std::string a = loadFileToStr(path.c_str());
 
@@ -19,8 +27,10 @@ PropertyManager::PropertyManager(const std::string& path)
 	try{
 
 		boost::property_tree::json_parser::read_json(stream, props);
-	} catch (std::exception& e)
+	}
+	catch (std::exception& e)
 	{
 		ENG_LOGLN(Error) << e.what();
 	}
 }
+

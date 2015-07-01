@@ -19,6 +19,9 @@ public:
 	/// <param name="moduleManager"> The module manager to register the module with</param>
 	ENGINE_API void registerModule(ModuleManager& mm);
 
+	ENGINE_API void addClass(const std::string& className, const std::function<void*()>& fun);
+	ENGINE_API void* spawnClass(const std::string& className);
+
 	/// <summary> Modules the given file.</summary>
 	///
 	/// <param name="filename"> Filename of the module to load.</param>
@@ -38,6 +41,7 @@ private:
 	getModuleEngineVersionFun* getModuleEngineVersionAddress;
 
 	std::string name;
+	std::map<std::string, std::function<void*()> > classes;
 
 	SharedLibrary::SharedLibHandle libraryHandle;
 

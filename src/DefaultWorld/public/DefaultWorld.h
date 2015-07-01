@@ -47,7 +47,10 @@ class DefaultWorld : public World
 	std::string pawnClassName;
 
 public: 
-	explicit DefaultWorld(std::string folder = ""); 
+	explicit DefaultWorld();
+	virtual ~DefaultWorld();
+
+	virtual void init(const std::string& name) override;
 
 	// World Interface
 	virtual void loadWorld(std::string name) override;
@@ -59,6 +62,4 @@ public:
 	virtual PlayerController* makePlayerController() override;
 	virtual Pawn* makePawn() override;
 	// End World Interface
-
-	virtual ~DefaultWorld();
 };

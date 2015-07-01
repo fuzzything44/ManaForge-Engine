@@ -25,4 +25,4 @@ public:
 	bool isOpen;
 };
 
-REGISTER_FOR_SAVING_HEADER(Gate, TestContent_ModuleName)
+REGISTER_FOR_SAVING_HEADER(Gate)

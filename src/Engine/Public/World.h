@@ -21,6 +21,8 @@ public:
 
 	virtual ~World() { };
 
+	virtual void init(const std::string& name) = 0;
+
 	/// <summary> loads a subworld with given name. </summary>
 	/// <param name="subWorldName"> Name of subworld ex. "dungeon1".
 	virtual void loadWorld(std::string subWorldName) = 0;

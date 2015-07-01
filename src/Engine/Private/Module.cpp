@@ -19,9 +19,10 @@ Module::Module(const std::string& filename) :
 		// load the library
 		libraryHandle = SharedLibrary::Load(name);
 
-		registerModuleFunctionAddress = SharedLibrary::getFunctionPtr<registerModuleFun>(libraryHandle, "registerModule");
+		registerModuleFunctionAddress = SharedLibrary::getFunctionPtr<registerModuleFun>
+			(libraryHandle, "registerModule");
 
-		getModuleEngineVersionAddress = SharedLibrary::getFunctionPtr < getModuleEngineVersionFun >
+		getModuleEngineVersionAddress = SharedLibrary::getFunctionPtr<getModuleEngineVersionFun>
 			(libraryHandle, "getModuleEngineVersion");
 
 
@@ -65,6 +66,23 @@ void Module::registerModule(ModuleManager& mm)
 	ENG_LOGLN(Trace) << "Module loaded: " << name;
 
 }
+
+void Module::addClass(const std::string& name, const std::function<void*()>& fun)
+{
+	classes.insert({ name, fun });
+}
+
+void* Module::spawnClass(const std::string& className)
+{
+	auto iter = classes.find(className);
+
+	if (iter != classes.end())
+	{
+		return iter->second();
+	}
+	return nullptr;
+}
+
 
 Module::~Module()
 {

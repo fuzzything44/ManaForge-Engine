@@ -6,13 +6,7 @@
 
 extern "C" DefualtWorld_API void registerModule(ModuleManager& mm)
 {
-	mm.setCreateWorldFun(
-		[](const std::string& name)
-	{
-		return new DefaultWorld(name);
-	});
-
-
+	mm.registerClass<DefaultWorld>(MODULE_NAME);
 }
 
 extern "C" DefualtWorld_API float getModuleEngineVersion()

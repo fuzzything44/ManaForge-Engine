@@ -11,7 +11,7 @@
   <ItemDefinitionGroup>
     <ClCompile>
       <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)src\Engine\Public;$(SolutionDir)src\StackWalker;$(ProjectDir)\public;$(ProjectDir)\private;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>$(ProjectName)_Source;BOOST_SERIALIZATION_DYN_LINK;_USE_MATH_DEFINES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>$(ProjectName)_Source;BOOST_SERIALIZATION_DYN_LINK;_USE_MATH_DEFINES;MODULE_NAME="$(ProjectName)";%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)bin\$(Configuration);$(SolutionDir)library\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>

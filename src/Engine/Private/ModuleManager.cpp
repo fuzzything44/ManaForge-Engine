@@ -19,13 +19,6 @@ ModuleManager::ModuleManager()
 
 ModuleManager::~ModuleManager()
 {
-	// explicitly call the destructors -- we get an error otherwise
-	newWorldFunction.~function();
-	
-	for (auto& elem : contentSpawnMethods)
-	{
-		elem.second.~function();
-	}
 
 	for (auto& elem : initCallbacks)
 	{
@@ -42,36 +35,6 @@ ModuleManager::~ModuleManager()
 	delete physicsSystem;
 }
 
-Renderer& ModuleManager::getRenderer()
-{ check(renderer); return *renderer; }
-
-AudioSystem& ModuleManager::getAudioSystem()
-{ check(audioSystem); return *audioSystem; }
-
-PhysicsSystem& ModuleManager::getPhysicsSystem()
-{ check(physicsSystem); return *physicsSystem; }
-
-void ModuleManager::setRenderer(Renderer* newRenderer)
-{
-	check(newRenderer);
-
-	renderer = newRenderer;
-	
-}
-
-void ModuleManager::setAudioSystem(AudioSystem* newAudioSystem)
-{
-	check(newAudioSystem);
-
-	audioSystem = newAudioSystem;
-}
-
-void ModuleManager::setPhysicsSystem(PhysicsSystem* newPhysicsSystem)
-{
-	check(newPhysicsSystem);
-
-	physicsSystem = newPhysicsSystem;
-}
 
 void ModuleManager::loadModule(const std::string& filename)
 {
@@ -81,30 +44,6 @@ void ModuleManager::loadModule(const std::string& filename)
 		loadedModules.insert(std::map<std::string, Module>::value_type(filename, Module(filename))).first->second.registerModule(*this);
 	}
 }
-
-void ModuleManager::setCreateWorldFun(const newWorldFun& createWorldFun)
-{
-	
-	// copy to the class's version
-	newWorldFunction =  createWorldFun;
-}
-
-World* ModuleManager::newWorld(std::string path)
-{
-	if (newWorldFunction._Empty())
-	{
-		FATAL_ERR("Failed to create world -- the function was empty");
-	}
-
-	return newWorldFunction(path);
-}
-
-void ModuleManager::AddContentModule(contentModuleSpawnFun fun, const std::string& moduleName)
-{
-	// add the function to the spawn method map
-	contentSpawnMethods.insert(std::pair<std::string, contentModuleSpawnFun>(moduleName, fun));
-}
-
 
 
 void ModuleManager::addInitCallback(const initFun& function)

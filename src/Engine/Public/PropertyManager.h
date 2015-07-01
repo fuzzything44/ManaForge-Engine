@@ -11,7 +11,9 @@ class PropertyManager
 
 public:
 
-	ENGINE_API explicit PropertyManager(const std::string& location);
+	ENGINE_API explicit PropertyManager(const std::string& location = "");
+	ENGINE_API void init(const std::string& location);
+	
 
 	template <typename T>
 	inline boost::optional<T> queryValue(const std::string& key);

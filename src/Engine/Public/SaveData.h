@@ -33,11 +33,11 @@
 #define REGISTER_FOR_SAVING_SOURCE() "registerForSerialization.h"
 
 // put this in the header after the definition of the class -- this isn't an include
-#define REGISTER_FOR_SAVING_HEADER(actorName, ModuleName)\
+#define REGISTER_FOR_SAVING_HEADER(actorName)\
 	BOOST_CLASS_EXPORT_KEY2(\
 		actorName, \
 		BOOST_PP_CAT(\
-			BOOST_PP_CAT(ModuleName, "."),\
+			BOOST_PP_CAT(MODULE_NAME, "."),\
 			BOOST_PP_STRINGIZE(actorName)))
 
 #define INIT_SAVED_CLASS() \

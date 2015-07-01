@@ -48,7 +48,8 @@ Runtime::Runtime(const std::string& worldPath)
 	}
 
 	// load the world
-	world = moduleManager.newWorld(worldPath);
+	world = moduleManager.spawnClass<World>("DefaultWorld.DefaultWorld");
+	world->init("default");// load the test world
 
 	Window& window = moduleManager.getRenderer().getWindow();
 	inputManager.setWindow(window);
