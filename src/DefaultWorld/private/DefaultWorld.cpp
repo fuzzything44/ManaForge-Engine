@@ -339,13 +339,24 @@ void DefaultWorld::loadWorld(std::string name)
 
 ActorLocation* DefaultWorld::addActor(Actor* toAdd)
 {
-	actors.insert({ nextIndex, toAdd });
-	DefaultWorldLocation* loc = new DefaultWorldLocation(nextIndex);
-	toAdd->GUID = loc;
-	nextIndex++;
+	auto result = actors.insert({ nextIndex, toAdd });
+	if (result.second) // if it succeeded
+	{
+		DefaultWorldLocation* loc = new DefaultWorldLocation(nextIndex);
+		loc->iter = result.first;
+		toAdd->GUID = loc;
+		nextIndex++;
 
-	return loc;
+		return loc;
+	}
+
+	FATAL_ERR("Failed to insert into actors map");
 	
+}
+
+void DefaultWorld::removeActor(Actor* toRemove)
+{
+	actors.erase(static_cast<DefaultWorldLocation*>(toRemove->GUID)->iter);
 }
 
 void DefaultWorld::save()

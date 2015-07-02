@@ -31,6 +31,7 @@ public:
 	virtual Pawn* makePawn() = 0;
 
 	virtual ActorLocation* addActor(Actor* toAdd) = 0;
+	virtual void removeActor(Actor* toRemove) = 0;
 
 	virtual void save() = 0;
 

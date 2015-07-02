@@ -54,7 +54,8 @@ public:
 
 	// World Interface
 	virtual void loadWorld(std::string name) override;
-	ActorLocation* addActor(Actor* toAdd) override; 
+	virtual ActorLocation* addActor(Actor* toAdd) override; 
+	virtual void removeActor(Actor* toRemove) override;
 	virtual void save() override;
 
 	virtual void consoleCommand(std::string& command) override;

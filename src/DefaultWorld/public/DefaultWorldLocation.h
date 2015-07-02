@@ -2,6 +2,8 @@
 
 #include <World.h>
 
+#include <map>
+
 struct DefaultWorldLocation : public ActorLocation
 {
 	friend class DefaultWorld;
@@ -11,4 +13,5 @@ public:
 	virtual void remove() override;
 private:
 	uint64 location;
+	std::map<uint64, Actor*>::iterator iter;
 };
