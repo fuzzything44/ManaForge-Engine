@@ -233,10 +233,3 @@ void Runtime::run()
 	delete tex;
 }
 
-Runtime& Runtime::get()
-{ if (!currentRuntime) { FATAL_ERR("NO RUNTIME OBJECT!"); } return *currentRuntime; }
-
-PlayerController* Runtime::addPlayerController()
-{
-	return world->makePlayerController();
-}

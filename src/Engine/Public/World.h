@@ -23,17 +23,13 @@ public:
 
 	virtual void init(const std::string& name) = 0;
 
-	/// <summary> loads a subworld with given name. </summary>
-	/// <param name="subWorldName"> Name of subworld ex. "dungeon1".
-	virtual void loadWorld(std::string subWorldName) = 0;
+	virtual void saveWorld() = 0;
 
 	virtual PlayerController* makePlayerController() = 0;
 	virtual Pawn* makePawn() = 0;
 
 	virtual ActorLocation* addActor(Actor* toAdd) = 0;
 	virtual void removeActor(Actor* toRemove) = 0;
-
-	virtual void save() = 0;
 
 	virtual void consoleCommand(std::string& command) = 0;
 

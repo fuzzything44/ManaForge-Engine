@@ -24,9 +24,12 @@ public:
 
 	ENGINE_API void run();
 
-	ENGINE_API static Runtime& get();
+	inline static Runtime& get();
 
-	ENGINE_API PlayerController* addPlayerController();
+	// returns the old world
+	inline World* setWorld(World* newWorld);
+
+	inline PlayerController* addPlayerController();
 
 	ModuleManager moduleManager;
 	PropertyManager propManager;
@@ -39,3 +42,20 @@ private:
 
 	static Runtime* currentRuntime;
 };
+
+// collapeed for quicker debugging -- not very important
+inline Runtime& Runtime::get()
+{if (!currentRuntime) { FATAL_ERR("NO RUNTIME OBJECT!"); } return *currentRuntime; }
+
+
+inline PlayerController* Runtime::addPlayerController()
+{
+	return world->makePlayerController();
+}
+
+inline World* Runtime::setWorld(World* newWorld)
+{
+	std::swap(world, newWorld);
+
+	return newWorld;
+}
