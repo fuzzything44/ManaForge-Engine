@@ -18,7 +18,7 @@
 class DefaultWorld : public World
 {
 public:
-	explicit DefaultWorld();
+	explicit DefaultWorld(const std::string& name = "");
 	virtual ~DefaultWorld();
 
 	// World Interface

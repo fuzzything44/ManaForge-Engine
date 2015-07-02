@@ -47,9 +47,13 @@
 using namespace std;
 
 
-DefaultWorld::DefaultWorld()
+DefaultWorld::DefaultWorld(const std::string& name)
 	:isDestructing(false)
 {
+	if (name != "")
+	{
+		init(name);
+	}
 }
 
 
