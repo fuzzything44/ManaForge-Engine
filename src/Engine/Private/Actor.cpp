@@ -20,6 +20,7 @@ Actor::Actor()
 Actor::~Actor()
 {
 	delete transController;
+	delete GUID;
 
 	for (auto elem : components)
 	{

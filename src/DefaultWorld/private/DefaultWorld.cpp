@@ -70,7 +70,7 @@ DefaultWorld::~DefaultWorld()
 
 	for (auto& elem : actors)
 	{
-		if (elem.second)
+		if (elem.second) // delete our actors.
 			delete elem.second;
 	}
 }

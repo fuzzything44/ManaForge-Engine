@@ -8,11 +8,10 @@ class ModuleManager;
 class Pawn;
 class PlayerController;
 
-// Struct used to find actor in the world. remove removes it from the world, getActor returns the actor or nullptr if not set.
+// Struct used to find actor in the world.
 struct ActorLocation
 {
-	virtual Actor* getActor() { return nullptr; };
-	virtual void remove() = 0;
+	virtual ~ActorLocation(){ };
 };
 
 class World
