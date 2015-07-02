@@ -2,7 +2,6 @@
 
 #include "PropertyManager.h"
 
-#include "Logging.h"
 #include "Helper.h"
 
 #include <boost/property_tree/json_parser.hpp>

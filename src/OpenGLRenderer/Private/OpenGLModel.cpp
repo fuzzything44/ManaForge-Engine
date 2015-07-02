@@ -122,7 +122,7 @@ void OpenGLModel::draw()
 	}
 	else
 	{
-		FATAL_ERR("could not find MVPmat uniform in shader");
+		ENG_LOGLN(Fatal) << "could not find MVPmat uniform in shader";
 	}
 
 

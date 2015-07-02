@@ -99,9 +99,8 @@ ENGINE_API std::ostream& operator<<(std::ostream& os, const mat4& mat);
 	}																								\
 	else																							\
 	{																								\
-		ENG_LOGLN(Warning) << "Value from key " << BOOST_PP_STRINGIZE(key)							\
-			<< " doesn't exist. Using default"														\
-			<< "value of: " << defaultValue;														\
+		ENG_LOGLN(Warning) << "Value from key " << key												\
+			<< " doesn't exist. Using default value of: " << defaultValue;							\
 	}																								\
 	/**/
 
@@ -113,6 +112,6 @@ ENGINE_API std::ostream& operator<<(std::ostream& os, const mat4& mat);
 	}																								\
 	else																							\
 	{																								\
-		FATAL_ERR(std::string() + "Value from key " + BOOST_PP_STRINGIZE(key) + " doesn't exist.");	\
+		ENG_LOGLN(Fatal) << "Value from key " << key << " doesn't exist.";							\
 	}																								\
 	/**/

@@ -1,8 +1,6 @@
 #pragma once
 
 #include "Engine.h"
-#include "Logging.h"
-#include "ENGException.h"
 #include "Helper.h"
 
 #include <vector>

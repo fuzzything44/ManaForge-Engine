@@ -4,9 +4,7 @@
 
 #include "Runtime.h"
 #include "SaveData.h"
-#include "Logging.h"
 #include "Window.h"
-#include "ENGException.h"
 
 #include <boost/archive/xml_iarchive.hpp>
 
@@ -19,7 +17,7 @@ InputManager::InputManager(Window* window): window(window)
 
 	if (!i_stream.is_open())
 	{
-		FATAL_ERR("bindings.txt not found");
+		ENG_LOGLN(Fatal) << "bindings.txt not found";
 	}
 
 	try{
@@ -32,11 +30,12 @@ InputManager::InputManager(Window* window): window(window)
 	}
 	catch (boost::archive::archive_exception& e)
 	{
-		FATAL_ERR(std::string("ARCHIVE EXCEPTION OCCURED IN LOADING INPUT MANAGER. Code: ") + boost::lexical_cast<std::string>(e.code) + " Error message: " + e.what());
+		ENG_LOGLN(Fatal) << "ARCHIVE EXCEPTION OCCURED IN LOADING INPUT MANAGER. Code: " << e.code << 
+			" Error message: " << e.what();
 	}
 	catch (std::exception& e)
 	{
-		FATAL_ERR(e.what());
+		ENG_LOGLN(Fatal) << e.what();
 	}
 }
 

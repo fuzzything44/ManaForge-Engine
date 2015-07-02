@@ -28,6 +28,9 @@
 
 #include <StackWalker.h>
 
+#include "Logging.h"
+#include "ENGException.h"
+
 #include <boost/preprocessor/cat.hpp>
 
 

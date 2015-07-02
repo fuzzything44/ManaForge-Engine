@@ -1,9 +1,7 @@
 #include "EnginePCH.h"
+#include "Engine.h"
 
 #include "ChangeDirectory.h"
-
-#include "Logging.h"
-#include "ENGException.h"
 
 #include <boost/filesystem.hpp>
 
@@ -18,7 +16,7 @@ void changeDir()
 	HMODULE hModule = GetModuleHandle(nullptr);
 	if (hModule == nullptr)
 	{
-		FATAL_ERR("getModuleHandle failed");
+		ENG_LOGLN(Fatal) << "getModuleHandle failed";
 	}
 	// When passing NULL to GetModuleHandle, it returns handle of exe itself
 	GetModuleFileName(hModule, ownPth, (sizeof(ownPth)));
@@ -37,14 +35,8 @@ void changeDir()
 	}
 	path += "Resource\\";
 
-	boost::system::error_code e;
+	boost::filesystem::current_path(path.c_str());
 
-	boost::filesystem::current_path(path.c_str(), e);
-
-	if (e)
-	{
-		FATAL_ERR(e.message());
-	}
 
 }
 

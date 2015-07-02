@@ -2,7 +2,6 @@
 
 #include "Module.h"
 
-#include "Logging.h"
 #include "Helper.h"
 
 #include <iostream>
@@ -29,7 +28,7 @@ Module::Module(const std::string& filename) :
 	}
 	catch (std::exception& e)
 	{
-		FATAL_ERR(e.what());
+		ENG_LOGLN(Fatal) << e.what();
 
 	}
 

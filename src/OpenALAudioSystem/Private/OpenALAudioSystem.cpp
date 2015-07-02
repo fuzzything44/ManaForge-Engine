@@ -17,10 +17,8 @@ OpenALAudioSystem::OpenALAudioSystem()
 	if (alutInit(nullptr, nullptr) == AL_FALSE)	// catch errors
 	{
 		ALenum err = alutGetError();
-		FATAL_ERR(std::string("Failed to initalize alut with error: ") 
-			+ alutGetErrorString(err) 
-			+  " And error number: " 
-			+ boost::lexical_cast<std::string>(err));
+		ENG_LOGLN(Fatal) << "Failed to initalize alut with error: "
+			<< alutGetErrorString(err) <<  " And error number: " << err;
 	}
 }
 

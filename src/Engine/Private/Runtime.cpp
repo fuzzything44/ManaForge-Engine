@@ -11,7 +11,6 @@
 #include "Renderer.h"
 #include "PhysicsSystem.h"
 #include "Texture.h"
-#include "Logging.h"
 
 #include <functional>
 #include <list>

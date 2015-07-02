@@ -1,9 +1,7 @@
 // local includes
 #include "Engine.h"
 
-#include "Actor.h"
 #include "Runtime.h"
-#include "ENGException.h"
 
 int32 main()
 {	

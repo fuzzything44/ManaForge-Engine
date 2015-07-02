@@ -1,5 +1,5 @@
 #pragma once
-#include "Engine.h"
+#include "ENGException.h"
 
 #include <fstream>
 #include <iostream>
@@ -82,33 +82,15 @@ BOOST_LOG_INLINE_GLOBAL_LOGGER_INIT(__logging_log, logger_t)
 	return logger_t();
 }
 
-inline std::string toUnqualifiedName(const char* begin)
-{
-	std::string begin_str = begin;
 
-	size_t pos = begin_str.find("rpg-simulator\\src", 17);
-	if (pos != std::string::npos)
-	{
-		pos += 17;
-		
-		std::string ret;
-		std::copy(begin_str.begin() + pos, begin_str.end(), std::back_inserter(ret));
 
-		return ret;
-	}
-
-	pos = begin_str.find("rpg-simulator/src", 17);
-	if (pos != std::string::npos)
-	{
-		pos += 17;
-
-		std::string ret;
-		std::copy(begin_str.begin() + pos, begin_str.end(), std::back_inserter(ret));
-
-		return ret;
-	}
-
-	return begin_str;
-}
-
-#define ENG_LOGLN(Severity) BOOST_LOG_SEV(::__logging_log::get(), ::severity_t::##Severity) << "{" << toUnqualifiedName(__FILE__) << ":" << __LINE__ << "} "
+// sooper hacky but it works
+#define ENG_LOGLN(Severity) \
+	for(bool needsExecution = true; needsExecution; \
+		[&needsExecution]() \
+		{ \
+			needsExecution = false;\
+			if(::severity_t::##Severity == ::severity_t::Fatal)\
+				throw ENGException(::std::string()); \
+		}())\
+		BOOST_LOG_SEV(::__logging_log::get(), ::severity_t::##Severity)

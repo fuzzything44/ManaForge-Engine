@@ -1,8 +1,6 @@
 #pragma once
 #include "Engine.h"
 
-#include "ENGException.h"
-
 #include <stdexcept>
 
 #if defined _WIN32 || defined WIN32
@@ -22,7 +20,7 @@ public:
 		if (handle == nullptr)
 		{
 			
-			FATAL_ERR("Failed to load library. Path: " + path);
+			ENG_LOGLN(Fatal) << "Failed to load library. Path: " << path;
 		}
 
 		return handle;
@@ -46,7 +44,7 @@ public:
 
 		if (addr == nullptr)
 		{
-			FATAL_ERR("Failed to get function address. Name: " + functionName);
+			ENG_LOGLN(Fatal) << "Failed to get function address. Name: " << functionName;
 		}
 
 		return reinterpret_cast<T*>(addr);
