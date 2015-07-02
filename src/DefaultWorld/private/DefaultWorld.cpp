@@ -138,7 +138,7 @@ void DefaultWorld::init(const std::string& name)
 		std::list<Actor*> staticActors;
 
 		// File location of static actors -- if we are binary, then use a binary stream
-		std::ifstream i_stream{ folderLocation + name + '\\' + name + ".WORLD",
+		std::ifstream i_stream{ folderLocation + "worldfile.WORLD",
 #	if IS_SAVE_BINARY
 			std::ifstream::binary
 #	endif
@@ -183,7 +183,7 @@ void DefaultWorld::init(const std::string& name)
 	{
 		// File location of dynamic actors.
 		// File location of static actors -- if we are binary, then use a binary stream
-		std::ifstream i_stream{ folderLocation + name + '\\' + name + ".SAVE",
+		std::ifstream i_stream{ folderLocation + "savefile.SAVE",
 #	if IS_SAVE_BINARY
 			std::ifstream::binary
 #	endif
@@ -228,7 +228,7 @@ void DefaultWorld::init(const std::string& name)
 		LOAD_PROPERTY_WITH_ERROR(propManager, "chunk.size", backgroundChunkSize);
 
 		std::vector<uint8> data;
-		uvec2 size = ImageLoader::load(folderLocation + name + "\\" + name + ".png", data);
+		uvec2 size = ImageLoader::load(folderLocation + "background.png", data);
 		numBackgroundChunks = size / backgroundChunkSize;
 
 

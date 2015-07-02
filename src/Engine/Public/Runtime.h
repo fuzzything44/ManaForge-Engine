@@ -29,8 +29,6 @@ public:
 	// returns the old world
 	inline World* setWorld(World* newWorld);
 
-	inline PlayerController* addPlayerController();
-
 	ModuleManager moduleManager;
 	PropertyManager propManager;
 	InputManager inputManager;
@@ -38,20 +36,16 @@ public:
 	World* world;
 private:
 
+	PlayerController* controller;
+
 	typedef std::chrono::high_resolution_clock clock;
 
-	static Runtime* currentRuntime;
+	ENGINE_API static Runtime* currentRuntime;
 };
 
 // collapeed for quicker debugging -- not very important
 inline Runtime& Runtime::get()
 {if (!currentRuntime) { FATAL_ERR("NO RUNTIME OBJECT!"); } return *currentRuntime; }
-
-
-inline PlayerController* Runtime::addPlayerController()
-{
-	return world->makePlayerController();
-}
 
 inline World* Runtime::setWorld(World* newWorld)
 {
