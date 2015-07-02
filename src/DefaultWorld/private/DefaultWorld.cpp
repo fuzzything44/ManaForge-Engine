@@ -48,12 +48,15 @@ using namespace std;
 
 
 DefaultWorld::DefaultWorld()
+	:isDestructing(false)
 {
 }
 
 
 DefaultWorld::~DefaultWorld()
 {
+
+	isDestructing = true;
 
 	if (backgroundImages)
 		delete backgroundImages;
@@ -356,7 +359,8 @@ ActorLocation* DefaultWorld::addActor(Actor* toAdd)
 
 void DefaultWorld::removeActor(Actor* toRemove)
 {
-	actors.erase(static_cast<DefaultWorldLocation*>(toRemove->GUID)->iter);
+	if (!isDestructing)
+		actors.erase(static_cast<DefaultWorldLocation*>(toRemove->GUID)->iter);
 }
 
 void DefaultWorld::save()

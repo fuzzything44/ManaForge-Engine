@@ -46,6 +46,8 @@ class DefaultWorld : public World
 	std::string playerControllerClassName;
 	std::string pawnClassName;
 
+	bool isDestructing;
+
 public: 
 	explicit DefaultWorld();
 	virtual ~DefaultWorld();
