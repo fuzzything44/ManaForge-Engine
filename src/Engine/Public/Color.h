@@ -52,17 +52,45 @@ struct Color
 
 	bool operator <(const Color& other) const
 	{
-		uint16 suma = red + green + blue + alpha;
-		uint16 sumb = other.red + other.green + other.blue + other.alpha;
+		uint32 hash =
+			((uint32)red << 24) |
+			((uint32)green << 16) |
+			((uint32)blue << 8) |
+			((uint32)alpha);
 
-		return suma < sumb;
+		uint32 hashOther =
+			((uint32)other.red << 24) |
+			((uint32)other.green << 16) |
+			((uint32)other.blue << 8) |
+			((uint32)other.alpha);
+
+		return hash < hashOther;
+
 	}
 
 	bool operator >(const Color& other) const
 	{
-		uint16 suma = red + green + blue + alpha;
-		uint16 sumb = other.red + other.green + other.blue + other.alpha;
+		uint32 hash =
+			((uint32)red << 24) |
+			((uint32)green << 16) |
+			((uint32)blue << 8) |
+			((uint32)alpha);
 
-		return suma > sumb;
+		uint32 hashOther =
+			((uint32)other.red << 24) |
+			((uint32)other.green << 16) |
+			((uint32)other.blue << 8) |
+			((uint32)other.alpha);
+
+		return hash > hashOther;
+	}
+
+	bool operator==(const Color& other) const
+	{
+		return 
+			red == other.red && 
+			green == other.green && 
+			blue == other.blue && 
+			alpha == other.alpha;
 	}
 };

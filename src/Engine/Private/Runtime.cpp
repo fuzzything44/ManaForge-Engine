@@ -171,11 +171,11 @@ void Runtime::run()
 
 		if (window.getIsKeyPressed(Keyboard::KEY_Q))
 		{
-			c->setZoom(c->getZoom() * 1.001f);
+			c->setZoom(c->getZoom() * 1.01f);
 		}
 		if (window.getIsKeyPressed(Keyboard::KEY_E))
 		{
-			c->setZoom(c->getZoom() * (1.f / 1.001f));
+			c->setZoom(c->getZoom() * (1.f / 1.01f));
 		}
 		if (window.getIsKeyPressed(Keyboard::KEY_A))
 		{

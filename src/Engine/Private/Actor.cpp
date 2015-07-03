@@ -14,7 +14,6 @@ Actor::Actor()
 	:transController(Runtime::get().moduleManager.getPhysicsSystem().newActorTransformController(this)),
 	GUID(Runtime::get().world->addActor(this))
 {
-	
 }
 
 Actor::~Actor()

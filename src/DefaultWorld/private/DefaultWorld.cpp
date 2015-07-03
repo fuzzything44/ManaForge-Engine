@@ -99,7 +99,7 @@ void DefaultWorld::init(const std::string& name)
 		boost::archive::xml_iarchive arch{ stream }; // this might want to be not xml, maybe text or binary
 
 		// load the map from the file
-		arch >> BOOST_SERIALIZATION_NVP(imageToTextureAssoc);
+		arch >> boost::serialization::make_nvp("assoc", imageToTextureAssoc);
 
 		backgroundImages->setFilterMode(Texture::FilterMode::MIPMAP_LINEAR);
 
