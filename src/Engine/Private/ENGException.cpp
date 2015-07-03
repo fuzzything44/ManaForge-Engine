@@ -103,7 +103,7 @@ void Stack::OnLoadModule(LPCSTR img, LPCSTR mod, DWORD64 baseAddr, DWORD size, D
 
 	if (!boost::starts_with(name, "C:\\Windows\\"))
 	{
-		logger<Fatal>() << "Module Loaded: " << mod;
+		logger<Error>() << "Module Loaded: " << mod;
 	}
 }
 

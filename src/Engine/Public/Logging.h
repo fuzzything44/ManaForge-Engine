@@ -105,7 +105,7 @@ namespace logdetail
 template<severity_t sev>
 struct logger : logdetail::log_base
 {
-	logger()
+	inline logger()
 	{
 		using namespace boost::posix_time;
 
@@ -114,7 +114,7 @@ struct logger : logdetail::log_base
 		str << "\n[" << time << "] (" << sev << ") : ";
 	}
 
-	~logger()
+	inline ~logger()
 	{
 		flush();
 	}
@@ -128,25 +128,25 @@ struct logger : logdetail::log_base
 };
 
 template<>
-struct logger<severity_t::Fatal> : logdetail::log_base
+struct logger<Fatal> : logdetail::log_base
 {
-	logger()
+	inline logger()
 	{
 		using namespace boost::posix_time;
 
 		ptime time = second_clock::local_time();
 
-		str << "\n[" << time << "] (" << severity_t::Fatal << ") : ";
+		str << "\n[" << time << "] (" << Fatal << ") : ";
 	}
 
-	~logger()
+	inline ~logger()
 	{
 		flush();
 		throw ENGException(); // looks bad, but this (should) always be an rvalue
 	}
 
 	template <typename T>
-	std::ostream& operator<<(const T& member)
+	inline std::ostream& operator<<(const T& member)
 	{
 		str << member;
 		return str;
