@@ -32,7 +32,7 @@ inline boost::optional<T> PropertyManager::queryValue(const std::string& key)
 		return (props.get<T>(key));
 	} catch (std::exception& e)
 	{
-		ENG_LOGLN(Error) << e.what();
+		logger<Error>() << e.what();
 
 		return boost::optional<T>(); // return "null"
 	}

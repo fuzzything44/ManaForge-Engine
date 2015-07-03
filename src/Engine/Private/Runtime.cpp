@@ -25,7 +25,7 @@
 Runtime* Runtime::currentRuntime = nullptr;
 
 Runtime::Runtime(const std::string& worldPath)
-	:propManager((changeDir(), "props.json")),
+	:propManager((changeDir(), logdetail::sink_t::init(), "props.json")),
 	moduleManager()
 {
 	
@@ -57,6 +57,7 @@ Runtime::Runtime(const std::string& worldPath)
 Runtime::~Runtime()
 {
 	ImageLoader::cleanUp();
+	logdetail::log_base::cleanup();
 
 	delete world;
 
@@ -72,12 +73,12 @@ void Runtime::run()
 		{
 			if (callback._Empty())
 			{
-				ENG_LOGLN(Warning) << "init callback empty.";
+				logger<Warning>() << "init callback empty.";
 			}
 
 			callback();
 		}
-		ENG_LOGLN(Trace) << "init completed.";
+		logger<Trace>() << "init completed.";
 
 		
 	}
@@ -215,7 +216,7 @@ void Runtime::run()
 		{
 			if (callback._Empty())
 			{
-				ENG_LOGLN(Warning) << "Update callback empty";
+				logger<Warning>() << "Update callback empty";
 			}
 
 			if(!callback(delta)) // it would return true if we should coninue

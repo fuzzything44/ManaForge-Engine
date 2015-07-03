@@ -2,6 +2,7 @@
 #include <exception>
 #include <string>
 
+#include "Engine.h"
 
 class ENGException : std::exception
 {

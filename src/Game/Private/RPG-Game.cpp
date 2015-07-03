@@ -16,12 +16,12 @@ int32 main()
 	catch (ENGException& e)
 	{
 		std::string reason = e.what();
-		ENG_LOGLN(Error) << reason;
+		logger<Error>() << reason;
 		return -1;
 	}
 	catch (std::exception& e)
 	{
-		ENG_LOGLN(Error) << e.what();
+		logger<Error>() << e.what();
 
 		return -1;
 	}

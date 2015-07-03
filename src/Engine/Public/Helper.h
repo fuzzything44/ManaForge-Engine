@@ -99,7 +99,7 @@ ENGINE_API std::ostream& operator<<(std::ostream& os, const mat4& mat);
 	}																								\
 	else																							\
 	{																								\
-		ENG_LOGLN(Warning) << "Value from key " << key												\
+		logger<Warning>() << "Value from key " << key												\
 			<< " doesn't exist. Using default value of: " << defaultValue;							\
 	}																								\
 	/**/
@@ -112,6 +112,6 @@ ENGINE_API std::ostream& operator<<(std::ostream& os, const mat4& mat);
 	}																								\
 	else																							\
 	{																								\
-		ENG_LOGLN(Fatal) << "Value from key " << key << " doesn't exist.";							\
+		logger<Fatal>() << "Value from key " << key << " doesn't exist.";							\
 	}																								\
 	/**/

@@ -27,7 +27,7 @@ OpenGLWindow::OpenGLWindow()
 	// init GLFW (our window handler)
 	if (int err = glfwInit() != 1)
 	{
-		ENG_LOGLN(Fatal) << "Failed to init GLFW. Error code: " << err;
+		logger<Fatal>() << "Failed to init GLFW. Error code: " << err;
 		
 	}
 
@@ -78,7 +78,7 @@ OpenGLWindow::OpenGLWindow()
 	if (!window)
 	{
 		glfwTerminate();
-		ENG_LOGLN(Fatal) << "\nWindow failed to create.";
+		logger<Fatal>() << "\nWindow failed to create.";
 	}
 
 
@@ -100,7 +100,7 @@ OpenGLWindow::OpenGLWindow()
 	if (int err = glewInit() != GLEW_OK)
 	{
 		glfwTerminate();
-		ENG_LOGLN(Fatal) << "GLEW failed to init. Error code: " << err;
+		logger<Fatal>() << "GLEW failed to init. Error code: " << err;
 	}
 	// for some reason there is already an error, so clear that
 	glGetError();

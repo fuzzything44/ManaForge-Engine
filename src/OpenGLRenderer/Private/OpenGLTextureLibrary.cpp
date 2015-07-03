@@ -184,14 +184,14 @@ void OpenGLTextureLibrary::appendDDS(uint32 texToAppend, uint32 Xoffset, uint32 
 	/* try to open the file */
 	fopen_s(&fp, filepath, "rb");
 	if (fp == nullptr)
-		ENG_LOGLN(Fatal) << "cannot open file: " << filepath;
+		logger<Fatal>() << "cannot open file: " << filepath;
 
 	/* verify the type of file */
 	char filecode[4];
 	fread(filecode, 1, 4, fp);
 	if (strncmp(filecode, "DDS ", 4) != 0) {
 		fclose(fp);
-		ENG_LOGLN(Fatal) << "file not a dds: " << filepath;
+		logger<Fatal>() << "file not a dds: " << filepath;
 	}
 
 	/* get the surface desc */
@@ -228,7 +228,7 @@ void OpenGLTextureLibrary::appendDDS(uint32 texToAppend, uint32 Xoffset, uint32 
 		break;
 	default:
 		free(buffer);
-		ENG_LOGLN(Fatal) << "unrecgnized compressed DDS format: " << filepath;
+		logger<Fatal>() << "unrecgnized compressed DDS format: " << filepath;
 	}
 
 	unsigned int blockSize = (format == GL_COMPRESSED_RGBA_S3TC_DXT1_EXT) ? 8 : 16;

@@ -16,7 +16,7 @@ void changeDir()
 	HMODULE hModule = GetModuleHandle(nullptr);
 	if (hModule == nullptr)
 	{
-		ENG_LOGLN(Fatal) << "getModuleHandle failed";
+		logger<Fatal>() << "getModuleHandle failed";
 	}
 	// When passing NULL to GetModuleHandle, it returns handle of exe itself
 	GetModuleFileName(hModule, ownPth, (sizeof(ownPth)));

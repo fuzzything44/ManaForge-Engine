@@ -45,7 +45,7 @@ private:
 
 // collapeed for quicker debugging -- not very important
 inline Runtime& Runtime::get()
-{if (!currentRuntime) { ENG_LOGLN(Fatal) << "NO RUNTIME OBJECT!"; } return *currentRuntime; }
+{if (!currentRuntime) { logger<Fatal>() << "NO RUNTIME OBJECT!"; } return *currentRuntime; }
 
 inline World* Runtime::setWorld(World* newWorld)
 {

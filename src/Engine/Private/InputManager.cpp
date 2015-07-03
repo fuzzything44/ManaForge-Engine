@@ -17,7 +17,7 @@ InputManager::InputManager(Window* window): window(window)
 
 	if (!i_stream.is_open())
 	{
-		ENG_LOGLN(Fatal) << "bindings.txt not found";
+		logger<Fatal>() << "bindings.txt not found";
 	}
 
 	try{
@@ -30,12 +30,12 @@ InputManager::InputManager(Window* window): window(window)
 	}
 	catch (boost::archive::archive_exception& e)
 	{
-		ENG_LOGLN(Fatal) << "ARCHIVE EXCEPTION OCCURED IN LOADING INPUT MANAGER. Code: " << e.code << 
+		logger<Fatal>() << "ARCHIVE EXCEPTION OCCURED IN LOADING INPUT MANAGER. Code: " << e.code << 
 			" Error message: " << e.what();
 	}
 	catch (std::exception& e)
 	{
-		ENG_LOGLN(Fatal) << e.what();
+		logger<Fatal>() << e.what();
 	}
 }
 
@@ -54,7 +54,7 @@ void InputManager::bindActionMappingPressed(const std::string& name, std::functi
 	}
 	else
 	{
-		ENG_LOGLN(Warning) << "action mapping \"" << name << "\" not found";
+		logger<Warning>() << "action mapping \"" << name << "\" not found";
 	}
 }
 
@@ -68,7 +68,7 @@ void InputManager::bindActionMappingReleased(const std::string& name, std::funct
 	}
 	else
 	{
-		ENG_LOGLN(Warning) << "action mapping \"" << name << "\" not found";
+		logger<Warning>() << "action mapping \"" << name << "\" not found";
 	}
 }
 
@@ -82,7 +82,7 @@ void InputManager::bindAxisMapping(const std::string& name, std::function<void(f
 	}
 	else
 	{
-		ENG_LOGLN(Warning) << "axis mapping \"" << name << "\" not found";
+		logger<Warning>() << "axis mapping \"" << name << "\" not found";
 	}
 }
 

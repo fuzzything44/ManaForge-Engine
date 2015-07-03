@@ -20,7 +20,7 @@ public:
 		if (handle == nullptr)
 		{
 			
-			ENG_LOGLN(Fatal) << "Failed to load library. Path: " << path;
+			logger<Fatal>() << "Failed to load library. Path: " << path;
 		}
 
 		return handle;
@@ -44,7 +44,7 @@ public:
 
 		if (addr == nullptr)
 		{
-			ENG_LOGLN(Fatal) << "Failed to get function address. Name: " << functionName;
+			logger<Fatal>() << "Failed to get function address. Name: " << functionName;
 		}
 
 		return reinterpret_cast<T*>(addr);

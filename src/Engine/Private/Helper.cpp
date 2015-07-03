@@ -15,7 +15,7 @@ std::string loadFileToStr(const char* filename)
 	// if the steam if bad then return
 	if (!stream.is_open())
 	{
-		ENG_LOGLN(Warning) << "file doens't exist: " << filename;
+		logger<Warning>() << "file doens't exist: " << filename;
 		return std::string();
 	}
 	// define strings for each line and the final string

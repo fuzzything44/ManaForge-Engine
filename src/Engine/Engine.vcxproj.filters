@@ -65,6 +65,9 @@
     <ClCompile Include="Private\PhysicsComponent.cpp">
       <Filter>Private</Filter>
     </ClCompile>
+    <ClCompile Include="Private\Logging.cpp">
+      <Filter>Private</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="public\Actor.h">

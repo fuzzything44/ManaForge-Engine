@@ -14,7 +14,7 @@ Box2DPhysicsBody::Box2DPhysicsBody(Box2DPhysicsShape* shape, PhysicsComponent* o
 
 	auto iter = system->bodies.find(owner->getOwner());
 
-	if (iter == system->bodies.end()) ENG_LOGLN(Fatal) << "could not find actor in ActorTransformController map";
+	if (iter == system->bodies.end()) logger<Fatal>() << "could not find actor in ActorTransformController map";
 	ownerController = iter->second;
 	
 

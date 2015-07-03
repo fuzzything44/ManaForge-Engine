@@ -29,7 +29,7 @@ void PropertyManager::init(const std::string& path)
 	}
 	catch (std::exception& e)
 	{
-		ENG_LOGLN(Error) << e.what();
+		logger<Error>() << e.what();
 	}
 }
 

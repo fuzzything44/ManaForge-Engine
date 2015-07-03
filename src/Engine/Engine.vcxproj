@@ -74,7 +74,7 @@
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <EnableParallelCodeGeneration>true</EnableParallelCodeGeneration>
       <OmitDefaultLibName>false</OmitDefaultLibName>
-      <AdditionalOptions>-D_SCL_SECURE_NO_WARNINGS %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>-D_SCL_SECURE_NO_WARNINGS -Zm200 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <TargetMachine>MachineX86</TargetMachine>
@@ -130,6 +130,7 @@
     <ClCompile Include="private\Helper.cpp" />
     <ClCompile Include="Private\ImageLoader.cpp" />
     <ClCompile Include="Private\InputManager.cpp" />
+    <ClCompile Include="Private\Logging.cpp" />
     <ClCompile Include="Private\MeshComponent.cpp" />
     <ClCompile Include="Private\Module.cpp" />
     <ClCompile Include="Private\ModuleManager.cpp" />
