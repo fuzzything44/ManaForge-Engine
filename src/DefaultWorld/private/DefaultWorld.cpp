@@ -303,6 +303,12 @@ void DefaultWorld::init(const std::string& name)
 	logger<Trace>() << "World Loaded!";
 }
 
+bool DefaultWorld::update(float deltaTime)
+{
+	tickingActors(deltaTime);
+	return true;
+}
+
 ActorLocation* DefaultWorld::addActor(Actor* toAdd)
 {
 	auto result = actors.insert({ nextIndex, toAdd });
@@ -366,4 +372,13 @@ PlayerController* DefaultWorld::makePlayerController()
 Pawn* DefaultWorld::makePawn()
 {
 	return nullptr; // TODO: fix
+}
+
+
+void DefaultWorld::registerTickingActor(Actor& toAdd)
+{
+	tickingActors.connect([&toAdd](float deltaTime)
+	{
+		toAdd.tick(deltaTime);
+	});
 }

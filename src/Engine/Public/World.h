@@ -29,4 +29,6 @@ public:
 
 	virtual ActorLocation* addActor(Actor* toAdd) = 0;
 
+	virtual void registerTickingActor(Actor& toAdd) = 0;
+
 };

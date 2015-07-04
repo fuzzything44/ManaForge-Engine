@@ -16,8 +16,6 @@ Box2DPhysicsSystem::Box2DPhysicsSystem()
 
 	dd->SetFlags(flags);
 	world->SetDebugDraw(dd);
-
-	
 }
 
 Box2DPhysicsSystem::~Box2DPhysicsSystem()
