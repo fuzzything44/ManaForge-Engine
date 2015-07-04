@@ -11,7 +11,7 @@ int32 main()
 		runtime->run();
 		delete runtime;
 	}
-	catch (ENGException& e)
+	catch (ENGException&)
 	{
 		return -1;
 	}
