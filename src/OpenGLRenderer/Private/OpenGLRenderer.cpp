@@ -85,15 +85,8 @@ std::unique_ptr<TextureLibrary> OpenGLRenderer::newTextureLibrary(uint16 maxElem
 
 std::shared_ptr<Material> OpenGLRenderer::newMaterial(const std::string& name)
 {
-	auto iter = materials.find(name);
-
-	if (iter != materials.end())
-	{
-		return iter->second;
-	}
-
-	// make another
-	return materials.insert({ name, std::make_shared<OpenGLMaterial>(name) }).first->second;
+	
+	return std::make_shared<OpenGLMaterial>(name);
 }
 
 void OpenGLRenderer::deleteTextureLibrary(TextureLibrary* library)

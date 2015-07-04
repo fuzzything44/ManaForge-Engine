@@ -67,7 +67,7 @@ void DefaultWorld::init(const std::string& name)
 	folderLocation = std::string("Worlds\\") + name + '\\';
 	propManager.init(folderLocation + "world.json");
 	nextIndex = 0;
-	backgroundImages = Runtime::get().moduleManager.getRenderer().newTextureLibrary(4, 256); // TODO: less hardcoded values
+	backgroundImages = std::move(Runtime::get().moduleManager.getRenderer().newTextureLibrary(4, 256)); // TODO: less hardcoded values
 	drawMaterial = Runtime::get().moduleManager.getRenderer().newMaterial("boilerplate");
 
 
@@ -293,13 +293,13 @@ void DefaultWorld::init(const std::string& name)
 					vec2(xChunks * backgroundChunkSize, yChunks * backgroundChunkSize)
 				},
 				ModelData(
-				drawMaterial,
-				&locations[0],
-				&UVs[0],
-				&elems[0],
-				backgroundChunkSize * backgroundChunkSize * 4,
-				backgroundChunkSize * backgroundChunkSize * 2,
-				bounds
+					drawMaterial,
+					&locations[0],
+					&UVs[0],
+					&elems[0],
+					backgroundChunkSize * backgroundChunkSize * 4,
+					backgroundChunkSize * backgroundChunkSize * 2,
+					bounds
 				));
 
 			}

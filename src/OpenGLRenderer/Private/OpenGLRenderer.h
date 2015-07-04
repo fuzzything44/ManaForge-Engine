@@ -66,7 +66,6 @@ private:
 	// doubley linked list of the models
 	std::list<OpenGLModel*> models;
 	std::map<std::string, std::shared_ptr<OpenGLTexture> > textures;
-	std::map<std::string, std::shared_ptr<OpenGLMaterial> > materials;
 
 	static bool isDestroying;
 };

@@ -11,6 +11,10 @@ OpenGLMaterial::OpenGLMaterial(const std::string& name)
 	addShaderProgramFromFile(name);
 
 	startTexUniform = glGetUniformLocation(program, "textures");
+	if (startTexUniform == -1)
+	{
+		logger<Warning>() << "Could not find startTexUniform in program: " << name;
+	}
 }
 
 OpenGLMaterial::~OpenGLMaterial()
