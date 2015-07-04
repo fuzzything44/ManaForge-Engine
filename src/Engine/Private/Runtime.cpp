@@ -119,8 +119,8 @@ void Runtime::run()
 	};
 
 	Material* mat = moduleManager.getRenderer().newMaterial("boilerplate");
-	Texture* tex = moduleManager.getRenderer().newTexture("4");
-	mat->setTexture(0, tex);
+	auto tex = moduleManager.getRenderer().newTexture("4");
+	mat->setTexture(0, *tex);
 
 	MeshComponent* meshComp = new MeshComponent(*player, Transform{}, ModelData(locations, UVs, tris, 4, 2, mat));
 
@@ -230,6 +230,5 @@ void Runtime::run()
 	} while (shouldContinue);
 
 	delete mat;
-	delete tex;
 }
 

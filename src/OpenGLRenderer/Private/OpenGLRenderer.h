@@ -6,6 +6,7 @@
 
 class OpenGLModel;
 class OpenGLMaterial;
+class OpenGLTexture;
 
 class OpenGLRenderer : public Renderer
 {
@@ -23,7 +24,7 @@ public:
 	const Window& getWindow() const override;
 
 	virtual Model* newModel(const ModelData& params, MeshComponent* owner) override;
-	virtual Texture* newTexture(const std::string& name) override;
+	virtual std::shared_ptr<Texture> newTexture(const std::string& name) override;
 	virtual TextureLibrary* newTextureLibrary(uint16, uint16) override;
 	virtual Material* newMaterial(const std::string& name) override;
 
@@ -64,6 +65,7 @@ private:
 
 	// doubley linked list of the models
 	std::list<OpenGLModel*> models;
+	std::map<std::string, std::shared_ptr<OpenGLTexture> > textures;
 
 	static bool isDestroying;
 };

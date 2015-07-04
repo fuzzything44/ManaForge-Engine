@@ -112,7 +112,7 @@ void DefaultWorld::init(const std::string& name)
 	}
 
 	// set the material
-	drawMaterial->setTexture(0, reinterpret_cast<Texture*>(backgroundImages));
+	drawMaterial->setTexture(0, *backgroundImages);
 
 	logger<Trace>() << "Loading world " << name << "...";
 

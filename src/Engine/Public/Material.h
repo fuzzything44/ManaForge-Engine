@@ -16,7 +16,7 @@ public:
 	}
 
 
-	virtual void setTexture(uint32 ID, Texture* texture) = 0;
+	virtual void setTexture(uint32 ID, Texture& texture) = 0;
 
 	
 };

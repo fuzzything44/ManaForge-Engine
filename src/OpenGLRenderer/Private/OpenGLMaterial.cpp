@@ -108,9 +108,9 @@ void OpenGLMaterial::addShaderProgramFromSource(std::string shader)
 {
 }
 
-void OpenGLMaterial::setTexture(uint32 ID, Texture* texture)
+void OpenGLMaterial::setTexture(uint32 ID, Texture& texture)
 {
-	textures[ID] = texture->getID();
+	textures[ID] = texture.getID();
 
 
 }

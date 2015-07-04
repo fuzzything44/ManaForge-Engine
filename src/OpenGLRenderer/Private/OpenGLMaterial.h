@@ -18,7 +18,7 @@ public:
 	void addShaderProgramFromSource(std::string shader);
 
 
-	void virtual setTexture(uint32 ID, Texture* texture) override;
+	void virtual setTexture(uint32 ID, Texture& texture) override;
 
 	void use();
 

@@ -8,50 +8,27 @@
 #define FOURCC_DXT3 0x33545844 // Equivalent to "DXT3" in ASCII
 #define FOURCC_DXT5 0x35545844 // Equivalent to "DXT5" in ASCII
 
-OpenGLTexture::MapType OpenGLTexture::textures = OpenGLTexture::MapType();
-
 OpenGLTexture::OpenGLTexture(const std::string& path)
 	: path(path)
 {
 
 	if (path != "")
 	{
-		auto iter = textures.find(path);
-		if (iter == textures.end())
-		{
-			std::string qualifiedPath = "textures\\" + path + ".dds";
+		std::string qualifiedPath = "textures\\" + path + ".dds";
 
-			ID = SOIL_load_OGL_texture(
-				qualifiedPath.c_str(),		// path
-				4,							// 4 channels
-				0,							// create a new texture ID in OGL
-				SOIL_FLAG_DDS_LOAD_DIRECT	// It is a dds
-			);
-
-
-			// if its new, add it to the map
-			textures[path] = std::pair<int, GLuint>(1, ID);
-		}
-		else
-		{
-			// copy it from the other already existing one
-			ID = (iter->second).second;
-			iter->second.first++; // increment the refrence count
-		}
+		ID = SOIL_load_OGL_texture(
+			qualifiedPath.c_str(),		// path
+			4,							// 4 channels
+			0,							// create a new texture ID in OGL
+			SOIL_FLAG_DDS_LOAD_DIRECT	// It is a dds
+		);
 	}
 }
 
 OpenGLTexture::~OpenGLTexture()
 {
-	auto iter = textures.find(path);
-	iter->second.first--; // reduce the refrence count by 1
-
-	if (iter->second.first == 0) // if the refrence count is zero
-	{
-		glDeleteTextures(1, &ID);
-		textures.erase(path);
-	}
-
+	glDeleteTextures(1, &ID);
+	
 }
 
 uint32 OpenGLTexture::getID()
@@ -154,15 +131,6 @@ Texture::WrapMode OpenGLTexture::getWrapMode() const
 		return WrapMode::REPEAT;
 	default:
 		return WrapMode::REPEAT; // just a deault fallback
-	}
-}
-
-
-void OpenGLTexture::deleteAll()
-{
-	for (auto& elem : textures)
-	{
-		glDeleteTextures(1, &elem.second.second);
 	}
 }
 

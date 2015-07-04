@@ -38,12 +38,12 @@ Gate::Gate()
 		{1, 2, 3}
 	};
 
-	Texture* tex = Runtime::get().moduleManager.getRenderer().newTexture("0");
+	auto tex = Runtime::get().moduleManager.getRenderer().newTexture("0");
 	tex->setFilterMode(Texture::FilterMode::MIPMAP_LINEAR);
 
 	mat = Runtime::get().moduleManager.getRenderer().newMaterial("boilerplate");
 
-	mat->setTexture(0, tex);
+	mat->setTexture(0, *tex);
 
 	meshComp = new MeshComponent(*this, Transform{ }, ModelData
 		(vertLocs, UVs, tris, 6, 2, mat));

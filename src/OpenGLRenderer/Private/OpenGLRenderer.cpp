@@ -40,9 +40,6 @@ OpenGLRenderer::~OpenGLRenderer()
 		delete elem;
 	}
 
-
-	OpenGLTexture::deleteAll();
-
 	glFinish();
 
 	delete window;
@@ -68,9 +65,17 @@ Model* OpenGLRenderer::newModel(const ModelData& params, MeshComponent* owner)
 	return new OpenGLModel(params, owner, this);
 }
 
-Texture* OpenGLRenderer::newTexture(const std::string& name)
+std::shared_ptr<Texture> OpenGLRenderer::newTexture(const std::string& name)
 {
-	return new OpenGLTexture(name);
+	auto iter = textures.find(name);
+
+	if (iter != textures.end())
+	{
+		return iter->second;
+	}
+
+	// make another
+	return textures.insert({ name, std::make_shared<OpenGLTexture>(name) }).first->second;
 }
 
 TextureLibrary* OpenGLRenderer::newTextureLibrary(uint16 maxElems, uint16 individualSize)

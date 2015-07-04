@@ -44,9 +44,7 @@ std::shared_ptr<SoundCue> OpenALAudioSystem::newSoundCue(const std::string& name
 
 std::unique_ptr<SoundSource> OpenALAudioSystem::newSoundSource(SoundCue& cue, AudioComponent& owner)
 {
-	OpenALSoundCue& ALcue = static_cast<OpenALSoundCue&>(cue);
-
-	return std::make_unique<OpenALSoundSource>(ALcue, owner, *this);
+	return std::make_unique<OpenALSoundSource>(static_cast<OpenALSoundCue&>(cue), owner, *this);
 }
 
 

@@ -12,9 +12,6 @@ class OpenGLRenderer;
 
 class OpenGLTexture : public Texture
 {
-	//				 PATH					REF COUNT	TEXTURE NAME
-	typedef std::map<std::string, std::pair<int,		GLuint		> > MapType;
-
 	friend OpenGLMaterial;
 	friend OpenGLRenderer;
 public:
@@ -37,10 +34,6 @@ private:
 	GLuint ID;
 
 	std::string path;
-
-	static MapType textures;
-
-	static void deleteAll();
 
 
 	int32 loadDDS(const std::string& filename);
