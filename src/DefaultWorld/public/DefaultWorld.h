@@ -1,3 +1,4 @@
+#pragma once
 #include "DefaultWorldConfig.h"
 #include <ENGException.h>
 #include <World.h>
@@ -18,6 +19,11 @@
 class DefaultWorld : public World
 {
 public:
+
+	bool isDestructing;
+
+	friend struct DefaultWorldLocation;
+
 	explicit DefaultWorld(const std::string& name = "");
 	virtual ~DefaultWorld();
 
@@ -27,12 +33,11 @@ public:
 	virtual void saveWorld() override;
 
 	virtual ActorLocation* addActor(Actor* toAdd) override;
-	virtual void removeActor(Actor* toRemove) override;
 
 	virtual PlayerController* makePlayerController() override;
 	virtual Pawn* makePawn() override;
 	// End World Interface
-
+	typedef std::map<uint64, Actor*>::iterator iter_type;
 private:
 
 	std::string folderLocation;
@@ -57,7 +62,5 @@ private:
 
 	std::string playerControllerClassName;
 	std::string pawnClassName;
-
-	bool isDestructing;
 
 };
