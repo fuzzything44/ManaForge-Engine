@@ -23,7 +23,7 @@ public:
 	virtual Window& getWindow() override;
 	const Window& getWindow() const override;
 
-	virtual Model* newModel(const ModelData& params, MeshComponent* owner) override;
+	virtual std::unique_ptr<Model> newModel(const ModelData& params, MeshComponent* owner) override;
 	virtual std::shared_ptr<Texture> newTexture(const std::string& name) override;
 	virtual TextureLibrary* newTextureLibrary(uint16, uint16) override;
 	virtual Material* newMaterial(const std::string& name) override;

@@ -20,5 +20,5 @@ public:
 
 protected:
 
-	Model* model;
-};
+	std::unique_ptr<Model> model;
+}; 

@@ -17,6 +17,8 @@
 #include <functional>	// MISC
 #include <chrono>
 
+#include <memory> // for smart ptrs
+
 
 ///////////////////////////////////////////
 /////////// START BOOST HEADERS
@@ -68,3 +70,4 @@
 #include <glm/gtx/matrix_transform_2d.hpp>
 
 #include <StackWalker.h>
+

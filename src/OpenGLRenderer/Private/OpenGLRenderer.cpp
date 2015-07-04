@@ -60,9 +60,9 @@ const Window& OpenGLRenderer::getWindow() const
 	return *window;
 }
 
-Model* OpenGLRenderer::newModel(const ModelData& params, MeshComponent* owner)
+std::unique_ptr<Model> OpenGLRenderer::newModel(const ModelData& params, MeshComponent* owner)
 {
-	return new OpenGLModel(params, owner, this);
+	return std::make_unique<OpenGLModel>(params, owner, this);
 }
 
 std::shared_ptr<Texture> OpenGLRenderer::newTexture(const std::string& name)
