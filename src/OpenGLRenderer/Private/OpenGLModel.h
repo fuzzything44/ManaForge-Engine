@@ -37,6 +37,6 @@ protected:
 	MeshComponent* parent;
 	OpenGLRenderer* renderer;
 
-	OpenGLMaterial* material;
+	std::shared_ptr<OpenGLMaterial> material;
 
 };

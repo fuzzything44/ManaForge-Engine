@@ -15,7 +15,7 @@ class Gate : public Actor
 
 	MeshComponent* meshComp;
 	PhysicsComponent* physComp;
-	Material* mat;
+	std::shared_ptr<Material> mat;
 public:
 
 	explicit Gate();

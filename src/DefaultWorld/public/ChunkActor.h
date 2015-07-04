@@ -9,7 +9,7 @@
 class ChunkActor : public Actor
 {
 public:
-	ChunkActor(const Transform& trans = Transform{}, const ModelData& data = ModelData{})
+	ChunkActor(const Transform& trans, const ModelData& data)
 		:Actor()
 	{
 		setWorldTransform(trans);

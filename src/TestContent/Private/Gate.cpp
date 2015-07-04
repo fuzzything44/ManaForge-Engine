@@ -39,20 +39,22 @@ Gate::Gate()
 	};
 
 	auto tex = Runtime::get().moduleManager.getRenderer().newTexture("0");
+
 	tex->setFilterMode(Texture::FilterMode::MIPMAP_LINEAR);
 
 	mat = Runtime::get().moduleManager.getRenderer().newMaterial("boilerplate");
 
 	mat->setTexture(0, *tex);
 
-	meshComp = new MeshComponent(*this, Transform{ }, ModelData
-		(vertLocs, UVs, tris, 6, 2, mat));
-
+	meshComp = new MeshComponent(*this, Transform{}, ModelData
+		(mat, vertLocs, UVs, tris, 6, 2));
+	
 
 
 	auto shape = Runtime::get().moduleManager.getPhysicsSystem().newPhysicsShape();
 
 	setPhysicsType(PhysicsType::DYNAMIC);
+	
 
 	shape->asRectangle(.75f, .75f);
 
@@ -64,5 +66,4 @@ Gate::Gate()
 
 Gate::~Gate()
 {
-	delete mat;
 }

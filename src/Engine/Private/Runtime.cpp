@@ -118,11 +118,14 @@ void Runtime::run()
 		{ 1, 2, 3 }
 	};
 
-	Material* mat = moduleManager.getRenderer().newMaterial("boilerplate");
+	auto mat = moduleManager.getRenderer().newMaterial("boilerplate");
 	auto tex = moduleManager.getRenderer().newTexture("4");
+
+
 	mat->setTexture(0, *tex);
 
-	MeshComponent* meshComp = new MeshComponent(*player, Transform{}, ModelData(locations, UVs, tris, 4, 2, mat));
+	MeshComponent* meshComp = new MeshComponent(*player, Transform{}, ModelData(mat, locations, UVs, tris, 4, 2));
+
 
 	auto shape = moduleManager.getPhysicsSystem().newPhysicsShape();
 	shape->setPosition(vec2(.5f, .5f));
@@ -228,7 +231,5 @@ void Runtime::run()
 
 
 	} while (shouldContinue);
-
-	delete mat;
 }
 

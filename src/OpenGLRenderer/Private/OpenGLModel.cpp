@@ -15,8 +15,9 @@ OpenGLModel::OpenGLModel(ModelData data, MeshComponent* owner, OpenGLRenderer* r
 	renderer(renderer),
 	parent(owner),
 	bounds(data.bounds),
-	material(static_cast<OpenGLMaterial*>(data.material))
+	material(std::static_pointer_cast<OpenGLMaterial>(data.material))
 {	
+	
 	// make sure they aren't zero
 	check(numVerts);
 	check(numTris);

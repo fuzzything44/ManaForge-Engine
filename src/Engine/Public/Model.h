@@ -30,12 +30,12 @@ struct ModelBounds
 struct ModelData
 {
 	ModelData(
+		std::shared_ptr<Material> material,
 		vec2* vertexLocations = nullptr,
 		vec2* UVs = nullptr,
 		uvec3* triangles = nullptr,
 		uint32 numVerts = 0,
 		uint32 numTriangles = 0,
-		Material* material = nullptr,
 		const ModelBounds& bounds = ModelBounds{})
 		
 		:vertexLocations(vertexLocations),
@@ -54,7 +54,7 @@ struct ModelData
 	uvec3* triangles;
 	uint32 numVerts;
 	uint32 numTriangles;
-	Material* material;
+	std::shared_ptr<Material> material;
 	ModelBounds bounds;
 };
 

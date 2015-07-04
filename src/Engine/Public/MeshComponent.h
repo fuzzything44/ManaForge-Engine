@@ -12,8 +12,8 @@ public:
 
 	ENGINE_API explicit MeshComponent(
 		Actor& owner,
-		Transform trans = Transform{},
-		ModelData data = ModelData{});
+		Transform trans,
+		ModelData data);
 
 	ENGINE_API virtual ~MeshComponent();
 

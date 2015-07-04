@@ -46,7 +46,7 @@ private:
 	uint64 nextIndex = 0;
 
 	std::unique_ptr<TextureLibrary> backgroundImages;
-	Material* drawMaterial;
+	std::shared_ptr<Material> drawMaterial;
 
 	// array of models -- in row major order
 	ChunkActor** background;
