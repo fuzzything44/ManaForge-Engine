@@ -95,13 +95,6 @@ bool OpenGLModel::isInBounds(const mat3& model, const mat4& camera) // TODO: ACT
 void OpenGLModel::draw()
 {
 	check(parent);
-	
-	//// start with the camera
-	//mat3 MVPmat = renderer->getCurrentCamera().getViewMat();
-
-	//MVPmat = glm::scale(MVPmat, worldTrans.scale);			// apply scaling
-	//MVPmat = glm::rotate(MVPmat, worldTrans.rotation);		// apply rotation
-	//MVPmat = glm::translate(MVPmat, worldTrans.location);	// apply translation
 
 	mat3 view = renderer->getCurrentCamera().getViewMat();
 	mat3 model = parent->getModelMatrix();
