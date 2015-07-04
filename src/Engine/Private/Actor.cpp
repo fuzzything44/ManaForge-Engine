@@ -26,7 +26,6 @@ Actor::~Actor()
 		delete elem;
 	}
 
-	Runtime::get().world->removeActor(this);
 }
 
 
