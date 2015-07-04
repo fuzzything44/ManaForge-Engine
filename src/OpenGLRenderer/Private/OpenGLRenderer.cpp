@@ -78,9 +78,9 @@ std::shared_ptr<Texture> OpenGLRenderer::newTexture(const std::string& name)
 	return textures.insert({ name, std::make_shared<OpenGLTexture>(name) }).first->second;
 }
 
-TextureLibrary* OpenGLRenderer::newTextureLibrary(uint16 maxElems, uint16 individualSize)
+std::unique_ptr<TextureLibrary> OpenGLRenderer::newTextureLibrary(uint16 maxElems, uint16 individualSize)
 {
-	return new OpenGLTextureLibrary(maxElems, individualSize);
+	return std::make_unique<OpenGLTextureLibrary>(maxElems, individualSize);
 }
 
 Material* OpenGLRenderer::newMaterial(const std::string& name)

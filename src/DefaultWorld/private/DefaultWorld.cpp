@@ -52,9 +52,6 @@ DefaultWorld::~DefaultWorld()
 {
 
 	isDestructing = true;
-
-	if (backgroundImages)
-		delete backgroundImages;
 	
 	if (drawMaterial)
 		delete drawMaterial;

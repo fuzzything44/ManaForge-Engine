@@ -45,7 +45,7 @@ private:
 	std::map<uint64, Actor*> actors;
 	uint64 nextIndex = 0;
 
-	TextureLibrary* backgroundImages;
+	std::unique_ptr<TextureLibrary> backgroundImages;
 	Material* drawMaterial;
 
 	// array of models -- in row major order

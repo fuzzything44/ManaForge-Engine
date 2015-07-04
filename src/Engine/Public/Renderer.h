@@ -52,7 +52,7 @@ public:
 	/// <returns> null if it fails, else a Model*.</returns>
 	virtual std::unique_ptr<Model> newModel(const ModelData& data, MeshComponent* owner) = 0;
 	virtual std::shared_ptr<Texture> newTexture(const std::string& name) = 0;
-	virtual TextureLibrary* newTextureLibrary(uint16, uint16) = 0;
+	virtual std::unique_ptr<TextureLibrary> newTextureLibrary(uint16, uint16) = 0;
 	virtual Material* newMaterial(const std::string& name) = 0;
 
 	virtual void deleteTextureLibrary(TextureLibrary* library) = 0;

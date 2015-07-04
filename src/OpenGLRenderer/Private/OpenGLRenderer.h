@@ -25,7 +25,7 @@ public:
 
 	virtual std::unique_ptr<Model> newModel(const ModelData& params, MeshComponent* owner) override;
 	virtual std::shared_ptr<Texture> newTexture(const std::string& name) override;
-	virtual TextureLibrary* newTextureLibrary(uint16, uint16) override;
+	virtual std::unique_ptr<TextureLibrary> newTextureLibrary(uint16, uint16) override;
 	virtual Material* newMaterial(const std::string& name) override;
 
 	virtual void deleteTextureLibrary(TextureLibrary* library) override;
