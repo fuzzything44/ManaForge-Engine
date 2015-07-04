@@ -86,7 +86,7 @@ namespace logdetail
 	struct log_base
 	{
 
-		void flush(){ str.flush(); }
+		inline static void flush(){ str.flush(); }
 
 		static void cleanup()
 		{
