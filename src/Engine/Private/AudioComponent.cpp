@@ -7,9 +7,9 @@
 #include "Runtime.h" 
 #include "AudioSystem.h"
 
-AudioComponent::AudioComponent(Actor* owner, Transform trans, SoundCue* cue, bool loops)
+AudioComponent::AudioComponent(Actor& owner, SoundCue& cue, Transform trans, bool loops)
 	:SceneComponent(owner, trans),
-	source(Runtime::get().moduleManager.getAudioSystem().newSoundSource(cue, this))
+	source(Runtime::get().moduleManager.getAudioSystem().newSoundSource(cue, *this))
 {
 	source->setLoops(loops);
 }

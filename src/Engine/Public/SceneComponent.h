@@ -11,7 +11,7 @@ public:
 	/// <summary> Default constructor. </summary>
 	/// <param name="owner"> The owner actor. Will usaually be this </param>
 	/// <param name="trans"> The transform, relative to the owner actor </param>
-	explicit SceneComponent(Actor* owner = nullptr, Transform trans = Transform{});
+	explicit SceneComponent(Actor& owner, Transform trans = Transform{});
 
 	virtual ~SceneComponent() override;
 
@@ -76,7 +76,7 @@ protected:
 ///////////////////////
 #include "Actor.h"
 
-inline SceneComponent::SceneComponent(Actor* owner, Transform trans)
+inline SceneComponent::SceneComponent(Actor& owner, Transform trans)
 	: Component(owner),
 	trans(trans)
 {
@@ -102,8 +102,8 @@ inline Transform SceneComponent::getWorldTransform() const
 	
 	vec3 loc3 = model * vec3(0.f, 0.f, 1.f);
 	worldTrans.location = vec2(loc3.x, loc3.y);
-	worldTrans.rotation = owner->getWorldRotation() + trans.rotation;
-	worldTrans.scale = owner->getScale() + trans.scale;
+	worldTrans.rotation = owner.getWorldRotation() + trans.rotation;
+	worldTrans.scale = owner.getScale() + trans.scale;
 
 	return worldTrans;
 
@@ -120,7 +120,7 @@ inline vec2 SceneComponent::getWorldLocation() const
 
 inline float SceneComponent::getWorldRotation() const
 {
-	return owner->getWorldRotation() + trans.rotation;
+	return owner.getWorldRotation() + trans.rotation;
 }
 
 inline vec2 SceneComponent::getRelativeLocation() const
@@ -174,7 +174,7 @@ inline void SceneComponent::addRelativeRotation(float rotToAdd)
 
 inline mat3 SceneComponent::getModelMatrix() const
 {
-	mat3 ret = owner->getModelMatrix();
+	mat3 ret = owner.getModelMatrix();
 
 	ret = glm::translate(ret, trans.location); 
 	ret = glm::rotate(ret, trans.rotation);

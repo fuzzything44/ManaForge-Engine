@@ -11,7 +11,7 @@
 BOOST_CLASS_EXPORT_IMPLEMENT(Actor);
 
 Actor::Actor()
-	:transController(Runtime::get().moduleManager.getPhysicsSystem().newActorTransformController(this)),
+	:transController(Runtime::get().moduleManager.getPhysicsSystem().newActorTransformController(*this)),
 	GUID(Runtime::get().world->addActor(this))
 {
 }

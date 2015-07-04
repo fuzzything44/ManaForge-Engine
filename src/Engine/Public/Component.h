@@ -7,17 +7,26 @@ class Actor;
 class Component
 {
 public:
-	ENGINE_API explicit Component(Actor* owner = nullptr);
+	inline explicit Component(Actor& owner);
 	ENGINE_API virtual ~Component();
 
-	ENGINE_API inline Actor* getOwner();
+	inline Actor& getOwner();
 
 protected:
-	Actor* owner;
+	Actor& owner;
 
 };
 
-inline Actor* Component::getOwner()
+#include "Actor.h"
+
+inline Component::Component(Actor& owner)
+	: owner(owner)
+{
+	owner.components.push_back(this);
+}
+
+
+inline Actor& Component::getOwner()
 {
 	return owner;
 }

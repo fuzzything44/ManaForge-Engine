@@ -10,7 +10,7 @@ class PhysicsComponent : public SceneComponent
 {
 public:
 
-	inline PhysicsComponent(Actor* owner = nullptr, const Transform& trans = Transform(), PhysicsShape* shape = nullptr);
+	inline PhysicsComponent(Actor& owner, PhysicsShape& shape, const Transform& trans = Transform());
 	ENGINE_API virtual ~PhysicsComponent();
 
 	inline void setRestitution(float newRestitution);
@@ -39,10 +39,10 @@ private:
 
 /////////// INLINE DEFINITIONS /////////
 
-inline PhysicsComponent::PhysicsComponent(Actor* owner, const Transform& trans, PhysicsShape* shape)
+inline PhysicsComponent::PhysicsComponent(Actor& owner, PhysicsShape& shape, const Transform& trans)
 	:SceneComponent(owner, trans)
 {
-	body = Runtime::get().moduleManager.getPhysicsSystem().newPhysicsBody(shape, this);
+	body = Runtime::get().moduleManager.getPhysicsSystem().newPhysicsBody(shape, *this);
 }
 
 

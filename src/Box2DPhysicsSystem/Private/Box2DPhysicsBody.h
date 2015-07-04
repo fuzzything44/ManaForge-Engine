@@ -12,7 +12,7 @@ class Box2DPhysicsBody : public PhysicsBody
 {
 	
 public:
-	Box2DPhysicsBody(Box2DPhysicsShape* shape, PhysicsComponent* owner, Box2DPhysicsSystem* system);
+	Box2DPhysicsBody(Box2DPhysicsShape& shape, PhysicsComponent& owner, Box2DPhysicsSystem& system);
 	virtual ~Box2DPhysicsBody();
 
 	virtual void setRestitution(float newRestitution) override;
@@ -28,9 +28,9 @@ public:
 	virtual bool getIsSensor() const override;
 
 private:
-	PhysicsComponent* ownerComponent;
-	Box2DPhysicsSystem* system; 
-	Box2DActorTransformController* ownerController;
+	PhysicsComponent& ownerComponent;
+	Box2DPhysicsSystem& system; 
+	Box2DActorTransformController* ownerController; // needs to be ptr because we find it afterwards -- and it might not exist
 	
 	b2Fixture* fixture;
 

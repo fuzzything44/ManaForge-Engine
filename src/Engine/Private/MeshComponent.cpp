@@ -6,7 +6,7 @@
 #include "Window.h"
 #include "Renderer.h"
 
-MeshComponent::MeshComponent(Actor* owner,
+MeshComponent::MeshComponent(Actor& owner,
 	Transform trans,
 	ModelData data)
 	:	SceneComponent(owner, trans),

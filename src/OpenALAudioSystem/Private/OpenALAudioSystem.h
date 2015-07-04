@@ -7,14 +7,15 @@
 #include <list>
 
 class OpenALSoundSource;
+class OpenALSoundCue;
 
 class OpenALAudioSystem : public AudioSystem
 {
 public:
 	OpenALAudioSystem();
 
-	virtual SoundCue* newSoundCue(const std::string& name) override;
-	virtual SoundSource* newSoundSource(SoundCue* cue, AudioComponent* owner) override;
+	virtual std::shared_ptr<SoundCue> newSoundCue(const std::string& name) override;
+	virtual std::unique_ptr<SoundSource> newSoundSource(SoundCue& cue, AudioComponent& owner) override;
 
 	void addSource(OpenALSoundSource* source);
 
@@ -23,5 +24,7 @@ public:
 private:
 
 	std::list<OpenALSoundSource*> sources;
+
+	std::map<std::string, std::shared_ptr<OpenALSoundCue> > cues;
 
 };

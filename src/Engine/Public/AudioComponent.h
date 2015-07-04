@@ -9,7 +9,7 @@ class SoundSource;
 class AudioComponent : public SceneComponent
 {
 public:
-	ENGINE_API explicit AudioComponent(Actor* owner = nullptr, Transform trans = Transform{}, SoundCue* cue = nullptr, bool loops = false);
+	ENGINE_API explicit AudioComponent(Actor& owner, SoundCue& cue, Transform trans = Transform(), bool loops = false);
 
 	inline void setLoops(bool loops);
 	inline bool getLoops() const;
@@ -32,7 +32,7 @@ public:
 	inline void setGainBounds(float min, float max);
 
 protected:
-	SoundSource* source;
+	std::unique_ptr<SoundSource> source;
 };
 
 /////////////////////////////////////////////

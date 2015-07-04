@@ -30,6 +30,6 @@ public:
 
 	virtual void setGainBounds(float min, float max) = 0;
 
-	virtual AudioComponent* getOwnerComponent() = 0;
+	virtual AudioComponent& getOwnerComponent() = 0;
 
 };

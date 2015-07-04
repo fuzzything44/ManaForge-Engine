@@ -45,18 +45,18 @@ Gate::Gate()
 
 	mat->setTexture(0, tex);
 
-	meshComp = new MeshComponent(this, Transform{ }, ModelData
+	meshComp = new MeshComponent(*this, Transform{ }, ModelData
 		(vertLocs, UVs, tris, 6, 2, mat));
 
 
 
-	PhysicsShape* shape = Runtime::get().moduleManager.getPhysicsSystem().newPhysicsShape();
+	auto shape = Runtime::get().moduleManager.getPhysicsSystem().newPhysicsShape();
 
 	setPhysicsType(PhysicsType::DYNAMIC);
 
 	shape->asRectangle(.75f, .75f);
 
-	physComp = new PhysicsComponent(this, Transform{}, shape);
+	physComp = new PhysicsComponent(*this, *shape, Transform{});
 	physComp->setDensity(1.f);
 	
 

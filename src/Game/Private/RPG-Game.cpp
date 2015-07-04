@@ -3,13 +3,12 @@
 int32 main()
 {	
 
-
-	Runtime* runtime = new Runtime("default");
-
 	try{
+
+		auto runtime = std::make_unique<Runtime>("default");
+
 		// run the runtime. consumes the thread until it returns
 		runtime->run();
-		delete runtime;
 	}
 	catch (ENGException&)
 	{

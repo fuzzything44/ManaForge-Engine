@@ -28,16 +28,25 @@ void OpenALAudioSystem::addSource(OpenALSoundSource* source)
 	sources.push_back(source);
 }
 
-SoundCue* OpenALAudioSystem::newSoundCue(const std::string& name)
+std::shared_ptr<SoundCue> OpenALAudioSystem::newSoundCue(const std::string& name)
 {
-	return new OpenALSoundCue(name);
+	auto iter = cues.find(name);
+
+	if (iter != cues.end())
+	{
+		return iter->second;
+	}
+
+
+	// return a new shared ptr from it
+	return cues.insert({ name, std::make_shared<OpenALSoundCue>(name) }).first->second;
 }
 
-SoundSource* OpenALAudioSystem::newSoundSource(SoundCue* cue, AudioComponent* owner)
+std::unique_ptr<SoundSource> OpenALAudioSystem::newSoundSource(SoundCue& cue, AudioComponent& owner)
 {
-	OpenALSoundCue* ALcue = static_cast<OpenALSoundCue*>(cue);
+	OpenALSoundCue& ALcue = static_cast<OpenALSoundCue&>(cue);
 
-	return new OpenALSoundSource(ALcue, owner, this);
+	return std::make_unique<OpenALSoundSource>(ALcue, owner, *this);
 }
 
 

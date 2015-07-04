@@ -11,7 +11,7 @@ class MeshComponent : public SceneComponent
 public:
 
 	ENGINE_API explicit MeshComponent(
-		Actor* owner = nullptr,
+		Actor& owner,
 		Transform trans = Transform{},
 		ModelData data = ModelData{});
 

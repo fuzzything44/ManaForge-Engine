@@ -9,7 +9,7 @@ class CameraComponent : public SceneComponent
 {
 public:
 	// aspect ratio is (WINDOW Y)/(WINDOW X)
-	ENGINE_API inline explicit CameraComponent(Actor* owner = nullptr, Transform trans = Transform{}, float aspectRatio = 1.f, float zoom = 1.f);
+	ENGINE_API inline explicit CameraComponent(Actor& owner, Transform trans = Transform{}, float aspectRatio = 1.f, float zoom = 1.f);
 	ENGINE_API inline virtual ~CameraComponent() override;
 
 	ENGINE_API inline mat3 getViewMat() const;
@@ -30,7 +30,7 @@ protected:
 /////////// INLINE DEFINITIONS
 
 
-inline CameraComponent::CameraComponent(Actor* owner, Transform trans, float aspectRatio, float zoom)
+inline CameraComponent::CameraComponent(Actor& owner, Transform trans, float aspectRatio, float zoom)
 	: SceneComponent(owner, trans),
 	aspectRatio(aspectRatio),
 	zoom(zoom)

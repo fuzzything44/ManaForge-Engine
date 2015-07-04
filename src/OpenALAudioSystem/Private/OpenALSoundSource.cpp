@@ -6,14 +6,14 @@
 #include <Runtime.h>
 #include <Helper.h>
 
-OpenALSoundSource::OpenALSoundSource(OpenALSoundCue* cue, AudioComponent* owner, OpenALAudioSystem* system)
+OpenALSoundSource::OpenALSoundSource(OpenALSoundCue& cue, AudioComponent& owner, OpenALAudioSystem& system)
 	:ownerComponent(owner),
 	system(system)
 {
 	alGenSources(1, &sourceHandle);
-	alSourcei(sourceHandle, AL_BUFFER, cue->bufferHandle);
+	alSourcei(sourceHandle, AL_BUFFER, cue.bufferHandle);
 
-	system->addSource(this);
+	system.addSource(this);
 }
 
 void OpenALSoundSource::setLoops(bool loops)
@@ -45,7 +45,7 @@ void OpenALSoundSource::stop()
 	alSourceRewind(sourceHandle);
 }
 
-AudioComponent* OpenALSoundSource::getOwnerComponent()
+AudioComponent& OpenALSoundSource::getOwnerComponent()
 {
 	return ownerComponent;
 }
@@ -91,8 +91,8 @@ float OpenALSoundSource::getReferenceDistance() const
 
 void OpenALSoundSource::update()
 {
-	vec2 loc = ownerComponent->getWorldLocation();
-	vec2 velocity = ownerComponent->getOwner()->getVelocity();
+	vec2 loc = ownerComponent.getWorldLocation();
+	vec2 velocity = ownerComponent.getOwner().getVelocity();
 
 	// update runtime variables
 	alSource3f(sourceHandle, AL_POSITION, loc.x, loc.y, 0.f);

@@ -23,9 +23,6 @@
     <ClCompile Include="private\ENGException.cpp">
       <Filter>Private</Filter>
     </ClCompile>
-    <ClCompile Include="Private\Component.cpp">
-      <Filter>Private</Filter>
-    </ClCompile>
     <ClCompile Include="Private\ModuleManager.cpp">
       <Filter>Private</Filter>
     </ClCompile>
@@ -66,6 +63,9 @@
       <Filter>Private</Filter>
     </ClCompile>
     <ClCompile Include="Private\Logging.cpp">
+      <Filter>Private</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\Component.cpp">
       <Filter>Private</Filter>
     </ClCompile>
   </ItemGroup>

@@ -1,20 +1,20 @@
 #include "Box2DActorTransformController.h"
 #include "Box2DPhysicsSystem.h"
 
-Box2DActorTransformController::Box2DActorTransformController(Actor* owner, Box2DPhysicsSystem* system)
+Box2DActorTransformController::Box2DActorTransformController(Actor& owner, Box2DPhysicsSystem& system)
 	:owner(owner),
 	system(system)
 {
-	system->bodies.insert(std::map<Actor*, Box2DActorTransformController*>::value_type(owner, this));
+	system.bodies.insert(std::map<Actor*, Box2DActorTransformController*>::value_type(&owner, this));
 
 	b2BodyDef bodyDef;
-	bodyDef.userData = owner;
+	bodyDef.userData = &owner;
 	bodyDef.type = b2_staticBody;
 	bodyDef.position = b2Vec2(0.f, 0.f);
 	bodyDef.angle = 0.f;
 	bodyDef.fixedRotation = false;
 	
-	body = system->world->CreateBody(&bodyDef);
+	body = system.world->CreateBody(&bodyDef);
 }
 
 Transform Box2DActorTransformController::getTransform() const
@@ -93,7 +93,7 @@ void Box2DActorTransformController::applyTorque(float magnituede)
 	body->ApplyTorque(magnituede, true);
 }
 
-Actor* Box2DActorTransformController::getOwner() const
+Actor& Box2DActorTransformController::getOwner() const
 {
 	return owner;
 }

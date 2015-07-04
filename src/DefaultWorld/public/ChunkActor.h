@@ -14,7 +14,7 @@ public:
 	{
 		setWorldTransform(trans);
 
-		meshComp = new MeshComponent(this, Transform{}, data);
+		meshComp = new MeshComponent(*this, Transform{}, data);
 	}
 
 private:

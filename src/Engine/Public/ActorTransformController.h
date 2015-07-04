@@ -24,7 +24,7 @@ public:
 	virtual Transform getTransform() const = 0;
 	virtual void setTransform(const Transform& newTrans) = 0;
 
-	virtual Actor* getOwner() const = 0;
+	virtual Actor& getOwner() const = 0;
 
 	virtual PhysicsType getType() = 0;
 	virtual void setType(PhysicsType) = 0;

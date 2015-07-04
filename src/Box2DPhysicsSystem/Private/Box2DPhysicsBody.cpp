@@ -5,22 +5,19 @@
 
 #include <Helper.h>
 
-Box2DPhysicsBody::Box2DPhysicsBody(Box2DPhysicsShape* shape, PhysicsComponent* owner, Box2DPhysicsSystem* system)
+Box2DPhysicsBody::Box2DPhysicsBody(Box2DPhysicsShape& shape, PhysicsComponent& owner, Box2DPhysicsSystem& system)
 	:system(system),
 	ownerComponent(owner)
 {
-	check(owner);
-	check(system);
+	auto iter = system.bodies.find(&owner.getOwner());
 
-	auto iter = system->bodies.find(owner->getOwner());
-
-	if (iter == system->bodies.end()) logger<Fatal>() << "could not find actor in ActorTransformController map";
+	if (iter == system.bodies.end()) logger<Fatal>() << "could not find actor in ActorTransformController map";
 	ownerController = iter->second;
 	
 
 	b2FixtureDef fixtureDef;
-	fixtureDef.shape = shape->shape;
-	fixtureDef.userData = owner;
+	fixtureDef.shape = shape.shape;
+	fixtureDef.userData = &owner;
 	
 
 	fixture = ownerController->body->CreateFixture(&fixtureDef);

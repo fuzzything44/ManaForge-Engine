@@ -11,7 +11,7 @@ class Box2DActorTransformController : public ActorTransformController
 	friend class Box2DPhysicsBody;
 public:
 
-	explicit Box2DActorTransformController(Actor* owner, Box2DPhysicsSystem* system);
+	explicit Box2DActorTransformController(Actor& owner, Box2DPhysicsSystem& system);
 
 	virtual Transform getTransform() const override;
 	virtual vec2 getVelocity() const override;
@@ -31,15 +31,15 @@ public:
 	virtual void setAngularVelocity(float newVelocity) override;
 	virtual float getAngularVelocity() override;
 
-	virtual Actor* getOwner() const override;
+	virtual Actor& getOwner() const override;
 
 
 
 private:
 
-	Box2DPhysicsSystem* system;
+	Box2DPhysicsSystem& system;
 
 	b2Body* body;
-	Actor* owner;
+	Actor& owner;
 
 };

@@ -13,7 +13,7 @@ class OpenALAudioSystem;
 class OpenALSoundSource : public SoundSource
 {
 public:
-	explicit OpenALSoundSource(OpenALSoundCue* cue, AudioComponent* ownerComponent, OpenALAudioSystem* system);
+	explicit OpenALSoundSource(OpenALSoundCue& cue, AudioComponent& ownerComponent, OpenALAudioSystem& system);
 
 	virtual void setLoops(bool loops) override;
 	virtual bool getLoops() const override;
@@ -38,13 +38,13 @@ public:
 
 	virtual void setGainBounds(float min, float max) override;
 
-	virtual AudioComponent* getOwnerComponent() override;
+	virtual AudioComponent& getOwnerComponent() override;
 
 
 	void update();
 
 private:
-	AudioComponent* ownerComponent;
+	AudioComponent& ownerComponent;
 	ALuint sourceHandle;
-	OpenALAudioSystem* system;
+	OpenALAudioSystem& system;
 };

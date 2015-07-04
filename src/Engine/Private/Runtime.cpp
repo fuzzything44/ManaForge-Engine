@@ -94,7 +94,7 @@ void Runtime::run()
 
 	Actor* player = new Actor();
 
-	CameraComponent* c = new CameraComponent{ player, Transform{}, aspectRatio, .1f };
+	CameraComponent* c = new CameraComponent{ *player, Transform{}, aspectRatio, .1f };
 	moduleManager.getRenderer().setCurrentCamera(c);
 
 
@@ -122,13 +122,13 @@ void Runtime::run()
 	Texture* tex = moduleManager.getRenderer().newTexture("4");
 	mat->setTexture(0, tex);
 
-	MeshComponent* meshComp = new MeshComponent(player, Transform{}, ModelData(locations, UVs, tris, 4, 2, mat));
+	MeshComponent* meshComp = new MeshComponent(*player, Transform{}, ModelData(locations, UVs, tris, 4, 2, mat));
 
-	PhysicsShape* shape = moduleManager.getPhysicsSystem().newPhysicsShape();
+	auto shape = moduleManager.getPhysicsSystem().newPhysicsShape();
 	shape->setPosition(vec2(.5f, .5f));
 	shape->asRectangle(.5f, .5f);
 
-	PhysicsComponent* physComp = new PhysicsComponent(player, Transform{}, shape);
+	PhysicsComponent* physComp = new PhysicsComponent(*player, *shape, Transform{});
 	player->setPhysicsType(PhysicsType::DYNAMIC);
 	physComp->setDensity(1.f);
 	

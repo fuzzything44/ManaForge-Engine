@@ -33,19 +33,19 @@ void Box2DPhysicsSystem::setGravity(vec2 newGravity)
 }
 
 
-PhysicsBody* Box2DPhysicsSystem::newPhysicsBody(PhysicsShape* shape, PhysicsComponent* owner)
+PhysicsBody* Box2DPhysicsSystem::newPhysicsBody(PhysicsShape& shape, PhysicsComponent& owner)
 {
-	return new Box2DPhysicsBody(static_cast<Box2DPhysicsShape*>(shape), owner, this);
+	return new Box2DPhysicsBody(static_cast<Box2DPhysicsShape&>(shape), owner, *this);
 }
 
-PhysicsShape* Box2DPhysicsSystem::newPhysicsShape()
+std::unique_ptr<PhysicsShape> Box2DPhysicsSystem::newPhysicsShape()
 {
-	return new Box2DPhysicsShape();
+	return std::make_unique<Box2DPhysicsShape>();
 }
 
-ActorTransformController* Box2DPhysicsSystem::newActorTransformController(Actor* actor)
+ActorTransformController* Box2DPhysicsSystem::newActorTransformController(Actor& actor)
 {
-	return new Box2DActorTransformController(actor, this);
+	return new Box2DActorTransformController(actor, *this);
 }
 
 
