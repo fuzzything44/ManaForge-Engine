@@ -100,9 +100,9 @@ void Runtime::run()
 
 	vec2 locations[] = 
 	{
-		{ 0.f, 0.f },
-		{ 0.f, 1.f },
-		{ 1.f, 0.f },
+		{ -1.f, -1.f },
+		{ -1.f, 1.f },
+		{ 1.f, -1.f },
 		{ 1.f, 1.f }
 	};
 	vec2 UVs[] = 
@@ -128,8 +128,8 @@ void Runtime::run()
 
 
 	auto shape = moduleManager.getPhysicsSystem().newPhysicsShape();
-	shape->setPosition(vec2(.5f, .5f));
-	shape->asRectangle(.5f, .5f);
+	shape->setPosition(vec2(0.f, 0.f));
+	shape->asRectangle(1.f, 1.f);
 
 	PhysicsComponent* physComp = new PhysicsComponent(*player, *shape, Transform{});
 	player->setPhysicsType(PhysicsType::DYNAMIC);

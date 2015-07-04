@@ -1,8 +1,7 @@
 #include <Runtime.h>
 
 int32 main()
-{	
-
+{
 	try{
 
 		auto runtime = std::make_unique<Runtime>("default");

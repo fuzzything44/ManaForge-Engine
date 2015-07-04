@@ -289,18 +289,19 @@ void DefaultWorld::init(const std::string& name)
 
 				background[yChunks * numBackgroundChunks.x * xChunks] =
 					new ChunkActor(
-					Transform{
-					vec2(xChunks * backgroundChunkSize, yChunks * backgroundChunkSize)
-				},
-				ModelData(
-					drawMaterial,
-					&locations[0],
-					&UVs[0],
-					&elems[0],
-					backgroundChunkSize * backgroundChunkSize * 4,
-					backgroundChunkSize * backgroundChunkSize * 2,
-					bounds
-				));
+						Transform{
+							vec2(xChunks * backgroundChunkSize, yChunks * backgroundChunkSize)
+						},
+						ModelData(
+							drawMaterial,
+							&locations[0],
+							&UVs[0],
+							&elems[0],
+							backgroundChunkSize * backgroundChunkSize * 4,
+							backgroundChunkSize * backgroundChunkSize * 2,
+							bounds
+						)
+					);
 
 			}
 		}
