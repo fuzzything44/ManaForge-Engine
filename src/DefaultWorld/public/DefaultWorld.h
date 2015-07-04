@@ -9,6 +9,8 @@
 #include <TextureLibrary.h>
 #include <map>
 
+#include <boost/signals2.hpp>
+
 #include <array>
 
 #include "ChunkActor.h"
@@ -22,10 +24,14 @@ public:
 
 	bool isDestructing;
 
+
 	friend struct DefaultWorldLocation;
 
 	explicit DefaultWorld(const std::string& name = "");
 	virtual ~DefaultWorld();
+
+
+	bool update(float deltaTime);
 
 	// World Interface
 	virtual void init(const std::string& name) override;
@@ -36,6 +42,8 @@ public:
 
 	virtual PlayerController* makePlayerController() override;
 	virtual Pawn* makePawn() override;
+
+	virtual void registerTickingActor(Actor& toAdd) override;
 	// End World Interface
 	typedef std::map<uint64, Actor*>::iterator iter_type;
 private:
@@ -62,5 +70,7 @@ private:
 
 	std::string playerControllerClassName;
 	std::string pawnClassName;
+
+	boost::signals2::signal<void(float)> tickingActors;
 
 };

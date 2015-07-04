@@ -20,7 +20,6 @@ class Actor
 
 public:
 	
-	// Make Chunk a freind so it can access private methods (namely tick)
 	friend Component;
 
 	// the global ID for this instatnce of the actor -- used mainly for networking
@@ -72,14 +71,16 @@ public:
 
 	inline void applyTorque(float magnituede);
 
-protected:
-
-	ActorTransformController* transController;
 
 	/// <summary> Ticks the given delta time.</summary>
 	///
 	/// <param name="deltaTime"> The delta time.</param>
 	ENGINE_API virtual void tick(float deltaTime);
+
+
+protected:
+
+	ActorTransformController* transController;
 
 	std::vector<Component*> components;
 
