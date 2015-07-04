@@ -16,10 +16,11 @@ class Gate : public Actor
 	MeshComponent* meshComp;
 	PhysicsComponent* physComp;
 	std::shared_ptr<Material> mat;
+	float timeToDestruction;
 public:
 
 	explicit Gate();
-
+	virtual void tick(float deltaTime) override;
 	virtual ~Gate() override;
 
 	bool isOpen;

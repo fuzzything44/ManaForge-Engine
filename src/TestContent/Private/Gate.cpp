@@ -8,13 +8,13 @@
 
 #include <cmath>
 
-#define SAVE_DATA Gate, Actor, isOpen
+#define SAVE_DATA Gate, Actor, isOpen, timeToDestruction
 #include REGISTER_FOR_SAVING_SOURCE()
 
 Gate::Gate()
-	: Actor()
+	: Actor(), timeToDestruction(30.f)
 {
-	
+	Runtime::get().world->registerTickingActor(*this);
 
 	vec2 vertLocs[] =
 	{
@@ -63,7 +63,13 @@ Gate::Gate()
 	
 
 }
-
+void Gate::tick(float deltaTime)
+{
+	timeToDestruction -= deltaTime;
+	if (timeToDestruction <= 0) {
+		delete this;
+	}
+}
 Gate::~Gate()
 {
 }

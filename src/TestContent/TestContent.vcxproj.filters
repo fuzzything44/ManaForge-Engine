@@ -17,12 +17,18 @@
     <ClInclude Include="Public\TestContentConfig.h">
       <Filter>Private</Filter>
     </ClInclude>
+    <ClInclude Include="pew.h">
+      <Filter>Public</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Private\Gate.cpp">
       <Filter>Private</Filter>
     </ClCompile>
     <ClCompile Include="Private\TestContentConfig.cpp">
+      <Filter>Private</Filter>
+    </ClCompile>
+    <ClCompile Include="pew.cpp">
       <Filter>Private</Filter>
     </ClCompile>
   </ItemGroup>
