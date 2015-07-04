@@ -1,6 +1,6 @@
-#include "pew.h"
+#include "Pew.h"
 #include "Gate.h"
-void pew::tick(float deltaTime)
+void Pew::tick(float deltaTime)
 {
 	timeToSpawn -= deltaTime;
 	if (timeToSpawn <= 0) {
