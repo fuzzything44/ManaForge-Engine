@@ -1,10 +1,11 @@
+#pragma once
 #include "TestContentConfig.h"
 #include <Actor.h>
 
-class pew : public Actor {
+class Pew : public Actor {
 public:
-	pew() : timeToSpawn(0.f) { Runtime::get().world->registerTickingActor(*this); }
-	~pew() override {}
+	Pew() : timeToSpawn(0.f) { Runtime::get().world->registerTickingActor(*this); }
+	~Pew() override {}
 	virtual void tick(float deltaTime) override;
 private:
 	float timeToSpawn;

@@ -90,8 +90,8 @@
     <ClInclude Include="Public\TestContentConfig.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Private\Pew.cpp" />
     <ClCompile Include="Private\Gate.cpp" />
-    <ClCompile Include="Private\pew.cpp" />
     <ClCompile Include="Private\TestContentConfig.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
