@@ -135,6 +135,9 @@ void Runtime::run()
 	player->setPhysicsType(PhysicsType::DYNAMIC);
 	physComp->setDensity(1.f);
 	
+	Actor* pew = moduleManager.spawnClass<Actor>("TestContent.pew");
+	check(pew);
+
 	// set initial tick
 	clock::time_point LastTick = clock::now();
 
@@ -207,8 +210,6 @@ void Runtime::run()
 		{
 			player->applyTorque(1.f);
 		}
-
-		gate->applyTorque(1.f);
 
 		// recieve the update callbacks
 		std::list<ModuleManager::updateFun>& updateCallbacks = moduleManager.getUpdateCallbacks();

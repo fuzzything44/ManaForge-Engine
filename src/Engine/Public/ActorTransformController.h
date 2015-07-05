@@ -18,6 +18,9 @@ enum class PhysicsType : uint8
 class ActorTransformController : boost::noncopyable
 {
 public:
+
+	virtual ~ActorTransformController(){ };
+
 	virtual void setVelocity(vec2 newVelocity) = 0;
 	virtual vec2 getVelocity() const = 0;
 
@@ -38,7 +41,5 @@ public:
 	virtual void setAngularVelocity(float newVelocity) = 0;
 	virtual float getAngularVelocity() = 0;
 
-
-	virtual ~ActorTransformController(){ };
 
 };

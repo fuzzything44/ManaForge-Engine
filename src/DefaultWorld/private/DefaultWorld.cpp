@@ -305,6 +305,7 @@ void DefaultWorld::init(const std::string& name)
 
 bool DefaultWorld::update(float deltaTime)
 {
+	logger<Debug>() << tickingActors.num_slots();
 	tickingActors(deltaTime);
 	return true;
 }

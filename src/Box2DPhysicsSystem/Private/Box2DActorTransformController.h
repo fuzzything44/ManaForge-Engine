@@ -12,6 +12,7 @@ class Box2DActorTransformController : public ActorTransformController
 public:
 
 	explicit Box2DActorTransformController(Actor& owner, Box2DPhysicsSystem& system);
+	virtual ~Box2DActorTransformController();
 
 	virtual Transform getTransform() const override;
 	virtual vec2 getVelocity() const override;

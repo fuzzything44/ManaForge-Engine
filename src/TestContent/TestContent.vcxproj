@@ -85,13 +85,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="pew.h" />
     <ClInclude Include="Public\Gate.h" />
+    <ClInclude Include="Public\pew.h" />
     <ClInclude Include="Public\TestContentConfig.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="pew.cpp" />
     <ClCompile Include="Private\Gate.cpp" />
+    <ClCompile Include="Private\pew.cpp" />
     <ClCompile Include="Private\TestContentConfig.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -16,6 +16,10 @@ Box2DActorTransformController::Box2DActorTransformController(Actor& owner, Box2D
 	
 	body = system.world->CreateBody(&bodyDef);
 }
+Box2DActorTransformController::~Box2DActorTransformController()
+{
+	system.world->DestroyBody(body);
+}
 
 Transform Box2DActorTransformController::getTransform() const
 {
