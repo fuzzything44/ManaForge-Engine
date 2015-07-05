@@ -19,7 +19,9 @@ Box2DPhysicsBody::Box2DPhysicsBody(Box2DPhysicsShape& shape, PhysicsComponent& o
 	fixtureDef.shape = shape.shape;
 	fixtureDef.userData = &owner;
 	
-
+	
+	check(ownerController->body);
+	check(ownerController->body->GetWorld())
 	fixture = ownerController->body->CreateFixture(&fixtureDef);
 
 }
