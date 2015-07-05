@@ -7,7 +7,7 @@
 #include <Actor.h>
 #include <functional>
 #include <TextureLibrary.h>
-#include <map>
+#include <deque>
 
 #include <boost/signals2.hpp>
 
@@ -38,7 +38,7 @@ public:
 
 	virtual void saveWorld() override;
 
-	virtual ActorLocation* addActor(Actor* toAdd) override;
+	virtual std::unique_ptr<ActorLocation> addActor(Actor& toAdd) override;
 
 	virtual PlayerController* makePlayerController() override;
 	virtual Pawn* makePawn() override;
@@ -53,10 +53,8 @@ private:
 
 	PropertyManager propManager; // for world specific properties
 
-	// Contains all actors in the world
-	// !!!!! We also need to clear it when you change worlds. We may need to clear other things too (and we have to keep persistent actors).
-	std::map<uint64, Actor*> actors;
-	uint64 nextIndex = 0;
+	// use a deque -- the index can be the index in it!
+	std::deque<Actor*> actors;
 
 	std::unique_ptr<TextureLibrary> backgroundImages;
 	std::shared_ptr<Material> drawMaterial;

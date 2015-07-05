@@ -29,7 +29,7 @@ public:
 	virtual PlayerController* makePlayerController() = 0;
 	virtual Pawn* makePawn() = 0;
 
-	virtual ActorLocation* addActor(Actor* toAdd) = 0;
+	virtual std::unique_ptr<ActorLocation> addActor(Actor& toAdd) = 0;
 
 	virtual boost::signals2::connection registerTickingActor(Actor& toAdd) = 0;
 

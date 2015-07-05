@@ -12,7 +12,6 @@
 #include <Color.h>
 #include <TextureLibrary.h>
 #include <Renderer.h>
-#include <SaveData.h>
 
 #include <list>
 #include <fstream>
@@ -22,7 +21,8 @@
 
 #include <boost/algorithm/string.hpp>
 
-
+#include <boost/serialization/deque.hpp>
+#include <boost/serialization/map.hpp>
 
 #if SAVE_TYPE_XML
 #	include <boost/archive/polymorphic_xml_oarchive.hpp>
@@ -55,8 +55,8 @@ DefaultWorld::~DefaultWorld()
 
 	for (auto& elem : actors)
 	{
-		if (elem.second) // delete our actors.
-			delete elem.second;
+		if (elem) // delete our actors.
+			delete elem;
 	}
 }
 
@@ -66,7 +66,6 @@ void DefaultWorld::init(const std::string& name)
 
 	folderLocation = std::string("Worlds\\") + name + '\\';
 	propManager.init(folderLocation + "world.json");
-	nextIndex = 0;
 	backgroundImages = std::move(Runtime::get().moduleManager.getRenderer().newTextureLibrary(4, 256)); // TODO: less hardcoded values
 	drawMaterial = Runtime::get().moduleManager.getRenderer().newMaterial("boilerplate");
 
@@ -305,23 +304,17 @@ void DefaultWorld::init(const std::string& name)
 
 bool DefaultWorld::update(float deltaTime)
 {
-	logger<Debug>() << tickingActors.num_slots();
+	logger<Debug>() << actors.size();
 	tickingActors(deltaTime);
 	return true;
 }
 
-ActorLocation* DefaultWorld::addActor(Actor* toAdd)
+std::unique_ptr<ActorLocation> DefaultWorld::addActor(Actor& toAdd)
 {
-	auto result = actors.insert({ nextIndex, toAdd });
-	if (result.second) // if it succeeded
-	{
-		DefaultWorldLocation* loc = new DefaultWorldLocation(result.first , *this);
+	actors.push_back(&toAdd);
 
-		toAdd->GUID = loc;
-		nextIndex++;
-
-		return loc;
-	}
+	return std::make_unique<DefaultWorldLocation>(actors.size() - 1, *this);
+	
 	// if we haven't returned by now, there is a problem.
 	logger<Fatal>() << "Failed to insert into actors map";
 	return nullptr;
@@ -331,12 +324,12 @@ void DefaultWorld::saveWorld()
 {
 	logger<Trace>() << "Saving world";
 	// Create list to save
-	std::list<Actor*> toSave;
-	for (auto& pair : actors) 
+	std::deque<Actor*> toSave;
+	for (auto& elem : actors) 
 	{
-		if (pair.second->needsSave()) 
+		if (elem->needsSave()) 
 		{
-			toSave.push_back(pair.second);
+			toSave.push_back(elem);
 		}
 	} // End for
 

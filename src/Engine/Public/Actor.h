@@ -40,7 +40,7 @@ public:
 	friend Component;
 
 	// the global ID for this instatnce of the actor -- used mainly for networking
-	ActorLocation* GUID;
+	std::unique_ptr<ActorLocation> GUID;
 	
 	/// <summary> Actors.</summary>
 	///

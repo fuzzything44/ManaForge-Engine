@@ -12,7 +12,7 @@
 #include REGISTER_FOR_SAVING_SOURCE()
 
 Gate::Gate()
-	: Actor(), timeToDestruction(30.f)
+	: Actor(), timeToDestruction(3.f)
 {
 
 	vec2 vertLocs[] =

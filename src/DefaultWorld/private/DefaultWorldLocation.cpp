@@ -3,11 +3,12 @@
 DefaultWorldLocation::~DefaultWorldLocation()
 {
 	if (!inWorld.isDestructing) {
-		// Last actual element in the map.
-		auto last = --inWorld.actors.end();
+		// store a copy of the last elem
+		Actor* last = inWorld.actors[inWorld.actors.size() - 1];
+		inWorld.actors.pop_back(); // remove the last element
 
-		location->second = last->second;
-		location->second->GUID = new DefaultWorldLocation(location, inWorld);
-		inWorld.actors.erase(last);
+		// assign it to our index
+		inWorld.actors[loc] = last;
+		static_cast<DefaultWorldLocation*>(last->GUID.get())->loc = loc; 
 	}
 }

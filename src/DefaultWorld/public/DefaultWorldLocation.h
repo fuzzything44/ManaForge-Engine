@@ -8,10 +8,10 @@
 struct DefaultWorldLocation : public ActorLocation
 {
 public:
-	DefaultWorldLocation(DefaultWorld::iter_type loc, DefaultWorld& world) : location(loc), inWorld(world) {};
+	DefaultWorldLocation(size_t loc, DefaultWorld& world) : loc(loc), inWorld(world) {};
 	virtual ~DefaultWorldLocation() override;
 	
 private:
-	DefaultWorld::iter_type location;
+	size_t loc;
 	DefaultWorld& inWorld;
 };
