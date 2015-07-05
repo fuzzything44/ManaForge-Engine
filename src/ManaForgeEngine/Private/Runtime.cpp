@@ -128,8 +128,7 @@ void Runtime::run()
 
 
 	auto shape = moduleManager.getPhysicsSystem().newPhysicsShape();
-	shape->setPosition(vec2(0.f, 0.f));
-	shape->asRectangle(1.f, 1.f);
+	shape->asCircle(1.f);
 
 	PhysicsComponent* physComp = new PhysicsComponent(*player, *shape, Transform{});
 	player->setPhysicsType(PhysicsType::DYNAMIC);
@@ -144,7 +143,7 @@ void Runtime::run()
 
 	bool shouldContinue = true;
 
-	float baseSpeed = 10.f;
+	float baseSpeed = 100.f;
 
 	do {
 		// calculate tick time
@@ -204,11 +203,11 @@ void Runtime::run()
 		}
 		if (window.getIsKeyPressed(Keyboard::KEY_TAB))
 		{
-			player->applyTorque(-1.f);
+			player->applyTorque(-10.f);
 		}
 		if (window.getIsKeyPressed(Keyboard::KEY_R))
 		{
-			player->applyTorque(1.f);
+			player->applyTorque(10.f);
 		}
 
 		// recieve the update callbacks

@@ -9,13 +9,10 @@ Box2DPhysicsSystem::Box2DPhysicsSystem()
 {
 	world = new b2World(gravity);
 
-	DebugDraw* dd = new DebugDraw();
 	uint32 flags = 0;
 	flags += b2Draw::e_shapeBit;
 	flags += b2Draw::e_aabbBit;
 
-	dd->SetFlags(flags);
-	world->SetDebugDraw(dd);
 }
 
 Box2DPhysicsSystem::~Box2DPhysicsSystem()
