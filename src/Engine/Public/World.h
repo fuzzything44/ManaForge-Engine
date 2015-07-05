@@ -1,6 +1,8 @@
 #pragma once
 #include "Engine.h"
 
+#include <boost/signals2/connection.hpp>
+
 #include <string>
 
 class Actor;
@@ -29,6 +31,6 @@ public:
 
 	virtual ActorLocation* addActor(Actor* toAdd) = 0;
 
-	virtual void registerTickingActor(Actor& toAdd) = 0;
+	virtual boost::signals2::connection registerTickingActor(Actor& toAdd) = 0;
 
 };

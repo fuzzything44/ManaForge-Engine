@@ -375,10 +375,9 @@ Pawn* DefaultWorld::makePawn()
 	return nullptr; // TODO: fix
 }
 
-
-void DefaultWorld::registerTickingActor(Actor& toAdd)
+boost::signals2::connection DefaultWorld::registerTickingActor(Actor& toAdd)
 {
-	tickingActors.connect([&toAdd](float deltaTime)
+	return tickingActors.connect([&toAdd](float deltaTime)
 	{
 		toAdd.tick(deltaTime);
 	});

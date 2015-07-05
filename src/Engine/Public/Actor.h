@@ -13,6 +13,23 @@ static const unsigned int MAX_ACTORS = 100001;
 
 class Component;
 
+template<typename Derived>
+struct TickingActor
+{
+	TickingActor()
+	{
+		connection = Runtime::get().world->registerTickingActor(static_cast<Derived&>(*this));
+	}
+
+	~TickingActor()
+	{
+		connection.disconnect();
+	}
+
+private:
+	boost::signals2::connection connection;
+};
+
 /// <summary> An actor. </summary>
 class Actor
 {

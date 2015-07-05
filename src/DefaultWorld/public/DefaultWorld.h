@@ -43,7 +43,7 @@ public:
 	virtual PlayerController* makePlayerController() override;
 	virtual Pawn* makePawn() override;
 
-	virtual void registerTickingActor(Actor& toAdd) override;
+	virtual boost::signals2::connection registerTickingActor(Actor& toAdd) override;
 	// End World Interface
 	typedef std::map<uint64, Actor*>::iterator iter_type;
 private:

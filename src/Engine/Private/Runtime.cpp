@@ -85,8 +85,6 @@ void Runtime::run()
 
 	// YA WE REALLY NEED PLAYER CONTROLLERS -- the gate shouldn't get to control the camera
 	Actor* gate = moduleManager.spawnClass<Actor>("TestContent.Gate");
-	Actor* pew = moduleManager.spawnClass<Actor>("TestContent.Pew");
-	pew->setWorldLocation(vec2(3.f, 3.f));
 	gate->setWorldLocation(vec2(2.f, 2.f));
 	gate->setWorldRotation(.25f * (float)M_PI);
 	
@@ -137,7 +135,7 @@ void Runtime::run()
 	player->setPhysicsType(PhysicsType::DYNAMIC);
 	physComp->setDensity(1.f);
 	
-	Actor* pew = moduleManager.spawnClass<Actor>("TestContent.pew");
+	Actor* pew = moduleManager.spawnClass<Actor>("TestContent.Pew");
 	check(pew);
 
 	// set initial tick

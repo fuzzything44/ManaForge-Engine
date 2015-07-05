@@ -9,7 +9,7 @@
 #include <AudioComponent.h>
 #include <PhysicsComponent.h>
 
-class Gate : public Actor
+class Gate : public Actor, TickingActor<Gate>
 {
 	INIT_SAVED_CLASS()
 

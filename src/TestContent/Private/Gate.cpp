@@ -14,7 +14,6 @@
 Gate::Gate()
 	: Actor(), timeToDestruction(30.f)
 {
-	Runtime::get().world->registerTickingActor(*this);
 
 	vec2 vertLocs[] =
 	{
