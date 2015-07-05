@@ -14,7 +14,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Game", "src\Game\Game.vcxpr
 		{F6469AF9-C1D1-4090-BE15-1EA000DD8102} = {F6469AF9-C1D1-4090-BE15-1EA000DD8102}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Engine", "src\Engine\Engine.vcxproj", "{366C8B6A-FC80-421F-9AAA-F3A29F3061F5}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ManaForgeEngine", "src\ManaForgeEngine\ManaForgeEngine.vcxproj", "{366C8B6A-FC80-421F-9AAA-F3A29F3061F5}"
 	ProjectSection(ProjectDependencies) = postProject
 		{95F6910A-2426-437A-B2C4-65FE547D9AEC} = {95F6910A-2426-437A-B2C4-65FE547D9AEC}
 	EndProjectSection

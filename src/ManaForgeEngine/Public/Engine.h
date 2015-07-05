@@ -1,12 +1,11 @@
 #pragma once
 #define ENGINE_VERSION 0.1f
-#define Engine_ModuleName "Engine"
 
-#ifdef Engine_Source
+#ifdef ManaForgeEngine_Source
 #	define ENGINE_API _declspec(dllexport)
 #else
 #	define ENGINE_API _declspec(dllimport)
-#	pragma comment(lib, "Engine.lib")
+#	pragma comment(lib, "ManaForgeEngine.lib")
 #endif
 
 #ifdef USE_VLD
