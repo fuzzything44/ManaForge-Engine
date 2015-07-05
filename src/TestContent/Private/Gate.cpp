@@ -15,7 +15,7 @@ bool Gate::isInitalized = false;
 std::shared_ptr<Material> Gate::mat = nullptr;
 
 Gate::Gate()
-	: Actor(), timeToDestruction(30.f)
+	: Actor(), timeToDestruction(300.f)
 {
 
 	vec2 vertLocs[] =
