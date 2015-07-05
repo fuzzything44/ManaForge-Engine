@@ -28,7 +28,7 @@ Box2DPhysicsBody::Box2DPhysicsBody(Box2DPhysicsShape& shape, PhysicsComponent& o
 
 Box2DPhysicsBody::~Box2DPhysicsBody()
 {
-
+	ownerController->body->DestroyFixture(fixture);
 }
 
 

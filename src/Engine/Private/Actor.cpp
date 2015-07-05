@@ -18,12 +18,13 @@ Actor::Actor()
 
 Actor::~Actor()
 {
-	delete transController;
-
+	
 	for (auto elem : components)
 	{
 		delete elem;
 	}
+
+	delete transController;
 
 }
 
