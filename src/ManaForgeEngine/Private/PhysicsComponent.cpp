@@ -4,5 +4,4 @@
 
 PhysicsComponent::~PhysicsComponent()
 {
-	delete body;
 }

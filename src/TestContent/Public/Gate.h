@@ -15,7 +15,8 @@ class Gate : public Actor, TickingActor<Gate>
 
 	MeshComponent* meshComp;
 	PhysicsComponent* physComp;
-	std::shared_ptr<Material> mat;
+	static std::shared_ptr<Material> mat;
+	static bool isInitalized;
 	float timeToDestruction;
 public:
 

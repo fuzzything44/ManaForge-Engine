@@ -20,7 +20,7 @@ Box2DPhysicsSystem::Box2DPhysicsSystem()
 
 Box2DPhysicsSystem::~Box2DPhysicsSystem()
 {
-
+	delete world;
 }
 
 void Box2DPhysicsSystem::setGravity(vec2 newGravity)
@@ -31,9 +31,9 @@ void Box2DPhysicsSystem::setGravity(vec2 newGravity)
 }
 
 
-PhysicsBody* Box2DPhysicsSystem::newPhysicsBody(PhysicsShape& shape, PhysicsComponent& owner)
+std::unique_ptr<PhysicsBody> Box2DPhysicsSystem::newPhysicsBody(PhysicsShape& shape, PhysicsComponent& owner)
 {
-	return new Box2DPhysicsBody(static_cast<Box2DPhysicsShape&>(shape), owner, *this);
+	return std::make_unique<Box2DPhysicsBody>(static_cast<Box2DPhysicsShape&>(shape), owner, *this);
 }
 
 std::unique_ptr<PhysicsShape> Box2DPhysicsSystem::newPhysicsShape()
@@ -41,9 +41,9 @@ std::unique_ptr<PhysicsShape> Box2DPhysicsSystem::newPhysicsShape()
 	return std::make_unique<Box2DPhysicsShape>();
 }
 
-ActorTransformController* Box2DPhysicsSystem::newActorTransformController(Actor& actor)
+std::unique_ptr<ActorTransformController> Box2DPhysicsSystem::newActorTransformController(Actor& actor)
 {
-	return new Box2DActorTransformController(actor, *this);
+	return std::make_unique<Box2DActorTransformController>(actor, *this);
 }
 
 

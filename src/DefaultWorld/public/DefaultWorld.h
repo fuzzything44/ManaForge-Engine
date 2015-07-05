@@ -22,9 +22,6 @@ class DefaultWorld : public World
 {
 public:
 
-	bool isDestructing;
-
-
 	friend struct DefaultWorldLocation;
 
 	explicit DefaultWorld(const std::string& name = "");

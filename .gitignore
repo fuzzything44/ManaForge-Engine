@@ -32,13 +32,13 @@
 *.psess
 *.vspx
 
-bin/Debug/Engine.*
+bin/Debug/ManaForgeEngine.*
 bin/Debug/Game.*
 bin/Game/Deubg/
 bin/Engine/Debug/
 bin/Editor/Debug/
 bin/Debug/Editor.*
-bin/Release/Engine.*
+bin/Release/ManaForgeEngine.*
 bin/Release/Game.*
 bin/Debug/Modules/OpenGLRenderer.*
 bin/Release/Modules/OpenGLRenderer.*

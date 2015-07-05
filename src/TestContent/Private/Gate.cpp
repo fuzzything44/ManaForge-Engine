@@ -11,6 +11,9 @@
 #define SAVE_DATA Gate, Actor, isOpen, timeToDestruction
 #include REGISTER_FOR_SAVING_SOURCE()
 
+bool Gate::isInitalized = false;
+std::shared_ptr<Material> Gate::mat = nullptr;
+
 Gate::Gate()
 	: Actor(), timeToDestruction(3.f)
 {
@@ -36,14 +39,19 @@ Gate::Gate()
 		{0, 1, 2},
 		{1, 2, 3}
 	};
+	if (!isInitalized)
+	{
+		auto tex = Runtime::get().moduleManager.getRenderer().newTexture("0");
 
-	auto tex = Runtime::get().moduleManager.getRenderer().newTexture("0");
+		tex->setFilterMode(Texture::FilterMode::MIPMAP_LINEAR);
 
-	tex->setFilterMode(Texture::FilterMode::MIPMAP_LINEAR);
+		mat = Runtime::get().moduleManager.getRenderer().newMaterial("boilerplate");
 
-	mat = Runtime::get().moduleManager.getRenderer().newMaterial("boilerplate");
+		mat->setTexture(0, *tex);
 
-	mat->setTexture(0, *tex);
+		isInitalized = true;
+
+	}
 
 	meshComp = new MeshComponent(*this, Transform{}, ModelData
 		(mat, vertLocs, UVs, tris, 6, 2));
@@ -71,4 +79,5 @@ void Gate::tick(float deltaTime)
 }
 Gate::~Gate()
 {
+	
 }

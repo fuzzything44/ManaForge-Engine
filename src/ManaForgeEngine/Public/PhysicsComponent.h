@@ -27,7 +27,7 @@ public:
 
 
 private:
-	PhysicsBody* body;
+	std::unique_ptr<PhysicsBody> body;
 
 };
 

@@ -19,8 +19,8 @@ public:
 
 	virtual void setGravity(vec2 newGravity) = 0;
 
-	virtual PhysicsBody* newPhysicsBody(PhysicsShape& shape, PhysicsComponent& owner) = 0;
+	virtual std::unique_ptr<PhysicsBody> newPhysicsBody(PhysicsShape& shape, PhysicsComponent& owner) = 0;
 	virtual std::unique_ptr<PhysicsShape> newPhysicsShape() = 0;
-	virtual ActorTransformController* newActorTransformController(Actor& actor) = 0;
+	virtual std::unique_ptr<ActorTransformController> newActorTransformController(Actor& actor) = 0;
 	virtual void drawDebugPoints() = 0;
 };

@@ -39,7 +39,6 @@ typedef boost::archive::polymorphic_binary_iarchive iarchive_t;
 #endif
 
 DefaultWorld::DefaultWorld(const std::string& name)
-	:isDestructing(false)
 {
 	if (name != "")
 	{
@@ -51,13 +50,13 @@ DefaultWorld::DefaultWorld(const std::string& name)
 DefaultWorld::~DefaultWorld()
 {
 
-	isDestructing = true;
 
-	for (auto& elem : actors)
+	while (actors.end() != actors.begin())
 	{
-		if (elem) // delete our actors.
-			delete elem;
+		delete *(--actors.end());
 	}
+
+	assert(actors.size() == 0);
 }
 
 
@@ -304,7 +303,6 @@ void DefaultWorld::init(const std::string& name)
 
 bool DefaultWorld::update(float deltaTime)
 {
-	logger<Debug>() << actors.size();
 	tickingActors(deltaTime);
 	return true;
 }

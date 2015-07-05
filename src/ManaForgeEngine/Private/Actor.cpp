@@ -24,8 +24,6 @@ Actor::~Actor()
 		delete elem;
 	}
 
-	delete transController;
-
 }
 
 

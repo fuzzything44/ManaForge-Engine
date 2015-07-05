@@ -97,7 +97,7 @@ public:
 
 protected:
 
-	ActorTransformController* transController;
+	std::unique_ptr<ActorTransformController> transController;
 
 	std::vector<Component*> components;
 
