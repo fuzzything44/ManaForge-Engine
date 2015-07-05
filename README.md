@@ -1,4 +1,4 @@
-RPG-Simulator 
+ManaForge Engine 
 =============
 
 SETUP:
