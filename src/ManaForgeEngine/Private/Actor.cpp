@@ -18,11 +18,6 @@ Actor::Actor()
 
 Actor::~Actor()
 {
-	
-	for (auto elem : components)
-	{
-		delete elem;
-	}
 
 }
 

@@ -53,8 +53,8 @@ Gate::Gate()
 
 	}
 
-	meshComp = new MeshComponent(*this, Transform{}, ModelData
-		(mat, vertLocs, UVs, tris, 6, 2));
+	meshComp = std::make_unique<MeshComponent>(*this, Transform{}, ModelData
+		(*mat, vertLocs, UVs, tris, 6, 2));
 	
 
 
@@ -65,7 +65,7 @@ Gate::Gate()
 
 	shape->asRectangle(.75f, .75f);
 
-	physComp = new PhysicsComponent(*this, *shape, Transform{});
+	physComp = std::make_unique<PhysicsComponent>(*this, *shape, Transform{});
 	physComp->setDensity(1.f);
 	
 

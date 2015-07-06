@@ -10,9 +10,9 @@ public:
 
 	friend class OpenGLRenderer;
 
-	explicit OpenGLModel(ModelData data, MeshComponent* owner, OpenGLRenderer* renderer);
+	explicit OpenGLModel(ModelData data, MeshComponent& owner, OpenGLRenderer& renderer);
 
-	MeshComponent* getOwnerComponent() override;
+	MeshComponent& getOwnerComponent() override;
 
 	virtual ~OpenGLModel();
 
@@ -34,9 +34,9 @@ protected:
 
 	ModelBounds bounds;
 
-	MeshComponent* parent;
-	OpenGLRenderer* renderer;
+	MeshComponent& parent;
+	OpenGLRenderer& renderer;
 
-	std::shared_ptr<OpenGLMaterial> material;
+	OpenGLMaterial& material;
 
 };

@@ -13,8 +13,8 @@ class Gate : public Actor, TickingActor<Gate>
 {
 	INIT_SAVED_CLASS()
 
-	MeshComponent* meshComp;
-	PhysicsComponent* physComp;
+	std::unique_ptr<MeshComponent> meshComp;
+	std::unique_ptr<PhysicsComponent> physComp;
 	static std::shared_ptr<Material> mat;
 	static bool isInitalized;
 	float timeToDestruction;

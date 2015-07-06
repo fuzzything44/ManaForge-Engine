@@ -1,6 +1,9 @@
 #include "OpenGLRendererConfig.h"
 
-#include <OpenGLRenderer.h>
+#include "OpenGLModel.h"
+
+#include "OpenGLRenderer.h"
+
 #include <Transform.h>
 #include <ModuleManager.h>
 #include <Helper.h>
@@ -9,13 +12,13 @@
 
 #include <glm-ortho-2d.h>
 
-OpenGLModel::OpenGLModel(ModelData data, MeshComponent* owner, OpenGLRenderer* renderer)
+OpenGLModel::OpenGLModel(ModelData data, MeshComponent& owner, OpenGLRenderer& renderer)
 	:numVerts(data.numVerts),
 	numTris(data.numTriangles),
 	renderer(renderer),
 	parent(owner),
 	bounds(data.bounds),
-	material(std::static_pointer_cast<OpenGLMaterial>(data.material))
+	material(static_cast<OpenGLMaterial&>(data.material))
 {	
 	
 	// make sure they aren't zero
@@ -23,7 +26,7 @@ OpenGLModel::OpenGLModel(ModelData data, MeshComponent* owner, OpenGLRenderer* r
 	check(numTris);
 
 	// add model to renderer's list
-	renderer->models.push_front(this);
+	renderer.models.push_front(this);
 
 	// init GL buffers
 	glGenVertexArrays(1, &vertexArray);
@@ -45,9 +48,7 @@ OpenGLModel::OpenGLModel(ModelData data, MeshComponent* owner, OpenGLRenderer* r
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uvec3) * numTris, data.triangles, GL_STATIC_DRAW);
 
 
-	// get the cameraMat location
-	check(material);
-	MVPUniformLocation = glGetUniformLocation((*material)(), "MVPmat");
+	MVPUniformLocation = glGetUniformLocation(material(), "MVPmat");
 }
 
 
@@ -62,13 +63,11 @@ OpenGLModel::~OpenGLModel()
 
 	if (!OpenGLRenderer::isDestroying)
 	{
-		check(renderer);
-
-		renderer->models.remove(this);
+		renderer.models.remove(this);
 	}
 }
 
-MeshComponent* OpenGLModel::getOwnerComponent()
+MeshComponent& OpenGLModel::getOwnerComponent()
 {
 	return parent;
 }
@@ -94,10 +93,8 @@ bool OpenGLModel::isInBounds(const mat3& model, const mat4& camera) // TODO: ACT
 
 void OpenGLModel::draw()
 {
-	check(parent);
-
-	mat3 view = renderer->getCurrentCamera().getViewMat();
-	mat3 model = parent->getModelMatrix();
+	mat3 view = renderer.getCurrentCamera().getViewMat();
+	mat3 model = parent.getModelMatrix();
 
 	mat3 MVPmat = view * model;
 
@@ -105,7 +102,7 @@ void OpenGLModel::draw()
 	//if (!isInBounds(model, camera))
 	//	return;
 
-	material->use();
+	material.use();
 
 	glBindVertexArray(vertexArray);
 
@@ -120,7 +117,7 @@ void OpenGLModel::draw()
 	}
 
 
-	glUniform1f(glGetUniformLocation((*material)(), "renderOrder"), 1.f);
+	glUniform1f(glGetUniformLocation(material(), "renderOrder"), 1.f);
 
 	// bind location data to the element attrib array so it shows up in our shaders -- the location is zero (look in shader)
 	glEnableVertexAttribArray(0);

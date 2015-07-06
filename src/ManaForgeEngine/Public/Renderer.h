@@ -36,7 +36,7 @@ public:
 	/// <summary> Sets camera to render at. </summary>
 	///
 	/// <param name="newCamera"> The camera it should render at. </param>
-	virtual void setCurrentCamera(CameraComponent* newCamera) = 0;
+	virtual void setCurrentCamera(CameraComponent& newCamera) = 0;
 
 	/// <summary> Gets the camera.</summary>
 	///
@@ -50,20 +50,11 @@ public:
 	/// <summary> Creates a new model.</summary>
 	///
 	/// <returns> null if it fails, else a Model*.</returns>
-	virtual std::unique_ptr<Model> newModel(const ModelData& data, MeshComponent* owner) = 0;
+	virtual std::unique_ptr<Model> newModel(const ModelData& data, MeshComponent& owner) = 0;
 	virtual std::shared_ptr<Texture> newTexture(const std::string& name) = 0;
 	virtual std::unique_ptr<TextureLibrary> newTextureLibrary(uint16, uint16) = 0;
-	virtual std::shared_ptr<Material> newMaterial(const std::string& name) = 0;
+	virtual std::unique_ptr<Material> newMaterial(const std::string& name) = 0;
 
-	virtual void deleteTextureLibrary(TextureLibrary* library) = 0;
-	virtual void deleteMaterial(Material* material) = 0;
-
-	virtual void removeModel(Model* model) = 0;
-
-	/// <summary> Loads the textures.</summary>
-	///
-	/// <param name="textures"> The textures.</param>
-	virtual void loadTextures(std::vector<std::string> textures) = 0;
 
 	/// <summary> Destructor.</summary>
 	virtual ~Renderer() { }

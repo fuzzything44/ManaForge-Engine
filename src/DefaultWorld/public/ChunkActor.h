@@ -14,11 +14,11 @@ public:
 	{
 		setWorldTransform(trans);
 
-		meshComp = new MeshComponent(*this, Transform{}, data);
+		meshComp = std::make_shared<MeshComponent>(*this, Transform{}, data);
 	}
 
 private:
 
-	MeshComponent* meshComp;
+	std::shared_ptr<MeshComponent> meshComp;
 
 };

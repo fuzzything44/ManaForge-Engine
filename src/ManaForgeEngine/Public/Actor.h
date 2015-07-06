@@ -99,7 +99,7 @@ protected:
 
 	std::unique_ptr<ActorTransformController> transController;
 
-	std::vector<Component*> components;
+	std::deque<Component* > components;
 
 
 	// save and load functions    

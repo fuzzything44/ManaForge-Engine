@@ -5,6 +5,7 @@
 #include "OpenGLWindow.h"
 #include "OpenGLTexture.h"
 #include "OpenGLTextureLibrary.h"
+#include "OpenGLModel.h"
 
 #include <Runtime.h>
 #include <Renderer.h>
@@ -18,8 +19,8 @@
 bool OpenGLRenderer::isDestroying = false;
 
 OpenGLRenderer::OpenGLRenderer()
-	: window(new OpenGLWindow()),
-	debugDraw(new OpenGLMaterial("debugdraw"))
+	: window(std::make_unique<OpenGLWindow>()),
+	debugDraw(std::make_unique<OpenGLMaterial>("debugdraw"))
 {
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
@@ -41,9 +42,6 @@ OpenGLRenderer::~OpenGLRenderer()
 	}
 
 	glFinish();
-
-	delete window;
-	delete debugDraw;
 }
 
 Window& OpenGLRenderer::getWindow()
@@ -60,9 +58,9 @@ const Window& OpenGLRenderer::getWindow() const
 	return *window;
 }
 
-std::unique_ptr<Model> OpenGLRenderer::newModel(const ModelData& params, MeshComponent* owner)
+std::unique_ptr<Model> OpenGLRenderer::newModel(const ModelData& params, MeshComponent& owner)
 {
-	return std::make_unique<OpenGLModel>(params, owner, this);
+	return std::make_unique<OpenGLModel>(params, owner, *this);
 }
 
 std::shared_ptr<Texture> OpenGLRenderer::newTexture(const std::string& name)
@@ -83,26 +81,10 @@ std::unique_ptr<TextureLibrary> OpenGLRenderer::newTextureLibrary(uint16 maxElem
 	return std::make_unique<OpenGLTextureLibrary>(maxElems, individualSize);
 }
 
-std::shared_ptr<Material> OpenGLRenderer::newMaterial(const std::string& name)
+std::unique_ptr<Material> OpenGLRenderer::newMaterial(const std::string& name)
 {
 	
-	return std::make_shared<OpenGLMaterial>(name);
-}
-
-void OpenGLRenderer::deleteTextureLibrary(TextureLibrary* library)
-{
-	delete library;
-}
-void OpenGLRenderer::deleteMaterial(Material* material)
-{
-	delete material;
-}
-
-
-
-void OpenGLRenderer::removeModel(Model* model)
-{
-	delete model;
+	return std::make_unique<OpenGLMaterial>(name);
 }
 
 bool OpenGLRenderer::update()
@@ -126,34 +108,29 @@ bool OpenGLRenderer::update()
 	return ret;
 }
 
-void OpenGLRenderer::setCurrentCamera(CameraComponent* newCamera)
+void OpenGLRenderer::setCurrentCamera(CameraComponent& newCamera)
 {
-	currentCamera = newCamera;
-}
-
-void OpenGLRenderer::loadTextures(std::vector<std::string> /*textures*/)
-{
-
+	currentCamera = &newCamera;
 }
 
 
 CameraComponent& OpenGLRenderer::getCurrentCamera()
 {
 	check(currentCamera);
-
 	return *currentCamera;
 }
 
-const CameraComponent& OpenGLRenderer::getCurrentCamera() const
+const CameraComponent& OpenGLRenderer::getCurrentCamera() const  
 {
 	check(currentCamera);
-
 	return *currentCamera;
 }
 
 
 void OpenGLRenderer::drawDebugOutlinePolygon(vec2* verts, uint32 numVerts, Color color)
 {
+
+	check(currentCamera);
 
 	debugDraw->use();
 
@@ -224,6 +201,8 @@ void OpenGLRenderer::drawDebugLine(vec2* locs, uint32 numLocs, Color color)
 }
 void OpenGLRenderer::drawDebugSolidPolygon(vec2* verts, uint32 numVerts, Color color)
 {
+	check(currentCamera);
+
 	debugDraw->use();
 
 	glUniform4f(glGetUniformLocation((*debugDraw)(), "color"), .5f * (float)color.red / 255.f, .5f * (float)color.green / 255.f, .5f * (float)color.blue / 255.f, .5f * (float)color.alpha / 255.f);
@@ -263,6 +242,9 @@ void OpenGLRenderer::drawDebugSolidPolygon(vec2* verts, uint32 numVerts, Color c
 
 void OpenGLRenderer::drawDebugOutlineCircle(vec2 center, float radius, Color color)
 {
+
+	check(currentCamera);
+
 	const float k_segments = 16.0f;
 	const float k_increment = 2.0f * (float)M_PI / k_segments;
 	float theta = 0.0f;
@@ -305,11 +287,16 @@ void OpenGLRenderer::drawDebugOutlineCircle(vec2 center, float radius, Color col
 
 	glDeleteBuffers(1, &buff);
 	glDeleteVertexArrays(1, &vao);
+
+	delete[] verts;
 }
 
 
 void OpenGLRenderer::drawDebugSolidCircle(vec2 center, float radius, Color color)
 {
+
+	check(currentCamera);
+
 	const float k_segments = 16.0f;
 	const float k_increment = 2.0f * (float)M_PI / k_segments;
 	float theta = 0.0f;
@@ -363,6 +350,7 @@ void OpenGLRenderer::drawDebugSolidCircle(vec2 center, float radius, Color color
 void OpenGLRenderer::drawDebugSegment(vec2 p1, vec2 p2, Color color)
 {
 
+	check(currentCamera);
 
 	debugDraw->use();
 

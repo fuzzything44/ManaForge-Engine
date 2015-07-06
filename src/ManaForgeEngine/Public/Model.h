@@ -30,7 +30,7 @@ struct ModelBounds
 struct ModelData
 {
 	ModelData(
-		std::shared_ptr<Material> material,
+		Material& material,
 		vec2* vertexLocations = nullptr,
 		vec2* UVs = nullptr,
 		uvec3* triangles = nullptr,
@@ -54,7 +54,7 @@ struct ModelData
 	uvec3* triangles;
 	uint32 numVerts;
 	uint32 numTriangles;
-	std::shared_ptr<Material> material;
+	Material& material;
 	ModelBounds bounds;
 };
 
@@ -67,7 +67,7 @@ public:
 
 	Model() { }
 	
-	virtual MeshComponent* getOwnerComponent() = 0;
+	virtual MeshComponent& getOwnerComponent() = 0;
 
 
 };

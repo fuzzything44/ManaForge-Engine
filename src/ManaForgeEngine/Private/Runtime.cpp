@@ -15,6 +15,7 @@
 #include <functional>
 #include <list>
 #include <chrono>
+#include <future>
 
 #include <boost/timer/timer.hpp>
 
@@ -67,7 +68,7 @@ void Runtime::run()
 {
 	{
 		// get the callbacks
-		std::list<ModuleManager::initFun>& initCallbacks = moduleManager.getInitCallbacks();
+		auto initCallbacks = moduleManager.getInitCallbacks();
 
 		for (auto& callback : initCallbacks)
 		{
@@ -94,8 +95,8 @@ void Runtime::run()
 
 	Actor* player = new Actor();
 
-	CameraComponent* c = new CameraComponent{ *player, Transform{}, aspectRatio, .1f };
-	moduleManager.getRenderer().setCurrentCamera(c);
+	auto c = std::make_unique<CameraComponent>(*player, Transform{}, aspectRatio, .1f);
+	moduleManager.getRenderer().setCurrentCamera(*c);
 
 
 	vec2 locations[] = 
@@ -124,17 +125,17 @@ void Runtime::run()
 
 	mat->setTexture(0, *tex);
 
-	MeshComponent* meshComp = new MeshComponent(*player, Transform{}, ModelData(mat, locations, UVs, tris, 4, 2));
+	auto meshComp = std::make_unique<MeshComponent>(*player, Transform{}, ModelData(*mat, locations, UVs, tris, 4, 2));
 
 
 	auto shape = moduleManager.getPhysicsSystem().newPhysicsShape();
 	shape->asCircle(1.f);
 
-	PhysicsComponent* physComp = new PhysicsComponent(*player, *shape, Transform{});
+	auto physComp = std::make_unique<PhysicsComponent>(*player, *shape, Transform{});
 	player->setPhysicsType(PhysicsType::DYNAMIC);
 	physComp->setDensity(1.f);
 	
-	Actor* pew = moduleManager.spawnClass<Actor>("TestContent.Pew");
+	auto pew = moduleManager.spawnClass<Actor>("TestContent.Pew");
 	check(pew);
 
 	// set initial tick
@@ -211,7 +212,7 @@ void Runtime::run()
 		}
 
 		// recieve the update callbacks
-		std::list<ModuleManager::updateFun>& updateCallbacks = moduleManager.getUpdateCallbacks();
+		auto updateCallbacks = moduleManager.getUpdateCallbacks();
 
 		shouldContinue = true;
 
@@ -221,14 +222,14 @@ void Runtime::run()
 			{
 				logger<Warning>() << "Update callback empty";
 			}
-
-			if(!callback(delta)) // it would return true if we should coninue
+			else if (!callback(delta))
 			{
 				shouldContinue = false;
 			}
+			
 		}
 		
-
+	
 
 	} while (shouldContinue);
 }

@@ -280,7 +280,7 @@ void DefaultWorld::init(const std::string& name)
 							vec2(xChunks * backgroundChunkSize, yChunks * backgroundChunkSize)
 						},
 						ModelData(
-							drawMaterial,
+							*drawMaterial,
 							&locations[0],
 							&UVs[0],
 							&elems[0],

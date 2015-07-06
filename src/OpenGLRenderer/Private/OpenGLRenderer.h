@@ -2,11 +2,11 @@
 #include "Renderer.h"
 #include <list>
 #include <vector>
-#include "OpenGLWindow.h"
 
 class OpenGLModel;
 class OpenGLMaterial;
 class OpenGLTexture;
+class OpenGLWindow;
 
 class OpenGLRenderer : public Renderer
 {
@@ -23,15 +23,10 @@ public:
 	virtual Window& getWindow() override;
 	const Window& getWindow() const override;
 
-	virtual std::unique_ptr<Model> newModel(const ModelData& params, MeshComponent* owner) override;
+	virtual std::unique_ptr<Model> newModel(const ModelData& params, MeshComponent& owner) override;
 	virtual std::shared_ptr<Texture> newTexture(const std::string& name) override;
 	virtual std::unique_ptr<TextureLibrary> newTextureLibrary(uint16, uint16) override;
-	virtual std::shared_ptr<Material> newMaterial(const std::string& name) override;
-
-	virtual void deleteTextureLibrary(TextureLibrary* library) override;
-	virtual void deleteMaterial(Material* material) override;
-
-	virtual void removeModel(Model* model) override;
+	virtual std::unique_ptr<Material> newMaterial(const std::string& name) override;
 
 	/// <summary> Renders the next frame. </summary>
 	virtual bool update() override;
@@ -39,9 +34,7 @@ public:
 	/// <summary> Sets camera to render at. </summary>
 	///
 	/// <param name="newCamera"> The camera it should render at. </param>
-	virtual void setCurrentCamera(CameraComponent* newCamera) override;
-
-	void loadTextures(std::vector<std::string> textures) override;
+	virtual void setCurrentCamera(CameraComponent& newCamera) override;
 
 
 	CameraComponent& getCurrentCamera() override;
@@ -57,9 +50,9 @@ public:
 private:
 	
 
-	OpenGLWindow* window;
+	std::unique_ptr<OpenGLWindow> window;
 
-	OpenGLMaterial* debugDraw;
+	std::unique_ptr<OpenGLMaterial> debugDraw;
 
 	CameraComponent* currentCamera;
 
@@ -69,6 +62,3 @@ private:
 
 	static bool isDestroying;
 };
-
-
-#include "OpenGLModel.h"
