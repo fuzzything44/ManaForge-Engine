@@ -24,6 +24,11 @@ OpenALAudioSystem::OpenALAudioSystem()
 	}
 }
 
+OpenALAudioSystem::~OpenALAudioSystem()
+{
+
+}
+
 void OpenALAudioSystem::addSource(OpenALSoundSource* source)
 {
 	sources.push_back(source);

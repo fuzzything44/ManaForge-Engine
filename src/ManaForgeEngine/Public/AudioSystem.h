@@ -14,7 +14,7 @@ class AudioComponent;
 class AudioSystem : boost::noncopyable
 {
 public:
-	AudioSystem(){}
+	virtual ~AudioSystem(){};
 
 	virtual std::shared_ptr<SoundCue> newSoundCue(const std::string& name) = 0;
 	virtual std::unique_ptr<SoundSource> newSoundSource(SoundCue& cue, AudioComponent& owner) = 0;

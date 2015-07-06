@@ -60,6 +60,8 @@ DefaultWorld::~DefaultWorld()
 	assert(actors.size() == 0);
 
 	tickingActors.~signal();
+
+	delete[] background;
 }
 
 
