@@ -28,7 +28,7 @@
 Runtime* Runtime::currentRuntime = nullptr;
 
 Runtime::Runtime(const std::string& worldPath)
-	:propManager((changeDir(), logdetail::sink_t::init(), "props.json")),
+	:propManager((changeDir(), logdetail::log_base::init(), "props.json")),
 	moduleManager()
 {
 	

@@ -5,7 +5,7 @@
 namespace logdetail
 {
 
-	boost::iostreams::stream<sink_t> log_base::str = boost::iostreams::stream<sink_t>(sink_t());
+	boost::iostreams::stream<sink_t>* log_base::str = nullptr;
 
-	std::ofstream sink_t::file = std::ofstream();
+	std::ofstream* sink_t::file = nullptr;
 }

@@ -9,8 +9,6 @@
 
 #include <vector>
 
-static const unsigned int MAX_ACTORS = 100001;
-
 class Component;
 
 template<typename Derived>

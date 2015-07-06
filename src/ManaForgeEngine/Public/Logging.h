@@ -66,7 +66,7 @@ namespace logdetail
 		std::streamsize write(const char_type* s, std::streamsize n)
 		{
 			std::copy(s, s + n, std::ostream_iterator<char_type>(std::cout));
-			std::copy(s, s + n, std::ostream_iterator<char_type>(file));
+			std::copy(s, s + n, std::ostream_iterator<char_type>(*file));
 
 			return n;
 
@@ -75,27 +75,39 @@ namespace logdetail
 
 		static void init()
 		{
-			file = std::ofstream("ENGLOG.log");
+			file = new std::ofstream("ENGLOG.log");
+		}
+
+		static void cleanup()
+		{
+			delete file;
 		}
 
 	private:
-		ENGINE_API static std::ofstream file;
+		ENGINE_API static std::ofstream* file;
 	};
 
 
 	struct log_base
 	{
 
-		inline static void flush(){ str.flush(); }
+		inline static void flush(){ str->flush(); }
+
+		static void init()
+		{
+			sink_t::init();
+			str = new boost::iostreams::stream<sink_t>(sink_t());
+		}
 
 		static void cleanup()
 		{
-			str.~stream();
+			sink_t::cleanup();
+			delete str;
 		}
 
 	protected:
 
-		ENGINE_API static boost::iostreams::stream<sink_t> str;
+		ENGINE_API static boost::iostreams::stream<sink_t>* str;
 
 
 	};
@@ -111,7 +123,7 @@ struct logger : logdetail::log_base
 
 		ptime time = second_clock::local_time();
 
-		str << "\n[" << time << "] (" << sev << ") : ";
+		*str << "\n[" << time << "] (" << sev << ") : ";
 	}
 
 	inline ~logger()
@@ -122,8 +134,8 @@ struct logger : logdetail::log_base
 	template <typename T>
 	std::ostream& operator<<(const T& member)
 	{
-		str << member;
-		return str;
+		*str << member;
+		return *str;
 	}
 };
 
@@ -136,7 +148,7 @@ struct logger<Fatal> : logdetail::log_base
 
 		ptime time = second_clock::local_time();
 
-		str << "\n[" << time << "] (" << Fatal << ") : ";
+		*str << "\n[" << time << "] (" << Fatal << ") : ";
 	}
 
 	inline ~logger()
@@ -148,7 +160,7 @@ struct logger<Fatal> : logdetail::log_base
 	template <typename T>
 	inline std::ostream& operator<<(const T& member)
 	{
-		str << member;
-		return str;
+		*str << member;
+		return *str;
 	}
 };

@@ -17,8 +17,6 @@
 #include <functional>
 #include <algorithm>
 
-bool OpenGLRenderer::isDestroying = false;
-
 OpenGLRenderer::OpenGLRenderer()
 	: window(std::make_unique<OpenGLWindow>()),
 	debugDraw(std::make_unique<OpenGLMaterial>("debugdraw"))

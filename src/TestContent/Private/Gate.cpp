@@ -11,8 +11,6 @@
 #define SAVE_DATA Gate, Actor, isOpen, timeToDestruction
 #include REGISTER_FOR_SAVING_SOURCE()
 
-bool Gate::isInitalized = false;
-std::shared_ptr<Material> Gate::mat = nullptr;
 
 Gate::Gate()
 	: Actor(), timeToDestruction(30.f)
@@ -39,19 +37,15 @@ Gate::Gate()
 		{0, 1, 2},
 		{1, 2, 3}
 	};
-	if (!isInitalized)
-	{
-		auto tex = Runtime::get().moduleManager.getRenderer().newTexture("0");
 
-		tex->setFilterMode(Texture::FilterMode::MIPMAP_LINEAR);
+	auto tex = Runtime::get().moduleManager.getRenderer().newTexture("0");
 
-		mat = Runtime::get().moduleManager.getRenderer().newMaterial("boilerplate");
+	tex->setFilterMode(Texture::FilterMode::MIPMAP_LINEAR);
 
-		mat->setTexture(0, *tex);
+	mat = Runtime::get().moduleManager.getRenderer().newMaterial("boilerplate");
 
-		isInitalized = true;
+	mat->setTexture(0, *tex);
 
-	}
 
 	meshComp = std::make_unique<MeshComponent>(*this, Transform{}, ModelData
 		(*mat, vertLocs, UVs, tris, 6, 2));

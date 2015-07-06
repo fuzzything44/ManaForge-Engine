@@ -2,6 +2,7 @@
 #include "Renderer.h"
 #include <list>
 #include <vector>
+#include <map>
 
 class OpenGLModel;
 class OpenGLMaterial;
@@ -60,5 +61,4 @@ private:
 	std::list<OpenGLModel*> models;
 	std::map<std::string, std::shared_ptr<OpenGLTexture> > textures;
 
-	static bool isDestroying;
 };
