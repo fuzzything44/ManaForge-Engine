@@ -108,14 +108,9 @@ void OpenGLMaterial::addShaderProgramFromFile(std::string name)
 	glDeleteShader(fragmentShader);
 }
 
-void OpenGLMaterial::addShaderProgramFromSource(std::string shader)
-{
-}
-
 void OpenGLMaterial::setTexture(uint32 ID, Texture& texture)
 {
 	textures[ID] = texture.getID();
-
 
 }
 
@@ -125,26 +120,14 @@ void OpenGLMaterial::use()
 {
 	glUseProgram(program);
 
-	//for (uint32 i = 0; i < maxTextures; i++)
-	//{
-	//	glUniform1i(startTexUniform + i, i);
-
-	//	glActiveTexture(GL_TEXTURE0 + i);
-	//	glBindTexture(GL_TEXTURE_2D, textures[i]);
-	//}
-
-	if (startTexUniform != -1)
+	for (uint32 i = 0; i < maxTextures; i++)
 	{
+		glUniform1i(startTexUniform + i, i);
 
-		glUniform1i(startTexUniform, 0);
-
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, textures[0]);
-
+		glActiveTexture(GL_TEXTURE0 + i);
+		glBindTexture(GL_TEXTURE_2D, textures[i]);
 	}
-
 	
-
 }
 
 GLint OpenGLMaterial::operator()()

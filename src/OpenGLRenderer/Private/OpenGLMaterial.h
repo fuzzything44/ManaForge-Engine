@@ -15,7 +15,6 @@ public:
 	virtual ~OpenGLMaterial() override;
 
 	void addShaderProgramFromFile(std::string filename);
-	void addShaderProgramFromSource(std::string shader);
 
 
 	void virtual setTexture(uint32 ID, Texture& texture) override;

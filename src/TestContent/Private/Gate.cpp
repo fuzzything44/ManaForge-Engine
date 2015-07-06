@@ -16,7 +16,7 @@ std::unique_ptr<Material> Gate::mat = nullptr;
 bool Gate::isInitalized = false;
 
 Gate::Gate()
-	: Actor(), timeToDestruction(30.f)
+	: Actor(), timeToDestruction(3.f)
 {
 
 	vec2 vertLocs[] =
