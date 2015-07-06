@@ -35,7 +35,7 @@ public:
 	virtual void applyLocalForce(vec2 localForce, vec2 localPoint) = 0;
 	virtual void applyWorldForce(vec2 localForce, vec2 localPoint) = 0;
 
-	virtual void applyTorque(float magnituede) = 0;
+	virtual void applyTorque(float magnitude) = 0;
 
 
 	virtual void setAngularVelocity(float newVelocity) = 0;
