@@ -6,7 +6,7 @@
 
 extern "C" OpenALAudioSystem_API void registerModule(ModuleManager& manager)
 {
-	manager.setAudioSystem(new OpenALAudioSystem());
+	manager.setAudioSystem(std::make_unique<OpenALAudioSystem>());
 	manager.addUpdateCallback([&manager](float delta)
 	{
 		return static_cast<OpenALAudioSystem*>(&(manager.getAudioSystem()))->update();

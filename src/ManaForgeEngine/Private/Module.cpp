@@ -10,8 +10,7 @@ Module::Module(const std::string& filename) :
 	registerModuleFunctionAddress(nullptr),
 	getModuleEngineVersionAddress(nullptr),
 	name(std::string("Modules\\").append(filename)), // Append the modules prefiex
-	libraryHandle(nullptr),
-	refrenceCount(nullptr)
+	libraryHandle(nullptr)
 {
 	try{
 
@@ -32,21 +31,8 @@ Module::Module(const std::string& filename) :
 
 	}
 
-	refrenceCount = new int(1);
 }
 
-Module::Module(const Module& other) :
-	registerModuleFunctionAddress(other.registerModuleFunctionAddress),
-	getModuleEngineVersionAddress(other.getModuleEngineVersionAddress),
-	name(other.name),
-	libraryHandle(other.libraryHandle),
-	refrenceCount(other.refrenceCount)
-{
-	if (refrenceCount)
-	{
-		(*refrenceCount)++;
-	}
-}
 
 void Module::registerModule(ModuleManager& mm)
 {
@@ -85,29 +71,8 @@ void* Module::spawnClass(const std::string& className)
 
 Module::~Module()
 {
-	// deincrement refcount
-	int remainingRefrences = --(*refrenceCount);
+	classes.erase(classes.begin(), classes.end());
 
-	if (remainingRefrences == 0)
-	{
-		try{
-
-			// make sure that these are deleted before the code is unloaded
-			for (auto& elem : classes)
-			{
-				elem.second.~function();
-			}
-
-			SharedLibrary::Unload(libraryHandle);
-
-			delete refrenceCount;
-
-
-		}
-		catch (std::exception& e)
-		{
-			logger<Error>() << e.what();
-		}
-	}
+	SharedLibrary::Unload(libraryHandle);
 
 }

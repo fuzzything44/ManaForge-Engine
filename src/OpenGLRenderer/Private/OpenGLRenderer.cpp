@@ -12,6 +12,7 @@
 #include <Helper.h>
 #include <Logging.h>
 #include <PhysicsSystem.h>
+#include <CameraComponent.h>
 
 #include <functional>
 #include <algorithm>
@@ -34,12 +35,7 @@ OpenGLRenderer::OpenGLRenderer()
 
 OpenGLRenderer::~OpenGLRenderer()
 {
-	isDestroying = true;
-
-	for (auto& elem : models)
-	{
-		delete elem;
-	}
+	assert(models.size() == 0);
 
 	glFinish();
 }
@@ -163,6 +159,8 @@ void OpenGLRenderer::drawDebugOutlinePolygon(vec2* verts, uint32 numVerts, Color
 
 	glDeleteBuffers(1, &buff);
 	glDeleteVertexArrays(1, &vao);
+
+
 
 }
 void OpenGLRenderer::drawDebugLine(vec2* locs, uint32 numLocs, Color color)

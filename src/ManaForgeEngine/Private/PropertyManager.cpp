@@ -26,6 +26,7 @@ void PropertyManager::init(const std::string& path)
 	try{
 
 		boost::property_tree::json_parser::read_json(stream, props);
+		
 	}
 	catch (std::exception& e)
 	{

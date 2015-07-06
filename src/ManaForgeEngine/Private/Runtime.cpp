@@ -11,6 +11,8 @@
 #include "Renderer.h"
 #include "PhysicsSystem.h"
 #include "Texture.h"
+#include "CameraComponent.h"
+#include "Material.h"
 
 #include <functional>
 #include <list>
@@ -48,7 +50,7 @@ Runtime::Runtime(const std::string& worldPath)
 	}
 
 	// load the world
-	world = moduleManager.spawnClass<World>("DefaultWorld.DefaultWorld");
+	world = std::unique_ptr < World > {moduleManager.spawnClass<World>("DefaultWorld.DefaultWorld")};
 	world->init("default");// load the test world
 
 	Window& window = moduleManager.getRenderer().getWindow();
@@ -59,8 +61,6 @@ Runtime::~Runtime()
 {
 	ImageLoader::cleanUp();
 	logdetail::log_base::cleanup();
-
-	delete world;
 
 }
 

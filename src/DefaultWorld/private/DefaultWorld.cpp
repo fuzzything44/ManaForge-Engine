@@ -12,6 +12,7 @@
 #include <Color.h>
 #include <TextureLibrary.h>
 #include <Renderer.h>
+#include <Material.h>
 
 #include <list>
 #include <fstream>
@@ -57,6 +58,8 @@ DefaultWorld::~DefaultWorld()
 	}
 
 	assert(actors.size() == 0);
+
+	tickingActors.~signal();
 }
 
 

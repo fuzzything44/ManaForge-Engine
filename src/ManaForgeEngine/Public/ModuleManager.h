@@ -39,9 +39,9 @@ public:
 	inline AudioSystem& getAudioSystem();
 	inline PhysicsSystem& getPhysicsSystem();
 	
-	inline void setRenderer(Renderer* newRenderer);
-	inline void setAudioSystem(AudioSystem* newAudioSystem);
-	inline void setPhysicsSystem(PhysicsSystem* newPhysicsSystem);
+	inline void setRenderer(std::unique_ptr<Renderer> newRenderer);
+	inline void setAudioSystem(std::unique_ptr<AudioSystem> newAudioSystem);
+	inline void setPhysicsSystem(std::unique_ptr<PhysicsSystem> newPhysicsSystem);
 
 	/// <summary> Loads a module.</summary>
 	///
@@ -65,16 +65,20 @@ private:
 	std::list<initFun> initCallbacks;
 	std::list<updateFun> updateCallbacks;
 
-	std::map<std::string, Module> loadedModules;
+	std::map<std::string, std::shared_ptr<Module> > loadedModules;
 
-	Renderer* renderer;
-	AudioSystem* audioSystem;
-	PhysicsSystem* physicsSystem;
+	std::unique_ptr<Renderer> renderer;
+	std::unique_ptr<AudioSystem> audioSystem;
+	std::unique_ptr<PhysicsSystem> physicsSystem;
 
 };
 
 #include "Helper.h"
 #include "Module.h"
+
+#include "PhysicsSystem.h"
+#include "AudioSystem.h"
+#include "Renderer.h"
 
 
 template<typename T>
@@ -90,7 +94,7 @@ inline void ModuleManager::registerClass(const std::string& moduleName, T* ptr)
 	auto moduleIter = loadedModules.find(moduleName);
 	if (moduleIter != loadedModules.end())
 	{
-		moduleIter->second.addClass(name, 
+		moduleIter->second->addClass(name, 
 			[]()
 			{
 				return new T(); 
@@ -117,7 +121,7 @@ inline T* ModuleManager::spawnClass(const std::string& name)
 	if (moduleIter != loadedModules.end())
 	{
 
-		return static_cast<T*>(moduleIter->second.spawnClass(className));
+		return static_cast<T*>(moduleIter->second->spawnClass(className));
 	}
 	// if we didn't return already, it wasn't found.
 	return nullptr;
@@ -139,24 +143,24 @@ PhysicsSystem& ModuleManager::getPhysicsSystem()
 	check(physicsSystem); return *physicsSystem;
 }
 
-void ModuleManager::setRenderer(Renderer* newRenderer)
+void ModuleManager::setRenderer(std::unique_ptr<Renderer> newRenderer)
 {
 	check(newRenderer);
 
-	renderer = newRenderer;
+	renderer = std::move(newRenderer);
 
 }
 
-void ModuleManager::setAudioSystem(AudioSystem* newAudioSystem)
+void ModuleManager::setAudioSystem(std::unique_ptr<AudioSystem> newAudioSystem)
 {
 	check(newAudioSystem);
 
-	audioSystem = newAudioSystem;
+	audioSystem = std::move(newAudioSystem);
 }
 
-void ModuleManager::setPhysicsSystem(PhysicsSystem* newPhysicsSystem)
+void ModuleManager::setPhysicsSystem(std::unique_ptr<PhysicsSystem> newPhysicsSystem)
 {
 	check(newPhysicsSystem);
 
-	physicsSystem = newPhysicsSystem;
+	physicsSystem = std::move(newPhysicsSystem);
 }

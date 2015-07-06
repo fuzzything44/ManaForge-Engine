@@ -7,6 +7,7 @@
 #include <Runtime.h>
 #include <Helper.h>
 #include <Renderer.h>
+#include <CameraComponent.h>
 
 #include "AL/alut.h"
 

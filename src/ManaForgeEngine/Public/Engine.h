@@ -9,11 +9,11 @@
 #endif
 
 #ifdef USE_VLD
-#	include <vld.h>
+#	//include <vld.h>
 #endif
 
 // ALWAYS link to stackwalker.lib
-#pragma comment(lib, "StackWalker.lib")
+//#pragma comment(lib, "StackWalker.lib")
 
 #if defined WIN32 || defined _WIN32
 #	define WIN32_LEAN_AND_MEAN 
@@ -25,7 +25,7 @@
 #include <glm/gtx/transform.hpp>
 #include <glm/gtx/matrix_transform_2d.hpp>
 
-#include <StackWalker.h>
+//#include <StackWalker.h>
 
 #include "Logging.h"
 #include "ENGException.h"

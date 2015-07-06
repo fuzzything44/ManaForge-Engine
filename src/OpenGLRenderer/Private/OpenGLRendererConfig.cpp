@@ -18,7 +18,7 @@
 
 extern "C" OpenGLRenderer_API void registerModule(ModuleManager& mm)
 {
-	mm.setRenderer(new OpenGLRenderer());
+	mm.setRenderer(std::make_unique<OpenGLRenderer>());
 
 	mm.addUpdateCallback(
 		std::bind(&OpenGLRenderer::update,

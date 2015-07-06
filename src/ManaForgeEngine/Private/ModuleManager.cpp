@@ -19,20 +19,9 @@ ModuleManager::ModuleManager()
 
 ModuleManager::~ModuleManager()
 {
+	initCallbacks.erase(initCallbacks.begin(), initCallbacks.end());
+	updateCallbacks.erase(updateCallbacks.begin(), updateCallbacks.end());
 
-	for (auto& elem : initCallbacks)
-	{
-		elem.~function();
-	}
-
-	for (auto& elem : updateCallbacks)
-	{
-		elem.~function();
-	}
-
-	delete renderer;
-	delete audioSystem;
-	delete physicsSystem;
 }
 
 
@@ -41,7 +30,7 @@ void ModuleManager::loadModule(const std::string& filename)
 
 	if (loadedModules.find(filename) == loadedModules.end())
 	{
-		loadedModules.insert(std::map<std::string, Module>::value_type(filename, Module(filename))).first->second.registerModule(*this);
+		loadedModules.insert({ filename, std::make_shared<Module>(filename) }).first->second->registerModule(*this);
 	}
 }
 

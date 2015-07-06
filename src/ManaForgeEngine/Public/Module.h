@@ -5,7 +5,7 @@
 
 class ModuleManager;
 
-class Module
+class Module : boost::noncopyable
 {
 
 public:
@@ -27,11 +27,6 @@ public:
 	/// <param name="filename"> Filename of the module to load.</param>
 	ENGINE_API Module(const std::string& filename);
 
-	/// <summary> Copys the module from the one specified.</summary>
-	///
-	/// <param name="other"> The other.</param>
-	ENGINE_API Module(const Module &other);
-
 	/// <summary> Destructor.</summary>
 	ENGINE_API ~Module();
 
@@ -45,5 +40,4 @@ private:
 
 	SharedLibrary::SharedLibHandle libraryHandle;
 
-	int* refrenceCount;
 };

@@ -33,7 +33,7 @@ public:
 	PropertyManager propManager;
 	InputManager inputManager;
 	
-	World* world;
+	std::unique_ptr<World> world;
 private:
 
 	PlayerController* controller;
@@ -43,13 +43,15 @@ private:
 	ENGINE_API static Runtime* currentRuntime;
 };
 
+#include "World.h"
+
 // collapeed for quicker debugging -- not very important
 inline Runtime& Runtime::get()
 {check(currentRuntime); return *currentRuntime;}
 
 inline World* Runtime::setWorld(World* newWorld)
 {
-	std::swap(world, newWorld);
+	std::swap(world, std::unique_ptr < World > {newWorld});
 
 	return newWorld;
 }

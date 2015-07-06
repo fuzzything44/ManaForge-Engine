@@ -50,8 +50,8 @@ void ImageLoader::addLoader(std::string extension, loadFun function)
 
 void ImageLoader::cleanUp()
 {
-	for (auto& elem : loadFunctions)
+	while (loadFunctions.begin() != loadFunctions.end())
 	{
-		elem.second.~function();
+		loadFunctions.erase(loadFunctions.begin());
 	}
 }

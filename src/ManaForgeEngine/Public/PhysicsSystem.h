@@ -1,15 +1,14 @@
 #pragma once
 
 #include "Engine.h"
-#include "PhysicsBody.h"
-#include "PhysicsShape.h"
-#include "ActorTransformController.h"
 
 #include <boost/noncopyable.hpp>
 
-
-
+class PhysicsBody;
+class PhysicsShape;
+class ActorTransformController;
 class PhysicsComponent;
+class Actor;
 
 class PhysicsSystem : boost::noncopyable
 {

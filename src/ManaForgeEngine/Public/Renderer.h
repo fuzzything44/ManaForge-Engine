@@ -73,8 +73,3 @@ public:
 	virtual void drawDebugSegment(vec2 p1, vec2 p2, Color color) = 0;
 
 };
-
-#include "Window.h"
-#include "CameraComponent.h"
-#include "Model.h"
-#include "Material.h"

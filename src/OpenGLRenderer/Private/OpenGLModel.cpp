@@ -61,10 +61,9 @@ OpenGLModel::~OpenGLModel()
 
 	glDeleteVertexArrays(1, &vertexArray);
 
-	if (!OpenGLRenderer::isDestroying)
-	{
-		renderer.models.remove(this);
-	}
+
+	renderer.models.remove(this);
+	
 }
 
 MeshComponent& OpenGLModel::getOwnerComponent()

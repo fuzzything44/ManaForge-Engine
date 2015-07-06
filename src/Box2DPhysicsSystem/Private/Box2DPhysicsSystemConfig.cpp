@@ -6,7 +6,7 @@
 
 extern "C" Box2DPhysicsSystem_API void registerModule(ModuleManager& manager)
 {
-	manager.setPhysicsSystem(new Box2DPhysicsSystem());
+	manager.setPhysicsSystem(std::make_unique<Box2DPhysicsSystem>());
 	manager.addUpdateCallback(std::bind(
 		&Box2DPhysicsSystem::update, 
 		static_cast<Box2DPhysicsSystem*>(&manager.getPhysicsSystem()), 
