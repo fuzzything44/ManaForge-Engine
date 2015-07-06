@@ -12,6 +12,9 @@
 #include REGISTER_FOR_SAVING_SOURCE()
 
 
+std::unique_ptr<Material> Gate::mat = nullptr;
+bool Gate::isInitalized = false;
+
 Gate::Gate()
 	: Actor(), timeToDestruction(30.f)
 {
@@ -42,15 +45,20 @@ Gate::Gate()
 
 	tex->setFilterMode(Texture::FilterMode::MIPMAP_LINEAR);
 
-	mat = Runtime::get().moduleManager.getRenderer().newMaterial("boilerplate");
+	if (!isInitalized)
+	{
+		mat = Runtime::get().moduleManager.getRenderer().newMaterial("boilerplate");
 
-	mat->setTexture(0, *tex);
+		mat->setTexture(0, *tex);
 
 
-	meshComp = std::make_unique<MeshComponent>(*this, Transform{}, ModelData
-		(*mat, vertLocs, UVs, tris, 6, 2));
+		meshComp = std::make_unique<MeshComponent>(*this, Transform{}, ModelData
+			(*mat, vertLocs, UVs, tris, 6, 2));
+
+
+	}
+
 	
-
 
 	auto shape = Runtime::get().moduleManager.getPhysicsSystem().newPhysicsShape();
 
