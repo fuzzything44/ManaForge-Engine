@@ -91,7 +91,7 @@ void Runtime::run()
 	
 	uvec2 windowSize = moduleManager.getRenderer().getWindow().getWindowProps().size;
 
-	float aspectRatio = static_cast<float>(windowSize.y) / static_cast<float>(windowSize.x);
+	float aspectRatio = float(windowSize.y) / float(windowSize.x);
 
 	Actor* player = new Actor();
 
@@ -149,8 +149,8 @@ void Runtime::run()
 	do {
 		// calculate tick time
 		clock::time_point CurrentTick = clock::now();
-		float delta = static_cast<float>((CurrentTick - LastTick).count()) * 
-			((float)clock::time_point::duration::period::num / (float)clock::time_point::duration::period::den);
+		std::chrono::duration<float> delta_duration = CurrentTick - LastTick;
+		float delta = delta_duration.count();
 
 		LastTick = CurrentTick;
 

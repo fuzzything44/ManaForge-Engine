@@ -33,12 +33,14 @@ public:
 	PropertyManager propManager;
 	InputManager inputManager;
 	
+
+	typedef std::chrono::high_resolution_clock clock;
+
 	std::unique_ptr<World> world;
 private:
 
 	PlayerController* controller;
 
-	typedef std::chrono::high_resolution_clock clock;
 
 	ENGINE_API static Runtime* currentRuntime;
 };
