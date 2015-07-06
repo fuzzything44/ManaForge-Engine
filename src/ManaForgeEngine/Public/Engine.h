@@ -9,6 +9,7 @@
 #endif
 
 #ifdef USE_VLD
+#	pragma message("VLD is enabled")
 #	include <vld.h>
 #endif
 

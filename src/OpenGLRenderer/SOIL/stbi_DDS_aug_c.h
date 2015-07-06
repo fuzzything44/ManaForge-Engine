@@ -274,9 +274,10 @@ static stbi_uc *dds_load(stbi *s, int *x, int *y, int *comp, int req_comp)
 	int flags, DXT_family;
 	int has_alpha, has_mipmap;
 	int is_compressed, cubemap_faces;
-	int block_pitch, num_blocks;
+	unsigned int block_pitch, num_blocks;
 	DDS_header header;
-	int i, sz, cf;
+	unsigned int i, sz;
+	int cf;
 	//	load the header
 	if( sizeof( DDS_header ) != 128 )
 	{
@@ -335,8 +336,8 @@ static stbi_uc *dds_load(stbi *s, int *x, int *y, int *comp, int req_comp)
 			{
 				//	where are we?
 				int bx, by, bw=4, bh=4;
-				int ref_x = 4 * (i % block_pitch);
-				int ref_y = 4 * (i / block_pitch);
+				unsigned int ref_x = 4 * (i % block_pitch);
+				unsigned int ref_y = 4 * (i / block_pitch);
 				//	get the next block's worth of compressed data, and decompress it
 				if( DXT_family == 1 )
 				{
@@ -495,7 +496,8 @@ stbi_uc *stbi_dds_load_from_file   (FILE *f,                  int *x, int *y, in
 stbi_uc *stbi_dds_load             (char *filename,           int *x, int *y, int *comp, int req_comp)
 {
    stbi_uc *data;
-   FILE *f = fopen(filename, "rb");
+   FILE *f;
+   fopen_s(&f, filename, "rb");
    if (!f) return NULL;
    data = stbi_dds_load_from_file(f,x,y,comp,req_comp);
    fclose(f);

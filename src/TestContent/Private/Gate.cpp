@@ -52,13 +52,13 @@ Gate::Gate()
 		mat->setTexture(0, *tex);
 
 
-		meshComp = std::make_unique<MeshComponent>(*this, Transform{}, ModelData
-			(*mat, vertLocs, UVs, tris, 6, 2));
-
-
+		isInitalized = true;
 	}
 
-	
+
+
+	meshComp = std::make_unique<MeshComponent>(*this, Transform{}, ModelData
+		(*mat, vertLocs, UVs, tris, 6, 2));
 
 	auto shape = Runtime::get().moduleManager.getPhysicsSystem().newPhysicsShape();
 
