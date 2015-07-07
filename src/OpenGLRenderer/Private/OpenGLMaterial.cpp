@@ -8,7 +8,7 @@
 
 OpenGLMaterial::OpenGLMaterial(const std::string& name)
 {
-	addShaderProgramFromFile(name);
+	program = addShaderProgramFromFile(name);
 
 	startTexUniform = glGetUniformLocation(program, "textures");
 	if (startTexUniform == -1)
@@ -24,7 +24,7 @@ OpenGLMaterial::~OpenGLMaterial()
 
 }
 
-void OpenGLMaterial::addShaderProgramFromFile(std::string name)
+GLuint OpenGLMaterial::addShaderProgramFromFile(std::string name)
 {
 	std::string vertexPath	= "shaders\\" + name + "vert.glsl";
 	std::string fragPath	= "shaders\\" + name + "frag.glsl";
@@ -89,7 +89,7 @@ void OpenGLMaterial::addShaderProgramFromFile(std::string name)
 
 	// Link the program
 	logger<Trace>() << "\tLinking program " << name;
-	program = glCreateProgram();
+	GLuint program = glCreateProgram();
 	glAttachShader(program, vertexShader);
 	glAttachShader(program, fragmentShader);
 	glLinkProgram(program);
@@ -106,6 +106,8 @@ void OpenGLMaterial::addShaderProgramFromFile(std::string name)
 
 	glDeleteShader(vertexShader);
 	glDeleteShader(fragmentShader);
+
+	return program;
 }
 
 void OpenGLMaterial::setTexture(uint32 ID, Texture& texture)

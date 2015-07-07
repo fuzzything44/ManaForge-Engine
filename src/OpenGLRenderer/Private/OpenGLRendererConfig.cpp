@@ -3,6 +3,7 @@
 
 #include <Helper.h>
 #include <ModuleManager.h>
+#include <Runtime.h>
 
 // link to required libs
 #pragma comment(lib, "glfw3dll.lib")
@@ -20,9 +21,15 @@ extern "C" OpenGLRenderer_API void registerModule(ModuleManager& mm)
 {
 	mm.setRenderer(std::make_unique<OpenGLRenderer>());
 
-	mm.addUpdateCallback(
-		std::bind(&OpenGLRenderer::update,
-		static_cast<OpenGLRenderer*>(&mm.getRenderer())));
+	mm.addUpdateCallback([](float deltaTime)
+	{
+		return Runtime::get().moduleManager.getRenderer().update(deltaTime);
+	});
+
+	mm.addInitCallback([]()
+	{
+		return Runtime::get().moduleManager.getRenderer().init();
+	});
 }
 
 extern "C" OpenGLRenderer_API float getModuleEngineVersion()

@@ -7,6 +7,8 @@
 #include "OpenGLTextureLibrary.h"
 #include "OpenGLModel.h"
 
+#include <SOIL/SOIL.h>
+
 #include <Runtime.h>
 #include <Renderer.h>
 #include <Helper.h>
@@ -18,16 +20,8 @@
 #include <algorithm>
 
 OpenGLRenderer::OpenGLRenderer()
-	: window(std::make_unique<OpenGLWindow>()),
-	debugDraw(std::make_unique<OpenGLMaterial>("debugdraw"))
 {
-	glEnable(GL_DEPTH_TEST);
-	glDepthFunc(GL_LESS);
-
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-	glClearColor(.2f, .2f, .2f, 1.f);
+	
 }
 
 
@@ -81,7 +75,7 @@ std::unique_ptr<Material> OpenGLRenderer::newMaterial(const std::string& name)
 	return std::make_unique<OpenGLMaterial>(name);
 }
 
-bool OpenGLRenderer::update()
+bool OpenGLRenderer::update(float /*deltaTime*/)
 {
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -100,6 +94,121 @@ bool OpenGLRenderer::update()
 
 	bool ret = !window->shouldClose();
 	return ret;
+}
+
+void OpenGLRenderer::init()
+{
+
+	window = std::make_unique<OpenGLWindow>();
+	debugDraw = std::make_unique<OpenGLMaterial>("debugdraw");
+
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LESS);
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	glClearColor(.2f, .2f, .2f, 1.f);
+
+	showLoadingImage();
+}
+
+
+void OpenGLRenderer::showLoadingImage()
+{
+
+	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+
+	GLuint vao;
+	GLuint vbo;
+	GLuint texCoordBuffer;
+	GLuint ebo;
+
+	vec2 vertLocs[] = 
+	{
+		{ -1.f, -1.f },
+		{ +1.f, -1.f },
+		{ -1.f, +1.f },
+		{ +1.f, +1.f }, 
+	};
+
+	vec2 texCoords[] =
+	{
+		{ +0.f, +1.f },
+		{ +1.f, +1.f },
+		{ +0.f, +0.f },
+		{ +1.f, +0.f },
+	};
+
+	uvec3 elems[] =
+	{
+		{ 0, 1, 2 },
+		{ 1, 2, 3 }, 
+	};
+
+	glGenVertexArrays(1, &vao);
+	glBindVertexArray(vao);
+
+	glGenBuffers(1, &vbo);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vec2) * 4, vertLocs, GL_STATIC_DRAW);
+
+	glGenBuffers(1, &texCoordBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, texCoordBuffer);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vec2) * 4, texCoords, GL_STATIC_DRAW);
+
+	glGenBuffers(1, &ebo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uvec3) * 2, elems, GL_STATIC_DRAW);
+
+	auto program = OpenGLMaterial::addShaderProgramFromFile("boilerplate");
+	auto texture = SOIL_load_OGL_texture("textures\\loading.dds", 4, 0, SOIL_FLAG_DDS_LOAD_DIRECT);
+	glUseProgram(program);
+
+	glUniform1i(glGetUniformLocation(program, "textures"), 0);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	glActiveTexture(GL_TEXTURE0);
+
+	glm::mat3 mvp = glm::ortho2d(-1.f, 1.f, -1.f, 1.f);
+	glUniformMatrix3fv(glGetUniformLocation(program, "MVPmat"), 1, GL_FALSE, &mvp[0][0]);
+
+	glUniform1i(glGetUniformLocation(program, "renderOrder"), 1);
+
+	glEnableVertexAttribArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glVertexAttribPointer(
+		0, // location 0 (see shader)
+		2, // two elements per vertex (x,y)
+		GL_FLOAT, // they are floats
+		GL_FALSE, // not normalized 
+		sizeof(float) * 2, // the next element is 2 floats later
+		nullptr // dont copy -- use the GL_ARRAY_BUFFER instead
+		);
+
+	// bind UV data to the element attrib array so it shows up in our sahders -- the location is  (look in shader)
+	glEnableVertexAttribArray(1);
+	glBindBuffer(GL_ARRAY_BUFFER, texCoordBuffer);
+	glVertexAttribPointer(
+		1, // location 1 (see shader)
+		2, // two elements per vertex (u,v)
+		GL_FLOAT, // they are floats
+		GL_FALSE, // not normalized 
+		sizeof(float) * 2, // the next element is 2 floats later
+		nullptr // use the GL_ARRAY_BUFFER instead of copying on the spot
+		);
+	
+	// glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo); // we don't have to do this bc its already bound
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+
+	glDeleteBuffers(1, &vbo);
+	glDeleteBuffers(1, &texCoordBuffer);
+	glDeleteBuffers(1, &ebo);
+
+	glDeleteVertexArrays(1, &vao);
+	glDeleteProgram(program);
+
+	window->swapBuffers();
+	window->pollEvents();
 }
 
 void OpenGLRenderer::setCurrentCamera(CameraComponent& newCamera)
@@ -235,7 +344,6 @@ void OpenGLRenderer::drawDebugSolidPolygon(vec2* verts, uint32 numVerts, Color c
 	glDeleteVertexArrays(1, &vao);
 
 }
-
 void OpenGLRenderer::drawDebugOutlineCircle(vec2 center, float radius, Color color)
 {
 
@@ -286,8 +394,6 @@ void OpenGLRenderer::drawDebugOutlineCircle(vec2 center, float radius, Color col
 
 	delete[] verts;
 }
-
-
 void OpenGLRenderer::drawDebugSolidCircle(vec2 center, float radius, Color color)
 {
 
@@ -342,7 +448,6 @@ void OpenGLRenderer::drawDebugSolidCircle(vec2 center, float radius, Color color
 	delete[] verts;
 	
 }
-
 void OpenGLRenderer::drawDebugSegment(vec2 p1, vec2 p2, Color color)
 {
 

@@ -49,12 +49,6 @@ Runtime::Runtime(const std::string& worldPath)
 			moduleManager.loadModule(elem);
 	}
 
-	// load the world
-	world = std::unique_ptr < World > {moduleManager.spawnClass<World>("DefaultWorld.DefaultWorld")};
-	world->init("default");// load the test world
-
-	Window& window = moduleManager.getRenderer().getWindow();
-	inputManager.setWindow(window);
 }
 
 Runtime::~Runtime()
@@ -66,6 +60,8 @@ Runtime::~Runtime()
 
 void Runtime::run()
 {
+
+
 	{
 		// get the callbacks
 		auto initCallbacks = moduleManager.getInitCallbacks();
@@ -83,6 +79,16 @@ void Runtime::run()
 
 		
 	}
+
+
+	// load the world
+	world = std::unique_ptr < World > {moduleManager.spawnClass<World>("DefaultWorld.DefaultWorld")};
+	world->init("default");// load the test world
+
+
+	// let the input manager know of the window
+	Window& window = moduleManager.getRenderer().getWindow();
+	inputManager.setWindow(window);
 
 	// YA WE REALLY NEED PLAYER CONTROLLERS -- the gate shouldn't get to control the camera
 	Actor* gate = moduleManager.spawnClass<Actor>("TestContent.Gate");

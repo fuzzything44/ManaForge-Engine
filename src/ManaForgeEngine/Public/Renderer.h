@@ -25,13 +25,15 @@ class Renderer :
 {
 public:
 
-	
 
-	/// <summary> Default constructor.</summary>
-	Renderer() { }
+	/// <summary> Destructor.</summary>
+	virtual ~Renderer() { }
+
 
 	/// <summary> Renders the next frame. </summary>
-	virtual bool update() = 0;
+	virtual bool update(float deltaTime) = 0;
+
+	virtual void init() = 0;
 	
 	/// <summary> Sets camera to render at. </summary>
 	///
@@ -55,9 +57,6 @@ public:
 	virtual std::unique_ptr<TextureLibrary> newTextureLibrary(uint16, uint16) = 0;
 	virtual std::unique_ptr<Material> newMaterial(const std::string& name) = 0;
 
-
-	/// <summary> Destructor.</summary>
-	virtual ~Renderer() { }
 
 	// gets the window
 	virtual Window& getWindow() = 0;

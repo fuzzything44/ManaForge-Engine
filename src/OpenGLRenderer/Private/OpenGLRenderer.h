@@ -21,6 +21,10 @@ public:
 
 	virtual ~OpenGLRenderer() override;
 
+	virtual void init() override;
+
+	void showLoadingImage();
+
 	virtual Window& getWindow() override;
 	const Window& getWindow() const override;
 
@@ -30,7 +34,7 @@ public:
 	virtual std::unique_ptr<Material> newMaterial(const std::string& name) override;
 
 	/// <summary> Renders the next frame. </summary>
-	virtual bool update() override;
+	virtual bool update(float deltaTime) override;
 
 	/// <summary> Sets camera to render at. </summary>
 	///
