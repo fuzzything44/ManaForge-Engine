@@ -57,9 +57,7 @@ DefaultWorld::~DefaultWorld()
 		delete *(--actors.end());
 	}
 
-	assert(actors.size() == 0);
-
-	tickingActors.~signal();
+	check(actors.size() == 0);
 
 	delete[] background;
 }
