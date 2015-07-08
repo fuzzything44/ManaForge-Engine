@@ -20,5 +20,5 @@ public:
 
 private:
 	vec2 location;
-	b2Shape* shape;
+	std::unique_ptr<b2Shape> shape;
 };
