@@ -105,24 +105,25 @@ void Runtime::run()
 	moduleManager.getRenderer().setCurrentCamera(*c);
 
 
-	vec2 locations[] = 
+	std::array<vec2, 4> locations = 
 	{
-		{ -1.f, -1.f },
-		{ -1.f, 1.f },
-		{ 1.f, -1.f },
-		{ 1.f, 1.f }
+		vec2{ -1.f, -1.f },
+		vec2{ -1.f, +1.f },
+		vec2{ +1.f, -1.f },
+		vec2{ +1.f, +1.f }
 	};
-	vec2 UVs[] = 
+	std::array<vec2, 4> UVs = 
 	{
-		{ 0.f, 1.f },
-		{ 0.f, 0.f },
-		{ 1.f, 1.f },
-		{ 1.f, 0.f }
+		vec2{ 0.f, 1.f },
+		vec2{ 0.f, 0.f },
+		vec2{ 1.f, 1.f },
+		vec2{ 1.f, 0.f }
 	};
-	uvec3 tris[] = 
+	std::array<uvec3, 2> tris = 
 	{
-		{ 0, 1, 2 },
-		{ 1, 2, 3 }
+		uvec3{ 0, 1, 2 },
+		uvec3{ 1, 2, 3 }
+
 	};
 
 	auto mat = moduleManager.getRenderer().newMaterial("boilerplate");
@@ -131,7 +132,7 @@ void Runtime::run()
 
 	mat->setTexture(0, *tex);
 
-	auto meshComp = std::make_unique<MeshComponent>(*player, Transform{}, ModelData(*mat, locations, UVs, tris, 4, 2));
+	auto meshComp = std::make_unique<MeshComponent>(*player, Transform{}, ModelData(*mat, locations.data(), UVs.data(), tris.data(), locations.size(), tris.size()));
 
 
 	auto shape = moduleManager.getPhysicsSystem().newPhysicsShape();
@@ -141,7 +142,7 @@ void Runtime::run()
 	player->setPhysicsType(PhysicsType::DYNAMIC);
 	physComp->setDensity(1.f);
 	
-	auto pew = moduleManager.spawnClass<Actor>("TestContent.Pew");
+	auto pew = std::unique_ptr<Actor>{ moduleManager.spawnClass<Actor>("TestContent.Pew") };
 	check(pew);
 
 	// set initial tick

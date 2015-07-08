@@ -31,6 +31,6 @@ private:
 	GLuint program;
 
 	// vector of <texture ID>
-	GLuint textures[maxTextures];
+	std::array<GLuint, maxTextures> textures;
 	GLint startTexUniform;
 };
