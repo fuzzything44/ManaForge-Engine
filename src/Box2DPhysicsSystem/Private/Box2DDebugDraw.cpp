@@ -6,30 +6,28 @@
 
 void DebugDraw::DrawPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color)
 {
-	vec2* verts = new vec2[vertexCount];
+	auto verts = std::vector<vec2>(vertexCount);
 	for (int i = 0; i < vertexCount; ++i)
 	{
 		verts[i] = convertVec(vertices[i]);
 	}
 	Color col = Color(uint8(color.r * 255.f), uint8(color.g * 255.f), uint8(color.b * 255.f), 255);
 
-	Runtime::get().moduleManager.getRenderer().drawDebugOutlinePolygon(verts, vertexCount, col);
+	Runtime::get().moduleManager.getRenderer().drawDebugOutlinePolygon(&verts[0], vertexCount, col);
 
-	delete[] verts;
 }
 
 void DebugDraw::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color)
 {
-	vec2* verts = new vec2[vertexCount];
+	auto verts = std::vector<vec2>(vertexCount);
 	for (int i = 0; i < vertexCount; ++i)
 	{
 		verts[i] = convertVec(vertices[i]);
 	}
 	Color col = Color(uint8(color.r * 255.f), uint8(color.g * 255.f), uint8(color.b * 255.f), 255);
 
-	Runtime::get().moduleManager.getRenderer().drawDebugSolidPolygon(verts, vertexCount, col);
+	Runtime::get().moduleManager.getRenderer().drawDebugSolidPolygon(&verts[0], vertexCount, col);
 
-	delete[] verts;
 }
 
 void DebugDraw::DrawCircle(const b2Vec2& center, float32 radius, const b2Color& color)
@@ -84,14 +82,13 @@ void DebugDraw::DrawPoint(const b2Vec2& p, float32 size, const b2Color& color)
 
 void DebugDraw::DrawAABB(b2AABB* aabb, const b2Color& c)
 {
-	vec2* points = new vec2[4];
+	auto points = std::array<vec2, 4>();
 	points[0] = vec2(aabb->lowerBound.x, aabb->lowerBound.y);
 	points[1] = vec2(aabb->upperBound.x, aabb->lowerBound.y);
 	points[2] = vec2(aabb->upperBound.x, aabb->upperBound.y);
 	points[3] = vec2(aabb->lowerBound.x, aabb->upperBound.y);
 
-	Runtime::get().moduleManager.getRenderer().drawDebugOutlinePolygon(points, 4, 
+	Runtime::get().moduleManager.getRenderer().drawDebugOutlinePolygon(&points[0], 4, 
 		Color(uint8(c.r * 255.f), uint8(c.g * 255.f), uint8(c.b * 255.f), 255));
 
-	delete[] points;
 }

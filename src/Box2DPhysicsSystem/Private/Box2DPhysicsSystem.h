@@ -33,6 +33,6 @@ private:
 	
 	std::map<Actor*, Box2DActorTransformController*> bodies;
 	
-	b2World* world;
+	std::unique_ptr<b2World> world;
 	b2Vec2 gravity;
 };

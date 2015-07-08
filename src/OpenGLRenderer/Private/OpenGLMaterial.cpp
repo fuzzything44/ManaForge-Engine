@@ -55,10 +55,9 @@ GLuint OpenGLMaterial::addShaderProgramFromFile(std::string name)
 	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &Result);
 	glGetShaderiv(vertexShader, GL_INFO_LOG_LENGTH, &InfoLogLength);
 	if (InfoLogLength > 1){
-		char* VertexShaderErrorMessage = new char[InfoLogLength + 1]();
-		glGetShaderInfoLog(vertexShader, InfoLogLength, nullptr, &VertexShaderErrorMessage[0]);
+		auto VertexShaderErrorMessage = std::make_unique<char[]>(InfoLogLength + 1);
+		glGetShaderInfoLog(vertexShader, InfoLogLength, nullptr, VertexShaderErrorMessage.get());
 		logger<Error>() << &VertexShaderErrorMessage[0];
-		delete[] VertexShaderErrorMessage;
 	}
 	else
 	{
@@ -76,10 +75,9 @@ GLuint OpenGLMaterial::addShaderProgramFromFile(std::string name)
 	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &Result);
 	glGetShaderiv(fragmentShader, GL_INFO_LOG_LENGTH, &InfoLogLength);
 	if (InfoLogLength > 1){
-		char* FragmentShaderErrorMessage = new char[InfoLogLength + 1]();
-		glGetShaderInfoLog(fragmentShader, InfoLogLength, nullptr, FragmentShaderErrorMessage);
-		logger<Error>() << FragmentShaderErrorMessage;
-		delete[] FragmentShaderErrorMessage;
+		auto FragmentShaderErrorMessage = std::make_unique<char[]>(InfoLogLength + 1);
+		glGetShaderInfoLog(fragmentShader, InfoLogLength, nullptr, FragmentShaderErrorMessage.get());
+		logger<Error>() << &FragmentShaderErrorMessage[0];
 	}
 	else
 	{
@@ -98,10 +96,9 @@ GLuint OpenGLMaterial::addShaderProgramFromFile(std::string name)
 	glGetProgramiv(program, GL_LINK_STATUS, &Result);
 	glGetProgramiv(program, GL_INFO_LOG_LENGTH, &InfoLogLength);
 	if (InfoLogLength > 1){
-		char* ProgramErrorMessage = new char[InfoLogLength + 1]();
-		glGetProgramInfoLog(program, InfoLogLength, nullptr, ProgramErrorMessage);
-		logger<Error>() << ProgramErrorMessage;
-		delete[] ProgramErrorMessage;
+		auto ProgramErrorMessage = std::make_unique<char[]>(InfoLogLength + 1);
+		glGetProgramInfoLog(program, InfoLogLength, nullptr, ProgramErrorMessage.get());
+		logger<Error>() << &ProgramErrorMessage[0];
 	}
 
 	glDeleteShader(vertexShader);
