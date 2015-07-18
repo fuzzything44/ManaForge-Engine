@@ -15,6 +15,9 @@ public:
 protected:
 	Actor& owner;
 
+private:
+	std::deque<Component*>::size_type location;
+
 };
 
 #include "Actor.h"
@@ -23,6 +26,7 @@ inline Component::Component(Actor& owner)
 	: owner(owner)
 {
 	owner.components.push_back(this);
+	location = owner.components.size() - 1;
 }
 
 

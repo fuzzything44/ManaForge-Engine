@@ -3,7 +3,7 @@
 #include "DefaultWorld.h"
 #include <World.h>
 
-#include <map>
+#include <deque>
 
 struct DefaultWorldLocation : public ActorLocation
 {
@@ -12,6 +12,6 @@ public:
 	virtual ~DefaultWorldLocation() override;
 	
 private:
-	size_t loc;
+	std::deque<Actor*>::size_type loc;
 	DefaultWorld& inWorld;
 };
