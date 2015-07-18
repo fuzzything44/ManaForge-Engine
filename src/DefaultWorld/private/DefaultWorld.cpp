@@ -60,8 +60,6 @@ DefaultWorld::~DefaultWorld()
 	}
 
 	check(actors.size() == 0);
-
-	delete[] background;
 }
 
 
@@ -204,11 +202,11 @@ void DefaultWorld::init(const std::string& name)
 		numBackgroundChunks = size / backgroundChunkSize;
 
 
-		background = new ChunkActor*[numBackgroundChunks.x * numBackgroundChunks.y];
+		background = std::make_unique<ChunkActor*[]>(numBackgroundChunks.x * numBackgroundChunks.y);
 
-		std::vector<vec2> locations{ backgroundChunkSize * backgroundChunkSize * 4 };
-		std::vector<vec2> UVs{ backgroundChunkSize * backgroundChunkSize * 4 };
-		std::vector<uvec3> elems{ backgroundChunkSize * backgroundChunkSize * 2 };
+		auto locations = std::vector<vec2>{ backgroundChunkSize * backgroundChunkSize * 4 };
+		auto UVs = std::vector<vec2>{ backgroundChunkSize * backgroundChunkSize * 4 };
+		auto elems = std::vector<uvec3>{ backgroundChunkSize * backgroundChunkSize * 2 };
 
 		// generate location and elem data -- all the same
 		for (uint16 yTiles = 0; yTiles < backgroundChunkSize; ++yTiles)

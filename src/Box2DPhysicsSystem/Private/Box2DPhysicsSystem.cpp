@@ -7,7 +7,7 @@
 
 Box2DPhysicsSystem::Box2DPhysicsSystem()
 {
-	world = new b2World(gravity);
+	world = std::make_unique<b2World>(gravity);
 
 	uint32 flags = 0;
 	flags += b2Draw::e_shapeBit;
@@ -17,7 +17,6 @@ Box2DPhysicsSystem::Box2DPhysicsSystem()
 
 Box2DPhysicsSystem::~Box2DPhysicsSystem()
 {
-	delete world;
 }
 
 void Box2DPhysicsSystem::setGravity(vec2 newGravity)

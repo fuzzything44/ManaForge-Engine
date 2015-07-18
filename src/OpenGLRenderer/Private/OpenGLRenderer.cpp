@@ -354,11 +354,11 @@ void OpenGLRenderer::drawDebugOutlineCircle(vec2 center, float radius, Color col
 
 	check(currentCamera);
 
-	const float k_segments = 16.0f;
-	const float k_increment = 2.0f * (float)M_PI / k_segments;
+	typedef boost::mpl::int_<16> k_segments;
+	const float k_increment = 2.0f * (float)M_PI / (float)k_segments::value;
 	float theta = 0.0f;
-	vec2* verts = new vec2[(uint32)k_segments];
-	for (int32 i = 0; i < k_segments; ++i)
+	auto verts = std::array<vec2, k_segments::value>();
+	for (int32 i = 0; i < k_segments::value; ++i)
 	{
 		verts[i] = center + radius * vec2(cosf(theta), sinf(theta));
 		theta += k_increment;
@@ -376,7 +376,7 @@ void OpenGLRenderer::drawDebugOutlineCircle(vec2 center, float radius, Color col
 	GLuint buff;
 	glGenBuffers(1, &buff);
 	glBindBuffer(GL_ARRAY_BUFFER, buff);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vec2) * (uint32)k_segments, verts, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vec2) * k_segments::value, &verts[0], GL_STATIC_DRAW);
 
 	// bind location data to the element attrib array so it shows up in our shaders -- the location is zero (look in shader)
 	glEnableVertexAttribArray(0);
@@ -390,25 +390,23 @@ void OpenGLRenderer::drawDebugOutlineCircle(vec2 center, float radius, Color col
 		nullptr // dont copy -- use the GL_ARRAY_BUFFER instead
 		);
 
-	glDrawArrays(GL_LINES, 0, (uint32)k_segments);
+	glDrawArrays(GL_LINES, 0, k_segments::value);
 
 	glDisableVertexAttribArray(0);
 
 	glDeleteBuffers(1, &buff);
 	glDeleteVertexArrays(1, &vao);
-
-	delete[] verts;
 }
 void OpenGLRenderer::drawDebugSolidCircle(vec2 center, float radius, Color color)
 {
 
 	check(currentCamera);
 
-	const float k_segments = 16.0f;
-	const float k_increment = 2.0f * (float)M_PI / k_segments;
+	typedef boost::mpl::int_<16> k_segments;
+	const float k_increment = 2.0f * (float)M_PI / (float)k_segments::value;
 	float theta = 0.0f;
-	vec2* verts = new vec2[(uint32)k_segments];
-	for (int32 i = 0; i < k_segments; ++i)
+	auto verts = std::array<vec2, k_segments::value>();
+	for (int32 i = 0; i < k_segments::value; ++i)
 	{
 		verts[i] = center + radius * vec2(cosf(theta), sinf(theta));
 		theta += k_increment;
@@ -426,7 +424,7 @@ void OpenGLRenderer::drawDebugSolidCircle(vec2 center, float radius, Color color
 	GLuint buff;
 	glGenBuffers(1, &buff);
 	glBindBuffer(GL_ARRAY_BUFFER, buff);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vec2) * (uint32)k_segments, verts, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vec2) * (uint32)k_segments::value, &verts[0], GL_STATIC_DRAW);
 
 	// bind location data to the element attrib array so it shows up in our shaders -- the location is zero (look in shader)
 	glEnableVertexAttribArray(0);
@@ -440,17 +438,15 @@ void OpenGLRenderer::drawDebugSolidCircle(vec2 center, float radius, Color color
 		nullptr // dont copy -- use the GL_ARRAY_BUFFER instead
 		);
 
-	glDrawArrays(GL_TRIANGLE_FAN, 0, (uint32)k_segments);
+	glDrawArrays(GL_TRIANGLE_FAN, 0, (uint32)k_segments::value);
 
 	glUniform4f(glGetUniformLocation((*debugDraw)(), "color"), (float)color.red / 255.f, (float)color.green / 255.f, (float)color.blue / 255.f, (float)color.alpha / 255.f);
-	glDrawArrays(GL_LINE_LOOP, 0, (uint32)k_segments);
+	glDrawArrays(GL_LINE_LOOP, 0, (uint32)k_segments::value);
 
 	glDisableVertexAttribArray(0);
 
 	glDeleteBuffers(1, &buff);
 	glDeleteVertexArrays(1, &vao);
-
-	delete[] verts;
 	
 }
 void OpenGLRenderer::drawDebugSegment(vec2 p1, vec2 p2, Color color)
@@ -463,7 +459,7 @@ void OpenGLRenderer::drawDebugSegment(vec2 p1, vec2 p2, Color color)
 	glUniform4f(glGetUniformLocation((*debugDraw)(), "color"), (float)color.red / 255.f, (float)color.green / 255.f, (float)color.blue / 255.f, (float)color.alpha / 255.f);
 	glUniformMatrix3fv(glGetUniformLocation((*debugDraw)(), "MVPmat"), 1, GL_FALSE, &currentCamera->getViewMat()[0][0]);
 
-	vec2* locs = new vec2[2];
+	auto locs = std::array<vec2, 2>();
 	locs[0] = p1;
 	locs[1] = p2;
 
@@ -473,7 +469,7 @@ void OpenGLRenderer::drawDebugSegment(vec2 p1, vec2 p2, Color color)
 	GLuint buff;
 	glGenBuffers(1, &buff);
 	glBindBuffer(GL_ARRAY_BUFFER, buff);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vec2) * 2, locs, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vec2) * 2, &locs[0], GL_STATIC_DRAW);
 
 	// bind location data to the element attrib array so it shows up in our shaders -- the location is zero (look in shader)
 	glEnableVertexAttribArray(0);
@@ -494,6 +490,5 @@ void OpenGLRenderer::drawDebugSegment(vec2 p1, vec2 p2, Color color)
 	glDeleteBuffers(1, &buff);
 	glDeleteVertexArrays(1, &vao);
 
-	delete[] locs;
 }
 

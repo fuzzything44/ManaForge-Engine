@@ -21,7 +21,6 @@ OpenGLMaterial::~OpenGLMaterial()
 {
 
 	glDeleteProgram(program);
-
 }
 
 GLuint OpenGLMaterial::addShaderProgramFromFile(std::string name)
@@ -34,10 +33,10 @@ GLuint OpenGLMaterial::addShaderProgramFromFile(std::string name)
 	GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 
 	// Read the Vertex Shader code from the file
-	std::string VertexShaderCode = loadFileToStr(vertexPath.c_str());
+	std::string&& VertexShaderCode = loadFileToStr(vertexPath.c_str());
 
 	// Read the Fragment Shader code from the file
-	std::string FragmentShaderCode = loadFileToStr(fragPath.c_str());
+	std::string&& FragmentShaderCode = loadFileToStr(fragPath.c_str());
 
 
 	int32 Result = GL_FALSE;
@@ -55,10 +54,11 @@ GLuint OpenGLMaterial::addShaderProgramFromFile(std::string name)
 	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &Result);
 	glGetShaderiv(vertexShader, GL_INFO_LOG_LENGTH, &InfoLogLength);
 	if (InfoLogLength > 1){
-		char* VertexShaderErrorMessage = new char[InfoLogLength + 1]();
-		glGetShaderInfoLog(vertexShader, InfoLogLength, nullptr, &VertexShaderErrorMessage[0]);
-		logger<Error>() << &VertexShaderErrorMessage[0];
-		delete[] VertexShaderErrorMessage;
+		auto VertexShaderErrorMessage = std::vector<char>(InfoLogLength + 1);
+		glGetShaderInfoLog(vertexShader, InfoLogLength, nullptr, VertexShaderErrorMessage.data());
+		logger<Error>() << VertexShaderErrorMessage.data();
+
+		
 	}
 	else
 	{
@@ -76,10 +76,9 @@ GLuint OpenGLMaterial::addShaderProgramFromFile(std::string name)
 	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &Result);
 	glGetShaderiv(fragmentShader, GL_INFO_LOG_LENGTH, &InfoLogLength);
 	if (InfoLogLength > 1){
-		char* FragmentShaderErrorMessage = new char[InfoLogLength + 1]();
-		glGetShaderInfoLog(fragmentShader, InfoLogLength, nullptr, FragmentShaderErrorMessage);
-		logger<Error>() << FragmentShaderErrorMessage;
-		delete[] FragmentShaderErrorMessage;
+		auto FragmentShaderErrorMessage = std::vector<char>(InfoLogLength + 1);
+		glGetShaderInfoLog(fragmentShader, InfoLogLength, nullptr, FragmentShaderErrorMessage.data());
+		logger<Error>() << FragmentShaderErrorMessage.data();
 	}
 	else
 	{
@@ -98,10 +97,9 @@ GLuint OpenGLMaterial::addShaderProgramFromFile(std::string name)
 	glGetProgramiv(program, GL_LINK_STATUS, &Result);
 	glGetProgramiv(program, GL_INFO_LOG_LENGTH, &InfoLogLength);
 	if (InfoLogLength > 1){
-		char* ProgramErrorMessage = new char[InfoLogLength + 1]();
-		glGetProgramInfoLog(program, InfoLogLength, nullptr, ProgramErrorMessage);
-		logger<Error>() << ProgramErrorMessage;
-		delete[] ProgramErrorMessage;
+		auto ProgramErrorMessage = std::vector<char>(InfoLogLength + 1);
+		glGetProgramInfoLog(program, InfoLogLength, nullptr, ProgramErrorMessage.data());
+		logger<Error>() << ProgramErrorMessage.data();
 	}
 
 	glDeleteShader(vertexShader);

@@ -2,8 +2,6 @@
 
 Box2DPhysicsShape::~Box2DPhysicsShape()
 {
-	if (shape)
-		delete shape;
 }
 
 vec2 Box2DPhysicsShape::getPosition()
@@ -18,16 +16,16 @@ void Box2DPhysicsShape::setPosition(vec2 newPos)
 	 
 void Box2DPhysicsShape::asCircle(float radius)
 {
-	b2CircleShape* cir = new b2CircleShape();
+	std::unique_ptr<b2CircleShape> cir = std::make_unique<b2CircleShape>();
 	cir->m_p = convertVec(location);
 	cir->m_radius = radius;
 	
-	shape = cir;
+	shape = std::move(cir);
 }
 
 void Box2DPhysicsShape::asPolygon(vec2* verts, uint32 numVerts)
 {
-	b2PolygonShape* poly = new b2PolygonShape();
+	std::unique_ptr<b2PolygonShape> poly = std::make_unique<b2PolygonShape>();
 
 	b2Vec2* vec = new b2Vec2[numVerts];
 
@@ -39,25 +37,25 @@ void Box2DPhysicsShape::asPolygon(vec2* verts, uint32 numVerts)
 
 	poly->Set(vec, numVerts); 
 
-	shape = poly;
+	shape = std::move(poly);
 	
 }
 
 void Box2DPhysicsShape::asRectangle(float halfWidth, float halfHeight)
 {
-	b2PolygonShape* box = new b2PolygonShape();
+	std::unique_ptr<b2PolygonShape> box = std::make_unique<b2PolygonShape>();
 
 	box->SetAsBox(halfWidth, halfHeight, b2Vec2(convertVec(location)), 0.f); // todo
 	
-	shape = box;
+	shape = std::move(box);
 }
 
 void Box2DPhysicsShape::asEdge(vec2 lineStart, vec2 lineEnd)
 {
-	b2EdgeShape* edge = new b2EdgeShape();
+	std::unique_ptr<b2EdgeShape> edge = std::make_unique<b2EdgeShape>();
 
 	edge->Set(convertVec(lineStart), convertVec(lineEnd));
 
-	shape = edge;
+	shape = std::move(edge);
 }
 

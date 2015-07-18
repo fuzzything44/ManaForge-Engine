@@ -57,7 +57,7 @@ private:
 	std::shared_ptr<Material> drawMaterial;
 
 	// array of models -- in row major order
-	ChunkActor** background;
+	std::unique_ptr<ChunkActor*[]> background;
 
 	uvec2 numBackgroundChunks;
 

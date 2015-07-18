@@ -16,7 +16,7 @@ Box2DPhysicsBody::Box2DPhysicsBody(Box2DPhysicsShape& shape, PhysicsComponent& o
 	
 
 	b2FixtureDef fixtureDef;
-	fixtureDef.shape = shape.shape;
+	fixtureDef.shape = shape.shape.get();
 	fixtureDef.userData = &owner;
 	
 	
