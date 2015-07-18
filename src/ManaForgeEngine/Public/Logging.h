@@ -59,8 +59,8 @@ namespace logdetail
 	class sink_t
 	{
 	public:
-		typedef char char_type;
-		typedef boost::iostreams::sink_tag category;
+		using char_type = char;
+		using category	= boost::iostreams::sink_tag;
 
 
 		std::streamsize write(const char_type* s, std::streamsize n)

@@ -42,7 +42,6 @@ public:
 
 	virtual boost::signals2::connection registerTickingActor(Actor& toAdd) override;
 	// End World Interface
-	typedef std::map<uint64, Actor*>::iterator iter_type;
 private:
 
 	std::string folderLocation;
@@ -53,8 +52,7 @@ private:
 	// use a deque -- the index can be the index in it!
 	std::deque<Actor*> actors;
 
-	std::unique_ptr<TextureLibrary> backgroundImages;
-	std::shared_ptr<Material> drawMaterial;
+	std::unique_ptr<MaterialInstance> drawMaterial;
 
 	// array of models -- in row major order
 	std::unique_ptr<ChunkActor*[]> background;

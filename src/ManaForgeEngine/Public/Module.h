@@ -3,6 +3,8 @@
 
 #include "SharedLibrary.h"
 
+#include <unordered_map>
+
 class ModuleManager;
 
 class Module : boost::noncopyable
@@ -10,9 +12,9 @@ class Module : boost::noncopyable
 
 public:
 
-	// typedef for the register plugin function type
-	typedef void registerModuleFun(ModuleManager&);
-	typedef float getModuleEngineVersionFun();
+	// aliases for the register plugin function type
+	typedef void registerModuleFun(ModuleManager&); // i get lots of erros for using a alias here, DAMN IT MCFT. it does work in VS 2015...
+	using getModuleEngineVersionFun		= float();
 
 	/// <summary> Registers the module with the ModuleManager specified</summary>
 	///
@@ -36,7 +38,7 @@ private:
 	getModuleEngineVersionFun* getModuleEngineVersionAddress;
 
 	std::string name;
-	std::map<std::string, std::function<void*()> > classes;
+	std::unordered_map<std::string, std::function<void*()> > classes;
 
 	SharedLibrary::SharedLibHandle libraryHandle;
 

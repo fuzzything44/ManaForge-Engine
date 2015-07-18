@@ -7,6 +7,8 @@
 #include <list>
 #include <typeinfo>
 
+#include <unordered_map>
+
 
 #include <boost/algorithm/string.hpp>
 #include <boost/core/noncopyable.hpp>
@@ -25,9 +27,9 @@ public:
 
 	friend Runtime;
 
-	typedef std::function<void*(const std::string&)> contentModuleSpawnFun;
-	typedef std::function<bool(float)> updateFun;
-	typedef std::function<void()> initFun;
+	using contentModuleSpawnFun		= std::function<void*(const std::string&)>;
+	using updateFun					= std::function<bool(float)>;
+	using initFun					= std::function<void()>;
 
 	ENGINE_API ~ModuleManager();
 
@@ -65,7 +67,7 @@ private:
 	std::list<initFun> initCallbacks;
 	std::list<updateFun> updateCallbacks;
 
-	std::map<std::string, std::shared_ptr<Module> > loadedModules;
+	std::unordered_map<std::string, std::shared_ptr<Module> > loadedModules;
 
 	std::unique_ptr<Renderer> renderer;
 	std::unique_ptr<AudioSystem> audioSystem;

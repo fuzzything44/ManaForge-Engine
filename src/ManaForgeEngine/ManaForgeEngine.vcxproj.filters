@@ -127,9 +127,6 @@
     <ClInclude Include="Public\Model.h">
       <Filter>Public</Filter>
     </ClInclude>
-    <ClInclude Include="Public\Material.h">
-      <Filter>Public</Filter>
-    </ClInclude>
     <ClInclude Include="Public\ImageLoader.h">
       <Filter>Public</Filter>
     </ClInclude>
@@ -209,6 +206,15 @@
       <Filter>Public</Filter>
     </ClInclude>
     <ClInclude Include="Public\Controller.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\ModelData.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\MaterialSource.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\MaterialInstance.h">
       <Filter>Public</Filter>
     </ClInclude>
   </ItemGroup>

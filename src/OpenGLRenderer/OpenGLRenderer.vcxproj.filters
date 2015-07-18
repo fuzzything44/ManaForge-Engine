@@ -14,9 +14,6 @@
     <ClCompile Include="Private\OpenGLModel.cpp">
       <Filter>Private</Filter>
     </ClCompile>
-    <ClCompile Include="Private\OpenGLMaterial.cpp">
-      <Filter>Private</Filter>
-    </ClCompile>
     <ClCompile Include="Private\OpenGLWindow.cpp">
       <Filter>Private</Filter>
     </ClCompile>
@@ -32,11 +29,17 @@
     <ClCompile Include="Private\OpenGLTextureLibrary.cpp">
       <Filter>Private</Filter>
     </ClCompile>
+    <ClCompile Include="Private\OpenGLModelData.cpp">
+      <Filter>Private</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\OpenGLMaterialInstance.cpp">
+      <Filter>Private</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\OpenGLMaterialSource.cpp">
+      <Filter>Private</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Private\OpenGLMaterial.h">
-      <Filter>Private</Filter>
-    </ClInclude>
     <ClInclude Include="Private\OpenGLModel.h">
       <Filter>Private</Filter>
     </ClInclude>
@@ -53,6 +56,15 @@
       <Filter>Private</Filter>
     </ClInclude>
     <ClInclude Include="Private\OpenGLTextureLibrary.h">
+      <Filter>Private</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\OpenGLModelData.h">
+      <Filter>Private</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\OpenGLMaterialInstance.h">
+      <Filter>Private</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\OpenGLMaterialSource.h">
       <Filter>Private</Filter>
     </ClInclude>
   </ItemGroup>

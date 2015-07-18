@@ -88,8 +88,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Private\OpenGLMaterial.cpp" />
+    <ClCompile Include="Private\OpenGLMaterialInstance.cpp" />
+    <ClCompile Include="Private\OpenGLMaterialSource.cpp" />
     <ClCompile Include="Private\OpenGLModel.cpp" />
+    <ClCompile Include="Private\OpenGLModelData.cpp" />
     <ClCompile Include="Private\OpenGLRenderer.cpp" />
     <ClCompile Include="Private\OpenGLRendererConfig.cpp" />
     <ClCompile Include="Private\OpenGLTexture.cpp" />
@@ -97,8 +99,10 @@
     <ClCompile Include="Private\OpenGLWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Private\OpenGLMaterial.h" />
+    <ClInclude Include="Private\OpenGLMaterialInstance.h" />
+    <ClInclude Include="Private\OpenGLMaterialSource.h" />
     <ClInclude Include="Private\OpenGLModel.h" />
+    <ClInclude Include="Private\OpenGLModelData.h" />
     <ClInclude Include="Private\OpenGLRenderer.h" />
     <ClInclude Include="Private\OpenGLRendererConfig.h" />
     <ClInclude Include="Private\OpenGLTexture.h" />

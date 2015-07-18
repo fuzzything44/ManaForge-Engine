@@ -1,42 +1,41 @@
 #pragma once
 
 #include <Engine.h>
+#include <ModelData.h>
 #include <Model.h>
-#include "OpenGLMaterial.h"
 
-class OpenGLModel : public Model
+#include "OpenGLMaterialInstance.h"
+
+class OpenGLModelData;
+
+class OpenGLModel final : public Model
 {
 public:
 
 	friend class OpenGLRenderer;
 
-	explicit OpenGLModel(ModelData data, MeshComponent& owner, OpenGLRenderer& renderer);
-
-	MeshComponent& getOwnerComponent() override;
-
+	explicit OpenGLModel(OpenGLRenderer& renderer);
 	virtual ~OpenGLModel();
 
-protected:
+	virtual void init(MaterialInstance& mat, std::shared_ptr<ModelData> data, MeshComponent& ownerComp) override;
+
+	virtual MeshComponent& getOwnerComponent() override;	
+	virtual const MeshComponent& getOwnerComponent() const override;
+
+
 
 	void draw();
+private:
 
-	bool isInBounds(const mat3& model, const mat4& camera);
-
-	uint32 numVerts;
-	uint32 numTris;
-
-	uint32 vertexArray;
-	uint32 vertexLocationBuffer;
-	uint32 texCoordBuffer;
-	uint32 elemBuffer;
 
 	GLint MVPUniformLocation;
 
-	ModelBounds bounds;
+	std::shared_ptr<OpenGLModelData> modelData;
 
-	MeshComponent& parent;
+	MeshComponent* parent;
+
 	OpenGLRenderer& renderer;
 
-	OpenGLMaterial& material;
+	OpenGLMaterialInstance* material;
 
 };

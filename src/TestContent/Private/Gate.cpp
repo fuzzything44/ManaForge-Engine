@@ -4,7 +4,8 @@
 #include <AudioSystem.h>
 #include <Texture.h>
 #include <Renderer.h>
-#include <Material.h>
+#include <MaterialInstance.h>
+#include <ModelData.h>
 
 #include <cmath>
 
@@ -12,7 +13,6 @@
 #include REGISTER_FOR_SAVING_SOURCE()
 
 
-std::unique_ptr<Material> Gate::mat = nullptr;
 bool Gate::isInitalized = false;
 
 Gate::Gate()
@@ -41,24 +41,23 @@ Gate::Gate()
 		{1, 2, 3}
 	};
 
-	auto tex = Runtime::get().moduleManager.getRenderer().newTexture("0");
+	auto tex = Runtime::get().moduleManager.getRenderer().getTexture("0");
 
 	tex->setFilterMode(Texture::FilterMode::MIPMAP_LINEAR);
 
-	if (!isInitalized)
-	{
-		mat = Runtime::get().moduleManager.getRenderer().newMaterial("boilerplate");
+	
+	mat = Runtime::get().moduleManager.getRenderer().newMaterial(
+		Runtime::get().moduleManager.getRenderer().getMaterialSource("boilerplate"));
 
-		mat->setTexture(0, *tex);
-
-
-		isInitalized = true;
-	}
+	mat->setTexture(0, tex);
 
 
+	
 
-	meshComp = std::make_unique<MeshComponent>(*this, Transform{}, ModelData
-		(*mat, vertLocs, UVs, tris, 6, 2));
+
+	auto modelData = Runtime::get().moduleManager.getRenderer().newModelData();
+	modelData->init(vertLocs, UVs, 6, tris, 2);
+	meshComp = std::make_unique<MeshComponent>(*this, Transform{}, *mat, std::move(modelData));
 
 	auto shape = Runtime::get().moduleManager.getPhysicsSystem().newPhysicsShape();
 

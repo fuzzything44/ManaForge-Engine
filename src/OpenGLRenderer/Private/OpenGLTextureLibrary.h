@@ -9,21 +9,24 @@
 class OpenGLTextureLibrary : public TextureLibrary
 {
 public:
-	explicit OpenGLTextureLibrary(uint16 maxNumElements, uint16 individualSize = 256);
+	explicit OpenGLTextureLibrary();
 
 	virtual ~OpenGLTextureLibrary() override;
 
 	// from TextureLibrary
-	void addImage(const std::string& name) override;
+	virtual void addImage(const std::string& name) override;
 	virtual boost::optional<QuadUVCoords> getUVCoords(const std::string& name) override;
+	virtual void init(uint16 maxElems, uint16 individualSize) override;
 
 	// from Texture
-	virtual uint32 getID() override;
 	virtual void setFilterMode(FilterMode mode) override;
 	virtual FilterMode getFilterMode() const override;
 
 	virtual void setWrapMode(WrapMode newMode) override;
 	virtual WrapMode getWrapMode() const override;
+
+
+	uint32 getID();
 
 private:
 

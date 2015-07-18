@@ -5,65 +5,18 @@
 
 // forward declarations
 class MeshComponent;
-class Material;
+class MaterialInstance;
 
-struct ModelBounds
-{
-	ModelBounds(
-		const vec2& lowerLeft  = vec2{ 0.f },
-		const vec2& upperLeft  = vec2{ 0.f },
-		const vec2& lowerRight = vec2{ 0.f },
-		const vec2& upperRight = vec2{ 0.f })
-
-		:lowerLeft(lowerLeft),
-		upperLeft(upperLeft),
-		lowerRight(lowerRight),
-		upperRight(upperRight)
-	{ }
-
-	vec2 lowerLeft;
-	vec2 upperLeft;
-	vec2 lowerRight;
-	vec2 upperRight;
-};
-
-struct ModelData
-{
-	ModelData(
-		Material& material,
-		vec2* vertexLocations = nullptr,
-		vec2* UVs = nullptr,
-		uvec3* triangles = nullptr,
-		uint32 numVerts = 0,
-		uint32 numTriangles = 0,
-		const ModelBounds& bounds = ModelBounds{})
-		
-		:vertexLocations(vertexLocations),
-		UVs(UVs),
-		triangles(triangles),
-		numVerts(numVerts),
-		numTriangles(numTriangles),
-		material(material),
-		bounds(bounds)
-	{
-
-	}
-
-	vec2* vertexLocations;
-	vec2* UVs;
-	uvec3* triangles;
-	uint32 numVerts;
-	uint32 numTriangles;
-	Material& material;
-	ModelBounds bounds;
-};
 
 class Model
 {
 public:
 	virtual ~Model() = default;
 	
+	virtual void init(MaterialInstance& mat, std::shared_ptr<ModelData> data, MeshComponent& ownerComp) = 0;
+
 	virtual MeshComponent& getOwnerComponent() = 0;
+	virtual const MeshComponent& getOwnerComponent() const = 0;
 
 
 };

@@ -34,33 +34,35 @@
 #include <boost/preprocessor/cat.hpp>
 
 
-// worldwide typedefs
-typedef int8_t			int8;
-typedef int16_t			int16;
-typedef int32_t			int32;
-typedef int64_t			int64;
+// worldwide aliases
+using int8		= int8_t;
+using int16		= int16_t;
+using int32		= int32_t;
+using int64		= int64_t;
+ 
+using uint8		= uint8_t;
+using uint16	= uint16_t;
+using uint32	= uint32_t;
+using uint64	= uint64_t;
+ 
 
-typedef uint8_t			uint8;
-typedef uint16_t		uint16;
-typedef uint32_t		uint32;
-typedef uint64_t		uint64;
 
-typedef glm::vec2		vec2;
-typedef glm::vec3		vec3;
-typedef glm::vec4		vec4;
-
-typedef glm::uvec2		uvec2;
-typedef glm::uvec3		uvec3;
-typedef glm::uvec4		uvec4;
-
-typedef glm::ivec2		ivec2;
-typedef glm::ivec3		ivec3;
-typedef glm::ivec4		ivec4;
-
-typedef glm::mat2		mat2;
-typedef glm::mat3		mat3;
-typedef glm::mat4		mat4;
-
-typedef glm::dvec2		dvec2;
-typedef glm::dvec3		dvec3;
-typedef glm::dvec4		dvec4;
+using vec2		= glm::vec2;
+using vec3		= glm::vec3;
+using vec4		= glm::vec4;
+ 
+using uvec2		= glm::uvec2;
+using uvec3		= glm::uvec3;
+using uvec4		= glm::uvec4;
+ 
+using ivec2		= glm::ivec2;
+using ivec3		= glm::ivec3;
+using ivec4		= glm::ivec4;
+ 
+using mat2		= glm::mat2;
+using mat3		= glm::mat3;
+using mat4		= glm::mat4;
+ 
+using dvec2		= glm::dvec2;
+using dvec3		= glm::dvec3;
+using dvec4		= glm::dvec4;

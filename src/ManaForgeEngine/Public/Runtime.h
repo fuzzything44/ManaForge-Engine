@@ -35,7 +35,7 @@ public:
 	InputManager inputManager;
 	
 
-	typedef std::chrono::high_resolution_clock clock;
+	using clock = std::chrono::high_resolution_clock;
 
 	std::unique_ptr<World> world;
 private:

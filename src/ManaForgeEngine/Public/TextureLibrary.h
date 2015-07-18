@@ -12,7 +12,7 @@ class TextureLibrary : public Texture
 {
 public:
 
-	virtual ~TextureLibrary() = default;
+	virtual void init(uint16 maxNumElements, uint16 individualSize) = 0;
 
 	virtual void addImage(const std::string& name) = 0;
 

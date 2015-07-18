@@ -3,13 +3,15 @@
 
 #include <list>
 #include <vector>
-#include <map>
+#include <unordered_map>
 #include <thread>
 
+
 class OpenGLModel;
-class OpenGLMaterial;
+class OpenGLMaterialInstance;
 class OpenGLTexture;
 class OpenGLWindow;
+class OpenGLMaterialSource;
 
 class OpenGLRenderer : public Renderer
 {
@@ -30,10 +32,12 @@ public:
 	virtual Window& getWindow() override;
 	const Window& getWindow() const override;
 
-	virtual std::unique_ptr<Model> newModel(const ModelData& params, MeshComponent& owner) override;
-	virtual std::shared_ptr<Texture> newTexture(const std::string& name) override;
-	virtual std::unique_ptr<TextureLibrary> newTextureLibrary(uint16, uint16) override;
-	virtual std::unique_ptr<Material> newMaterial(const std::string& name) override;
+	virtual std::unique_ptr<Model> newModel() override;
+	virtual std::shared_ptr<Texture> getTexture(const std::string& name) override;
+	virtual std::shared_ptr<MaterialSource> getMaterialSource(const std::string& name) override;
+	virtual std::unique_ptr<TextureLibrary> newTextureLibrary() override;
+	virtual std::unique_ptr<MaterialInstance> newMaterial(std::shared_ptr<MaterialSource> source) override;
+	virtual std::unique_ptr<ModelData> newModelData() override;
 
 	/// <summary> Renders the next frame. </summary>
 	virtual bool update(float deltaTime) override;
@@ -59,13 +63,14 @@ private:
 
 	std::unique_ptr<OpenGLWindow> window;
 
-	std::unique_ptr<OpenGLMaterial> debugDraw;
+	std::unique_ptr<OpenGLMaterialInstance> debugDraw;
 
 	CameraComponent* currentCamera;
 
 	// doubley linked list of the models
 	std::list<OpenGLModel*> models;
-	std::map<std::string, std::shared_ptr<OpenGLTexture> > textures;
+	std::unordered_map<std::string, std::weak_ptr<OpenGLTexture> > textures;
+	std::unordered_map<std::string, std::weak_ptr<OpenGLMaterialSource> > matSources;
 
 
 };

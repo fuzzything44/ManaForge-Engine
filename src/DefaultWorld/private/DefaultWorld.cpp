@@ -12,9 +12,10 @@
 #include <Color.h>
 #include <TextureLibrary.h>
 #include <Renderer.h>
-#include <Material.h>
+#include <MaterialInstance.h>
 #include <Pawn.h>
 #include <PlayerController.h>
+#include <ModelData.h>
 
 #include <list>
 #include <fstream>
@@ -31,14 +32,14 @@
 #	include <boost/archive/polymorphic_xml_oarchive.hpp>
 #	include <boost/archive/polymorphic_xml_iarchive.hpp>
 #	define IS_SAVE_BINARY 0
-typedef boost::archive::polymorphic_xml_oarchive oarchive_t;
-typedef boost::archive::polymorphic_xml_iarchive iarchive_t;
+using oarchive_t = boost::archive::polymorphic_xml_oarchive;
+using iarchive_t = boost::archive::polymorphic_xml_iarchive;
 #else
 #	include <boost/archive/polymorphic_binary_oarchive.hpp>
 #	include <boost/archive/polymorphic_binary_iarchive.hpp>
 #	define IS_SAVE_BINARY 1
-typedef boost::archive::polymorphic_binary_oarchive oarchive_t;
-typedef boost::archive::polymorphic_binary_iarchive iarchive_t;
+using oarchive_t = boost::archive::polymorphic_binary_oarchive;
+using iarchive_t = boost::archive::polymorphic_binary_iarchive;
 #endif
 
 DefaultWorld::DefaultWorld(const std::string& name)
@@ -68,9 +69,11 @@ void DefaultWorld::init(const std::string& name)
 
 	folderLocation = std::string("Worlds\\") + name + '\\';
 	propManager.init(folderLocation + "world.json");
-	backgroundImages = std::move(Runtime::get().moduleManager.getRenderer().newTextureLibrary(4, 256)); // TODO: less hardcoded values
-	drawMaterial = Runtime::get().moduleManager.getRenderer().newMaterial("boilerplate");
+	drawMaterial = Runtime::get().moduleManager.getRenderer().newMaterial(
+		Runtime::get().moduleManager.getRenderer().getMaterialSource("boilerplate"));
 
+	auto backgroundImages = std::shared_ptr<TextureLibrary>{ Runtime::get().moduleManager.getRenderer().newTextureLibrary() }; // TODO: less hardcoded values
+	backgroundImages->init(4, 256);
 
 	// Make sure a world folder was supplied.
 	if (name.empty() || name == "") {
@@ -107,7 +110,7 @@ void DefaultWorld::init(const std::string& name)
 	}
 
 	// set the material
-	drawMaterial->setTexture(0, *backgroundImages);
+	drawMaterial->setTexture(0, backgroundImages);
 
 	logger<Trace>() << "Loading world " << name << "...";
 
@@ -225,12 +228,6 @@ void DefaultWorld::init(const std::string& name)
 			}
 		}
 
-		ModelBounds bounds{
-			vec2(0.f, 0.f),
-			vec2(0.f, backgroundChunkSize),
-			vec2(backgroundChunkSize, 0.f),
-			vec2(backgroundChunkSize, backgroundChunkSize) };
-
 		// generate UV 
 		for (uint16 yChunks = 0; yChunks < numBackgroundChunks.y; ++yChunks)
 		{
@@ -283,21 +280,21 @@ void DefaultWorld::init(const std::string& name)
 				}
 
 
+				auto modelData = Runtime::get().moduleManager.getRenderer().newModelData();
+				modelData->init(
+					&locations[0],
+					&UVs[0],
+					backgroundChunkSize * backgroundChunkSize * 4,
+					&elems[0],
+					backgroundChunkSize * backgroundChunkSize * 2);
 
 				background[yChunks * numBackgroundChunks.x * xChunks] =
 					new ChunkActor(
 						Transform{
 							vec2(xChunks * backgroundChunkSize, yChunks * backgroundChunkSize)
 						},
-						ModelData(
-							*drawMaterial,
-							&locations[0],
-							&UVs[0],
-							&elems[0],
-							backgroundChunkSize * backgroundChunkSize * 4,
-							backgroundChunkSize * backgroundChunkSize * 2,
-							bounds
-						)
+						*drawMaterial,
+						std::move(modelData)
 					);
 
 			}

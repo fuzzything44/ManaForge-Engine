@@ -14,7 +14,8 @@
 #include "PhysicsSystem.h"
 #include "Texture.h"
 #include "CameraComponent.h"
-#include "Material.h"
+#include "MaterialInstance.h"
+#include "ModelData.h"
 
 #include <functional>
 #include <list>
@@ -57,6 +58,9 @@ Runtime::~Runtime()
 {
 	ImageLoader::cleanUp();
 	logdetail::log_base::cleanup();
+
+	pawn.reset();
+	controller.reset();
 
 }
 
@@ -127,13 +131,15 @@ void Runtime::run()
 
 	};
 
-	auto mat = moduleManager.getRenderer().newMaterial("boilerplate");
-	auto tex = moduleManager.getRenderer().newTexture("4");
+	auto mat = moduleManager.getRenderer().newMaterial(moduleManager.getRenderer().getMaterialSource("boilerplate"));
+	auto tex = moduleManager.getRenderer().getTexture("4");
 
 
-	mat->setTexture(0, *tex);
+	mat->setTexture(0, tex);
 
-	auto meshComp = std::make_unique<MeshComponent>(*player, Transform{}, ModelData(*mat, locations.data(), UVs.data(), tris.data(), locations.size(), tris.size()));
+	auto meshData = Runtime::get().moduleManager.getRenderer().newModelData();
+	meshData->init(locations.data(), UVs.data(), locations.size(), tris.data(), tris.size());
+	auto meshComp = std::make_unique<MeshComponent>(*player, Transform{}, *mat, std::move(meshData));
 
 
 	auto shape = moduleManager.getPhysicsSystem().newPhysicsShape();

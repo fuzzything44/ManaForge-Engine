@@ -25,7 +25,6 @@ public:
 		REPEAT
 	};
 
-	virtual uint32 getID() = 0;
 	virtual void setFilterMode(FilterMode newMode) = 0;
 	virtual FilterMode getFilterMode() const = 0;
 

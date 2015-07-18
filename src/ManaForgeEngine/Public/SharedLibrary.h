@@ -9,7 +9,7 @@ class SharedLibrary
 {
 public:
 	// typedef it to make sure we don't do any platform specific crap
-	typedef HINSTANCE SharedLibHandle;
+	using SharedLibHandle = HINSTANCE;
 
 	static SharedLibHandle Load(const std::string& path)
 	{

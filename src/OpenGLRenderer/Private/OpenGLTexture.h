@@ -7,18 +7,18 @@
 #include <map>
 
 // forward declaration
-class OpenGLMaterial;
+class OpenGLMaterialInstance;
 class OpenGLRenderer;
 
 class OpenGLTexture : public Texture
 {
-	friend OpenGLMaterial;
+	friend OpenGLMaterialInstance;
 	friend OpenGLRenderer;
 public:
 
 	explicit OpenGLTexture(const std::string& path);
 
-	virtual uint32 getID() override;
+	uint32 getID();
 
 	virtual void setFilterMode(FilterMode mode) override;
 	virtual FilterMode getFilterMode() const override;

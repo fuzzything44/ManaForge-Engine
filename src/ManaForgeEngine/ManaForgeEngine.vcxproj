@@ -159,9 +159,11 @@
     <ClInclude Include="Public\InputManager.h" />
     <ClInclude Include="Public\KeyEnum.h" />
     <ClInclude Include="Public\Logging.h" />
-    <ClInclude Include="Public\Material.h" />
+    <ClInclude Include="Public\MaterialInstance.h" />
+    <ClInclude Include="Public\MaterialSource.h" />
     <ClInclude Include="Public\MeshComponent.h" />
     <ClInclude Include="Public\Model.h" />
+    <ClInclude Include="Public\ModelData.h" />
     <ClInclude Include="Public\Module.h" />
     <ClInclude Include="Public\ModuleManager.h" />
     <ClInclude Include="Public\ParallelQueue.h" />

@@ -11,7 +11,7 @@
 class ImageLoader
 {
 public:
-	typedef std::function<uvec2(std::string, std::vector<uint8>&)> loadFun;
+	using loadFun = std::function<uvec2(std::string, std::vector<uint8>&)>;
 	
 	ENGINE_API static void addLoader(std::string extension, loadFun function);
 

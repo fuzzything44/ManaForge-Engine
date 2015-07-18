@@ -7,17 +7,10 @@
 
 #include "SOIL/SOIL.h"
 
-OpenGLTextureLibrary::OpenGLTextureLibrary(uint16 maxElements, uint16 individualSize)
-	:nextLocation(0, 0),
-	individualSize(individualSize),
-	maxElements(maxElements)
+OpenGLTextureLibrary::OpenGLTextureLibrary()
+	:nextLocation(0, 0)
 {
-	glGenTextures(1, &texHandle);
-	glBindTexture(GL_TEXTURE_2D, texHandle);
 
-	width = static_cast<uint16>(ceil(sqrt(maxElements)));
-	
-	texHandle = allocateCompressedTextureLibraryFromDDS(width, "textures\\0.dds");
 
 }
 
@@ -27,6 +20,20 @@ OpenGLTextureLibrary::~OpenGLTextureLibrary()
 	glDeleteTextures(1, &texHandle);
 }
 
+
+void OpenGLTextureLibrary::init(uint16 maxElems, uint16 indSize)
+{
+
+	individualSize = indSize;
+	maxElements = maxElems;
+
+	glGenTextures(1, &texHandle);
+	glBindTexture(GL_TEXTURE_2D, texHandle);
+
+	width = static_cast<uint16>(ceil(sqrt(maxElements)));
+
+	texHandle = allocateCompressedTextureLibraryFromDDS(width, "textures\\0.dds");
+}
 
 void OpenGLTextureLibrary::addImage(const std::string& name)
 {

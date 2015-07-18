@@ -4,5 +4,5 @@
         "size" : "250"
     },
 	"DefaultPlayerController" : "Core.PlayerController",
-	"DefaultPawn" : "Core.Pawn"
+	"DefaultPawn" : "TestContent.TestContentPawn"
 }

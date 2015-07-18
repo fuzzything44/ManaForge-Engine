@@ -4,7 +4,7 @@
 
 #include "Controller.h"
 
-Pawn::Pawn(const Transform& trans)
+Pawn::Pawn()
 {
 
 }

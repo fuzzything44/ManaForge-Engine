@@ -12,12 +12,13 @@
 // forward declarations
 class MeshComponent;
 class Texture;
-class Material;
+class MaterialInstance;
 class CameraComponent;
 class Window;
 class Model;
 class TextureLibrary;
-struct ModelData;
+class ModelData;
+class MaterialSource;
 
 // a non - copyable abstract class that handles rendering
 class Renderer :
@@ -52,10 +53,12 @@ public:
 	/// <summary> Creates a new model.</summary>
 	///
 	/// <returns> null if it fails, else a Model*.</returns>
-	virtual std::unique_ptr<Model> newModel(const ModelData& data, MeshComponent& owner) = 0;
-	virtual std::shared_ptr<Texture> newTexture(const std::string& name) = 0;
-	virtual std::unique_ptr<TextureLibrary> newTextureLibrary(uint16, uint16) = 0;
-	virtual std::unique_ptr<Material> newMaterial(const std::string& name) = 0;
+	virtual std::unique_ptr<Model> newModel() = 0;
+	virtual std::shared_ptr<Texture> getTexture(const std::string& name) = 0;
+	virtual std::shared_ptr<MaterialSource> getMaterialSource(const std::string& name) = 0;
+	virtual std::unique_ptr<TextureLibrary> newTextureLibrary() = 0;
+	virtual std::unique_ptr<MaterialInstance> newMaterial(std::shared_ptr<MaterialSource> source) = 0;
+	virtual std::unique_ptr<ModelData> newModelData() = 0;
 
 
 	// gets the window

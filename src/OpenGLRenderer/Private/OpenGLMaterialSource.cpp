@@ -1,32 +1,23 @@
-#include "OpenGLMaterial.h"
-#include "OpenGLTexture.h"
+#include "OpenGLMaterialSource.h"
 
-#include <Logging.h>
-#include <Helper.h>
-#include <Texture.h>
+#include "Helper.h"
 
-
-OpenGLMaterial::OpenGLMaterial(const std::string& name)
+OpenGLMaterialSource::OpenGLMaterialSource(const std::string& name)
 {
-	program = addShaderProgramFromFile(name);
-
-	startTexUniform = glGetUniformLocation(program, "textures");
-	if (startTexUniform == -1)
-	{
-		logger<Warning>() << "Could not find startTexUniform in program: " << name;
-	}
+	if (!name.empty())
+		init(name);
 }
 
-OpenGLMaterial::~OpenGLMaterial()
+OpenGLMaterialSource::~OpenGLMaterialSource()
 {
 
 	glDeleteProgram(program);
 }
 
-GLuint OpenGLMaterial::addShaderProgramFromFile(std::string name)
+void OpenGLMaterialSource::init(const std::string& name)
 {
-	std::string vertexPath	= "shaders\\" + name + "vert.glsl";
-	std::string fragPath	= "shaders\\" + name + "frag.glsl";
+	std::string vertexPath = "shaders\\" + name + "vert.glsl";
+	std::string fragPath = "shaders\\" + name + "frag.glsl";
 
 	// Create the shaders
 	GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
@@ -58,7 +49,7 @@ GLuint OpenGLMaterial::addShaderProgramFromFile(std::string name)
 		glGetShaderInfoLog(vertexShader, InfoLogLength, nullptr, VertexShaderErrorMessage.data());
 		logger<Error>() << VertexShaderErrorMessage.data();
 
-		
+
 	}
 	else
 	{
@@ -88,7 +79,7 @@ GLuint OpenGLMaterial::addShaderProgramFromFile(std::string name)
 
 	// Link the program
 	logger<Trace>() << "\tLinking program " << name;
-	GLuint program = glCreateProgram();
+	program = glCreateProgram();
 	glAttachShader(program, vertexShader);
 	glAttachShader(program, fragmentShader);
 	glLinkProgram(program);
@@ -105,32 +96,9 @@ GLuint OpenGLMaterial::addShaderProgramFromFile(std::string name)
 	glDeleteShader(vertexShader);
 	glDeleteShader(fragmentShader);
 
-	return program;
 }
 
-void OpenGLMaterial::setTexture(uint32 ID, Texture& texture)
+std::string OpenGLMaterialSource::getName()
 {
-	textures[ID] = texture.getID();
-
-}
-
-
-
-void OpenGLMaterial::use()
-{
-	glUseProgram(program);
-
-	for (uint32 i = 0; i < maxTextures; i++)
-	{
-		glUniform1i(startTexUniform + i, i);
-
-		glActiveTexture(GL_TEXTURE0 + i);
-		glBindTexture(GL_TEXTURE_2D, textures[i]);
-	}
-	
-}
-
-GLint OpenGLMaterial::operator()()
-{
-	return program;
+	return name;
 }

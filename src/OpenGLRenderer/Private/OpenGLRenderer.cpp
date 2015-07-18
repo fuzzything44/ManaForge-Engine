@@ -1,11 +1,13 @@
 #include "OpenGLRendererConfig.h"
 
 #include "OpenGLRenderer.h"
-#include "OpenGLMaterial.h"
+#include "OpenGLMaterialInstance.h"
 #include "OpenGLWindow.h"
 #include "OpenGLTexture.h"
 #include "OpenGLTextureLibrary.h"
 #include "OpenGLModel.h"
+#include "OpenGLModelData.h"
+#include "OpenGLMaterialSource.h"
 
 #include <SOIL/SOIL.h>
 
@@ -29,7 +31,7 @@ void OpenGLRenderer::init()
 {
 
 	window = std::make_unique<OpenGLWindow>();
-	debugDraw = std::make_unique<OpenGLMaterial>("debugdraw");
+	debugDraw = std::make_unique<OpenGLMaterialInstance>(getMaterialSource("debugdraw"));
 
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
@@ -65,34 +67,54 @@ const Window& OpenGLRenderer::getWindow() const
 	return *window;
 }
 
-std::unique_ptr<Model> OpenGLRenderer::newModel(const ModelData& params, MeshComponent& owner)
+std::unique_ptr<Model> OpenGLRenderer::newModel()
 {
-	return std::make_unique<OpenGLModel>(params, owner, *this);
+	return std::make_unique<OpenGLModel>(*this);
 }
 
-std::shared_ptr<Texture> OpenGLRenderer::newTexture(const std::string& name)
+std::shared_ptr<Texture> OpenGLRenderer::getTexture(const std::string& name)
 {
 	auto iter = textures.find(name);
 
 	if (iter != textures.end())
 	{
-		return iter->second;
+		return iter->second.lock();
 	}
 
 	// make another
-	return textures.insert({ name, std::make_shared<OpenGLTexture>(name) }).first->second;
+	return textures.insert({ name, std::make_shared<OpenGLTexture>(name) }).first->second.lock();
 }
 
-std::unique_ptr<TextureLibrary> OpenGLRenderer::newTextureLibrary(uint16 maxElems, uint16 individualSize)
+std::shared_ptr<MaterialSource> OpenGLRenderer::getMaterialSource(const std::string& name)
 {
-	return std::make_unique<OpenGLTextureLibrary>(maxElems, individualSize);
+	auto iter = matSources.find(name);
+
+	if (iter != matSources.end())
+	{
+		return iter->second.lock();
+	}
+
+	// make another
+	return matSources.insert({ name, std::make_shared<OpenGLMaterialSource>(name) }).first->second.lock();
+
 }
 
-std::unique_ptr<Material> OpenGLRenderer::newMaterial(const std::string& name)
+std::unique_ptr<TextureLibrary> OpenGLRenderer::newTextureLibrary()
+{
+	return std::make_unique<OpenGLTextureLibrary>();
+}
+
+std::unique_ptr<MaterialInstance> OpenGLRenderer::newMaterial(std::shared_ptr<MaterialSource> source)
 {
 	
-	return std::make_unique<OpenGLMaterial>(name);
+	return std::make_unique<OpenGLMaterialInstance>(source);
 }
+
+std::unique_ptr<ModelData> OpenGLRenderer::newModelData()
+{
+	return std::make_unique<OpenGLModelData>();
+}
+
 
 bool OpenGLRenderer::update(float /*deltaTime*/)
 {
@@ -100,7 +122,11 @@ bool OpenGLRenderer::update(float /*deltaTime*/)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// call the draw function for all of the models
-	std::for_each(models.begin(), models.end(), std::bind(&OpenGLModel::draw, std::placeholders::_1));
+	std::for_each(models.begin(), models.end(), [](OpenGLModel* model)
+		{
+			model->draw();
+		}
+	);
 
 	glDisable(GL_DEPTH_TEST);
 
@@ -163,21 +189,21 @@ void OpenGLRenderer::showLoadingImage()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uvec3) * 2, elems, GL_STATIC_DRAW);
 
-	auto program = OpenGLMaterial::addShaderProgramFromFile("boilerplate");
+	auto program = std::make_unique<OpenGLMaterialSource>("boilerplate");
 	auto texture = SOIL_load_OGL_texture("textures\\loading.dds", 4, 0, SOIL_FLAG_DDS_LOAD_DIRECT);
-	glUseProgram(program);
+	glUseProgram(**program);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-	glUniform1i(glGetUniformLocation(program, "textures"), 0);
+	glUniform1i(glGetUniformLocation(**program, "textures"), 0);
 	glBindTexture(GL_TEXTURE_2D, texture);
 	glActiveTexture(GL_TEXTURE0);
 
 	glm::mat3 mvp = glm::ortho2d(-1.f, 1.f, -1.f, 1.f);
-	glUniformMatrix3fv(glGetUniformLocation(program, "MVPmat"), 1, GL_FALSE, &mvp[0][0]);
+	glUniformMatrix3fv(glGetUniformLocation(**program, "MVPmat"), 1, GL_FALSE, &mvp[0][0]);
 
-	glUniform1i(glGetUniformLocation(program, "renderOrder"), 1);
+	glUniform1i(glGetUniformLocation(**program, "renderOrder"), 1);
 
 	glEnableVertexAttribArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
@@ -205,13 +231,15 @@ void OpenGLRenderer::showLoadingImage()
 	// glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo); // we don't have to do this bc its already bound
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
+	// cleanup
 	glDeleteBuffers(1, &vbo);
 	glDeleteBuffers(1, &texCoordBuffer);
 	glDeleteBuffers(1, &ebo);
 
 	glDeleteVertexArrays(1, &vao);
-	glDeleteProgram(program);
+	glDeleteProgram(**program);
 
+	// display it
 	window->swapBuffers();
 	window->pollEvents();
 }
@@ -242,8 +270,10 @@ void OpenGLRenderer::drawDebugOutlinePolygon(vec2* verts, uint32 numVerts, Color
 
 	debugDraw->use();
 
-	glUniform4f(glGetUniformLocation((*debugDraw)(), "color"), (float)color.red / 255.f, (float)color.green / 255.f, (float)color.blue / 255.f, (float)color.alpha / 255.f);
-	glUniformMatrix3fv(glGetUniformLocation((*debugDraw)(), "MVPmat"), 1, GL_FALSE, &currentCamera->getViewMat()[0][0]);
+	GLuint program = **std::static_pointer_cast<OpenGLMaterialSource>(debugDraw->getSource());
+		
+	glUniform4f(glGetUniformLocation(program, "color"), (float)color.red / 255.f, (float)color.green / 255.f, (float)color.blue / 255.f, (float)color.alpha / 255.f);
+	glUniformMatrix3fv(glGetUniformLocation(program, "MVPmat"), 1, GL_FALSE, &currentCamera->getViewMat()[0][0]);
 
 	GLuint vao;
 	glGenVertexArrays(1, &vao);
@@ -278,8 +308,10 @@ void OpenGLRenderer::drawDebugOutlinePolygon(vec2* verts, uint32 numVerts, Color
 void OpenGLRenderer::drawDebugLine(vec2* locs, uint32 numLocs, Color color)
 {
 
-	glUniform4f(glGetUniformLocation((*debugDraw)(), "color"), (float)color.red / 255.f, (float)color.green / 255.f, (float)color.blue / 255.f, (float)color.alpha / 255.f);
-	glUniformMatrix3fv(glGetUniformLocation((*debugDraw)(), "MVPmat"), 1, GL_FALSE, &currentCamera->getViewMat()[0][0]);
+	GLuint program = **std::static_pointer_cast<OpenGLMaterialSource>(debugDraw->getSource());
+
+	glUniform4f(glGetUniformLocation(program, "color"), (float)color.red / 255.f, (float)color.green / 255.f, (float)color.blue / 255.f, (float)color.alpha / 255.f);
+	glUniformMatrix3fv(glGetUniformLocation(program, "MVPmat"), 1, GL_FALSE, &currentCamera->getViewMat()[0][0]);
 
 	GLuint vao;
 	glGenVertexArrays(1, &vao);
@@ -315,8 +347,10 @@ void OpenGLRenderer::drawDebugSolidPolygon(vec2* verts, uint32 numVerts, Color c
 
 	debugDraw->use();
 
-	glUniform4f(glGetUniformLocation((*debugDraw)(), "color"), .5f * (float)color.red / 255.f, .5f * (float)color.green / 255.f, .5f * (float)color.blue / 255.f, .5f * (float)color.alpha / 255.f);
-	glUniformMatrix3fv(glGetUniformLocation((*debugDraw)(), "MVPmat"), 1, GL_FALSE, &currentCamera->getViewMat()[0][0]);
+	GLuint program = **std::static_pointer_cast<OpenGLMaterialSource>(debugDraw->getSource());
+
+	glUniform4f(glGetUniformLocation(program, "color"), .5f * (float)color.red / 255.f, .5f * (float)color.green / 255.f, .5f * (float)color.blue / 255.f, .5f * (float)color.alpha / 255.f);
+	glUniformMatrix3fv(glGetUniformLocation(program, "MVPmat"), 1, GL_FALSE, &currentCamera->getViewMat()[0][0]);
 
 	GLuint vao;
 	glGenVertexArrays(1, &vao);
@@ -340,7 +374,7 @@ void OpenGLRenderer::drawDebugSolidPolygon(vec2* verts, uint32 numVerts, Color c
 
 	glDrawArrays(GL_TRIANGLE_FAN, 0, numVerts);
 
-	glUniform4f(glGetUniformLocation((*debugDraw)(), "color"), (float)color.red / 255.f, (float)color.green / 255.f, (float)color.blue / 255.f, (float)color.alpha / 255.f);
+	glUniform4f(glGetUniformLocation(program, "color"), (float)color.red / 255.f, (float)color.green / 255.f, (float)color.blue / 255.f, (float)color.alpha / 255.f);
 	glDrawArrays(GL_LINE_LOOP, 0, numVerts);
 
 	glDisableVertexAttribArray(0);
@@ -354,7 +388,7 @@ void OpenGLRenderer::drawDebugOutlineCircle(vec2 center, float radius, Color col
 
 	check(currentCamera);
 
-	typedef boost::mpl::int_<16> k_segments;
+	using k_segments = boost::mpl::int_<16>;
 	const float k_increment = 2.0f * (float)M_PI / (float)k_segments::value;
 	float theta = 0.0f;
 	auto verts = std::array<vec2, k_segments::value>();
@@ -366,9 +400,10 @@ void OpenGLRenderer::drawDebugOutlineCircle(vec2 center, float radius, Color col
 
 
 	debugDraw->use();
+	GLuint program = **std::static_pointer_cast<OpenGLMaterialSource>(debugDraw->getSource());
 
-	glUniform4f(glGetUniformLocation((*debugDraw)(), "color"), (float)color.red / 255.f, (float)color.green / 255.f, (float)color.blue / 255.f, (float)color.alpha / 255.f);
-	glUniformMatrix3fv(glGetUniformLocation((*debugDraw)(), "MVPmat"), 1, GL_FALSE, &currentCamera->getViewMat()[0][0]);
+	glUniform4f(glGetUniformLocation(program, "color"), (float)color.red / 255.f, (float)color.green / 255.f, (float)color.blue / 255.f, (float)color.alpha / 255.f);
+	glUniformMatrix3fv(glGetUniformLocation(program, "MVPmat"), 1, GL_FALSE, &currentCamera->getViewMat()[0][0]);
 
 	GLuint vao;
 	glGenVertexArrays(1, &vao);
@@ -402,7 +437,7 @@ void OpenGLRenderer::drawDebugSolidCircle(vec2 center, float radius, Color color
 
 	check(currentCamera);
 
-	typedef boost::mpl::int_<16> k_segments;
+	using k_segments = boost::mpl::int_<16>;
 	const float k_increment = 2.0f * (float)M_PI / (float)k_segments::value;
 	float theta = 0.0f;
 	auto verts = std::array<vec2, k_segments::value>();
@@ -415,8 +450,10 @@ void OpenGLRenderer::drawDebugSolidCircle(vec2 center, float radius, Color color
 
 	debugDraw->use();
 
-	glUniform4f(glGetUniformLocation((*debugDraw)(), "color"), .5f * (float)color.red / 255.f, .5f * (float)color.green / 255.f, .5f * (float)color.blue / 255.f, .5f * (float)color.alpha / 255.f);
-	glUniformMatrix3fv(glGetUniformLocation((*debugDraw)(), "MVPmat"), 1, GL_FALSE, &currentCamera->getViewMat()[0][0]);
+	GLuint program = **std::static_pointer_cast<OpenGLMaterialSource>(debugDraw->getSource());
+
+	glUniform4f(glGetUniformLocation(program, "color"), .5f * (float)color.red / 255.f, .5f * (float)color.green / 255.f, .5f * (float)color.blue / 255.f, .5f * (float)color.alpha / 255.f);
+	glUniformMatrix3fv(glGetUniformLocation(program, "MVPmat"), 1, GL_FALSE, &currentCamera->getViewMat()[0][0]);
 
 	GLuint vao;
 	glGenVertexArrays(1, &vao);
@@ -440,7 +477,7 @@ void OpenGLRenderer::drawDebugSolidCircle(vec2 center, float radius, Color color
 
 	glDrawArrays(GL_TRIANGLE_FAN, 0, (uint32)k_segments::value);
 
-	glUniform4f(glGetUniformLocation((*debugDraw)(), "color"), (float)color.red / 255.f, (float)color.green / 255.f, (float)color.blue / 255.f, (float)color.alpha / 255.f);
+	glUniform4f(glGetUniformLocation(program, "color"), (float)color.red / 255.f, (float)color.green / 255.f, (float)color.blue / 255.f, (float)color.alpha / 255.f);
 	glDrawArrays(GL_LINE_LOOP, 0, (uint32)k_segments::value);
 
 	glDisableVertexAttribArray(0);
@@ -456,8 +493,10 @@ void OpenGLRenderer::drawDebugSegment(vec2 p1, vec2 p2, Color color)
 
 	debugDraw->use();
 
-	glUniform4f(glGetUniformLocation((*debugDraw)(), "color"), (float)color.red / 255.f, (float)color.green / 255.f, (float)color.blue / 255.f, (float)color.alpha / 255.f);
-	glUniformMatrix3fv(glGetUniformLocation((*debugDraw)(), "MVPmat"), 1, GL_FALSE, &currentCamera->getViewMat()[0][0]);
+	GLuint program = **std::static_pointer_cast<OpenGLMaterialSource>(debugDraw->getSource());
+
+	glUniform4f(glGetUniformLocation(program, "color"), (float)color.red / 255.f, (float)color.green / 255.f, (float)color.blue / 255.f, (float)color.alpha / 255.f);
+	glUniformMatrix3fv(glGetUniformLocation(program, "MVPmat"), 1, GL_FALSE, &currentCamera->getViewMat()[0][0]);
 
 	auto locs = std::array<vec2, 2>();
 	locs[0] = p1;

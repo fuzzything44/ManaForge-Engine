@@ -88,11 +88,13 @@
     <ClInclude Include="Public\Gate.h" />
     <ClInclude Include="Public\pew.h" />
     <ClInclude Include="Public\TestContentConfig.h" />
+    <ClInclude Include="Public\TestContentPawn.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Private\Pew.cpp" />
     <ClCompile Include="Private\Gate.cpp" />
     <ClCompile Include="Private\TestContentConfig.cpp" />
+    <ClCompile Include="Private\TestContentPawn.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
