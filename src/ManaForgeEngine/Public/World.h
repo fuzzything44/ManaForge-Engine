@@ -26,8 +26,8 @@ public:
 
 	virtual void saveWorld() = 0;
 
-	virtual PlayerController* makePlayerController() = 0;
-	virtual Pawn* makePawn() = 0;
+	virtual std::unique_ptr<PlayerController> makePlayerController() = 0;
+	virtual std::unique_ptr<Pawn> makePawn() = 0;
 
 	virtual std::unique_ptr<ActorLocation> addActor(Actor& toAdd) = 0;
 

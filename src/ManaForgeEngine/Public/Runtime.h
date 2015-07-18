@@ -39,8 +39,8 @@ public:
 	std::unique_ptr<World> world;
 private:
 
-	PlayerController* controller;
-
+	std::unique_ptr<PlayerController> controller;
+	std::unique_ptr<Pawn> pawn;
 
 	ENGINE_API static Runtime* currentRuntime;
 };

@@ -13,6 +13,8 @@
 #include <TextureLibrary.h>
 #include <Renderer.h>
 #include <Material.h>
+#include <Pawn.h>
+#include <PlayerController.h>
 
 #include <list>
 #include <fstream>
@@ -359,14 +361,14 @@ void DefaultWorld::saveWorld()
 	}
 }
 
-PlayerController* DefaultWorld::makePlayerController()
+std::unique_ptr<PlayerController> DefaultWorld::makePlayerController()
 {
-	return nullptr; // TODO: fix
+	return std::unique_ptr < PlayerController > {Runtime::get().moduleManager.spawnClass<PlayerController>(playerControllerClassName)};
 }
 
-Pawn* DefaultWorld::makePawn()
+std::unique_ptr<Pawn> DefaultWorld::makePawn()
 {
-	return nullptr; // TODO: fix
+	return std::unique_ptr < Pawn > {Runtime::get().moduleManager.spawnClass<Pawn>(pawnClassName)};
 }
 
 boost::signals2::connection DefaultWorld::registerTickingActor(Actor& toAdd)

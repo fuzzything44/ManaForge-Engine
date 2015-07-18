@@ -37,8 +37,8 @@ public:
 
 	virtual std::unique_ptr<ActorLocation> addActor(Actor& toAdd) override;
 
-	virtual PlayerController* makePlayerController() override;
-	virtual Pawn* makePawn() override;
+	virtual std::unique_ptr<PlayerController> makePlayerController() override;
+	virtual std::unique_ptr<Pawn> makePawn() override;
 
 	virtual boost::signals2::connection registerTickingActor(Actor& toAdd) override;
 	// End World Interface
