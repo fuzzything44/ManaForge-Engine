@@ -8,10 +8,10 @@ class OpenGLMaterialSource : public MaterialSource
 {
 public:
 
-	explicit OpenGLMaterialSource(const std::string& name = "");
+	explicit OpenGLMaterialSource(const path_t& name = "");
 	virtual ~OpenGLMaterialSource();
 
-	virtual void init(const std::string& name) override;
+	virtual void init(const path_t& name) override;
 	
 	virtual std::string getName() override;
 

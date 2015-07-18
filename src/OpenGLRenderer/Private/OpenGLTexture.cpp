@@ -8,16 +8,16 @@
 #define FOURCC_DXT3 0x33545844 // Equivalent to "DXT3" in ASCII
 #define FOURCC_DXT5 0x35545844 // Equivalent to "DXT5" in ASCII
 
-OpenGLTexture::OpenGLTexture(const std::string& path)
+OpenGLTexture::OpenGLTexture(const path_t& path)
 	: path(path)
 {
 
 	if (path != "")
 	{
-		std::string qualifiedPath = "textures\\" + path + ".dds";
+		path_t qualifiedPath = L"textures\\" + path.wstring() + L".dds";
 
 		ID = SOIL_load_OGL_texture(
-			qualifiedPath.c_str(),		// path
+			qualifiedPath.string().c_str(),		// path
 			4,							// 4 channels
 			0,							// create a new texture ID in OGL
 			SOIL_FLAG_DDS_LOAD_DIRECT	// It is a dds

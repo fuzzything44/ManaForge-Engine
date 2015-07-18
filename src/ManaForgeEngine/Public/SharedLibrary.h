@@ -11,11 +11,11 @@ public:
 	// typedef it to make sure we don't do any platform specific crap
 	using SharedLibHandle = HINSTANCE;
 
-	static SharedLibHandle Load(const std::string& path)
+	static SharedLibHandle Load(const path_t& path)
 	{
-		std::string pathWithExt = path + ".dll";
+		path_t pathWithExt = path.wstring() + (L".dll");
 
-		SharedLibHandle handle = LoadLibraryA(pathWithExt.c_str());
+		SharedLibHandle handle = LoadLibraryW(pathWithExt.c_str());
 
 		if (handle == nullptr)
 		{

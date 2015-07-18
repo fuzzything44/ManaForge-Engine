@@ -5,5 +5,5 @@
 class SoundCue
 {
 public:
-	virtual std::string getName() const = 0;
+	virtual path_t getName() const = 0;
 };

@@ -7,18 +7,19 @@
 // standard library includes
 #include <ios>
 
+#include <boost/filesystem/fstream.hpp>
 
 /// <summary> Loads file to string.</summary>
 ///
 /// <param name="filename"> Filename of the file.</param>
 ///
 /// <returns> The file to string.</returns>
-inline std::string loadFileToStr(const char* filename)
+inline std::string loadFileToStr(const path_t& filename)
 {
 
 
 	// stream for the file
-	std::ifstream stream;
+	boost::filesystem::ifstream stream;
 	stream.open(filename);
 
 	// if the steam if bad then return

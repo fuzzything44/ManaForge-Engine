@@ -34,7 +34,7 @@ void OpenALAudioSystem::addSource(OpenALSoundSource* source)
 	sources.push_back(source);
 }
 
-std::shared_ptr<SoundCue> OpenALAudioSystem::newSoundCue(const std::string& name)
+std::shared_ptr<SoundCue> OpenALAudioSystem::newSoundCue(const path_t& name)
 {
 	auto iter = cues.find(name);
 

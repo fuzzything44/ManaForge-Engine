@@ -2,12 +2,12 @@
 
 #include <Logging.h>
 
-OpenALSoundCue::OpenALSoundCue(const std::string& name)
+OpenALSoundCue::OpenALSoundCue(const path_t& name)
 	:name(name)
 {
-	std::string path = "sounds\\" + name + ".wav";
+	path_t path = L"sounds\\" + name.wstring() + L".wav";
 
-	bufferHandle = alutCreateBufferFromFile(path.c_str());
+	bufferHandle = alutCreateBufferFromFile(path.string().c_str());
 
 	ALint amtChannels;
 	alGetBufferi(bufferHandle, AL_CHANNELS, &amtChannels);
@@ -18,7 +18,7 @@ OpenALSoundCue::OpenALSoundCue(const std::string& name)
 	}
 }
 
-std::string OpenALSoundCue::getName() const
+path_t OpenALSoundCue::getName() const
 {
 	return name;
 }

@@ -16,7 +16,7 @@ class OpenGLTexture : public Texture
 	friend OpenGLRenderer;
 public:
 
-	explicit OpenGLTexture(const std::string& path);
+	explicit OpenGLTexture(const path_t& path);
 
 	uint32 getID();
 
@@ -33,7 +33,7 @@ private:
 
 	GLuint ID;
 
-	std::string path;
+	path_t path;
 
 
 	int32 loadDDS(const std::string& filename);

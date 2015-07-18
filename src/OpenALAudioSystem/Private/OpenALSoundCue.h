@@ -13,11 +13,11 @@ class OpenALSoundCue : public SoundCue
 	friend class OpenALSoundSource;
 public:
 
-	explicit OpenALSoundCue(const std::string& name);
-	virtual std::string getName() const override;
+	explicit OpenALSoundCue(const path_t& name);
+	virtual path_t getName() const override;
 
 private:
 
 	ALuint bufferHandle;
-	std::string name;
+	path_t name;
 };

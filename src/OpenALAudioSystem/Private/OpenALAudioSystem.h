@@ -5,7 +5,7 @@
 #include <AudioSystem.h>
 
 #include <list>
-#include <map>
+#include <unordered_map>
 
 class OpenALSoundSource;
 class OpenALSoundCue;
@@ -17,7 +17,7 @@ public:
 
 	virtual ~OpenALAudioSystem();
 
-	virtual std::shared_ptr<SoundCue> newSoundCue(const std::string& name) override;
+	virtual std::shared_ptr<SoundCue> newSoundCue(const path_t& name) override;
 	virtual std::unique_ptr<SoundSource> newSoundSource(SoundCue& cue, AudioComponent& owner) override;
 
 	void addSource(OpenALSoundSource* source);
@@ -28,6 +28,6 @@ private:
 
 	std::list<OpenALSoundSource*> sources;
 
-	std::map<std::string, std::shared_ptr<OpenALSoundCue> > cues;
+	std::unordered_map<path_t, std::shared_ptr<OpenALSoundCue> > cues;
 
 };

@@ -10,8 +10,8 @@ class PropertyManager
 
 public:
 
-	ENGINE_API explicit PropertyManager(const std::string& location = "");
-	ENGINE_API void init(const std::string& location);
+	ENGINE_API explicit PropertyManager(const path_t& location = "");
+	ENGINE_API void init(const path_t& location);
 	
 
 	template <typename T>

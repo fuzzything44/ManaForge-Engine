@@ -19,7 +19,7 @@ class Runtime : boost::noncopyable
 {
 public:
 
-	ENGINE_API explicit Runtime(const std::string& world = "");
+	ENGINE_API explicit Runtime(const path_t& world);
 
 	ENGINE_API ~Runtime();
 

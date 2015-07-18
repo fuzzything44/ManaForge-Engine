@@ -31,10 +31,29 @@
 #include "Logging.h"
 #include "ENGException.h"
 
-#include <boost/preprocessor/cat.hpp>
+#include <boost/filesystem/path.hpp>
 
+namespace std{
+
+	template<>
+	struct std::hash<boost::filesystem::path>
+	{
+		size_t operator()(const boost::filesystem::path& p)
+		{
+			size_t current = 0;
+			for (auto& elem : p.generic_wstring())
+			{
+				current += (size_t)elem;
+			}
+
+			return current;
+		}
+	};
+}
 
 // worldwide aliases
+using path_t = boost::filesystem::path;
+
 using int8		= int8_t;
 using int16		= int16_t;
 using int32		= int32_t;

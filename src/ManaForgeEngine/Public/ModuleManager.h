@@ -48,7 +48,7 @@ public:
 	/// <summary> Loads a module.</summary>
 	///
 	/// <param name="filename"> Filename of the module.</param>
-	ENGINE_API void loadModule(const std::string& filename);
+	ENGINE_API void loadModule(const path_t& filename);
 
 	template<typename T>
 	inline void registerClass(const std::string& moduleName, T* ptr = nullptr);
@@ -67,7 +67,7 @@ private:
 	std::list<initFun> initCallbacks;
 	std::list<updateFun> updateCallbacks;
 
-	std::unordered_map<std::string, std::shared_ptr<Module> > loadedModules;
+	std::unordered_map<path_t, std::shared_ptr<Module> > loadedModules;
 
 	std::unique_ptr<Renderer> renderer;
 	std::unique_ptr<AudioSystem> audioSystem;

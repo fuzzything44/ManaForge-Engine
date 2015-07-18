@@ -6,10 +6,10 @@
 
 #include <iostream>
 
-Module::Module(const std::string& filename) :
+Module::Module(const path_t& filename) :
 	registerModuleFunctionAddress(nullptr),
 	getModuleEngineVersionAddress(nullptr),
-	name(std::string("Modules\\").append(filename)), // Append the modules prefiex
+	name(std::wstring(L"Modules\\").append(filename.wstring())), // Append the modules prefiex
 	libraryHandle(nullptr)
 {
 	try{

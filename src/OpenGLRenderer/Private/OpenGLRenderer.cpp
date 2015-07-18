@@ -72,7 +72,7 @@ std::unique_ptr<Model> OpenGLRenderer::newModel()
 	return std::make_unique<OpenGLModel>(*this);
 }
 
-std::shared_ptr<Texture> OpenGLRenderer::getTexture(const std::string& name)
+std::shared_ptr<Texture> OpenGLRenderer::getTexture(const path_t& name)
 {
 	auto iter = textures.find(name);
 
@@ -85,7 +85,7 @@ std::shared_ptr<Texture> OpenGLRenderer::getTexture(const std::string& name)
 	return textures.insert({ name, std::make_shared<OpenGLTexture>(name) }).first->second.lock();
 }
 
-std::shared_ptr<MaterialSource> OpenGLRenderer::getMaterialSource(const std::string& name)
+std::shared_ptr<MaterialSource> OpenGLRenderer::getMaterialSource(const path_t& name)
 {
 	auto iter = matSources.find(name);
 

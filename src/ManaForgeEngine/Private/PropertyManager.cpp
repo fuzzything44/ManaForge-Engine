@@ -6,7 +6,9 @@
 
 #include <boost/property_tree/json_parser.hpp>
 
-PropertyManager::PropertyManager(const std::string& path)
+#include <boost/filesystem/fstream.hpp>
+
+PropertyManager::PropertyManager(const path_t& path)
 {
 	if (path != "")
 	{
@@ -14,12 +16,12 @@ PropertyManager::PropertyManager(const std::string& path)
 	}
 }
 
-void PropertyManager::init(const std::string& path)
+void PropertyManager::init(const path_t& path)
 {
 
 	std::string a = loadFileToStr(path.c_str());
 
-	std::ifstream stream{ path };
+	boost::filesystem::ifstream stream{ path };
 
 
 

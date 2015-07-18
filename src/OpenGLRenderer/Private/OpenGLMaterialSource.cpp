@@ -2,7 +2,7 @@
 
 #include "Helper.h"
 
-OpenGLMaterialSource::OpenGLMaterialSource(const std::string& name)
+OpenGLMaterialSource::OpenGLMaterialSource(const path_t& name)
 {
 	if (!name.empty())
 		init(name);
@@ -14,20 +14,20 @@ OpenGLMaterialSource::~OpenGLMaterialSource()
 	glDeleteProgram(program);
 }
 
-void OpenGLMaterialSource::init(const std::string& name)
+void OpenGLMaterialSource::init(const path_t& name)
 {
-	std::string vertexPath = "shaders\\" + name + "vert.glsl";
-	std::string fragPath = "shaders\\" + name + "frag.glsl";
+	path_t vertexPath = L"shaders\\" + name.wstring() + L"vert.glsl";
+	path_t fragPath = L"shaders\\" + name.wstring() + L"frag.glsl";
 
 	// Create the shaders
 	GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
 	GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 
 	// Read the Vertex Shader code from the file
-	std::string&& VertexShaderCode = loadFileToStr(vertexPath.c_str());
+	std::string&& VertexShaderCode = loadFileToStr(vertexPath);
 
 	// Read the Fragment Shader code from the file
-	std::string&& FragmentShaderCode = loadFileToStr(fragPath.c_str());
+	std::string&& FragmentShaderCode = loadFileToStr(fragPath);
 
 
 	int32 Result = GL_FALSE;

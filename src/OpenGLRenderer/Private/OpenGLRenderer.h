@@ -33,8 +33,8 @@ public:
 	const Window& getWindow() const override;
 
 	virtual std::unique_ptr<Model> newModel() override;
-	virtual std::shared_ptr<Texture> getTexture(const std::string& name) override;
-	virtual std::shared_ptr<MaterialSource> getMaterialSource(const std::string& name) override;
+	virtual std::shared_ptr<Texture> getTexture(const path_t& name) override;
+	virtual std::shared_ptr<MaterialSource> getMaterialSource(const path_t& name) override;
 	virtual std::unique_ptr<TextureLibrary> newTextureLibrary() override;
 	virtual std::unique_ptr<MaterialInstance> newMaterial(std::shared_ptr<MaterialSource> source) override;
 	virtual std::unique_ptr<ModelData> newModelData() override;
@@ -69,8 +69,8 @@ private:
 
 	// doubley linked list of the models
 	std::list<OpenGLModel*> models;
-	std::unordered_map<std::string, std::weak_ptr<OpenGLTexture> > textures;
-	std::unordered_map<std::string, std::weak_ptr<OpenGLMaterialSource> > matSources;
+	std::unordered_map<path_t, std::weak_ptr<OpenGLTexture> > textures;
+	std::unordered_map<path_t, std::weak_ptr<OpenGLMaterialSource> > matSources;
 
 
 };

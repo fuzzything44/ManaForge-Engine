@@ -25,7 +25,7 @@ ModuleManager::~ModuleManager()
 }
 
 
-void ModuleManager::loadModule(const std::string& filename)
+void ModuleManager::loadModule(const path_t& filename)
 {
 
 	if (loadedModules.find(filename) == loadedModules.end())
