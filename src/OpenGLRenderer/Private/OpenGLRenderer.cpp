@@ -76,26 +76,63 @@ std::shared_ptr<Texture> OpenGLRenderer::getTexture(const path_t& name)
 {
 	auto iter = textures.find(name);
 
+	std::shared_ptr<OpenGLTexture> ret;
+
 	if (iter != textures.end())
 	{
-		return iter->second.lock();
+		if (iter->second.expired())
+		{
+			ret = std::make_shared<OpenGLTexture>(name);
+			iter->second = ret;
+
+		}
+		else
+		{
+			ret = std::shared_ptr<OpenGLTexture>{ iter->second };
+		}
+
+		return ret;
 	}
 
+	ret = std::make_shared<OpenGLTexture>(name);
+
 	// make another
-	return textures.insert({ name, std::make_shared<OpenGLTexture>(name) }).first->second.lock();
+	textures.insert(
+		{ name, ret }
+	);
+
+	return ret;
 }
 
 std::shared_ptr<MaterialSource> OpenGLRenderer::getMaterialSource(const path_t& name)
 {
 	auto iter = matSources.find(name);
 
-	if (iter != matSources.end())
+	std::shared_ptr<OpenGLMaterialSource> ret;
+
+	if (iter != matSources.end() )
 	{
-		return iter->second.lock();
+		if (iter->second.expired())
+		{
+			ret = std::make_shared<OpenGLMaterialSource>(name);
+			iter->second = ret;
+			
+		}
+		else
+		{
+			ret = std::shared_ptr<OpenGLMaterialSource>{ iter->second };
+		}
+		
+		return ret;
 	}
 
+	ret = std::make_shared<OpenGLMaterialSource>(name);
 	// make another
-	return matSources.insert({ name, std::make_shared<OpenGLMaterialSource>(name) }).first->second.lock();
+	matSources.insert( 
+		{ name, ret }
+	);
+
+	return ret;
 
 }
 
@@ -189,7 +226,7 @@ void OpenGLRenderer::showLoadingImage()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uvec3) * 2, elems, GL_STATIC_DRAW);
 
-	auto program = std::make_unique<OpenGLMaterialSource>("boilerplate");
+	auto program = std::static_pointer_cast<OpenGLMaterialSource>(getMaterialSource("boilerplate"));
 	auto texture = SOIL_load_OGL_texture("textures\\loading.dds", 4, 0, SOIL_FLAG_DDS_LOAD_DIRECT);
 	glUseProgram(**program);
 
