@@ -8,11 +8,6 @@
 #	pragma comment(lib, "ManaForgeEngine.lib")
 #endif
 
-#ifdef USE_VLD
-#	pragma message("VLD is enabled")
-#	include <vld.h>
-#endif
-
 // ALWAYS link to stackwalker.lib
 #pragma comment(lib, "StackWalker.lib")
 
@@ -33,6 +28,7 @@
 
 #include <boost/filesystem/path.hpp>
 
+// hashing for path_t
 namespace std{
 
 	template<>
@@ -41,7 +37,7 @@ namespace std{
 		size_t operator()(const boost::filesystem::path& p)
 		{
 			size_t current = 0;
-			for (auto& elem : p.generic_wstring())
+			for (auto& elem : p.wstring())
 			{
 				current += (size_t)elem;
 			}
