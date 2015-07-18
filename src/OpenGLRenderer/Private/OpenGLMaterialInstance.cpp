@@ -22,6 +22,7 @@ OpenGLMaterialInstance::~OpenGLMaterialInstance()
 
 void OpenGLMaterialInstance::setTexture(uint32 ID, std::shared_ptr<Texture> texture)
 {
+	check(texture);
 	textures[ID] = std::static_pointer_cast<OpenGLTexture>(texture);
 
 }
@@ -53,6 +54,8 @@ void OpenGLMaterialInstance::use()
 
 	for (uint32 i = 0; i < maxTextures && textures[i]; i++)
 	{
+		check(*textures[i])
+
 		glUniform1i(startTexUniform + i, i);
 
 		glActiveTexture(GL_TEXTURE0 + i);

@@ -32,14 +32,13 @@ OpenGLModel::~OpenGLModel()
 	
 }
 
-void OpenGLModel::init(MaterialInstance& mat, std::shared_ptr<ModelData> data, MeshComponent& ownerComp)
+void OpenGLModel::init(std::shared_ptr<MaterialInstance> mat, std::shared_ptr<ModelData> data, MeshComponent& ownerComp)
 {
-	material = static_cast<OpenGLMaterialInstance*>(&mat);
+	material = std::static_pointer_cast<OpenGLMaterialInstance>(mat);
 	modelData = std::static_pointer_cast<OpenGLModelData>(data);
 	parent = &ownerComp;
 
-	check(mat.getSource());
-	GLuint program = **std::static_pointer_cast<OpenGLMaterialSource>(mat.getSource());
+	GLuint program = **std::static_pointer_cast<OpenGLMaterialSource>(mat->getSource());
 
 	MVPUniformLocation = glGetUniformLocation(program, "MVPmat");
 }

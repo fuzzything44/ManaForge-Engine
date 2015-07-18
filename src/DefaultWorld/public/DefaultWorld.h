@@ -52,8 +52,6 @@ private:
 	// use a deque -- the index can be the index in it!
 	std::deque<Actor*> actors;
 
-	std::unique_ptr<MaterialInstance> drawMaterial;
-
 	// array of models -- in row major order
 	std::unique_ptr<ChunkActor*[]> background;
 

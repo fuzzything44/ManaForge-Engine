@@ -69,8 +69,9 @@ void DefaultWorld::init(const std::string& name)
 
 	folderLocation = std::string("Worlds\\") + name + '\\';
 	propManager.init(folderLocation + "world.json");
-	drawMaterial = Runtime::get().moduleManager.getRenderer().newMaterial(
-		Runtime::get().moduleManager.getRenderer().getMaterialSource("boilerplate"));
+
+	auto drawMaterial = std::shared_ptr<MaterialInstance>{ Runtime::get().moduleManager.getRenderer().newMaterial(
+		Runtime::get().moduleManager.getRenderer().getMaterialSource("boilerplate")) };
 
 	auto backgroundImages = std::shared_ptr<TextureLibrary>{ Runtime::get().moduleManager.getRenderer().newTextureLibrary() }; // TODO: less hardcoded values
 	backgroundImages->init(4, 256);
@@ -293,7 +294,7 @@ void DefaultWorld::init(const std::string& name)
 						Transform{
 							vec2(xChunks * backgroundChunkSize, yChunks * backgroundChunkSize)
 						},
-						*drawMaterial,
+						drawMaterial,
 						std::move(modelData)
 					);
 

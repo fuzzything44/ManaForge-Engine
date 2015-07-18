@@ -57,7 +57,7 @@ Gate::Gate()
 
 	auto modelData = Runtime::get().moduleManager.getRenderer().newModelData();
 	modelData->init(vertLocs, UVs, 6, tris, 2);
-	meshComp = std::make_unique<MeshComponent>(*this, Transform{}, *mat, std::move(modelData));
+	meshComp = std::make_unique<MeshComponent>(*this, Transform{}, std::move(mat), std::move(modelData));
 
 	auto shape = Runtime::get().moduleManager.getPhysicsSystem().newPhysicsShape();
 

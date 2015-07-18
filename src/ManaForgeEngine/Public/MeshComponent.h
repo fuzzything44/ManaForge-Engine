@@ -10,16 +10,25 @@ class MeshComponent : public SceneComponent
 {
 public:
 
-	ENGINE_API explicit MeshComponent(
+	inline explicit MeshComponent(
 		Actor& owner,
 		Transform trans,
-		MaterialInstance& mat,
+		std::shared_ptr<MaterialInstance> mat,
 		std::shared_ptr<ModelData> data);
-
-	ENGINE_API virtual ~MeshComponent();
 
 
 protected:
 
 	std::unique_ptr<Model> model;
 }; 
+
+MeshComponent::MeshComponent(
+	Actor& owner,
+	Transform trans,
+	std::shared_ptr<MaterialInstance> mat,
+	std::shared_ptr<ModelData> data)
+	: SceneComponent(owner, trans),
+	model(Runtime::get().moduleManager.getRenderer().newModel())
+{
+	model->init(mat, data, *this);
+}

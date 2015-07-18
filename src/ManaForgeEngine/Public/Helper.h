@@ -165,7 +165,7 @@ inline std::ostream& operator<<(std::ostream& os, const mat4& mat)
 	
 
 	/// <summary> Checks a pointer, and throws an exception if it is null.</summary>
-	#define check(ptr) if(!ptr){  ::logger<Error>() << "Null pointer exception caught: " << #ptr; }
+	#define check(ptr) if(!(ptr)){  ::logger<Error>() << "Null pointer exception caught: " << #ptr; }
 
 	
 #else

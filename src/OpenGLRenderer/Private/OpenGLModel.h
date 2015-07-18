@@ -17,7 +17,7 @@ public:
 	explicit OpenGLModel(OpenGLRenderer& renderer);
 	virtual ~OpenGLModel();
 
-	virtual void init(MaterialInstance& mat, std::shared_ptr<ModelData> data, MeshComponent& ownerComp) override;
+	virtual void init(std::shared_ptr<MaterialInstance> mat, std::shared_ptr<ModelData> data, MeshComponent& ownerComp) override;
 
 	virtual MeshComponent& getOwnerComponent() override;	
 	virtual const MeshComponent& getOwnerComponent() const override;
@@ -36,6 +36,6 @@ private:
 
 	OpenGLRenderer& renderer;
 
-	OpenGLMaterialInstance* material;
+	std::shared_ptr<OpenGLMaterialInstance> material;
 
 };

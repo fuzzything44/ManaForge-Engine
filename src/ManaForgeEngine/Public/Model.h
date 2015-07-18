@@ -13,7 +13,7 @@ class Model
 public:
 	virtual ~Model() = default;
 	
-	virtual void init(MaterialInstance& mat, std::shared_ptr<ModelData> data, MeshComponent& ownerComp) = 0;
+	virtual void init(std::shared_ptr<MaterialInstance> mat, std::shared_ptr<ModelData> data, MeshComponent& ownerComp) = 0;
 
 	virtual MeshComponent& getOwnerComponent() = 0;
 	virtual const MeshComponent& getOwnerComponent() const = 0;
