@@ -14,9 +14,6 @@
     <ClCompile Include="private\Actor.cpp">
       <Filter>Private</Filter>
     </ClCompile>
-    <ClCompile Include="private\Helper.cpp">
-      <Filter>Private</Filter>
-    </ClCompile>
     <ClCompile Include="Private\Module.cpp">
       <Filter>Private</Filter>
     </ClCompile>
@@ -47,9 +44,6 @@
     <ClCompile Include="Private\Pawn.cpp">
       <Filter>Private</Filter>
     </ClCompile>
-    <ClCompile Include="Private\Controller.cpp">
-      <Filter>Private</Filter>
-    </ClCompile>
     <ClCompile Include="Private\InputManager.cpp">
       <Filter>Private</Filter>
     </ClCompile>
@@ -66,6 +60,9 @@
       <Filter>Private</Filter>
     </ClCompile>
     <ClCompile Include="Private\Component.cpp">
+      <Filter>Private</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\Controller.cpp">
       <Filter>Private</Filter>
     </ClCompile>
   </ItemGroup>
@@ -163,9 +160,6 @@
     <ClInclude Include="Public\Pawn.h">
       <Filter>Public</Filter>
     </ClInclude>
-    <ClInclude Include="Public\Controller.h">
-      <Filter>Public</Filter>
-    </ClInclude>
     <ClInclude Include="Public\InputManager.h">
       <Filter>Public</Filter>
     </ClInclude>
@@ -209,6 +203,12 @@
       <Filter>Public</Filter>
     </ClInclude>
     <ClInclude Include="Public\ActorTransformController.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\ParallelQueue.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\Controller.h">
       <Filter>Public</Filter>
     </ClInclude>
   </ItemGroup>

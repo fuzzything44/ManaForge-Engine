@@ -151,10 +151,11 @@ struct logger<Fatal> : logdetail::log_base
 		*str << "\n[" << time << "] (" << Fatal << ") : ";
 	}
 
-	inline ~logger()
+	inline ~logger() 
 	{
+		Stack().ShowCallstack();
 		flush();
-		throw ENGException(); // looks bad, but this (should) always be an rvalue
+		std::exit(-1);
 	}
 
 	template <typename T>
@@ -164,3 +165,30 @@ struct logger<Fatal> : logdetail::log_base
 		return *str;
 	}
 };
+
+template<>
+struct logger<Error> : logdetail::log_base
+{
+	inline logger()
+	{
+		using namespace boost::posix_time;
+
+		ptime time = second_clock::local_time();
+
+		*str << "\n[" << time << "] (" << Fatal << ") : ";
+	}
+
+	inline ~logger()
+	{
+		flush();
+		throw ENGException();
+	}
+
+	template <typename T>
+	inline std::ostream& operator<<(const T& member)
+	{
+		*str << member;
+		return *str;
+	}
+};
+

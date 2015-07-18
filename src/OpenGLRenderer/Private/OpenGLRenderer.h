@@ -1,8 +1,10 @@
 #pragma once
 #include "Renderer.h"
+
 #include <list>
 #include <vector>
 #include <map>
+#include <thread>
 
 class OpenGLModel;
 class OpenGLMaterial;
@@ -64,5 +66,6 @@ private:
 	// doubley linked list of the models
 	std::list<OpenGLModel*> models;
 	std::map<std::string, std::shared_ptr<OpenGLTexture> > textures;
+
 
 };

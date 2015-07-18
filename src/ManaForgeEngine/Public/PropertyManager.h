@@ -32,10 +32,10 @@ inline boost::optional<T> PropertyManager::queryValue(const std::string& key)
 		return (props.get<T>(key));
 	} catch (std::exception& e)
 	{
-		logger<Error>() << e.what();
+		logger<Warning>() << e.what();
 
-		return boost::optional<T>(); // return "null"
 	}
+	return boost::optional<T>();
 }
 
 template <typename T>

@@ -128,7 +128,6 @@
     <ClCompile Include="Private\EnginePCH.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="private\Helper.cpp" />
     <ClCompile Include="Private\ImageLoader.cpp" />
     <ClCompile Include="Private\InputManager.cpp" />
     <ClCompile Include="Private\Logging.cpp" />
@@ -165,6 +164,7 @@
     <ClInclude Include="Public\Model.h" />
     <ClInclude Include="Public\Module.h" />
     <ClInclude Include="Public\ModuleManager.h" />
+    <ClInclude Include="Public\ParallelQueue.h" />
     <ClInclude Include="Public\Pawn.h" />
     <ClInclude Include="Public\PhysicsBody.h" />
     <ClInclude Include="Public\PhysicsComponent.h" />

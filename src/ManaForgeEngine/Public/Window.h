@@ -14,12 +14,7 @@ class Window :
 {
 public:
 
-	Window() { }
-
-	virtual ~Window()
-	{
-		
-	}
+	virtual ~Window() = default;
 
 	virtual const WindowProps& getWindowProps() const = 0;
 	virtual void setWindowProps(const WindowProps& props) = 0;

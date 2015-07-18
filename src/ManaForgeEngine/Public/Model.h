@@ -61,11 +61,7 @@ struct ModelData
 class Model
 {
 public:
-	virtual ~Model()
-	{
-	}
-
-	Model() { }
+	virtual ~Model() = default;
 	
 	virtual MeshComponent& getOwnerComponent() = 0;
 

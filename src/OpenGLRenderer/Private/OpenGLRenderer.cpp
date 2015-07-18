@@ -15,6 +15,7 @@
 #include <Logging.h>
 #include <PhysicsSystem.h>
 #include <CameraComponent.h>
+#include <ParallelQueue.h>
 
 #include <functional>
 #include <algorithm>
@@ -23,6 +24,24 @@ OpenGLRenderer::OpenGLRenderer()
 {
 	
 }
+
+void OpenGLRenderer::init()
+{
+
+	window = std::make_unique<OpenGLWindow>();
+	debugDraw = std::make_unique<OpenGLMaterial>("debugdraw");
+
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LESS);
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	glClearColor(.2f, .2f, .2f, 1.f);
+
+	showLoadingImage();
+}
+
 
 
 OpenGLRenderer::~OpenGLRenderer()
@@ -94,23 +113,6 @@ bool OpenGLRenderer::update(float /*deltaTime*/)
 
 	bool ret = !window->shouldClose();
 	return ret;
-}
-
-void OpenGLRenderer::init()
-{
-
-	window = std::make_unique<OpenGLWindow>();
-	debugDraw = std::make_unique<OpenGLMaterial>("debugdraw");
-
-	glEnable(GL_DEPTH_TEST);
-	glDepthFunc(GL_LESS);
-
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-	glClearColor(.2f, .2f, .2f, 1.f);
-
-	showLoadingImage();
 }
 
 

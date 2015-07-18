@@ -258,8 +258,15 @@ void DefaultWorld::init(const std::string& name)
 						{
 							std::string imageName = imageIter->second;
 
-
-							QuadUVCoords coords = backgroundImages->getUVCoords(imageName);
+							QuadUVCoords coords;
+							if (auto optCoords = backgroundImages->getUVCoords(imageName))
+							{
+								coords = *optCoords;
+							}
+							else
+							{
+								logger<Error>() << "Texture coordinates not found for image: " << imageName;
+							}
 
 							uint32 startTileIndex = (yTiles * backgroundChunkSize * 4) + (xTiles * 4);
 

@@ -30,6 +30,7 @@ void PropertyManager::init(const std::string& path)
 	}
 	catch (std::exception& e)
 	{
+		// pass it up the stack with a stack trace
 		logger<Error>() << e.what();
 	}
 }

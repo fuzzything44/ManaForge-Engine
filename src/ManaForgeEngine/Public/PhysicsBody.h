@@ -6,7 +6,7 @@
 class PhysicsBody : boost::noncopyable
 {
 public:
-	virtual ~PhysicsBody(){ }
+	virtual ~PhysicsBody() = default;
 
 	virtual void setRestitution(float newRestitution) = 0;
 	virtual float getRestitution() const = 0;

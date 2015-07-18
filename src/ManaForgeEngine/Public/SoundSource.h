@@ -8,7 +8,7 @@ class SoundSource
 {
 public:
 
-	SoundSource() { }
+	SoundSource() = default;
 
 	virtual void play() = 0; 
 	virtual void pause() = 0;

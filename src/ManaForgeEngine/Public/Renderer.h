@@ -27,7 +27,7 @@ public:
 
 
 	/// <summary> Destructor.</summary>
-	virtual ~Renderer() { }
+	virtual ~Renderer() = default;
 
 
 	/// <summary> Renders the next frame. </summary>

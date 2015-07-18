@@ -4,18 +4,18 @@
 #include "Texture.h"
 #include "QuadUVCoords.h"
 
+#include <boost/optional.hpp>
+
 #include <string>
 
 class TextureLibrary : public Texture
 {
 public:
 
-	TextureLibrary() { }
-
-	virtual ~TextureLibrary() { };
+	virtual ~TextureLibrary() = default;
 
 	virtual void addImage(const std::string& name) = 0;
 
-	virtual QuadUVCoords getUVCoords(const std::string& name) = 0;
+	virtual boost::optional<QuadUVCoords> getUVCoords(const std::string& name) = 0;
 
 };

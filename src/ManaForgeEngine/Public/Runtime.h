@@ -12,6 +12,7 @@
 #include <chrono>
 
 class PlayerController;
+class Pawn;
 class Window;
 
 class Runtime : boost::noncopyable

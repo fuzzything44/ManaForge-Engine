@@ -15,7 +15,7 @@ public:
 
 	// from TextureLibrary
 	void addImage(const std::string& name) override;
-	virtual QuadUVCoords getUVCoords(const std::string& name) override;
+	virtual boost::optional<QuadUVCoords> getUVCoords(const std::string& name) override;
 
 	// from Texture
 	virtual uint32 getID() override;

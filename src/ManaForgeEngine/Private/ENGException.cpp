@@ -9,31 +9,6 @@
 #include <boost/algorithm/string.hpp>
 
 
-class Stack : public StackWalker
-{
-public:
-
-	explicit Stack(int options = OptionsAll, // 'int' is by design, to combine the enum-flags
-		LPCSTR szSymPath = nullptr,
-		DWORD dwProcessId = GetCurrentProcessId(),
-		HANDLE hProcess = GetCurrentProcess()) : StackWalker(options, szSymPath, dwProcessId, hProcess){ }
-
-	virtual ~Stack() { }
-
-protected:
-	bool hasPrintedMain;
-	bool wasLastExternal;
-
-	virtual void OnCallstackEntry(CallstackEntryType eType, CallstackEntry& entry) override;
-
-	virtual void OnLoadModule(LPCSTR img, LPCSTR mod, DWORD64 baseAddr, DWORD size,
-		DWORD result, LPCSTR symType, LPCSTR pdbName, ULONGLONG fileVersion) override;
-
-
-
-};
-
-
 void Stack::OnCallstackEntry(CallstackEntryType eType, CallstackEntry& entry)
 {
 
@@ -57,7 +32,7 @@ void Stack::OnCallstackEntry(CallstackEntryType eType, CallstackEntry& entry)
 		{
 			if (!wasLastExternal)
 			{
-				logger<Error>() << "External code";
+				logger<Info>() << "External code";
 			}
 			wasLastExternal = true;
 
@@ -87,7 +62,7 @@ void Stack::OnCallstackEntry(CallstackEntryType eType, CallstackEntry& entry)
 			// reverse it
 			std::reverse(fileOut.begin(), fileOut.end());
 
-			logger<Error>() << "Name: " << entry.undFullName << "\n\tFile: " << fileOut << "\n\tLine: " << entry.lineNumber;
+			logger<Info>() << "Name: " << entry.undFullName << "\n\tFile: " << fileOut << "\n\tLine: " << entry.lineNumber;
 
 			wasLastExternal = false;
 		}
@@ -103,7 +78,7 @@ void Stack::OnLoadModule(LPCSTR img, LPCSTR mod, DWORD64 baseAddr, DWORD size, D
 
 	if (!boost::starts_with(name, "C:\\Windows\\"))
 	{
-		logger<Error>() << "Module Loaded: " << mod;
+		logger<Info>() << "Module Loaded: " << mod;
 	}
 }
 
@@ -112,7 +87,7 @@ void Stack::OnLoadModule(LPCSTR img, LPCSTR mod, DWORD64 baseAddr, DWORD size, D
 ENGException::ENGException(const std::string& reasonIn) 
 {
 	
-	logger<Error>() << reasonIn << " Stack:\n";
+	logger<Info>() << reasonIn << " Stack:\n";
 
 	Stack s;
 	s.ShowCallstack();

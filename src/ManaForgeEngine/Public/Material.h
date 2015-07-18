@@ -9,11 +9,8 @@ class Texture;
 class Material
 {
 public:
-	Material() {};
 
-	virtual ~Material()
-	{
-	}
+	virtual ~Material() = default;
 
 
 	virtual void setTexture(uint32 ID, Texture& texture) = 0;

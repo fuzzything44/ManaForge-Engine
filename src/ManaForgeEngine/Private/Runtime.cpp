@@ -8,6 +8,8 @@
 #include "ImageLoader.h"
 #include "MeshComponent.h"
 #include "PhysicsComponent.h"
+#include "PlayerController.h"
+#include "Pawn.h"
 #include "Renderer.h"
 #include "PhysicsSystem.h"
 #include "Texture.h"

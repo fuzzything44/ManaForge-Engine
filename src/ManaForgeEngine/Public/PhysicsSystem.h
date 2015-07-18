@@ -14,7 +14,7 @@ class PhysicsSystem : boost::noncopyable
 {
 public:
 
-	virtual ~PhysicsSystem(){ };
+	virtual ~PhysicsSystem() = default;
 
 	virtual void setGravity(vec2 newGravity) = 0;
 

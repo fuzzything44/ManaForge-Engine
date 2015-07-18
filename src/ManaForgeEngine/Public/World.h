@@ -13,14 +13,14 @@ class PlayerController;
 // Struct used to find actor in the world.
 struct ActorLocation
 {
-	virtual ~ActorLocation(){ };
+	virtual ~ActorLocation() = default;
 };
 
 class World
 {
 public:
 
-	virtual ~World() { };
+	virtual ~World() = default;
 
 	virtual void init(const std::string& name) = 0;
 

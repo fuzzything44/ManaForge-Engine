@@ -8,10 +8,7 @@
 class Texture
 {
 public:
-
-	explicit Texture(){ }
-
-	virtual ~Texture(){ }
+	virtual ~Texture() = default;
 
 	enum class FilterMode : uint8
 	{

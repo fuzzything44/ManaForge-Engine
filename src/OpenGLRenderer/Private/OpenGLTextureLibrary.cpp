@@ -49,7 +49,7 @@ void OpenGLTextureLibrary::addImage(const std::string& name)
 	}
 }
 
-QuadUVCoords OpenGLTextureLibrary::getUVCoords(const std::string& name)
+boost::optional<QuadUVCoords> OpenGLTextureLibrary::getUVCoords(const std::string& name)
 {
 	auto iter = UVs.find(name);
 
@@ -59,9 +59,9 @@ QuadUVCoords OpenGLTextureLibrary::getUVCoords(const std::string& name)
 		return iter->second;
 	}
 
-	// and if not -- return a defualt one
-	return QuadUVCoords{ };
+	logger<Warning>() << "Cannot find UVCoord named " << name;
 	
+	return boost::optional<QuadUVCoords>(); // return the "null" version
 }
 
 uint32 OpenGLTextureLibrary::getID()
