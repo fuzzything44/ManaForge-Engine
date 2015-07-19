@@ -17,7 +17,6 @@
 #include <Logging.h>
 #include <PhysicsSystem.h>
 #include <CameraComponent.h>
-#include <ParallelQueue.h>
 
 #include <functional>
 #include <algorithm>
