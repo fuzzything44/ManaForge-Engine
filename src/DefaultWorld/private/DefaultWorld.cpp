@@ -87,16 +87,20 @@ void DefaultWorld::init(const std::string& name)
 
 	std::map<Color, std::string> imageToTextureAssoc;
 	// load the image associations
-	{
+	try {
 		// We should probably just have the images we use in the same file as chunk size.
-		std::ifstream stream{ folderLocation + "images.txt", std::ifstream::app };
+		std::ifstream stream{ folderLocation + "images.txt"
+#if IS_SAVE_BINARY
+			, std::ios::binary
+#endif
+		};
 
 		if (!stream.is_open())
 		{
 			logger<Fatal>() << "Could not open images.txt file for world: " << worldName;
 		}
 
-		boost::archive::xml_iarchive arch{ stream }; // this might want to be not xml, maybe text or binary
+		iarchive_t arch{ stream }; // this might want to be not xml, maybe text or binary
 
 		// load the map from the file
 		arch >> boost::serialization::make_nvp("assoc", imageToTextureAssoc);
@@ -109,6 +113,15 @@ void DefaultWorld::init(const std::string& name)
 			backgroundImages->addImage(elem.second);
 		}
 
+	}
+	catch (boost::archive::archive_exception& e)
+	{
+		logger<Error>() << "ARCHIVE ERROR ENCOUNTERED WHEN LOADING IMAGE ASSOCIATIONS. Error code: " 
+			<< e.code << " Error message: " << e.what();
+	}
+	catch (std::exception& e)
+	{
+		logger<Error>() << "ERROR ENCOUNTERED WHEN LOADING IMAGE ASSOCIATIONS. Message: " << e.what();
 	}
 
 	// set the material

@@ -160,18 +160,11 @@ inline std::ostream& operator<<(std::ostream& os, const mat4& mat)
 }
 
 
-// ONLY define these macros if we are debugging -- they could be slow
-#ifdef _DEBUG
 	
 
-	/// <summary> Checks a pointer, and throws an exception if it is null.</summary>
-	#define check(ptr) if(!(ptr)){  ::logger<Error>() << "Null pointer exception caught: " << #ptr; }
+/// <summary> Checks a pointer, and throws an exception if it is null.</summary>
+#define check(ptr) if(!(ptr)){  ::logger<Error>() << "Null pointer exception caught: " << #ptr; }
 
-	
-#else
-	#define errChkCL(err)
-	#define check(ptr)
-#endif
 
 #define LOAD_PROPERTY_WITH_WARNING(propertyManager, key, value, defaultValue)						\
 	if(::boost::optional<decltype(value)> tempOptional =											\
