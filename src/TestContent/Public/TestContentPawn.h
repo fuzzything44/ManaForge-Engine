@@ -81,12 +81,12 @@ public:
 	void moveLeft(float amount)
 	{
 		if (amount)
-			applyLocalForce(vec2{ amount, 0.f }, vec2{ 0.f, 0.f });
+			applyLocalForce(vec2{ -amount*100.f, 0.f }, vec2{ 0.f, 0.f });
 	}
 	void moveUp(float amount)
 	{
 		if (amount)
-			applyLocalForce(vec2{ 0.f, amount }, vec2{ 0.f, 0.f });
+			applyLocalForce(vec2{ 0.f, amount*100.f }, vec2{ 0.f, 0.f });
 
 	}
 

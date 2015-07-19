@@ -27,6 +27,7 @@
 
 #include <boost/serialization/deque.hpp>
 #include <boost/serialization/map.hpp>
+#include <boost/serialization/list.hpp>
 
 #if SAVE_TYPE_XML
 #	include <boost/archive/polymorphic_xml_oarchive.hpp>

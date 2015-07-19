@@ -9,9 +9,7 @@
 
 #include <cmath>
 
-#define SAVE_DATA Gate, Actor, isOpen, timeToDestruction
-#include REGISTER_FOR_SAVING_SOURCE()
-
+MFCLASS_SOURCE(Gate)
 
 bool Gate::isInitalized = false;
 

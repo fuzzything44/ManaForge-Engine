@@ -2,8 +2,27 @@
 <!DOCTYPE boost_serialization>
 <boost_serialization signature="serialization::archive" version="12">
 	<list class_id="0" tracking_level="0" version="0">
-		<count>0</count>
+		<count>1</count>
 		<item_version>0</item_version>
+		<item class_id="2" class_name="TestContent.Pew" tracking_level="1" version="0" object_id="_0">
+			<base class_id="1" tracking_level="0" version="0">
+				<trans class_id="3" tracking_level="0" version="0">
+					<location class_id="4" tracking_level="0" version="0">
+						<x>0.000000000e+000</x>
+						<y>0.000000000e+000</y>
+					</location>
+					<rotation>0.000000000e+000</rotation>
+					<scale>
+						<x>1.000000000e+000</x>
+						<y>1.000000000e+000</y>
+					</scale>
+				</trans>
+				<velocity>
+					<x>0.000000000e+000</x>
+					<y>0.000000000e+000</y>
+				</velocity>
+			</base>
+		</item>
 	</list>
 
 <boost_serialization>

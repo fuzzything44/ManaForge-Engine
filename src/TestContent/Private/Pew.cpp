@@ -1,7 +1,11 @@
 #include "Pew.h"
 #include "Gate.h"
+
+MFCLASS_SOURCE(Pew)
+
 void Pew::tick(float deltaTime)
 {
+
 	timeToSpawn -= deltaTime;
 	if (timeToSpawn <= 0) {
 		Gate* g = new Gate();

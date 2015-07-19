@@ -27,6 +27,14 @@
 #include <boost/algorithm/string.hpp>
 
 
+
+
+
+
+#include <boost/archive/polymorphic_xml_oarchive.hpp>
+#include <boost/serialization/list.hpp>
+
+
 // DEFINE STATIC VARIABLES
 Runtime* Runtime::currentRuntime = nullptr;
 
@@ -97,11 +105,6 @@ void Runtime::run()
 	// spawn the new playercontrollers and pawns
 	controller = world->makePlayerController();
 	pawn = world->makePawn();
-
-
-	
-	auto pew = std::unique_ptr<Actor>{ moduleManager.spawnClass<Actor>("TestContent.Pew") };
-	check(pew);
 
 	// set initial tick
 	clock::time_point LastTick = clock::now();

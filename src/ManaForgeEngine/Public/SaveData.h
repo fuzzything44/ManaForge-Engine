@@ -5,47 +5,122 @@
 
 #define BOOST_SERIALIZATION_DYN_LINK 1
 
-#include <boost/preprocessor/variadic.hpp>
-#include <boost/preprocessor/iteration.hpp>
-#include <boost/preprocessor/cat.hpp>
-#include <boost/preprocessor/stringize.hpp>
+#include "SerializeGLM.h"
 
+#include <boost/mpl/vector.hpp>
+#include <boost/mpl/at.hpp>
+#include <boost/mpl/int.hpp>
+
+#include <boost/serialization/export.hpp>
 
 
 #include <boost/archive/polymorphic_iarchive.hpp>
 #include <boost/archive/polymorphic_oarchive.hpp>
 
-#include <boost/serialization/base_object.hpp>
-#include <boost/serialization/access.hpp>
-#include <boost/serialization/nvp.hpp>
-#include <boost/serialization/export.hpp>
+#include <type_traits>
 
-#include <boost/serialization/map.hpp>
-#include <boost/serialization/list.hpp>
-#include <boost/serialization/vector.hpp>
+class Actor;
 
-#include "SerializeGLM.h"
+template<typename T>
+struct bases;
 
-// before using this please define ACTOR_SAVE_DATA in the format:
-// #define SAVE_DATA <this_class>, <parent_class>, <saved val 1>, <saved val 2>, etc **** NOTE WHITESPACE BETWEEN ACTOR_SAVE_DATA and <this_class>, IT IS VITAL
-// USAGE: #include REGISTER_FOR_SAVING_SOURCE()
-// put in the source file
-#define REGISTER_FOR_SAVING_SOURCE() "registerForSerialization.h"
 
-// put this in the header after the definition of the class -- this isn't an include
-#define REGISTER_FOR_SAVING_HEADER(actorName)\
-	BOOST_CLASS_EXPORT_KEY2(\
-		actorName, \
-		BOOST_PP_CAT(\
-			BOOST_PP_CAT(MODULE_NAME, "."),\
-			BOOST_PP_STRINGIZE(actorName)))
+template<typename vector, int32 index>
+struct serializeBases
+{
+	template<typename Archive, typename Derived>
+	static inline void apply(Archive& ar, Derived& derived)
+	{
+		using Base =	
+			typename boost::mpl::at<
+				vector,
+				boost::mpl::int_<index>
+			>::type;
 
-#define INIT_SAVED_CLASS() \
-	friend boost::serialization::access; \
-	template <typename Archive>\
-	void serialize(Archive& ar, const unsigned int version); \
-	virtual bool needsSave()\
-	{\
-		return true;\
-	}\
-	/**/
+		static_assert(std::is_base_of<Base, Derived>::type::value, "Derived needs to be derived from Base");
+
+		ar & boost::serialization::make_nvp(
+			"base", 
+			boost::serialization::base_object<Base>(derived));
+
+		serializeBases<vector, index - 1>::apply(ar, derived);
+	}
+};
+
+
+template<typename vector>
+struct serializeBases<vector, -1>
+{
+	template<typename Archive, typename Derived>
+	static inline void apply(Archive& ar, Derived& derived)
+	{
+	}
+};
+
+template<typename... args>
+struct serializeMembers_impl;
+
+template<typename First, typename... Rest>
+struct serializeMembers_impl<First, Rest...>
+{
+	template<typename Archive>
+	static inline void apply(Archive& ar, First& first, Rest&... rest)
+	{
+		ar & boost::serialization::make_nvp("member", first);
+
+		serializeMembers<Rest...>::apply(ar, rest...);
+	}
+};
+
+template< >
+struct serializeMembers_impl <>
+{
+	template<typename Archive>
+	static inline void apply(Archive& ar)
+	{
+	}
+};
+
+template<typename Archive, typename... Types>
+void serializeMembers(Archive& ar, Types&... values)
+{
+	serializeMembers_impl<Types...>::apply(ar, values...);
+}
+
+#define MFCLASS(className, ... /*bases*/) 						\
+	class className;											\
+	BOOST_CLASS_EXPORT_KEY2(className, 							\
+		BOOST_PP_CAT( 											\
+			BOOST_PP_CAT( 										\
+				MODULE_NAME, 				\
+				"."), 											\
+			BOOST_PP_STRINGIZE(className))) 					\
+	template<> 													\
+	struct bases <className> 									\
+	{ 															\
+		using type = boost::mpl::vector< __VA_ARGS__ >; 		\
+	}; 
+
+#define MFCLASS_SOURCE(className) 																				  \
+	BOOST_CLASS_EXPORT_IMPLEMENT(className) 																	  \
+	 																											  \
+	template void className::serialize<>(boost::archive::polymorphic_oarchive&, const unsigned int version); 	  \
+	template void className::serialize<>(boost::archive::polymorphic_iarchive&, const unsigned int version);
+
+
+
+#define MFCLASS_BODY(className, .../*members to be serialized*/) 	\
+	friend class boost::serialization::access; 						\
+	template<typename Archive> 										\
+	void serialize(Archive& ar, const unsigned version) 			\
+	{ 																\
+		serializeBases< 											\
+			bases<className>::type, 								\
+			boost::mpl::size< 										\
+				bases<className>::type 								\
+			>::type::value - 1 										\
+		>::apply(ar, *this); 										\
+		 															\
+		serializeMembers(ar, __VA_ARGS__); 							\
+	} 
+

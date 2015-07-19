@@ -9,9 +9,10 @@
 #include <AudioComponent.h>
 #include <PhysicsComponent.h>
 
+MFCLASS(Gate, Actor)
 class Gate : public Actor, TickingActor<Gate>
 {
-	INIT_SAVED_CLASS()
+	MFCLASS_BODY(Gate)
 
 	std::unique_ptr<MeshComponent> meshComp;
 	std::unique_ptr<PhysicsComponent> physComp;
@@ -27,5 +28,3 @@ public:
 
 	bool isOpen;
 };
-
-REGISTER_FOR_SAVING_HEADER(Gate)
