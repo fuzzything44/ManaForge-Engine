@@ -80,7 +80,7 @@ void Runtime::run()
 
 		for (auto& callback : initCallbacks)
 		{
-			if (callback._Empty())
+			if (!callback)
 			{
 				logger<Warning>() << "init callback empty.";
 			}
@@ -142,7 +142,7 @@ void Runtime::run()
 
 		for (auto& callback : updateCallbacks)
 		{
-			if (callback._Empty())
+			if (!callback)
 			{
 				logger<Warning>() << "Update callback empty";
 			}

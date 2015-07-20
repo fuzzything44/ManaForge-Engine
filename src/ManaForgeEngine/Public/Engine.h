@@ -34,7 +34,8 @@ namespace std{
 	template<>
 	struct std::hash<boost::filesystem::path>
 	{
-		size_t operator()(const boost::filesystem::path& p)
+		
+		size_t operator()(const boost::filesystem::path& p) const
 		{
 			size_t current = 0;
 			for (auto& elem : p.wstring())

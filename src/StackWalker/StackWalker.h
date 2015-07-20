@@ -59,7 +59,7 @@ class StackWalkerInternal;  // forward
 class StackWalker
 {
 public:
-  typedef enum StackWalkOptions
+  enum StackWalkOptions
   {
     // No addition info will be retrived 
     // (only the address is available)
@@ -91,7 +91,7 @@ public:
     
     // Contains all options (default)
     OptionsAll = 0x3F
-  } StackWalkOptions;
+  } ;
 
   STACK_WALKER_API StackWalker(
     int options = OptionsAll, // 'int' is by design, to combine the enum-flags
@@ -146,7 +146,7 @@ protected:
     CHAR loadedImageName[STACKWALK_MAX_NAMELEN];
   } CallstackEntry;
 
-  typedef enum CallstackEntryType {firstEntry, nextEntry, lastEntry};
+  enum CallstackEntryType {firstEntry, nextEntry, lastEntry};
 
   STACK_WALKER_API virtual void OnSymInit(LPCSTR szSearchPath, DWORD symOptions, LPCSTR szUserName);
   STACK_WALKER_API virtual void OnLoadModule(LPCSTR img, LPCSTR mod, DWORD64 baseAddr, DWORD size, DWORD result, LPCSTR symType, LPCSTR pdbName, ULONGLONG fileVersion);

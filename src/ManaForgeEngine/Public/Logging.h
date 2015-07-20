@@ -178,7 +178,7 @@ struct logger<Error> : logdetail::log_base
 		*str << "\n[" << time << "] (" << Fatal << ") : ";
 	}
 
-	inline ~logger()
+	inline ~logger() noexcept(false)
 	{
 		flush();
 		throw ENGException();

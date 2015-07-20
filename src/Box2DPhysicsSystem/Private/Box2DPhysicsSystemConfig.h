@@ -2,8 +2,6 @@
 
 #include <Engine.h>
 
-#define Box2DPhysicsSystem_Name "OpenGLRenderer"
-
 #pragma comment(lib, "Box2D.lib")
 
 #ifdef Box2DPhysicsSystem_Source
