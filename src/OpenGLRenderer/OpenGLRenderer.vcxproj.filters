@@ -38,6 +38,9 @@
     <ClCompile Include="Private\OpenGLMaterialSource.cpp">
       <Filter>Private</Filter>
     </ClCompile>
+    <ClCompile Include="Private\OpenGLRendererPCH.cpp">
+      <Filter>Private</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Private\OpenGLModel.h">
@@ -65,6 +68,9 @@
       <Filter>Private</Filter>
     </ClInclude>
     <ClInclude Include="Private\OpenGLMaterialSource.h">
+      <Filter>Private</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\OpenGLRendererPCH.h">
       <Filter>Private</Filter>
     </ClInclude>
   </ItemGroup>

@@ -4,11 +4,13 @@
 
 #include <MaterialSource.h>
 
+class OpenGLRenderer;
+
 class OpenGLMaterialSource : public MaterialSource
 {
 public:
 
-	explicit OpenGLMaterialSource(const path_t& name = "");
+	explicit OpenGLMaterialSource(OpenGLRenderer& renderer, const path_t& name = "");
 	virtual ~OpenGLMaterialSource();
 
 	virtual void init(const path_t& name) override;
@@ -23,7 +25,7 @@ public:
 
 private:
 	std::string name;
-
+	OpenGLRenderer& renderer;
 	GLint program;
 };
 

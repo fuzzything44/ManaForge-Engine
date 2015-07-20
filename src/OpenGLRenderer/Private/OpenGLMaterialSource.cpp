@@ -1,8 +1,15 @@
+#include "OpenGLRendererPCH.h"
+
 #include "OpenGLMaterialSource.h"
+
+#include "OpenGLRenderer.h"
 
 #include "Helper.h"
 
-OpenGLMaterialSource::OpenGLMaterialSource(const path_t& name)
+#include <thread>
+
+OpenGLMaterialSource::OpenGLMaterialSource(OpenGLRenderer& renderer, const path_t& name)
+	:renderer(renderer)
 {
 	if (!name.empty())
 		init(name);
@@ -11,11 +18,16 @@ OpenGLMaterialSource::OpenGLMaterialSource(const path_t& name)
 OpenGLMaterialSource::~OpenGLMaterialSource()
 {
 
-	glDeleteProgram(program);
+	renderer.runOnRenderThreadSync([this]
+	{
+		glDeleteProgram(program);
+	});
 }
 
 void OpenGLMaterialSource::init(const path_t& name)
 {
+	assert(renderer.isOnRenderThread());
+
 	path_t vertexPath = L"shaders\\" + name.wstring() + L"vert.glsl";
 	path_t fragPath = L"shaders\\" + name.wstring() + L"frag.glsl";
 

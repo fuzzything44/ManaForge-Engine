@@ -4,9 +4,13 @@
 
 #include <ModelData.h>
 
+class OpenGLRenderer;
+
 class OpenGLModelData final : public ModelData
 {
 public:
+
+	OpenGLModelData(OpenGLRenderer& renderer) : renderer(renderer){}
 
 	virtual ~OpenGLModelData();
 
@@ -25,6 +29,8 @@ private:
 
 	uint32 numVerts;
 	uint32 numElems;
+
+	OpenGLRenderer& renderer;
 
 };
 

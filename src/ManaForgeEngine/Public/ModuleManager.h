@@ -61,17 +61,21 @@ public:
 
 private:
 
+	// and finally the modules
+	std::unordered_map<path_t, std::shared_ptr<Module> > loadedModules;
+
+	// then the systems
+	std::unique_ptr<Renderer> renderer;
+	std::unique_ptr<AudioSystem> audioSystem;
+	std::unique_ptr<PhysicsSystem> physicsSystem;
+
+	// destroy the callbacks first
 	std::list<initFun>& getInitCallbacks();
 	std::list<updateFun>& getUpdateCallbacks();
 
 	std::list<initFun> initCallbacks;
 	std::list<updateFun> updateCallbacks;
 
-	std::unordered_map<path_t, std::shared_ptr<Module> > loadedModules;
-
-	std::unique_ptr<Renderer> renderer;
-	std::unique_ptr<AudioSystem> audioSystem;
-	std::unique_ptr<PhysicsSystem> physicsSystem;
 
 };
 

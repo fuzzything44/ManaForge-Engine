@@ -1,4 +1,8 @@
+#include "OpenGLRendererPCH.h"
+
 #include "OpenGLTextureLibrary.h"
+
+#include "OpenGLRenderer.h"
 
 #include <Logging.h>
 #include <ENGException.h>
@@ -7,8 +11,9 @@
 
 #include "SOIL/SOIL.h"
 
-OpenGLTextureLibrary::OpenGLTextureLibrary()
-	:nextLocation(0, 0)
+OpenGLTextureLibrary::OpenGLTextureLibrary(OpenGLRenderer& renderer)
+	:nextLocation(0, 0),
+	renderer(renderer)
 {
 
 
@@ -23,21 +28,29 @@ OpenGLTextureLibrary::~OpenGLTextureLibrary()
 
 void OpenGLTextureLibrary::init(uint16 maxElems, uint16 indSize)
 {
-
+	
 	individualSize = indSize;
 	maxElements = maxElems;
 
-	glGenTextures(1, &texHandle);
-	glBindTexture(GL_TEXTURE_2D, texHandle);
+	renderer.runOnRenderThreadSync([this]
+	{
 
-	width = static_cast<uint16>(ceil(sqrt(maxElements)));
+		glGenTextures(1, &texHandle);
+		glBindTexture(GL_TEXTURE_2D, texHandle);
 
-	texHandle = allocateCompressedTextureLibraryFromDDS(width, "textures\\0.dds");
+		width = static_cast<uint16>(ceil(sqrt(maxElements)));
+
+		texHandle = allocateCompressedTextureLibraryFromDDS(width, "textures\\0.dds");
+	});
+
 }
 
 void OpenGLTextureLibrary::addImage(const std::string& name)
 {
-	appendDDS(texHandle, nextLocation.x * individualSize, nextLocation.y * individualSize, ("textures\\" + name + ".dds").c_str());
+	renderer.runOnRenderThreadSync([this, &name]
+	{
+		appendDDS(texHandle, nextLocation.x * individualSize, nextLocation.y * individualSize, ("textures\\" + name + ".dds").c_str());
+	});
 
 	QuadUVCoords data;
 	data.upperLeft = vec2(nextLocation) / vec2(width);
@@ -78,101 +91,115 @@ uint32 OpenGLTextureLibrary::getID()
 
 void OpenGLTextureLibrary::setFilterMode(FilterMode newMode)
 {
-	glBindTexture(GL_TEXTURE_2D, texHandle);
-
-	switch (newMode)
+	renderer.runOnRenderThreadSync([this, newMode]
 	{
-	case FilterMode::LINEAR:
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		break;
-	case FilterMode::NEAREST:
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		break;
-	case FilterMode::MIPMAP_LINEAR:
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		break;
-	case FilterMode::MIPMAP_NEAREST:
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		break;
-	default:
-		break;
+		glBindTexture(GL_TEXTURE_2D, texHandle);
 
-	}
+		switch (newMode)
+		{
+		case FilterMode::LINEAR:
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+			break;
+		case FilterMode::NEAREST:
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+			break;
+		case FilterMode::MIPMAP_LINEAR:
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+			break;
+		case FilterMode::MIPMAP_NEAREST:
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+			break;
+		default:
+			break;
+
+		}
+	});
+	
 }
 
 Texture::FilterMode OpenGLTextureLibrary::getFilterMode() const
 {
-	glBindTexture(GL_TEXTURE_2D, texHandle);
-
-	int mode;
-	glGetTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, &mode);
-
-	switch (mode)
+	return renderer.runOnRenderThreadSync([this]
 	{
-	case GL_LINEAR:
-		return Texture::FilterMode::LINEAR;
-		break;
-	case GL_NEAREST:
-		return Texture::FilterMode::NEAREST;
-		break;
-	case GL_LINEAR_MIPMAP_LINEAR:
-		return Texture::FilterMode::MIPMAP_LINEAR;
-		break;
-	case GL_NEAREST_MIPMAP_NEAREST:
-		return Texture::FilterMode::MIPMAP_NEAREST;
-		break;
-	default:
-		return Texture::FilterMode::LINEAR; // IDK
-		break;
-	}
+		glBindTexture(GL_TEXTURE_2D, texHandle);
+
+		int mode;
+		glGetTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, &mode);
+
+		switch (mode)
+		{
+		case GL_LINEAR:
+			return Texture::FilterMode::LINEAR;
+			break;
+		case GL_NEAREST:
+			return Texture::FilterMode::NEAREST;
+			break;
+		case GL_LINEAR_MIPMAP_LINEAR:
+			return Texture::FilterMode::MIPMAP_LINEAR;
+			break;
+		case GL_NEAREST_MIPMAP_NEAREST:
+			return Texture::FilterMode::MIPMAP_NEAREST;
+			break;
+		default:
+			return Texture::FilterMode::LINEAR; // IDK
+			break;
+		}
+	});
+	
 }
 
 
 void OpenGLTextureLibrary::setWrapMode(WrapMode newMode)
 {
-	glBindTexture(GL_TEXTURE_2D, texHandle);
-	switch (newMode)
+	renderer.runOnRenderThreadSync([this, newMode]
 	{
-	case WrapMode::CLAMP_TO_EDGE:
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		break;
-	case WrapMode::MIRRORED_REPEAT:
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
-		break;
-	case WrapMode::REPEAT:
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		break;
-	default:
-		break;
-	}
+		glBindTexture(GL_TEXTURE_2D, texHandle);
+		switch (newMode)
+		{
+		case WrapMode::CLAMP_TO_EDGE:
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+			break;
+		case WrapMode::MIRRORED_REPEAT:
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+			break;
+		case WrapMode::REPEAT:
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+			break;
+		default:
+			break;
+		}
+	});
 }
 
 Texture::WrapMode OpenGLTextureLibrary::getWrapMode() const
 {
-	glBindTexture(GL_TEXTURE_2D, texHandle);
-
-	GLint wrap;
-
-	glGetTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, &wrap); // retreive the data
-
-	switch (wrap)
+	return renderer.runOnRenderThreadSync([this]
 	{
-	case GL_CLAMP_TO_EDGE:
-		return WrapMode::CLAMP_TO_EDGE;
-	case GL_MIRRORED_REPEAT:
-		return WrapMode::MIRRORED_REPEAT;
-	case GL_REPEAT:
-		return WrapMode::REPEAT;
-	default:
-		return WrapMode::REPEAT; // just a deault fallback
-	}
+		glBindTexture(GL_TEXTURE_2D, texHandle);
+
+		GLint wrap;
+
+		glGetTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, &wrap); // retreive the data
+
+		switch (wrap)
+		{
+		case GL_CLAMP_TO_EDGE:
+			return WrapMode::CLAMP_TO_EDGE;
+		case GL_MIRRORED_REPEAT:
+			return WrapMode::MIRRORED_REPEAT;
+		case GL_REPEAT:
+			return WrapMode::REPEAT;
+		default:
+			return WrapMode::REPEAT; // just a deault fallback
+		}
+	});
 }
 
 

@@ -5,7 +5,10 @@
 #include <vector>
 #include <unordered_map>
 #include <thread>
+#include <future>
+#include <functional>
 
+#include <boost/lockfree/spsc_queue.hpp>
 
 class OpenGLModel;
 class OpenGLMaterialInstance;
@@ -17,6 +20,31 @@ class OpenGLRenderer : public Renderer
 {
 
 	friend class OpenGLModel;
+
+
+	struct RenderThread
+	{
+		RenderThread(std::thread&& thread) : isInLoop(true), thread(std::move(thread)) {}
+		RenderThread() : isInLoop(true) {}
+
+		const RenderThread& operator=(std::thread&& rightThread) { thread = std::move(rightThread); return *this; };
+
+		operator std::thread&(){ return thread; }
+
+		std::thread& getThread() { return thread; }
+
+		~RenderThread()
+		{
+			isInLoop = false;
+			if (thread.joinable())
+				thread.join();
+		}
+
+		std::atomic<bool> isInLoop;
+	private:
+		std::thread thread;
+	};
+
 
 public:
 
@@ -58,19 +86,55 @@ public:
 	virtual void drawDebugSolidCircle(vec2 center, float radius, Color color) override;
 	virtual void drawDebugSegment(vec2 p1, vec2 p2, Color color) override;
 
+	template<typename Function>
+	inline auto runOnRenderThreadSync(Function& func)->decltype(func());
+
+	inline bool isOnRenderThread() { return std::this_thread::get_id() == renderThread.getThread().get_id(); }
+
 private:
-	
+
+	void initRenderer();
+	void renderLoop();
+
+
+	boost::lockfree::spsc_queue<std::function<void()> > queue;
+	RenderThread renderThread;
 
 	std::unique_ptr<OpenGLWindow> window;
-
 	std::unique_ptr<OpenGLMaterialInstance> debugDraw;
 
-	CameraComponent* currentCamera;
+	// then delete our atomics
+	std::atomic<CameraComponent*> currentCamera;
+	std::future<void> lastFrame;
+	std::promise<void> tickPromise;
+	std::atomic<bool> shouldExit;
 
-	// doubley linked list of the models
+	// delete our caches and models first
 	std::list<OpenGLModel*> models;
 	std::unordered_map<path_t, std::weak_ptr<OpenGLTexture> > textures;
 	std::unordered_map<path_t, std::weak_ptr<OpenGLMaterialSource> > matSources;
 
-
 };
+
+template<typename Function>
+inline auto OpenGLRenderer::runOnRenderThreadSync(Function& func) -> decltype(func())
+{
+	if (isOnRenderThread())
+	{
+		return func();
+	}
+
+	using retType = decltype(func());
+
+	std::packaged_task<retType()> pack{ func };
+
+	queue.push([&pack]
+	{
+		pack();
+	});
+
+
+	return pack.get_future().get();
+}
+
+

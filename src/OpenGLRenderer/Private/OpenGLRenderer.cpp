@@ -1,3 +1,5 @@
+#include "OpenGLRendererPCH.h"
+
 #include "OpenGLRendererConfig.h"
 
 #include "OpenGLRenderer.h"
@@ -20,14 +22,50 @@
 
 #include <functional>
 #include <algorithm>
+#include <future>
 
 OpenGLRenderer::OpenGLRenderer()
+	:queue(100)
 {
-	
+}
+
+
+
+OpenGLRenderer::~OpenGLRenderer()
+{
+	assert(models.size() == 0);
+
+
+	runOnRenderThreadSync([]{ glFinish(); });
+
+
 }
 
 void OpenGLRenderer::init()
 {
+	renderThread = std::thread{ [this]{ renderLoop(); } };
+
+	runOnRenderThreadSync([this]{ initRenderer(); });
+	
+}
+
+void OpenGLRenderer::renderLoop()
+{
+	while (renderThread.isInLoop)
+	{
+		while (queue.empty() && renderThread.isInLoop);
+
+		queue.consume_all([](const std::function<void()>& fun)
+		{
+			fun();
+		});
+	}
+}
+
+void OpenGLRenderer::initRenderer()
+{
+	// make sure we are on the render thread
+	assert(isOnRenderThread());
 
 	window = std::make_unique<OpenGLWindow>();
 	debugDraw = std::make_unique<OpenGLMaterialInstance>(getMaterialSource("debugdraw"));
@@ -41,16 +79,10 @@ void OpenGLRenderer::init()
 	glClearColor(.2f, .2f, .2f, 1.f);
 
 	showLoadingImage();
+
 }
 
 
-
-OpenGLRenderer::~OpenGLRenderer()
-{
-	assert(models.size() == 0);
-
-	glFinish();
-}
 
 Window& OpenGLRenderer::getWindow()
 {
@@ -68,7 +100,7 @@ const Window& OpenGLRenderer::getWindow() const
 
 std::unique_ptr<Model> OpenGLRenderer::newModel()
 {
-	return std::make_unique<OpenGLModel>(*this);
+	return runOnRenderThreadSync([this]{ return std::make_unique<OpenGLModel>(*this); });
 }
 
 std::shared_ptr<Texture> OpenGLRenderer::getTexture(const path_t& name)
@@ -81,8 +113,10 @@ std::shared_ptr<Texture> OpenGLRenderer::getTexture(const path_t& name)
 	{
 		if (iter->second.expired())
 		{
-			ret = std::make_shared<OpenGLTexture>(name);
-			iter->second = ret;
+			iter->second = ret = runOnRenderThreadSync([&name]
+			{
+				return std::make_shared<OpenGLTexture>(name);
+			});
 
 		}
 		else
@@ -93,7 +127,11 @@ std::shared_ptr<Texture> OpenGLRenderer::getTexture(const path_t& name)
 		return ret;
 	}
 
-	ret = std::make_shared<OpenGLTexture>(name);
+	
+	ret = runOnRenderThreadSync([&name]
+	{
+		return std::make_shared<OpenGLTexture>(name);
+	});
 
 	// make another
 	textures.insert(
@@ -113,9 +151,10 @@ std::shared_ptr<MaterialSource> OpenGLRenderer::getMaterialSource(const path_t& 
 	{
 		if (iter->second.expired())
 		{
-			ret = std::make_shared<OpenGLMaterialSource>(name);
-			iter->second = ret;
-			
+			iter->second = ret = runOnRenderThreadSync([this, &name]
+			{
+				return std::make_shared<OpenGLMaterialSource>(*this, name);
+			});
 		}
 		else
 		{
@@ -125,8 +164,11 @@ std::shared_ptr<MaterialSource> OpenGLRenderer::getMaterialSource(const path_t& 
 		return ret;
 	}
 
-	ret = std::make_shared<OpenGLMaterialSource>(name);
-	// make another
+	ret = runOnRenderThreadSync([this, &name]
+	{
+		return std::make_shared<OpenGLMaterialSource>(*this, name);
+	});
+
 	matSources.insert( 
 		{ name, ret }
 	);
@@ -137,49 +179,60 @@ std::shared_ptr<MaterialSource> OpenGLRenderer::getMaterialSource(const path_t& 
 
 std::unique_ptr<TextureLibrary> OpenGLRenderer::newTextureLibrary()
 {
-	return std::make_unique<OpenGLTextureLibrary>();
+	return runOnRenderThreadSync([this]{ return std::make_unique<OpenGLTextureLibrary>(*this); });
 }
 
 std::unique_ptr<MaterialInstance> OpenGLRenderer::newMaterial(std::shared_ptr<MaterialSource> source)
 {
-	
-	return std::make_unique<OpenGLMaterialInstance>(source);
+	return runOnRenderThreadSync([&source]{ return std::make_unique<OpenGLMaterialInstance>(source); });
 }
 
 std::unique_ptr<ModelData> OpenGLRenderer::newModelData()
 {
-	return std::make_unique<OpenGLModelData>();
+	return runOnRenderThreadSync([this]{ return std::make_unique<OpenGLModelData>(*this); });
 }
 
 
 bool OpenGLRenderer::update(float /*deltaTime*/)
 {
+	// wait for the last frame's rendering to finish
+	if (lastFrame.valid())
+		lastFrame.wait();
 
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	tickPromise = std::promise<void>();
+	lastFrame = tickPromise.get_future();
+	queue.push([this] // caputre the renderer
+	{
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	// call the draw function for all of the models
-	std::for_each(models.begin(), models.end(), [](OpenGLModel* model)
+		// call the draw function for all of the models
+		std::for_each(models.begin(), models.end(), [](OpenGLModel* model)
 		{
 			model->draw();
-		}
-	);
+		});
 
-	glDisable(GL_DEPTH_TEST);
+		glDisable(GL_DEPTH_TEST);
 
-	Runtime::get().moduleManager.getPhysicsSystem().drawDebugPoints();
+		Runtime::get().moduleManager.getPhysicsSystem().drawDebugPoints();
 
-	glEnable(GL_DEPTH_TEST);
+		glEnable(GL_DEPTH_TEST);
 
-	window->swapBuffers();
-	window->pollEvents();
+		window->swapBuffers();
+		window->pollEvents();
 
-	bool ret = !window->shouldClose();
-	return ret;
+		shouldExit = window->shouldClose();
+
+		tickPromise.set_value();
+
+	});
+
+	return !shouldExit;
 }
 
 
 void OpenGLRenderer::showLoadingImage()
 {
+	assert(isOnRenderThread());
 
 	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
@@ -288,13 +341,13 @@ void OpenGLRenderer::setCurrentCamera(CameraComponent& newCamera)
 
 CameraComponent& OpenGLRenderer::getCurrentCamera()
 {
-	check(currentCamera);
+	check(currentCamera.load());
 	return *currentCamera;
 }
 
 const CameraComponent& OpenGLRenderer::getCurrentCamera() const  
 {
-	check(currentCamera);
+	check(currentCamera.load());
 	return *currentCamera;
 }
 
@@ -302,14 +355,14 @@ const CameraComponent& OpenGLRenderer::getCurrentCamera() const
 void OpenGLRenderer::drawDebugOutlinePolygon(vec2* verts, uint32 numVerts, Color color)
 {
 
-	check(currentCamera);
+	check(currentCamera.load());
 
 	debugDraw->use();
 
 	GLuint program = **std::static_pointer_cast<OpenGLMaterialSource>(debugDraw->getSource());
 		
 	glUniform4f(glGetUniformLocation(program, "color"), (float)color.red / 255.f, (float)color.green / 255.f, (float)color.blue / 255.f, (float)color.alpha / 255.f);
-	glUniformMatrix3fv(glGetUniformLocation(program, "MVPmat"), 1, GL_FALSE, &currentCamera->getViewMat()[0][0]);
+	glUniformMatrix3fv(glGetUniformLocation(program, "MVPmat"), 1, GL_FALSE, &currentCamera.load()->getViewMat()[0][0]);
 
 	GLuint vao;
 	glGenVertexArrays(1, &vao);
@@ -347,7 +400,7 @@ void OpenGLRenderer::drawDebugLine(vec2* locs, uint32 numLocs, Color color)
 	GLuint program = **std::static_pointer_cast<OpenGLMaterialSource>(debugDraw->getSource());
 
 	glUniform4f(glGetUniformLocation(program, "color"), (float)color.red / 255.f, (float)color.green / 255.f, (float)color.blue / 255.f, (float)color.alpha / 255.f);
-	glUniformMatrix3fv(glGetUniformLocation(program, "MVPmat"), 1, GL_FALSE, &currentCamera->getViewMat()[0][0]);
+	glUniformMatrix3fv(glGetUniformLocation(program, "MVPmat"), 1, GL_FALSE, &currentCamera.load()->getViewMat()[0][0]);
 
 	GLuint vao;
 	glGenVertexArrays(1, &vao);
@@ -379,14 +432,14 @@ void OpenGLRenderer::drawDebugLine(vec2* locs, uint32 numLocs, Color color)
 }
 void OpenGLRenderer::drawDebugSolidPolygon(vec2* verts, uint32 numVerts, Color color)
 {
-	check(currentCamera);
+	check(currentCamera.load());
 
 	debugDraw->use();
 
 	GLuint program = **std::static_pointer_cast<OpenGLMaterialSource>(debugDraw->getSource());
 
 	glUniform4f(glGetUniformLocation(program, "color"), .5f * (float)color.red / 255.f, .5f * (float)color.green / 255.f, .5f * (float)color.blue / 255.f, .5f * (float)color.alpha / 255.f);
-	glUniformMatrix3fv(glGetUniformLocation(program, "MVPmat"), 1, GL_FALSE, &currentCamera->getViewMat()[0][0]);
+	glUniformMatrix3fv(glGetUniformLocation(program, "MVPmat"), 1, GL_FALSE, &currentCamera.load()->getViewMat()[0][0]);
 
 	GLuint vao;
 	glGenVertexArrays(1, &vao);
@@ -422,7 +475,7 @@ void OpenGLRenderer::drawDebugSolidPolygon(vec2* verts, uint32 numVerts, Color c
 void OpenGLRenderer::drawDebugOutlineCircle(vec2 center, float radius, Color color)
 {
 
-	check(currentCamera);
+	check(currentCamera.load());
 
 	using k_segments = boost::mpl::int_<16>;
 	const float k_increment = 2.0f * (float)M_PI / (float)k_segments::value;
@@ -439,7 +492,7 @@ void OpenGLRenderer::drawDebugOutlineCircle(vec2 center, float radius, Color col
 	GLuint program = **std::static_pointer_cast<OpenGLMaterialSource>(debugDraw->getSource());
 
 	glUniform4f(glGetUniformLocation(program, "color"), (float)color.red / 255.f, (float)color.green / 255.f, (float)color.blue / 255.f, (float)color.alpha / 255.f);
-	glUniformMatrix3fv(glGetUniformLocation(program, "MVPmat"), 1, GL_FALSE, &currentCamera->getViewMat()[0][0]);
+	glUniformMatrix3fv(glGetUniformLocation(program, "MVPmat"), 1, GL_FALSE, &currentCamera.load()->getViewMat()[0][0]);
 
 	GLuint vao;
 	glGenVertexArrays(1, &vao);
@@ -471,7 +524,7 @@ void OpenGLRenderer::drawDebugOutlineCircle(vec2 center, float radius, Color col
 void OpenGLRenderer::drawDebugSolidCircle(vec2 center, float radius, Color color)
 {
 
-	check(currentCamera);
+	check(currentCamera.load());
 
 	using k_segments = boost::mpl::int_<16>;
 	const float k_increment = 2.0f * (float)M_PI / (float)k_segments::value;
@@ -489,7 +542,7 @@ void OpenGLRenderer::drawDebugSolidCircle(vec2 center, float radius, Color color
 	GLuint program = **std::static_pointer_cast<OpenGLMaterialSource>(debugDraw->getSource());
 
 	glUniform4f(glGetUniformLocation(program, "color"), .5f * (float)color.red / 255.f, .5f * (float)color.green / 255.f, .5f * (float)color.blue / 255.f, .5f * (float)color.alpha / 255.f);
-	glUniformMatrix3fv(glGetUniformLocation(program, "MVPmat"), 1, GL_FALSE, &currentCamera->getViewMat()[0][0]);
+	glUniformMatrix3fv(glGetUniformLocation(program, "MVPmat"), 1, GL_FALSE, &currentCamera.load()->getViewMat()[0][0]);
 
 	GLuint vao;
 	glGenVertexArrays(1, &vao);
@@ -525,14 +578,14 @@ void OpenGLRenderer::drawDebugSolidCircle(vec2 center, float radius, Color color
 void OpenGLRenderer::drawDebugSegment(vec2 p1, vec2 p2, Color color)
 {
 
-	check(currentCamera);
+	check(currentCamera.load());
 
 	debugDraw->use();
 
 	GLuint program = **std::static_pointer_cast<OpenGLMaterialSource>(debugDraw->getSource());
 
 	glUniform4f(glGetUniformLocation(program, "color"), (float)color.red / 255.f, (float)color.green / 255.f, (float)color.blue / 255.f, (float)color.alpha / 255.f);
-	glUniformMatrix3fv(glGetUniformLocation(program, "MVPmat"), 1, GL_FALSE, &currentCamera->getViewMat()[0][0]);
+	glUniformMatrix3fv(glGetUniformLocation(program, "MVPmat"), 1, GL_FALSE, &currentCamera.load()->getViewMat()[0][0]);
 
 	auto locs = std::array<vec2, 2>();
 	locs[0] = p1;

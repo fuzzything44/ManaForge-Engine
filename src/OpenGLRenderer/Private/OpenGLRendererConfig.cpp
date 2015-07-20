@@ -1,3 +1,5 @@
+#include "OpenGLRendererPCH.h"
+
 #include "OpenGLRendererConfig.h"
 #include "OpenGLRenderer.h"
 

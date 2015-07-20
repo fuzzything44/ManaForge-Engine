@@ -1,3 +1,5 @@
+#include "OpenGLRendererPCH.h"
+
 #include "OpenGLRendererConfig.h"
 
 #include "OpenGLModel.h"
@@ -40,7 +42,10 @@ void OpenGLModel::init(std::shared_ptr<MaterialInstance> mat, std::shared_ptr<Mo
 
 	GLuint program = **std::static_pointer_cast<OpenGLMaterialSource>(mat->getSource());
 
-	MVPUniformLocation = glGetUniformLocation(program, "MVPmat");
+	renderer.runOnRenderThreadSync([this, program]
+	{
+		MVPUniformLocation = glGetUniformLocation(program, "MVPmat"); 
+	});
 }
 
 

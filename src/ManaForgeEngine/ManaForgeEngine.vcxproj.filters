@@ -199,9 +199,6 @@
     <ClInclude Include="Public\ActorTransformController.h">
       <Filter>Public</Filter>
     </ClInclude>
-    <ClInclude Include="Public\ParallelQueue.h">
-      <Filter>Public</Filter>
-    </ClInclude>
     <ClInclude Include="Public\Controller.h">
       <Filter>Public</Filter>
     </ClInclude>

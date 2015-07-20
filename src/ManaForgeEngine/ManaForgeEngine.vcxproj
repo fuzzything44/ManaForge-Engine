@@ -165,7 +165,6 @@
     <ClInclude Include="Public\ModelData.h" />
     <ClInclude Include="Public\Module.h" />
     <ClInclude Include="Public\ModuleManager.h" />
-    <ClInclude Include="Public\ParallelQueue.h" />
     <ClInclude Include="Public\Pawn.h" />
     <ClInclude Include="Public\PhysicsBody.h" />
     <ClInclude Include="Public\PhysicsComponent.h" />

@@ -1,3 +1,5 @@
+#include "OpenGLRendererPCH.h"
+
 #include "OpenGLTexture.h"
 #include "SOIL/SOIL.h"
 

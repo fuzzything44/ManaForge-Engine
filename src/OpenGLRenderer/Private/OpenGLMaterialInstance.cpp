@@ -1,3 +1,5 @@
+#include "OpenGLRendererPCH.h"
+
 #include "OpenGLMaterialInstance.h"
 #include "OpenGLTexture.h"
 #include "OpenGLMaterialSource.h"

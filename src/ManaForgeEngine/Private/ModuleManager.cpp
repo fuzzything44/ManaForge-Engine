@@ -19,8 +19,6 @@ ModuleManager::ModuleManager()
 
 ModuleManager::~ModuleManager()
 {
-	initCallbacks.erase(initCallbacks.begin(), initCallbacks.end());
-	updateCallbacks.erase(updateCallbacks.begin(), updateCallbacks.end());
 
 }
 

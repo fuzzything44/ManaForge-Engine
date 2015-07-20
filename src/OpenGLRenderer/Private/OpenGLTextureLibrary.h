@@ -6,10 +6,12 @@
 
 #include <map>
 
+class OpenGLRenderer;
+
 class OpenGLTextureLibrary : public TextureLibrary
 {
 public:
-	explicit OpenGLTextureLibrary();
+	explicit OpenGLTextureLibrary(OpenGLRenderer& renderer);
 
 	virtual ~OpenGLTextureLibrary() override;
 
@@ -40,6 +42,7 @@ private:
 
 	std::map<std::string, QuadUVCoords> UVs;
 
+	OpenGLRenderer& renderer;
 
 	void appendDDS(uint32 texToAppend, uint32 Xoffset, uint32 Yoffset, const char* filepath);
 	uint32 allocateCompressedTextureLibraryFromDDS(uint32 num, const char* filepath);
