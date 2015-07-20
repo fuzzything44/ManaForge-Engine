@@ -10,12 +10,13 @@ class OpenGLModelData final : public ModelData
 {
 public:
 
-	OpenGLModelData(OpenGLRenderer& renderer) : renderer(renderer){}
+	OpenGLModelData(OpenGLRenderer& renderer) : renderer(renderer), bisInitialized(false){}
 
 	virtual ~OpenGLModelData();
 
 	// ModelData Interface
 	virtual void init(const vec2* vertLocs, const vec2* UVs, uint32 numVerts, const uvec3* elems, uint32 numElems) override;
+	virtual bool isInitialized() override;
 	// end ModelData Interface
 
 	inline void draw();
@@ -31,6 +32,8 @@ private:
 	uint32 numElems;
 
 	OpenGLRenderer& renderer;
+
+	bool bisInitialized;
 
 };
 

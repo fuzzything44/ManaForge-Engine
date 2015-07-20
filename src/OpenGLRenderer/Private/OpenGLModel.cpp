@@ -40,12 +40,6 @@ void OpenGLModel::init(std::shared_ptr<MaterialInstance> mat, std::shared_ptr<Mo
 	modelData = std::static_pointer_cast<OpenGLModelData>(data);
 	parent = &ownerComp;
 
-	GLuint program = **std::static_pointer_cast<OpenGLMaterialSource>(mat->getSource());
-
-	renderer.runOnRenderThreadSync([this, program]
-	{
-		MVPUniformLocation = glGetUniformLocation(program, "MVPmat"); 
-	});
 }
 
 
@@ -68,23 +62,15 @@ void OpenGLModel::draw()
 
 	mat3 MVPmat = view * model;
 
+	auto&& matSource = std::static_pointer_cast<OpenGLMaterialSource>(material->getSource());
 	
 	check(material);
 	material->use();
 
-	if (MVPUniformLocation != -1)
-	{
-		glUniformMatrix3fv(MVPUniformLocation, 1, GL_FALSE, &MVPmat[0][0]);
-	}
-	else
-	{
-		logger<Error>() << "could not find MVPmat uniform in shader";
-	}
+	glUniformMatrix3fv(matSource->MVPUniformLocation, 1, GL_FALSE, &MVPmat[0][0]);
+	
 
-
-	GLuint program = **std::static_pointer_cast<OpenGLMaterialSource>(material->getSource());
-
-	glUniform1f(glGetUniformLocation(program, "renderOrder"), 1.f);
+	glUniform1f(glGetUniformLocation(**matSource, "renderOrder"), 1.f);
 
 	modelData->draw();
 }

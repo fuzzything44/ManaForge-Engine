@@ -114,12 +114,19 @@ void Runtime::run()
 
 	float baseSpeed = 100.f;
 
+	uint64 totalTicks = 0;
+	long double totalTime = 0;
+
 	do {
+
 		// calculate tick time
 		clock::time_point CurrentTick = clock::now();
 		std::chrono::duration<float> delta_duration = CurrentTick - LastTick;
 		float delta = delta_duration.count();
 
+		++totalTicks;
+		totalTime += delta;
+		
 		LastTick = CurrentTick;
 
 		inputManager.update();
@@ -146,8 +153,10 @@ void Runtime::run()
 			
 		}
 		
-	
 
 	} while (shouldContinue);
+
+	logger<Debug>() << "Total frames: " << totalTicks << "  Total time: " << totalTime << "  avg FPS: " << (long double)totalTicks / totalTime;
+
 }
 

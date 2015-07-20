@@ -17,28 +17,6 @@ Gate::Gate()
 	: Actor(), timeToDestruction(3.f)
 {
 
-	vec2 vertLocs[] =
-	{
-		{ -1.f, -1.f },
-		{ +1.f, -1.f },
-		{ -1.f, +1.f },
-		{ +1.f, +1.f }
-	};
-
-	vec2 UVs[] =
-	{
-		{0.f, 1.f},
-		{1.f, 1.f},
-		{0.f, 0.f},
-		{1.f, 0.f}
-	};
-
-	uvec3 tris[] = 
-	{
-		{0, 1, 2},
-		{1, 2, 3}
-	};
-
 	auto tex = Runtime::get().moduleManager.getRenderer().getTexture("0");
 
 	tex->setFilterMode(Texture::FilterMode::MIPMAP_LINEAR);
@@ -53,8 +31,34 @@ Gate::Gate()
 	
 
 
-	auto modelData = Runtime::get().moduleManager.getRenderer().newModelData();
-	modelData->init(vertLocs, UVs, 6, tris, 2);
+	auto modelData = Runtime::get().moduleManager.getRenderer().newModelData("GateMesh");
+	if (!modelData->isInitialized())
+	{
+
+		vec2 vertLocs[] =
+		{
+			{ -1.f, -1.f },
+			{ +1.f, -1.f },
+			{ -1.f, +1.f },
+			{ +1.f, +1.f }
+		};
+
+		vec2 UVs[] =
+		{
+			{ 0.f, 1.f },
+			{ 1.f, 1.f },
+			{ 0.f, 0.f },
+			{ 1.f, 0.f }
+		};
+
+		uvec3 tris[] =
+		{
+			{ 0, 1, 2 },
+			{ 1, 2, 3 }
+		};
+
+		modelData->init(vertLocs, UVs, 6, tris, 2);
+	}
 	meshComp = std::make_unique<MeshComponent>(*this, Transform{}, std::move(mat), std::move(modelData));
 
 	auto shape = Runtime::get().moduleManager.getPhysicsSystem().newPhysicsShape();

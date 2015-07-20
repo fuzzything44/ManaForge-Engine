@@ -33,11 +33,7 @@ void OpenGLMaterialInstance::init(std::shared_ptr<MaterialSource> source)
 {
 	program = std::static_pointer_cast<OpenGLMaterialSource>(source);
 
-	startTexUniform = glGetUniformLocation(**program, "textures");
-	if (startTexUniform == -1)
-	{
-		logger<Warning>() << "Could not find startTexUniform in program: " << source->getName();
-	}
+
 }
 
 std::shared_ptr<MaterialSource> OpenGLMaterialInstance::getSource()
@@ -58,7 +54,7 @@ void OpenGLMaterialInstance::use()
 	{
 		check(*textures[i])
 
-		glUniform1i(startTexUniform + i, i);
+		glUniform1i(program->startTexUniform + i, i);
 
 		glActiveTexture(GL_TEXTURE0 + i);
 		glBindTexture(GL_TEXTURE_2D, (*textures[i])->getID());

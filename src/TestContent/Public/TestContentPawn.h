@@ -36,26 +36,7 @@ public:
 		Runtime::get().moduleManager.getRenderer().setCurrentCamera(*camera);
 
 
-		std::array<vec2, 4> locations =
-		{
-			vec2{ -1.f, -1.f },
-			vec2{ -1.f, +1.f },
-			vec2{ +1.f, -1.f },
-			vec2{ +1.f, +1.f }
-		};
-		std::array<vec2, 4> UVs =
-		{
-			vec2{ 0.f, 1.f },
-			vec2{ 0.f, 0.f },
-			vec2{ 1.f, 1.f },
-			vec2{ 1.f, 0.f }
-		};
-		std::array<uvec3, 2> tris =
-		{
-			uvec3{ 0, 1, 2 },
-			uvec3{ 1, 2, 3 }
 
-		};
 
 		auto mat = Runtime::get().moduleManager.getRenderer().newMaterial(
 			Runtime::get().moduleManager.getRenderer().getMaterialSource("boilerplate"));
@@ -65,8 +46,32 @@ public:
 
 		mat->setTexture(0, tex);
 
-		auto meshData = Runtime::get().moduleManager.getRenderer().newModelData();
-		meshData->init(locations.data(), UVs.data(), locations.size(), tris.data(), tris.size());
+		auto meshData = Runtime::get().moduleManager.getRenderer().newModelData("PlayerModel");
+		if (!meshData->isInitialized())
+		{
+			std::array<vec2, 4> locations =
+			{
+				vec2{ -1.f, -1.f },
+				vec2{ -1.f, +1.f },
+				vec2{ +1.f, -1.f },
+				vec2{ +1.f, +1.f }
+			};
+			std::array<vec2, 4> UVs =
+			{
+				vec2{ 0.f, 1.f },
+				vec2{ 0.f, 0.f },
+				vec2{ 1.f, 1.f },
+				vec2{ 1.f, 0.f }
+			};
+			std::array<uvec3, 2> tris =
+			{
+				uvec3{ 0, 1, 2 },
+				uvec3{ 1, 2, 3 }
+
+			};
+
+			meshData->init(locations.data(), UVs.data(), locations.size(), tris.data(), tris.size());
+		}
 		mesh = std::make_unique<MeshComponent>(*this, Transform{}, std::move(mat), std::move(meshData));
 
 

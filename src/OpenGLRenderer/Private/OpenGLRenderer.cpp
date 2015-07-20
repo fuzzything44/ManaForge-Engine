@@ -24,6 +24,8 @@
 #include <algorithm>
 #include <future>
 
+#include <boost/timer/timer.hpp>
+
 OpenGLRenderer::OpenGLRenderer()
 	:queue(100)
 {
@@ -100,7 +102,7 @@ const Window& OpenGLRenderer::getWindow() const
 
 std::unique_ptr<Model> OpenGLRenderer::newModel()
 {
-	return runOnRenderThreadSync([this]{ return std::make_unique<OpenGLModel>(*this); });
+	return std::make_unique<OpenGLModel>(*this);
 }
 
 std::shared_ptr<Texture> OpenGLRenderer::getTexture(const path_t& name)
@@ -184,20 +186,60 @@ std::unique_ptr<TextureLibrary> OpenGLRenderer::newTextureLibrary()
 
 std::unique_ptr<MaterialInstance> OpenGLRenderer::newMaterial(std::shared_ptr<MaterialSource> source)
 {
-	return runOnRenderThreadSync([&source]{ return std::make_unique<OpenGLMaterialInstance>(source); });
+	return std::make_unique<OpenGLMaterialInstance>(source);
+}
+
+std::shared_ptr<ModelData> OpenGLRenderer::newModelData(const std::string& name)
+{
+	auto iter = modelDataCache.find(name);
+
+	std::shared_ptr<OpenGLModelData> ret;
+
+	if (iter != modelDataCache.end())
+	{
+		if (iter->second.expired())
+		{
+			iter->second = ret = runOnRenderThreadSync([this]
+			{
+				return std::make_shared<OpenGLModelData>(*this);
+			});
+		}
+		else
+		{
+			ret = std::shared_ptr<OpenGLModelData>{ iter->second };
+		}
+
+		return ret;
+	}
+
+	ret = runOnRenderThreadSync([this]
+	{
+		return std::make_shared<OpenGLModelData>(*this);
+	});
+
+	modelDataCache.insert(
+		{ name, ret }
+	);
+
+	return ret;
 }
 
 std::unique_ptr<ModelData> OpenGLRenderer::newModelData()
 {
-	return runOnRenderThreadSync([this]{ return std::make_unique<OpenGLModelData>(*this); });
+	return runOnRenderThreadSync([this]
+	{
+		return std::make_unique<OpenGLModelData>(*this);
+	});
 }
-
 
 bool OpenGLRenderer::update(float /*deltaTime*/)
 {
+	
+		
 	// wait for the last frame's rendering to finish
 	if (lastFrame.valid())
 		lastFrame.wait();
+
 
 	tickPromise = std::promise<void>();
 	lastFrame = tickPromise.get_future();

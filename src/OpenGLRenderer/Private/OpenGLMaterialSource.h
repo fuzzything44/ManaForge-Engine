@@ -23,6 +23,8 @@ public:
 		return program;
 	}
 
+	int32 startTexUniform;
+	int32 MVPUniformLocation;
 private:
 	std::string name;
 	OpenGLRenderer& renderer;

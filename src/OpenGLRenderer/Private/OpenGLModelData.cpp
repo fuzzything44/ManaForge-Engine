@@ -41,7 +41,14 @@ void OpenGLModelData::init(const vec2* vertLocs_, const vec2* UVs_, uint32 numVe
 
 
 	});
+
+	bisInitialized = true;
 	
+}
+
+bool OpenGLModelData::isInitialized()
+{
+	return bisInitialized;
 }
 
 OpenGLModelData::~OpenGLModelData()

@@ -27,9 +27,6 @@ public:
 	void draw();
 private:
 
-
-	GLint MVPUniformLocation;
-
 	std::shared_ptr<OpenGLModelData> modelData;
 
 	MeshComponent* parent;

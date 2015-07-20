@@ -36,5 +36,4 @@ private:
 
 	// vector of <texture ID>
 	std::array< boost::optional<std::shared_ptr<OpenGLTexture> >, maxTextures> textures;
-	int32 startTexUniform;
 };

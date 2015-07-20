@@ -28,6 +28,9 @@ void OpenGLMaterialSource::init(const path_t& name)
 {
 	assert(renderer.isOnRenderThread());
 
+
+
+
 	path_t vertexPath = L"shaders\\" + name.wstring() + L"vert.glsl";
 	path_t fragPath = L"shaders\\" + name.wstring() + L"frag.glsl";
 
@@ -108,6 +111,19 @@ void OpenGLMaterialSource::init(const path_t& name)
 	glDeleteShader(vertexShader);
 	glDeleteShader(fragmentShader);
 
+
+	startTexUniform = glGetUniformLocation(program, "textures");
+	if (startTexUniform == -1)
+	{
+		logger<Warning>() << "Could not find startTexUniform in program: " << name;
+	}
+
+
+	MVPUniformLocation = glGetUniformLocation(program, "MVPmat");
+	if (MVPUniformLocation == -1)
+	{
+		logger<Warning>() << "Could not find MVPUniformLocation in program: " << name;
+	}
 }
 
 std::string OpenGLMaterialSource::getName()

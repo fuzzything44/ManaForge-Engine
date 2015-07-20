@@ -15,6 +15,7 @@ class OpenGLMaterialInstance;
 class OpenGLTexture;
 class OpenGLWindow;
 class OpenGLMaterialSource;
+class OpenGLModelData;
 
 class OpenGLRenderer : public Renderer
 {
@@ -65,6 +66,7 @@ public:
 	virtual std::shared_ptr<MaterialSource> getMaterialSource(const path_t& name) override;
 	virtual std::unique_ptr<TextureLibrary> newTextureLibrary() override;
 	virtual std::unique_ptr<MaterialInstance> newMaterial(std::shared_ptr<MaterialSource> source) override;
+	virtual std::shared_ptr<ModelData> newModelData(const std::string& name) override;
 	virtual std::unique_ptr<ModelData> newModelData() override;
 
 	/// <summary> Renders the next frame. </summary>
@@ -113,6 +115,7 @@ private:
 	std::list<OpenGLModel*> models;
 	std::unordered_map<path_t, std::weak_ptr<OpenGLTexture> > textures;
 	std::unordered_map<path_t, std::weak_ptr<OpenGLMaterialSource> > matSources;
+	std::unordered_map<std::string, std::weak_ptr<OpenGLModelData>> modelDataCache;
 
 };
 
