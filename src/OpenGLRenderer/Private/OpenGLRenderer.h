@@ -88,8 +88,8 @@ public:
 	virtual void drawDebugSolidCircle(vec2 center, float radius, Color color) override;
 	virtual void drawDebugSegment(vec2 p1, vec2 p2, Color color) override;
 
-	template<typename Function>
-	inline auto runOnRenderThreadSync(Function& func)->decltype(func());
+	template<typename Function, typename...Args>
+	inline auto runOnRenderThreadSync(Function& func, Args&&...args);
 
 	inline bool isOnRenderThread() { return std::this_thread::get_id() == renderThread.getThread().get_id(); }
 
@@ -119,25 +119,25 @@ private:
 
 };
 
-template<typename Function>
-inline auto OpenGLRenderer::runOnRenderThreadSync(Function& func) -> decltype(func())
+template<typename Function, typename ...Args>
+inline auto OpenGLRenderer::runOnRenderThreadSync(Function & func, Args && ...args)
 {
 	if (isOnRenderThread())
 	{
-		return func();
+		return func(std::forward<Args>(args)...);
 	}
 
-	using retType = decltype(func());
+	using retType = decltype(func(Args&&...));
 
-	std::packaged_task<retType()> pack{ func };
+	std::packaged_task<retType(Args&&...)> pack{ func };
 
-	queue.push([&pack]
+	queue.push([&pack, &args...]
 	{
-		pack();
+		pack(std::forward<Args>(args)...);
 	});
 
 
-	return pack.get_future().get();
+	return pack.get_future();
 }
 
 
