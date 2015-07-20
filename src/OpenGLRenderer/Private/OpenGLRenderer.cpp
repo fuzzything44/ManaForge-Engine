@@ -241,9 +241,7 @@ bool OpenGLRenderer::update(float /*deltaTime*/)
 		lastFrame.wait();
 
 
-	tickPromise = std::promise<void>();
-	lastFrame = tickPromise.get_future();
-	queue.push([this] // caputre the renderer
+	lastFrame = runOnRenderThreadAsync([this] // caputre the renderer
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -264,9 +262,8 @@ bool OpenGLRenderer::update(float /*deltaTime*/)
 
 		shouldExit = window->shouldClose();
 
-		tickPromise.set_value();
-
 	});
+	
 
 	return !shouldExit;
 }

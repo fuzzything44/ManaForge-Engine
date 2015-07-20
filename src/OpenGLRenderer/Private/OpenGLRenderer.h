@@ -89,9 +89,13 @@ public:
 	virtual void drawDebugSegment(vec2 p1, vec2 p2, Color color) override;
 
 	template<typename Function, typename...Args>
-	inline auto runOnRenderThreadSync(Function& func, Args&&...args);
+	inline auto runOnRenderThreadSync(Function&& func, Args&&...args);
 
-	inline bool isOnRenderThread() { return std::this_thread::get_id() == renderThread.getThread().get_id(); }
+	template<typename Function, typename...Args>
+	inline auto runOnRenderThreadAsync(Function&& func, Args&&...args) -> std::future<decltype(func(Args&&...))>;
+
+	inline bool isOnRenderThread() 
+		{ return std::this_thread::get_id() == renderThread.getThread().get_id(); }
 
 private:
 
@@ -108,7 +112,6 @@ private:
 	// then delete our atomics
 	std::atomic<CameraComponent*> currentCamera;
 	std::future<void> lastFrame;
-	std::promise<void> tickPromise;
 	std::atomic<bool> shouldExit;
 
 	// delete our caches and models first
@@ -120,7 +123,7 @@ private:
 };
 
 template<typename Function, typename ...Args>
-inline auto OpenGLRenderer::runOnRenderThreadSync(Function & func, Args && ...args)
+inline auto OpenGLRenderer::runOnRenderThreadSync(Function && func, Args && ...args)
 {
 	if (isOnRenderThread())
 	{
@@ -129,15 +132,36 @@ inline auto OpenGLRenderer::runOnRenderThreadSync(Function & func, Args && ...ar
 
 	using retType = decltype(func(Args&&...));
 
-	std::packaged_task<retType(Args&&...)> pack{ func };
+	std::packaged_task<retType(Args&&...)> task{ func };
 
-	queue.push([&pack, &args...]
+	queue.push([&task, &args...]
 	{
-		pack(std::forward<Args>(args)...);
+		task(std::forward<Args>(args)...);
 	});
 
 
-	return pack.get_future().get();
+	return task.get_future().get();
+}
+
+template<typename Function, typename ...Args>
+inline auto OpenGLRenderer::runOnRenderThreadAsync(Function && func, Args && ...args)-> std::future<decltype(func(Args&&...))>
+{
+	if (isOnRenderThread())
+		logger<Error>() << "Cannot run an async task on the render thread, you're already on that thread!";
+
+	using retType = decltype(func(Args&&...));
+
+	// this needs to be a shared_ptr because the lambda needs to be copied. If the queue had emplace functions...
+	auto task = std::make_shared<std::packaged_task<retType(Args&&...)>>(func);
+	auto ret = task->get_future(); // cache it because it will be moved from.
+
+	queue.push([pack = std::move(task), &args...]
+	{
+		(*pack)(std::forward<Args>(args)...);
+	});
+
+
+	return ret;
 }
 
 
