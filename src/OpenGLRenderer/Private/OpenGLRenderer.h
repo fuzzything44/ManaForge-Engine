@@ -137,7 +137,7 @@ inline auto OpenGLRenderer::runOnRenderThreadSync(Function & func, Args && ...ar
 	});
 
 
-	return pack.get_future();
+	return pack.get_future().get();
 }
 
 
