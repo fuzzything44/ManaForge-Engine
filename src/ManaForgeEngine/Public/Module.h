@@ -31,6 +31,9 @@ public:
 	ENGINE_API ~Module();
 
 private:
+	// first so it will be destructed last.
+	SharedLibrary libraryHandle;
+	
 	// address to the function to register the plugin
 	registerModuleFun* registerModuleFunctionAddress;
 	getModuleEngineVersionFun* getModuleEngineVersionAddress;
@@ -38,6 +41,5 @@ private:
 	path_t name;
 	std::unordered_map<std::string, std::function<void*()> > classes;
 
-	SharedLibrary::SharedLibHandle libraryHandle;
 
 };

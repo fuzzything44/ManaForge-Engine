@@ -9,19 +9,18 @@
 Module::Module(const path_t& filename) :
 	registerModuleFunctionAddress(nullptr),
 	getModuleEngineVersionAddress(nullptr),
-	name(std::wstring(L"Modules\\").append(filename.wstring())), // Append the modules prefiex
-	libraryHandle(nullptr)
+	name(std::wstring(L"Modules\\").append(filename.wstring())) // Append the modules prefiex
 {
 	try{
 
 		// load the library
-		libraryHandle = SharedLibrary::Load(name);
+		libraryHandle = SharedLibrary{name};
 
-		registerModuleFunctionAddress = SharedLibrary::getFunctionPtr<registerModuleFun>
-			(libraryHandle, "registerModule");
+		registerModuleFunctionAddress = libraryHandle.getFunctionPtr<registerModuleFun>
+			("registerModule");
 
-		getModuleEngineVersionAddress = SharedLibrary::getFunctionPtr<getModuleEngineVersionFun>
-			(libraryHandle, "getModuleEngineVersion");
+		getModuleEngineVersionAddress = libraryHandle.getFunctionPtr<getModuleEngineVersionFun>
+			("getModuleEngineVersion");
 
 
 	}
@@ -72,7 +71,5 @@ void* Module::spawnClass(const std::string& className)
 Module::~Module()
 {
 	classes.erase(classes.begin(), classes.end());
-
-	SharedLibrary::Unload(libraryHandle);
 
 }
