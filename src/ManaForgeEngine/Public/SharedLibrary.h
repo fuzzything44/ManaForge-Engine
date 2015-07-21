@@ -41,10 +41,10 @@ private:
 };
 
 
+#if defined WIN32
 template<typename T>
 inline T * SharedLibrary::getFunctionPtr(const std::string & functionName)
 {
-#if defined WIN32
 	check(handle);
 
 	// FARPROC is a generic fucntion pointer
@@ -57,5 +57,6 @@ inline T * SharedLibrary::getFunctionPtr(const std::string & functionName)
 	}
 
 	return reinterpret_cast<T*>(addr);
-#endif
 }
+#endif
+

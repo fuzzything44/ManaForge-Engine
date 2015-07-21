@@ -1,9 +1,9 @@
 #include "EnginePCH.h"
 #include "SharedLibrary.h"
 
+#ifdef WIN32
 SharedLibrary::SharedLibrary(const path_t & path)
 {
-#ifdef WIN32
 	path_t pathWithExt = path.wstring() + (L".dll");
 
 	handle = LoadLibraryW(pathWithExt.c_str());
@@ -13,16 +13,16 @@ SharedLibrary::SharedLibrary(const path_t & path)
 
 		logger<Fatal>() << "Failed to load library. Path: " << path;
 	}
-#endif
 }
+#endif
 
+#ifdef WIN32
 void SharedLibrary::Unload(SharedLibHandle handle)
 {
-#ifdef WIN32
 	BOOL result = FreeLibrary(handle);
 	if (result == FALSE)
 	{
 		throw std::runtime_error("Could not unload DLL");
 	}
-#endif
 }
+#endif

@@ -139,7 +139,7 @@
     <ClCompile Include="Private\PlayerController.cpp" />
     <ClCompile Include="Private\PropertyManager.cpp" />
     <ClCompile Include="Private\Runtime.cpp" />
-    <ClCompile Include="Public\SharedLibrary.cpp" />
+    <ClCompile Include="Private\SharedLibrary.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Private\EnginePCH.h" />
