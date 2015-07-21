@@ -59,11 +59,7 @@
 
 #include <boost/date_time.hpp>
 
-#if defined WIN32 || defined _WIN32
-#	define WIN32_LEAN_AND_MEAN 
-#	include <Windows.h>
-#	include <direct.h>
-#endif
+#include <Windows.h>
 
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>

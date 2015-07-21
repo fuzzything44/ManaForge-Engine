@@ -42,6 +42,8 @@ namespace std{
 	};
 }
 
+#include "Quantity.h"
+
 // worldwide aliases
 using path_t = boost::filesystem::path;
 
