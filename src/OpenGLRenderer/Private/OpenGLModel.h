@@ -35,4 +35,6 @@ private:
 
 	std::shared_ptr<OpenGLMaterialInstance> material;
 
+	std::list<OpenGLModel*>::iterator location;
+
 };

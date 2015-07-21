@@ -28,7 +28,6 @@ public:
 
 	virtual void applyTorque(float magnituede) override;
 
-
 	virtual void setAngularVelocity(float newVelocity) override;
 	virtual float getAngularVelocity() override;
 
@@ -36,11 +35,15 @@ public:
 
 
 
-private:
-
 	Box2DPhysicsSystem& system;
 
-	b2Body* body;
+	static void bodyDeleter(b2Body* ptr)
+	{
+		ptr->GetWorld()->DestroyBody(ptr);
+	}
+
+	std::unique_ptr<b2Body, decltype(&bodyDeleter)> body;
 	Actor& owner;
+
 
 };

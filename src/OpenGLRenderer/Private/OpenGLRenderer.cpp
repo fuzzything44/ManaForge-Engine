@@ -246,10 +246,10 @@ bool OpenGLRenderer::update(float /*deltaTime*/)
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		// call the draw function for all of the models
-		std::for_each(models.begin(), models.end(), [](OpenGLModel* model)
+		for(auto&& model : models)
 		{
 			model->draw();
-		});
+		}
 
 		glDisable(GL_DEPTH_TEST);
 

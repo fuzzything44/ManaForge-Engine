@@ -25,6 +25,8 @@ public:
 	inline void setIsSensor(bool newIsSensor);
 	inline bool getIsSensor() const;
 
+	inline void setStartContactCallback(const std::function<void(PhysicsComponent&)>& callback);
+	inline void setEndContactCallback(const std::function<void(PhysicsComponent&)>& callback);
 
 private:
 	std::unique_ptr<PhysicsBody> body;
@@ -81,4 +83,14 @@ inline void PhysicsComponent::setIsSensor(bool newIsSensor)
 inline bool PhysicsComponent::getIsSensor() const
 {
 	return body->getIsSensor();
+}
+
+inline void PhysicsComponent::setStartContactCallback(const std::function<void(PhysicsComponent&)>& callback)
+{
+	body->setStartContactCallback(callback);
+}
+
+inline void PhysicsComponent::setEndContactCallback(const std::function<void(PhysicsComponent&)>& callback)
+{
+	body->setEndContactCallback(callback);
 }

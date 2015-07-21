@@ -148,9 +148,6 @@
     <ClInclude Include="Public\SerializeGLM.h">
       <Filter>Public</Filter>
     </ClInclude>
-    <ClInclude Include="Public\registerForSerialization.h">
-      <Filter>Public</Filter>
-    </ClInclude>
     <ClInclude Include="Public\PlayerController.h">
       <Filter>Public</Filter>
     </ClInclude>

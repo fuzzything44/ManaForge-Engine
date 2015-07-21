@@ -87,6 +87,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Private\Box2DActorTransformController.h" />
+    <ClInclude Include="Private\Box2DContactListener.h" />
     <ClInclude Include="Private\Box2DDebugDraw.h" />
     <ClInclude Include="Private\Box2DPhysicsBody.h" />
     <ClInclude Include="Private\Box2DPhysicsShape.h" />
@@ -95,6 +96,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Private\Box2DActorTransformController.cpp" />
+    <ClCompile Include="Private\Box2DContactListener.cpp" />
     <ClCompile Include="Private\Box2DDebugDraw.cpp" />
     <ClCompile Include="Private\Box2DPhysicsBody.cpp" />
     <ClCompile Include="Private\Box2DPhysicsShape.cpp" />

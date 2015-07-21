@@ -21,7 +21,7 @@ OpenGLModel::OpenGLModel(OpenGLRenderer& renderer) :
 
 
 	// add model to renderer's list
-	renderer.models.push_front(this);
+	location = renderer.models.insert(renderer.models.begin(), this);
 
 }
 
@@ -30,7 +30,7 @@ OpenGLModel::OpenGLModel(OpenGLRenderer& renderer) :
 OpenGLModel::~OpenGLModel()
 {
 
-	renderer.models.remove(this);
+	renderer.models.erase(location);
 	
 }
 

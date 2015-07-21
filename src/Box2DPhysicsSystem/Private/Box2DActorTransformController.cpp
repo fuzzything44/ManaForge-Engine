@@ -3,22 +3,23 @@
 
 Box2DActorTransformController::Box2DActorTransformController(Actor& owner, Box2DPhysicsSystem& system)
 	:owner(owner),
-	system(system)
+	system(system),
+	body(std::unique_ptr<b2Body, decltype(&bodyDeleter)>(nullptr, &bodyDeleter))
 {
 	system.bodies.insert(std::map<Actor*, Box2DActorTransformController*>::value_type(&owner, this));
 
 	b2BodyDef bodyDef;
-	bodyDef.userData = &owner;
+	bodyDef.userData = this;
 	bodyDef.type = b2_staticBody;
 	bodyDef.position = b2Vec2(0.f, 0.f);
 	bodyDef.angle = 0.f;
 	bodyDef.fixedRotation = false;
 	
-	body = system.world->CreateBody(&bodyDef);
+	body = std::unique_ptr<b2Body, decltype(&bodyDeleter)>(system.world->CreateBody(&bodyDef),
+		&bodyDeleter);
 }
 Box2DActorTransformController::~Box2DActorTransformController()
 {
-	system.world->DestroyBody(body);
 	system.bodies.erase(&owner);
 }
 
@@ -97,6 +98,8 @@ void Box2DActorTransformController::applyTorque(float magnituede)
 {
 	body->ApplyTorque(magnituede, true);
 }
+
+
 
 Actor& Box2DActorTransformController::getOwner() const
 {

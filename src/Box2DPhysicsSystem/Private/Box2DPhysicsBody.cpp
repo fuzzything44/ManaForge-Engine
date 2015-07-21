@@ -7,7 +7,9 @@
 
 Box2DPhysicsBody::Box2DPhysicsBody(Box2DPhysicsShape& shape, PhysicsComponent& owner, Box2DPhysicsSystem& system)
 	:system(system),
-	ownerComponent(owner)
+	ownerComponent(owner),
+	shouldCallStartContact(false),
+	shouldCallEndContact(false)
 {
 	auto iter = system.bodies.find(&(owner.getOwner()));
 
@@ -17,7 +19,7 @@ Box2DPhysicsBody::Box2DPhysicsBody(Box2DPhysicsShape& shape, PhysicsComponent& o
 
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = shape.shape.get();
-	fixtureDef.userData = &owner;
+	fixtureDef.userData = this;
 	
 	
 	check(ownerController->body);
@@ -69,4 +71,14 @@ void Box2DPhysicsBody::setIsSensor(bool newIsSensor)
 bool Box2DPhysicsBody::getIsSensor() const
 {
 	return fixture->IsSensor();
+}
+
+void Box2DPhysicsBody::setStartContactCallback(const std::function<void(PhysicsComponent&)>& callback)
+{
+	startContactCallback = callback;
+}
+
+void Box2DPhysicsBody::setEndContactCallback(const std::function<void(PhysicsComponent&)>& callback)
+{
+	endContactCallback = callback;
 }

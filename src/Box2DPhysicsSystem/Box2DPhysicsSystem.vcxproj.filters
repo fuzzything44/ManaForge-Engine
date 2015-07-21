@@ -29,6 +29,9 @@
     <ClInclude Include="Private\Box2DDebugDraw.h">
       <Filter>Private</Filter>
     </ClInclude>
+    <ClInclude Include="Private\Box2DContactListener.h">
+      <Filter>Private</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Private\Box2DPhysicsSystemConfig.cpp">
@@ -47,6 +50,9 @@
       <Filter>Private</Filter>
     </ClCompile>
     <ClCompile Include="Private\Box2DDebugDraw.cpp">
+      <Filter>Private</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\Box2DContactListener.cpp">
       <Filter>Private</Filter>
     </ClCompile>
   </ItemGroup>

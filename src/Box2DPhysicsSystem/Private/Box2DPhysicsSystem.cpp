@@ -4,14 +4,14 @@
 #include "Box2DPhysicsBody.h"
 #include "Box2DActorTransformController.h"
 #include "Box2DDebugDraw.h"
+#include "Box2DContactListener.h"
 
 Box2DPhysicsSystem::Box2DPhysicsSystem()
 {
 	world = std::make_unique<b2World>(gravity);
 
-	uint32 flags = 0;
-	flags += b2Draw::e_shapeBit;
-	flags += b2Draw::e_aabbBit;
+
+	world->SetContactListener(&listener);
 
 }
 
@@ -46,6 +46,19 @@ std::unique_ptr<ActorTransformController> Box2DPhysicsSystem::newActorTransformC
 bool Box2DPhysicsSystem::update(float deltaTime)
 {
 	world->Step(deltaTime, 8, 3); // step once
+
+	auto nextElem = world->GetBodyList();
+	while (nextElem != nullptr)
+	{
+		auto nextFixture = nextElem->GetFixtureList();
+		while (nextFixture != nullptr)
+		{
+			auto body = static_cast<Box2DPhysicsBody*>(nextFixture->GetUserData());
+			body->postStep();
+			nextFixture = nextFixture->GetNext();
+		}
+		nextElem = nextElem->GetNext();
+	}
 
 	return true;
 }

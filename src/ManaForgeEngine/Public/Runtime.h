@@ -38,10 +38,13 @@ public:
 	using clock = std::chrono::high_resolution_clock;
 
 	std::unique_ptr<World> world;
-private:
+
 
 	std::unique_ptr<PlayerController> controller;
 	std::unique_ptr<Pawn> pawn;
+
+private:
+
 
 	ENGINE_API static Runtime* currentRuntime;
 };

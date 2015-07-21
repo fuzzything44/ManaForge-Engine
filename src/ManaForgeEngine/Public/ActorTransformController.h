@@ -6,6 +6,7 @@
 #include <boost/noncopyable.hpp>
 
 class Actor;
+class PhysicsComponent;
 
 enum class PhysicsType : uint8
 {
@@ -36,7 +37,6 @@ public:
 	virtual void applyWorldForce(vec2 localForce, vec2 localPoint) = 0;
 
 	virtual void applyTorque(float magnitude) = 0;
-
 
 	virtual void setAngularVelocity(float newVelocity) = 0;
 	virtual float getAngularVelocity() = 0;

@@ -1,5 +1,6 @@
 #pragma once
 #include "Box2DPhysicsSystemConfig.h"
+#include "Box2DContactListener.h"
 
 #include <PhysicsSystem.h>
 #include <Actor.h>
@@ -32,6 +33,7 @@ public:
 private:
 	
 	std::map<Actor*, Box2DActorTransformController*> bodies;
+	Box2DContactListener listener;
 	
 	std::unique_ptr<b2World> world;
 	b2Vec2 gravity;

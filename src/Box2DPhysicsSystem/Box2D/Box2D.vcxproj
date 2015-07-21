@@ -72,7 +72,7 @@
   <PropertyGroup>
     <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(DefaultOutputDir)</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)/Debug</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)/Debug/</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Box2D</TargetName>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.lib</TargetExt>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Users\Russell\Downloads\Box2D-master\Box2D-master\Box2D\Box2D\Release\</OutDir>
@@ -301,11 +301,6 @@
     <ClCompile Include="C:\Users\Russell\Downloads\Box2D-master\Box2D-master\Box2D\Box2D\Collision\b2DynamicTree.cpp" />
     <ClCompile Include="C:\Users\Russell\Downloads\Box2D-master\Box2D-master\Box2D\Box2D\Collision\b2TimeOfImpact.cpp" />
     <ClCompile Include="C:\Users\Russell\Downloads\Box2D-master\Box2D-master\Box2D\Box2D\Rope\b2Rope.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="C:/Users/Russell/Downloads/Box2D-master/Box2D-master/Box2D/Box2D/ZERO_CHECK.vcxproj">
-      <Project>E23EFF79-70B1-4C7A-8C9B-409B8EFD0170</Project>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

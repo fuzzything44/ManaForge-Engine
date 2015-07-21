@@ -1,15 +1,34 @@
 #include "Pew.h"
 #include "Gate.h"
 
+
 MFCLASS_SOURCE(Pew)
+
+Pew::Pew ()
+	: timeToSpawn(0.f)
+{
+	auto shape = Runtime::get().moduleManager.getPhysicsSystem().newPhysicsShape();
+	shape->asRectangle(2.f, 2.f);
+
+	phys = std::make_unique<PhysicsComponent>(*this, *shape);
+	phys->setStartContactCallback([this](PhysicsComponent& other)
+	{
+		startContact(other);
+	});
+}
 
 void Pew::tick(float deltaTime)
 {
 
-	timeToSpawn -= deltaTime;
-	if (timeToSpawn <= 0) {
-		Gate* g = new Gate();
-		g->addWorldLocation(vec2(rand() % 10, rand() % 10) );
-		timeToSpawn = .1f;
+	
+}
+
+void Pew::startContact(PhysicsComponent & other)
+{
+	if (&other.getOwner() == reinterpret_cast<Actor*>(Runtime::get().pawn.get()))
+	{
+		auto g = new Gate();
+		g->setWorldLocation(getWorldLocation() + vec2(2.f, 1.f));
+		g->setVelocity(vec2(1.f, .3f));
 	}
 }
