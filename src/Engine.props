@@ -2,8 +2,8 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros">
-    <DefaultOutputDir>$(SolutionDir)bin\$(Configuration)\</DefaultOutputDir>
-    <ModuleOutputDir>$(SolutionDir)bin\$(Configuration)\modules\</ModuleOutputDir>
+    <DefaultOutputDir>$(SolutionDir)bin\$(Platform)\$(Configuration)\</DefaultOutputDir>
+    <ModuleOutputDir>$(DefaultOutputDir)\modules\</ModuleOutputDir>
   </PropertyGroup>
   <PropertyGroup>
     <OutDir />
@@ -14,7 +14,7 @@
       <PreprocessorDefinitions>$(ProjectName)_Source;BOOST_SERIALIZATION_DYN_LINK;_USE_MATH_DEFINES;MODULE_NAME="$(ProjectName)";%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(SolutionDir)bin\$(Configuration);$(SolutionDir)library\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(DefaultOutputDir);$(SolutionDir)library\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>

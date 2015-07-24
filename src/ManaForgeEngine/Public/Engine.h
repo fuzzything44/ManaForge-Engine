@@ -31,13 +31,7 @@ namespace std{
 		
 		size_t operator()(const boost::filesystem::path& p) const
 		{
-			size_t current = 0;
-			for (auto& elem : p.wstring())
-			{
-				current += (size_t)elem;
-			}
-
-			return current;
+			return std::hash<std::wstring>()(p.wstring());
 		}
 	};
 }

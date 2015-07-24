@@ -32,40 +32,27 @@
 *.psess
 *.vspx
 
-bin/Debug/ManaForgeEngine.*
-bin/Debug/Game.*
-bin/Game/Deubg/
-bin/Engine/Debug/
-bin/Editor/Debug/
-bin/Debug/Editor.*
-bin/Release/ManaForgeEngine.*
-bin/Release/Game.*
-bin/Debug/Modules/OpenGLRenderer.*
-bin/Release/Modules/OpenGLRenderer.*
-bin/Release/Modules/DefaultWorld.*
-bin/Debug/Modules/DefaultWorld.*
-bin/Release/Modules/lodepng.*
-bin/Debug/Modules/lodepng.*
-bin/Release/StackWalker.*
-bin/Debug/StackWalker.*
-bin/Release/Modules/TestContent.*
-bin/Debug/Modules/TestContent.*
-bin/Debug/glew32d.*
-bin/Release/glew32.*
-bin/Debug/Modules/Box2dPhysicsSystem.*
-bin/Release/Modules/Box2dPhysicsSystem.*
-bin/Debug/Modules/OpenALAudioSystem.*
-bin/Release/Modules/OpenALAudioSystem.*
-bin/Debug/Soil.*
-bin/Release/Soil.*
+bin/*/*/ManaForgeEngine.*
+bin/*/*/Game.*
+bin/*/*/Modules/OpenGLRenderer.*
+bin/*/*/Modules/DefaultWorld.*
+bin/*/*/Modules/lodepng.*
+bin/*/*/StackWalker.*
+bin/*/*/Modules/TestContent.*
+bin/*/*/glew32*.*
+bin/*/*/box2d.*
+bin/*/*/Modules/Box2dPhysicsSystem.*
+bin/*/*/Modules/OpenALAudioSystem.*
+bin/*/*/Soil.*
 src/*/lib/*/*/*.*
-
 
 
 Game/Game_*/*.*
 Game/Game_*/*/*.*
 
 ipch/
+
+.idea/
 
 Resource/log.txt
 

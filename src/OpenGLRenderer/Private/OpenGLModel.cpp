@@ -16,7 +16,8 @@
 #include <glm-ortho-2d.h>
 
 OpenGLModel::OpenGLModel(OpenGLRenderer& renderer) :
-	renderer(renderer)
+	renderer(renderer),
+	isValid(true)
 {	
 
 
@@ -29,8 +30,12 @@ OpenGLModel::OpenGLModel(OpenGLRenderer& renderer) :
 
 OpenGLModel::~OpenGLModel()
 {
-
-	renderer.models.erase(location);
+	isValid = false;
+	// this could be pretty slow, needs optimization.
+	renderer.runOnRenderThreadSync([location = location]
+	{
+		static_cast<OpenGLRenderer&>(Runtime::get().moduleManager.getRenderer()).models.erase(location);
+	});
 	
 }
 
@@ -57,20 +62,24 @@ const MeshComponent& OpenGLModel::getOwnerComponent() const
 
 void OpenGLModel::draw()
 {
-	mat3 view = renderer.getCurrentCamera().getViewMat();
-	mat3 model = parent->getModelMatrix();
+	if (isValid)
+	{
+		mat3 view = renderer.getCurrentCamera().getViewMat();
+		mat3 model = parent->getModelMatrix();
 
-	mat3 MVPmat = view * model;
+		mat3 MVPmat = view * model;
 
-	auto&& matSource = std::static_pointer_cast<OpenGLMaterialSource>(material->getSource());
-	
-	check(material);
-	material->use();
+		auto&& matSource = std::static_pointer_cast<OpenGLMaterialSource>(material->getSource());
 
-	glUniformMatrix3fv(matSource->MVPUniformLocation, 1, GL_FALSE, &MVPmat[0][0]);
-	
+		check(material);
+		material->use();
 
-	glUniform1f(glGetUniformLocation(**matSource, "renderOrder"), 1.f);
+		glUniformMatrix3fv(matSource->MVPUniformLocation, 1, GL_FALSE, &MVPmat[0][0]);
 
-	modelData->draw();
+
+		glUniform1f(glGetUniformLocation(**matSource, "renderOrder"), 1.f);
+
+		modelData->draw();
+	}
+
 }

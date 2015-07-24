@@ -8,8 +8,8 @@
 #include <Runtime.h>
 
 // link to required libs
-#pragma comment(lib, "glfw3dll.lib")
 #pragma comment(lib, "OpenGL32.lib")
+#	pragma comment(lib, "glfw3.lib")
 
 #ifdef _DEBUG
 #	pragma comment(lib, "glew32d.lib")

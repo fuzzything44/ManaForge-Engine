@@ -4,6 +4,8 @@
 #include <ModelData.h>
 #include <Model.h>
 
+#include <atomic>
+
 #include "OpenGLMaterialInstance.h"
 
 class OpenGLModelData;
@@ -36,5 +38,7 @@ private:
 	std::shared_ptr<OpenGLMaterialInstance> material;
 
 	std::list<OpenGLModel*>::iterator location;
+
+	std::atomic<bool> isValid;
 
 };

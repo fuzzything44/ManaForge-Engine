@@ -25,10 +25,15 @@ void Pew::tick(float deltaTime)
 
 void Pew::startContact(PhysicsComponent & other)
 {
+	
 	if (&other.getOwner() == reinterpret_cast<Actor*>(Runtime::get().pawn.get()))
 	{
-		auto g = new Gate();
-		g->setWorldLocation(getWorldLocation() + vec2(2.f, 1.f));
-		g->setVelocity(vec2(1.f, .3f));
+		for (int i = 0; i < 100; ++i)
+		{
+			auto g = new Gate();
+			g->setWorldLocation(getWorldLocation() + vec2(2.f, 1.f));
+			g->setVelocity(vec2(1.f, .3f));
+			// not a memory leak: Gates clean theirselvs up.
+		}
 	}
 }

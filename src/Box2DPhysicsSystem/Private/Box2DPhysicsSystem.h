@@ -32,7 +32,7 @@ public:
 
 private:
 	
-	std::map<Actor*, Box2DActorTransformController*> bodies;
+	std::unordered_map<Actor*, Box2DActorTransformController*> bodies;
 	Box2DContactListener listener;
 	
 	std::unique_ptr<b2World> world;
