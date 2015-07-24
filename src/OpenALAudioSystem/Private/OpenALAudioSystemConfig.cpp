@@ -2,14 +2,15 @@
 
 #include "OpenALAudioSystem.h"
 
+#include <Runtime.h>
 #include <ModuleManager.h>
 
 extern "C" OpenALAudioSystem_API void registerModule(ModuleManager& manager)
 {
-	manager.setAudioSystem(std::make_unique<OpenALAudioSystem>());
+	manager.registerClass<OpenALAudioSystem>(MODULE_NAME);
 	manager.addUpdateCallback([&manager](float delta)
 	{
-		return static_cast<OpenALAudioSystem*>(&(manager.getAudioSystem()))->update();
+		return static_cast<OpenALAudioSystem*>(Runtime::get().audioSystem.get())->update();
 
 	});
 }

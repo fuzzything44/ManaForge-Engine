@@ -31,23 +31,9 @@ public:
 	using updateFun					= std::function<bool(float)>;
 	using initFun					= std::function<void()>;
 
+	ENGINE_API ModuleManager();
 	ENGINE_API ~ModuleManager();
 
-	/// <summary> Default constructor.</summary>
-	ENGINE_API ModuleManager();
-
-
-	inline Renderer& getRenderer();
-	inline AudioSystem& getAudioSystem();
-	inline PhysicsSystem& getPhysicsSystem();
-	
-	inline void setRenderer(std::unique_ptr<Renderer> newRenderer);
-	inline void setAudioSystem(std::unique_ptr<AudioSystem> newAudioSystem);
-	inline void setPhysicsSystem(std::unique_ptr<PhysicsSystem> newPhysicsSystem);
-
-	/// <summary> Loads a module.</summary>
-	///
-	/// <param name="filename"> Filename of the module.</param>
 	ENGINE_API void loadModule(const path_t& filename);
 
 	template<typename T>
@@ -63,11 +49,6 @@ private:
 
 	// and finally the modules
 	std::unordered_map<path_t, std::shared_ptr<Module> > loadedModules;
-
-	// then the systems
-	std::unique_ptr<Renderer> renderer;
-	std::unique_ptr<AudioSystem> audioSystem;
-	std::unique_ptr<PhysicsSystem> physicsSystem;
 
 	// destroy the callbacks first
 	std::list<initFun>& getInitCallbacks();
@@ -133,40 +114,3 @@ inline T* ModuleManager::spawnClass(const std::string& name)
 	return nullptr;
 }
 
-
-Renderer& ModuleManager::getRenderer()
-{
-	check(renderer); return *renderer;
-}
-
-AudioSystem& ModuleManager::getAudioSystem()
-{
-	check(audioSystem); return *audioSystem;
-}
-
-PhysicsSystem& ModuleManager::getPhysicsSystem()
-{
-	check(physicsSystem); return *physicsSystem;
-}
-
-void ModuleManager::setRenderer(std::unique_ptr<Renderer> newRenderer)
-{
-	check(newRenderer);
-
-	renderer = std::move(newRenderer);
-
-}
-
-void ModuleManager::setAudioSystem(std::unique_ptr<AudioSystem> newAudioSystem)
-{
-	check(newAudioSystem);
-
-	audioSystem = std::move(newAudioSystem);
-}
-
-void ModuleManager::setPhysicsSystem(std::unique_ptr<PhysicsSystem> newPhysicsSystem)
-{
-	check(newPhysicsSystem);
-
-	physicsSystem = std::move(newPhysicsSystem);
-}

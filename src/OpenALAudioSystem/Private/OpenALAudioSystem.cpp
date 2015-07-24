@@ -56,7 +56,7 @@ std::unique_ptr<SoundSource> OpenALAudioSystem::newSoundSource(SoundCue& cue, Au
 
 bool OpenALAudioSystem::update()
 {
-	vec2 cameraLoc = Runtime::get().moduleManager.getRenderer().getCurrentCamera().getWorldLocation();
+	vec2 cameraLoc = Runtime::get().renderer->getCurrentCamera().getWorldLocation();
 
 	// setup listener properities
 	alListener3f(AL_POSITION, cameraLoc.x, cameraLoc.y, 0.f);

@@ -12,7 +12,6 @@
 #include <map>
 
 ModuleManager::ModuleManager()
-	: renderer(nullptr)
 {
 
 }

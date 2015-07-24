@@ -7,7 +7,7 @@ MFCLASS_SOURCE(Pew)
 Pew::Pew ()
 	: timeToSpawn(0.f)
 {
-	auto shape = Runtime::get().moduleManager.getPhysicsSystem().newPhysicsShape();
+	auto shape = Runtime::get().physSystem->newPhysicsShape();
 	shape->asRectangle(2.f, 2.f);
 
 	phys = std::make_unique<PhysicsComponent>(*this, *shape);

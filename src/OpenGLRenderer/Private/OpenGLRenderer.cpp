@@ -253,7 +253,7 @@ bool OpenGLRenderer::update(float /*deltaTime*/)
 
 		glDisable(GL_DEPTH_TEST);
 
-		Runtime::get().moduleManager.getPhysicsSystem().drawDebugPoints();
+		Runtime::get().physSystem->drawDebugPoints();
 
 		glEnable(GL_DEPTH_TEST);
 

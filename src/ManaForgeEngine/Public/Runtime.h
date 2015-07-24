@@ -29,22 +29,28 @@ public:
 
 	// returns the old world
 	inline World* setWorld(World* newWorld);
+	
 
 	ModuleManager moduleManager;
 	PropertyManager propManager;
 	InputManager inputManager;
-	
+
+	std::unique_ptr<Renderer> renderer;
+	std::unique_ptr<PhysicsSystem> physSystem;
+	std::unique_ptr<AudioSystem> audioSystem;
+
 
 	using clock = std::chrono::high_resolution_clock;
 
 	std::unique_ptr<World> world;
 
-
 	std::unique_ptr<PlayerController> controller;
 	std::unique_ptr<Pawn> pawn;
 
 private:
-
+	std::string rendererName;
+	std::string physicsSystemName;
+	std::string audioSystemName;
 
 	ENGINE_API static Runtime* currentRuntime;
 };

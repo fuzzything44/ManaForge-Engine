@@ -60,6 +60,9 @@ Runtime::Runtime(const path_t& worldPath)
 			moduleManager.loadModule(elem);
 	}
 
+	LOAD_PROPERTY_WITH_ERROR(propManager, "Renderer",		rendererName);
+	LOAD_PROPERTY_WITH_ERROR(propManager, "AudioSystem",	audioSystemName);
+	LOAD_PROPERTY_WITH_ERROR(propManager, "PhysicsSystem",	physicsSystemName);
 }
 
 Runtime::~Runtime()
@@ -72,7 +75,10 @@ Runtime::~Runtime()
 
 void Runtime::run()
 {
-
+	// create the systems.
+	renderer	= std::unique_ptr<Renderer>		{ moduleManager.spawnClass<Renderer>		(rendererName		) };
+	physSystem	= std::unique_ptr<PhysicsSystem>{ moduleManager.spawnClass<PhysicsSystem>	(physicsSystemName	) };
+	audioSystem = std::unique_ptr<AudioSystem>	{ moduleManager.spawnClass<AudioSystem>		(audioSystemName	) };
 
 	{
 		// get the callbacks
@@ -99,7 +105,7 @@ void Runtime::run()
 
 
 	// let the input manager know of the window
-	Window& window = moduleManager.getRenderer().getWindow();
+	Window& window = renderer->getWindow();
 	inputManager.setWindow(window);
 
 	// spawn the new playercontrollers and pawns
@@ -132,7 +138,7 @@ void Runtime::run()
 		inputManager.update();
 
 
-		Window& window = moduleManager.getRenderer().getWindow();
+		Window& window = renderer->getWindow();
 
 
 		// recieve the update callbacks

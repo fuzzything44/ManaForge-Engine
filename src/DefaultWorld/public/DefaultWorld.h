@@ -5,13 +5,14 @@
 #include <PropertyManager.h>
 #include <Runtime.h>
 #include <Actor.h>
-#include <functional>
 #include <TextureLibrary.h>
+#include <Renderer.h>
+
 #include <deque>
+#include <functional>
+#include <array>
 
 #include <boost/signals2.hpp>
-
-#include <array>
 
 #include "ChunkActor.h"
 
@@ -63,5 +64,6 @@ private:
 	std::string pawnClassName;
 
 	boost::signals2::signal<void(float)> tickingActors;
+
 
 };

@@ -21,16 +21,15 @@
 
 extern "C" OpenGLRenderer_API void registerModule(ModuleManager& mm)
 {
-	mm.setRenderer(std::make_unique<OpenGLRenderer>());
-
+	mm.registerClass<OpenGLRenderer>(MODULE_NAME);
 	mm.addUpdateCallback([](float deltaTime)
 	{
-		return Runtime::get().moduleManager.getRenderer().update(deltaTime);
+		return Runtime::get().renderer->update(deltaTime);
 	});
 
 	mm.addInitCallback([]()
 	{
-		return Runtime::get().moduleManager.getRenderer().init();
+		return Runtime::get().renderer->init();
 	});
 }
 

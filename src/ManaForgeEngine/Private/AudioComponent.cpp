@@ -9,7 +9,7 @@
 
 AudioComponent::AudioComponent(Actor& owner, SoundCue& cue, Transform trans, bool loops)
 	:SceneComponent(owner, trans),
-	source(Runtime::get().moduleManager.getAudioSystem().newSoundSource(cue, *this))
+	source(Runtime::get().audioSystem->newSoundSource(cue, *this))
 {
 	source->setLoops(loops);
 }

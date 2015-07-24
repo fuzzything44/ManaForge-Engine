@@ -15,7 +15,7 @@ public:
 	virtual ~OpenGLModelData();
 
 	// ModelData Interface
-	virtual void init(const vec2* vertLocs, const vec2* UVs, uint32 numVerts, const uvec3* elems, uint32 numElems) override;
+	virtual void init(const vec2* vertLocs, const vec2* UVs, size_t numVerts, const uvec3* elems, size_t numElems) override;
 	virtual bool isInitialized() override;
 	// end ModelData Interface
 
@@ -28,8 +28,8 @@ private:
 	uint32 texCoordBuffer;
 	uint32 elemBuffer;
 
-	uint32 numVerts;
-	uint32 numElems;
+	size_t numVerts;
+	size_t numElems;
 
 	OpenGLRenderer& renderer;
 

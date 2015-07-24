@@ -28,25 +28,25 @@ public:
 			this->moveUp(amount);
 		});
 
-		uvec2 windowSize = Runtime::get().moduleManager.getRenderer().getWindow().getWindowProps().size;
+		uvec2 windowSize = Runtime::get().renderer->getWindow().getWindowProps().size;
 
 		float aspectRatio = float(windowSize.y) / float(windowSize.x);
 
 		camera = std::make_unique<CameraComponent>(*this, Transform{}, aspectRatio, .1f);
-		Runtime::get().moduleManager.getRenderer().setCurrentCamera(*camera);
+		Runtime::get().renderer->setCurrentCamera(*camera);
 
 
 
 
-		auto mat = Runtime::get().moduleManager.getRenderer().newMaterial(
-			Runtime::get().moduleManager.getRenderer().getMaterialSource("boilerplate"));
+		auto mat = Runtime::get().renderer->newMaterial(
+			Runtime::get().renderer->getMaterialSource("boilerplate"));
 
-		auto tex = Runtime::get().moduleManager.getRenderer().getTexture("4");
+		auto tex = Runtime::get().renderer->getTexture("4");
 
 
 		mat->setTexture(0, tex);
 
-		auto meshData = Runtime::get().moduleManager.getRenderer().newModelData("PlayerModel");
+		auto meshData = Runtime::get().renderer->newModelData("PlayerModel");
 		if (!meshData->isInitialized())
 		{
 			std::array<vec2, 4> locations =
@@ -75,7 +75,7 @@ public:
 		mesh = std::make_unique<MeshComponent>(*this, Transform{}, std::move(mat), std::move(meshData));
 
 
-		auto shape = Runtime::get().moduleManager.getPhysicsSystem().newPhysicsShape();
+		auto shape = Runtime::get().physSystem->newPhysicsShape();
 		shape->asCircle(1.f);
 
 		phyMesh = std::make_unique<PhysicsComponent>(*this, *shape, Transform{});

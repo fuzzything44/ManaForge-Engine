@@ -6,11 +6,11 @@
 
 extern "C" Box2DPhysicsSystem_API void registerModule(ModuleManager& manager)
 {
-	manager.setPhysicsSystem(std::make_unique<Box2DPhysicsSystem>());
-	manager.addUpdateCallback(std::bind(
-		&Box2DPhysicsSystem::update, 
-		static_cast<Box2DPhysicsSystem*>(&manager.getPhysicsSystem()), 
-			std::placeholders::_1));
+	manager.registerClass<Box2DPhysicsSystem>(MODULE_NAME);
+	manager.addUpdateCallback([](float delta)
+	{
+		return static_cast<Box2DPhysicsSystem*>(Runtime::get().physSystem.get())->update(delta);
+	});
 }
 
 extern "C" Box2DPhysicsSystem_API float getModuleEngineVersion()

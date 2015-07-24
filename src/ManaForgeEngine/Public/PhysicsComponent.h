@@ -44,7 +44,7 @@ private:
 inline PhysicsComponent::PhysicsComponent(Actor& owner, PhysicsShape& shape, const Transform& trans)
 	:SceneComponent(owner, trans)
 {
-	body = Runtime::get().moduleManager.getPhysicsSystem().newPhysicsBody(shape, *this);
+	body = Runtime::get().physSystem->newPhysicsBody(shape, *this);
 }
 
 

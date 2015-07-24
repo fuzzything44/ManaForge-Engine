@@ -17,13 +17,13 @@ Gate::Gate()
 	: Actor(), timeToDestruction(3.f)
 {
 
-	auto tex = Runtime::get().moduleManager.getRenderer().getTexture("0");
+	auto tex = Runtime::get().renderer->getTexture("0");
 
 	tex->setFilterMode(Texture::FilterMode::MIPMAP_LINEAR);
 
 	
-	mat = Runtime::get().moduleManager.getRenderer().newMaterial(
-		Runtime::get().moduleManager.getRenderer().getMaterialSource("boilerplate"));
+	mat = Runtime::get().renderer->newMaterial(
+		Runtime::get().renderer->getMaterialSource("boilerplate"));
 
 	mat->setTexture(0, tex);
 
@@ -31,7 +31,7 @@ Gate::Gate()
 	
 
 
-	auto modelData = Runtime::get().moduleManager.getRenderer().newModelData("GateMesh");
+	auto modelData = Runtime::get().renderer->newModelData("GateMesh");
 	if (!modelData->isInitialized())
 	{
 
@@ -61,7 +61,7 @@ Gate::Gate()
 	}
 	meshComp = std::make_unique<MeshComponent>(*this, Transform{}, std::move(mat), std::move(modelData));
 
-	auto shape = Runtime::get().moduleManager.getPhysicsSystem().newPhysicsShape();
+	auto shape = Runtime::get().physSystem->newPhysicsShape();
 
 	setPhysicsType(PhysicsType::DYNAMIC);
 	

@@ -12,6 +12,9 @@
 		"windowMode" : 2,
 		"title" : "RPG-Prop Simulator"
 		
-	}
+	},
+	"Renderer" : "OpenGLRenderer.OpenGLRenderer",
+	"PhysicsSystem" : "Box2DPhysicsSystem.Box2DPhysicsSystem",
+	"AudioSystem" : "OpenALAudioSystem.OpenALAudioSystem"
 	
 }

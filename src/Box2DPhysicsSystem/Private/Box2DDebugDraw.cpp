@@ -13,7 +13,7 @@ void DebugDraw::DrawPolygon(const b2Vec2* vertices, int32 vertexCount, const b2C
 	}
 	Color col = Color(uint8(color.r * 255.f), uint8(color.g * 255.f), uint8(color.b * 255.f), 255);
 
-	Runtime::get().moduleManager.getRenderer().drawDebugOutlinePolygon(verts.data(), vertexCount, col);
+	Runtime::get().renderer->drawDebugOutlinePolygon(verts.data(), vertexCount, col);
 
 }
 
@@ -26,13 +26,13 @@ void DebugDraw::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, cons
 	}
 	Color col = Color(uint8(color.r * 255.f), uint8(color.g * 255.f), uint8(color.b * 255.f), 255);
 
-	Runtime::get().moduleManager.getRenderer().drawDebugSolidPolygon(verts.data(), vertexCount, col);
+	Runtime::get().renderer->drawDebugSolidPolygon(verts.data(), vertexCount, col);
 
 }
 
 void DebugDraw::DrawCircle(const b2Vec2& center, float32 radius, const b2Color& color)
 {
-	Runtime::get().moduleManager.getRenderer().drawDebugOutlineCircle(convertVec(center), radius,
+	Runtime::get().renderer->drawDebugOutlineCircle(convertVec(center), radius,
 		Color(uint8(color.r * 255.f), uint8(color.g * 255.f), uint8(color.b * 255.f), 255));
 
 
@@ -40,14 +40,14 @@ void DebugDraw::DrawCircle(const b2Vec2& center, float32 radius, const b2Color& 
 
 void DebugDraw::DrawSolidCircle(const b2Vec2& center, float32 radius, const b2Vec2& axis, const b2Color& color)
 {
-	Runtime::get().moduleManager.getRenderer().drawDebugSolidCircle(convertVec(center), radius,
+	Runtime::get().renderer->drawDebugSolidCircle(convertVec(center), radius,
 		Color(uint8(color.r * 255.f), uint8(color.g * 255.f), uint8(color.b * 255.f), 255));
 
 }
 
 void DebugDraw::DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Color& color)
 {
-	Runtime::get().moduleManager.getRenderer().drawDebugSegment(convertVec(p1), convertVec(p2),
+	Runtime::get().renderer->drawDebugSegment(convertVec(p1), convertVec(p2),
 		Color(uint8(color.r * 255.f), uint8(color.g * 255.f), uint8(color.b * 255.f), 255));
 }
 
@@ -90,7 +90,7 @@ void DebugDraw::DrawAABB(b2AABB* aabb, const b2Color& c)
 	}};
 
 
-	Runtime::get().moduleManager.getRenderer().drawDebugOutlinePolygon(points.data(), 4, 
+	Runtime::get().renderer->drawDebugOutlinePolygon(points.data(), 4, 
 		Color(uint8(c.r * 255.f), uint8(c.g * 255.f), uint8(c.b * 255.f), 255));
 
 }

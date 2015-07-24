@@ -34,7 +34,7 @@ OpenGLModel::~OpenGLModel()
 	// this could be pretty slow, needs optimization.
 	renderer.runOnRenderThreadSync([location = location]
 	{
-		static_cast<OpenGLRenderer&>(Runtime::get().moduleManager.getRenderer()).models.erase(location);
+		static_cast<OpenGLRenderer*>(Runtime::get().renderer.get())->models.erase(location);
 	});
 	
 }

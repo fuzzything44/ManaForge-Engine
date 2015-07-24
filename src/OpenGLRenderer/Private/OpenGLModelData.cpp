@@ -6,7 +6,7 @@
 
 #include <Helper.h>
 
-void OpenGLModelData::init(const vec2* vertLocs_, const vec2* UVs_, uint32 numVerts_, const uvec3* elems_, uint32 numElems_)
+void OpenGLModelData::init(const vec2* vertLocs_, const vec2* UVs_, size_t numVerts_, const uvec3* elems_, size_t numElems_)
 {
 	numVerts = numVerts_;
 	numElems = numElems_;

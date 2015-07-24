@@ -28,7 +28,7 @@ MeshComponent::MeshComponent(
 	std::shared_ptr<MaterialInstance> mat,
 	std::shared_ptr<ModelData> data)
 	: SceneComponent(owner, trans),
-	model(Runtime::get().moduleManager.getRenderer().newModel())
+	model(Runtime::get().renderer->newModel())
 {
 	model->init(mat, data, *this);
 }
