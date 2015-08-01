@@ -11,7 +11,7 @@
 
 #include <boost/date_time.hpp>
 
-enum severity_t
+enum class severity_t
 {
 	Trace,
 	Debug,
@@ -139,56 +139,17 @@ struct logger : logdetail::log_base
 	}
 };
 
-template<>
-struct logger<Fatal> : logdetail::log_base
-{
-	inline logger()
-	{
-		using namespace boost::posix_time;
-
-		ptime time = second_clock::local_time();
-
-		*str << "\n[" << time << "] (" << Fatal << ") : ";
-	}
-
-	inline ~logger() 
-	{
-		Stack().ShowCallstack();
-		flush();
-		std::exit(-1);
-	}
-
-	template <typename T>
-	inline std::ostream& operator<<(const T& member)
-	{
-		*str << member;
-		return *str;
-	}
-};
-
-template<>
-struct logger<Error> : logdetail::log_base
-{
-	inline logger()
-	{
-		using namespace boost::posix_time;
-
-		ptime time = second_clock::local_time();
-
-		*str << "\n[" << time << "] (" << Fatal << ") : ";
-	}
-
-	inline ~logger() noexcept(false)
-	{
-		flush();
-		throw ENGException();
-	}
-
-	template <typename T>
-	inline std::ostream& operator<<(const T& member)
-	{
-		*str << member;
-		return *str;
-	}
-};
-
+#define MFLOG(sev) 													 \
+	for(bool needsRun = true; needsRun; [&needsRun]					 \
+	{																 \
+		needsRun = false;								    		 \
+		if (::severity_t::##sev == ::severity_t::Fatal)				 \
+		{															 \
+			::std::terminate();										 \
+		}															 \
+		else if (::severity_t::##sev == ::severity_t::Error)		 \
+		{															 \
+			throw ::ENGException();									 \
+		}															 \
+	}())															 \
+	::logger<severity_t::##sev>()

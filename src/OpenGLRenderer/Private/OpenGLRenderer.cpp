@@ -88,14 +88,14 @@ void OpenGLRenderer::initRenderer()
 
 Window& OpenGLRenderer::getWindow()
 {
-	check(window);
+	assert(window);
 
 	return *window;
 }
 
 const Window& OpenGLRenderer::getWindow() const
 {
-	check(window);
+	assert(window);
 
 	return *window;
 }
@@ -380,13 +380,13 @@ void OpenGLRenderer::setCurrentCamera(CameraComponent& newCamera)
 
 CameraComponent& OpenGLRenderer::getCurrentCamera()
 {
-	check(currentCamera.load());
+	assert(currentCamera.load());
 	return *currentCamera;
 }
 
 const CameraComponent& OpenGLRenderer::getCurrentCamera() const  
 {
-	check(currentCamera.load());
+	assert(currentCamera.load());
 	return *currentCamera;
 }
 
@@ -394,7 +394,7 @@ const CameraComponent& OpenGLRenderer::getCurrentCamera() const
 void OpenGLRenderer::drawDebugOutlinePolygon(vec2* verts, uint32 numVerts, Color color)
 {
 
-	check(currentCamera.load());
+	assert(currentCamera.load());
 
 	debugDraw->use();
 
@@ -471,7 +471,7 @@ void OpenGLRenderer::drawDebugLine(vec2* locs, uint32 numLocs, Color color)
 }
 void OpenGLRenderer::drawDebugSolidPolygon(vec2* verts, uint32 numVerts, Color color)
 {
-	check(currentCamera.load());
+	assert(currentCamera.load());
 
 	debugDraw->use();
 
@@ -514,7 +514,7 @@ void OpenGLRenderer::drawDebugSolidPolygon(vec2* verts, uint32 numVerts, Color c
 void OpenGLRenderer::drawDebugOutlineCircle(vec2 center, float radius, Color color)
 {
 
-	check(currentCamera.load());
+	assert(currentCamera.load());
 
 	using k_segments = boost::mpl::int_<16>;
 	const float k_increment = 2.0f * (float)M_PI / (float)k_segments::value;
@@ -563,7 +563,7 @@ void OpenGLRenderer::drawDebugOutlineCircle(vec2 center, float radius, Color col
 void OpenGLRenderer::drawDebugSolidCircle(vec2 center, float radius, Color color)
 {
 
-	check(currentCamera.load());
+	assert(currentCamera.load());
 
 	using k_segments = boost::mpl::int_<16>;
 	const float k_increment = 2.0f * (float)M_PI / (float)k_segments::value;
@@ -617,7 +617,7 @@ void OpenGLRenderer::drawDebugSolidCircle(vec2 center, float radius, Color color
 void OpenGLRenderer::drawDebugSegment(vec2 p1, vec2 p2, Color color)
 {
 
-	check(currentCamera.load());
+	assert(currentCamera.load());
 
 	debugDraw->use();
 

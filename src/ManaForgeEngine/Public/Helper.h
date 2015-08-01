@@ -25,7 +25,7 @@ inline std::string loadFileToStr(const path_t& filename)
 	// if the steam if bad then return
 	if (!stream.is_open())
 	{
-		logger<Warning>() << "file doens't exist: " << filename;
+		MFLOG(Warning) << "file doens't exist: " << filename;
 		return std::string();
 	}
 	// define strings for each line and the final string
@@ -160,11 +160,6 @@ inline std::ostream& operator<<(std::ostream& os, const mat4& mat)
 }
 
 
-	
-
-/// <summary> Checks a pointer, and throws an exception if it is null.</summary>
-#define check(ptr) if(!(ptr)){  ::logger<Error>() << "Null pointer exception caught: " << #ptr; }
-
 
 #define LOAD_PROPERTY_WITH_WARNING(propertyManager, key, value, defaultValue)						\
 	if(::boost::optional<decltype(value)> tempOptional =											\
@@ -174,7 +169,7 @@ inline std::ostream& operator<<(std::ostream& os, const mat4& mat)
 	}																								\
 	else																							\
 	{																								\
-		logger<Warning>() << "Value from key " << key												\
+		MFLOG(Warning) << "Value from key " << key												\
 			<< " doesn't exist. Using default value of: " << defaultValue;							\
 	}																								\
 	/**/
@@ -187,6 +182,6 @@ inline std::ostream& operator<<(std::ostream& os, const mat4& mat)
 	}																								\
 	else																							\
 	{																								\
-		logger<Fatal>() << "Value from key " << key << " doesn't exist.";							\
+		MFLOG(Fatal) << "Value from key " << key << " doesn't exist.";							\
 	}																								\
 	/**/

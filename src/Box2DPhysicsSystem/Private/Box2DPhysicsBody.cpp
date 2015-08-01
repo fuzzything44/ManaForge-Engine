@@ -13,7 +13,7 @@ Box2DPhysicsBody::Box2DPhysicsBody(Box2DPhysicsShape& shape, PhysicsComponent& o
 {
 	auto iter = system.bodies.find(&(owner.getOwner()));
 
-	if (iter == system.bodies.end()) logger<Fatal>() << "could not find actor in ActorTransformController map";
+	if (iter == system.bodies.end()) MFLOG(Fatal) << "could not find actor in ActorTransformController map";
 	ownerController = iter->second;
 	
 
@@ -22,8 +22,8 @@ Box2DPhysicsBody::Box2DPhysicsBody(Box2DPhysicsShape& shape, PhysicsComponent& o
 	fixtureDef.userData = this;
 	
 	
-	check(ownerController->body);
-	check(ownerController->body->GetWorld())
+	assert(ownerController->body);
+	assert(ownerController->body->GetWorld());
 	fixture = ownerController->body->CreateFixture(&fixtureDef);
 
 }

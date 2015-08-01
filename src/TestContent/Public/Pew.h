@@ -4,13 +4,12 @@
 #include <PhysicsComponent.h>
 
 MFCLASS(Pew, Actor)
-class Pew : public Actor, TickingActor<Pew> {
+class Pew : public Actor {
 
 	MFCLASS_BODY(Pew)
 public:
 	Pew();
 	~Pew() override {}
-	virtual void tick(float deltaTime) override;
 
 	void startContact(PhysicsComponent& other);
 private:

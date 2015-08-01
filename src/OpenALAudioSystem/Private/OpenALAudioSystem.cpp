@@ -18,7 +18,7 @@ OpenALAudioSystem::OpenALAudioSystem()
 	if (alutInit(nullptr, nullptr) == AL_FALSE)	// catch errors
 	{
 		ALenum err = alutGetError();
-		logger<Warning>() << "Failed to initalize alut with error: "
+		MFLOG(Warning) << "Failed to initalize alut with error: "
 			<< alutGetErrorString(err) <<  " And error number: " << err
 			<< "\n If you recieve this error, you won't have sound.";
 	}

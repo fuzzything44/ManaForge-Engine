@@ -61,7 +61,7 @@ DefaultWorld::~DefaultWorld()
 		delete *(--actors.end());
 	}
 
-	check(actors.size() == 0);
+	assert(actors.size() == 0);
 }
 
 
@@ -79,7 +79,7 @@ void DefaultWorld::init(const std::string& name)
 
 	// Make sure a world folder was supplied.
 	if (name.empty() || name == "") {
-		logger<Fatal>() << "No world specified";
+		MFLOG(Fatal) << "No world specified";
 	}
 
 	LOAD_PROPERTY_WITH_WARNING(propManager, "DefaultPlayerController", playerControllerClassName, "Core.PlayerController");
@@ -97,7 +97,7 @@ void DefaultWorld::init(const std::string& name)
 
 		if (!stream.is_open())
 		{
-			logger<Fatal>() << "Could not open images.txt file for world: " << worldName;
+			MFLOG(Fatal) << "Could not open images.txt file for world: " << worldName;
 		}
 
 		iarchive_t arch{ stream }; // this might want to be not xml, maybe text or binary
@@ -116,18 +116,18 @@ void DefaultWorld::init(const std::string& name)
 	}
 	catch (boost::archive::archive_exception& e)
 	{
-		logger<Error>() << "ARCHIVE ERROR ENCOUNTERED WHEN LOADING IMAGE ASSOCIATIONS. Error code: " 
+		MFLOG(Error) << "ARCHIVE ERROR ENCOUNTERED WHEN LOADING IMAGE ASSOCIATIONS. Error code: " 
 			<< e.code << " Error message: " << e.what();
 	}
 	catch (std::exception& e)
 	{
-		logger<Error>() << "ERROR ENCOUNTERED WHEN LOADING IMAGE ASSOCIATIONS. Message: " << e.what();
+		MFLOG(Error) << "ERROR ENCOUNTERED WHEN LOADING IMAGE ASSOCIATIONS. Message: " << e.what();
 	}
 
 	// set the material
 	drawMaterial->setTexture(0, backgroundImages);
 
-	logger<Trace>() << "Loading world " << name << "...";
+	MFLOG(Trace) << "Loading world " << name << "...";
 
 	/////////////////////////////////////////////////////
 	// Begin static actor loading.
@@ -147,7 +147,7 @@ void DefaultWorld::init(const std::string& name)
 		// make sure that the file exists
 		if (!i_stream.is_open())
 		{
-			logger<Fatal>() << "WORLD FILE DOESN'T EXIST FOR WORLD " << name;
+			MFLOG(Fatal) << "WORLD FILE DOESN'T EXIST FOR WORLD " << name;
 		}
 
 		// this might fail, so put it into try catch block
@@ -162,12 +162,12 @@ void DefaultWorld::init(const std::string& name)
 		}
 		catch (boost::archive::archive_exception& e)
 		{
-			logger<Fatal>() << "ARCHIVE ERROR ENCOUNTERED WHILE LOADING WORLD ACTORS! Reason: " << e.what() << // do this for stack tracing
+			MFLOG(Fatal) << "ARCHIVE ERROR ENCOUNTERED WHILE LOADING WORLD ACTORS! Reason: " << e.what() << // do this for stack tracing
 				" Error code: " << e.code;
 		}
 		catch (std::exception& e)
 		{
-			logger<Fatal>() << "ERROR ENCOUNTERED WHILE LOADING WORLD ACTORS! Reason: " << e.what();
+			MFLOG(Fatal) << "ERROR ENCOUNTERED WHILE LOADING WORLD ACTORS! Reason: " << e.what();
 		}
 
 	}
@@ -185,7 +185,7 @@ void DefaultWorld::init(const std::string& name)
 
 		if (!i_stream.is_open())
 		{
-			logger<Fatal>() << "SAVE FILE DOESN'T EXIST";
+			MFLOG(Fatal) << "SAVE FILE DOESN'T EXIST";
 		}
 
 
@@ -200,14 +200,14 @@ void DefaultWorld::init(const std::string& name)
 		}
 		catch (boost::archive::archive_exception& e)
 		{
-			logger<Fatal>() << "ARCHIVE ERROR WHILE LOADING SAVED ACTORS! Reason: " << e.what() << " Error code: " << e.code;
+			MFLOG(Fatal) << "ARCHIVE ERROR WHILE LOADING SAVED ACTORS! Reason: " << e.what() << " Error code: " << e.code;
 		}
 		catch (std::exception& e)
 		{
-			logger<Fatal>() << "ERROR ENCOUNTERED WHILE LOADING SAVED ACTORS! Reason: " << e.what();
+			MFLOG(Fatal) << "ERROR ENCOUNTERED WHILE LOADING SAVED ACTORS! Reason: " << e.what();
 		}
 	}
-	logger<Trace>() << "Actors Loaded!";
+	MFLOG(Trace) << "Actors Loaded!";
 
 	///////////////////////////
 	// begin background loading
@@ -275,7 +275,7 @@ void DefaultWorld::init(const std::string& name)
 							}
 							else
 							{
-								logger<Error>() << "Texture coordinates not found for image: " << imageName;
+								MFLOG(Error) << "Texture coordinates not found for image: " << imageName;
 							}
 
 							uint32 startTileIndex = (yTiles * backgroundChunkSize * 4) + (xTiles * 4);
@@ -287,7 +287,7 @@ void DefaultWorld::init(const std::string& name)
 						}
 						else
 						{
-							logger<Warning>() << "Warining: could not find image name in imageAssoc map in DefaultWorld";
+							MFLOG(Warning) << "Warining: could not find image name in imageAssoc map in DefaultWorld";
 						}
 
 
@@ -320,7 +320,7 @@ void DefaultWorld::init(const std::string& name)
 	// end background loading
 
 
-	logger<Trace>() << "World Loaded!";
+	MFLOG(Trace) << "World Loaded!";
 }
 
 bool DefaultWorld::update(float deltaTime)
@@ -336,13 +336,13 @@ std::unique_ptr<ActorLocation> DefaultWorld::addActor(Actor& toAdd)
 	return std::make_unique<DefaultWorldLocation>(actors.size() - 1, *this);
 	
 	// if we haven't returned by now, there is a problem.
-	logger<Fatal>() << "Failed to insert into actors map";
+	MFLOG(Fatal) << "Failed to insert into actors map";
 	return nullptr;
 }
 
 void DefaultWorld::saveWorld()
 {
-	logger<Trace>() << "Saving world";
+	MFLOG(Trace) << "Saving world";
 	// Create list to save
 	std::deque<Actor*> toSave;
 	for (auto& elem : actors) 
@@ -370,11 +370,11 @@ void DefaultWorld::saveWorld()
 	}
 	catch (boost::archive::archive_exception& e)
 	{
-		logger<Error>() << "ARCHIVE ERROR SAVING ACTORS. Reason: " << e.what() << " Code: " << e.code;
+		MFLOG(Error) << "ARCHIVE ERROR SAVING ACTORS. Reason: " << e.what() << " Code: " << e.code;
 	}
 	catch (std::exception& e)
 	{
-		logger<Error>() << "ERROR SAVING ACTORS. Reason: " << e.what();
+		MFLOG(Error) << "ERROR SAVING ACTORS. Reason: " << e.what();
 	}
 }
 

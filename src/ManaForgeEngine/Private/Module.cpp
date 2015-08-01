@@ -26,7 +26,7 @@ Module::Module(const path_t& filename) :
 	}
 	catch (std::exception& e)
 	{
-		logger<Fatal>() << e.what();
+		MFLOG(Fatal) << e.what();
 
 	}
 
@@ -37,17 +37,17 @@ void Module::registerModule(ModuleManager& mm)
 {
 	
 
-	check(getModuleEngineVersionAddress);
-	check(registerModuleFunctionAddress);
+	assert(getModuleEngineVersionAddress);
+	assert(registerModuleFunctionAddress);
 
 	if(getModuleEngineVersionAddress() != ENGINE_VERSION)
 	{
-		logger<Warning>() << "Module: " << name << " Needs to be rebuilt -- using old engine";
+		MFLOG(Warning) << "Module: " << name << " Needs to be rebuilt -- using old engine";
 	};
 	
 	registerModuleFunctionAddress(mm);
 
-	logger<Trace>() << "Module loaded: " << name;
+	MFLOG(Trace) << "Module loaded: " << name;
 
 }
 

@@ -160,18 +160,18 @@ int32 OpenGLTexture::loadDDS(const std::string& filename)
 	/* get the surface desc */
 	fread(&header, 124, 1, fp);
 
-	auto height = reinterpret_cast<unsigned int>(&(header[8]));
-	auto width = reinterpret_cast<unsigned int>(&(header[12]));
-	auto linearSize = reinterpret_cast<unsigned int>(&(header[16]));
-	auto mipMapCount = reinterpret_cast<unsigned int>(&(header[24]));
-	auto fourCC = reinterpret_cast<unsigned int>(&(header[80]));
+	auto height			= reinterpret_cast<size_t>(&(header[8]));
+	auto width			= reinterpret_cast<size_t>(&(header[12]));
+	auto linearSize		= reinterpret_cast<size_t>(&(header[16]));
+	auto mipMapCount	= reinterpret_cast<size_t>(&(header[24]));
+	auto fourCC			= reinterpret_cast<size_t>(&(header[80]));
 
 	unsigned char * buffer;
-	unsigned int bufsize;
+	size_t bufsize;
 	/* how big is it going to be including all mipmaps? */
 	bufsize = mipMapCount > 1 ? linearSize * 2 : linearSize;
 	buffer = static_cast<unsigned char*>(malloc(bufsize * sizeof(unsigned char)));
-	check(buffer);
+	assert(buffer);
 	fread(buffer, 1, bufsize, fp);
 	/* close the file pointer */
 	fclose(fp);
@@ -200,15 +200,16 @@ int32 OpenGLTexture::loadDDS(const std::string& filename)
 	// "Bind" the newly created texture : all future texture functions will modify this texture
 	glBindTexture(GL_TEXTURE_2D, textureID);
 
-	unsigned int blockSize = (format == GL_COMPRESSED_RGBA_S3TC_DXT1_EXT) ? 8 : 16;
-	unsigned int offset = 0;
+	size_t blockSize = (format == GL_COMPRESSED_RGBA_S3TC_DXT1_EXT) ? 8 : 16;
+	size_t offset = 0;
 
 	/* load the mipmaps */
 	for (unsigned int level = 0; level < mipMapCount && (width || height); ++level)
 	{
-		unsigned int size = ((width + 3) / 4)*((height + 3) / 4)*blockSize;
-		glCompressedTexImage2D(GL_TEXTURE_2D, level, format, width, height,
-			0, size, buffer + offset);
+		auto size = ((width + 3) / 4)*((height + 3) / 4)*blockSize;
+		glCompressedTexImage2D(GL_TEXTURE_2D, level, format, (GLsizei)width, (GLsizei)height,
+			0, (GLsizei)size, buffer + offset);
+		
 
 		offset += size;
 		width /= 2;

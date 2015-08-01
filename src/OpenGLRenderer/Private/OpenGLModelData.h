@@ -70,7 +70,7 @@ inline void OpenGLModelData::draw()
 
 	glDrawElements(
 		GL_TRIANGLES, // they are trianges
-		numElems * 3, // these many trainges - three verts / triangle
+		(GLsizei)numElems * 3, // these many trainges - three verts / triangle
 		GL_UNSIGNED_INT, // the data is uint32 - unsigned int
 		nullptr // use the buffer instead of raw data
 		);

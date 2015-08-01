@@ -15,13 +15,15 @@ Pew::Pew ()
 	{
 		startContact(other);
 	});
+
+	Runtime::get().timeManager.addTimer(TimeManager::Double_duration_t(1.f), []
+	{
+		auto g = new Gate();
+		g->setVelocity({ 5.f, 5.f });
+		g->setWorldLocation({ 3.f, 3.f });
+	}, true);
 }
 
-void Pew::tick(float deltaTime)
-{
-
-	
-}
 
 void Pew::startContact(PhysicsComponent & other)
 {

@@ -5312,7 +5312,7 @@ static unsigned filter(unsigned char* out, const unsigned char* in, unsigned w, 
 		{
 			for (type = 0; type != 5; ++type)
 			{
-				unsigned testsize = attempt[type].size;
+				auto testsize = attempt[type].size;
 				/*if(testsize > 8) testsize /= 8;*/ /*it already works good enough by testing a part of the row*/
 
 				filterScanline(attempt[type].data, &in[y * linebytes], prevline, linebytes, bytewidth, type);

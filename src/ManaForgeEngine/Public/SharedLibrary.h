@@ -45,7 +45,7 @@ private:
 template<typename T>
 inline T * SharedLibrary::getFunctionPtr(const std::string & functionName)
 {
-	check(handle);
+	assert(handle);
 
 	// FARPROC is a generic fucntion pointer
 	// gets the pointer to the function name specified
@@ -53,7 +53,7 @@ inline T * SharedLibrary::getFunctionPtr(const std::string & functionName)
 
 	if (addr == nullptr)
 	{
-		logger<Fatal>() << "Failed to get function address. Name: " << functionName;
+		MFLOG(Fatal) << "Failed to get function address. Name: " << functionName;
 	}
 
 	return reinterpret_cast<T*>(addr);

@@ -6,6 +6,7 @@
 #include "ModuleManager.h"
 #include "WindowProps.h"
 #include "InputManager.h"
+#include "TimeManager.h"
 
 #include <boost/core/noncopyable.hpp>
 
@@ -34,6 +35,7 @@ public:
 	ModuleManager moduleManager;
 	PropertyManager propManager;
 	InputManager inputManager;
+	TimeManager timeManager;
 
 	std::unique_ptr<Renderer> renderer;
 	std::unique_ptr<PhysicsSystem> physSystem;
@@ -59,7 +61,7 @@ private:
 
 // collapeed for quicker debugging -- not very important
 inline Runtime& Runtime::get()
-{check(currentRuntime); return *currentRuntime;}
+{assert(currentRuntime); return *currentRuntime;}
 
 inline World* Runtime::setWorld(World* newWorld)
 {

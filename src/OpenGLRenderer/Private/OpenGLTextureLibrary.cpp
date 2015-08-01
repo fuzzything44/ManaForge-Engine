@@ -79,7 +79,7 @@ boost::optional<QuadUVCoords> OpenGLTextureLibrary::getUVCoords(const std::strin
 		return iter->second;
 	}
 
-	logger<Warning>() << "Cannot find UVCoord named " << name;
+	MFLOG(Warning) << "Cannot find UVCoord named " << name;
 	
 	return boost::optional<QuadUVCoords>(); // return the "null" version
 }
@@ -218,14 +218,14 @@ void OpenGLTextureLibrary::appendDDS(uint32 texToAppend, uint32 Xoffset, uint32 
 	/* try to open the file */
 	fopen_s(&fp, filepath, "rb");
 	if (fp == nullptr)
-		logger<Fatal>() << "cannot open file: " << filepath;
+		MFLOG(Fatal) << "cannot open file: " << filepath;
 
 	/* verify the type of file */
 	char filecode[4];
 	fread(filecode, 1, 4, fp);
 	if (strncmp(filecode, "DDS ", 4) != 0) {
 		fclose(fp);
-		logger<Fatal>() << "file not a dds: " << filepath;
+		MFLOG(Fatal) << "file not a dds: " << filepath;
 	}
 
 	/* get the surface desc */
@@ -242,7 +242,7 @@ void OpenGLTextureLibrary::appendDDS(uint32 texToAppend, uint32 Xoffset, uint32 
 	/* how big is it going to be including all mipmaps? */
 	bufsize = mipMapCount > 1 ? linearSize * 2 : linearSize;
 	buffer = static_cast<unsigned char*>(malloc(bufsize * sizeof(unsigned char)));
-	check(buffer);
+	assert(buffer);
 	fread(buffer, 1, bufsize, fp);
 	/* close the file pointer */
 	fclose(fp);
@@ -262,7 +262,7 @@ void OpenGLTextureLibrary::appendDDS(uint32 texToAppend, uint32 Xoffset, uint32 
 		break;
 	default:
 		free(buffer);
-		logger<Fatal>() << "unrecgnized compressed DDS format: " << filepath;
+		MFLOG(Fatal) << "unrecgnized compressed DDS format: " << filepath;
 	}
 
 	unsigned int blockSize = (format == GL_COMPRESSED_RGBA_S3TC_DXT1_EXT) ? 8 : 16;

@@ -147,7 +147,7 @@ template<typename Function, typename ...Args>
 inline auto OpenGLRenderer::runOnRenderThreadAsync(Function && func, Args && ...args)-> std::future<decltype(func(Args&&...))>
 {
 	if (isOnRenderThread())
-		logger<Error>() << "Cannot run an async task on the render thread, you're already on that thread!";
+		MFLOG(Error) << "Cannot run an async task on the render thread, you're already on that thread!";
 
 	using retType = decltype(func(Args&&...));
 

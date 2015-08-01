@@ -20,7 +20,7 @@ Actor::~Actor()
 {
 	while (components.end() != components.begin())
 	{
-		logger<Info>() << "Component not memory managed. It is suggested to use std::unique_ptr or std::shared_ptr for components.";
+		MFLOG(Info) << "Component not memory managed. It is suggested to use std::unique_ptr or std::shared_ptr for components.";
 		delete *components.begin();
 	}
 }

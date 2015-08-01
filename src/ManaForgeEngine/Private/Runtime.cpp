@@ -88,12 +88,12 @@ void Runtime::run()
 		{
 			if (!callback)
 			{
-				logger<Warning>() << "init callback empty.";
+				MFLOG(Warning) << "init callback empty.";
 			}
 
 			callback();
 		}
-		logger<Trace>() << "init completed.";
+		MFLOG(Trace) << "init completed.";
 
 		
 	}
@@ -136,6 +136,7 @@ void Runtime::run()
 		LastTick = CurrentTick;
 
 		inputManager.update();
+		timeManager.update();
 
 
 		Window& window = renderer->getWindow();
@@ -150,7 +151,7 @@ void Runtime::run()
 		{
 			if (!callback)
 			{
-				logger<Warning>() << "Update callback empty";
+				MFLOG(Warning) << "Update callback empty";
 			}
 			else if (!callback(delta))
 			{
@@ -162,7 +163,7 @@ void Runtime::run()
 
 	} while (shouldContinue);
 
-	logger<Debug>() << "Total frames: " << totalTicks << "  Total time: " << totalTime << "  avg FPS: " << (long double)totalTicks / totalTime;
+	MFLOG(Debug) << "Total frames: " << totalTicks << "  Total time: " << totalTime << "  avg FPS: " << (long double)totalTicks / totalTime;
 
 }
 

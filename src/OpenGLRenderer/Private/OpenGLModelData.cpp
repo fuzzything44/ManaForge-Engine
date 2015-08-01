@@ -13,8 +13,8 @@ void OpenGLModelData::init(const vec2* vertLocs_, const vec2* UVs_, size_t numVe
 
 
 	// make sure they aren't zero
-	check(numVerts);
-	check(numElems);
+	assert(numVerts);
+	assert(numElems);
 
 	renderer.runOnRenderThreadSync([this, vertLocs_, UVs_, elems_]
 	{

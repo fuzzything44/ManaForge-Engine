@@ -11,7 +11,7 @@ SharedLibrary::SharedLibrary(const path_t & path)
 	if (handle == nullptr)
 	{
 
-		logger<Fatal>() << "Failed to load library. Path: " << path;
+		MFLOG(Fatal) << "Failed to load library. Path: " << path;
 	}
 }
 #endif

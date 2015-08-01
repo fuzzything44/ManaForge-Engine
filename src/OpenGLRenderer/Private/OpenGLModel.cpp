@@ -50,12 +50,12 @@ void OpenGLModel::init(std::shared_ptr<MaterialInstance> mat, std::shared_ptr<Mo
 
 MeshComponent& OpenGLModel::getOwnerComponent()
 {
-	check(parent);  return *parent;
+	assert(parent);  return *parent;
 }
 
 const MeshComponent& OpenGLModel::getOwnerComponent() const
 {
-	check(parent); return *parent;
+	assert(parent); return *parent;
 }
 
 
@@ -71,11 +71,10 @@ void OpenGLModel::draw()
 
 		auto&& matSource = std::static_pointer_cast<OpenGLMaterialSource>(material->getSource());
 
-		check(material);
+		assert(material);
 		material->use();
 
 		glUniformMatrix3fv(matSource->MVPUniformLocation, 1, GL_FALSE, &MVPmat[0][0]);
-
 
 		glUniform1f(glGetUniformLocation(**matSource, "renderOrder"), 1.f);
 

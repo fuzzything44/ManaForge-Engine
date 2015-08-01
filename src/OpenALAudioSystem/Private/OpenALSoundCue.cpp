@@ -14,7 +14,7 @@ OpenALSoundCue::OpenALSoundCue(const path_t& name)
 
 	if (amtChannels == 2)
 	{
-		logger<Info>() << "using stereo buffer: " << name << ". The sound will not be location based";
+		MFLOG(Info) << "using stereo buffer: " << name << ". The sound will not be location based";
 	}
 }
 
