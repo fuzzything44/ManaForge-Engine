@@ -5,6 +5,10 @@
 #include <Runtime.h>
 #include <ModuleManager.h>
 
+
+#pragma comment(lib, "OpenAL.lib")
+#pragma comment(lib, "alut.lib")
+
 extern "C" OpenALAudioSystem_API void registerModule(ModuleManager& manager)
 {
 	manager.registerClass<OpenALAudioSystem>(MODULE_NAME);

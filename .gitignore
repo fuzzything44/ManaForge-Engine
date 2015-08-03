@@ -46,6 +46,7 @@ bin/*/*/Modules/OpenALAudioSystem.*
 bin/*/*/OpenAL.*
 bin/*/*/alut.*
 bin/*/*/Soil.*
+bin/*/*/GLFW3.*
 src/*/lib/*/*/*.*
 
 .vs/

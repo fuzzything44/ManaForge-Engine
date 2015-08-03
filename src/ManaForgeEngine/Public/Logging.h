@@ -149,6 +149,7 @@ struct logger : logdetail::log_base
 	}
 };
 
+// and the hackery commences
 #define MFLOG(sev) 													 \
 	for(std::tuple<bool, std::stringstream> data					 \
 		{ true, std::stringstream() }; std::get<0>(data); [&data]	 \
@@ -158,6 +159,7 @@ struct logger : logdetail::log_base
 			::logdetail::stringToWstring(::std::get<1>(data).str()); \
 		if (::severity_t::##sev == ::severity_t::Fatal)				 \
 		{															 \
+			::logdetail::log_base::cleanup();						 \
 			::std::terminate();										 \
 		}															 \
 		else if (::severity_t::##sev == ::severity_t::Error)		 \
@@ -174,6 +176,7 @@ struct logger : logdetail::log_base
 		needsRun = false;								    		 \
 		if (::severity_t::##sev == ::severity_t::Fatal)				 \
 		{															 \
+			::logdetail::log_base::cleanup();						 \
 			::std::terminate();										 \
 		}															 \
 		else if (::severity_t::##sev == ::severity_t::Error)		 \
