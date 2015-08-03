@@ -13,10 +13,10 @@ class Module : boost::noncopyable
 public:
 
 	// aliases for the register plugin function type
-	typedef void registerModuleFun(ModuleManager&); // i get lots of erros for using a alias here, DAMN IT MCFT. it does work in VS 2015...
+	using registerModuleFun				= void(ModuleManager&);
 	using getModuleEngineVersionFun		= float();
 
-	ENGINE_API Module(const path_t& filename);
+	ENGINE_API Module(const std::string& filename);
 
 	/// <summary> Registers the module with the ModuleManager specified</summary>
 	///
@@ -38,7 +38,7 @@ private:
 	registerModuleFun* registerModuleFunctionAddress;
 	getModuleEngineVersionFun* getModuleEngineVersionAddress;
 
-	path_t name;
+	std::string name;
 	std::unordered_map<std::string, std::function<void*()> > classes;
 
 

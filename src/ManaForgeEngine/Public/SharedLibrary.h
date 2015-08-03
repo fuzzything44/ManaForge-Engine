@@ -22,7 +22,7 @@ class SharedLibrary
 public:
 
 	SharedLibrary() : handle(nullptr) { };
-	ENGINE_API explicit SharedLibrary(const path_t& path);
+	ENGINE_API explicit SharedLibrary(const std::wstring& name);
 
 	// make it move only
 	SharedLibrary(const SharedLibrary& other) = delete;

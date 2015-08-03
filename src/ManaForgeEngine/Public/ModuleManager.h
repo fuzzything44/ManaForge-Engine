@@ -34,7 +34,7 @@ public:
 	ENGINE_API ModuleManager();
 	ENGINE_API ~ModuleManager();
 
-	ENGINE_API void loadModule(const path_t& filename);
+	ENGINE_API void loadModule(const std::string& name);
 
 	template<typename T>
 	inline void registerClass(const std::string& moduleName, T* ptr = nullptr);
@@ -43,12 +43,12 @@ public:
 	ENGINE_API void addUpdateCallback(const updateFun& function);
 
 	template <typename T>
-	inline T* spawnClass(const std::string& name);
+	inline T* spawnClass(const std::string& moduleName, const std::string& className);
 
 private:
 
 	// and finally the modules
-	std::unordered_map<path_t, std::shared_ptr<Module> > loadedModules;
+	std::unordered_map<std::string, std::shared_ptr<Module> > loadedModules;
 
 	// destroy the callbacks first
 	std::list<initFun>& getInitCallbacks();
@@ -67,17 +67,32 @@ private:
 #include "AudioSystem.h"
 #include "Renderer.h"
 
+#include <boost/type_index.hpp>
 
 template<typename T>
 inline void ModuleManager::registerClass(const std::string& moduleName, T* ptr)
 {
-	std::string nameWithClass = typeid(T).name();
-	auto iterAtSpace = nameWithClass.rbegin();
-	while (iterAtSpace != nameWithClass.rend() && *iterAtSpace != ' ') iterAtSpace++;
+	std::string name = boost::typeindex::type_id<T>().pretty_name();
 
-	std::string name;
-	std::copy(iterAtSpace.base(), nameWithClass.end(), std::back_inserter(name));
+	std::string::iterator iterAt = name.end();
+	for (auto iter = name.begin(); iter != name.end(); ++iter)
+	{
+		if (isspace(*iter))
+		{
+			iterAt = iter;
+			break;
+		}
+	}
+
+	if (iterAt != name.end())
+	{
+		std::string strTemp;
+		std::copy(iterAt + 1, name.end(), std::back_inserter(strTemp));
+
+		name = strTemp;
+	}
 	
+
 	auto moduleIter = loadedModules.find(moduleName);
 	if (moduleIter != loadedModules.end())
 	{
@@ -92,16 +107,8 @@ inline void ModuleManager::registerClass(const std::string& moduleName, T* ptr)
 }
 
 template <typename T>
-inline T* ModuleManager::spawnClass(const std::string& name)
+inline T* ModuleManager::spawnClass(const std::string& moduleName, const std::string& className)
 {
-	auto iterWhereDot = name.begin();
-	while (iterWhereDot != name.end() && *iterWhereDot != '.') ++iterWhereDot;
-
-	std::string moduleName;
-	std::copy(name.begin(), iterWhereDot, std::back_inserter(moduleName));
-
-	std::string className;
-	std::copy(iterWhereDot + 1, name.end(), std::back_inserter(className));
 
 	auto moduleIter = loadedModules.find(moduleName);
 

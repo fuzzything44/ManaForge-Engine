@@ -1,20 +1,26 @@
 {
-	"modules" : "OpenGLRenderer Lodepng DefaultWorld TestContent OpenALAudioSystem Box2DPhysicsSystem",
-	
-	"window" :
-	{
-		"size" : 
-		{
-			"x" : 1280,
-			"y" : 720
-		},
-		"renderMode" : 0,
-		"windowMode" : 2,
-		"title" : "RPG-Prop Simulator"
-		
-	},
-	"Renderer" : "OpenGLRenderer.OpenGLRenderer",
-	"PhysicsSystem" : "Box2DPhysicsSystem.Box2DPhysicsSystem",
-	"AudioSystem" : "OpenALAudioSystem.OpenALAudioSystem"
-	
+  "modules": "OpenGLRenderer Lodepng DefaultWorld TestContent OpenALAudioSystem Box2DPhysicsSystem",
+
+  "window": {
+    "size": {
+      "x": 1280,
+      "y": 720
+    },
+    "renderMode": 0,
+    "windowMode": 2,
+    "title": "RPG-Prop Simulator"
+
+  },
+  "Renderer": {
+    "Module": "OpenGLRenderer",
+    "Name": "OpenGLRenderer"
+  },
+  "PhysicsSystem": {
+    "Module": "Box2DPhysicsSystem",
+    "Name": "Box2DPhysicsSystem"
+  },
+	"AudioSystem": {
+    "Module": "OpenALAudioSystem",
+    "Name": "OpenALAudioSystem"
+  }
 }

@@ -30,6 +30,7 @@ inline std::string loadFileToStr(const path_t& filename)
 	}
 	// define strings for each line and the final string
 	std::string ret, build;
+	
 
 	// while there is another line, append it to ret.
 	while (std::getline(stream, build))
@@ -42,12 +43,6 @@ inline std::string loadFileToStr(const path_t& filename)
 	
 
 }
-///// <summary> Gets the string assiociated with the error code.</summary>
-/////
-///// <param name="error"> The error.</param>
-/////
-///// <returns> A the string that is the error.</returns>
-//ENGINE_API std::string clGetErrorString(cl_int error);
 
 // custom vector printing
 inline std::ostream& operator<<(std::ostream& os, const vec2& vec)

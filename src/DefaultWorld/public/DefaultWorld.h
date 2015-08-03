@@ -60,6 +60,10 @@ private:
 
 	uint32 backgroundChunkSize;
 
+
+	std::string playerControllerModuleName;
+	std::string pawnModuleName;
+
 	std::string playerControllerClassName;
 	std::string pawnClassName;
 

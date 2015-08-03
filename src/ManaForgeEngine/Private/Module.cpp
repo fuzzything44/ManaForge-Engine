@@ -6,15 +6,15 @@
 
 #include <iostream>
 
-Module::Module(const path_t& filename) :
+Module::Module(const std::string& filename) :
 	registerModuleFunctionAddress(nullptr),
 	getModuleEngineVersionAddress(nullptr),
-	name(std::wstring(L"Modules\\").append(filename.wstring())) // Append the modules prefiex
+	name("modules\\" + filename) // Append the modules prefiex
 {
 	try{
 
 		// load the library
-		libraryHandle = SharedLibrary{name};
+		libraryHandle = SharedLibrary{ logdetail::stringToWstring(name) };
 
 		registerModuleFunctionAddress = libraryHandle.getFunctionPtr<registerModuleFun>
 			("registerModule");

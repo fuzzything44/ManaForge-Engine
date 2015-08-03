@@ -1,8 +1,14 @@
 {
-    "modules" : " ",
-    "chunk": {
-        "size" : "250"
-    },
-	"DefaultPlayerController" : "Core.PlayerController",
-	"DefaultPawn" : "TestContent.TestContentPawn"
+  "modules": " ",
+  "chunk": {
+    "size": "250"
+  },
+  "DefaultPlayerController": {
+    "Module": "Core",
+    "Name": "PlayerController"
+  },
+  "DefaultPawn" : {
+    "Module": "TestContent",
+    "Name" :  "TestContentPawn"
+  } 
 }

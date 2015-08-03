@@ -43,16 +43,18 @@ bin/*/*/glew32*.*
 bin/*/*/box2d.*
 bin/*/*/Modules/Box2dPhysicsSystem.*
 bin/*/*/Modules/OpenALAudioSystem.*
+bin/*/*/OpenAL.*
+bin/*/*/alut.*
 bin/*/*/Soil.*
 src/*/lib/*/*/*.*
 
+.vs/
+.vs/config/
 
 Game/Game_*/*.*
 Game/Game_*/*/*.*
 
 ipch/
-
-.idea/
 
 Resource/log.txt
 
@@ -67,3 +69,5 @@ log.txt
 *.xdc
 
 boost.props
+src/boostx64.props
+src/boostx64.props

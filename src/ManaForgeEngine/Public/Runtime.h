@@ -50,6 +50,10 @@ public:
 	std::unique_ptr<Pawn> pawn;
 
 private:
+	std::string rendererModuleName;
+	std::string physicsSystemModuleName;
+	std::string audioSystemModuleName;
+
 	std::string rendererName;
 	std::string physicsSystemName;
 	std::string audioSystemName;

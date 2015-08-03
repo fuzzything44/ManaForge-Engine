@@ -2,16 +2,18 @@
 #include "SharedLibrary.h"
 
 #ifdef WIN32
-SharedLibrary::SharedLibrary(const path_t & path)
+SharedLibrary::SharedLibrary(const std::wstring& name)
 {
-	path_t pathWithExt = path.wstring() + (L".dll");
+	std::wstring pathWithExt = name + L".dll";
+
+	using namespace std::string_literals;
 
 	handle = LoadLibraryW(pathWithExt.c_str());
 
 	if (handle == nullptr)
 	{
 
-		MFLOG(Fatal) << "Failed to load library. Path: " << path;
+		MFLOG(Error) << "Failed to load library. Name: " << name.c_str();
 	}
 }
 #endif

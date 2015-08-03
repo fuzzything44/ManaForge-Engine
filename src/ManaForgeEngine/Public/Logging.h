@@ -5,11 +5,14 @@
 #include <iostream>
 #include <string>
 #include <algorithm>
+#include <tuple>
 
 #include <boost/iostreams/stream.hpp>
 #include <boost/iostreams/categories.hpp>
 
 #include <boost/date_time.hpp>
+
+
 
 enum class severity_t
 {
@@ -55,18 +58,25 @@ inline std::basic_ostream<char_t, traits>& operator<<(std::basic_ostream<char_t,
 // as to not croud the global namspace
 namespace logdetail
 {
+	inline std::wstring stringToWstring(const std::string& other)
+	{
+		std::wstring ret(other.size(), L'#');
+		mbstowcs(&ret[0], other.c_str(), other.size());
+
+		return ret;
+	}
 
 	class sink_t
 	{
 	public:
-		using char_type = char;
+		using char_type = wchar_t;
 		using category	= boost::iostreams::sink_tag;
 
 
 		std::streamsize write(const char_type* s, std::streamsize n)
 		{
-			std::copy(s, s + n, std::ostream_iterator<char_type>(std::cout));
-			std::copy(s, s + n, std::ostream_iterator<char_type>(*file));
+			std::copy(s, s + n, std::ostream_iterator<char_type, char_type>(std::wcout));
+			std::copy(s, s + n, std::ostream_iterator<char_type, char_type>(*file));
 
 			return n;
 
@@ -75,7 +85,7 @@ namespace logdetail
 
 		static void init()
 		{
-			file = new std::ofstream("ENGLOG.log");
+			file = new std::wofstream("ENGLOG.log");
 		}
 
 		static void cleanup()
@@ -84,10 +94,10 @@ namespace logdetail
 		}
 
 	private:
-		ENGINE_API static std::ofstream* file;
+		ENGINE_API static std::wofstream* file;
 	};
 
-
+	
 	struct log_base
 	{
 
@@ -96,7 +106,7 @@ namespace logdetail
 		static void init()
 		{
 			sink_t::init();
-			str = new boost::iostreams::stream<sink_t>(sink_t());
+			str = new boost::iostreams::stream<sink_t >(sink_t());
 		}
 
 		static void cleanup()
@@ -132,7 +142,7 @@ struct logger : logdetail::log_base
 	}
 
 	template <typename T>
-	std::ostream& operator<<(const T& member)
+	std::wostream& operator<<(const T& member)
 	{
 		*str << member;
 		return *str;
@@ -140,6 +150,25 @@ struct logger : logdetail::log_base
 };
 
 #define MFLOG(sev) 													 \
+	for(std::tuple<bool, std::stringstream> data					 \
+		{ true, std::stringstream() }; std::get<0>(data); [&data]	 \
+	{																 \
+		std::get<0>(data) = false;									 \
+		::logger<::severity_t::##sev>() <<							 \
+			::logdetail::stringToWstring(::std::get<1>(data).str()); \
+		if (::severity_t::##sev == ::severity_t::Fatal)				 \
+		{															 \
+			::std::terminate();										 \
+		}															 \
+		else if (::severity_t::##sev == ::severity_t::Error)		 \
+		{															 \
+			throw ::ENGException();									 \
+		}															 \
+	}())															 \
+	std::get<1>(data)
+
+// for wide chars
+#define MFLOGW(sev) 												 \
 	for(bool needsRun = true; needsRun; [&needsRun]					 \
 	{																 \
 		needsRun = false;								    		 \
@@ -152,4 +181,4 @@ struct logger : logdetail::log_base
 			throw ::ENGException();									 \
 		}															 \
 	}())															 \
-	::logger<severity_t::##sev>()
+	::logger<severity_t::##sev>()				 

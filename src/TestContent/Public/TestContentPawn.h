@@ -85,6 +85,7 @@ public:
 
 	void moveLeft(float amount)
 	{
+		auto a = getWorldLocation();
 		if (amount)
 			applyLocalForce(vec2{ -amount*100.f, 0.f }, vec2{ 0.f, 0.f });
 	}

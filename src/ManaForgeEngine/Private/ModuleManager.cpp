@@ -22,12 +22,16 @@ ModuleManager::~ModuleManager()
 }
 
 
-void ModuleManager::loadModule(const path_t& filename)
+void ModuleManager::loadModule(const std::string& name)
 {
 
-	if (loadedModules.find(filename) == loadedModules.end())
+	if (loadedModules.find(name) == loadedModules.end())
 	{
-		loadedModules.insert({ filename, std::make_shared<Module>(filename) }).first->second->registerModule(*this);
+		loadedModules.insert({ name, std::make_shared<Module>(name) }).first->second->registerModule(*this);
+	}
+	else
+	{
+		MFLOG(Warning) << "Module: " << name << " already loaded.";
 	}
 }
 

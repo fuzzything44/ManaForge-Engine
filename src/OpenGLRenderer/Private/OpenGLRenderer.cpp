@@ -374,7 +374,7 @@ void OpenGLRenderer::showLoadingImage()
 
 void OpenGLRenderer::setCurrentCamera(CameraComponent& newCamera)
 {
-	currentCamera = &newCamera;
+	currentCamera.store(&newCamera);
 }
 
 

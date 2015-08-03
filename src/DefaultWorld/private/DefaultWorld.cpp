@@ -82,8 +82,12 @@ void DefaultWorld::init(const std::string& name)
 		MFLOG(Fatal) << "No world specified";
 	}
 
-	LOAD_PROPERTY_WITH_WARNING(propManager, "DefaultPlayerController", playerControllerClassName, "Core.PlayerController");
-	LOAD_PROPERTY_WITH_WARNING(propManager, "DefaultPawn", pawnClassName, "Core.Pawn");
+	LOAD_PROPERTY_WITH_WARNING(propManager, "DefaultPlayerController.Module",	playerControllerModuleName,	"Core");
+	LOAD_PROPERTY_WITH_WARNING(propManager, "DefaultPawn.Module",				pawnModuleName,				"Core");
+
+	LOAD_PROPERTY_WITH_WARNING(propManager, "DefaultPlayerController.Name",		playerControllerClassName,	"PlayerController");
+	LOAD_PROPERTY_WITH_WARNING(propManager, "DefaultPawn.Name",					pawnClassName,				"Pawn");
+
 
 	std::map<Color, std::string> imageToTextureAssoc;
 	// load the image associations
@@ -380,12 +384,14 @@ void DefaultWorld::saveWorld()
 
 std::unique_ptr<PlayerController> DefaultWorld::makePlayerController()
 {
-	return std::unique_ptr < PlayerController > {Runtime::get().moduleManager.spawnClass<PlayerController>(playerControllerClassName)};
+	return std::unique_ptr < PlayerController > {Runtime::get().moduleManager.
+		spawnClass<PlayerController>(playerControllerModuleName, playerControllerClassName)};
 }
 
 std::unique_ptr<Pawn> DefaultWorld::makePawn()
 {
-	return std::unique_ptr < Pawn > {Runtime::get().moduleManager.spawnClass<Pawn>(pawnClassName)};
+	return std::unique_ptr < Pawn > {Runtime::get().moduleManager.
+		spawnClass<Pawn>(pawnModuleName, pawnClassName)};
 }
 
 boost::signals2::connection DefaultWorld::registerTickingActor(Actor& toAdd)

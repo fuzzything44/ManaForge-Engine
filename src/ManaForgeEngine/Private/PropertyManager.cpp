@@ -19,11 +19,7 @@ PropertyManager::PropertyManager(const path_t& path)
 void PropertyManager::init(const path_t& path)
 {
 
-	std::string a = loadFileToStr(path.c_str());
-
 	boost::filesystem::ifstream stream{ path };
-
-
 
 	try{
 

@@ -60,9 +60,13 @@ Runtime::Runtime(const path_t& worldPath)
 			moduleManager.loadModule(elem);
 	}
 
-	LOAD_PROPERTY_WITH_ERROR(propManager, "Renderer",		rendererName);
-	LOAD_PROPERTY_WITH_ERROR(propManager, "AudioSystem",	audioSystemName);
-	LOAD_PROPERTY_WITH_ERROR(propManager, "PhysicsSystem",	physicsSystemName);
+	LOAD_PROPERTY_WITH_ERROR(propManager, "Renderer.Module",		rendererModuleName);
+	LOAD_PROPERTY_WITH_ERROR(propManager, "AudioSystem.Module",		audioSystemModuleName);
+	LOAD_PROPERTY_WITH_ERROR(propManager, "PhysicsSystem.Module",	physicsSystemModuleName);
+
+	LOAD_PROPERTY_WITH_ERROR(propManager, "Renderer.Name",			rendererName);
+	LOAD_PROPERTY_WITH_ERROR(propManager, "AudioSystem.Name",		audioSystemName);
+	LOAD_PROPERTY_WITH_ERROR(propManager, "PhysicsSystem.Name",		physicsSystemName);
 }
 
 Runtime::~Runtime()
@@ -76,9 +80,15 @@ Runtime::~Runtime()
 void Runtime::run()
 {
 	// create the systems.
-	renderer	= std::unique_ptr<Renderer>		{ moduleManager.spawnClass<Renderer>		(rendererName		) };
-	physSystem	= std::unique_ptr<PhysicsSystem>{ moduleManager.spawnClass<PhysicsSystem>	(physicsSystemName	) };
-	audioSystem = std::unique_ptr<AudioSystem>	{ moduleManager.spawnClass<AudioSystem>		(audioSystemName	) };
+	renderer	= std::unique_ptr<Renderer>		{ moduleManager.spawnClass<Renderer>		
+		(rendererModuleName			, rendererName		) };
+	physSystem	= std::unique_ptr<PhysicsSystem>{ moduleManager.spawnClass<PhysicsSystem>	
+		(physicsSystemModuleName	, physicsSystemName	) };
+	audioSystem = std::unique_ptr<AudioSystem>	{ moduleManager.spawnClass<AudioSystem>		
+		(audioSystemModuleName		, audioSystemName	) };
+	assert(renderer);
+	assert(physSystem);
+	assert(audioSystem);
 
 	{
 		// get the callbacks
@@ -100,7 +110,7 @@ void Runtime::run()
 
 
 	// load the world
-	world = std::unique_ptr < World > {moduleManager.spawnClass<World>("DefaultWorld.DefaultWorld")};
+	world = std::unique_ptr < World > {moduleManager.spawnClass<World>("DefaultWorld", "DefaultWorld")};
 	world->init("default");// load the test world
 
 
@@ -111,6 +121,8 @@ void Runtime::run()
 	// spawn the new playercontrollers and pawns
 	controller = world->makePlayerController();
 	pawn = world->makePawn();
+	//assert(controller); TODO: Core Classes
+	assert(pawn);
 
 	// set initial tick
 	clock::time_point LastTick = clock::now();

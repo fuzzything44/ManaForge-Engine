@@ -1,11 +1,10 @@
 #include "OpenGLRendererPCH.h"
-
 #include "OpenGLWindow.h"
 
-#include <Logging.h>
-#include <Helper.h>
+#include <PropertyManager.h>
+
 #include <Runtime.h>
-#include <ENGException.h>
+#include <Helper.h>
 
 std::map<GLFWwindow*, OpenGLWindow*> OpenGLWindow::windows = std::map<GLFWwindow*, OpenGLWindow*>();
 
