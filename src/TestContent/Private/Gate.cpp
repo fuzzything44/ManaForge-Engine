@@ -23,12 +23,12 @@ Gate::Gate() : Actor(), timeToDestruction(10.f)
 
 	mat = Runtime::get().renderer->newMaterial(Runtime::get().renderer->getMaterialSource("animation"));
 	mat->setProperty("tiles", 2);
-	mat->setUpdateCallback([time = 0.f](MaterialInstance& inst) mutable
-	{
-		time += Runtime::get().getDeltaTime();
-		
-		inst.setProperty("currentTile", int(time*10) % 4);
-	});
+	mat->setUpdateCallback([time = 0.f](MaterialInstance & inst) mutable
+	                       {
+		                       time += Runtime::get().getDeltaTime();
+
+		                       inst.setProperty("currentTile", int(time * 10) % 4);
+		                   });
 
 	mat->setTexture(0, tex);
 
