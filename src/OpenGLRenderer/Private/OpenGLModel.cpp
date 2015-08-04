@@ -18,9 +18,7 @@
 OpenGLModel::OpenGLModel(OpenGLRenderer& renderer) :
 	renderer(renderer),
 	isValid(true)
-{	
-
-
+{
 	// add model to renderer's list
 	location = renderer.models.insert(renderer.models.begin(), this);
 
@@ -62,6 +60,7 @@ const MeshComponent& OpenGLModel::getOwnerComponent() const
 
 void OpenGLModel::draw()
 {
+
 	if (isValid)
 	{
 		mat3 view = renderer.getCurrentCamera().getViewMat();

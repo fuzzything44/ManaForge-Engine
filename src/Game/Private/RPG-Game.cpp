@@ -3,14 +3,17 @@
 
 int32 main(int argc, char** argv)
 {
-	auto runtime = std::make_unique<Runtime>("default");
+	try
+	{
 
+		auto runtime = std::make_unique<Runtime>("default");
 
+		// run the runtime. consumes the thread until it returns
+		runtime->run();
+	}
+	catch(const ENGException& /*e*/) { }
+	catch (const std::exception& /*e*/) { }
 	
-
-
-	// run the runtime. consumes the thread until it returns
-	runtime->run();
 
 
 	return 0;

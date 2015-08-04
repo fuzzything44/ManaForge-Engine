@@ -235,7 +235,7 @@ std::unique_ptr<ModelData> OpenGLRenderer::newModelData()
 bool OpenGLRenderer::update(float /*deltaTime*/)
 {
 	
-		
+
 	// wait for the last frame's rendering to finish
 	if (lastFrame.valid())
 		lastFrame.wait();
