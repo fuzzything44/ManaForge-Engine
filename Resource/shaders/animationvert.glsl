@@ -17,14 +17,14 @@ void main()
 	gl_Position = vec4(vec3location.x, vec3location.y, -renderOrder, vec3location.z);
 	
 	// calculate the texture coordinates
-	int row = floor(currentTile / tiles);
+	int row = currentTile / tiles;
 	int column = currentTile % tiles;
 	
 	float uvCoordsPerTile = 1.f / float(tiles);
 	
 	fragTexCoord = vec2 (
 		(vertTexCoordIn.x / float(tiles)) + (column * uvCoordsPerTile),
-		(vertTexCoordIn.y / float(tiles)) + (row * uvCoordsPerTile)
+		1.f - ((vertTexCoordIn.y / float(tiles)) + (row * uvCoordsPerTile))
 	);
 	
 }

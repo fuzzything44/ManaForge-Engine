@@ -8,7 +8,7 @@
 
 #include <thread>
 
-OpenGLMaterialSource::OpenGLMaterialSource(OpenGLRenderer& renderer, const path_t& name) : renderer(renderer)
+OpenGLMaterialSource::OpenGLMaterialSource(OpenGLRenderer& renderer, const path_t& name) : renderer(renderer), name(name)
 {
 	if (!name.empty()) init(name);
 }
@@ -62,12 +62,12 @@ void OpenGLMaterialSource::init(const path_t& name)
 	}
 	else
 	{
-		MFLOG(Trace) << "Shader " << vertexPath << " Successfully Compiled\n";
+		MFLOG(Trace) << "\tShader " << vertexPath << " Successfully Compiled";
 	}
 
 
 	// Compile Fragment Shader
-	MFLOG(Trace) << "\nCompiling fragment Shader " << fragPath;
+	MFLOG(Trace) << "\tCompiling fragment Shader " << fragPath;
 	const char* FragmentSourcePointer = FragmentShaderCode.c_str();
 	glShaderSource(fragmentShader, 1, &FragmentSourcePointer, nullptr);
 	glCompileShader(fragmentShader);
@@ -82,7 +82,7 @@ void OpenGLMaterialSource::init(const path_t& name)
 	}
 	else
 	{
-		MFLOG(Trace) << "Shader " << fragPath << " Successfully Compiled\n";
+		MFLOG(Trace) << "\tShader " << fragPath << " Successfully Compiled";
 	}
 
 
@@ -116,6 +116,8 @@ void OpenGLMaterialSource::init(const path_t& name)
 	if (MVPUniformLocation == -1) {
 		MFLOG(Warning) << "Could not find MVPUniformLocation in program: " << name;
 	}
+
+	MFLOG(Trace) << "\tSuccessfully Linked Program: " << name;
 }
 
-std::string OpenGLMaterialSource::getName() { return name; }
+path_t OpenGLMaterialSource::getName() const { return name; }

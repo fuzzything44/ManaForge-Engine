@@ -73,7 +73,7 @@ void OpenGLRenderer::initRenderer()
 	assert(isOnRenderThread());
 
 	window = std::make_unique<OpenGLWindow>();
-	debugDraw = std::make_unique<OpenGLMaterialInstance>(getMaterialSource("debugdraw"));
+	debugDraw = std::make_unique<OpenGLMaterialInstance>(*this, getMaterialSource("debugdraw"));
 
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
@@ -177,7 +177,7 @@ std::unique_ptr<TextureLibrary> OpenGLRenderer::newTextureLibrary()
 
 std::unique_ptr<MaterialInstance> OpenGLRenderer::newMaterial(std::shared_ptr<MaterialSource> source)
 {
-	return std::make_unique<OpenGLMaterialInstance>(source);
+	return std::make_unique<OpenGLMaterialInstance>(*this, source);
 }
 
 std::shared_ptr<ModelData> OpenGLRenderer::newModelData(const std::string& name)

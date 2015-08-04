@@ -13,15 +13,22 @@ MFCLASS_SOURCE(Gate)
 
 bool Gate::isInitalized = false;
 
-Gate::Gate() : Actor(), timeToDestruction(3.f)
+Gate::Gate() : Actor(), timeToDestruction(10.f)
 {
 
-	auto tex = Runtime::get().renderer->getTexture("0");
+	auto tex = Runtime::get().renderer->getTexture("water");
 
 	tex->setFilterMode(Texture::FilterMode::MIPMAP_LINEAR);
 
 
-	mat = Runtime::get().renderer->newMaterial(Runtime::get().renderer->getMaterialSource("boilerplate"));
+	mat = Runtime::get().renderer->newMaterial(Runtime::get().renderer->getMaterialSource("animation"));
+	mat->setProperty("tiles", 2);
+	mat->setUpdateCallback([time = 0.f](MaterialInstance& inst) mutable
+	{
+		time += Runtime::get().getDeltaTime();
+		
+		inst.setProperty("currentTile", int(time*10) % 4);
+	});
 
 	mat->setTexture(0, tex);
 

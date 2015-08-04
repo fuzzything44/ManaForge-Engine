@@ -11,7 +11,6 @@
 // ALWAYS link to stackwalker.lib
 #pragma comment(lib, "StackWalker.lib")
 
-#include <vld.h>
 
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>

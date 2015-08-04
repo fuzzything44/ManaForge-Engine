@@ -14,7 +14,7 @@ class OpenGLMaterialSource : public MaterialSource
 
 	virtual void init(const path_t& name) override;
 
-	virtual std::string getName() override;
+	virtual path_t getName() const override;
 
 
 	GLint operator*() const { return program; }
@@ -23,7 +23,7 @@ class OpenGLMaterialSource : public MaterialSource
 	int32 MVPUniformLocation;
 
   private:
-	std::string name;
+	path_t name;
 	OpenGLRenderer& renderer;
 	GLint program;
 };

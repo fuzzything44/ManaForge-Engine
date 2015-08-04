@@ -12,11 +12,12 @@
 
 class OpenGLTexture;
 class OpenGLMaterialSource;
+class OpenGLRenderer;
 
 class OpenGLMaterialInstance : public MaterialInstance
 {
   public:
-	OpenGLMaterialInstance(std::shared_ptr<MaterialSource> source = nullptr);
+	OpenGLMaterialInstance(OpenGLRenderer& renderer, std::shared_ptr<MaterialSource> source = nullptr);
 	virtual ~OpenGLMaterialInstance() override;
 
 	void virtual setTexture(uint32 ID, std::shared_ptr<Texture> texture) override;
@@ -53,6 +54,8 @@ class OpenGLMaterialInstance : public MaterialInstance
 
 
   private:
+	OpenGLRenderer& renderer;
+
 	const static uint32 maxTextures = 32;
 
 	std::function<void(MaterialInstance&) > updateCallback;

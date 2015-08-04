@@ -92,6 +92,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OGLRenderer", "OGLRenderer", "{24D32CB1-5184-4953-9E7C-6587061B299A}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SOIL", "src\OpenGLRenderer\SOIL\SOIL.vcxproj", "{4E58643A-DEE0-4954-BED0-D45FF11A8A40}"
+	ProjectSection(ProjectDependencies) = postProject
+		{63632DBC-1A79-4325-9332-C8C4269BA45A} = {63632DBC-1A79-4325-9332-C8C4269BA45A}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenALAudioSystem", "src\OpenALAudioSystem\OpenALAudioSystem.vcxproj", "{4E4F8707-4B18-4877-8EA6-627FE176E629}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -108,6 +111,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Physics", "Physics", "{E349
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Box2DPhysicsSystem", "src\Box2DPhysicsSystem\Box2DPhysicsSystem.vcxproj", "{3898CEB4-251E-480E-A582-17BB3CDDC0AF}"
 	ProjectSection(ProjectDependencies) = postProject
+		{366C8B6A-FC80-421F-9AAA-F3A29F3061F5} = {366C8B6A-FC80-421F-9AAA-F3A29F3061F5}
 		{793B03D0-23BC-4FA0-BC2E-26EB63EE0F91} = {793B03D0-23BC-4FA0-BC2E-26EB63EE0F91}
 	EndProjectSection
 EndProject
@@ -120,7 +124,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "alut", "src\OpenALAudioSyst
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenAL", "src\OpenALAudioSystem\OpenAL\OpenAL.vcxproj", "{7D83357A-C135-481D-A081-06E8E8C81C61}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GLFW", "src\OpenGLRenderer\GLFW\GLFW.vcxproj", "{8170A6D1-83D7-4CD6-B104-522744D41F38}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GLFW3", "src\OpenGLRenderer\GLFW\GLFW.vcxproj", "{8170A6D1-83D7-4CD6-B104-522744D41F38}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
