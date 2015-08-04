@@ -12,7 +12,7 @@
 class Pew;
 
 MFCLASS(Gate, Actor)
-class Gate : public Actor, TickingActor<Gate>
+class Gate : public Actor
 {
 	MFCLASS_BODY(Gate)
 
@@ -21,11 +21,9 @@ class Gate : public Actor, TickingActor<Gate>
 
 	std::unique_ptr<MaterialInstance> mat;
 	static bool isInitalized;
-	float timeToDestruction;
 
   public:
 	explicit Gate();
-	virtual void tick(float deltaTime) override;
 	virtual ~Gate() override;
 
 	bool isOpen;

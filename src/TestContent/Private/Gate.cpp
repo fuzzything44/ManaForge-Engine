@@ -13,7 +13,7 @@ MFCLASS_SOURCE(Gate)
 
 bool Gate::isInitalized = false;
 
-Gate::Gate() : Actor(), timeToDestruction(10.f)
+Gate::Gate() : Actor()
 {
 
 	auto tex = Runtime::get().renderer->getTexture("water");
@@ -55,12 +55,13 @@ Gate::Gate() : Actor(), timeToDestruction(10.f)
 
 	physComp = std::make_unique<PhysicsComponent>(*this, *shape, Transform{});
 	physComp->setDensity(1.f);
-}
-void Gate::tick(float deltaTime)
-{
-	timeToDestruction -= deltaTime;
-	if (timeToDestruction <= 0) {
+
+	using namespace std::chrono_literals;
+
+	Runtime::get().timeManager.addTimer(10s, [this]
+	{
 		delete this;
-	}
+	}, false);
 }
+
 Gate::~Gate() {}
