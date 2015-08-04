@@ -125,27 +125,19 @@ void Runtime::run()
 	assert(pawn);
 
 	// set initial tick
-	clock::time_point LastTick = clock::now();
-
+	clock::time_point lastTick = clock::now();
 
 	bool shouldContinue = true;
 
-	float baseSpeed = 100.f;
-
-	uint64 totalTicks = 0;
-	long double totalTime = 0;
 
 	do {
 
 		// calculate tick time
-		clock::time_point CurrentTick = clock::now();
-		std::chrono::duration<float> delta_duration = CurrentTick - LastTick;
-		float delta = delta_duration.count();
+		clock::time_point currentTick = clock::now();
+		std::chrono::duration<float> delta_duration = currentTick - lastTick;
+		deltaTime = delta_duration.count();
 
-		++totalTicks;
-		totalTime += delta;
-		
-		LastTick = CurrentTick;
+		lastTick = currentTick;
 
 		inputManager.update();
 		timeManager.update();
@@ -165,7 +157,7 @@ void Runtime::run()
 			{
 				MFLOG(Warning) << "Update callback empty";
 			}
-			else if (!callback(delta))
+			else if (!callback(deltaTime))
 			{
 				shouldContinue = false;
 			}
@@ -174,8 +166,6 @@ void Runtime::run()
 		
 
 	} while (shouldContinue);
-
-	MFLOG(Debug) << "Total frames: " << totalTicks << "  Total time: " << totalTime << "  avg FPS: " << (long double)totalTicks / totalTime;
 
 }
 

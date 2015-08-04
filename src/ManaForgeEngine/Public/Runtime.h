@@ -31,6 +31,7 @@ public:
 	// returns the old world
 	inline World* setWorld(World* newWorld);
 	
+	inline float getDeltaTime();
 
 	ModuleManager moduleManager;
 	PropertyManager propManager;
@@ -58,6 +59,8 @@ private:
 	std::string physicsSystemName;
 	std::string audioSystemName;
 
+	float deltaTime;
+
 	ENGINE_API static Runtime* currentRuntime;
 };
 
@@ -72,4 +75,9 @@ inline World* Runtime::setWorld(World* newWorld)
 	std::swap(world, std::unique_ptr < World > {newWorld});
 
 	return newWorld;
+}
+
+inline float Runtime::getDeltaTime()
+{
+	return deltaTime;
 }

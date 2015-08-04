@@ -45,6 +45,12 @@ std::shared_ptr<const MaterialSource> OpenGLMaterialInstance::getSource() const
 	return program;
 }
 
+
+void OpenGLMaterialInstance::setUpdateCallback(std::function<void(MaterialInstance&)> func)
+{
+	updateCallback = func;
+}
+
 // start property interface
 void OpenGLMaterialInstance::setProperty(const std::string& propName, int i)  
 {
@@ -57,7 +63,6 @@ void OpenGLMaterialInstance::setProperty(const std::string& propName, int i)
 		}
 	};
 }
-
 void OpenGLMaterialInstance::setProperty(const std::string& propName, ivec2 i)  
 {
 	properties[propName] =
@@ -70,7 +75,6 @@ void OpenGLMaterialInstance::setProperty(const std::string& propName, ivec2 i)
 	};
 
 }
-
 void OpenGLMaterialInstance::setProperty(const std::string& propName, ivec3 i)  
 {	
 	properties[propName] =
@@ -83,7 +87,6 @@ void OpenGLMaterialInstance::setProperty(const std::string& propName, ivec3 i)
 	};
 
 }
-
 void OpenGLMaterialInstance::setProperty(const std::string& propName, ivec4 i)  
 {
 	properties[propName] =
@@ -95,7 +98,6 @@ void OpenGLMaterialInstance::setProperty(const std::string& propName, ivec4 i)
 		}
 	};
 }
-
 void OpenGLMaterialInstance::setProperty(const std::string& propName, int* i, size_t size)  
 {
 
@@ -143,8 +145,6 @@ void OpenGLMaterialInstance::setProperty(const std::string& propName, int* i, si
 		break;
 	}
 }
-
-
 void OpenGLMaterialInstance::setProperty(const std::string& propName, float i)  
 {
 	properties[propName] =
@@ -157,7 +157,6 @@ void OpenGLMaterialInstance::setProperty(const std::string& propName, float i)
 	};
 
 }
-
 void OpenGLMaterialInstance::setProperty(const std::string& propName, vec2 i)  
 {
 	properties[propName] =
@@ -170,7 +169,6 @@ void OpenGLMaterialInstance::setProperty(const std::string& propName, vec2 i)
 	};
 
 }
-
 void OpenGLMaterialInstance::setProperty(const std::string& propName, vec3 i)  
 {
 	properties[propName] =
@@ -184,7 +182,6 @@ void OpenGLMaterialInstance::setProperty(const std::string& propName, vec3 i)
 
 
 }
-
 void OpenGLMaterialInstance::setProperty(const std::string& propName, vec4 i)  
 {
 
@@ -198,7 +195,6 @@ void OpenGLMaterialInstance::setProperty(const std::string& propName, vec4 i)
 	};
 
 }
-
 void OpenGLMaterialInstance::setProperty(const std::string& propName, float* i, size_t size)  
 {
 	switch (size)
@@ -246,8 +242,6 @@ void OpenGLMaterialInstance::setProperty(const std::string& propName, float* i, 
 	}
 
 }
-
-
 void OpenGLMaterialInstance::setPropertyMatrix(const std::string& propName, mat2 i)  
 {
 
@@ -260,7 +254,6 @@ void OpenGLMaterialInstance::setPropertyMatrix(const std::string& propName, mat2
 		}
 	};
 }
-
 void OpenGLMaterialInstance::setPropertyMatrix(const std::string& propName, mat3 i)  
 {
 	properties[propName] =
@@ -272,7 +265,6 @@ void OpenGLMaterialInstance::setPropertyMatrix(const std::string& propName, mat3
 		}
 	};
 }
-
 void OpenGLMaterialInstance::setPropertyMatrix(const std::string& propName, mat4 i)  
 {
 	properties[propName] =
@@ -284,8 +276,6 @@ void OpenGLMaterialInstance::setPropertyMatrix(const std::string& propName, mat4
 		}
 	};
 }
-
-
 void OpenGLMaterialInstance::setPropertyMatrix2ptr(const std::string& propName, float* i)  
 {
 	properties[propName] =
@@ -297,7 +287,6 @@ void OpenGLMaterialInstance::setPropertyMatrix2ptr(const std::string& propName, 
 		}
 	};
 }
-
 void OpenGLMaterialInstance::setPropertyMatrix3ptr(const std::string& propName, float* i)  
 {
 	properties[propName] =
@@ -309,7 +298,6 @@ void OpenGLMaterialInstance::setPropertyMatrix3ptr(const std::string& propName, 
 		}
 	};
 }
-
 void OpenGLMaterialInstance::setPropertyMatrix4ptr(const std::string& propName, float* i)  
 {
 	properties[propName] =
@@ -321,11 +309,20 @@ void OpenGLMaterialInstance::setPropertyMatrix4ptr(const std::string& propName, 
 		}
 	};
 }
-
 // end property interface
 
 void OpenGLMaterialInstance::use()
 {
+	if (updateCallback) updateCallback(*this);
+
+	for (auto&& elem : properties)
+	{
+		auto&& fun = std::get<1>(elem.second);
+		auto&& loc = std::get<0>(elem.second);
+
+		fun(loc);
+	}
+
 	glUseProgram(**program);
 
 	for (uint32 i = 0; i < maxTextures && textures[i]; i++)
