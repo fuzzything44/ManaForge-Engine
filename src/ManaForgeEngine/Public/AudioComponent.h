@@ -8,12 +8,12 @@ class SoundSource;
 
 class AudioComponent : public SceneComponent
 {
-public:
+  public:
 	ENGINE_API explicit AudioComponent(Actor& owner, SoundCue& cue, Transform trans = Transform(), bool loops = false);
 
 	inline void setLoops(bool loops);
 	inline bool getLoops() const;
-	 
+
 	inline void play();
 	inline void pause();
 	inline void stop();
@@ -31,7 +31,7 @@ public:
 
 	inline void setGainBounds(float min, float max);
 
-protected:
+  protected:
 	std::unique_ptr<SoundSource> source;
 };
 
@@ -39,68 +39,31 @@ protected:
 /// INLINE DEFINITIONS
 #include <SoundSource.h>
 
-inline void AudioComponent::setLoops(bool loops)
-{
-	source->setLoops(loops);
-}
+inline void AudioComponent::setLoops(bool loops) { source->setLoops(loops); }
 
-inline bool AudioComponent::getLoops() const
-{
-	return source->getLoops();
-}
+inline bool AudioComponent::getLoops() const { return source->getLoops(); }
 
-inline void AudioComponent::play()
-{
-	source->play();
-}
+inline void AudioComponent::play() { source->play(); }
 
-inline void AudioComponent::pause()
-{
-	source->pause();
-}
+inline void AudioComponent::pause() { source->pause(); }
 
-inline void AudioComponent::stop()
-{
-	source->stop();
-}
+inline void AudioComponent::stop() { source->stop(); }
 
-inline void AudioComponent::setMaxDistance(float maxDistacne)
-{
-	source->setMaxDistance(maxDistacne);
-}
+inline void AudioComponent::setMaxDistance(float maxDistacne) { source->setMaxDistance(maxDistacne); }
 
-inline float AudioComponent::getMaxDistance() const
-{
-	source->getMaxDistance();
-}
+inline float AudioComponent::getMaxDistance() const { source->getMaxDistance(); }
 
-inline void AudioComponent::setRolloffFactor(float rolloffFactor)
-{
-	source->setRolloffFactor(rolloffFactor);
-}
+inline void AudioComponent::setRolloffFactor(float rolloffFactor) { source->setRolloffFactor(rolloffFactor); }
 
-inline float AudioComponent::getRolloffFactor() const
-{
-	return source->getRolloffFactor();
-}
+inline float AudioComponent::getRolloffFactor() const { return source->getRolloffFactor(); }
 
-inline void AudioComponent::setReferenceDistance(float refrenceDistance)
-{
-	source->setReferenceDistance(refrenceDistance);
-}
+inline void AudioComponent::setReferenceDistance(float refrenceDistance) { source->setReferenceDistance(refrenceDistance); }
 
-inline float AudioComponent::getReferenceDistance() const
-{
-	return source->getReferenceDistance();
-}
+inline float AudioComponent::getReferenceDistance() const { return source->getReferenceDistance(); }
 
 inline void AudioComponent::setConeParams(vec2 direction, float innerAngle, float outerAngle, float outerGain)
 {
 	source->setConeParams(direction, innerAngle, outerAngle, outerGain);
 }
 
-inline void AudioComponent::setGainBounds(float min, float max)
-{
-	source->setGainBounds(min, max);
-}
-
+inline void AudioComponent::setGainBounds(float min, float max) { source->setGainBounds(min, max); }

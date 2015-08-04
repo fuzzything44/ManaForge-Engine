@@ -5,8 +5,7 @@
 
 Component::~Component()
 {
-	if (location != (owner.components.size() - 1))
-	{
+	if (location != (owner.components.size() - 1)) {
 		// store a copy of the last elem
 		Component* toMove = *(owner.components.end() - 1);
 
@@ -15,5 +14,5 @@ Component::~Component()
 		toMove->location = location;
 	}
 
-	owner.components.pop_back(); // remove the last element
+	owner.components.pop_back();  // remove the last element
 }

@@ -10,8 +10,7 @@
 
 PropertyManager::PropertyManager(const path_t& path)
 {
-	if (path != "")
-	{
+	if (path != "") {
 		init(path);
 	}
 }
@@ -19,12 +18,12 @@ PropertyManager::PropertyManager(const path_t& path)
 void PropertyManager::init(const path_t& path)
 {
 
-	boost::filesystem::ifstream stream{ path };
+	boost::filesystem::ifstream stream{path};
 
-	try{
+	try
+	{
 
 		boost::property_tree::json_parser::read_json(stream, props);
-		
 	}
 	catch (std::exception& e)
 	{
@@ -32,4 +31,3 @@ void PropertyManager::init(const path_t& path)
 		MFLOG(Error) << e.what();
 	}
 }
-

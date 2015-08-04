@@ -14,28 +14,22 @@ void Stack::OnCallstackEntry(CallstackEntryType eType, CallstackEntry& entry)
 
 	std::string name = entry.name;
 
-	if (eType == firstEntry)
-	{
+	if (eType == firstEntry) {
 		hasPrintedMain = false;
 		wasLastExternal = false;
 	}
 
 	if (name == "StackWalker::ShowCallstack" || name == "ENGException::ENGException") return;
 
-	if (!hasPrintedMain)
-	{
+	if (!hasPrintedMain) {
 
-		if (boost::starts_with(name, "std") ||
-			name == "RtlInitializeExceptionChain" || name == "BaseThreadInitThunk" ||
-			name == "mainCRTStartup" || name == "__tmainCRTStartup" ||
-			name == "")
+		if (boost::starts_with(name, "std") || name == "RtlInitializeExceptionChain" || name == "BaseThreadInitThunk" ||
+		    name == "mainCRTStartup" || name == "__tmainCRTStartup" || name == "")
 		{
-			if (!wasLastExternal)
-			{
+			if (!wasLastExternal) {
 				MFLOG(Info) << "External code";
 			}
 			wasLastExternal = true;
-
 		}
 		else
 		{
@@ -47,7 +41,7 @@ void Stack::OnCallstackEntry(CallstackEntryType eType, CallstackEntry& entry)
 			// go up to source -- this will be backwards
 			for (std::string::reverse_iterator iter = startFile.rbegin(); iter != startFile.rend(); ++iter)
 			{
-				if (lastThree[0] == 'c' && lastThree[1] == 'r' && lastThree[2] == 's') // src backward
+				if (lastThree[0] == 'c' && lastThree[1] == 'r' && lastThree[2] == 's')  // src backward
 				{
 					fileOut.push_back(*iter);
 					break;
@@ -66,7 +60,6 @@ void Stack::OnCallstackEntry(CallstackEntryType eType, CallstackEntry& entry)
 
 			wasLastExternal = false;
 		}
-
 	}
 
 	if (name == "main" && !hasPrintedMain) hasPrintedMain = true;
@@ -76,25 +69,20 @@ void Stack::OnLoadModule(LPCSTR img, LPCSTR mod, DWORD64 baseAddr, DWORD size, D
 {
 	std::string name = img;
 
-	if (!boost::starts_with(name, "C:\\Windows\\"))
-	{
+	if (!boost::starts_with(name, "C:\\Windows\\")) {
 		MFLOG(Info) << "Module Loaded: " << mod;
 	}
 }
 
 //////////////////////////////////////////////////////////////////////////////
 
-ENGException::ENGException(const std::string& reasonIn) 
+ENGException::ENGException(const std::string& reasonIn)
 {
-	
+
 	MFLOG(Info) << reasonIn << " Stack:\n";
 
 	Stack s;
 	s.ShowCallstack();
-
 }
 
-const char* ENGException::what() const
-{
-	return "";
-}
+const char* ENGException::what() const { return ""; }

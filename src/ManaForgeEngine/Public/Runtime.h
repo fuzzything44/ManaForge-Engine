@@ -18,8 +18,7 @@ class Window;
 
 class Runtime : boost::noncopyable
 {
-public:
-
+  public:
 	ENGINE_API explicit Runtime(const path_t& world);
 
 	ENGINE_API ~Runtime();
@@ -30,7 +29,7 @@ public:
 
 	// returns the old world
 	inline World* setWorld(World* newWorld);
-	
+
 	inline float getDeltaTime();
 
 	ModuleManager moduleManager;
@@ -50,7 +49,7 @@ public:
 	std::unique_ptr<PlayerController> controller;
 	std::unique_ptr<Pawn> pawn;
 
-private:
+  private:
 	std::string rendererModuleName;
 	std::string physicsSystemModuleName;
 	std::string audioSystemModuleName;
@@ -68,16 +67,16 @@ private:
 
 // collapeed for quicker debugging -- not very important
 inline Runtime& Runtime::get()
-{assert(currentRuntime); return *currentRuntime;}
+{
+	assert(currentRuntime);
+	return *currentRuntime;
+}
 
 inline World* Runtime::setWorld(World* newWorld)
 {
-	std::swap(world, std::unique_ptr < World > {newWorld});
+	std::swap(world, std::unique_ptr<World>{newWorld});
 
 	return newWorld;
 }
 
-inline float Runtime::getDeltaTime()
-{
-	return deltaTime;
-}
+inline float Runtime::getDeltaTime() { return deltaTime; }

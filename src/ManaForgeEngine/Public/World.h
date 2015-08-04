@@ -18,8 +18,7 @@ struct ActorLocation
 
 class World
 {
-public:
-
+  public:
 	virtual ~World() = default;
 
 	virtual void init(const std::string& name) = 0;
@@ -32,5 +31,4 @@ public:
 	virtual std::unique_ptr<ActorLocation> addActor(Actor& toAdd) = 0;
 
 	virtual boost::signals2::connection registerTickingActor(Actor& toAdd) = 0;
-
 };

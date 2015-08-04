@@ -6,8 +6,8 @@
 class Box2DPhysicsShape : public PhysicsShape
 {
 	friend class Box2DPhysicsBody;
-public:
 
+  public:
 	virtual ~Box2DPhysicsShape();
 
 	virtual vec2 getPosition() override;
@@ -18,7 +18,7 @@ public:
 	virtual void asRectangle(float halfWidth, float halfHeight) override;
 	virtual void asEdge(vec2 lineStart, vec2 lineEnd) override;
 
-private:
+  private:
 	vec2 location;
 	std::unique_ptr<b2Shape> shape;
 };

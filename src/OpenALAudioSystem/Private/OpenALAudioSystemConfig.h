@@ -3,8 +3,8 @@
 #include <Engine.h>
 
 #ifdef OpenALAudioSystem_Source
-#	define OpenALAudioSystem_API __declspec(dllexport)
+#define OpenALAudioSystem_API __declspec(dllexport)
 #else
-#	define OpenALAudioSystem_API __declspec(dllimport)
-#	pragma comment(lib, "OpenALAudioSystem.lib")
+#define OpenALAudioSystem_API __declspec(dllimport)
+#pragma comment(lib, "OpenALAudioSystem.lib")
 #endif

@@ -1,4 +1,4 @@
-#pragma once 
+#pragma once
 #include "Engine.h"
 
 #include "WindowProps.h"
@@ -21,12 +21,9 @@ class ModelData;
 class MaterialSource;
 
 // a non - copyable abstract class that handles rendering
-class Renderer :
-	boost::noncopyable
+class Renderer : boost::noncopyable
 {
-public:
-
-
+  public:
 	/// <summary> Destructor.</summary>
 	virtual ~Renderer() = default;
 
@@ -35,7 +32,7 @@ public:
 	virtual bool update(float deltaTime) = 0;
 
 	virtual void init() = 0;
-	
+
 	/// <summary> Sets camera to render at. </summary>
 	///
 	/// <param name="newCamera"> The camera it should render at. </param>
@@ -57,10 +54,9 @@ public:
 	virtual std::shared_ptr<Texture> getTexture(const path_t& name) = 0;
 	virtual std::shared_ptr<MaterialSource> getMaterialSource(const path_t& name) = 0;
 	virtual std::unique_ptr<TextureLibrary> newTextureLibrary() = 0;
-	virtual std::unique_ptr<MaterialInstance> newMaterial(std::shared_ptr<MaterialSource> source) = 0;	
+	virtual std::unique_ptr<MaterialInstance> newMaterial(std::shared_ptr<MaterialSource> source) = 0;
 	virtual std::shared_ptr<ModelData> newModelData(const std::string& name) = 0;
 	virtual std::unique_ptr<ModelData> newModelData() = 0;
-
 
 
 	// gets the window
@@ -70,10 +66,9 @@ public:
 
 
 	virtual void drawDebugOutlinePolygon(vec2* verts, uint32 numVerts, Color color) = 0;
-	virtual void drawDebugLine(vec2* locs, uint32 numLocs, Color color) = 0;	
+	virtual void drawDebugLine(vec2* locs, uint32 numLocs, Color color) = 0;
 	virtual void drawDebugSolidPolygon(vec2* verts, uint32 numVerts, Color color) = 0;
 	virtual void drawDebugOutlineCircle(vec2 center, float radius, Color color) = 0;
 	virtual void drawDebugSolidCircle(vec2 center, float radius, Color color) = 0;
 	virtual void drawDebugSegment(vec2 p1, vec2 p2, Color color) = 0;
-
 };

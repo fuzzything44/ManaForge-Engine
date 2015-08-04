@@ -7,8 +7,7 @@
 #include <Helper.h>
 
 OpenALSoundSource::OpenALSoundSource(OpenALSoundCue& cue, AudioComponent& owner, OpenALAudioSystem& system)
-	:ownerComponent(owner),
-	system(system)
+    : ownerComponent(owner), system(system)
 {
 	alGenSources(1, &sourceHandle);
 	alSourcei(sourceHandle, AL_BUFFER, cue.bufferHandle);
@@ -16,28 +15,19 @@ OpenALSoundSource::OpenALSoundSource(OpenALSoundCue& cue, AudioComponent& owner,
 	system.addSource(this);
 }
 
-void OpenALSoundSource::setLoops(bool loops)
-{
-	alSourcei(sourceHandle, AL_LOOPING, loops);
-}
+void OpenALSoundSource::setLoops(bool loops) { alSourcei(sourceHandle, AL_LOOPING, loops); }
 
 bool OpenALSoundSource::getLoops() const
 {
 	ALint loops;
 	alGetSourcei(sourceHandle, AL_LOOPING, &loops);
 
-	return loops != 0; // convert to boolean
+	return loops != 0;  // convert to boolean
 }
 
-void OpenALSoundSource::play()
-{
-	alSourcePlay(sourceHandle);
-}
+void OpenALSoundSource::play() { alSourcePlay(sourceHandle); }
 
-void OpenALSoundSource::pause()
-{
-	alSourcePause(sourceHandle);
-}
+void OpenALSoundSource::pause() { alSourcePause(sourceHandle); }
 
 void OpenALSoundSource::stop()
 {
@@ -45,15 +35,9 @@ void OpenALSoundSource::stop()
 	alSourceRewind(sourceHandle);
 }
 
-AudioComponent& OpenALSoundSource::getOwnerComponent()
-{
-	return ownerComponent;
-}
+AudioComponent& OpenALSoundSource::getOwnerComponent() { return ownerComponent; }
 
-void OpenALSoundSource::setMaxDistance(float maxDistacne)
-{
-	alSourcef(sourceHandle, AL_MAX_DISTANCE, maxDistacne);
-}
+void OpenALSoundSource::setMaxDistance(float maxDistacne) { alSourcef(sourceHandle, AL_MAX_DISTANCE, maxDistacne); }
 
 float OpenALSoundSource::getMaxDistance() const
 {
@@ -64,10 +48,7 @@ float OpenALSoundSource::getMaxDistance() const
 	return ret;
 }
 
-void OpenALSoundSource::setRolloffFactor(float rolloffFactor)
-{
-	alSourcef(sourceHandle, AL_ROLLOFF_FACTOR, rolloffFactor);
-}
+void OpenALSoundSource::setRolloffFactor(float rolloffFactor) { alSourcef(sourceHandle, AL_ROLLOFF_FACTOR, rolloffFactor); }
 
 float OpenALSoundSource::getRolloffFactor() const
 {

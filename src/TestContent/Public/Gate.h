@@ -23,8 +23,7 @@ class Gate : public Actor, TickingActor<Gate>
 	static bool isInitalized;
 	float timeToDestruction;
 
-public:
-
+  public:
 	explicit Gate();
 	virtual void tick(float deltaTime) override;
 	virtual ~Gate() override;

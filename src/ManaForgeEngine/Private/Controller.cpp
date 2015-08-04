@@ -4,12 +4,6 @@
 
 #include "Pawn.h"
 
-Controller::Controller()
-{
+Controller::Controller() {}
 
-}
-
-Controller::~Controller()
-{
-
-}
+Controller::~Controller() {}

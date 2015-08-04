@@ -12,7 +12,7 @@ class OpenALAudioSystem;
 
 class OpenALSoundSource : public SoundSource
 {
-public:
+  public:
 	explicit OpenALSoundSource(OpenALSoundCue& cue, AudioComponent& ownerComponent, OpenALAudioSystem& system);
 
 	virtual void setLoops(bool loops) override;
@@ -43,7 +43,7 @@ public:
 
 	void update();
 
-private:
+  private:
 	AudioComponent& ownerComponent;
 	ALuint sourceHandle;
 	OpenALAudioSystem& system;

@@ -11,23 +11,16 @@
 
 #include <map>
 
-ModuleManager::ModuleManager()
-{
+ModuleManager::ModuleManager() {}
 
-}
-
-ModuleManager::~ModuleManager()
-{
-
-}
+ModuleManager::~ModuleManager() {}
 
 
 void ModuleManager::loadModule(const std::string& name)
 {
 
-	if (loadedModules.find(name) == loadedModules.end())
-	{
-		loadedModules.insert({ name, std::make_shared<Module>(name) }).first->second->registerModule(*this);
+	if (loadedModules.find(name) == loadedModules.end()) {
+		loadedModules.insert({name, std::make_shared<Module>(name)}).first->second->registerModule(*this);
 	}
 	else
 	{
@@ -36,22 +29,10 @@ void ModuleManager::loadModule(const std::string& name)
 }
 
 
-void ModuleManager::addInitCallback(const initFun& function)
-{
-	initCallbacks.push_back(function);
-}
+void ModuleManager::addInitCallback(const initFun& function) { initCallbacks.push_back(function); }
 
-void ModuleManager::addUpdateCallback(const updateFun& function)
-{
-	updateCallbacks.push_back(function);
-}
+void ModuleManager::addUpdateCallback(const updateFun& function) { updateCallbacks.push_back(function); }
 
-std::list<ModuleManager::initFun>& ModuleManager::getInitCallbacks()
-{
-	return initCallbacks;
-}
+std::list<ModuleManager::initFun>& ModuleManager::getInitCallbacks() { return initCallbacks; }
 
-std::list<ModuleManager::updateFun>& ModuleManager::getUpdateCallbacks()
-{
-	return updateCallbacks;
-}
+std::list<ModuleManager::updateFun>& ModuleManager::getUpdateCallbacks() { return updateCallbacks; }

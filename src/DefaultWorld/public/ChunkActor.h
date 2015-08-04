@@ -9,17 +9,14 @@
 
 class ChunkActor : public Actor
 {
-public:
-	ChunkActor(const Transform& trans, std::shared_ptr<MaterialInstance> mat, std::shared_ptr<ModelData> data)
-		:Actor()
+  public:
+	ChunkActor(const Transform& trans, std::shared_ptr<MaterialInstance> mat, std::shared_ptr<ModelData> data) : Actor()
 	{
 		setWorldTransform(trans);
 
 		meshComp = std::make_shared<MeshComponent>(*this, Transform{}, mat, data);
 	}
 
-private:
-
+  private:
 	std::shared_ptr<MeshComponent> meshComp;
-
 };

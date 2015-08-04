@@ -14,8 +14,8 @@ class Box2DPhysicsSystem : public PhysicsSystem
 {
 	friend class Box2DPhysicsBody;
 	friend Box2DActorTransformController;
-public:
 
+  public:
 	Box2DPhysicsSystem();
 	virtual ~Box2DPhysicsSystem();
 
@@ -30,11 +30,10 @@ public:
 	bool update(float deltaTime);
 
 
-private:
-	
+  private:
 	std::unordered_map<Actor*, Box2DActorTransformController*> bodies;
 	Box2DContactListener listener;
-	
+
 	std::unique_ptr<b2World> world;
 	b2Vec2 gravity;
 };

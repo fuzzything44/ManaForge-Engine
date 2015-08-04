@@ -21,8 +21,7 @@
 
 class DefaultWorld : public World
 {
-public:
-
+  public:
 	friend struct DefaultWorldLocation;
 
 	explicit DefaultWorld(const std::string& name = "");
@@ -43,18 +42,17 @@ public:
 
 	virtual boost::signals2::connection registerTickingActor(Actor& toAdd) override;
 	// End World Interface
-private:
-
+  private:
 	std::string folderLocation;
 	std::string worldName;
 
-	PropertyManager propManager; // for world specific properties
+	PropertyManager propManager;  // for world specific properties
 
 	// use a deque -- the index can be the index in it!
 	std::deque<Actor*> actors;
 
 	// array of models -- in row major order
-	std::unique_ptr<ChunkActor*[]> background;
+	std::unique_ptr<ChunkActor* []> background;
 
 	uvec2 numBackgroundChunks;
 
@@ -67,7 +65,5 @@ private:
 	std::string playerControllerClassName;
 	std::string pawnClassName;
 
-	boost::signals2::signal<void(float)> tickingActors;
-
-
+	boost::signals2::signal<void(float) > tickingActors;
 };

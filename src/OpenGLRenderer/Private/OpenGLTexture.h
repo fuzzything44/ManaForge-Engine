@@ -14,8 +14,8 @@ class OpenGLTexture : public Texture
 {
 	friend OpenGLMaterialInstance;
 	friend OpenGLRenderer;
-public:
 
+  public:
 	explicit OpenGLTexture(const path_t& path);
 
 	uint32 getID();
@@ -29,14 +29,13 @@ public:
 
 	~OpenGLTexture() override;
 
-private:
-
+  private:
 	GLuint ID;
 
 	path_t path;
 
 
 	int32 loadDDS(const std::string& filename);
-	//void appendDDS(uint32 texToAppend, uint32 Xoffset, uint32 Yoffset, const char* filepath);
-	//uint32 allocateCompressedTextureLibraryFromDDS(uint32 num, const char* filepath);			// keeping just in case
+	// void appendDDS(uint32 texToAppend, uint32 Xoffset, uint32 Yoffset, const char* filepath);
+	// uint32 allocateCompressedTextureLibraryFromDDS(uint32 num, const char* filepath);			// keeping just in case
 };

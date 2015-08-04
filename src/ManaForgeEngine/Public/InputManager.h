@@ -15,8 +15,7 @@ class Window;
 
 class InputManager
 {
-public:
-
+  public:
 	ENGINE_API explicit InputManager(Window* window = nullptr);
 
 	ENGINE_API void setWindow(Window& newWindow);
@@ -25,10 +24,9 @@ public:
 	ENGINE_API void bindActionMappingPressed(const std::string& name, std::function<void()> callback);
 	ENGINE_API void bindActionMappingReleased(const std::string& name, std::function<void()> callback);
 
-	ENGINE_API void bindAxisMapping(const std::string& name, std::function<void(float)> callback);
+	ENGINE_API void bindAxisMapping(const std::string& name, std::function<void(float) > callback);
 
-private:
-
+  private:
 	bool update();
 
 	Window* window;
@@ -56,10 +54,10 @@ private:
 
 		void operator()();
 
-		template<typename Archive>
+		template <typename Archive>
 		void serialize(Archive& ar, const uint32 version)
 		{
-			ar & BOOST_SERIALIZATION_NVP(keysBound);
+			ar& BOOST_SERIALIZATION_NVP(keysBound);
 		}
 	};
 
@@ -67,28 +65,28 @@ private:
 	{
 		friend class boost::serialization::access;
 
-		AxisMapping(const std::vector<std::pair<Keyboard, float> >& values = std::vector<std::pair<Keyboard, float> >());
+		AxisMapping(const std::vector<std::pair<Keyboard, float>>& values = std::vector<std::pair<Keyboard, float>>());
 
 		~AxisMapping();
 
 		// vector of the values of the keys
-		std::vector < std::pair<Keyboard, float> > values;
+		std::vector<std::pair<Keyboard, float>> values;
 
-		std::function<void(float)> callback;
+		std::function<void(float) > callback;
 
-		void setCallback(std::function<void(float)> newCallback);
+		void setCallback(std::function<void(float) > newCallback);
 
 		void operator()();
 
-		template<typename Archive>
+		template <typename Archive>
 		void serialize(Archive& ar, const uint32 version)
 		{
-			ar & BOOST_SERIALIZATION_NVP(values);
+			ar& BOOST_SERIALIZATION_NVP(values);
 		}
 	};
 
 
-	std::map<std::string, ActionMapping> actionMappings; 
+	std::map<std::string, ActionMapping> actionMappings;
 	std::map<std::string, AxisMapping> axisMappings;
 
 	friend AxisMapping;
@@ -96,7 +94,4 @@ private:
 	friend Runtime;
 
 	friend boost::serialization::access;
-	
 };
-
-

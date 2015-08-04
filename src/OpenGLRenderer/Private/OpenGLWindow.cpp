@@ -8,8 +8,7 @@
 
 std::map<GLFWwindow*, OpenGLWindow*> OpenGLWindow::windows = std::map<GLFWwindow*, OpenGLWindow*>();
 
-OpenGLWindow::OpenGLWindow()
-	: Window()
+OpenGLWindow::OpenGLWindow() : Window()
 {
 	PropertyManager& propManager = Runtime::get().propManager;
 
@@ -26,10 +25,8 @@ OpenGLWindow::OpenGLWindow()
 	hasFocus = true;
 
 	// init GLFW (our window handler)
-	if (int err = glfwInit() != 1)
-	{
+	if (int err = glfwInit() != 1) {
 		MFLOG(Fatal) << "Failed to init GLFW. Error code: " << err;
-		
 	}
 
 	GLFWmonitor* mon = glfwGetPrimaryMonitor();
@@ -68,16 +65,12 @@ OpenGLWindow::OpenGLWindow()
 		window = glfwCreateWindow(props.size.x, props.size.y, props.title.c_str(), nullptr, nullptr);
 		break;
 
-	default:
-
-		break;
+	default: break;
 	}
 
 
-
 	// exit if the window wasn't initialized correctly
-	if (!window)
-	{
+	if (!window) {
 		glfwTerminate();
 		MFLOG(Fatal) << "\nWindow failed to create.";
 	}
@@ -97,9 +90,8 @@ OpenGLWindow::OpenGLWindow()
 	glewExperimental = GL_TRUE;
 
 	// init GL (glew is an extension that does this for us)
-	
-	if (int err = glewInit() != GLEW_OK)
-	{
+
+	if (int err = glewInit() != GLEW_OK) {
 		glfwTerminate();
 		MFLOG(Fatal) << "GLEW failed to init. Error code: " << err;
 	}
@@ -122,14 +114,9 @@ OpenGLWindow::~OpenGLWindow()
 	glfwDestroyWindow(window);
 
 	glfwTerminate();
-	
-
 }
 
-const WindowProps& OpenGLWindow::getWindowProps() const
-{
-	return props;
-}
+const WindowProps& OpenGLWindow::getWindowProps() const { return props; }
 
 void OpenGLWindow::setWindowProps(const WindowProps& props)
 {
@@ -148,10 +135,7 @@ void OpenGLWindow::saveWindowProps()
 	Runtime::get().propManager.saveValue("window.title", props.title);
 }
 
-int OpenGLWindow::getIsKeyPressed(Keyboard key)
-{
-	return glfwGetKey(window, static_cast<int>(key));
-}
+int OpenGLWindow::getIsKeyPressed(Keyboard key) { return glfwGetKey(window, static_cast<int>(key)); }
 
 vec2 OpenGLWindow::getCursorLocPixels()
 {
@@ -161,15 +145,9 @@ vec2 OpenGLWindow::getCursorLocPixels()
 	return static_cast<vec2>(locationdouble);
 }
 
-void OpenGLWindow::swapBuffers()
-{
-	glfwSwapBuffers(window);
-}
+void OpenGLWindow::swapBuffers() { glfwSwapBuffers(window); }
 
-void OpenGLWindow::pollEvents()
-{
-	glfwPollEvents();
-}
+void OpenGLWindow::pollEvents() { glfwPollEvents(); }
 
 bool OpenGLWindow::shouldClose()
 {
@@ -186,28 +164,19 @@ void OpenGLWindow::updateProps()
 
 	switch (props.renderMode)
 	{
-	case RenderMode::NORMAL:
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-		break;
-	case RenderMode::WIREFRAME:
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-		break;
-	default:
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-		break;
+	case RenderMode::NORMAL: glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); break;
+	case RenderMode::WIREFRAME: glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); break;
+	default: glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); break;
 	}
 
 	// show the window if it should be visible
 	props.visible ? glfwShowWindow(window) : glfwHideWindow(window);
-	
-
 }
 
 void OpenGLWindow::scrollCallback(GLFWwindow* window, double x, double y)
 {
 	auto iter = windows.find(window);
-	if (iter != windows.end())
-	{
+	if (iter != windows.end()) {
 		// iter->second->scroll(x, y);
 	}
 }
@@ -215,8 +184,7 @@ void OpenGLWindow::scrollCallback(GLFWwindow* window, double x, double y)
 void OpenGLWindow::focusCallback(GLFWwindow* window, int x)
 {
 	auto iter = windows.find(window);
-	if (iter != windows.end())
-	{
+	if (iter != windows.end()) {
 		// iter->second->focus(x);
 	}
-}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+}

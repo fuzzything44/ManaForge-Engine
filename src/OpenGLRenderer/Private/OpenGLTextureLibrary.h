@@ -10,7 +10,7 @@ class OpenGLRenderer;
 
 class OpenGLTextureLibrary : public TextureLibrary
 {
-public:
+  public:
 	explicit OpenGLTextureLibrary(OpenGLRenderer& renderer);
 
 	virtual ~OpenGLTextureLibrary() override;
@@ -30,8 +30,7 @@ public:
 
 	uint32 getID();
 
-private:
-
+  private:
 	GLuint texHandle;
 
 	uvec2 nextLocation;

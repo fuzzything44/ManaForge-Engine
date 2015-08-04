@@ -4,7 +4,7 @@
 
 class ModelData
 {
-public:
+  public:
 	virtual ~ModelData() = default;
 
 	virtual void init(const vec2* vertLocs, const vec2* UVs, size_t numVerts, const uvec3* elems, size_t numElems) = 0;

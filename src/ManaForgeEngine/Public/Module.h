@@ -10,11 +10,10 @@ class ModuleManager;
 class Module : boost::noncopyable
 {
 
-public:
-
+  public:
 	// aliases for the register plugin function type
-	using registerModuleFun				= void(ModuleManager&);
-	using getModuleEngineVersionFun		= float();
+	using registerModuleFun = void(ModuleManager&);
+	using getModuleEngineVersionFun = float();
 
 	ENGINE_API Module(const std::string& filename);
 
@@ -30,16 +29,14 @@ public:
 	/// <summary> Destructor.</summary>
 	ENGINE_API ~Module();
 
-private:
+  private:
 	// first so it will be destructed last.
 	SharedLibrary libraryHandle;
-	
+
 	// address to the function to register the plugin
 	registerModuleFun* registerModuleFunctionAddress;
 	getModuleEngineVersionFun* getModuleEngineVersionAddress;
 
 	std::string name;
-	std::unordered_map<std::string, std::function<void*()> > classes;
-
-
+	std::unordered_map<std::string, std::function<void*()>> classes;
 };

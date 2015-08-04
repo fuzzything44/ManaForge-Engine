@@ -9,7 +9,7 @@ class PhysicsComponent;
 
 class PhysicsBody : boost::noncopyable
 {
-public:
+  public:
 	virtual ~PhysicsBody() = default;
 
 	virtual void setRestitution(float newRestitution) = 0;
@@ -25,6 +25,6 @@ public:
 	virtual bool getIsSensor() const = 0;
 
 
-	virtual void setStartContactCallback(const std::function<void(PhysicsComponent&)>&) = 0;
-	virtual void setEndContactCallback(const std::function<void(PhysicsComponent&)>&) = 0;
+	virtual void setStartContactCallback(const std::function<void(PhysicsComponent&) >&) = 0;
+	virtual void setEndContactCallback(const std::function<void(PhysicsComponent&) >&) = 0;
 };

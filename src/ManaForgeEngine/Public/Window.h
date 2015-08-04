@@ -9,11 +9,9 @@
 #include "KeyEnum.h"
 
 /// <summary> A window.</summary>
-class Window :
-	boost::noncopyable
+class Window : boost::noncopyable
 {
-public:
-
+  public:
 	virtual ~Window() = default;
 
 	virtual const WindowProps& getWindowProps() const = 0;
@@ -22,7 +20,4 @@ public:
 
 	virtual int getIsKeyPressed(Keyboard key) = 0;
 	virtual vec2 getCursorLocPixels() = 0;
-
-
 };
-

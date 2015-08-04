@@ -12,8 +12,7 @@ class OpenGLModelData;
 
 class OpenGLModel final : public Model
 {
-public:
-
+  public:
 	friend class OpenGLRenderer;
 
 	explicit OpenGLModel(OpenGLRenderer& renderer);
@@ -21,14 +20,13 @@ public:
 
 	virtual void init(std::shared_ptr<MaterialInstance> mat, std::shared_ptr<ModelData> data, MeshComponent& ownerComp) override;
 
-	virtual MeshComponent& getOwnerComponent() override;	
+	virtual MeshComponent& getOwnerComponent() override;
 	virtual const MeshComponent& getOwnerComponent() const override;
 
 
-
 	void draw();
-private:
 
+  private:
 	std::shared_ptr<OpenGLModelData> modelData;
 
 	MeshComponent* parent;
@@ -40,5 +38,4 @@ private:
 	std::list<OpenGLModel*>::iterator location;
 
 	std::atomic<bool> isValid;
-
 };

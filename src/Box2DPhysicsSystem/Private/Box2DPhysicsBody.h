@@ -10,8 +10,8 @@ class Box2DPhysicsSystem;
 
 class Box2DPhysicsBody : public PhysicsBody
 {
-	
-public:
+
+  public:
 	Box2DPhysicsBody(Box2DPhysicsShape& shape, PhysicsComponent& owner, Box2DPhysicsSystem& system);
 	virtual ~Box2DPhysicsBody();
 
@@ -28,9 +28,9 @@ public:
 	virtual void setIsSensor(bool newIsSensor) override;
 	virtual bool getIsSensor() const override;
 
-	virtual void setStartContactCallback(const std::function<void(PhysicsComponent&)>&) override;
+	virtual void setStartContactCallback(const std::function<void(PhysicsComponent&) >&) override;
 
-	virtual void setEndContactCallback(const std::function<void(PhysicsComponent&)>&) override;
+	virtual void setEndContactCallback(const std::function<void(PhysicsComponent&) >&) override;
 
 
 	inline void callStartContactCallback(PhysicsComponent& other)
@@ -43,33 +43,29 @@ public:
 		endCallOther = &other;
 		shouldCallEndContact = true;
 	}
-	inline PhysicsComponent& getOwner() const
-	{
-		return ownerComponent;
-	}
+	inline PhysicsComponent& getOwner() const { return ownerComponent; }
 	inline void postStep()
 	{
-		
-		if (shouldCallStartContact	&& startContactCallback	&& startCallOther)	startContactCallback(*startCallOther);
-		if (shouldCallEndContact	&& endContactCallback	&& endCallOther)	endContactCallback	(*endCallOther);
-		shouldCallStartContact	= false;
-		shouldCallEndContact	= false;
+
+		if (shouldCallStartContact && startContactCallback && startCallOther) startContactCallback(*startCallOther);
+		if (shouldCallEndContact && endContactCallback && endCallOther) endContactCallback(*endCallOther);
+		shouldCallStartContact = false;
+		shouldCallEndContact = false;
 
 		startCallOther = nullptr;
 		endCallOther = nullptr;
 	}
 
-private:
+  private:
 	PhysicsComponent& ownerComponent;
-	Box2DPhysicsSystem& system; 
-	Box2DActorTransformController* ownerController; // needs to be ptr because we find it afterwards -- and it might not exist
-	
+	Box2DPhysicsSystem& system;
+	Box2DActorTransformController* ownerController;  // needs to be ptr because we find it afterwards -- and it might not
+	                                                 // exist
+
 	b2Fixture* fixture;
 
 	bool shouldCallStartContact, shouldCallEndContact;
 	PhysicsComponent* endCallOther, *startCallOther;
-	std::function<void(PhysicsComponent&)> startContactCallback;
-	std::function<void(PhysicsComponent&)> endContactCallback;
-
-
+	std::function<void(PhysicsComponent&) > startContactCallback;
+	std::function<void(PhysicsComponent&) > endContactCallback;
 };

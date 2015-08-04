@@ -10,16 +10,15 @@ class PhysicsComponent;
 
 enum class PhysicsType : uint8
 {
-	UNKNOWN		= 0,
-	DYNAMIC		= 1,
-	STATIC		= 2,
-	KINEMATIC	= 3,
+	UNKNOWN = 0,
+	DYNAMIC = 1,
+	STATIC = 2,
+	KINEMATIC = 3,
 };
 
 class ActorTransformController : boost::noncopyable
 {
-public:
-
+  public:
 	virtual ~ActorTransformController() = default;
 
 	virtual void setVelocity(vec2 newVelocity) = 0;
@@ -40,6 +39,4 @@ public:
 
 	virtual void setAngularVelocity(float newVelocity) = 0;
 	virtual float getAngularVelocity() = 0;
-
-
 };

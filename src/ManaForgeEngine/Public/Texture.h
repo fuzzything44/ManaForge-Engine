@@ -4,10 +4,9 @@
 #include <string>
 
 
-
 class Texture
 {
-public:
+  public:
 	virtual ~Texture() = default;
 
 	enum class FilterMode : uint8
@@ -21,7 +20,7 @@ public:
 	enum class WrapMode : uint8
 	{
 		CLAMP_TO_EDGE,
-		MIRRORED_REPEAT, 
+		MIRRORED_REPEAT,
 		REPEAT
 	};
 

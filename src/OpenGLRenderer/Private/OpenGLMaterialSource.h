@@ -8,26 +8,22 @@ class OpenGLRenderer;
 
 class OpenGLMaterialSource : public MaterialSource
 {
-public:
-
+  public:
 	explicit OpenGLMaterialSource(OpenGLRenderer& renderer, const path_t& name = "");
 	virtual ~OpenGLMaterialSource();
 
 	virtual void init(const path_t& name) override;
-	
+
 	virtual std::string getName() override;
 
 
-	GLint operator*() const
-	{
-		return program;
-	}
+	GLint operator*() const { return program; }
 
 	int32 startTexUniform;
 	int32 MVPUniformLocation;
-private:
+
+  private:
 	std::string name;
 	OpenGLRenderer& renderer;
 	GLint program;
 };
-

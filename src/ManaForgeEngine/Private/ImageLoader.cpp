@@ -2,8 +2,8 @@
 
 #include "ImageLoader.h"
 
-std::map<std::string, std::function<uvec2(std::string, std::vector<uint8>&)> > 
-	ImageLoader::loadFunctions = std::map<std::string, loadFun >();
+std::map<std::string, std::function<uvec2(std::string, std::vector<uint8>&) >> ImageLoader::loadFunctions =
+    std::map<std::string, loadFun>();
 
 uvec2 ImageLoader::load(std::string filename, std::vector<uint8>& data)
 {
@@ -12,15 +12,13 @@ uvec2 ImageLoader::load(std::string filename, std::vector<uint8>& data)
 	for (uint8 i = 1; filename[filename.size() - i] != '.' && i <= filename.size(); i++)
 	{
 		extension.push_back(filename[filename.size() - i]);
-
 	}
 
 	std::reverse(extension.begin(), extension.end());
 
 	auto foundIter = loadFunctions.find(extension);
 
-	if (foundIter == loadFunctions.end())
-	{
+	if (foundIter == loadFunctions.end()) {
 		MFLOG(Warning) << "no loader for extension, returning nullvector";
 
 		data.clear();
@@ -37,15 +35,11 @@ uvec2 ImageLoader::load(std::string filename, std::vector<uint8>& data)
 
 void ImageLoader::addLoader(std::string extension, loadFun function)
 {
-	if (loadFunctions.find(extension) != loadFunctions.end())
-	{
+	if (loadFunctions.find(extension) != loadFunctions.end()) {
 		MFLOG(Info) << "Dulplicate loader for " << extension << ". using newest loader.";
-
 	}
 
 	loadFunctions[extension] = function;
-
-
 }
 
 void ImageLoader::cleanUp()

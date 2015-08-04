@@ -10,10 +10,9 @@ enum class BodyType
 };
 
 
-
 class PhysicsShape
 {
-public:
+  public:
 	virtual ~PhysicsShape() = default;
 
 	virtual vec2 getPosition() = 0;

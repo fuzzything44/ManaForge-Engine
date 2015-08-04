@@ -1,4 +1,4 @@
-#pragma once 
+#pragma once
 #include "Engine.h"
 
 #include <map>
@@ -23,32 +23,30 @@ class Module;
 
 class ModuleManager : boost::noncopyable
 {
-public:
-
+  public:
 	friend Runtime;
 
-	using contentModuleSpawnFun		= std::function<void*(const std::string&)>;
-	using updateFun					= std::function<bool(float)>;
-	using initFun					= std::function<void()>;
+	using contentModuleSpawnFun = std::function<void*(const std::string&) >;
+	using updateFun = std::function<bool(float) >;
+	using initFun = std::function<void()>;
 
 	ENGINE_API ModuleManager();
 	ENGINE_API ~ModuleManager();
 
 	ENGINE_API void loadModule(const std::string& name);
 
-	template<typename T>
+	template <typename T>
 	inline void registerClass(const std::string& moduleName, T* ptr = nullptr);
-	
+
 	ENGINE_API void addInitCallback(const initFun& function);
 	ENGINE_API void addUpdateCallback(const updateFun& function);
 
 	template <typename T>
 	inline T* spawnClass(const std::string& moduleName, const std::string& className);
 
-private:
-
+  private:
 	// and finally the modules
-	std::unordered_map<std::string, std::shared_ptr<Module> > loadedModules;
+	std::unordered_map<std::string, std::shared_ptr<Module>> loadedModules;
 
 	// destroy the callbacks first
 	std::list<initFun>& getInitCallbacks();
@@ -56,8 +54,6 @@ private:
 
 	std::list<initFun> initCallbacks;
 	std::list<updateFun> updateCallbacks;
-
-
 };
 
 #include "Helper.h"
@@ -69,7 +65,7 @@ private:
 
 #include <boost/type_index.hpp>
 
-template<typename T>
+template <typename T>
 inline void ModuleManager::registerClass(const std::string& moduleName, T* ptr)
 {
 	std::string name = boost::typeindex::type_id<T>().pretty_name();
@@ -77,33 +73,27 @@ inline void ModuleManager::registerClass(const std::string& moduleName, T* ptr)
 	std::string::iterator iterAt = name.end();
 	for (auto iter = name.begin(); iter != name.end(); ++iter)
 	{
-		if (isspace(*iter))
-		{
+		if (isspace(*iter)) {
 			iterAt = iter;
 			break;
 		}
 	}
 
-	if (iterAt != name.end())
-	{
+	if (iterAt != name.end()) {
 		std::string strTemp;
 		std::copy(iterAt + 1, name.end(), std::back_inserter(strTemp));
 
 		name = strTemp;
 	}
-	
+
 
 	auto moduleIter = loadedModules.find(moduleName);
-	if (moduleIter != loadedModules.end())
-	{
-		moduleIter->second->addClass(name, 
-			[]()
-			{
-				return new T(); 
-			}
-		);
+	if (moduleIter != loadedModules.end()) {
+		moduleIter->second->addClass(name, []()
+		                             {
+			                             return new T();
+			                         });
 	}
-
 }
 
 template <typename T>
@@ -112,12 +102,10 @@ inline T* ModuleManager::spawnClass(const std::string& moduleName, const std::st
 
 	auto moduleIter = loadedModules.find(moduleName);
 
-	if (moduleIter != loadedModules.end())
-	{
+	if (moduleIter != loadedModules.end()) {
 
 		return static_cast<T*>(moduleIter->second->spawnClass(className));
 	}
 	// if we didn't return already, it wasn't found.
 	return nullptr;
 }
-

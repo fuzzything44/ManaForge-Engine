@@ -10,9 +10,9 @@
 
 class ImageLoader
 {
-public:
-	using loadFun = std::function<uvec2(std::string, std::vector<uint8>&)>;
-	
+  public:
+	using loadFun = std::function<uvec2(std::string, std::vector<uint8>&) >;
+
 	ENGINE_API static void addLoader(std::string extension, loadFun function);
 
 	// returns size
@@ -20,7 +20,6 @@ public:
 
 	ENGINE_API static void cleanUp();
 
-private:
-	static std::map<std::string, loadFun > loadFunctions;
-
+  private:
+	static std::map<std::string, loadFun> loadFunctions;
 };

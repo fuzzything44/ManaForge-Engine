@@ -14,19 +14,19 @@
 
 class TestContentPawn : public Pawn
 {
-public:
+  public:
 	TestContentPawn()
 	{
 		auto& inputManager = Runtime::get().inputManager;
 
 		inputManager.bindAxisMapping("moveLeft", [this](float amount)
-		{
-			this->moveLeft(amount);
-		});
+		                             {
+			                             this->moveLeft(amount);
+			                         });
 		inputManager.bindAxisMapping("moveUp", [this](float amount)
-		{
-			this->moveUp(amount);
-		});
+		                             {
+			                             this->moveUp(amount);
+			                         });
 
 		uvec2 windowSize = Runtime::get().renderer->getWindow().getWindowProps().size;
 
@@ -36,10 +36,7 @@ public:
 		Runtime::get().renderer->setCurrentCamera(*camera);
 
 
-
-
-		auto mat = Runtime::get().renderer->newMaterial(
-			Runtime::get().renderer->getMaterialSource("boilerplate"));
+		auto mat = Runtime::get().renderer->newMaterial(Runtime::get().renderer->getMaterialSource("boilerplate"));
 
 		auto tex = Runtime::get().renderer->getTexture("4");
 
@@ -47,26 +44,10 @@ public:
 		mat->setTexture(0, tex);
 
 		auto meshData = Runtime::get().renderer->newModelData("PlayerModel");
-		if (!meshData->isInitialized())
-		{
-			std::array<vec2, 4> locations =
-			{
-				vec2{ -1.f, -1.f },
-				vec2{ -1.f, +1.f },
-				vec2{ +1.f, -1.f },
-				vec2{ +1.f, +1.f }
-			};
-			std::array<vec2, 4> UVs =
-			{
-				vec2{ 0.f, 1.f },
-				vec2{ 0.f, 0.f },
-				vec2{ 1.f, 1.f },
-				vec2{ 1.f, 0.f }
-			};
-			std::array<uvec3, 2> tris =
-			{
-				uvec3{ 0, 1, 2 },
-				uvec3{ 1, 2, 3 }
+		if (!meshData->isInitialized()) {
+			std::array<vec2, 4> locations = {vec2{-1.f, -1.f}, vec2{-1.f, +1.f}, vec2{+1.f, -1.f}, vec2{+1.f, +1.f}};
+			std::array<vec2, 4> UVs = {vec2{0.f, 1.f}, vec2{0.f, 0.f}, vec2{1.f, 1.f}, vec2{1.f, 0.f}};
+			std::array<uvec3, 2> tris = {uvec3{0, 1, 2}, uvec3{1, 2, 3}
 
 			};
 
@@ -86,17 +67,14 @@ public:
 	void moveLeft(float amount)
 	{
 		auto a = getWorldLocation();
-		if (amount)
-			applyLocalForce(vec2{ -amount*100.f, 0.f }, vec2{ 0.f, 0.f });
+		if (amount) applyLocalForce(vec2{-amount * 100.f, 0.f}, vec2{0.f, 0.f});
 	}
 	void moveUp(float amount)
 	{
-		if (amount)
-			applyLocalForce(vec2{ 0.f, amount*100.f }, vec2{ 0.f, 0.f });
-
+		if (amount) applyLocalForce(vec2{0.f, amount * 100.f}, vec2{0.f, 0.f});
 	}
 
-private:
+  private:
 	std::unique_ptr<MeshComponent> mesh;
 	std::unique_ptr<PhysicsComponent> phyMesh;
 	std::unique_ptr<CameraComponent> camera;

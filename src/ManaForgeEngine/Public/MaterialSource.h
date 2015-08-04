@@ -4,13 +4,11 @@
 
 class MaterialSource
 {
-public:
+  public:
 	virtual ~MaterialSource() = default;
 
 	virtual void init(const path_t& name) = 0;
 
 
 	virtual std::string getName() = 0;
-
 };
-

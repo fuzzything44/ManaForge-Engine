@@ -2,8 +2,7 @@
 
 #include <Logging.h>
 
-OpenALSoundCue::OpenALSoundCue(const path_t& name)
-	:name(name)
+OpenALSoundCue::OpenALSoundCue(const path_t& name) : name(name)
 {
 	path_t path = L"sounds\\" + name.wstring() + L".wav";
 
@@ -12,13 +11,9 @@ OpenALSoundCue::OpenALSoundCue(const path_t& name)
 	ALint amtChannels;
 	alGetBufferi(bufferHandle, AL_CHANNELS, &amtChannels);
 
-	if (amtChannels == 2)
-	{
+	if (amtChannels == 2) {
 		MFLOG(Info) << "using stereo buffer: " << name << ". The sound will not be location based";
 	}
 }
 
-path_t OpenALSoundCue::getName() const
-{
-	return name;
-}
+path_t OpenALSoundCue::getName() const { return name; }

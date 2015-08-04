@@ -11,27 +11,25 @@
 #include <boost/lexical_cast.hpp>
 
 
-InputManager::InputManager(Window* window): window(window)
+InputManager::InputManager(Window* window) : window(window)
 {
-	std::ifstream i_stream{ "bindings.txt" };
+	std::ifstream i_stream{"bindings.txt"};
 
-	if (!i_stream.is_open())
-	{
+	if (!i_stream.is_open()) {
 		MFLOG(Fatal) << "bindings.txt not found";
 	}
 
-	try{
+	try
+	{
 
-		boost::archive::xml_iarchive i_archive{ i_stream };
+		boost::archive::xml_iarchive i_archive{i_stream};
 
 		i_archive >> BOOST_SERIALIZATION_NVP(actionMappings);
 		i_archive >> BOOST_SERIALIZATION_NVP(axisMappings);
-
 	}
 	catch (boost::archive::archive_exception& e)
 	{
-		MFLOG(Fatal) << "ARCHIVE EXCEPTION OCCURED IN LOADING INPUT MANAGER. Code: " << e.code << 
-			" Error message: " << e.what();
+		MFLOG(Fatal) << "ARCHIVE EXCEPTION OCCURED IN LOADING INPUT MANAGER. Code: " << e.code << " Error message: " << e.what();
 	}
 	catch (std::exception& e)
 	{
@@ -39,17 +37,13 @@ InputManager::InputManager(Window* window): window(window)
 	}
 }
 
-void InputManager::setWindow(Window& newWindow)
-{
-	window = &newWindow;
-}
+void InputManager::setWindow(Window& newWindow) { window = &newWindow; }
 
 void InputManager::bindActionMappingPressed(const std::string& name, std::function<void()> callback)
 {
 	auto iter = actionMappings.find(name);
 
-	if (iter != actionMappings.end())
-	{
+	if (iter != actionMappings.end()) {
 		iter->second.pressed = callback;
 	}
 	else
@@ -62,8 +56,7 @@ void InputManager::bindActionMappingReleased(const std::string& name, std::funct
 {
 	auto iter = actionMappings.find(name);
 
-	if (iter != actionMappings.end())
-	{
+	if (iter != actionMappings.end()) {
 		iter->second.released = callback;
 	}
 	else
@@ -72,12 +65,11 @@ void InputManager::bindActionMappingReleased(const std::string& name, std::funct
 	}
 }
 
-void InputManager::bindAxisMapping(const std::string& name, std::function<void(float)> callback)
+void InputManager::bindAxisMapping(const std::string& name, std::function<void(float) > callback)
 {
 	auto iter = axisMappings.find(name);
 
-	if (iter != axisMappings.end())
-	{
+	if (iter != axisMappings.end()) {
 		iter->second.callback = callback;
 	}
 	else
@@ -104,42 +96,27 @@ bool InputManager::update()
 	return true;
 }
 
-InputManager::ActionMapping::ActionMapping(const std::vector<Keyboard>& keys)
-	: keysBound(keys)
-{
-			
-}
+InputManager::ActionMapping::ActionMapping(const std::vector<Keyboard>& keys) : keysBound(keys) {}
 
-InputManager::ActionMapping::~ActionMapping()
-{
-	
-}
+InputManager::ActionMapping::~ActionMapping() {}
 
-void InputManager::ActionMapping::setPressedCallback(std::function<void()> fun)
-{
-	pressed = fun;
-}
+void InputManager::ActionMapping::setPressedCallback(std::function<void()> fun) { pressed = fun; }
 
-void InputManager::ActionMapping::setReleasedCallback(std::function<void()> fun)
-{
-	released = fun;
-}
+void InputManager::ActionMapping::setReleasedCallback(std::function<void()> fun) { released = fun; }
 
 void InputManager::ActionMapping::operator()()
 {
 	// if neither of the events exist, return.
-	if (!pressed && !released)
-	{
+	if (!pressed && !released) {
 		return;
 	}
 
 	bool isPressedNew = false;
-	for(auto& elem : keysBound)
+	for (auto& elem : keysBound)
 	{
 		// if there is one that is pressed, the entire binding is pressed,
 		// so break
-		if (Runtime::get().inputManager.window->getIsKeyPressed(elem))
-		{
+		if (Runtime::get().inputManager.window->getIsKeyPressed(elem)) {
 			isPressedNew = true;
 			break;
 		}
@@ -155,19 +132,11 @@ void InputManager::ActionMapping::operator()()
 	if (!isPressedNew && isPressed && released) released();
 }
 
-InputManager::AxisMapping::AxisMapping(const std::vector<std::pair<Keyboard, float>>& values)
-	: values(values)
-{
-}
+InputManager::AxisMapping::AxisMapping(const std::vector<std::pair<Keyboard, float>>& values) : values(values) {}
 
-InputManager::AxisMapping::~AxisMapping()
-{
-}
+InputManager::AxisMapping::~AxisMapping() {}
 
-void InputManager::AxisMapping::setCallback(std::function<void(float)> newCallback)
-{
-	callback = newCallback;
-}
+void InputManager::AxisMapping::setCallback(std::function<void(float) > newCallback) { callback = newCallback; }
 
 void InputManager::AxisMapping::operator()()
 {
@@ -179,6 +148,5 @@ void InputManager::AxisMapping::operator()()
 		totalValue += Runtime::get().inputManager.window->getIsKeyPressed(elem.first) * elem.second;
 	}
 
-	if (callback)
-		callback(totalValue);
+	if (callback) callback(totalValue);
 }

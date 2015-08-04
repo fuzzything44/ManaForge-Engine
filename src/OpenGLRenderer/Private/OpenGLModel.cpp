@@ -15,15 +15,11 @@
 
 #include <glm-ortho-2d.h>
 
-OpenGLModel::OpenGLModel(OpenGLRenderer& renderer) :
-	renderer(renderer),
-	isValid(true)
+OpenGLModel::OpenGLModel(OpenGLRenderer& renderer) : renderer(renderer), isValid(true)
 {
 	// add model to renderer's list
 	location = renderer.models.insert(renderer.models.begin(), this);
-
 }
-
 
 
 OpenGLModel::~OpenGLModel()
@@ -31,10 +27,9 @@ OpenGLModel::~OpenGLModel()
 	isValid = false;
 	// this could be pretty slow, needs optimization.
 	renderer.runOnRenderThreadSync([location = location]
-	{
-		static_cast<OpenGLRenderer*>(Runtime::get().renderer.get())->models.erase(location);
-	});
-	
+	                               {
+		                               static_cast<OpenGLRenderer*>(Runtime::get().renderer.get())->models.erase(location);
+		                           });
 }
 
 void OpenGLModel::init(std::shared_ptr<MaterialInstance> mat, std::shared_ptr<ModelData> data, MeshComponent& ownerComp)
@@ -42,27 +37,26 @@ void OpenGLModel::init(std::shared_ptr<MaterialInstance> mat, std::shared_ptr<Mo
 	material = std::static_pointer_cast<OpenGLMaterialInstance>(mat);
 	modelData = std::static_pointer_cast<OpenGLModelData>(data);
 	parent = &ownerComp;
-
 }
 
 
 MeshComponent& OpenGLModel::getOwnerComponent()
 {
-	assert(parent);  return *parent;
+	assert(parent);
+	return *parent;
 }
 
 const MeshComponent& OpenGLModel::getOwnerComponent() const
 {
-	assert(parent); return *parent;
+	assert(parent);
+	return *parent;
 }
-
 
 
 void OpenGLModel::draw()
 {
 
-	if (isValid)
-	{
+	if (isValid) {
 		mat3 view = renderer.getCurrentCamera().getViewMat();
 		mat3 model = parent->getModelMatrix();
 
@@ -79,5 +73,4 @@ void OpenGLModel::draw()
 
 		modelData->draw();
 	}
-
 }

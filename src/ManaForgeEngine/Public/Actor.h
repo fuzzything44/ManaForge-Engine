@@ -11,20 +11,14 @@
 
 class Component;
 
-template<typename Derived>
+template <typename Derived>
 struct TickingActor
 {
-	TickingActor()
-	{
-		connection = Runtime::get().world->registerTickingActor(static_cast<Derived&>(*this));
-	}
+	TickingActor() { connection = Runtime::get().world->registerTickingActor(static_cast<Derived&>(*this)); }
 
-	~TickingActor()
-	{
-		connection.disconnect();
-	}
+	~TickingActor() { connection.disconnect(); }
 
-private:
+  private:
 	boost::signals2::connection connection;
 };
 
@@ -33,13 +27,12 @@ class Actor
 {
 	friend class boost::serialization::access;
 
-public:
-	
+  public:
 	friend Component;
 
 	// the global ID for this instatnce of the actor -- used mainly for networking
 	std::unique_ptr<ActorLocation> GUID;
-	
+
 	/// <summary> Actors.</summary>
 	///
 	/// <param name="dataIn">  The data in.</param>
@@ -93,22 +86,20 @@ public:
 	ENGINE_API virtual void tick(float deltaTime);
 
 
-protected:
-
+  protected:
 	std::unique_ptr<ActorTransformController> transController;
 
-	std::deque<Component* > components;
+	std::deque<Component*> components;
 
 
-	// save and load functions    
-	template<class Archive>
-	inline void save(Archive & ar, const unsigned int version) const;
+	// save and load functions
+	template <class Archive>
+	inline void save(Archive& ar, const unsigned int version) const;
 
-	template<class Archive>
-	inline void load(Archive & ar, const unsigned int version);
+	template <class Archive>
+	inline void load(Archive& ar, const unsigned int version);
 
 	BOOST_SERIALIZATION_SPLIT_MEMBER();
-
 };
 
 
@@ -117,21 +108,21 @@ protected:
 ////////////////////////////////////////////////////////////////
 
 
-template<class Archive>
-inline void Actor::save(Archive & ar, const unsigned int version) const
+template <class Archive>
+inline void Actor::save(Archive& ar, const unsigned int version) const
 {
 	Transform trans = transController->getTransform();
 	vec2 velocity = transController->getVelocity();
-	ar  & BOOST_SERIALIZATION_NVP(trans);
-	ar  & BOOST_SERIALIZATION_NVP(velocity);
+	ar& BOOST_SERIALIZATION_NVP(trans);
+	ar& BOOST_SERIALIZATION_NVP(velocity);
 }
-template<class Archive>
-inline void Actor::load(Archive & ar, const unsigned int version)
+template <class Archive>
+inline void Actor::load(Archive& ar, const unsigned int version)
 {
 	Transform trans;
 	vec2 velocity;
-	ar  & BOOST_SERIALIZATION_NVP(trans);
-	ar  & BOOST_SERIALIZATION_NVP(velocity);
+	ar& BOOST_SERIALIZATION_NVP(trans);
+	ar& BOOST_SERIALIZATION_NVP(velocity);
 
 	transController->setTransform(trans);
 	transController->setVelocity(velocity);
@@ -144,15 +135,11 @@ BOOST_CLASS_EXPORT_KEY2(Actor, "Default.Actor");
 
 /////////////////// START TRANSFORM MANIPULATION ///////////////////////////
 
-inline Transform Actor::getWorldTransform() const
-{ 
-	return transController->getTransform();
-}
+inline Transform Actor::getWorldTransform() const { return transController->getTransform(); }
 inline vec2 Actor::getWorldLocation() const
 {
 	const Transform& trans = transController->getTransform();
 	return trans.location;
-
 }
 inline vec2 Actor::getScale() const
 {
@@ -185,10 +172,7 @@ inline void Actor::setWorldRotation(float newRot)
 	trans.rotation = newRot;
 	transController->setTransform(trans);
 }
-inline void Actor::setWorldTransform(const Transform& newTrans)
-{
-	transController->setTransform(newTrans);
-}
+inline void Actor::setWorldTransform(const Transform& newTrans) { transController->setTransform(newTrans); }
 
 inline void Actor::addWorldLocation(vec2 locToAdd)
 {
@@ -214,53 +198,28 @@ inline mat3 Actor::getModelMatrix()
 	ret = glm::translate(ret, trans.location);
 	ret = glm::rotate(ret, trans.rotation);
 	ret = glm::scale(ret, trans.scale);
-	
+
 	return ret;
 }
 
 
-
-inline PhysicsType Actor::getPhysicsType() const
-{
-	return transController->getType();
-}
-inline void Actor::setPhysicsType(PhysicsType newType)
-{
-	transController->setType(newType);
-}
+inline PhysicsType Actor::getPhysicsType() const { return transController->getType(); }
+inline void Actor::setPhysicsType(PhysicsType newType) { transController->setType(newType); }
 
 
-inline vec2 Actor::getVelocity() const
-{
-	return transController->getVelocity();
-}
-inline void Actor::setVelocity(const vec2& newVelocity)
-{
-	return transController->setVelocity(newVelocity);
-}
+inline vec2 Actor::getVelocity() const { return transController->getVelocity(); }
+inline void Actor::setVelocity(const vec2& newVelocity) { return transController->setVelocity(newVelocity); }
 
 
-inline void Actor::applyLocalForce(vec2 force, vec2 point)
-{
-	transController->applyLocalForce(force, point);
-}
+inline void Actor::applyLocalForce(vec2 force, vec2 point) { transController->applyLocalForce(force, point); }
 
 inline void Actor::applyWorldForce(vec2 worldForce, vec2 worldPoint)
 {
 	transController->applyWorldForce(worldForce, worldPoint);
 }
 
-inline void Actor::applyTorque(float magnitude)
-{
-	transController->applyTorque(magnitude);
-}
+inline void Actor::applyTorque(float magnitude) { transController->applyTorque(magnitude); }
 
 
-inline void Actor::setAngularVelocity(float newVelocity)
-{
-	transController->setAngularVelocity(newVelocity);
-}
-inline float Actor::getAngularVelocity()
-{
-	return transController->getAngularVelocity();
-}
+inline void Actor::setAngularVelocity(float newVelocity) { transController->setAngularVelocity(newVelocity); }
+inline float Actor::getAngularVelocity() { return transController->getAngularVelocity(); }

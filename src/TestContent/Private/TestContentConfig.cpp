@@ -16,7 +16,4 @@ extern "C" TestContent_API void registerModule(ModuleManager& mm)
 	mm.registerClass<TestContentPawn>(MODULE_NAME);
 }
 
-extern "C" TestContent_API float getModuleEngineVersion()
-{
-	return ENGINE_VERSION;
-}
+extern "C" TestContent_API float getModuleEngineVersion() { return ENGINE_VERSION; }

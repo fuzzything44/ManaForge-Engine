@@ -9,8 +9,8 @@ class Box2DPhysicsSystem;
 class Box2DActorTransformController : public ActorTransformController
 {
 	friend class Box2DPhysicsBody;
-public:
 
+  public:
 	explicit Box2DActorTransformController(Actor& owner, Box2DPhysicsSystem& system);
 	virtual ~Box2DActorTransformController();
 
@@ -34,16 +34,10 @@ public:
 	virtual Actor& getOwner() const override;
 
 
-
 	Box2DPhysicsSystem& system;
 
-	static void bodyDeleter(b2Body* ptr)
-	{
-		ptr->GetWorld()->DestroyBody(ptr);
-	}
+	static void bodyDeleter(b2Body* ptr) { ptr->GetWorld()->DestroyBody(ptr); }
 
 	std::unique_ptr<b2Body, decltype(&bodyDeleter)> body;
 	Actor& owner;
-
-
 };

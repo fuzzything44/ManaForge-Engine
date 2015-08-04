@@ -8,27 +8,23 @@
 
 #include <thread>
 
-OpenGLMaterialSource::OpenGLMaterialSource(OpenGLRenderer& renderer, const path_t& name)
-	:renderer(renderer)
+OpenGLMaterialSource::OpenGLMaterialSource(OpenGLRenderer& renderer, const path_t& name) : renderer(renderer)
 {
-	if (!name.empty())
-		init(name);
+	if (!name.empty()) init(name);
 }
 
 OpenGLMaterialSource::~OpenGLMaterialSource()
 {
 
 	renderer.runOnRenderThreadSync([this]
-	{
-		glDeleteProgram(program);
-	});
+	                               {
+		                               glDeleteProgram(program);
+		                           });
 }
 
 void OpenGLMaterialSource::init(const path_t& name)
 {
 	assert(renderer.isOnRenderThread());
-
-
 
 
 	path_t vertexPath = L"shaders\\" + name.wstring() + L"vert.glsl";
@@ -59,12 +55,10 @@ void OpenGLMaterialSource::init(const path_t& name)
 	// Check Vertex Shader
 	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &Result);
 	glGetShaderiv(vertexShader, GL_INFO_LOG_LENGTH, &InfoLogLength);
-	if (InfoLogLength > 1){
+	if (InfoLogLength > 1) {
 		auto VertexShaderErrorMessage = std::vector<char>(InfoLogLength + 1);
 		glGetShaderInfoLog(vertexShader, InfoLogLength, nullptr, VertexShaderErrorMessage.data());
 		MFLOG(Error) << VertexShaderErrorMessage.data();
-
-
 	}
 	else
 	{
@@ -81,7 +75,7 @@ void OpenGLMaterialSource::init(const path_t& name)
 	// Check Fragment Shader
 	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &Result);
 	glGetShaderiv(fragmentShader, GL_INFO_LOG_LENGTH, &InfoLogLength);
-	if (InfoLogLength > 1){
+	if (InfoLogLength > 1) {
 		auto FragmentShaderErrorMessage = std::vector<char>(InfoLogLength + 1);
 		glGetShaderInfoLog(fragmentShader, InfoLogLength, nullptr, FragmentShaderErrorMessage.data());
 		MFLOG(Error) << FragmentShaderErrorMessage.data();
@@ -102,7 +96,7 @@ void OpenGLMaterialSource::init(const path_t& name)
 	// Check the program
 	glGetProgramiv(program, GL_LINK_STATUS, &Result);
 	glGetProgramiv(program, GL_INFO_LOG_LENGTH, &InfoLogLength);
-	if (InfoLogLength > 1){
+	if (InfoLogLength > 1) {
 		auto ProgramErrorMessage = std::vector<char>(InfoLogLength + 1);
 		glGetProgramInfoLog(program, InfoLogLength, nullptr, ProgramErrorMessage.data());
 		MFLOG(Error) << ProgramErrorMessage.data();
@@ -113,20 +107,15 @@ void OpenGLMaterialSource::init(const path_t& name)
 
 
 	startTexUniform = glGetUniformLocation(program, "textures");
-	if (startTexUniform == -1)
-	{
+	if (startTexUniform == -1) {
 		MFLOG(Warning) << "Could not find startTexUniform in program: " << name;
 	}
 
 
 	MVPUniformLocation = glGetUniformLocation(program, "MVPmat");
-	if (MVPUniformLocation == -1)
-	{
+	if (MVPUniformLocation == -1) {
 		MFLOG(Warning) << "Could not find MVPUniformLocation in program: " << name;
 	}
 }
 
-std::string OpenGLMaterialSource::getName()
-{
-	return name;
-}
+std::string OpenGLMaterialSource::getName() { return name; }

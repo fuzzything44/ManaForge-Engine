@@ -11,13 +11,13 @@ int32 main(int argc, char** argv)
 		// run the runtime. consumes the thread until it returns
 		runtime->run();
 	}
-	catch(const ENGException& /*e*/) { }
-	catch (const std::exception& /*e*/) { }
-	
+	catch (const ENGException& /*e*/)
+	{
+	}
+	catch (const std::exception& /*e*/)
+	{
+	}
 
 
 	return 0;
-
 }
-
-
