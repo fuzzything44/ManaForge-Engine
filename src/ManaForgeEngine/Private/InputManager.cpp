@@ -98,8 +98,8 @@ bool InputManager::update()
 }
 
 InputManager::ActionMapping::ActionMapping(const std::vector<Keyboard>& keys)
-	: keysBound(keys),
-	isPressed(false)
+	: keysBound(keys)
+	, isPressed(false)
 {
 }
 

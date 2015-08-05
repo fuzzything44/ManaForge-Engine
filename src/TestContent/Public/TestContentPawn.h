@@ -31,12 +31,12 @@ class TestContentPawn : public Pawn
 			});
 		inputManager.bindActionMappingPressed("ResetLocation",
 			[this]
-		{
-			setWorldLocation({ 0.f, 0.f });
-			setWorldRotation(0.f);
-			setVelocity({ 0.f, 0.f });
-			setAngularVelocity(0.f);
-		});
+			{
+				setWorldLocation({0.f, 0.f});
+				setWorldRotation(0.f);
+				setVelocity({0.f, 0.f});
+				setAngularVelocity(0.f);
+			});
 
 		uvec2 windowSize = Runtime::get().renderer->getWindow().getWindowProps().size;
 
