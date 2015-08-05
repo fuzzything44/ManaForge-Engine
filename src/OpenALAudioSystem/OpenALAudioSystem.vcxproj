@@ -87,6 +87,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(ModuleOutputDir)</OutDir>
     <TargetExt>.dll</TargetExt>
+    <IncludePath>$(ProjectDir)alut\include;$(ProjectDir)openal\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <TargetExt>.dll</TargetExt>

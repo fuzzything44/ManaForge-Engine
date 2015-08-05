@@ -12,6 +12,7 @@
 #pragma comment(lib, "StackWalker.lib")
 
 #include <glm/glm.hpp>
+#include <glm/gtx/type_aligned.hpp>
 #include <glm/gtx/transform.hpp>
 #include <glm/gtx/matrix_transform_2d.hpp>
 

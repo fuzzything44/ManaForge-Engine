@@ -673,7 +673,9 @@
 
 // Not standard
 #define GLM_HAS_ANONYMOUS_UNION (GLM_LANG & GLM_LANG_CXXMS_FLAG)
-
+// Russell Greene start edit
+#undef GLM_HAS_ANONYMOUS_UNION
+// Russell Greene end edit
 ///////////////////////////////////////////////////////////////////////////////////
 // Platform 
 
