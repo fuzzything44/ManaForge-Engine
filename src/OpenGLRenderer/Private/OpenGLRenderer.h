@@ -98,8 +98,7 @@ class OpenGLRenderer : public Renderer
 	inline auto runOnRenderThreadSync(Function&& func, Args&&... args);
 
 	template <typename Function, typename... Args>
-	inline auto runOnRenderThreadAsync(Function&& func, Args&&... args)
-		-> std::future<decltype(func(Args&&...))>;
+	inline auto runOnRenderThreadAsync(Function&& func, Args&&... args);
 
 	inline bool isOnRenderThread() { return std::this_thread::get_id() == renderThread.getThread().get_id(); }
 
@@ -146,7 +145,6 @@ inline auto OpenGLRenderer::runOnRenderThreadSync(Function&& func, Args&&... arg
 
 template <typename Function, typename... Args>
 inline auto OpenGLRenderer::runOnRenderThreadAsync(Function&& func, Args&&... args)
-	-> std::future<decltype(func(Args&&...))>
 {
 	if (isOnRenderThread())
 		MFLOG(Error) << "Cannot run an async task on the render thread, you're already on that thread!";

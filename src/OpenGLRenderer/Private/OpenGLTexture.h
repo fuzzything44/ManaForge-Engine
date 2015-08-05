@@ -35,7 +35,8 @@ class OpenGLTexture : public Texture
 
 	int32 loadDDS(const std::string& filename);
 	// void appendDDS(uint32 texToAppend, uint32 Xoffset, uint32 Yoffset, const char* filepath);
-	// uint32 allocateCompressedTextureLibraryFromDDS(uint32 num, const char* filepath);			// keeping just
+	// uint32 allocateCompressedTextureLibraryFromDDS(uint32 num, const char* filepath);			// keeping
+	// just
 	// in
 	// case
 };

@@ -53,7 +53,7 @@ void OpenGLMaterialInstance::setProperty(const std::string& propName, int i)
 				}};
 		});
 }
-void OpenGLMaterialInstance::setProperty(const std::string& propName, ivec2 i)
+void OpenGLMaterialInstance::setProperty(const std::string& propName, const ivec2& i)
 {
 	renderer.runOnRenderThreadAsync([this, propName, i]
 		{
@@ -65,7 +65,7 @@ void OpenGLMaterialInstance::setProperty(const std::string& propName, ivec2 i)
 				}};
 		});
 }
-void OpenGLMaterialInstance::setProperty(const std::string& propName, ivec3 i)
+void OpenGLMaterialInstance::setProperty(const std::string& propName, const ivec3& i)
 {
 
 	renderer.runOnRenderThreadAsync([this, propName, i]
@@ -78,7 +78,7 @@ void OpenGLMaterialInstance::setProperty(const std::string& propName, ivec3 i)
 				}};
 		});
 }
-void OpenGLMaterialInstance::setProperty(const std::string& propName, ivec4 i)
+void OpenGLMaterialInstance::setProperty(const std::string& propName, const ivec4& i)
 {
 
 	renderer.runOnRenderThreadAsync([this, propName, i]
@@ -145,7 +145,7 @@ void OpenGLMaterialInstance::setProperty(const std::string& propName, float i)
 				}};
 		});
 }
-void OpenGLMaterialInstance::setProperty(const std::string& propName, vec2 i)
+void OpenGLMaterialInstance::setProperty(const std::string& propName, const vec2& i)
 {
 	renderer.runOnRenderThreadAsync([this, propName, i]
 		{
@@ -157,7 +157,7 @@ void OpenGLMaterialInstance::setProperty(const std::string& propName, vec2 i)
 				}};
 		});
 }
-void OpenGLMaterialInstance::setProperty(const std::string& propName, vec3 i)
+void OpenGLMaterialInstance::setProperty(const std::string& propName, const vec3& i)
 {
 	renderer.runOnRenderThreadAsync([this, propName, i]
 		{
@@ -169,7 +169,7 @@ void OpenGLMaterialInstance::setProperty(const std::string& propName, vec3 i)
 				}};
 		});
 }
-void OpenGLMaterialInstance::setProperty(const std::string& propName, vec4 i)
+void OpenGLMaterialInstance::setProperty(const std::string& propName, const vec4& i)
 {
 	renderer.runOnRenderThreadAsync([this, propName, i]
 		{
@@ -183,7 +183,7 @@ void OpenGLMaterialInstance::setProperty(const std::string& propName, vec4 i)
 }
 void OpenGLMaterialInstance::setProperty(const std::string& propName, float* i, size_t size)
 {
-	renderer.runOnRenderThreadAsync([this, propName, i, size]
+	renderer.runOnRenderThreadAsync([this, &propName, i, size]
 		{
 			switch (size)
 			{
@@ -222,9 +222,9 @@ void OpenGLMaterialInstance::setProperty(const std::string& propName, float* i, 
 			}
 		});
 }
-void OpenGLMaterialInstance::setPropertyMatrix(const std::string& propName, mat2 i)
+void OpenGLMaterialInstance::setPropertyMatrix(const std::string& propName, const mat2& i)
 {
-	renderer.runOnRenderThreadAsync([this, propName, i]
+	renderer.runOnRenderThreadAsync([this, &propName, i]
 		{
 			properties[propName] = std::tuple<int32, std::function<void(int32)>>{
 				glGetUniformLocation(**program, propName.c_str()),
@@ -234,9 +234,9 @@ void OpenGLMaterialInstance::setPropertyMatrix(const std::string& propName, mat2
 				}};
 		});
 }
-void OpenGLMaterialInstance::setPropertyMatrix(const std::string& propName, mat3 i)
+void OpenGLMaterialInstance::setPropertyMatrix(const std::string& propName, const mat3& i)
 {
-	renderer.runOnRenderThreadAsync([this, propName, i]
+	renderer.runOnRenderThreadAsync([this, &propName, i]
 		{
 			properties[propName] = std::tuple<int32, std::function<void(int32)>>{
 				glGetUniformLocation(**program, propName.c_str()),
@@ -246,9 +246,9 @@ void OpenGLMaterialInstance::setPropertyMatrix(const std::string& propName, mat3
 				}};
 		});
 }
-void OpenGLMaterialInstance::setPropertyMatrix(const std::string& propName, mat4 i)
+void OpenGLMaterialInstance::setPropertyMatrix(const std::string& propName, const mat4& i)
 {
-	renderer.runOnRenderThreadAsync([this, propName, i]
+	renderer.runOnRenderThreadAsync([this, &propName, i]
 		{
 			properties[propName] = std::tuple<int32, std::function<void(int32)>>{
 				glGetUniformLocation(**program, propName.c_str()),
@@ -260,7 +260,7 @@ void OpenGLMaterialInstance::setPropertyMatrix(const std::string& propName, mat4
 }
 void OpenGLMaterialInstance::setPropertyMatrix2ptr(const std::string& propName, float* i)
 {
-	renderer.runOnRenderThreadAsync([this, propName, i]
+	renderer.runOnRenderThreadAsync([this, &propName, i]
 		{
 			properties[propName] = std::tuple<int32, std::function<void(int32)>>{
 				glGetUniformLocation(**program, propName.c_str()),
@@ -272,7 +272,7 @@ void OpenGLMaterialInstance::setPropertyMatrix2ptr(const std::string& propName, 
 }
 void OpenGLMaterialInstance::setPropertyMatrix3ptr(const std::string& propName, float* i)
 {
-	renderer.runOnRenderThreadAsync([this, propName, i]
+	renderer.runOnRenderThreadAsync([this, &propName, i]
 		{
 			properties[propName] = std::tuple<int32, std::function<void(int32)>>{
 				glGetUniformLocation(**program, propName.c_str()),
@@ -284,7 +284,7 @@ void OpenGLMaterialInstance::setPropertyMatrix3ptr(const std::string& propName, 
 }
 void OpenGLMaterialInstance::setPropertyMatrix4ptr(const std::string& propName, float* i)
 {
-	renderer.runOnRenderThreadAsync([this, propName, i]
+	renderer.runOnRenderThreadAsync([this, &propName, i]
 		{
 			properties[propName] = std::tuple<int32, std::function<void(int32)>>{
 				glGetUniformLocation(**program, propName.c_str()),
