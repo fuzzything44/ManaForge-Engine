@@ -2,8 +2,18 @@
 <!DOCTYPE boost_serialization>
 <boost_serialization signature="serialization::archive" version="12">
 <actionMappings class_id="0" tracking_level="0" version="0">
-	<count>0</count>
+	<count>1</count>
 	<item_version>0</item_version>
+	<item class_id="1" tracking_level="0" version="0">
+		<first>ResetLocation</first>
+		<second class_id="2" tracking_level="0" version="0">
+			<keysBound class_id="3" tracking_level="0" version="0">
+				<count>1</count>
+				<item_version>0</item_version>
+				<item>82</item>
+			</keysBound>
+		</second>
+	</item>
 </actionMappings>
 <axisMappings class_id="4" tracking_level="0" version="0">
 	<count>2</count>
