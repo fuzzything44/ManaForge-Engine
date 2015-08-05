@@ -11,8 +11,7 @@
 
 class Component;
 
-template <typename Derived>
-struct TickingActor
+template <typename Derived> struct TickingActor
 {
 	TickingActor() { connection = Runtime::get().world->registerTickingActor(static_cast<Derived&>(*this)); }
 
@@ -47,7 +46,6 @@ class Actor
 	/// <summary> destructor </summary>
 	ENGINE_API virtual ~Actor();
 
-
 	//////////////////////// TRANSFORM MODIFICATION START ///////////////////
 	inline Transform getWorldTransform() const;
 	inline vec2 getWorldLocation() const;
@@ -79,45 +77,36 @@ class Actor
 
 	inline void applyTorque(float magnituede);
 
-
 	/// <summary> Ticks the given delta time.</summary>
 	///
 	/// <param name="deltaTime"> The delta time.</param>
 	ENGINE_API virtual void tick(float deltaTime);
-
 
   protected:
 	std::unique_ptr<ActorTransformController> transController;
 
 	std::deque<Component*> components;
 
-
 	// save and load functions
-	template <class Archive>
-	inline void save(Archive& ar, const unsigned int version) const;
+	template <class Archive> inline void save(Archive& ar, const unsigned int version) const;
 
-	template <class Archive>
-	inline void load(Archive& ar, const unsigned int version);
+	template <class Archive> inline void load(Archive& ar, const unsigned int version);
 
 	BOOST_SERIALIZATION_SPLIT_MEMBER();
 };
-
 
 ////////////////////////////////////////////////////////////////
 ///// INLINE DEFINITIONS ///////////////////////////////////////
 ////////////////////////////////////////////////////////////////
 
-
-template <class Archive>
-inline void Actor::save(Archive& ar, const unsigned int version) const
+template <class Archive> inline void Actor::save(Archive& ar, const unsigned int version) const
 {
 	Transform trans = transController->getTransform();
 	vec2 velocity = transController->getVelocity();
 	ar& BOOST_SERIALIZATION_NVP(trans);
 	ar& BOOST_SERIALIZATION_NVP(velocity);
 }
-template <class Archive>
-inline void Actor::load(Archive& ar, const unsigned int version)
+template <class Archive> inline void Actor::load(Archive& ar, const unsigned int version)
 {
 	Transform trans;
 	vec2 velocity;
@@ -131,7 +120,6 @@ inline void Actor::load(Archive& ar, const unsigned int version)
 BOOST_CLASS_EXPORT_KEY2(Actor, "Default.Actor");
 
 #include "Component.h"
-
 
 /////////////////// START TRANSFORM MANIPULATION ///////////////////////////
 
@@ -202,14 +190,11 @@ inline mat3 Actor::getModelMatrix()
 	return ret;
 }
 
-
 inline PhysicsType Actor::getPhysicsType() const { return transController->getType(); }
 inline void Actor::setPhysicsType(PhysicsType newType) { transController->setType(newType); }
 
-
 inline vec2 Actor::getVelocity() const { return transController->getVelocity(); }
 inline void Actor::setVelocity(const vec2& newVelocity) { return transController->setVelocity(newVelocity); }
-
 
 inline void Actor::applyLocalForce(vec2 force, vec2 point) { transController->applyLocalForce(force, point); }
 
@@ -219,7 +204,6 @@ inline void Actor::applyWorldForce(vec2 worldForce, vec2 worldPoint)
 }
 
 inline void Actor::applyTorque(float magnitude) { transController->applyTorque(magnitude); }
-
 
 inline void Actor::setAngularVelocity(float newVelocity) { transController->setAngularVelocity(newVelocity); }
 inline float Actor::getAngularVelocity() { return transController->getAngularVelocity(); }

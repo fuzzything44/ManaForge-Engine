@@ -50,10 +50,8 @@ DefaultWorld::DefaultWorld(const std::string& name)
 	}
 }
 
-
 DefaultWorld::~DefaultWorld()
 {
-
 
 	while (actors.end() != actors.begin())
 	{
@@ -63,7 +61,6 @@ DefaultWorld::~DefaultWorld()
 	assert(actors.size() == 0);
 }
 
-
 void DefaultWorld::init(const std::string& name)
 {
 
@@ -71,10 +68,10 @@ void DefaultWorld::init(const std::string& name)
 	propManager.init(folderLocation + "world.json");
 
 	auto drawMaterial = std::shared_ptr<MaterialInstance>{
-	    Runtime::get().renderer->newMaterial(Runtime::get().renderer->getMaterialSource("boilerplate"))};
+		Runtime::get().renderer->newMaterial(Runtime::get().renderer->getMaterialSource("boilerplate"))};
 
-	auto backgroundImages =
-	    std::shared_ptr<TextureLibrary>{Runtime::get().renderer->newTextureLibrary()};  // TODO: less hardcoded values
+	auto backgroundImages = std::shared_ptr<TextureLibrary>{
+		Runtime::get().renderer->newTextureLibrary()}; // TODO: less hardcoded values
 	backgroundImages->init(4, 256);
 
 	// Make sure a world folder was supplied.
@@ -82,12 +79,13 @@ void DefaultWorld::init(const std::string& name)
 		MFLOG(Fatal) << "No world specified";
 	}
 
-	LOAD_PROPERTY_WITH_WARNING(propManager, "DefaultPlayerController.Module", playerControllerModuleName, "Core");
+	LOAD_PROPERTY_WITH_WARNING(
+		propManager, "DefaultPlayerController.Module", playerControllerModuleName, "Core");
 	LOAD_PROPERTY_WITH_WARNING(propManager, "DefaultPawn.Module", pawnModuleName, "Core");
 
-	LOAD_PROPERTY_WITH_WARNING(propManager, "DefaultPlayerController.Name", playerControllerClassName, "PlayerController");
+	LOAD_PROPERTY_WITH_WARNING(
+		propManager, "DefaultPlayerController.Name", playerControllerClassName, "PlayerController");
 	LOAD_PROPERTY_WITH_WARNING(propManager, "DefaultPawn.Name", pawnClassName, "Pawn");
-
 
 	std::map<Color, std::string> imageToTextureAssoc;
 	// load the image associations
@@ -98,8 +96,8 @@ void DefaultWorld::init(const std::string& name)
 		{
 			folderLocation + "images.txt"
 #if IS_SAVE_BINARY
-			    ,
-			    std::ios::binary
+				,
+				std::ios::binary
 #endif
 		};
 
@@ -107,7 +105,7 @@ void DefaultWorld::init(const std::string& name)
 			MFLOG(Fatal) << "Could not open images.txt file for world: " << worldName;
 		}
 
-		iarchive_t arch{stream};  // this might want to be not xml, maybe text or binary
+		iarchive_t arch{stream}; // this might want to be not xml, maybe text or binary
 
 		// load the map from the file
 		arch >> boost::serialization::make_nvp("assoc", imageToTextureAssoc);
@@ -123,7 +121,7 @@ void DefaultWorld::init(const std::string& name)
 	catch (boost::archive::archive_exception& e)
 	{
 		MFLOG(Error) << "ARCHIVE ERROR ENCOUNTERED WHEN LOADING IMAGE ASSOCIATIONS. Error code: " << e.code
-		             << " Error message: " << e.what();
+					 << " Error message: " << e.what();
 	}
 	catch (std::exception& e)
 	{
@@ -139,7 +137,6 @@ void DefaultWorld::init(const std::string& name)
 	// Begin static actor loading.
 	{
 
-
 		// List it will read things into.
 		std::list<Actor*> staticActors;
 
@@ -148,7 +145,7 @@ void DefaultWorld::init(const std::string& name)
 		{
 			folderLocation + "worldfile.WORLD",
 #if IS_SAVE_BINARY
-			    std::ifstream::binary
+				std::ifstream::binary
 #endif
 		};
 
@@ -164,14 +161,13 @@ void DefaultWorld::init(const std::string& name)
 			// Create archive.
 			iarchive_t i_archive{i_stream};
 
-
 			i_archive >> BOOST_SERIALIZATION_NVP(staticActors);
 		}
 		catch (boost::archive::archive_exception& e)
 		{
 			MFLOG(Fatal) << "ARCHIVE ERROR ENCOUNTERED WHILE LOADING WORLD ACTORS! Reason: " << e.what()
-			             <<  // do this for stack tracing
-			    " Error code: " << e.code;
+						 << // do this for stack tracing
+				" Error code: " << e.code;
 		}
 		catch (std::exception& e)
 		{
@@ -188,14 +184,13 @@ void DefaultWorld::init(const std::string& name)
 		{
 			folderLocation + "savefile.SAVE",
 #if IS_SAVE_BINARY
-			    std::ifstream::binary
+				std::ifstream::binary
 #endif
 		};
 
 		if (!i_stream.is_open()) {
 			MFLOG(Fatal) << "SAVE FILE DOESN'T EXIST";
 		}
-
 
 		// List actors will be read into.
 		std::list<Actor*> dynamicActors;
@@ -208,7 +203,8 @@ void DefaultWorld::init(const std::string& name)
 		}
 		catch (boost::archive::archive_exception& e)
 		{
-			MFLOG(Fatal) << "ARCHIVE ERROR WHILE LOADING SAVED ACTORS! Reason: " << e.what() << " Error code: " << e.code;
+			MFLOG(Fatal) << "ARCHIVE ERROR WHILE LOADING SAVED ACTORS! Reason: " << e.what()
+						 << " Error code: " << e.code;
 		}
 		catch (std::exception& e)
 		{
@@ -226,7 +222,6 @@ void DefaultWorld::init(const std::string& name)
 		std::vector<uint8> data;
 		uvec2 size = ImageLoader::load(folderLocation + "background.png", data);
 		numBackgroundChunks = size / backgroundChunkSize;
-
 
 		background = std::make_unique<ChunkActor* []>(numBackgroundChunks.x * numBackgroundChunks.y);
 
@@ -246,8 +241,10 @@ void DefaultWorld::init(const std::string& name)
 				locations[startIndex + 2] = vec2(xTiles + 1, yTiles);
 				locations[startIndex + 3] = vec2(xTiles + 1, yTiles + 1);
 
-				elems[yTiles * backgroundChunkSize * 2 + xTiles * 2] = uvec3(startIndex, startIndex + 1, startIndex + 2);
-				elems[yTiles * backgroundChunkSize * 2 + xTiles * 2 + 1] = uvec3(startIndex + 1, startIndex + 2, startIndex + 3);
+				elems[yTiles * backgroundChunkSize * 2 + xTiles * 2] =
+					uvec3(startIndex, startIndex + 1, startIndex + 2);
+				elems[yTiles * backgroundChunkSize * 2 + xTiles * 2 + 1] =
+					uvec3(startIndex + 1, startIndex + 2, startIndex + 3);
 			}
 		}
 
@@ -261,12 +258,15 @@ void DefaultWorld::init(const std::string& name)
 					for (uint16 xTiles = 0; xTiles < backgroundChunkSize; ++xTiles)
 					{
 
-						uint32 startColIndex = ((numBackgroundChunks.y - yChunks - 1) * numBackgroundChunks.x + xChunks) *
-						                           4 * backgroundChunkSize * backgroundChunkSize +
-						                       ((backgroundChunkSize - yTiles - 1) * backgroundChunkSize * 4) + (4 * xTiles);
+						uint32 startColIndex =
+							((numBackgroundChunks.y - yChunks - 1) * numBackgroundChunks.x + xChunks) * 4
+								* backgroundChunkSize * backgroundChunkSize
+							+ ((backgroundChunkSize - yTiles - 1) * backgroundChunkSize * 4) + (4 * xTiles);
 
-						Color col =
-						    Color(data[startColIndex], data[startColIndex + 1], data[startColIndex + 2], data[startColIndex + 3]);
+						Color col = Color(data[startColIndex],
+							data[startColIndex + 1],
+							data[startColIndex + 2],
+							data[startColIndex + 3]);
 
 						auto imageIter = imageToTextureAssoc.find(col);
 
@@ -292,23 +292,27 @@ void DefaultWorld::init(const std::string& name)
 						}
 						else
 						{
-							MFLOG(Warning) << "Warining: could not find image name in imageAssoc map in DefaultWorld";
+							MFLOG(Warning)
+								<< "Warining: could not find image name in imageAssoc map in DefaultWorld";
 						}
 					}
 				}
 
-
 				auto modelData = Runtime::get().renderer->newModelData();
-				modelData->init(&locations[0], &UVs[0], backgroundChunkSize * backgroundChunkSize * 4, &elems[0],
-				                backgroundChunkSize * backgroundChunkSize * 2);
+				modelData->init(&locations[0],
+					&UVs[0],
+					backgroundChunkSize * backgroundChunkSize * 4,
+					&elems[0],
+					backgroundChunkSize * backgroundChunkSize * 2);
 
 				background[yChunks * numBackgroundChunks.x * xChunks] = new ChunkActor(
-				    Transform{vec2(xChunks * backgroundChunkSize, yChunks * backgroundChunkSize)}, drawMaterial, std::move(modelData));
+					Transform{vec2(xChunks * backgroundChunkSize, yChunks * backgroundChunkSize)},
+					drawMaterial,
+					std::move(modelData));
 			}
 		}
 	}
 	// end background loading
-
 
 	MFLOG(Trace) << "World Loaded!";
 }
@@ -340,14 +344,14 @@ void DefaultWorld::saveWorld()
 		if (elem->needsSave()) {
 			toSave.push_back(elem);
 		}
-	}  // End for
+	} // End for
 
 	// File location of static actors -- if we are binary, then use a binary stream
 	std::ofstream o_stream
 	{
 		folderLocation + worldName + '\\' + worldName + ".SAVE",
 #if IS_SAVE_BINARY
-		    std::ifstream::binary
+			std::ifstream::binary
 #endif
 	};
 
@@ -371,19 +375,20 @@ void DefaultWorld::saveWorld()
 
 std::unique_ptr<PlayerController> DefaultWorld::makePlayerController()
 {
-	return std::unique_ptr<PlayerController>{
-	    Runtime::get().moduleManager.spawnClass<PlayerController>(playerControllerModuleName, playerControllerClassName)};
+	return std::unique_ptr<PlayerController>{Runtime::get().moduleManager.spawnClass<PlayerController>(
+		playerControllerModuleName, playerControllerClassName)};
 }
 
 std::unique_ptr<Pawn> DefaultWorld::makePawn()
 {
-	return std::unique_ptr<Pawn>{Runtime::get().moduleManager.spawnClass<Pawn>(pawnModuleName, pawnClassName)};
+	return std::unique_ptr<Pawn>{
+		Runtime::get().moduleManager.spawnClass<Pawn>(pawnModuleName, pawnClassName)};
 }
 
 boost::signals2::connection DefaultWorld::registerTickingActor(Actor& toAdd)
 {
 	return tickingActors.connect([&toAdd](float deltaTime)
-	                             {
-		                             toAdd.tick(deltaTime);
-		                         });
+		{
+			toAdd.tick(deltaTime);
+		});
 }

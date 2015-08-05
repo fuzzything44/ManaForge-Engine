@@ -19,14 +19,16 @@ class TestContentPawn : public Pawn
 	{
 		auto& inputManager = Runtime::get().inputManager;
 
-		inputManager.bindAxisMapping("moveLeft", [this](float amount)
-		                             {
-			                             this->moveLeft(amount);
-			                         });
-		inputManager.bindAxisMapping("moveUp", [this](float amount)
-		                             {
-			                             this->moveUp(amount);
-			                         });
+		inputManager.bindAxisMapping("moveLeft",
+			[this](float amount)
+			{
+				this->moveLeft(amount);
+			});
+		inputManager.bindAxisMapping("moveUp",
+			[this](float amount)
+			{
+				this->moveUp(amount);
+			});
 
 		uvec2 windowSize = Runtime::get().renderer->getWindow().getWindowProps().size;
 
@@ -35,17 +37,17 @@ class TestContentPawn : public Pawn
 		camera = std::make_unique<CameraComponent>(*this, Transform{}, aspectRatio, .1f);
 		Runtime::get().renderer->setCurrentCamera(*camera);
 
-
-		auto mat = Runtime::get().renderer->newMaterial(Runtime::get().renderer->getMaterialSource("boilerplate"));
+		auto mat =
+			Runtime::get().renderer->newMaterial(Runtime::get().renderer->getMaterialSource("boilerplate"));
 
 		auto tex = Runtime::get().renderer->getTexture("4");
-
 
 		mat->setTexture(0, tex);
 
 		auto meshData = Runtime::get().renderer->newModelData("PlayerModel");
 		if (!meshData->isInitialized()) {
-			std::array<vec2, 4> locations = {vec2{-1.f, -1.f}, vec2{-1.f, +1.f}, vec2{+1.f, -1.f}, vec2{+1.f, +1.f}};
+			std::array<vec2, 4> locations = {
+				vec2{-1.f, -1.f}, vec2{-1.f, +1.f}, vec2{+1.f, -1.f}, vec2{+1.f, +1.f}};
 			std::array<vec2, 4> UVs = {vec2{0.f, 1.f}, vec2{0.f, 0.f}, vec2{1.f, 1.f}, vec2{1.f, 0.f}};
 			std::array<uvec3, 2> tris = {uvec3{0, 1, 2}, uvec3{1, 2, 3}
 
@@ -54,7 +56,6 @@ class TestContentPawn : public Pawn
 			meshData->init(locations.data(), UVs.data(), locations.size(), tris.data(), tris.size());
 		}
 		mesh = std::make_unique<MeshComponent>(*this, Transform{}, std::move(mat), std::move(meshData));
-
 
 		auto shape = Runtime::get().physSystem->newPhysicsShape();
 		shape->asCircle(1.f);

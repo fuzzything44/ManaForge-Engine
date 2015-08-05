@@ -8,10 +8,10 @@
 
 std::map<GLFWwindow*, OpenGLWindow*> OpenGLWindow::windows = std::map<GLFWwindow*, OpenGLWindow*>();
 
-OpenGLWindow::OpenGLWindow() : Window()
+OpenGLWindow::OpenGLWindow()
+	: Window()
 {
 	PropertyManager& propManager = Runtime::get().propManager;
-
 
 	LOAD_PROPERTY_WITH_WARNING(propManager, "window.size.x", props.size.x, 800);
 	LOAD_PROPERTY_WITH_WARNING(propManager, "window.size.y", props.size.y, 600);
@@ -20,7 +20,6 @@ OpenGLWindow::OpenGLWindow() : Window()
 	LOAD_PROPERTY_WITH_WARNING(propManager, "window.windowMode", props.windowMode, WindowMode::FULLSCREEN);
 
 	LOAD_PROPERTY_WITH_WARNING(propManager, "window.title", props.title, "WARNING- NO TITLE GIVEN");
-
 
 	hasFocus = true;
 
@@ -36,7 +35,6 @@ OpenGLWindow::OpenGLWindow() : Window()
 	glfwWindowHint(GLFW_SAMPLES, 8);
 
 	glfwWindowHint(GL_DOUBLEBUFFER, false);
-
 
 	// set GL version
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -68,23 +66,19 @@ OpenGLWindow::OpenGLWindow() : Window()
 	default: break;
 	}
 
-
 	// exit if the window wasn't initialized correctly
 	if (!window) {
 		glfwTerminate();
 		MFLOG(Fatal) << "\nWindow failed to create.";
 	}
 
-
 	windows[window] = this;
 
 	// make context current in this thread
 	glfwMakeContextCurrent(window);
 
-
 	// make sure the cursor is shown. Most likely want to change this in the future
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-
 
 	// use newer GL
 	glewExperimental = GL_TRUE;
@@ -101,9 +95,7 @@ OpenGLWindow::OpenGLWindow() : Window()
 	// Ensure we can capture the escape key being pressed below
 	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 
-
 	glfwSetScrollCallback(window, &OpenGLWindow::scrollCallback);
-
 
 	glfwSetWindowFocusCallback(window, &OpenGLWindow::focusCallback);
 }

@@ -10,7 +10,6 @@ Box2DPhysicsSystem::Box2DPhysicsSystem()
 {
 	world = std::make_unique<b2World>(gravity);
 
-
 	world->SetContactListener(&listener);
 }
 
@@ -22,23 +21,24 @@ void Box2DPhysicsSystem::setGravity(vec2 newGravity)
 	world->SetGravity(gravity);
 }
 
-
 std::unique_ptr<PhysicsBody> Box2DPhysicsSystem::newPhysicsBody(PhysicsShape& shape, PhysicsComponent& owner)
 {
 	return std::make_unique<Box2DPhysicsBody>(static_cast<Box2DPhysicsShape&>(shape), owner, *this);
 }
 
-std::unique_ptr<PhysicsShape> Box2DPhysicsSystem::newPhysicsShape() { return std::make_unique<Box2DPhysicsShape>(); }
+std::unique_ptr<PhysicsShape> Box2DPhysicsSystem::newPhysicsShape()
+{
+	return std::make_unique<Box2DPhysicsShape>();
+}
 
 std::unique_ptr<ActorTransformController> Box2DPhysicsSystem::newActorTransformController(Actor& actor)
 {
 	return std::make_unique<Box2DActorTransformController>(actor, *this);
 }
 
-
 bool Box2DPhysicsSystem::update(float deltaTime)
 {
-	world->Step(deltaTime, 8, 3);  // step once
+	world->Step(deltaTime, 8, 3); // step once
 
 	auto nextElem = world->GetBodyList();
 	while (nextElem != nullptr)
@@ -55,6 +55,5 @@ bool Box2DPhysicsSystem::update(float deltaTime)
 
 	return true;
 }
-
 
 void Box2DPhysicsSystem::drawDebugPoints() { world->DrawDebugData(); }

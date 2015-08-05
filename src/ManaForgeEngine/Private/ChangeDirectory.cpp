@@ -27,7 +27,6 @@ void changeDir()
 	for (int i = 0; i < 4; i++)
 	{
 
-
 		do
 		{
 			path = path.substr(0, path.size() - 1);
@@ -69,7 +68,6 @@ void changeDir()
 			path = pathStr.substr(0, pathStr.size() - 1);
 		} while (pathStr[pathStr.size() - 1] != '\\');
 	}
-
 
 	boost::filesystem::current_path(path.append("Resources\\"));
 }

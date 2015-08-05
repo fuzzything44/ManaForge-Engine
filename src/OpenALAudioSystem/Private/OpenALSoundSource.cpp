@@ -7,7 +7,8 @@
 #include <Helper.h>
 
 OpenALSoundSource::OpenALSoundSource(OpenALSoundCue& cue, AudioComponent& owner, OpenALAudioSystem& system)
-    : ownerComponent(owner), system(system)
+	: ownerComponent(owner)
+	, system(system)
 {
 	alGenSources(1, &sourceHandle);
 	alSourcei(sourceHandle, AL_BUFFER, cue.bufferHandle);
@@ -22,7 +23,7 @@ bool OpenALSoundSource::getLoops() const
 	ALint loops;
 	alGetSourcei(sourceHandle, AL_LOOPING, &loops);
 
-	return loops != 0;  // convert to boolean
+	return loops != 0; // convert to boolean
 }
 
 void OpenALSoundSource::play() { alSourcePlay(sourceHandle); }
@@ -37,7 +38,10 @@ void OpenALSoundSource::stop()
 
 AudioComponent& OpenALSoundSource::getOwnerComponent() { return ownerComponent; }
 
-void OpenALSoundSource::setMaxDistance(float maxDistacne) { alSourcef(sourceHandle, AL_MAX_DISTANCE, maxDistacne); }
+void OpenALSoundSource::setMaxDistance(float maxDistacne)
+{
+	alSourcef(sourceHandle, AL_MAX_DISTANCE, maxDistacne);
+}
 
 float OpenALSoundSource::getMaxDistance() const
 {
@@ -48,7 +52,10 @@ float OpenALSoundSource::getMaxDistance() const
 	return ret;
 }
 
-void OpenALSoundSource::setRolloffFactor(float rolloffFactor) { alSourcef(sourceHandle, AL_ROLLOFF_FACTOR, rolloffFactor); }
+void OpenALSoundSource::setRolloffFactor(float rolloffFactor)
+{
+	alSourcef(sourceHandle, AL_ROLLOFF_FACTOR, rolloffFactor);
+}
 
 float OpenALSoundSource::getRolloffFactor() const
 {
@@ -56,7 +63,6 @@ float OpenALSoundSource::getRolloffFactor() const
 	alGetSourcef(sourceHandle, AL_ROLLOFF_FACTOR, &ret);
 	return ret;
 }
-
 
 void OpenALSoundSource::setReferenceDistance(float refrenceDistance)
 {
@@ -87,7 +93,6 @@ void OpenALSoundSource::setConeParams(vec2 direction, float innerAngle, float ou
 	alSourcef(sourceHandle, AL_CONE_OUTER_ANGLE, outerAngle);
 	alSourcef(sourceHandle, AL_CONE_OUTER_GAIN, outerGain);
 }
-
 
 void OpenALSoundSource::setGainBounds(float min, float max)
 {

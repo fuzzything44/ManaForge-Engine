@@ -11,5 +11,5 @@ DefaultWorldLocation::~DefaultWorldLocation()
 		static_cast<DefaultWorldLocation*>(last->GUID.get())->loc = loc;
 	}
 
-	inWorld.actors.pop_back();  // remove the last element
+	inWorld.actors.pop_back(); // remove the last element
 }

@@ -9,7 +9,6 @@
 
 #include <SaveData.h>
 
-
 class Runtime;
 class Window;
 
@@ -20,11 +19,10 @@ class InputManager
 
 	ENGINE_API void setWindow(Window& newWindow);
 
-
 	ENGINE_API void bindActionMappingPressed(const std::string& name, std::function<void()> callback);
 	ENGINE_API void bindActionMappingReleased(const std::string& name, std::function<void()> callback);
 
-	ENGINE_API void bindAxisMapping(const std::string& name, std::function<void(float) > callback);
+	ENGINE_API void bindAxisMapping(const std::string& name, std::function<void(float)> callback);
 
   private:
 	bool update();
@@ -46,7 +44,8 @@ class InputManager
 
 		std::vector<Keyboard> keysBound;
 
-		// function pointers -- they are pointers to make sure they are all allocated and freed in the same module.
+		// function pointers -- they are pointers to make sure they are all allocated and freed in the same
+		// module.
 		std::function<void()> pressed;
 		std::function<void()> released;
 
@@ -54,8 +53,7 @@ class InputManager
 
 		void operator()();
 
-		template <typename Archive>
-		void serialize(Archive& ar, const uint32 version)
+		template <typename Archive> void serialize(Archive& ar, const uint32 version)
 		{
 			ar& BOOST_SERIALIZATION_NVP(keysBound);
 		}
@@ -65,26 +63,25 @@ class InputManager
 	{
 		friend class boost::serialization::access;
 
-		AxisMapping(const std::vector<std::pair<Keyboard, float>>& values = std::vector<std::pair<Keyboard, float>>());
+		AxisMapping(const std::vector<std::pair<Keyboard, float>>& values =
+						std::vector<std::pair<Keyboard, float>>());
 
 		~AxisMapping();
 
 		// vector of the values of the keys
 		std::vector<std::pair<Keyboard, float>> values;
 
-		std::function<void(float) > callback;
+		std::function<void(float)> callback;
 
-		void setCallback(std::function<void(float) > newCallback);
+		void setCallback(std::function<void(float)> newCallback);
 
 		void operator()();
 
-		template <typename Archive>
-		void serialize(Archive& ar, const uint32 version)
+		template <typename Archive> void serialize(Archive& ar, const uint32 version)
 		{
 			ar& BOOST_SERIALIZATION_NVP(values);
 		}
 	};
-
 
 	std::map<std::string, ActionMapping> actionMappings;
 	std::map<std::string, AxisMapping> axisMappings;

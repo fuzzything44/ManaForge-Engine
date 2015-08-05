@@ -1,6 +1,5 @@
 #include <Runtime.h>
 
-
 int32 main(int argc, char** argv)
 {
 	try
@@ -17,7 +16,6 @@ int32 main(int argc, char** argv)
 	catch (const std::exception& /*e*/)
 	{
 	}
-
 
 	return 0;
 }

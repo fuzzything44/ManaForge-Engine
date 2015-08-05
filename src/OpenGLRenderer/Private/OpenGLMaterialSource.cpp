@@ -8,7 +8,9 @@
 
 #include <thread>
 
-OpenGLMaterialSource::OpenGLMaterialSource(OpenGLRenderer& renderer, const path_t& name) : renderer(renderer), name(name)
+OpenGLMaterialSource::OpenGLMaterialSource(OpenGLRenderer& renderer, const path_t& name)
+	: renderer(renderer)
+	, name(name)
 {
 	if (!name.empty()) init(name);
 }
@@ -17,15 +19,14 @@ OpenGLMaterialSource::~OpenGLMaterialSource()
 {
 
 	renderer.runOnRenderThreadSync([this]
-	                               {
-		                               glDeleteProgram(program);
-		                           });
+		{
+			glDeleteProgram(program);
+		});
 }
 
 void OpenGLMaterialSource::init(const path_t& name)
 {
 	assert(renderer.isOnRenderThread());
-
 
 	path_t vertexPath = L"shaders\\" + name.wstring() + L"vert.glsl";
 	path_t fragPath = L"shaders\\" + name.wstring() + L"frag.glsl";
@@ -40,10 +41,8 @@ void OpenGLMaterialSource::init(const path_t& name)
 	// Read the Fragment Shader code from the file
 	std::string&& FragmentShaderCode = loadFileToStr(fragPath);
 
-
 	int32 Result = GL_FALSE;
 	int InfoLogLength;
-
 
 	// Compile Vertex Shader
 	MFLOG(Trace) << "Compiling vertex Shader " << vertexPath;
@@ -65,7 +64,6 @@ void OpenGLMaterialSource::init(const path_t& name)
 		MFLOG(Trace) << "\tShader " << vertexPath << " Successfully Compiled";
 	}
 
-
 	// Compile Fragment Shader
 	MFLOG(Trace) << "\tCompiling fragment Shader " << fragPath;
 	const char* FragmentSourcePointer = FragmentShaderCode.c_str();
@@ -84,7 +82,6 @@ void OpenGLMaterialSource::init(const path_t& name)
 	{
 		MFLOG(Trace) << "\tShader " << fragPath << " Successfully Compiled";
 	}
-
 
 	// Link the program
 	MFLOG(Trace) << "\tLinking program " << name;
@@ -105,12 +102,10 @@ void OpenGLMaterialSource::init(const path_t& name)
 	glDeleteShader(vertexShader);
 	glDeleteShader(fragmentShader);
 
-
 	startTexUniform = glGetUniformLocation(program, "textures");
 	if (startTexUniform == -1) {
 		MFLOG(Warning) << "Could not find startTexUniform in program: " << name;
 	}
-
 
 	MVPUniformLocation = glGetUniformLocation(program, "MVPmat");
 	if (MVPUniformLocation == -1) {

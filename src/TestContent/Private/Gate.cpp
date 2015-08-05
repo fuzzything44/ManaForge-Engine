@@ -13,25 +13,24 @@ MFCLASS_SOURCE(Gate)
 
 bool Gate::isInitalized = false;
 
-Gate::Gate() : Actor()
+Gate::Gate()
+	: Actor()
 {
 
 	auto tex = Runtime::get().renderer->getTexture("water");
 
 	tex->setFilterMode(Texture::FilterMode::MIPMAP_LINEAR);
 
-
 	mat = Runtime::get().renderer->newMaterial(Runtime::get().renderer->getMaterialSource("animation"));
 	mat->setProperty("tiles", 2);
 	mat->setUpdateCallback([time = 0.f](MaterialInstance & inst) mutable
-	                       {
-		                       time += Runtime::get().getDeltaTime();
+		{
+			time += Runtime::get().getDeltaTime();
 
-		                       inst.setProperty("currentTile", int(time * 10) % 4);
-		                   });
+			inst.setProperty("currentTile", int(time * 10) % 4);
+		});
 
 	mat->setTexture(0, tex);
-
 
 	auto modelData = Runtime::get().renderer->newModelData("GateMesh");
 	if (!modelData->isInitialized()) {
@@ -50,7 +49,6 @@ Gate::Gate() : Actor()
 
 	setPhysicsType(PhysicsType::DYNAMIC);
 
-
 	shape->asRectangle(.75f, .75f);
 
 	physComp = std::make_unique<PhysicsComponent>(*this, *shape, Transform{});
@@ -58,10 +56,12 @@ Gate::Gate() : Actor()
 
 	using namespace std::chrono_literals;
 
-	Runtime::get().timeManager.addTimer(10s, [this]
-	{
-		delete this;
-	}, false);
+	Runtime::get().timeManager.addTimer(10s,
+		[this]
+		{
+			delete this;
+		},
+		false);
 }
 
 Gate::~Gate() {}

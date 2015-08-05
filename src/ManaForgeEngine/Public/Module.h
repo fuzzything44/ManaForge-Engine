@@ -25,7 +25,6 @@ class Module : boost::noncopyable
 	ENGINE_API void addClass(const std::string& className, const std::function<void*()>& fun);
 	ENGINE_API void* spawnClass(const std::string& className);
 
-
 	/// <summary> Destructor.</summary>
 	ENGINE_API ~Module();
 

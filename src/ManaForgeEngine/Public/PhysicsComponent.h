@@ -24,13 +24,12 @@ class PhysicsComponent : public SceneComponent
 	inline void setIsSensor(bool newIsSensor);
 	inline bool getIsSensor() const;
 
-	inline void setStartContactCallback(const std::function<void(PhysicsComponent&) >& callback);
-	inline void setEndContactCallback(const std::function<void(PhysicsComponent&) >& callback);
+	inline void setStartContactCallback(const std::function<void(PhysicsComponent&)>& callback);
+	inline void setEndContactCallback(const std::function<void(PhysicsComponent&)>& callback);
 
   private:
 	std::unique_ptr<PhysicsBody> body;
 };
-
 
 #include "Runtime.h"
 #include "PhysicsBody.h"
@@ -40,11 +39,10 @@ class PhysicsComponent : public SceneComponent
 /////////// INLINE DEFINITIONS /////////
 
 inline PhysicsComponent::PhysicsComponent(Actor& owner, PhysicsShape& shape, const Transform& trans)
-    : SceneComponent(owner, trans)
+	: SceneComponent(owner, trans)
 {
 	body = Runtime::get().physSystem->newPhysicsBody(shape, *this);
 }
-
 
 inline void PhysicsComponent::setRestitution(float newRestitution) { body->setRestitution(newRestitution); }
 inline float PhysicsComponent::getRestitution() const { return body->getRestitution(); }
@@ -58,12 +56,12 @@ inline float PhysicsComponent::getFriction() const { return body->getFriction();
 inline void PhysicsComponent::setIsSensor(bool newIsSensor) { body->setIsSensor(newIsSensor); }
 inline bool PhysicsComponent::getIsSensor() const { return body->getIsSensor(); }
 
-inline void PhysicsComponent::setStartContactCallback(const std::function<void(PhysicsComponent&) >& callback)
+inline void PhysicsComponent::setStartContactCallback(const std::function<void(PhysicsComponent&)>& callback)
 {
 	body->setStartContactCallback(callback);
 }
 
-inline void PhysicsComponent::setEndContactCallback(const std::function<void(PhysicsComponent&) >& callback)
+inline void PhysicsComponent::setEndContactCallback(const std::function<void(PhysicsComponent&)>& callback)
 {
 	body->setEndContactCallback(callback);
 }

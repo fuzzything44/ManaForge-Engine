@@ -20,7 +20,10 @@ class TimeManager
 	struct Elem_t
 	{
 		Elem_t(Time_point_t endTime, Double_duration_t duration, Callback_t callback, bool loops)
-		    : endTime(endTime), duration(duration), callback(callback), loops(loops)
+			: endTime(endTime)
+			, duration(duration)
+			, callback(callback)
+			, loops(loops)
 		{
 		}
 
@@ -50,7 +53,6 @@ inline void TimeManager::update()
 
 		queue.pop();
 
-
 		if (elem.loops) {
 			using namespace std::chrono_literals;
 
@@ -61,7 +63,6 @@ inline void TimeManager::update()
 		}
 	}
 }
-
 
 inline void TimeManager::addTimer(Double_duration_t timeToWait, Callback_t callback, bool loops)
 {

@@ -35,7 +35,6 @@ using newton = boost::mpl::vector<force, std::ratio<1>>;
 using meter_per_second = boost::mpl::vector<velocity, std::ratio<1>>;
 using meter_per_second_squared = boost::mpl::vector<acceleration, std::ratio<1>>;
 
-
 using nanogram = boost::mpl::vector<mass, std::nano>;
 using nanometer = boost::mpl::vector<position, std::nano>;
 using nanonewton = boost::mpl::vector<force, std::nano>;
@@ -55,7 +54,6 @@ using centigram = boost::mpl::vector<mass, std::centi>;
 using centimeter = boost::mpl::vector<position, std::centi>;
 using centinewton = boost::mpl::vector<force, std::centi>;
 using centijoule = boost::mpl::vector<energy, std::deca>;
-
 
 using decigram = boost::mpl::vector<mass, std::deci>;
 using decimeter = boost::mpl::vector<position, std::deci>;
@@ -92,28 +90,31 @@ using terameter = boost::mpl::vector<position, std::tera>;
 using teranewton = boost::mpl::vector<force, std::tera>;
 using terajoule = boost::mpl::vector<energy, std::peta>;
 
-
 using minute = boost::mpl::vector<time, std::ratio<60>>;
 using hour = boost::mpl::vector<time, std::ratio<60 * 60>>;
 using day = boost::mpl::vector<time, std::ratio<60 * 60 * 24>>;
 using week = boost::mpl::vector<time, std::ratio<60 * 60 * 24 * 7>>;
 }
 
-template <typename Dimensions>
-class Quantity
+template <typename Dimensions> class Quantity
 {
 	float data;
 
   public:
-	Quantity(float f = 0.f) : data(f) {}
+	Quantity(float f = 0.f)
+		: data(f)
+	{
+	}
 
 	template <typename DimensionsU,
-	          typename = std::enable_if<boost::mpl::equal<boost::mpl::at_c<DimensionsU, 0>::type, boost::mpl::at_c<Dimensions, 0>::type>::type::value>>
+		typename = std::enable_if<boost::mpl::equal<boost::mpl::at_c<DimensionsU, 0>::type,
+			boost::mpl::at_c<Dimensions, 0>::type>::type::value>>
 	Quantity(const Quantity<DimensionsU>& other)
 	{
-		constexpr float multiplier =
-		    ((float) boost::mpl::at_c<DimensionsU, 1>::type::num / (float) boost::mpl::at_c<DimensionsU, 1>::type::den) /
-		    ((float) boost::mpl::at_c<Dimensions, 1>::type::num / (float) boost::mpl::at_c<Dimensions, 1>::type::den);
+		constexpr float multiplier = ((float)boost::mpl::at_c<DimensionsU, 1>::type::num
+										 / (float)boost::mpl::at_c<DimensionsU, 1>::type::den)
+									 / ((float)boost::mpl::at_c<Dimensions, 1>::type::num
+										   / (float)boost::mpl::at_c<Dimensions, 1>::type::den);
 
 		data = other.get() * multiplier;
 	}
@@ -122,39 +123,42 @@ class Quantity
 	float get() const { return data; }
 
 	template <typename DimensionsU,
-	          typename = std::enable_if<boost::mpl::equal<boost::mpl::at_c<DimensionsU, 0>::type, boost::mpl::at_c<Dimensions, 0>::type>::type::value>>
+		typename = std::enable_if<boost::mpl::equal<boost::mpl::at_c<DimensionsU, 0>::type,
+			boost::mpl::at_c<Dimensions, 0>::type>::type::value>>
 	const Quantity<Dimensions>& operator=(const Quantity<DimensionsU>& other)
 	{
 		constexpr float multiplier =
-		    ((float) boost::mpl::at_c<DimensionsU, 1>::num / (float) boost::mpl::at_c<DimensionsU, 1>::den) /
-		    ((float) boost::mpl::at_c<Dimensions, 1>::num / (float) boost::mpl::at_c<Dimensions, 1>::den);
+			((float)boost::mpl::at_c<DimensionsU, 1>::num / (float)boost::mpl::at_c<DimensionsU, 1>::den)
+			/ ((float)boost::mpl::at_c<Dimensions, 1>::num / (float)boost::mpl::at_c<Dimensions, 1>::den);
 
 		data = other.get() * multiplier;
 	}
 
-	template <typename DimensionsU>
-	auto operator*(const Quantity<DimensionsU>& other)
+	template <typename DimensionsU> auto operator*(const Quantity<DimensionsU>& other)
 	{
-		Quantity<boost::mpl::vector<boost::mpl::at_c<DimensionsU, 0>::type, boost::mpl::at_c<Dimensions, 1>::type>> otherConverted = other;
+		Quantity<boost::mpl::vector<boost::mpl::at_c<DimensionsU, 0>::type,
+			boost::mpl::at_c<Dimensions, 1>::type>> otherConverted = other;
 
+		using outputDims = boost::mpl::transform<boost::mpl::at_c<Dimensions, 0>::type,
+			boost::mpl::at_c<DimensionsU, 0>::type,
+			boost::mpl::plus<boost::mpl::placeholders::_1, boost::mpl::placeholders::_2>>;
 
-		using outputDims = boost::mpl::transform<boost::mpl::at_c<Dimensions, 0>::type, boost::mpl::at_c<DimensionsU, 0>::type,
-		                                         boost::mpl::plus<boost::mpl::placeholders::_1, boost::mpl::placeholders::_2>>;
-
-		return Quantity<boost::mpl::vector<outputDims, boost::mpl::at_c<Dimensions, 1>::type>>(get() * otherConverted.get());
+		return Quantity<boost::mpl::vector<outputDims, boost::mpl::at_c<Dimensions, 1>::type>>(
+			get() * otherConverted.get());
 	}
 
-	template <typename DimensionsU>
-	auto operator/(const Quantity<DimensionsU>& other)
+	template <typename DimensionsU> auto operator/(const Quantity<DimensionsU>& other)
 	{
 		// make sure we have the same multiplier
-		Quantity<boost::mpl::vector<boost::mpl::at_c<DimensionsU, 0>::type, boost::mpl::at_c<Dimensions, 1>::type>> otherConverted = other;
+		Quantity<boost::mpl::vector<boost::mpl::at_c<DimensionsU, 0>::type,
+			boost::mpl::at_c<Dimensions, 1>::type>> otherConverted = other;
 
+		using outputDims = boost::mpl::transform<boost::mpl::at_c<Dimensions, 0>::type,
+			boost::mpl::at_c<DimensionsU, 0>::type,
+			boost::mpl::minus<boost::mpl::placeholders::_1, boost::mpl::placeholders::_2>>;
 
-		using outputDims = boost::mpl::transform<boost::mpl::at_c<Dimensions, 0>::type, boost::mpl::at_c<DimensionsU, 0>::type,
-		                                         boost::mpl::minus<boost::mpl::placeholders::_1, boost::mpl::placeholders::_2>>;
-
-		return Quantity<boost::mpl::vector<outputDims, boost::mpl::at_c<Dimensions, 1>::type>>(get() / otherConverted.get());
+		return Quantity<boost::mpl::vector<outputDims, boost::mpl::at_c<Dimensions, 1>::type>>(
+			get() / otherConverted.get());
 	}
 };
 

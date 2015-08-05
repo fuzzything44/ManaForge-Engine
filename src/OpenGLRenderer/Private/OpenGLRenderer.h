@@ -22,11 +22,17 @@ class OpenGLRenderer : public Renderer
 
 	friend class OpenGLModel;
 
-
 	struct RenderThread
 	{
-		RenderThread(std::thread&& thread) : isInLoop(true), thread(std::move(thread)) {}
-		RenderThread() : isInLoop(true) {}
+		RenderThread(std::thread&& thread)
+			: isInLoop(true)
+			, thread(std::move(thread))
+		{
+		}
+		RenderThread()
+			: isInLoop(true)
+		{
+		}
 
 		const RenderThread& operator=(std::thread&& rightThread)
 		{
@@ -49,7 +55,6 @@ class OpenGLRenderer : public Renderer
 	  private:
 		std::thread thread;
 	};
-
 
   public:
 	OpenGLRenderer();
@@ -79,7 +84,6 @@ class OpenGLRenderer : public Renderer
 	/// <param name="newCamera"> The camera it should render at. </param>
 	virtual void setCurrentCamera(CameraComponent& newCamera) override;
 
-
 	CameraComponent& getCurrentCamera() override;
 	const CameraComponent& getCurrentCamera() const override;
 
@@ -94,14 +98,14 @@ class OpenGLRenderer : public Renderer
 	inline auto runOnRenderThreadSync(Function&& func, Args&&... args);
 
 	template <typename Function, typename... Args>
-	inline auto runOnRenderThreadAsync(Function&& func, Args&&... args) -> std::future<decltype(func(Args&&...))>;
+	inline auto runOnRenderThreadAsync(Function&& func, Args&&... args)
+		-> std::future<decltype(func(Args&&...))>;
 
 	inline bool isOnRenderThread() { return std::this_thread::get_id() == renderThread.getThread().get_id(); }
 
   private:
 	void initRenderer();
 	void renderLoop();
-
 
 	boost::lockfree::spsc_queue<std::function<void()>> queue;
 	RenderThread renderThread;
@@ -133,30 +137,31 @@ inline auto OpenGLRenderer::runOnRenderThreadSync(Function&& func, Args&&... arg
 	std::packaged_task<retType(Args && ...)> task{func};
 
 	queue.push([&task, &args...]
-	           {
-		           task(std::forward<Args>(args)...);
-		       });
-
+		{
+			task(std::forward<Args>(args)...);
+		});
 
 	return task.get_future().get();
 }
 
 template <typename Function, typename... Args>
-inline auto OpenGLRenderer::runOnRenderThreadAsync(Function&& func, Args&&... args) -> std::future<decltype(func(Args&&...))>
+inline auto OpenGLRenderer::runOnRenderThreadAsync(Function&& func, Args&&... args)
+	-> std::future<decltype(func(Args&&...))>
 {
-	if (isOnRenderThread()) MFLOG(Error) << "Cannot run an async task on the render thread, you're already on that thread!";
+	if (isOnRenderThread())
+		MFLOG(Error) << "Cannot run an async task on the render thread, you're already on that thread!";
 
 	using retType = decltype(func(Args && ...));
 
-	// this needs to be a shared_ptr because the lambda needs to be copied. If the queue had emplace functions...
+	// this needs to be a shared_ptr because the lambda needs to be copied. If the queue had emplace
+	// functions...
 	auto task = std::make_shared<std::packaged_task<retType(Args && ...)>>(func);
-	auto ret = task->get_future();  // cache it because it will be moved from.
+	auto ret = task->get_future(); // cache it because it will be moved from.
 
 	queue.push([ pack = std::move(task), &args... ]
-	           {
-		           (*pack)(std::forward<Args>(args)...);
-		       });
-
+		{
+			(*pack)(std::forward<Args>(args)...);
+		});
 
 	return ret;
 }

@@ -4,8 +4,7 @@
 
 namespace glm
 {
-template <typename T>
-GLM_FUNC_QUALIFIER tmat3x3<T, defaultp> ortho2d(T left, T right, T bottom, T top)
+template <typename T> GLM_FUNC_QUALIFIER tmat3x3<T, defaultp> ortho2d(T left, T right, T bottom, T top)
 {
 	tmat3x3<T, defaultp> Result(1);
 	Result[0][0] = static_cast<T>(2) / (right - left);

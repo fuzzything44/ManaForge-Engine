@@ -3,11 +3,9 @@
 #include "Engine.h"
 #include "ENGException.h"
 
-
 #include <sstream>
 
 #include <boost/algorithm/string.hpp>
-
 
 void Stack::OnCallstackEntry(CallstackEntryType eType, CallstackEntry& entry)
 {
@@ -23,8 +21,11 @@ void Stack::OnCallstackEntry(CallstackEntryType eType, CallstackEntry& entry)
 
 	if (!hasPrintedMain) {
 
-		if (boost::starts_with(name, "std") || name == "RtlInitializeExceptionChain" || name == "BaseThreadInitThunk" ||
-		    name == "mainCRTStartup" || name == "__tmainCRTStartup" || name == "")
+		if (boost::starts_with(name, "std") || name == "RtlInitializeExceptionChain"
+			|| name == "BaseThreadInitThunk"
+			|| name == "mainCRTStartup"
+			|| name == "__tmainCRTStartup"
+			|| name == "")
 		{
 			if (!wasLastExternal) {
 				MFLOG(Info) << "External code";
@@ -41,7 +42,7 @@ void Stack::OnCallstackEntry(CallstackEntryType eType, CallstackEntry& entry)
 			// go up to source -- this will be backwards
 			for (std::string::reverse_iterator iter = startFile.rbegin(); iter != startFile.rend(); ++iter)
 			{
-				if (lastThree[0] == 'c' && lastThree[1] == 'r' && lastThree[2] == 's')  // src backward
+				if (lastThree[0] == 'c' && lastThree[1] == 'r' && lastThree[2] == 's') // src backward
 				{
 					fileOut.push_back(*iter);
 					break;
@@ -56,7 +57,8 @@ void Stack::OnCallstackEntry(CallstackEntryType eType, CallstackEntry& entry)
 			// reverse it
 			std::reverse(fileOut.begin(), fileOut.end());
 
-			MFLOG(Info) << "Name: " << entry.undFullName << "\n\tFile: " << fileOut << "\n\tLine: " << entry.lineNumber;
+			MFLOG(Info) << "Name: " << entry.undFullName << "\n\tFile: " << fileOut
+						<< "\n\tLine: " << entry.lineNumber;
 
 			wasLastExternal = false;
 		}
@@ -65,7 +67,14 @@ void Stack::OnCallstackEntry(CallstackEntryType eType, CallstackEntry& entry)
 	if (name == "main" && !hasPrintedMain) hasPrintedMain = true;
 }
 
-void Stack::OnLoadModule(LPCSTR img, LPCSTR mod, DWORD64 baseAddr, DWORD size, DWORD result, LPCSTR symType, LPCSTR pdbName, ULONGLONG fileVersion)
+void Stack::OnLoadModule(LPCSTR img,
+	LPCSTR mod,
+	DWORD64 baseAddr,
+	DWORD size,
+	DWORD result,
+	LPCSTR symType,
+	LPCSTR pdbName,
+	ULONGLONG fileVersion)
 {
 	std::string name = img;
 

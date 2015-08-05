@@ -26,7 +26,7 @@ class OpenGLMaterialInstance : public MaterialInstance
 	virtual std::shared_ptr<MaterialSource> getSource() override;
 	virtual std::shared_ptr<const MaterialSource> getSource() const override;
 
-	virtual void setUpdateCallback(std::function<void(MaterialInstance&) >) override;
+	virtual void setUpdateCallback(std::function<void(MaterialInstance&)>) override;
 
 	// property interface
 	virtual void setProperty(const std::string& propName, int i) override;
@@ -52,13 +52,12 @@ class OpenGLMaterialInstance : public MaterialInstance
 
 	void use();
 
-
   private:
 	OpenGLRenderer& renderer;
 
 	const static uint32 maxTextures = 32;
 
-	std::function<void(MaterialInstance&) > updateCallback;
+	std::function<void(MaterialInstance&)> updateCallback;
 
 	std::shared_ptr<OpenGLMaterialSource> program;
 

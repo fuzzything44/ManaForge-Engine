@@ -26,16 +26,15 @@
 
 #include <boost/algorithm/string.hpp>
 
-
 #include <boost/archive/polymorphic_xml_oarchive.hpp>
 #include <boost/serialization/list.hpp>
-
 
 // DEFINE STATIC VARIABLES
 Runtime* Runtime::currentRuntime = nullptr;
 
 Runtime::Runtime(const path_t& worldPath)
-    : propManager((changeDir(), logdetail::log_base::init(), "props.json")), moduleManager()
+	: propManager((changeDir(), logdetail::log_base::init(), "props.json"))
+	, moduleManager()
 {
 
 	// update current runtime to be the most recently created one
@@ -72,9 +71,12 @@ Runtime::~Runtime()
 void Runtime::run()
 {
 	// create the systems.
-	renderer = std::unique_ptr<Renderer>{moduleManager.spawnClass<Renderer>(rendererModuleName, rendererName)};
-	physSystem = std::unique_ptr<PhysicsSystem>{moduleManager.spawnClass<PhysicsSystem>(physicsSystemModuleName, physicsSystemName)};
-	audioSystem = std::unique_ptr<AudioSystem>{moduleManager.spawnClass<AudioSystem>(audioSystemModuleName, audioSystemName)};
+	renderer =
+		std::unique_ptr<Renderer>{moduleManager.spawnClass<Renderer>(rendererModuleName, rendererName)};
+	physSystem = std::unique_ptr<PhysicsSystem>{
+		moduleManager.spawnClass<PhysicsSystem>(physicsSystemModuleName, physicsSystemName)};
+	audioSystem = std::unique_ptr<AudioSystem>{
+		moduleManager.spawnClass<AudioSystem>(audioSystemModuleName, audioSystemName)};
 	assert(renderer);
 	assert(physSystem);
 	assert(audioSystem);
@@ -94,11 +96,9 @@ void Runtime::run()
 		MFLOG(Trace) << "init completed.";
 	}
 
-
 	// load the world
 	world = std::unique_ptr<World>{moduleManager.spawnClass<World>("DefaultWorld", "DefaultWorld")};
-	world->init("default");  // load the test world
-
+	world->init("default"); // load the test world
 
 	// let the input manager know of the window
 	Window& window = renderer->getWindow();
@@ -115,7 +115,6 @@ void Runtime::run()
 
 	bool shouldContinue = true;
 
-
 	do
 	{
 
@@ -129,9 +128,7 @@ void Runtime::run()
 		inputManager.update();
 		timeManager.update();
 
-
 		Window& window = renderer->getWindow();
-
 
 		// recieve the update callbacks
 		auto updateCallbacks = moduleManager.getUpdateCallbacks();
@@ -148,7 +145,6 @@ void Runtime::run()
 				shouldContinue = false;
 			}
 		}
-
 
 	} while (shouldContinue);
 }

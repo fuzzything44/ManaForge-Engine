@@ -13,7 +13,8 @@ class OpenALAudioSystem;
 class OpenALSoundSource : public SoundSource
 {
   public:
-	explicit OpenALSoundSource(OpenALSoundCue& cue, AudioComponent& ownerComponent, OpenALAudioSystem& system);
+	explicit OpenALSoundSource(
+		OpenALSoundCue& cue, AudioComponent& ownerComponent, OpenALAudioSystem& system);
 
 	virtual void setLoops(bool loops) override;
 	virtual bool getLoops() const override;
@@ -21,7 +22,6 @@ class OpenALSoundSource : public SoundSource
 	virtual void play() override;
 	virtual void pause() override;
 	virtual void stop() override;
-
 
 	virtual void setMaxDistance(float maxDistacne) override;
 	virtual float getMaxDistance() const override;
@@ -32,14 +32,11 @@ class OpenALSoundSource : public SoundSource
 	virtual void setReferenceDistance(float refrenceDistance) override;
 	virtual float getReferenceDistance() const override;
 
-
 	virtual void setConeParams(vec2 direction, float innerAngle, float outerAngle, float outerGain) override;
-
 
 	virtual void setGainBounds(float min, float max) override;
 
 	virtual AudioComponent& getOwnerComponent() override;
-
 
 	void update();
 

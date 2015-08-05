@@ -13,10 +13,10 @@ enum class Keyboard : int32
 	/*printable keys */
 	KEY_SPACE = 32,
 	KEY_APOSTROPHE = 39, /* ' */
-	KEY_COMMA = 44,      /* , */
-	KEY_MINUS = 45,      /* - */
-	KEY_PERIOD = 46,     /* . */
-	KEY_SLASH = 47,      /* / */
+	KEY_COMMA = 44,		 /* , */
+	KEY_MINUS = 45,		 /* - */
+	KEY_PERIOD = 46,	 /* . */
+	KEY_SLASH = 47,		 /* / */
 	KEY_0 = 48,
 	KEY_1 = 49,
 	KEY_2 = 50,
@@ -28,7 +28,7 @@ enum class Keyboard : int32
 	KEY_8 = 56,
 	KEY_9 = 57,
 	KEY_SEMICOLON = 59, /* ; */
-	KEY_EQUAL = 61,     /* = */
+	KEY_EQUAL = 61,		/* = */
 	KEY_A = 65,
 	KEY_B = 66,
 	KEY_C = 67,
@@ -56,11 +56,11 @@ enum class Keyboard : int32
 	KEY_Y = 89,
 	KEY_Z = 90,
 	KEY_LEFT_BRACKET = 91,  /* [ */
-	KEY_BACKSLASH = 92,     /* \ */
+	KEY_BACKSLASH = 92,		/* \ */
 	KEY_RIGHT_BRACKET = 93, /* ] */
 	KEY_GRAVE_ACCENT = 96,  /* ` */
-	KEY_WORLD_1 = 161,      /* non-US #1 */
-	KEY_WORLD_2 = 162,      /* non-US #2 */
+	KEY_WORLD_1 = 161,		/* non-US #1 */
+	KEY_WORLD_2 = 162,		/* non-US #2 */
 
 	/*function keys */
 	KEY_ESCAPE = 256,

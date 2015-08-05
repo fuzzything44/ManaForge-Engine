@@ -28,10 +28,9 @@ class Box2DPhysicsBody : public PhysicsBody
 	virtual void setIsSensor(bool newIsSensor) override;
 	virtual bool getIsSensor() const override;
 
-	virtual void setStartContactCallback(const std::function<void(PhysicsComponent&) >&) override;
+	virtual void setStartContactCallback(const std::function<void(PhysicsComponent&)>&) override;
 
-	virtual void setEndContactCallback(const std::function<void(PhysicsComponent&) >&) override;
-
+	virtual void setEndContactCallback(const std::function<void(PhysicsComponent&)>&) override;
 
 	inline void callStartContactCallback(PhysicsComponent& other)
 	{
@@ -47,7 +46,8 @@ class Box2DPhysicsBody : public PhysicsBody
 	inline void postStep()
 	{
 
-		if (shouldCallStartContact && startContactCallback && startCallOther) startContactCallback(*startCallOther);
+		if (shouldCallStartContact && startContactCallback && startCallOther)
+			startContactCallback(*startCallOther);
 		if (shouldCallEndContact && endContactCallback && endCallOther) endContactCallback(*endCallOther);
 		shouldCallStartContact = false;
 		shouldCallEndContact = false;
@@ -59,13 +59,14 @@ class Box2DPhysicsBody : public PhysicsBody
   private:
 	PhysicsComponent& ownerComponent;
 	Box2DPhysicsSystem& system;
-	Box2DActorTransformController* ownerController;  // needs to be ptr because we find it afterwards -- and it might not
-	                                                 // exist
+	Box2DActorTransformController*
+		ownerController; // needs to be ptr because we find it afterwards -- and it might not
+						 // exist
 
 	b2Fixture* fixture;
 
 	bool shouldCallStartContact, shouldCallEndContact;
 	PhysicsComponent* endCallOther, *startCallOther;
-	std::function<void(PhysicsComponent&) > startContactCallback;
-	std::function<void(PhysicsComponent&) > endContactCallback;
+	std::function<void(PhysicsComponent&)> startContactCallback;
+	std::function<void(PhysicsComponent&)> endContactCallback;
 };

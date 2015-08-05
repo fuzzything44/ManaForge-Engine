@@ -7,8 +7,9 @@
 #include <iostream>
 
 Module::Module(const std::string& filename)
-    : registerModuleFunctionAddress(nullptr), getModuleEngineVersionAddress(nullptr),
-      name("modules\\" + filename)  // Append the modules prefiex
+	: registerModuleFunctionAddress(nullptr)
+	, getModuleEngineVersionAddress(nullptr)
+	, name("modules\\" + filename) // Append the modules prefiex
 {
 	try
 	{
@@ -18,7 +19,8 @@ Module::Module(const std::string& filename)
 
 		registerModuleFunctionAddress = libraryHandle.getFunctionPtr<registerModuleFun>("registerModule");
 
-		getModuleEngineVersionAddress = libraryHandle.getFunctionPtr<getModuleEngineVersionFun>("getModuleEngineVersion");
+		getModuleEngineVersionAddress =
+			libraryHandle.getFunctionPtr<getModuleEngineVersionFun>("getModuleEngineVersion");
 	}
 	catch (std::exception& e)
 	{
@@ -26,10 +28,8 @@ Module::Module(const std::string& filename)
 	}
 }
 
-
 void Module::registerModule(ModuleManager& mm)
 {
-
 
 	assert(getModuleEngineVersionAddress);
 	assert(registerModuleFunctionAddress);
@@ -43,7 +43,10 @@ void Module::registerModule(ModuleManager& mm)
 	MFLOG(Trace) << "Module loaded: " << name;
 }
 
-void Module::addClass(const std::string& name, const std::function<void*()>& fun) { classes.insert({name, fun}); }
+void Module::addClass(const std::string& name, const std::function<void*()>& fun)
+{
+	classes.insert({name, fun});
+}
 
 void* Module::spawnClass(const std::string& className)
 {
@@ -54,6 +57,5 @@ void* Module::spawnClass(const std::string& className)
 	}
 	return nullptr;
 }
-
 
 Module::~Module() { classes.erase(classes.begin(), classes.end()); }

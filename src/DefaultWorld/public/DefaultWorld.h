@@ -18,7 +18,6 @@
 
 #include <Color.h>
 
-
 class DefaultWorld : public World
 {
   public:
@@ -26,7 +25,6 @@ class DefaultWorld : public World
 
 	explicit DefaultWorld(const std::string& name = "");
 	virtual ~DefaultWorld();
-
 
 	bool update(float deltaTime);
 
@@ -46,7 +44,7 @@ class DefaultWorld : public World
 	std::string folderLocation;
 	std::string worldName;
 
-	PropertyManager propManager;  // for world specific properties
+	PropertyManager propManager; // for world specific properties
 
 	// use a deque -- the index can be the index in it!
 	std::deque<Actor*> actors;
@@ -58,12 +56,11 @@ class DefaultWorld : public World
 
 	uint32 backgroundChunkSize;
 
-
 	std::string playerControllerModuleName;
 	std::string pawnModuleName;
 
 	std::string playerControllerClassName;
 	std::string pawnClassName;
 
-	boost::signals2::signal<void(float) > tickingActors;
+	boost::signals2::signal<void(float)> tickingActors;
 };

@@ -9,6 +9,5 @@ class MaterialSource
 
 	virtual void init(const path_t& name) = 0;
 
-
 	virtual path_t getName() const = 0;
 };

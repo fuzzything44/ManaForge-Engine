@@ -69,13 +69,16 @@ class SceneComponent : public Component
 	Transform trans;
 };
 
-
 ///////////////////////
 ///// INLINE DEFINITIONS
 ///////////////////////
 #include "Actor.h"
 
-inline SceneComponent::SceneComponent(Actor& owner, Transform trans) : Component(owner), trans(trans) {}
+inline SceneComponent::SceneComponent(Actor& owner, Transform trans)
+	: Component(owner)
+	, trans(trans)
+{
+}
 
 inline SceneComponent::~SceneComponent() {}
 
@@ -96,7 +99,6 @@ inline Transform SceneComponent::getWorldTransform() const
 	return worldTrans;
 }
 
-
 inline vec2 SceneComponent::getWorldLocation() const
 {
 	mat3 model = getModelMatrix();
@@ -109,17 +111,13 @@ inline float SceneComponent::getWorldRotation() const { return owner.getWorldRot
 
 inline vec2 SceneComponent::getRelativeLocation() const { return trans.location; }
 
-
 inline vec2 SceneComponent::getScale() const { return trans.scale; }
-
 
 inline float SceneComponent::getRelativeRotation() const { return trans.rotation; }
 
 inline void SceneComponent::setRelativeLocation(vec2 newLoc) { trans.location = newLoc; }
 
-
 inline void SceneComponent::setScale(vec2 newScale) { trans.scale = newScale; }
-
 
 inline void SceneComponent::setRelativeRotation(float newRot) { trans.rotation = newRot; }
 
@@ -135,8 +133,9 @@ inline mat3 SceneComponent::getModelMatrix() const
 
 	ret = glm::translate(ret, trans.location);
 	ret = glm::rotate(ret, trans.rotation);
-	ret = glm::scale(ret, trans.scale);  // I REALLY DON'T GET THIS ORDER -- TO ME IT SHOULD BE THE OTHER WAY AROUND BUT IT
-	                                     // WORKS
+	ret = glm::scale(
+		ret, trans.scale); // I REALLY DON'T GET THIS ORDER -- TO ME IT SHOULD BE THE OTHER WAY AROUND BUT IT
+						   // WORKS
 
 	return ret;
 }

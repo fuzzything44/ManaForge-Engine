@@ -9,7 +9,6 @@
 #pragma comment(lib, "OpenGLRenderer.lib")
 #endif
 
-
 #include <GL/glew.h>
 
 #define GLFW_INCLUDE_NONE

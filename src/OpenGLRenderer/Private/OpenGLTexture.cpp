@@ -5,22 +5,22 @@
 
 #include <Helper.h>
 
+#define FOURCC_DXT1 0x31545844 // Equivalent to "DXT1" in ASCII
+#define FOURCC_DXT3 0x33545844 // Equivalent to "DXT3" in ASCII
+#define FOURCC_DXT5 0x35545844 // Equivalent to "DXT5" in ASCII
 
-#define FOURCC_DXT1 0x31545844  // Equivalent to "DXT1" in ASCII
-#define FOURCC_DXT3 0x33545844  // Equivalent to "DXT3" in ASCII
-#define FOURCC_DXT5 0x35545844  // Equivalent to "DXT5" in ASCII
-
-OpenGLTexture::OpenGLTexture(const path_t& path) : path(path)
+OpenGLTexture::OpenGLTexture(const path_t& path)
+	: path(path)
 {
 
 	if (path != "") {
 		path_t qualifiedPath = L"textures\\" + path.wstring() + L".dds";
 
-		ID = SOIL_load_OGL_texture(qualifiedPath.string().c_str(),  // path
-		                           4,                               // 4 channels
-		                           0,                               // create a new texture ID in OGL
-		                           SOIL_FLAG_DDS_LOAD_DIRECT        // It is a dds
-		                           );
+		ID = SOIL_load_OGL_texture(qualifiedPath.string().c_str(), // path
+			4,													   // 4 channels
+			0,													   // create a new texture ID in OGL
+			SOIL_FLAG_DDS_LOAD_DIRECT							   // It is a dds
+			);
 	}
 }
 
@@ -67,7 +67,7 @@ Texture::FilterMode OpenGLTexture::getFilterMode() const
 	case GL_NEAREST: return Texture::FilterMode::NEAREST; break;
 	case GL_LINEAR_MIPMAP_LINEAR: return Texture::FilterMode::MIPMAP_LINEAR; break;
 	case GL_NEAREST_MIPMAP_NEAREST: return Texture::FilterMode::MIPMAP_NEAREST; break;
-	default: return Texture::FilterMode::LINEAR;  // IDK break;
+	default: return Texture::FilterMode::LINEAR; // IDK break;
 	}
 }
 
@@ -98,14 +98,14 @@ Texture::WrapMode OpenGLTexture::getWrapMode() const
 
 	GLint wrap;
 
-	glGetTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, &wrap);  // retreive the data
+	glGetTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, &wrap); // retreive the data
 
 	switch (wrap)
 	{
 	case GL_CLAMP_TO_EDGE: return WrapMode::CLAMP_TO_EDGE;
 	case GL_MIRRORED_REPEAT: return WrapMode::MIRRORED_REPEAT;
 	case GL_REPEAT: return WrapMode::REPEAT;
-	default: return WrapMode::REPEAT;  // just a deault fallback
+	default: return WrapMode::REPEAT; // just a deault fallback
 	}
 }
 
@@ -115,7 +115,6 @@ int32 OpenGLTexture::loadDDS(const std::string& filename)
 	unsigned char header[124];
 
 	FILE* fp;
-
 
 	/* try to open the file */
 	fopen_s(&fp, filename.c_str(), "rb");
@@ -171,8 +170,8 @@ int32 OpenGLTexture::loadDDS(const std::string& filename)
 	for (unsigned int level = 0; level < mipMapCount && (width || height); ++level)
 	{
 		auto size = ((width + 3) / 4) * ((height + 3) / 4) * blockSize;
-		glCompressedTexImage2D(GL_TEXTURE_2D, level, format, (GLsizei) width, (GLsizei) height, 0, (GLsizei) size, buffer + offset);
-
+		glCompressedTexImage2D(
+			GL_TEXTURE_2D, level, format, (GLsizei)width, (GLsizei)height, 0, (GLsizei)size, buffer + offset);
 
 		offset += size;
 		width /= 2;

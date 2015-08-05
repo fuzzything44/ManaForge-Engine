@@ -8,7 +8,6 @@
 
 #include <boost/core/noncopyable.hpp>
 
-
 // forward declarations
 class MeshComponent;
 class Texture;
@@ -26,7 +25,6 @@ class Renderer : boost::noncopyable
   public:
 	/// <summary> Destructor.</summary>
 	virtual ~Renderer() = default;
-
 
 	/// <summary> Renders the next frame. </summary>
 	virtual bool update(float deltaTime) = 0;
@@ -58,12 +56,10 @@ class Renderer : boost::noncopyable
 	virtual std::shared_ptr<ModelData> newModelData(const std::string& name) = 0;
 	virtual std::unique_ptr<ModelData> newModelData() = 0;
 
-
 	// gets the window
 	virtual Window& getWindow() = 0;
 	// and the const version
 	virtual const Window& getWindow() const = 0;
-
 
 	virtual void drawDebugOutlinePolygon(vec2* verts, uint32 numVerts, Color color) = 0;
 	virtual void drawDebugLine(vec2* locs, uint32 numLocs, Color color) = 0;

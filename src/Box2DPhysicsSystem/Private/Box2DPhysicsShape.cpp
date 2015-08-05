@@ -36,7 +36,7 @@ void Box2DPhysicsShape::asRectangle(float halfWidth, float halfHeight)
 {
 	std::unique_ptr<b2PolygonShape> box = std::make_unique<b2PolygonShape>();
 
-	box->SetAsBox(halfWidth, halfHeight, b2Vec2(convertVec(location)), 0.f);  // todo
+	box->SetAsBox(halfWidth, halfHeight, b2Vec2(convertVec(location)), 0.f); // todo
 
 	shape = std::move(box);
 }

@@ -8,7 +8,6 @@
 
 #include <map>
 
-
 extern "C" TestContent_API void registerModule(ModuleManager& mm)
 {
 	mm.registerClass<Gate>(MODULE_NAME);

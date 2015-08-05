@@ -27,7 +27,6 @@ class OpenGLTextureLibrary : public TextureLibrary
 	virtual void setWrapMode(WrapMode newMode) override;
 	virtual WrapMode getWrapMode() const override;
 
-
 	uint32 getID();
 
   private:

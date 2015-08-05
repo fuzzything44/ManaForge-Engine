@@ -1,14 +1,12 @@
 #pragma once
 #include "Engine.h"
 
-
 enum class BodyType
 {
 	DYNAMIC,
 	STATIC,
 	KINEMATIC
 };
-
 
 class PhysicsShape
 {

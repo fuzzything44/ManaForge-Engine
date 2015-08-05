@@ -13,7 +13,6 @@
 
 #include <boost/serialization/export.hpp>
 
-
 #include <boost/archive/polymorphic_iarchive.hpp>
 #include <boost/archive/polymorphic_oarchive.hpp>
 
@@ -21,15 +20,11 @@
 
 class Actor;
 
-template <typename T>
-struct bases;
+template <typename T> struct bases;
 
-
-template <typename vector, int32 index>
-struct serializeBases
+template <typename vector, int32 index> struct serializeBases
 {
-	template <typename Archive, typename Derived>
-	static inline void apply(Archive& ar, Derived& derived)
+	template <typename Archive, typename Derived> static inline void apply(Archive& ar, Derived& derived)
 	{
 		using Base = typename boost::mpl::at<vector, boost::mpl::int_<index>>::type;
 
@@ -41,24 +36,16 @@ struct serializeBases
 	}
 };
 
-
-template <typename vector>
-struct serializeBases<vector, -1>
+template <typename vector> struct serializeBases<vector, -1>
 {
-	template <typename Archive, typename Derived>
-	static inline void apply(Archive& ar, Derived& derived)
-	{
-	}
+	template <typename Archive, typename Derived> static inline void apply(Archive& ar, Derived& derived) {}
 };
 
-template <typename... args>
-struct serializeMembers_impl;
+template <typename... args> struct serializeMembers_impl;
 
-template <typename First, typename... Rest>
-struct serializeMembers_impl<First, Rest...>
+template <typename First, typename... Rest> struct serializeMembers_impl<First, Rest...>
 {
-	template <typename Archive>
-	static inline void apply(Archive& ar, First& first, Rest&... rest)
+	template <typename Archive> static inline void apply(Archive& ar, First& first, Rest&... rest)
 	{
 		ar& boost::serialization::make_nvp("member", first);
 
@@ -66,28 +53,23 @@ struct serializeMembers_impl<First, Rest...>
 	}
 };
 
-template <>
-struct serializeMembers_impl<>
+template <> struct serializeMembers_impl<>
 {
-	template <typename Archive>
-	static inline void apply(Archive& ar)
-	{
-	}
+	template <typename Archive> static inline void apply(Archive& ar) {}
 };
 
-template <typename Archive, typename... Types>
-void serializeMembers(Archive& ar, Types&... values)
+template <typename Archive, typename... Types> void serializeMembers(Archive& ar, Types&... values)
 {
 	serializeMembers_impl<Types...>::apply(ar, values...);
 }
 
-#define MFCLASS(className, ... /*bases*/)                                                                           \
-	class className;                                                                                                \
-	BOOST_CLASS_EXPORT_KEY2(className, BOOST_PP_CAT(BOOST_PP_CAT(MODULE_NAME, "."), BOOST_PP_STRINGIZE(className))) \
-	template <>                                                                                                     \
-	struct bases<className>                                                                                         \
-	{                                                                                                               \
-		using type = boost::mpl::vector<__VA_ARGS__>;                                                               \
+#define MFCLASS(className, ... /*bases*/)                                                       \
+	class className;                                                                            \
+	BOOST_CLASS_EXPORT_KEY2(                                                                    \
+		className, BOOST_PP_CAT(BOOST_PP_CAT(MODULE_NAME, "."), BOOST_PP_STRINGIZE(className))) \
+	template <> struct bases<className>                                                         \
+	{                                                                                           \
+		using type = boost::mpl::vector<__VA_ARGS__>;                                           \
 	};
 
 #define MFCLASS_SOURCE(className)                                                                            \
@@ -96,13 +78,12 @@ void serializeMembers(Archive& ar, Types&... values)
 	template void className::serialize<>(boost::archive::polymorphic_oarchive&, const unsigned int version); \
 	template void className::serialize<>(boost::archive::polymorphic_iarchive&, const unsigned int version);
 
-
-#define MFCLASS_BODY(className, ... /*members to be serialized*/)                                                            \
-	friend class boost::serialization::access;                                                                               \
-	template <typename Archive>                                                                                              \
-	void serialize(Archive& ar, const unsigned version)                                                                      \
-	{                                                                                                                        \
-		serializeBases<bases<className>::type, boost::mpl::size<bases<className>::type>::type::value - 1>::apply(ar, *this); \
-                                                                                                                             \
-		serializeMembers(ar, __VA_ARGS__);                                                                                   \
+#define MFCLASS_BODY(className, ... /*members to be serialized*/)                         \
+	friend class boost::serialization::access;                                            \
+	template <typename Archive> void serialize(Archive& ar, const unsigned version)       \
+	{                                                                                     \
+		serializeBases<bases<className>::type,                                            \
+			boost::mpl::size<bases<className>::type>::type::value - 1>::apply(ar, *this); \
+                                                                                          \
+		serializeMembers(ar, __VA_ARGS__);                                                \
 	}

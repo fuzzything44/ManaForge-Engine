@@ -24,7 +24,6 @@ class PhysicsBody : boost::noncopyable
 	virtual void setIsSensor(bool newIsSensor) = 0;
 	virtual bool getIsSensor() const = 0;
 
-
-	virtual void setStartContactCallback(const std::function<void(PhysicsComponent&) >&) = 0;
-	virtual void setEndContactCallback(const std::function<void(PhysicsComponent&) >&) = 0;
+	virtual void setStartContactCallback(const std::function<void(PhysicsComponent&)>&) = 0;
+	virtual void setEndContactCallback(const std::function<void(PhysicsComponent&)>&) = 0;
 };

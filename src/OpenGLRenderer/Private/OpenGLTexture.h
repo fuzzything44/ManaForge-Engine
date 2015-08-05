@@ -23,7 +23,6 @@ class OpenGLTexture : public Texture
 	virtual void setFilterMode(FilterMode mode) override;
 	virtual FilterMode getFilterMode() const override;
 
-
 	virtual void setWrapMode(WrapMode newMode) override;
 	virtual WrapMode getWrapMode() const override;
 
@@ -34,8 +33,9 @@ class OpenGLTexture : public Texture
 
 	path_t path;
 
-
 	int32 loadDDS(const std::string& filename);
 	// void appendDDS(uint32 texToAppend, uint32 Xoffset, uint32 Yoffset, const char* filepath);
-	// uint32 allocateCompressedTextureLibraryFromDDS(uint32 num, const char* filepath);			// keeping just in case
+	// uint32 allocateCompressedTextureLibraryFromDDS(uint32 num, const char* filepath);			// keeping just
+	// in
+	// case
 };

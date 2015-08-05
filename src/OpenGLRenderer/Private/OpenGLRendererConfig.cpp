@@ -17,19 +17,18 @@
 #pragma comment(lib, "glew32.lib")
 #endif
 
-
 extern "C" OpenGLRenderer_API void registerModule(ModuleManager& mm)
 {
 	mm.registerClass<OpenGLRenderer>(MODULE_NAME);
 	mm.addUpdateCallback([](float deltaTime)
-	                     {
-		                     return Runtime::get().renderer->update(deltaTime);
-		                 });
+		{
+			return Runtime::get().renderer->update(deltaTime);
+		});
 
 	mm.addInitCallback([]()
-	                   {
-		                   return Runtime::get().renderer->init();
-		               });
+		{
+			return Runtime::get().renderer->init();
+		});
 }
 
 extern "C" OpenGLRenderer_API float getModuleEngineVersion() { return ENGINE_VERSION; }

@@ -5,19 +5,21 @@
 
 #include <Helper.h>
 
-Box2DPhysicsBody::Box2DPhysicsBody(Box2DPhysicsShape& shape, PhysicsComponent& owner, Box2DPhysicsSystem& system)
-    : system(system), ownerComponent(owner), shouldCallStartContact(false), shouldCallEndContact(false)
+Box2DPhysicsBody::Box2DPhysicsBody(
+	Box2DPhysicsShape& shape, PhysicsComponent& owner, Box2DPhysicsSystem& system)
+	: system(system)
+	, ownerComponent(owner)
+	, shouldCallStartContact(false)
+	, shouldCallEndContact(false)
 {
 	auto iter = system.bodies.find(&(owner.getOwner()));
 
 	if (iter == system.bodies.end()) MFLOG(Fatal) << "could not find actor in ActorTransformController map";
 	ownerController = iter->second;
 
-
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = shape.shape.get();
 	fixtureDef.userData = this;
-
 
 	assert(ownerController->body);
 	assert(ownerController->body->GetWorld());
@@ -25,7 +27,6 @@ Box2DPhysicsBody::Box2DPhysicsBody(Box2DPhysicsShape& shape, PhysicsComponent& o
 }
 
 Box2DPhysicsBody::~Box2DPhysicsBody() { ownerController->body->DestroyFixture(fixture); }
-
 
 void Box2DPhysicsBody::setRestitution(float newRestitution)
 {
@@ -47,12 +48,12 @@ float Box2DPhysicsBody::getFriction() const { return fixture->GetFriction(); }
 void Box2DPhysicsBody::setIsSensor(bool newIsSensor) { fixture->SetSensor(newIsSensor); }
 bool Box2DPhysicsBody::getIsSensor() const { return fixture->IsSensor(); }
 
-void Box2DPhysicsBody::setStartContactCallback(const std::function<void(PhysicsComponent&) >& callback)
+void Box2DPhysicsBody::setStartContactCallback(const std::function<void(PhysicsComponent&)>& callback)
 {
 	startContactCallback = callback;
 }
 
-void Box2DPhysicsBody::setEndContactCallback(const std::function<void(PhysicsComponent&) >& callback)
+void Box2DPhysicsBody::setEndContactCallback(const std::function<void(PhysicsComponent&)>& callback)
 {
 	endContactCallback = callback;
 }

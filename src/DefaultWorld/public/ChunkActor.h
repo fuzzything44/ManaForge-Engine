@@ -10,7 +10,8 @@
 class ChunkActor : public Actor
 {
   public:
-	ChunkActor(const Transform& trans, std::shared_ptr<MaterialInstance> mat, std::shared_ptr<ModelData> data) : Actor()
+	ChunkActor(const Transform& trans, std::shared_ptr<MaterialInstance> mat, std::shared_ptr<ModelData> data)
+		: Actor()
 	{
 		setWorldTransform(trans);
 

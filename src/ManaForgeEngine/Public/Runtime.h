@@ -41,7 +41,6 @@ class Runtime : boost::noncopyable
 	std::unique_ptr<PhysicsSystem> physSystem;
 	std::unique_ptr<AudioSystem> audioSystem;
 
-
 	using clock = std::chrono::high_resolution_clock;
 
 	std::unique_ptr<World> world;

@@ -11,7 +11,6 @@
 // ALWAYS link to stackwalker.lib
 #pragma comment(lib, "StackWalker.lib")
 
-
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
 #include <glm/gtx/matrix_transform_2d.hpp>
@@ -27,11 +26,13 @@
 namespace std
 {
 
-template <>
-struct std::hash<boost::filesystem::path>
+template <> struct std::hash<boost::filesystem::path>
 {
 
-	size_t operator()(const boost::filesystem::path& p) const { return std::hash<std::wstring>()(p.wstring()); }
+	size_t operator()(const boost::filesystem::path& p) const
+	{
+		return std::hash<std::wstring>()(p.wstring());
+	}
 };
 }
 
@@ -49,7 +50,6 @@ using uint8 = uint8_t;
 using uint16 = uint16_t;
 using uint32 = uint32_t;
 using uint64 = uint64_t;
-
 
 using vec2 = glm::vec2;
 using vec3 = glm::vec3;

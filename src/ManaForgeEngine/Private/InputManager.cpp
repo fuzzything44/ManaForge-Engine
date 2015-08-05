@@ -10,8 +10,8 @@
 
 #include <boost/lexical_cast.hpp>
 
-
-InputManager::InputManager(Window* window) : window(window)
+InputManager::InputManager(Window* window)
+	: window(window)
 {
 	std::ifstream i_stream{"bindings.txt"};
 
@@ -29,7 +29,8 @@ InputManager::InputManager(Window* window) : window(window)
 	}
 	catch (boost::archive::archive_exception& e)
 	{
-		MFLOG(Fatal) << "ARCHIVE EXCEPTION OCCURED IN LOADING INPUT MANAGER. Code: " << e.code << " Error message: " << e.what();
+		MFLOG(Fatal) << "ARCHIVE EXCEPTION OCCURED IN LOADING INPUT MANAGER. Code: " << e.code
+					 << " Error message: " << e.what();
 	}
 	catch (std::exception& e)
 	{
@@ -65,7 +66,7 @@ void InputManager::bindActionMappingReleased(const std::string& name, std::funct
 	}
 }
 
-void InputManager::bindAxisMapping(const std::string& name, std::function<void(float) > callback)
+void InputManager::bindAxisMapping(const std::string& name, std::function<void(float)> callback)
 {
 	auto iter = axisMappings.find(name);
 
@@ -96,7 +97,10 @@ bool InputManager::update()
 	return true;
 }
 
-InputManager::ActionMapping::ActionMapping(const std::vector<Keyboard>& keys) : keysBound(keys) {}
+InputManager::ActionMapping::ActionMapping(const std::vector<Keyboard>& keys)
+	: keysBound(keys)
+{
+}
 
 InputManager::ActionMapping::~ActionMapping() {}
 
@@ -132,11 +136,17 @@ void InputManager::ActionMapping::operator()()
 	if (!isPressedNew && isPressed && released) released();
 }
 
-InputManager::AxisMapping::AxisMapping(const std::vector<std::pair<Keyboard, float>>& values) : values(values) {}
+InputManager::AxisMapping::AxisMapping(const std::vector<std::pair<Keyboard, float>>& values)
+	: values(values)
+{
+}
 
 InputManager::AxisMapping::~AxisMapping() {}
 
-void InputManager::AxisMapping::setCallback(std::function<void(float) > newCallback) { callback = newCallback; }
+void InputManager::AxisMapping::setCallback(std::function<void(float)> newCallback)
+{
+	callback = newCallback;
+}
 
 void InputManager::AxisMapping::operator()()
 {

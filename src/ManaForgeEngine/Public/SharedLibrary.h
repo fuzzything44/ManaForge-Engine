@@ -12,7 +12,6 @@
 #include <Windows.h>
 #endif
 
-
 class SharedLibrary
 {
 #if defined WIN32
@@ -20,7 +19,8 @@ class SharedLibrary
 	using SharedLibHandle = HINSTANCE;
 #endif
   public:
-	SharedLibrary() : handle(nullptr){};
+	SharedLibrary()
+		: handle(nullptr){};
 	ENGINE_API explicit SharedLibrary(const std::wstring& name);
 
 	// make it move only
@@ -37,17 +37,14 @@ class SharedLibrary
 
 	ENGINE_API static void Unload(SharedLibHandle handle);
 
-	template <typename T>
-	inline T* getFunctionPtr(const std::string& functionName);
+	template <typename T> inline T* getFunctionPtr(const std::string& functionName);
 
   private:
 	SharedLibHandle handle;
 };
 
-
 #if defined WIN32
-template <typename T>
-inline T* SharedLibrary::getFunctionPtr(const std::string& functionName)
+template <typename T> inline T* SharedLibrary::getFunctionPtr(const std::string& functionName)
 {
 	assert(handle);
 

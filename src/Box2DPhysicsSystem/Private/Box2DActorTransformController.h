@@ -33,7 +33,6 @@ class Box2DActorTransformController : public ActorTransformController
 
 	virtual Actor& getOwner() const override;
 
-
 	Box2DPhysicsSystem& system;
 
 	static void bodyDeleter(b2Body* ptr) { ptr->GetWorld()->DestroyBody(ptr); }

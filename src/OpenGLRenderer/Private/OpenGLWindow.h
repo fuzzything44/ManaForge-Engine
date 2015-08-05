@@ -16,7 +16,6 @@ class OpenGLWindow : public Window
 	virtual int32 getIsKeyPressed(Keyboard key) override;
 	virtual vec2 getCursorLocPixels() override;
 
-
 	virtual void swapBuffers();
 	virtual void pollEvents();
 	bool shouldClose();

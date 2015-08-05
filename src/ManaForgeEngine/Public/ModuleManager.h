@@ -9,7 +9,6 @@
 
 #include <unordered_map>
 
-
 #include <boost/algorithm/string.hpp>
 #include <boost/core/noncopyable.hpp>
 
@@ -20,14 +19,13 @@ class PhysicsSystem;
 class AudioSystem;
 class Module;
 
-
 class ModuleManager : boost::noncopyable
 {
   public:
 	friend Runtime;
 
-	using contentModuleSpawnFun = std::function<void*(const std::string&) >;
-	using updateFun = std::function<bool(float) >;
+	using contentModuleSpawnFun = std::function<void*(const std::string&)>;
+	using updateFun = std::function<bool(float)>;
 	using initFun = std::function<void()>;
 
 	ENGINE_API ModuleManager();
@@ -35,14 +33,12 @@ class ModuleManager : boost::noncopyable
 
 	ENGINE_API void loadModule(const std::string& name);
 
-	template <typename T>
-	inline void registerClass(const std::string& moduleName, T* ptr = nullptr);
+	template <typename T> inline void registerClass(const std::string& moduleName, T* ptr = nullptr);
 
 	ENGINE_API void addInitCallback(const initFun& function);
 	ENGINE_API void addUpdateCallback(const updateFun& function);
 
-	template <typename T>
-	inline T* spawnClass(const std::string& moduleName, const std::string& className);
+	template <typename T> inline T* spawnClass(const std::string& moduleName, const std::string& className);
 
   private:
 	// and finally the modules
@@ -65,8 +61,7 @@ class ModuleManager : boost::noncopyable
 
 #include <boost/type_index.hpp>
 
-template <typename T>
-inline void ModuleManager::registerClass(const std::string& moduleName, T* ptr)
+template <typename T> inline void ModuleManager::registerClass(const std::string& moduleName, T* ptr)
 {
 	std::string name = boost::typeindex::type_id<T>().pretty_name();
 
@@ -86,13 +81,13 @@ inline void ModuleManager::registerClass(const std::string& moduleName, T* ptr)
 		name = strTemp;
 	}
 
-
 	auto moduleIter = loadedModules.find(moduleName);
 	if (moduleIter != loadedModules.end()) {
-		moduleIter->second->addClass(name, []()
-		                             {
-			                             return new T();
-			                         });
+		moduleIter->second->addClass(name,
+			[]()
+			{
+				return new T();
+			});
 	}
 }
 

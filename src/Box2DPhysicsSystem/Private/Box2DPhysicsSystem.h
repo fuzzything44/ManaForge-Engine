@@ -21,14 +21,13 @@ class Box2DPhysicsSystem : public PhysicsSystem
 
 	virtual void setGravity(vec2 newGravity) override;
 
-
-	virtual std::unique_ptr<PhysicsBody> newPhysicsBody(PhysicsShape& shape, PhysicsComponent& owner) override;
+	virtual std::unique_ptr<PhysicsBody> newPhysicsBody(
+		PhysicsShape& shape, PhysicsComponent& owner) override;
 	virtual std::unique_ptr<PhysicsShape> newPhysicsShape() override;
 	virtual std::unique_ptr<ActorTransformController> newActorTransformController(Actor& actor) override;
 	virtual void drawDebugPoints() override;
 
 	bool update(float deltaTime);
-
 
   private:
 	std::unordered_map<Actor*, Box2DActorTransformController*> bodies;

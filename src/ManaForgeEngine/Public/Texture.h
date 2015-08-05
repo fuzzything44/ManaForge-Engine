@@ -3,7 +3,6 @@
 #include "Engine.h"
 #include <string>
 
-
 class Texture
 {
   public:

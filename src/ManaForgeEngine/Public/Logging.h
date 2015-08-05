@@ -12,7 +12,6 @@
 
 #include <boost/date_time.hpp>
 
-
 enum class severity_t
 {
 	Trace,
@@ -24,7 +23,8 @@ enum class severity_t
 };
 
 template <typename char_t, typename traits>
-inline std::basic_ostream<char_t, traits>& operator<<(std::basic_ostream<char_t, traits>& stream, severity_t sev)
+inline std::basic_ostream<char_t, traits>& operator<<(
+	std::basic_ostream<char_t, traits>& stream, severity_t sev)
 {
 	switch (sev)
 	{
@@ -57,7 +57,6 @@ class sink_t
 	using char_type = wchar_t;
 	using category = boost::iostreams::sink_tag;
 
-
 	std::streamsize write(const char_type* s, std::streamsize n)
 	{
 		std::copy(s, s + n, std::ostream_iterator<char_type, char_type>(std::wcout));
@@ -66,7 +65,6 @@ class sink_t
 		return n;
 	}
 
-
 	static void init() { file = new std::wofstream("ENGLOG.log"); }
 
 	static void cleanup() { delete file; }
@@ -74,7 +72,6 @@ class sink_t
   private:
 	ENGINE_API static std::wofstream* file;
 };
-
 
 struct log_base
 {
@@ -98,8 +95,7 @@ struct log_base
 };
 }
 
-template <severity_t sev>
-struct logger : logdetail::log_base
+template <severity_t sev> struct logger : logdetail::log_base
 {
 	inline logger()
 	{
@@ -112,8 +108,7 @@ struct logger : logdetail::log_base
 
 	inline ~logger() { flush(); }
 
-	template <typename T>
-	std::wostream& operator<<(const T& member)
+	template <typename T> std::wostream& operator<<(const T& member)
 	{
 		*str << member;
 		return *str;
@@ -123,7 +118,7 @@ struct logger : logdetail::log_base
 // and the hackery commences
 #define MFLOG(sev)                                                                                       \
 	for (std::tuple<bool, std::stringstream> data{true, std::stringstream()}; std::get<0>(data); [&data] \
-	     {                                                                                               \
+		 {                                                                                               \
 		std::get<0>(data) = false;                                                                       \
 		::logger<::severity_t::##sev>() << ::logdetail::stringToWstring(::std::get<1>(data).str());      \
 		if (::severity_t::##sev == ::severity_t::Fatal) {                                                \
@@ -140,7 +135,7 @@ struct logger : logdetail::log_base
 // for wide chars
 #define MFLOGW(sev)                                          \
 	for (bool needsRun = true; needsRun; [&needsRun]         \
-	     {                                                   \
+		 {                                                   \
 		needsRun = false;                                    \
 		if (::severity_t::##sev == ::severity_t::Fatal) {    \
 			::logdetail::log_base::cleanup();                \

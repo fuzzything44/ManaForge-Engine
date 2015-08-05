@@ -15,7 +15,6 @@ ModuleManager::ModuleManager() {}
 
 ModuleManager::~ModuleManager() {}
 
-
 void ModuleManager::loadModule(const std::string& name)
 {
 
@@ -27,7 +26,6 @@ void ModuleManager::loadModule(const std::string& name)
 		MFLOG(Warning) << "Module: " << name << " already loaded.";
 	}
 }
-
 
 void ModuleManager::addInitCallback(const initFun& function) { initCallbacks.push_back(function); }
 

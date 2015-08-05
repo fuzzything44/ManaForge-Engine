@@ -1,24 +1,23 @@
 ///////////////////////////////////////////
 /////// START STD LIBRARY HEADERS /////////
-#include <ios>  // IOS
+#include <ios> // IOS
 
-#include <iostream>  // STREAMS
+#include <iostream> // STREAMS
 #include <sstream>
 #include <fstream>
 
-#include <map>  // CONTAINERS
+#include <map> // CONTAINERS
 #include <list>
 #include <vector>
 #include <string>
 
-#include <exception>  // EXCEPTION
+#include <exception> // EXCEPTION
 #include <stdexcept>
 
-#include <functional>  // MISC
+#include <functional> // MISC
 #include <chrono>
 
-#include <memory>  // for smart ptrs
-
+#include <memory> // for smart ptrs
 
 ///////////////////////////////////////////
 /////////// START BOOST HEADERS
@@ -52,7 +51,6 @@
 #include <boost/serialization/map.hpp>
 #include <boost/serialization/list.hpp>
 #include <boost/serialization/vector.hpp>
-
 
 #include <boost/iostreams/stream.hpp>
 #include <boost/iostreams/categories.hpp>

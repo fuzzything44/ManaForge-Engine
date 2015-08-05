@@ -2,7 +2,9 @@
 #include "Box2DPhysicsSystem.h"
 
 Box2DActorTransformController::Box2DActorTransformController(Actor& owner, Box2DPhysicsSystem& system)
-    : owner(owner), system(system), body(std::unique_ptr<b2Body, decltype(&bodyDeleter)>(nullptr, &bodyDeleter))
+	: owner(owner)
+	, system(system)
+	, body(std::unique_ptr<b2Body, decltype(&bodyDeleter)>(nullptr, &bodyDeleter))
 {
 	system.bodies.insert(std::map<Actor*, Box2DActorTransformController*>::value_type(&owner, this));
 
@@ -26,7 +28,6 @@ Transform Box2DActorTransformController::getTransform() const
 	return ret;
 }
 
-
 vec2 Box2DActorTransformController::getVelocity() const { return convertVec(body->GetLinearVelocity()); }
 
 void Box2DActorTransformController::setTransform(const Transform& newTrans)
@@ -34,7 +35,10 @@ void Box2DActorTransformController::setTransform(const Transform& newTrans)
 	body->SetTransform(convertVec(newTrans.location), newTrans.rotation);
 }
 
-void Box2DActorTransformController::setVelocity(vec2 newVelocity) { body->SetLinearVelocity(convertVec(newVelocity)); }
+void Box2DActorTransformController::setVelocity(vec2 newVelocity)
+{
+	body->SetLinearVelocity(convertVec(newVelocity));
+}
 
 PhysicsType Box2DActorTransformController::getType()
 {
@@ -64,19 +68,20 @@ void Box2DActorTransformController::setType(PhysicsType newType)
 
 void Box2DActorTransformController::applyLocalForce(vec2 localForce, vec2 localPoint)
 {
-	body->ApplyForce(body->GetWorldVector(convertVec(localForce)), body->GetWorldPoint(convertVec(localPoint)), true);
+	body->ApplyForce(
+		body->GetWorldVector(convertVec(localForce)), body->GetWorldPoint(convertVec(localPoint)), true);
 }
 void Box2DActorTransformController::applyWorldForce(vec2 localForce, vec2 localPoint)
 {
 	body->ApplyForce(convertVec(localForce), convertVec(localPoint), true);
 }
 
-
 void Box2DActorTransformController::applyTorque(float magnituede) { body->ApplyTorque(magnituede, true); }
-
 
 Actor& Box2DActorTransformController::getOwner() const { return owner; }
 
-
-void Box2DActorTransformController::setAngularVelocity(float newVelocity) { body->SetAngularVelocity(newVelocity); }
+void Box2DActorTransformController::setAngularVelocity(float newVelocity)
+{
+	body->SetAngularVelocity(newVelocity);
+}
 float Box2DActorTransformController::getAngularVelocity() { return body->GetAngularVelocity(); }

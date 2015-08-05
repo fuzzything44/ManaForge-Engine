@@ -2,7 +2,6 @@
 
 #include "Component.h"
 
-
 Component::~Component()
 {
 	if (location != (owner.components.size() - 1)) {
@@ -14,5 +13,5 @@ Component::~Component()
 		toMove->location = location;
 	}
 
-	owner.components.pop_back();  // remove the last element
+	owner.components.pop_back(); // remove the last element
 }

@@ -8,7 +8,13 @@ struct Color
 	uint8 blue;
 	uint8 alpha;
 
-	explicit Color(uint8 r = 0, uint8 g = 0, uint8 b = 0, uint8 a = 0) : red(r), green(g), blue(b), alpha(a) {}
+	explicit Color(uint8 r = 0, uint8 g = 0, uint8 b = 0, uint8 a = 0)
+		: red(r)
+		, green(g)
+		, blue(b)
+		, alpha(a)
+	{
+	}
 
 	explicit Color(std::array<uint8, 4> color)
 	{
@@ -18,8 +24,7 @@ struct Color
 		alpha = color[3];
 	}
 
-	template <typename Archive>
-	void serialize(Archive& ar, const uint32 version)
+	template <typename Archive> void serialize(Archive& ar, const uint32 version)
 	{
 		ar& BOOST_SERIALIZATION_NVP(red);
 		ar& BOOST_SERIALIZATION_NVP(green);
@@ -52,20 +57,20 @@ struct Color
 
 	bool operator<(const Color& other) const
 	{
-		uint32 hash = ((uint32) red << 24) | ((uint32) green << 16) | ((uint32) blue << 8) | ((uint32) alpha);
+		uint32 hash = ((uint32)red << 24) | ((uint32)green << 16) | ((uint32)blue << 8) | ((uint32)alpha);
 
-		uint32 hashOther =
-		    ((uint32) other.red << 24) | ((uint32) other.green << 16) | ((uint32) other.blue << 8) | ((uint32) other.alpha);
+		uint32 hashOther = ((uint32)other.red << 24) | ((uint32)other.green << 16) | ((uint32)other.blue << 8)
+						   | ((uint32)other.alpha);
 
 		return hash < hashOther;
 	}
 
 	bool operator>(const Color& other) const
 	{
-		uint32 hash = ((uint32) red << 24) | ((uint32) green << 16) | ((uint32) blue << 8) | ((uint32) alpha);
+		uint32 hash = ((uint32)red << 24) | ((uint32)green << 16) | ((uint32)blue << 8) | ((uint32)alpha);
 
-		uint32 hashOther =
-		    ((uint32) other.red << 24) | ((uint32) other.green << 16) | ((uint32) other.blue << 8) | ((uint32) other.alpha);
+		uint32 hashOther = ((uint32)other.red << 24) | ((uint32)other.green << 16) | ((uint32)other.blue << 8)
+						   | ((uint32)other.alpha);
 
 		return hash > hashOther;
 	}

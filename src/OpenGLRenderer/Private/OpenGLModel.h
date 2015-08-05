@@ -18,11 +18,12 @@ class OpenGLModel final : public Model
 	explicit OpenGLModel(OpenGLRenderer& renderer);
 	virtual ~OpenGLModel();
 
-	virtual void init(std::shared_ptr<MaterialInstance> mat, std::shared_ptr<ModelData> data, MeshComponent& ownerComp) override;
+	virtual void init(std::shared_ptr<MaterialInstance> mat,
+		std::shared_ptr<ModelData> data,
+		MeshComponent& ownerComp) override;
 
 	virtual MeshComponent& getOwnerComponent() override;
 	virtual const MeshComponent& getOwnerComponent() const override;
-
 
 	void draw();
 

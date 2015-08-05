@@ -15,30 +15,31 @@
 
 #include <glm-ortho-2d.h>
 
-OpenGLModel::OpenGLModel(OpenGLRenderer& renderer) : renderer(renderer), isValid(true)
+OpenGLModel::OpenGLModel(OpenGLRenderer& renderer)
+	: renderer(renderer)
+	, isValid(true)
 {
 	// add model to renderer's list
 	location = renderer.models.insert(renderer.models.begin(), this);
 }
-
 
 OpenGLModel::~OpenGLModel()
 {
 	isValid = false;
 	// this could be pretty slow, needs optimization.
 	renderer.runOnRenderThreadSync([location = location]
-	                               {
-		                               static_cast<OpenGLRenderer*>(Runtime::get().renderer.get())->models.erase(location);
-		                           });
+		{
+			static_cast<OpenGLRenderer*>(Runtime::get().renderer.get())->models.erase(location);
+		});
 }
 
-void OpenGLModel::init(std::shared_ptr<MaterialInstance> mat, std::shared_ptr<ModelData> data, MeshComponent& ownerComp)
+void OpenGLModel::init(
+	std::shared_ptr<MaterialInstance> mat, std::shared_ptr<ModelData> data, MeshComponent& ownerComp)
 {
 	material = std::static_pointer_cast<OpenGLMaterialInstance>(mat);
 	modelData = std::static_pointer_cast<OpenGLModelData>(data);
 	parent = &ownerComp;
 }
-
 
 MeshComponent& OpenGLModel::getOwnerComponent()
 {
@@ -51,7 +52,6 @@ const MeshComponent& OpenGLModel::getOwnerComponent() const
 	assert(parent);
 	return *parent;
 }
-
 
 void OpenGLModel::draw()
 {

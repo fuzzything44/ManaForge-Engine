@@ -2,7 +2,8 @@
 
 #include <Logging.h>
 
-OpenALSoundCue::OpenALSoundCue(const path_t& name) : name(name)
+OpenALSoundCue::OpenALSoundCue(const path_t& name)
+	: name(name)
 {
 	path_t path = L"sounds\\" + name.wstring() + L".wav";
 

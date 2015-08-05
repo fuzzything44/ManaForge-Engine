@@ -16,7 +16,6 @@ class OpenGLMaterialSource : public MaterialSource
 
 	virtual path_t getName() const override;
 
-
 	GLint operator*() const { return program; }
 
 	int32 startTexUniform;

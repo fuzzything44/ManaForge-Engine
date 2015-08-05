@@ -9,7 +9,8 @@ class SoundSource;
 class AudioComponent : public SceneComponent
 {
   public:
-	ENGINE_API explicit AudioComponent(Actor& owner, SoundCue& cue, Transform trans = Transform(), bool loops = false);
+	ENGINE_API explicit AudioComponent(
+		Actor& owner, SoundCue& cue, Transform trans = Transform(), bool loops = false);
 
 	inline void setLoops(bool loops);
 	inline bool getLoops() const;
@@ -27,7 +28,8 @@ class AudioComponent : public SceneComponent
 	inline void setReferenceDistance(float refrenceDistance);
 	inline float getReferenceDistance() const;
 
-	inline void setConeParams(vec2 direction = vec2(), float innerAngle = 360.f, float outerAngle = 360.f, float outerGain = 0.f);
+	inline void setConeParams(
+		vec2 direction = vec2(), float innerAngle = 360.f, float outerAngle = 360.f, float outerGain = 0.f);
 
 	inline void setGainBounds(float min, float max);
 
@@ -57,7 +59,10 @@ inline void AudioComponent::setRolloffFactor(float rolloffFactor) { source->setR
 
 inline float AudioComponent::getRolloffFactor() const { return source->getRolloffFactor(); }
 
-inline void AudioComponent::setReferenceDistance(float refrenceDistance) { source->setReferenceDistance(refrenceDistance); }
+inline void AudioComponent::setReferenceDistance(float refrenceDistance)
+{
+	source->setReferenceDistance(refrenceDistance);
+}
 
 inline float AudioComponent::getReferenceDistance() const { return source->getReferenceDistance(); }
 

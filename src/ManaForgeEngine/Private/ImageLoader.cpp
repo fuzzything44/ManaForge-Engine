@@ -2,8 +2,8 @@
 
 #include "ImageLoader.h"
 
-std::map<std::string, std::function<uvec2(std::string, std::vector<uint8>&) >> ImageLoader::loadFunctions =
-    std::map<std::string, loadFun>();
+std::map<std::string, std::function<uvec2(std::string, std::vector<uint8>&)>> ImageLoader::loadFunctions =
+	std::map<std::string, loadFun>();
 
 uvec2 ImageLoader::load(std::string filename, std::vector<uint8>& data)
 {

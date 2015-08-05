@@ -19,7 +19,7 @@ class MaterialInstance
 	virtual std::shared_ptr<MaterialSource> getSource() = 0;
 	virtual std::shared_ptr<const MaterialSource> getSource() const = 0;
 
-	virtual void setUpdateCallback(std::function<void(MaterialInstance&) >) = 0;
+	virtual void setUpdateCallback(std::function<void(MaterialInstance&)>) = 0;
 
 	virtual void setProperty(const std::string& propName, int i) = 0;
 	virtual void setProperty(const std::string& propName, ivec2 i) = 0;
