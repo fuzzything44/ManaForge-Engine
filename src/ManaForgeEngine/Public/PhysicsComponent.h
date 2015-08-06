@@ -8,7 +8,7 @@ class PhysicsShape;
 
 class PhysicsComponent : public SceneComponent
 {
-  public:
+public:
 	inline PhysicsComponent(Actor& owner, PhysicsShape& shape, const Transform& trans = Transform());
 	ENGINE_API virtual ~PhysicsComponent();
 
@@ -27,7 +27,7 @@ class PhysicsComponent : public SceneComponent
 	inline void setStartContactCallback(const std::function<void(PhysicsComponent&)>& callback);
 	inline void setEndContactCallback(const std::function<void(PhysicsComponent&)>& callback);
 
-  private:
+private:
 	std::unique_ptr<PhysicsBody> body;
 };
 

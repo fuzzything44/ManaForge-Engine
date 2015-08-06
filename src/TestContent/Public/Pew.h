@@ -8,13 +8,13 @@ class Pew : public Actor
 {
 
 	MFCLASS_BODY(Pew)
-  public:
+public:
 	Pew();
 	~Pew() override {}
 
 	void startContact(PhysicsComponent& other);
 
-  private:
+private:
 	std::unique_ptr<PhysicsComponent> phys;
 
 	float timeToSpawn;

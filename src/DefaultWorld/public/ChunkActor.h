@@ -9,7 +9,7 @@
 
 class ChunkActor : public Actor
 {
-  public:
+public:
 	ChunkActor(const Transform& trans, std::shared_ptr<MaterialInstance> mat, std::shared_ptr<ModelData> data)
 		: Actor()
 	{
@@ -18,6 +18,6 @@ class ChunkActor : public Actor
 		meshComp = std::make_shared<MeshComponent>(*this, Transform{}, mat, data);
 	}
 
-  private:
+private:
 	std::shared_ptr<MeshComponent> meshComp;
 };

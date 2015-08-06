@@ -12,11 +12,11 @@ class OpenALSoundCue : public SoundCue
 {
 	friend class OpenALSoundSource;
 
-  public:
+public:
 	explicit OpenALSoundCue(const path_t& name);
 	virtual path_t getName() const override;
 
-  private:
+private:
 	ALuint bufferHandle;
 	path_t name;
 };

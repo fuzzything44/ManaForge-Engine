@@ -18,7 +18,7 @@ class SharedLibrary
 	// typedef it to make sure we don't do any platform specific crap
 	using SharedLibHandle = HINSTANCE;
 #endif
-  public:
+public:
 	SharedLibrary()
 		: handle(nullptr){};
 	ENGINE_API explicit SharedLibrary(const std::wstring& name);
@@ -39,7 +39,7 @@ class SharedLibrary
 
 	template <typename T> inline T* getFunctionPtr(const std::string& functionName);
 
-  private:
+private:
 	SharedLibHandle handle;
 };
 

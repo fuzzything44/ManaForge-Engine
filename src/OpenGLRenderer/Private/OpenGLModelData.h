@@ -8,7 +8,7 @@ class OpenGLRenderer;
 
 class OpenGLModelData final : public ModelData
 {
-  public:
+public:
 	OpenGLModelData(OpenGLRenderer& renderer)
 		: renderer(renderer)
 		, bisInitialized(false)
@@ -25,7 +25,7 @@ class OpenGLModelData final : public ModelData
 
 	inline void draw();
 
-  private:
+private:
 	uint32 vertexArray;
 	uint32 vertexLocationBuffer;
 	uint32 texCoordBuffer;

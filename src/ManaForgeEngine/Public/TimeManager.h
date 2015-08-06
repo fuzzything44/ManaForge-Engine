@@ -6,9 +6,12 @@
 #include <ratio>
 #include <deque>
 
-class TimeManager
+class TimerHandle;
+
+class TimerManager
 {
-  public:
+	friend class TimerHandle;
+public:
 	using Callback_t = std::function<void()>;
 	using Double_duration_t = std::chrono::duration<long double>;
 	using Time_point_t = std::chrono::time_point<std::chrono::system_clock, Double_duration_t>;
@@ -16,7 +19,8 @@ class TimeManager
 	inline void update();
 	inline void addTimer(Double_duration_t timeToWait, Callback_t callback, bool loops);
 
-  private:
+private:
+	
 	struct Elem_t
 	{
 		Elem_t(Time_point_t endTime, Double_duration_t duration, Callback_t callback, bool loops)
@@ -34,13 +38,19 @@ class TimeManager
 		Callback_t callback;
 		Double_duration_t duration;
 		bool loops;
-	};
+	}; 
+	using Queue_t = std::priority_queue<Elem_t, std::deque<Elem_t>, std::greater<Elem_t>>;
 
-	std::priority_queue<Elem_t, std::deque<Elem_t>> queue;
+
+	Queue_t queue;
 };
 
-inline void TimeManager::update()
+#include <TimerHandle.h>
+
+
+inline void TimerManager::update()
 {
+	// get the current time
 	Time_point_t now = std::chrono::system_clock::now();
 
 	// check if the queue is empty first
@@ -53,6 +63,7 @@ inline void TimeManager::update()
 
 		queue.pop();
 
+		// if it is a looping timer, loop it.
 		if (elem.loops) {
 			using namespace std::chrono_literals;
 
@@ -64,7 +75,7 @@ inline void TimeManager::update()
 	}
 }
 
-inline void TimeManager::addTimer(Double_duration_t timeToWait, Callback_t callback, bool loops)
+inline void TimerManager::addTimer(Double_duration_t timeToWait, Callback_t callback, bool loops)
 {
 	queue.emplace(std::chrono::system_clock::now() + timeToWait, timeToWait, callback, loops);
 }

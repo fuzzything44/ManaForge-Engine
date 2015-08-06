@@ -17,7 +17,7 @@ template <typename Derived> struct TickingActor
 
 	~TickingActor() { connection.disconnect(); }
 
-  private:
+private:
 	boost::signals2::connection connection;
 };
 
@@ -26,7 +26,7 @@ class Actor
 {
 	friend class boost::serialization::access;
 
-  public:
+public:
 	friend Component;
 
 	// the global ID for this instatnce of the actor -- used mainly for networking
@@ -82,7 +82,7 @@ class Actor
 	/// <param name="deltaTime"> The delta time.</param>
 	ENGINE_API virtual void tick(float deltaTime);
 
-  protected:
+protected:
 	std::unique_ptr<ActorTransformController> transController;
 
 	std::deque<Component*> components;

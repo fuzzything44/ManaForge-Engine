@@ -10,7 +10,7 @@ class Box2DActorTransformController : public ActorTransformController
 {
 	friend class Box2DPhysicsBody;
 
-  public:
+public:
 	explicit Box2DActorTransformController(Actor& owner, Box2DPhysicsSystem& system);
 	virtual ~Box2DActorTransformController();
 

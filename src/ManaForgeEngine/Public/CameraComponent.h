@@ -6,7 +6,7 @@
 
 class CameraComponent : public SceneComponent
 {
-  public:
+public:
 	// aspect ratio is (WINDOW Y)/(WINDOW X)
 	ENGINE_API inline explicit CameraComponent(
 		Actor& owner, Transform trans = Transform{}, float aspectRatio = 1.f, float zoom = 1.f);
@@ -20,7 +20,7 @@ class CameraComponent : public SceneComponent
 	ENGINE_API inline float getAspectRatio() const;
 	ENGINE_API inline float getZoom() const;
 
-  protected:
+protected:
 	float aspectRatio;
 	float zoom;
 };

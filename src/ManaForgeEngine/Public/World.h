@@ -18,7 +18,7 @@ struct ActorLocation
 
 class World
 {
-  public:
+public:
 	virtual ~World() = default;
 
 	virtual void init(const std::string& name) = 0;

@@ -12,7 +12,7 @@ class Actor;
 
 class PhysicsSystem : boost::noncopyable
 {
-  public:
+public:
 	virtual ~PhysicsSystem() = default;
 
 	virtual void setGravity(vec2 newGravity) = 0;

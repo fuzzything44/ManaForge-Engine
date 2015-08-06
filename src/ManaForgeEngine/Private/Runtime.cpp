@@ -126,7 +126,7 @@ void Runtime::run()
 		lastTick = currentTick;
 
 		inputManager.update();
-		timeManager.update();
+		timerManager.update();
 
 		Window& window = renderer->getWindow();
 

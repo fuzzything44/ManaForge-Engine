@@ -93,7 +93,7 @@
     <IncludePath>$(ProjectDir);$(IncludePath);$(ProjectDir)\glew\include\;</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(ProjectDir);$(IncludePath);$(ProjectDir)\glew\include\</IncludePath>
+    <IncludePath>$(ProjectDir);$(IncludePath);$(ProjectDir)\glew\include\;$(ProjectDir)\glfw\include\;</IncludePath>
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(ModuleOutputDir)</OutDir>
   </PropertyGroup>

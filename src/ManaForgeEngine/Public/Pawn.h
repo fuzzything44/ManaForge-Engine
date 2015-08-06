@@ -9,10 +9,10 @@ class Controller;
 
 class Pawn : public Actor
 {
-  public:
+public:
 	ENGINE_API explicit Pawn();
 	ENGINE_API virtual ~Pawn() override;
 
-  private:
+private:
 	Controller* controller;
 };

@@ -8,7 +8,7 @@ class SoundSource;
 
 class AudioComponent : public SceneComponent
 {
-  public:
+public:
 	ENGINE_API explicit AudioComponent(
 		Actor& owner, SoundCue& cue, Transform trans = Transform(), bool loops = false);
 
@@ -33,7 +33,7 @@ class AudioComponent : public SceneComponent
 
 	inline void setGainBounds(float min, float max);
 
-  protected:
+protected:
 	std::unique_ptr<SoundSource> source;
 };
 

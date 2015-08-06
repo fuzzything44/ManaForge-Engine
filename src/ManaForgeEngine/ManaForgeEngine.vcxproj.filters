@@ -217,5 +217,8 @@
     <ClInclude Include="Public\TimeManager.h">
       <Filter>Public</Filter>
     </ClInclude>
+    <ClInclude Include="Public\TimerHandle.h">
+      <Filter>Public</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

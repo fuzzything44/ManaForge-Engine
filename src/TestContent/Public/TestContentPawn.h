@@ -14,7 +14,7 @@
 
 class TestContentPawn : public Pawn
 {
-  public:
+public:
 	TestContentPawn()
 	{
 		auto& inputManager = Runtime::get().inputManager;
@@ -83,7 +83,7 @@ class TestContentPawn : public Pawn
 		if (amount) applyLocalForce(vec2{0.f, amount * 100.f}, vec2{0.f, 0.f});
 	}
 
-  private:
+private:
 	std::unique_ptr<MeshComponent> mesh;
 	std::unique_ptr<PhysicsComponent> phyMesh;
 	std::unique_ptr<CameraComponent> camera;

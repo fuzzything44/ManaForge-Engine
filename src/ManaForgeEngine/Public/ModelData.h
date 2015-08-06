@@ -4,7 +4,7 @@
 
 class ModelData
 {
-  public:
+public:
 	virtual ~ModelData() = default;
 
 	virtual void init(

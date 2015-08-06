@@ -6,7 +6,7 @@
 /// <summary> a component that has a transform </summary>
 class SceneComponent : public Component
 {
-  public:
+public:
 	/// <summary> Default constructor. </summary>
 	/// <param name="owner"> The owner actor. Will usaually be this </param>
 	/// <param name="trans"> The transform, relative to the owner actor </param>
@@ -65,7 +65,7 @@ class SceneComponent : public Component
 
 	ENGINE_API inline mat3 getModelMatrix() const;
 
-  protected:
+protected:
 	Transform trans;
 };
 

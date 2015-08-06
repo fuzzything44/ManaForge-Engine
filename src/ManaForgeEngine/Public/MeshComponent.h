@@ -7,13 +7,13 @@ class MaterialInstance;
 
 class MeshComponent : public SceneComponent
 {
-  public:
+public:
 	inline explicit MeshComponent(Actor& owner,
 		Transform trans,
 		std::shared_ptr<MaterialInstance> mat,
 		std::shared_ptr<ModelData> data);
 
-  protected:
+protected:
 	std::unique_ptr<Model> model;
 };
 

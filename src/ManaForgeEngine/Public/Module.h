@@ -10,7 +10,7 @@ class ModuleManager;
 class Module : boost::noncopyable
 {
 
-  public:
+public:
 	// aliases for the register plugin function type
 	using registerModuleFun = void(ModuleManager&);
 	using getModuleEngineVersionFun = float();
@@ -28,7 +28,7 @@ class Module : boost::noncopyable
 	/// <summary> Destructor.</summary>
 	ENGINE_API ~Module();
 
-  private:
+private:
 	// first so it will be destructed last.
 	SharedLibrary libraryHandle;
 

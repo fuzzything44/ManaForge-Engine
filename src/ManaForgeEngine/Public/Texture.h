@@ -5,7 +5,7 @@
 
 class Texture
 {
-  public:
+public:
 	virtual ~Texture() = default;
 
 	enum class FilterMode : uint8

@@ -4,6 +4,6 @@
 
 class SoundCue
 {
-  public:
+public:
 	virtual path_t getName() const = 0;
 };

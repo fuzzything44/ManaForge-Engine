@@ -6,16 +6,16 @@ class Actor;
 
 class Component : std::enable_shared_from_this<Component>
 {
-  public:
+public:
 	inline explicit Component(Actor& owner);
 	ENGINE_API virtual ~Component();
 
 	inline Actor& getOwner();
 
-  protected:
+protected:
 	Actor& owner;
 
-  private:
+private:
 	std::deque<Component*>::size_type location;
 };
 

@@ -16,7 +16,7 @@ class OpenGLRenderer;
 
 class OpenGLMaterialInstance : public MaterialInstance
 {
-  public:
+public:
 	OpenGLMaterialInstance(OpenGLRenderer& renderer, std::shared_ptr<MaterialSource> source = nullptr);
 	virtual ~OpenGLMaterialInstance() override;
 
@@ -52,7 +52,7 @@ class OpenGLMaterialInstance : public MaterialInstance
 
 	void use();
 
-  private:
+private:
 	OpenGLRenderer& renderer;
 
 	const static uint32 maxTextures = 32;

@@ -100,7 +100,7 @@ template <typename Dimensions> class Quantity
 {
 	float data;
 
-  public:
+public:
 	Quantity(float f = 0.f)
 		: data(f)
 	{

@@ -20,7 +20,7 @@
 
 class DefaultWorld : public World
 {
-  public:
+public:
 	friend struct DefaultWorldLocation;
 
 	explicit DefaultWorld(const std::string& name = "");
@@ -40,7 +40,7 @@ class DefaultWorld : public World
 
 	virtual boost::signals2::connection registerTickingActor(Actor& toAdd) override;
 	// End World Interface
-  private:
+private:
 	std::string folderLocation;
 	std::string worldName;
 

@@ -11,7 +11,7 @@
 /// <summary> A window.</summary>
 class Window : boost::noncopyable
 {
-  public:
+public:
 	virtual ~Window() = default;
 
 	virtual const WindowProps& getWindowProps() const = 0;

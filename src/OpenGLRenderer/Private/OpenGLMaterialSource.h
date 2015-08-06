@@ -8,7 +8,7 @@ class OpenGLRenderer;
 
 class OpenGLMaterialSource : public MaterialSource
 {
-  public:
+public:
 	explicit OpenGLMaterialSource(OpenGLRenderer& renderer, const path_t& name = "");
 	virtual ~OpenGLMaterialSource();
 
@@ -21,7 +21,7 @@ class OpenGLMaterialSource : public MaterialSource
 	int32 startTexUniform;
 	int32 MVPUniformLocation;
 
-  private:
+private:
 	path_t name;
 	OpenGLRenderer& renderer;
 	GLint program;

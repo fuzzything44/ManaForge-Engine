@@ -11,7 +11,7 @@ class Box2DPhysicsSystem;
 class Box2DPhysicsBody : public PhysicsBody
 {
 
-  public:
+public:
 	Box2DPhysicsBody(Box2DPhysicsShape& shape, PhysicsComponent& owner, Box2DPhysicsSystem& system);
 	virtual ~Box2DPhysicsBody();
 
@@ -56,7 +56,7 @@ class Box2DPhysicsBody : public PhysicsBody
 		endCallOther = nullptr;
 	}
 
-  private:
+private:
 	PhysicsComponent& ownerComponent;
 	Box2DPhysicsSystem& system;
 	Box2DActorTransformController*

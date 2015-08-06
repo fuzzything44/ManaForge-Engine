@@ -18,7 +18,7 @@ class Window;
 
 class Runtime : boost::noncopyable
 {
-  public:
+public:
 	ENGINE_API explicit Runtime(const path_t& world);
 
 	ENGINE_API ~Runtime();
@@ -35,7 +35,7 @@ class Runtime : boost::noncopyable
 	ModuleManager moduleManager;
 	PropertyManager propManager;
 	InputManager inputManager;
-	TimeManager timeManager;
+	TimerManager timerManager;
 
 	std::unique_ptr<Renderer> renderer;
 	std::unique_ptr<PhysicsSystem> physSystem;
@@ -48,7 +48,7 @@ class Runtime : boost::noncopyable
 	std::unique_ptr<PlayerController> controller;
 	std::unique_ptr<Pawn> pawn;
 
-  private:
+private:
 	std::string rendererModuleName;
 	std::string physicsSystemModuleName;
 	std::string audioSystemModuleName;

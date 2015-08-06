@@ -5,7 +5,7 @@
 
 class OpenGLWindow : public Window
 {
-  public:
+public:
 	explicit OpenGLWindow();
 	virtual ~OpenGLWindow() override;
 
@@ -20,7 +20,7 @@ class OpenGLWindow : public Window
 	virtual void pollEvents();
 	bool shouldClose();
 
-  private:
+private:
 	void updateProps();
 
 	WindowProps props;

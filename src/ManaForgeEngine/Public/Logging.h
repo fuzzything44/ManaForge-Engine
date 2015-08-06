@@ -53,7 +53,7 @@ inline std::wstring stringToWstring(const std::string& other)
 
 class sink_t
 {
-  public:
+public:
 	using char_type = wchar_t;
 	using category = boost::iostreams::sink_tag;
 
@@ -69,7 +69,7 @@ class sink_t
 
 	static void cleanup() { delete file; }
 
-  private:
+private:
 	ENGINE_API static std::wofstream* file;
 };
 
@@ -90,7 +90,7 @@ struct log_base
 		delete str;
 	}
 
-  protected:
+protected:
 	ENGINE_API static boost::iostreams::stream<sink_t>* str;
 };
 }

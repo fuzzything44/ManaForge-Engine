@@ -15,7 +15,7 @@ Pew::Pew()
 			startContact(other);
 		});
 
-	Runtime::get().timeManager.addTimer(TimeManager::Double_duration_t(1.f),
+	Runtime::get().timerManager.addTimer(TimerManager::Double_duration_t(1.f),
 		[]
 		{
 			auto g = new Gate();
@@ -29,7 +29,7 @@ void Pew::startContact(PhysicsComponent& other)
 {
 
 	if (&other.getOwner() == reinterpret_cast<Actor*>(Runtime::get().pawn.get())) {
-		for (int i = 0; i < 100; ++i)
+		for (int i = 0; i < 1; ++i)
 		{
 			auto g = new Gate();
 			g->setWorldLocation(getWorldLocation() + vec2(2.f, 1.f));

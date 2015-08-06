@@ -9,7 +9,7 @@ class MaterialInstance;
 
 class Model
 {
-  public:
+public:
 	virtual ~Model() = default;
 
 	virtual void init(

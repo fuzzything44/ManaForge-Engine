@@ -7,10 +7,10 @@ class Pawn;
 
 class Controller
 {
-  public:
+public:
 	ENGINE_API Controller();
 	ENGINE_API virtual ~Controller();
 
-  private:
+private:
 	Pawn* controlledPawn;
 };

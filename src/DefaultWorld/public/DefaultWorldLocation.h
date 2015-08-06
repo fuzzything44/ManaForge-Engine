@@ -7,13 +7,13 @@
 
 struct DefaultWorldLocation : public ActorLocation
 {
-  public:
+public:
 	DefaultWorldLocation(size_t loc, DefaultWorld& world)
 		: loc(loc)
 		, inWorld(world){};
 	virtual ~DefaultWorldLocation() override;
 
-  private:
+private:
 	std::deque<Actor*>::size_type loc;
 	DefaultWorld& inWorld;
 };

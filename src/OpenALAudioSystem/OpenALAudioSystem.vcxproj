@@ -83,6 +83,7 @@
     <LinkIncremental>false</LinkIncremental>
     <TargetExt>.dll</TargetExt>
     <OutDir>$(ModuleOutputDir)</OutDir>
+    <IncludePath>$(ProjectDir)\alut\include\;$(ProjectDir)\openAL\include\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(ModuleOutputDir)</OutDir>

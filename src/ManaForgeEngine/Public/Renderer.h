@@ -22,7 +22,7 @@ class MaterialSource;
 // a non - copyable abstract class that handles rendering
 class Renderer : boost::noncopyable
 {
-  public:
+public:
 	/// <summary> Destructor.</summary>
 	virtual ~Renderer() = default;
 

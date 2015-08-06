@@ -15,7 +15,7 @@ class OpenGLTexture : public Texture
 	friend OpenGLMaterialInstance;
 	friend OpenGLRenderer;
 
-  public:
+public:
 	explicit OpenGLTexture(const path_t& path);
 
 	uint32 getID();
@@ -28,7 +28,7 @@ class OpenGLTexture : public Texture
 
 	~OpenGLTexture() override;
 
-  private:
+private:
 	GLuint ID;
 
 	path_t path;

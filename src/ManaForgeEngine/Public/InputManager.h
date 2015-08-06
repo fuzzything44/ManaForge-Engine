@@ -14,7 +14,7 @@ class Window;
 
 class InputManager
 {
-  public:
+public:
 	ENGINE_API explicit InputManager(Window* window = nullptr);
 
 	ENGINE_API void setWindow(Window& newWindow);
@@ -24,7 +24,7 @@ class InputManager
 
 	ENGINE_API void bindAxisMapping(const std::string& name, std::function<void(float)> callback);
 
-  private:
+private:
 	bool update();
 
 	Window* window;

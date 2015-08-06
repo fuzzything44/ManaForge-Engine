@@ -12,7 +12,7 @@ class OpenGLModelData;
 
 class OpenGLModel final : public Model
 {
-  public:
+public:
 	friend class OpenGLRenderer;
 
 	explicit OpenGLModel(OpenGLRenderer& renderer);
@@ -27,7 +27,7 @@ class OpenGLModel final : public Model
 
 	void draw();
 
-  private:
+private:
 	std::shared_ptr<OpenGLModelData> modelData;
 
 	MeshComponent* parent;

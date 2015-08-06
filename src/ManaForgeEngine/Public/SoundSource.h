@@ -6,7 +6,7 @@ class AudioComponent;
 
 class SoundSource
 {
-  public:
+public:
 	SoundSource() = default;
 
 	virtual void play() = 0;

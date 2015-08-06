@@ -13,7 +13,7 @@ class AudioComponent;
 
 class AudioSystem : boost::noncopyable
 {
-  public:
+public:
 	virtual ~AudioSystem() = default;
 
 	virtual std::shared_ptr<SoundCue> newSoundCue(const path_t& name) = 0;

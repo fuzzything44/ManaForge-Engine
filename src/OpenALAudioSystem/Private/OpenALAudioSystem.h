@@ -12,7 +12,7 @@ class OpenALSoundCue;
 
 class OpenALAudioSystem : public AudioSystem
 {
-  public:
+public:
 	OpenALAudioSystem();
 
 	virtual ~OpenALAudioSystem();
@@ -24,7 +24,7 @@ class OpenALAudioSystem : public AudioSystem
 
 	bool update();
 
-  private:
+private:
 	std::list<OpenALSoundSource*> sources;
 
 	std::unordered_map<path_t, std::shared_ptr<OpenALSoundCue>> cues;

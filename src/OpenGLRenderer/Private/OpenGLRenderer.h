@@ -52,11 +52,11 @@ class OpenGLRenderer : public Renderer
 
 		std::atomic<bool> isInLoop;
 
-	  private:
+	private:
 		std::thread thread;
 	};
 
-  public:
+public:
 	OpenGLRenderer();
 
 	virtual ~OpenGLRenderer() override;
@@ -102,7 +102,7 @@ class OpenGLRenderer : public Renderer
 
 	inline bool isOnRenderThread() { return std::this_thread::get_id() == renderThread.getThread().get_id(); }
 
-  private:
+private:
 	void initRenderer();
 	void renderLoop();
 

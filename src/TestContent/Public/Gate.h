@@ -22,7 +22,7 @@ class Gate : public Actor
 	std::unique_ptr<MaterialInstance> mat;
 	static bool isInitalized;
 
-  public:
+public:
 	explicit Gate();
 	virtual ~Gate() override;
 

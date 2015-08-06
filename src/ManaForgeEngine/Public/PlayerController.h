@@ -5,10 +5,10 @@
 
 class PlayerController : public Controller
 {
-  public:
+public:
 	ENGINE_API PlayerController();
 
 	ENGINE_API virtual ~PlayerController();
 
-  private:
+private:
 };

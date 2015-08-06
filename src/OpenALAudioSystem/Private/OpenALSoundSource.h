@@ -12,7 +12,7 @@ class OpenALAudioSystem;
 
 class OpenALSoundSource : public SoundSource
 {
-  public:
+public:
 	explicit OpenALSoundSource(
 		OpenALSoundCue& cue, AudioComponent& ownerComponent, OpenALAudioSystem& system);
 
@@ -40,7 +40,7 @@ class OpenALSoundSource : public SoundSource
 
 	void update();
 
-  private:
+private:
 	AudioComponent& ownerComponent;
 	ALuint sourceHandle;
 	OpenALAudioSystem& system;

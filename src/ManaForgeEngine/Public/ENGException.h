@@ -6,7 +6,7 @@
 
 class Stack : public StackWalker
 {
-  public:
+public:
 	ENGINE_API explicit Stack(int options = OptionsAll, // 'int' is by design, to combine the enum-flags
 		LPCSTR szSymPath = nullptr,
 		DWORD dwProcessId = GetCurrentProcessId(),
@@ -15,7 +15,7 @@ class Stack : public StackWalker
 	{
 	}
 
-  protected:
+protected:
 	bool hasPrintedMain;
 	bool wasLastExternal;
 
@@ -33,7 +33,7 @@ class Stack : public StackWalker
 
 class ENGException : std::exception
 {
-  public:
+public:
 	ENGINE_API virtual const char* what() const override;
 
 	ENGINE_API explicit ENGException(const std::string& reasonIn = "");

@@ -10,7 +10,7 @@ class MaterialSource;
 
 class MaterialInstance
 {
-  public:
+public:
 	virtual ~MaterialInstance() = default;
 
 	virtual void init(std::shared_ptr<MaterialSource> source) = 0;

@@ -21,7 +21,7 @@ class Module;
 
 class ModuleManager : boost::noncopyable
 {
-  public:
+public:
 	friend Runtime;
 
 	using contentModuleSpawnFun = std::function<void*(const std::string&)>;
@@ -40,7 +40,7 @@ class ModuleManager : boost::noncopyable
 
 	template <typename T> inline T* spawnClass(const std::string& moduleName, const std::string& className);
 
-  private:
+private:
 	// and finally the modules
 	std::unordered_map<std::string, std::shared_ptr<Module>> loadedModules;
 
