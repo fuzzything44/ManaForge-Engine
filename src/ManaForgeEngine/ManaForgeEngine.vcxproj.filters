@@ -214,10 +214,10 @@
     <ClInclude Include="Public\Quantity.h">
       <Filter>Public</Filter>
     </ClInclude>
-    <ClInclude Include="Public\TimeManager.h">
+    <ClInclude Include="Public\TimerHandle.h">
       <Filter>Public</Filter>
     </ClInclude>
-    <ClInclude Include="Public\TimerHandle.h">
+    <ClInclude Include="Public\TimerManager.h">
       <Filter>Public</Filter>
     </ClInclude>
   </ItemGroup>

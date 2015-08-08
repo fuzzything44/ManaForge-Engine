@@ -341,7 +341,7 @@ void DefaultWorld::saveWorld()
 	std::deque<Actor*> toSave;
 	for (auto& elem : actors)
 	{
-		if (elem->needsSave()) {
+		if (elem->getSaved()) {
 			toSave.push_back(elem);
 		}
 	} // End for

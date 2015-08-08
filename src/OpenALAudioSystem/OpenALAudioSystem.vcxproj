@@ -78,21 +78,23 @@
     <OutDir>$(ModuleOutputDir)</OutDir>
     <LinkIncremental>false</LinkIncremental>
     <TargetExt>.dll</TargetExt>
+    <IncludePath>$(ProjectDir)\alut\include\;$(ProjectDir)\openal\include\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <TargetExt>.dll</TargetExt>
     <OutDir>$(ModuleOutputDir)</OutDir>
-    <IncludePath>$(ProjectDir)\alut\include\;$(ProjectDir)\openAL\include\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)\alut\include\;$(ProjectDir)\openal\include\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(ModuleOutputDir)</OutDir>
     <TargetExt>.dll</TargetExt>
-    <IncludePath>$(ProjectDir)alut\include;$(ProjectDir)openal\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)\alut\include\;$(ProjectDir)\openal\include\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <TargetExt>.dll</TargetExt>
     <OutDir>$(ModuleOutputDir)</OutDir>
+    <IncludePath>$(ProjectDir)\alut\include\;$(ProjectDir)\openal\include\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

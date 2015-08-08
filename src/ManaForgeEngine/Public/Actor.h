@@ -29,22 +29,23 @@ class Actor
 public:
 	friend Component;
 
-	// the global ID for this instatnce of the actor -- used mainly for networking
-	std::unique_ptr<ActorLocation> GUID;
-
-	/// <summary> Actors.</summary>
-	///
-	/// <param name="dataIn">  The data in.</param>
-	/// <param name="chunkIn"> [in,out] If non-null, the chunk in.</param>
-	///
-	/// <returns> An ENGINE_API.</returns>
 	ENGINE_API explicit Actor();
 
-	//<summary> returns if the actor should be saved or not.
-	ENGINE_API virtual bool needsSave();
+	// there is no way to copy the components, so this will be a move only type --
+	// TODO: think about a clone method for component
+	Actor(const Actor& other) = delete;
+	Actor(Actor&& other) = default;
 
-	/// <summary> destructor </summary>
+	Actor& operator=(const Actor& other) = delete;
+	Actor& operator=(Actor&& other) = default;
+
+	//<summary> returns if the actor should be saved or not.
+	ENGINE_API virtual bool getSaved() { return false; };
+
 	ENGINE_API virtual ~Actor();
+
+	// the global ID for this instatnce of the actor -- used mainly for networking
+	std::unique_ptr<ActorLocation> GUID;
 
 	//////////////////////// TRANSFORM MODIFICATION START ///////////////////
 	inline Transform getWorldTransform() const;

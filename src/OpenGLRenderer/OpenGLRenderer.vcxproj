@@ -84,16 +84,16 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LibraryPath>$(LibraryPath)</LibraryPath>
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(ProjectDir);$(IncludePath);$(ProjectDir)\glew\include\</IncludePath>
+    <IncludePath>$(ProjectDir);$(IncludePath);$(ProjectDir)\glew\include\;$(ProjectDir)\GLFW\include</IncludePath>
     <OutDir>$(ModuleOutputDir)</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(ModuleOutputDir)</OutDir>
-    <IncludePath>$(ProjectDir);$(IncludePath);$(ProjectDir)\glew\include\;</IncludePath>
+    <IncludePath>$(ProjectDir);$(IncludePath);$(ProjectDir)\glew\include\;$(ProjectDir)\GLFW\include</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(ProjectDir);$(IncludePath);$(ProjectDir)\glew\include\;$(ProjectDir)\glfw\include\;</IncludePath>
+    <IncludePath>$(ProjectDir);$(IncludePath);$(ProjectDir)\glew\include\;$(ProjectDir)\GLFW\include</IncludePath>
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(ModuleOutputDir)</OutDir>
   </PropertyGroup>

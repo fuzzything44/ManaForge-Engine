@@ -11,6 +11,11 @@ class AudioComponent : public SceneComponent
 public:
 	ENGINE_API explicit AudioComponent(
 		Actor& owner, SoundCue& cue, Transform trans = Transform(), bool loops = false);
+	AudioComponent(const AudioComponent& other) = delete;
+	AudioComponent(AudioComponent&& other) = default;
+
+	AudioComponent& operator=(const AudioComponent& other) = delete;
+	AudioComponent& operator=(AudioComponent&& other) = default;
 
 	inline void setLoops(bool loops);
 	inline bool getLoops() const;

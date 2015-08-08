@@ -6,7 +6,7 @@
 #include "ModuleManager.h"
 #include "WindowProps.h"
 #include "InputManager.h"
-#include "TimeManager.h"
+#include "TimerManager.h"
 
 #include <boost/core/noncopyable.hpp>
 

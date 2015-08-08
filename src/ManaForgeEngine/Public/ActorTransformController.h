@@ -3,8 +3,6 @@
 
 #include "Transform.h"
 
-#include <boost/noncopyable.hpp>
-
 class Actor;
 class PhysicsComponent;
 
@@ -16,7 +14,7 @@ enum class PhysicsType : uint8
 	KINEMATIC = 3,
 };
 
-class ActorTransformController : boost::noncopyable
+class ActorTransformController
 {
 public:
 	virtual ~ActorTransformController() = default;

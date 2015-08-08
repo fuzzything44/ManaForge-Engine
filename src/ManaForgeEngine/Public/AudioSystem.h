@@ -11,7 +11,7 @@ class SoundCue;
 class SoundSource;
 class AudioComponent;
 
-class AudioSystem : boost::noncopyable
+class AudioSystem
 {
 public:
 	virtual ~AudioSystem() = default;
