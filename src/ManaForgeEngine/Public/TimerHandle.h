@@ -5,10 +5,9 @@
 class TimerHandle
 {
 	friend TimerManager;
-public:
 
-	template<typename... Args>
-	static std::shared_ptr<TimerHandle> create(Args&&... args);
+public:
+	template <typename... Args> static std::shared_ptr<TimerHandle> create(Args&&... args);
 
 	TimerHandle& operator=(const TimerHandle& other) = delete;
 	TimerHandle& operator=(TimerHandle&& other)
@@ -35,24 +34,21 @@ public:
 	bool operator>(const TimerHandle& other) const { return endTime > other.endTime; }
 
 private:
-
-	inline TimerHandle(
-		TimerManager& manager,
+	inline TimerHandle(TimerManager& manager,
 		TimerManager::Time_point_t endTime,
 		TimerManager::Double_duration_t duration,
 		TimerManager::Callback_t callback,
 		bool loops)
-		: manager(manager),
-		endTime(endTime),
-		duration(duration),
-		callback(callback),
-		loops(loops){};
+		: manager(manager)
+		, endTime(endTime)
+		, duration(duration)
+		, callback(callback)
+		, loops(loops) {};
 
 	TimerHandle(const TimerHandle& other) = delete;
 	TimerHandle(TimerHandle&& other)
 		: manager(other.manager)
 	{
-
 	}
 
 	TimerManager::Time_point_t endTime;
@@ -63,8 +59,7 @@ private:
 	TimerManager& manager;
 };
 
-template<typename... Args>
-std::shared_ptr<TimerHandle> TimerHandle::create(Args&&... args)
+template <typename... Args> std::shared_ptr<TimerHandle> TimerHandle::create(Args&&... args)
 {
 	return std::shared_ptr<TimerHandle>(new TimerHandle(std::forward<Args>(args)...));
 }
@@ -85,7 +80,6 @@ inline TimerManager::Double_duration_t TimerHandle::getTimeRemaining() const
 	auto now = TimerManager::Time_point_t{ std::chrono::system_clock::now() };
 
 	return now - endTime;
-	
 }
 inline std::shared_ptr<TimerHandle> TimerHandle::reset()
 {
