@@ -168,6 +168,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Private\OpenGLFont.cpp" />
     <ClCompile Include="Private\OpenGLMaterialInstance.cpp" />
     <ClCompile Include="Private\OpenGLMaterialSource.cpp" />
     <ClCompile Include="Private\OpenGLModel.cpp" />
@@ -178,11 +179,14 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Private\OpenGLTextBox.cpp" />
     <ClCompile Include="Private\OpenGLTexture.cpp" />
     <ClCompile Include="Private\OpenGLTextureLibrary.cpp" />
     <ClCompile Include="Private\OpenGLWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Private\OpenGLCharacterData.h" />
+    <ClInclude Include="Private\OpenGLFont.h" />
     <ClInclude Include="Private\OpenGLMaterialInstance.h" />
     <ClInclude Include="Private\OpenGLMaterialSource.h" />
     <ClInclude Include="Private\OpenGLModel.h" />
@@ -190,6 +194,7 @@
     <ClInclude Include="Private\OpenGLRenderer.h" />
     <ClInclude Include="Private\OpenGLRendererConfig.h" />
     <ClInclude Include="Private\OpenGLRendererPCH.h" />
+    <ClInclude Include="Private\OpenGLTextBox.h" />
     <ClInclude Include="Private\OpenGLTexture.h" />
     <ClInclude Include="Private\OpenGLTextureLibrary.h" />
     <ClInclude Include="Private\OpenGLWindow.h" />

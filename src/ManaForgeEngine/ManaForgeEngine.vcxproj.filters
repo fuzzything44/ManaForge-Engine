@@ -220,5 +220,11 @@
     <ClInclude Include="Public\TimerManager.h">
       <Filter>Public</Filter>
     </ClInclude>
+    <ClInclude Include="Public\TextBox.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\Font.h">
+      <Filter>Public</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

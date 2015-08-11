@@ -264,6 +264,7 @@
     <ClInclude Include="Public\Controller.h" />
     <ClInclude Include="Public\ENGException.h" />
     <ClInclude Include="Public\Engine.h" />
+    <ClInclude Include="Public\Font.h" />
     <ClInclude Include="Public\glm-ortho-2d.h" />
     <ClInclude Include="public\Helper.h" />
     <ClInclude Include="Public\ImageLoader.h" />
@@ -294,6 +295,7 @@
     <ClInclude Include="Public\SharedLibrary.h" />
     <ClInclude Include="Public\SoundCue.h" />
     <ClInclude Include="Public\SoundSource.h" />
+    <ClInclude Include="Public\TextBox.h" />
     <ClInclude Include="Public\Texture.h" />
     <ClInclude Include="Public\TextureLibrary.h" />
     <ClInclude Include="Public\TimerManager.h" />

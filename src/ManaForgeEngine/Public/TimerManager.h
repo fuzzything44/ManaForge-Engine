@@ -26,11 +26,12 @@ public:
 	TimerManager& operator=(TimerManager&&) = default;
 
 	inline void update();
-	inline std::shared_ptr<TimerHandle> addTimer(Double_duration_t timeToWait, Callback_t callback, bool loops);
+	inline std::shared_ptr<TimerHandle> addTimer(
+		Double_duration_t timeToWait, Callback_t callback, bool loops);
 
 private:
-
-	inline static bool compHandle(const std::shared_ptr<TimerHandle>& lhs, const std::shared_ptr<TimerHandle>& rhs);
+	inline static bool compHandle(
+		const std::shared_ptr<TimerHandle>& lhs, const std::shared_ptr<TimerHandle>& rhs);
 
 	using Queue_t = std::deque<std::shared_ptr<TimerHandle>>;
 	using Comp_t = decltype(&TimerManager::compHandle);
@@ -55,8 +56,7 @@ inline void TimerManager::update()
 		auto elem = queue[0];
 
 		// if there is no element...well why?
-		if (queue.size() > 1)
-		{
+		if (queue.size() > 1) {
 			// put elem in the back of the deque while reatining heap property
 			std::pop_heap(queue.begin(), queue.end(), &TimerManager::compHandle);
 		}
@@ -83,14 +83,16 @@ inline void TimerManager::update()
 	}
 }
 
-inline std::shared_ptr<TimerHandle> TimerManager::addTimer(Double_duration_t timeToWait, Callback_t callback, bool loops)
+inline std::shared_ptr<TimerHandle> TimerManager::addTimer(
+	Double_duration_t timeToWait, Callback_t callback, bool loops)
 {
 	// if there is no callback, there is no point
 	if (callback) {
 
 		assert(std::is_heap(queue.begin(), queue.end(), &TimerManager::compHandle));
 
-		queue.emplace_back(TimerHandle::create(*this, std::chrono::system_clock::now() + timeToWait, timeToWait, callback, loops));
+		queue.emplace_back(TimerHandle::create(
+			*this, std::chrono::system_clock::now() + timeToWait, timeToWait, callback, loops));
 		std::push_heap(queue.begin(), queue.end(), compHandle);
 
 		assert(std::is_heap(queue.begin(), queue.end(), &TimerManager::compHandle));
@@ -99,8 +101,8 @@ inline std::shared_ptr<TimerHandle> TimerManager::addTimer(Double_duration_t tim
 	return queue[queue.size() - 1];
 }
 
-
-bool TimerManager::compHandle(const std::shared_ptr<TimerHandle>& lhs, const std::shared_ptr<TimerHandle>& rhs)
+bool TimerManager::compHandle(
+	const std::shared_ptr<TimerHandle>& lhs, const std::shared_ptr<TimerHandle>& rhs)
 {
 	return *lhs > *rhs;
 }

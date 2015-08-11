@@ -9,6 +9,9 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
+    <Filter Include="PCH">
+      <UniqueIdentifier>{e73a37bc-f110-47e8-a45a-d4607fbf02b5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Private\OpenGLModel.cpp">
@@ -38,7 +41,13 @@
     <ClCompile Include="Private\OpenGLMaterialSource.cpp">
       <Filter>Private</Filter>
     </ClCompile>
+    <ClCompile Include="Private\OpenGLTextBox.cpp">
+      <Filter>Private</Filter>
+    </ClCompile>
     <ClCompile Include="Private\OpenGLRendererPCH.cpp">
+      <Filter>PCH</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\OpenGLFont.cpp">
       <Filter>Private</Filter>
     </ClCompile>
   </ItemGroup>
@@ -70,7 +79,16 @@
     <ClInclude Include="Private\OpenGLMaterialSource.h">
       <Filter>Private</Filter>
     </ClInclude>
+    <ClInclude Include="Private\OpenGLTextBox.h">
+      <Filter>Private</Filter>
+    </ClInclude>
     <ClInclude Include="Private\OpenGLRendererPCH.h">
+      <Filter>PCH</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\OpenGLFont.h">
+      <Filter>Private</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\OpenGLCharacterData.h">
       <Filter>Private</Filter>
     </ClInclude>
   </ItemGroup>

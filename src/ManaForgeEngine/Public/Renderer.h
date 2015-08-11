@@ -18,6 +18,8 @@ class Model;
 class TextureLibrary;
 class ModelData;
 class MaterialSource;
+class Font;
+class TextBox;
 
 // a non - copyable abstract class that handles rendering
 class Renderer : boost::noncopyable
@@ -45,10 +47,9 @@ public:
 	/// <returns> null if it fails, else the camera.</returns>
 	virtual const CameraComponent& getCurrentCamera() const = 0;
 
-	/// <summary> Creates a new model.</summary>
-	///
-	/// <returns> null if it fails, else a Model*.</returns>
 	virtual std::unique_ptr<Model> newModel() = 0;
+	virtual std::unique_ptr<TextBox> newTextBox() = 0;
+	virtual std::shared_ptr<Font> getFont() = 0;
 	virtual std::shared_ptr<Texture> getTexture(const path_t& name) = 0;
 	virtual std::shared_ptr<MaterialSource> getMaterialSource(const path_t& name) = 0;
 	virtual std::unique_ptr<TextureLibrary> newTextureLibrary() = 0;
