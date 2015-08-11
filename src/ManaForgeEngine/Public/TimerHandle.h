@@ -43,7 +43,7 @@ private:
 		, endTime(endTime)
 		, duration(duration)
 		, callback(callback)
-		, loops(loops) {};
+		, loops(loops){};
 
 	TimerHandle(const TimerHandle& other) = delete;
 	TimerHandle(TimerHandle&& other)
@@ -77,7 +77,7 @@ inline TimerManager::Double_duration_t TimerHandle::getDuration() const { return
 
 inline TimerManager::Double_duration_t TimerHandle::getTimeRemaining() const
 {
-	auto now = TimerManager::Time_point_t{ std::chrono::system_clock::now() };
+	auto now = TimerManager::Time_point_t{std::chrono::system_clock::now()};
 
 	return now - endTime;
 }

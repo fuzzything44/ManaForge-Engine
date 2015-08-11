@@ -9,17 +9,9 @@
 #include <boost/serialization/unordered_map.hpp>
 
 
-OpenGLFont::OpenGLFont(const std::wstring& name)
+OpenGLFont::OpenGLFont()
 {
-	if (!name.empty())
-	{
-		init(name);
-	}
-}
-
-void OpenGLFont::init(const std::wstring & name)
-{
-	boost::filesystem::wifstream i_stream{ L"fonts\\" + name + L"\\drawdata.txt" };
+	boost::filesystem::wifstream i_stream{"drawData.txt"};
 
 	if (!i_stream.is_open()) MFLOG(Error) << "Failed to open draw data for font" << fontName;
 
@@ -27,7 +19,7 @@ void OpenGLFont::init(const std::wstring & name)
 	{
 
 		boost::archive::xml_wiarchive i_arch{ i_stream };
-
+		
 
 		i_arch >> boost::serialization::make_nvp("charData", charData);
 	}
@@ -41,3 +33,13 @@ void OpenGLFont::init(const std::wstring & name)
 	}
 }
 
+OpenGLCharacterData OpenGLFont::getCharacterData(wchar_t ch)
+{
+	auto iter = charData.find(ch);
+
+	if (iter != charData.end()) {
+		return iter->second;
+	}
+
+	MFLOG(Error) << "Cannot find char " << ch << " in font " << fontName;
+}

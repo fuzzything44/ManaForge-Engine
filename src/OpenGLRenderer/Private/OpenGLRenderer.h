@@ -69,6 +69,8 @@ public:
 	const Window& getWindow() const override;
 
 	virtual std::unique_ptr<Model> newModel() override;
+	virtual std::unique_ptr<TextBox> newTextBox() override;
+	virtual std::shared_ptr<Font> getFont() override;
 	virtual std::shared_ptr<Texture> getTexture(const path_t& name) override;
 	virtual std::shared_ptr<MaterialSource> getMaterialSource(const path_t& name) override;
 	virtual std::unique_ptr<TextureLibrary> newTextureLibrary() override;

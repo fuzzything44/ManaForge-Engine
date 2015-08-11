@@ -55,8 +55,8 @@ Gate::Gate()
 
 	using namespace std::chrono_literals;
 
-	Runtime::get().timerManager.addTimer(10s,
-		[this]
+	Runtime::get().timerManager.addTimer(1s,
+		[this]()
 		{
 			delete this;
 		},
