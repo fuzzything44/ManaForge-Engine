@@ -45,30 +45,24 @@ OpenGLFont::OpenGLFont(OpenGLRenderer& rendererIn, const path_t& name)
 	}
 	using namespace std::string_literals;
 
-
 	renderer.runOnRenderThreadSync([this]
-	{
-		tex = SOIL_load_OGL_texture(("fonts\\" + fontName.string() + "\\font.dds").c_str(),
-			1,							// 1 channel
-			0,							// create a new texture
-			SOIL_FLAG_DDS_LOAD_DIRECT); // load it from dds
-		
+		{
+			tex = SOIL_load_OGL_texture(("fonts\\" + fontName.string() + "\\font.dds").c_str(),
+				1,							// 1 channel
+				0,							// create a new texture
+				SOIL_FLAG_DDS_LOAD_DIRECT); // load it from dds
 
-	});
-	
-
-	
+		});
 
 	matSource = std::static_pointer_cast<OpenGLMaterialSource>(renderer.getMaterialSource("font"));
-	
 }
 
 OpenGLFont::~OpenGLFont()
 {
 	renderer.runOnRenderThreadSync([this]
-	{
-		glDeleteTextures(1, &tex);
-	});
+		{
+			glDeleteTextures(1, &tex);
+		});
 }
 
 OpenGLCharacterData OpenGLFont::getCharacterData(wchar_t ch)
@@ -86,7 +80,7 @@ OpenGLCharacterData OpenGLFont::getCharacterData(wchar_t ch)
 
 std::shared_ptr<OpenGLMaterialSource> OpenGLFont::getMaterialSource() { return matSource; }
 
-void OpenGLFont::render(OpenGLTextBox & box)
+void OpenGLFont::render(OpenGLTextBox& box)
 {
 	auto matID = **matSource;
 

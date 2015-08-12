@@ -23,9 +23,9 @@ OpenGLTextBox::OpenGLTextBox(OpenGLRenderer& renderer)
 OpenGLTextBox::~OpenGLTextBox()
 {
 	renderer.runOnRenderThreadSync([this]
-	{
-		renderer.textBoxes.erase(location);
-	});
+		{
+			renderer.textBoxes.erase(location);
+		});
 }
 
 void OpenGLTextBox::setText(const std::u16string& textIn)
@@ -49,10 +49,7 @@ void OpenGLTextBox::setFont(std::shared_ptr<Font> newFont)
 
 std::shared_ptr<Font> OpenGLTextBox::getFont() const { return font; }
 
-void OpenGLTextBox::render()
-{
-	font->render(*this);
-}
+void OpenGLTextBox::render() { font->render(*this); }
 
 void OpenGLTextBox::regenerateBuffers()
 {
@@ -87,21 +84,21 @@ void OpenGLTextBox::regenerateBuffers()
 	}
 
 	renderer.runOnRenderThreadSync([this, &locations, &uvs, &elements]
-	{
-		glGenVertexArrays(1, &vertexArray);
-		glBindVertexArray(vertexArray);
+		{
+			glGenVertexArrays(1, &vertexArray);
+			glBindVertexArray(vertexArray);
 
-		glGenBuffers(1, &vertLocBuffer);
-		glBindBuffer(GL_ARRAY_BUFFER, vertLocBuffer);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vec2) * locations.size(), &locations[0], GL_STATIC_DRAW);
+			glGenBuffers(1, &vertLocBuffer);
+			glBindBuffer(GL_ARRAY_BUFFER, vertLocBuffer);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(vec2) * locations.size(), &locations[0], GL_STATIC_DRAW);
 
-		glGenBuffers(1, &texCoordBuffer);
-		glBindBuffer(GL_ARRAY_BUFFER, texCoordBuffer);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vec2) * uvs.size(), &uvs[0], GL_STATIC_DRAW);
+			glGenBuffers(1, &texCoordBuffer);
+			glBindBuffer(GL_ARRAY_BUFFER, texCoordBuffer);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(vec2) * uvs.size(), &uvs[0], GL_STATIC_DRAW);
 
-		glGenBuffers(1, &elemBuffer);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elemBuffer);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uvec3) * elements.size(), &elements[0], GL_STATIC_DRAW);
-	});
-		
+			glGenBuffers(1, &elemBuffer);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elemBuffer);
+			glBufferData(
+				GL_ELEMENT_ARRAY_BUFFER, sizeof(uvec3) * elements.size(), &elements[0], GL_STATIC_DRAW);
+		});
 }

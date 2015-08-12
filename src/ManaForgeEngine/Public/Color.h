@@ -1,7 +1,6 @@
 #pragma once
 #include "Engine.h"
 
-
 struct Color
 {
 	uint8 red;

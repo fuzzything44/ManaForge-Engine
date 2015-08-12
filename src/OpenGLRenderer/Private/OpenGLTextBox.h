@@ -12,6 +12,7 @@ class OpenGLRenderer;
 class OpenGLTextBox : public TextBox
 {
 	friend class OpenGLFont;
+
 public:
 	OpenGLTextBox(OpenGLRenderer& renderer);
 	virtual ~OpenGLTextBox();

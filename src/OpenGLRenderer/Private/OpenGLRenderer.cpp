@@ -114,19 +114,19 @@ std::shared_ptr<Font> OpenGLRenderer::getFont(const path_t& name)
 	std::shared_ptr<OpenGLFont> ret;
 
 	if (iter != fonts.end()) {
-		
-		ret = std::shared_ptr<OpenGLFont>{ iter->second };
+
+		ret = std::shared_ptr<OpenGLFont>{iter->second};
 
 		return ret;
 	}
 
 	ret = runOnRenderThreadSync([&name, this]
-	{
-		return std::make_shared<OpenGLFont>(*this, name);
-	});
+		{
+			return std::make_shared<OpenGLFont>(*this, name);
+		});
 
 	// make another
-	fonts.insert({ name, ret });
+	fonts.insert({name, ret});
 
 	return ret;
 }
