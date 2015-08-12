@@ -4,13 +4,28 @@
 
 #include "OpenGLFont.h"
 #include "OpenGLMaterialSource.h"
+#include "OpenGLRenderer.h"
 
-OpenGLTextBox::OpenGLTextBox()
+OpenGLTextBox::OpenGLTextBox(OpenGLRenderer& renderer)
+	: renderer(renderer)
 {
-	// just generate the buffers, there is no data yet.
-	glGenBuffers(1, &vertLocBuffer);
-	glGenBuffers(1, &texCoordBuffer);
-	glGenBuffers(1, &elemBuffer);
+	renderer.runOnRenderThreadSync([this]
+		{
+			location = this->renderer.textBoxes.insert(this->renderer.textBoxes.begin(), this);
+
+			// just generate the buffers, there is no data yet.
+			glGenBuffers(1, &vertLocBuffer);
+			glGenBuffers(1, &texCoordBuffer);
+			glGenBuffers(1, &elemBuffer);
+		});
+}
+
+OpenGLTextBox::~OpenGLTextBox()
+{
+	renderer.runOnRenderThreadSync([this]
+	{
+		renderer.textBoxes.erase(location);
+	});
 }
 
 void OpenGLTextBox::setText(const std::u16string& textIn)
@@ -36,32 +51,7 @@ std::shared_ptr<Font> OpenGLTextBox::getFont() const { return font; }
 
 void OpenGLTextBox::render()
 {
-	auto matID = **font->getMaterialSource();
-
-	glUseProgram(matID);
-
-	auto loccutoff = glGetUniformLocation(matID, "cutoff");
-	auto locsize = glGetUniformLocation(matID, "size");
-	assert(loccutoff != -1);
-	assert(locsize != -1);
-	// glUniform1f(loccutoff, cutoff);
-	// glUniform1f(locsize, size);
-
-	glBindVertexArray(vertexArray);
-
-	glEnableVertexAttribArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, vertLocBuffer);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
-
-	glEnableVertexAttribArray(1);
-	glBindBuffer(GL_ARRAY_BUFFER, texCoordBuffer);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elemBuffer);
-	glDrawElements(GL_TRIANGLES, (GLsizei)text.size() * 2 * 3, GL_UNSIGNED_INT, 0);
-
-	glDisableVertexAttribArray(0);
-	glDisableVertexAttribArray(1);
+	font->render(*this);
 }
 
 void OpenGLTextBox::regenerateBuffers()
@@ -96,18 +86,22 @@ void OpenGLTextBox::regenerateBuffers()
 		cursorpos += d.advance;
 	}
 
-	glGenVertexArrays(1, &vertexArray);
-	glBindVertexArray(vertexArray);
+	renderer.runOnRenderThreadSync([this, &locations, &uvs, &elements]
+	{
+		glGenVertexArrays(1, &vertexArray);
+		glBindVertexArray(vertexArray);
 
-	glGenBuffers(1, &vertLocBuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, vertLocBuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vec2) * locations.size(), &locations[0], GL_STATIC_DRAW);
+		glGenBuffers(1, &vertLocBuffer);
+		glBindBuffer(GL_ARRAY_BUFFER, vertLocBuffer);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(vec2) * locations.size(), &locations[0], GL_STATIC_DRAW);
 
-	glGenBuffers(1, &texCoordBuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, texCoordBuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vec2) * uvs.size(), &uvs[0], GL_STATIC_DRAW);
+		glGenBuffers(1, &texCoordBuffer);
+		glBindBuffer(GL_ARRAY_BUFFER, texCoordBuffer);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(vec2) * uvs.size(), &uvs[0], GL_STATIC_DRAW);
 
-	glGenBuffers(1, &elemBuffer);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elemBuffer);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uvec3) * elements.size(), &elements[0], GL_STATIC_DRAW);
+		glGenBuffers(1, &elemBuffer);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elemBuffer);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uvec3) * elements.size(), &elements[0], GL_STATIC_DRAW);
+	});
+		
 }

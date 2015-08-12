@@ -28,9 +28,9 @@ distribution.
 
 #ifndef LODEPNG_EXPORTS
 #pragma comment(lib, "lodepng.lib")
-#define LODEPNG_API __declspec(dllimport)
+#define LODEPNG_API
 #else
-#define LODEPNG_API __declspec(dllexport)
+#define LODEPNG_API
 #endif
 
 #include <string.h> /*for size_t*/

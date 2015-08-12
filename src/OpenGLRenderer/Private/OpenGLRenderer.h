@@ -16,11 +16,14 @@ class OpenGLTexture;
 class OpenGLWindow;
 class OpenGLMaterialSource;
 class OpenGLModelData;
+class OpenGLTextBox;
+class OpenGLFont;
 
 class OpenGLRenderer : public Renderer
 {
 
 	friend class OpenGLModel;
+	friend class OpenGLTextBox;
 
 	struct RenderThread
 	{
@@ -70,7 +73,7 @@ public:
 
 	virtual std::unique_ptr<Model> newModel() override;
 	virtual std::unique_ptr<TextBox> newTextBox() override;
-	virtual std::shared_ptr<Font> getFont(const std::string& name) override;
+	virtual std::shared_ptr<Font> getFont(const path_t& name) override;
 	virtual std::shared_ptr<Texture> getTexture(const path_t& name) override;
 	virtual std::shared_ptr<MaterialSource> getMaterialSource(const path_t& name) override;
 	virtual std::unique_ptr<TextureLibrary> newTextureLibrary() override;
@@ -121,7 +124,9 @@ private:
 
 	// delete our caches and models first
 	std::list<OpenGLModel*> models;
+	std::list<OpenGLTextBox*> textBoxes;
 	std::unordered_map<path_t, std::weak_ptr<OpenGLTexture>> textures;
+	std::unordered_map<path_t, std::shared_ptr<OpenGLFont>> fonts;
 	std::unordered_map<path_t, std::weak_ptr<OpenGLMaterialSource>> matSources;
 	std::unordered_map<std::string, std::weak_ptr<OpenGLModelData>> modelDataCache;
 };

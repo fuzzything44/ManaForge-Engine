@@ -105,11 +105,30 @@ const Window& OpenGLRenderer::getWindow() const
 
 std::unique_ptr<Model> OpenGLRenderer::newModel() { return std::make_unique<OpenGLModel>(*this); }
 
-std::unique_ptr<TextBox> OpenGLRenderer::newTextBox() { return std::make_unique<OpenGLTextBox>(); }
+std::unique_ptr<TextBox> OpenGLRenderer::newTextBox() { return std::make_unique<OpenGLTextBox>(*this); }
 
-std::shared_ptr<Font> OpenGLRenderer::getFont(const std::string& name)
+std::shared_ptr<Font> OpenGLRenderer::getFont(const path_t& name)
 {
-	return std::make_shared<OpenGLFont>(*this, name);
+	auto iter = fonts.find(name);
+
+	std::shared_ptr<OpenGLFont> ret;
+
+	if (iter != fonts.end()) {
+		
+		ret = std::shared_ptr<OpenGLFont>{ iter->second };
+
+		return ret;
+	}
+
+	ret = runOnRenderThreadSync([&name, this]
+	{
+		return std::make_shared<OpenGLFont>(*this, name);
+	});
+
+	// make another
+	fonts.insert({ name, ret });
+
+	return ret;
 }
 
 std::shared_ptr<Texture> OpenGLRenderer::getTexture(const path_t& name)
@@ -246,6 +265,11 @@ bool OpenGLRenderer::update(float /*deltaTime*/)
 			glDisable(GL_DEPTH_TEST);
 
 			Runtime::get().physSystem->drawDebugPoints();
+
+			for (auto&& textBox : textBoxes)
+			{
+				textBox->render();
+			}
 
 			glEnable(GL_DEPTH_TEST);
 

@@ -7,11 +7,14 @@
 
 class Font;
 class OpenGLFont;
+class OpenGLRenderer;
 
 class OpenGLTextBox : public TextBox
 {
+	friend class OpenGLFont;
 public:
-	OpenGLTextBox();
+	OpenGLTextBox(OpenGLRenderer& renderer);
+	virtual ~OpenGLTextBox();
 
 	// start TextBox interface
 	virtual void setText(const std::u16string& text) override;
@@ -33,6 +36,12 @@ private:
 	uint32 vertLocBuffer;
 	uint32 texCoordBuffer;
 	uint32 elemBuffer;
+
+	float cutoff;
+
+	OpenGLRenderer& renderer;
+
+	std::list<OpenGLTextBox*>::iterator location;
 
 	std::shared_ptr<OpenGLFont> font;
 };

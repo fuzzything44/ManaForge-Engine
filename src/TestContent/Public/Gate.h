@@ -8,6 +8,7 @@
 #include <MeshComponent.h>
 #include <AudioComponent.h>
 #include <PhysicsComponent.h>
+#include <TextBox.h>
 
 class Pew;
 
@@ -20,6 +21,9 @@ class Gate : public Actor
 	std::unique_ptr<PhysicsComponent> physComp;
 
 	std::unique_ptr<MaterialInstance> mat;
+
+	std::unique_ptr<TextBox> textBox;
+
 	static bool isInitalized;
 
 public:

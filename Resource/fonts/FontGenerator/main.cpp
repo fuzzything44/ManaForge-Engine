@@ -11,11 +11,11 @@
 
 #include <boost/lexical_cast.hpp>
 #include <boost/dynamic_bitset.hpp>
-#include <map>
+#include <unordered_map>
 
 #include <boost/serialization/nvp.hpp>
-#include <boost/serialization/map.hpp>
-#include <boost/archive/xml_oarchive.hpp>
+#include <boost/serialization/unordered_map.hpp>
+#include <boost/archive/xml_woarchive.hpp>
 #include <fstream>
 
 FT_Library ft_lib;
@@ -187,7 +187,7 @@ int main(int argc, char** argv)
 	boost::dynamic_bitset<unsigned char> bitset;
 	bitset.resize(sourceRes * 10 * sourceRes * 10);
 
-	std::map<char, bitmapData> drawData;
+	std::unordered_map<char, bitmapData> drawData;
 
 	for (int y = 0; y < 10; ++y)
 	{
@@ -217,13 +217,15 @@ int main(int argc, char** argv)
 
 		}
 	}
-	std::ofstream o_str{ "drawData.txt" };
-	boost::archive::xml_oarchive o_arch{ o_str };
+	{
+		std::wofstream o_str{ "drawData.txt" };
+		boost::archive::xml_woarchive o_arch{ o_str };
 
-	o_arch << BOOST_SERIALIZATION_NVP(drawData);
+		o_arch << BOOST_SERIALIZATION_NVP(drawData);
+
+	}
 
 	std::vector<unsigned char> data;
-
 	distanceField(data, bitset, sourceRes * 10, 20, targetRes, targetRes);
 
 	//for (int i = 0; i < bitset.size(); ++i)

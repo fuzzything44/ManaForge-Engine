@@ -3,92 +3,49 @@
 <boost_serialization signature="serialization::archive" version="12">
 <drawData class_id="0" tracking_level="0" version="0">
 	<count>100</count>
+	<bucket_count>512</bucket_count>
 	<item_version>0</item_version>
 	<item class_id="1" tracking_level="0" version="0">
-		<first>-128</first>
+		<first>40</first>
 		<second class_id="2" tracking_level="0" version="0">
 			<uvBegin class_id="3" tracking_level="0" version="0">
-				<x>6.004999876e-01</x>
-				<y>9.004999995e-01</y>
-			</uvBegin>
-			<uvEnd>
-				<x>6.504999995e-01</x>
-				<y>9.629999995e-01</y>
-			</uvEnd>
-			<advance>7.500000298e-02</advance>
-			<offset>
-				<x>1.250000019e-02</x>
-				<y>6.250000000e-02</y>
-			</offset>
-			<size>
-				<x>5.000000075e-02</x>
-				<y>6.250000000e-02</y>
-			</size>
-		</second>
-	</item>
-	<item>
-		<first>-127</first>
-		<second>
-			<uvBegin>
-				<x>7.005000114e-01</x>
-				<y>9.004999995e-01</y>
-			</uvBegin>
-			<uvEnd>
-				<x>7.505000234e-01</x>
-				<y>9.629999995e-01</y>
-			</uvEnd>
-			<advance>7.500000298e-02</advance>
-			<offset>
-				<x>1.250000019e-02</x>
-				<y>6.250000000e-02</y>
-			</offset>
-			<size>
-				<x>5.000000075e-02</x>
-				<y>6.250000000e-02</y>
-			</size>
-		</second>
-	</item>
-	<item>
-		<first>-126</first>
-		<second>
-			<uvBegin>
 				<x>8.004999757e-01</x>
-				<y>9.004999995e-01</y>
+				<y>5.000000237e-04</y>
 			</uvBegin>
 			<uvEnd>
-				<x>8.504999876e-01</x>
-				<y>9.629999995e-01</y>
+				<x>8.240999579e-01</x>
+				<y>9.430000186e-02</y>
 			</uvEnd>
-			<advance>7.500000298e-02</advance>
+			<advance>3.330000117e-02</advance>
 			<offset>
-				<x>1.250000019e-02</x>
-				<y>6.250000000e-02</y>
+				<x>6.099999882e-03</x>
+				<y>7.280000299e-02</y>
 			</offset>
 			<size>
-				<x>5.000000075e-02</x>
-				<y>6.250000000e-02</y>
+				<x>2.360000089e-02</x>
+				<y>9.380000085e-02</y>
 			</size>
 		</second>
 	</item>
 	<item>
-		<first>-125</first>
+		<first>96</first>
 		<second>
 			<uvBegin>
-				<x>9.004999995e-01</x>
-				<y>9.004999995e-01</y>
+				<x>4.004999995e-01</x>
+				<y>6.004999876e-01</y>
 			</uvBegin>
 			<uvEnd>
-				<x>9.505000114e-01</x>
-				<y>9.629999995e-01</y>
+				<x>4.189000130e-01</x>
+				<y>6.141999960e-01</y>
 			</uvEnd>
-			<advance>7.500000298e-02</advance>
+			<advance>3.330000117e-02</advance>
 			<offset>
-				<x>1.250000019e-02</x>
-				<y>6.250000000e-02</y>
+				<x>4.199999850e-03</x>
+				<y>7.199999690e-02</y>
 			</offset>
 			<size>
-				<x>5.000000075e-02</x>
-				<y>6.250000000e-02</y>
+				<x>1.840000041e-02</x>
+				<y>1.370000001e-02</y>
 			</size>
 		</second>
 	</item>
@@ -265,28 +222,6 @@
 			<size>
 				<x>9.999999776e-03</x>
 				<y>2.529999986e-02</y>
-			</size>
-		</second>
-	</item>
-	<item>
-		<first>40</first>
-		<second>
-			<uvBegin>
-				<x>8.004999757e-01</x>
-				<y>5.000000237e-04</y>
-			</uvBegin>
-			<uvEnd>
-				<x>8.240999579e-01</x>
-				<y>9.430000186e-02</y>
-			</uvEnd>
-			<advance>3.330000117e-02</advance>
-			<offset>
-				<x>6.099999882e-03</x>
-				<y>7.280000299e-02</y>
-			</offset>
-			<size>
-				<x>2.360000089e-02</x>
-				<y>9.380000085e-02</y>
 			</size>
 		</second>
 	</item>
@@ -1501,28 +1436,6 @@
 		</second>
 	</item>
 	<item>
-		<first>96</first>
-		<second>
-			<uvBegin>
-				<x>4.004999995e-01</x>
-				<y>6.004999876e-01</y>
-			</uvBegin>
-			<uvEnd>
-				<x>4.189000130e-01</x>
-				<y>6.141999960e-01</y>
-			</uvEnd>
-			<advance>3.330000117e-02</advance>
-			<offset>
-				<x>4.199999850e-03</x>
-				<y>7.199999690e-02</y>
-			</offset>
-			<size>
-				<x>1.840000041e-02</x>
-				<y>1.370000001e-02</y>
-			</size>
-		</second>
-	</item>
-	<item>
 		<first>97</first>
 		<second>
 			<uvBegin>
@@ -2191,6 +2104,94 @@
 			</uvBegin>
 			<uvEnd>
 				<x>5.505000353e-01</x>
+				<y>9.629999995e-01</y>
+			</uvEnd>
+			<advance>7.500000298e-02</advance>
+			<offset>
+				<x>1.250000019e-02</x>
+				<y>6.250000000e-02</y>
+			</offset>
+			<size>
+				<x>5.000000075e-02</x>
+				<y>6.250000000e-02</y>
+			</size>
+		</second>
+	</item>
+	<item>
+		<first>-128</first>
+		<second>
+			<uvBegin>
+				<x>6.004999876e-01</x>
+				<y>9.004999995e-01</y>
+			</uvBegin>
+			<uvEnd>
+				<x>6.504999995e-01</x>
+				<y>9.629999995e-01</y>
+			</uvEnd>
+			<advance>7.500000298e-02</advance>
+			<offset>
+				<x>1.250000019e-02</x>
+				<y>6.250000000e-02</y>
+			</offset>
+			<size>
+				<x>5.000000075e-02</x>
+				<y>6.250000000e-02</y>
+			</size>
+		</second>
+	</item>
+	<item>
+		<first>-127</first>
+		<second>
+			<uvBegin>
+				<x>7.005000114e-01</x>
+				<y>9.004999995e-01</y>
+			</uvBegin>
+			<uvEnd>
+				<x>7.505000234e-01</x>
+				<y>9.629999995e-01</y>
+			</uvEnd>
+			<advance>7.500000298e-02</advance>
+			<offset>
+				<x>1.250000019e-02</x>
+				<y>6.250000000e-02</y>
+			</offset>
+			<size>
+				<x>5.000000075e-02</x>
+				<y>6.250000000e-02</y>
+			</size>
+		</second>
+	</item>
+	<item>
+		<first>-126</first>
+		<second>
+			<uvBegin>
+				<x>8.004999757e-01</x>
+				<y>9.004999995e-01</y>
+			</uvBegin>
+			<uvEnd>
+				<x>8.504999876e-01</x>
+				<y>9.629999995e-01</y>
+			</uvEnd>
+			<advance>7.500000298e-02</advance>
+			<offset>
+				<x>1.250000019e-02</x>
+				<y>6.250000000e-02</y>
+			</offset>
+			<size>
+				<x>5.000000075e-02</x>
+				<y>6.250000000e-02</y>
+			</size>
+		</second>
+	</item>
+	<item>
+		<first>-125</first>
+		<second>
+			<uvBegin>
+				<x>9.004999995e-01</x>
+				<y>9.004999995e-01</y>
+			</uvBegin>
+			<uvEnd>
+				<x>9.505000114e-01</x>
 				<y>9.629999995e-01</y>
 			</uvEnd>
 			<advance>7.500000298e-02</advance>

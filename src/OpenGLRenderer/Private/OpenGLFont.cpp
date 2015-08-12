@@ -3,24 +3,27 @@
 #include "OpenGLFont.h"
 #include "OpenGLTexture.h"
 #include "OpenGLRenderer.h"
+#include "OpenGLMaterialSource.h"
+#include "OpenGLTextBox.h"
 
 #include <boost/filesystem/fstream.hpp>
 
 #include <boost/archive/xml_wiarchive.hpp>
 #include <boost/serialization/nvp.hpp>
 #include <boost/serialization/unordered_map.hpp>
+#include <SOIL/SOIL.h>
 
 #include <string>
 
-OpenGLFont::OpenGLFont(OpenGLRenderer& rendererIn, const std::string& name)
-	: fontName(std::string(name))
+OpenGLFont::OpenGLFont(OpenGLRenderer& rendererIn, const path_t& name)
+	: fontName(name)
 	, renderer(rendererIn)
 {
 	if (fontName.empty()) return;
 
 	// load the drawData
 	{
-		boost::filesystem::wifstream i_stream{"fonts\\" + fontName + "\\drawData.txt"};
+		boost::filesystem::wifstream i_stream{L"fonts\\" + fontName.wstring() + L"\\drawData.txt"};
 
 		if (!i_stream.is_open()) MFLOG(Error) << "Failed to open draw data for font" << fontName;
 
@@ -33,16 +36,39 @@ OpenGLFont::OpenGLFont(OpenGLRenderer& rendererIn, const std::string& name)
 		}
 		catch (boost::archive::archive_exception& e)
 		{
-			std::cout << e.what();
+			MFLOG(Error) << "Archive exception while loading font " << fontName << " Error: " << e.what();
 		}
 		catch (std::runtime_error& e)
 		{
-			std::cout << e.what();
+			MFLOG(Error) << "Failed to load font " << fontName << " Error: " << e.what();
 		}
 	}
 	using namespace std::string_literals;
-	// load the texture
-	tex = std::static_pointer_cast<OpenGLTexture>(renderer.getTexture("../fonts\\"s + fontName + "\\font"s));
+
+
+	renderer.runOnRenderThreadSync([this]
+	{
+		tex = SOIL_load_OGL_texture(("fonts\\" + fontName.string() + "\\font.dds").c_str(),
+			1,							// 1 channel
+			0,							// create a new texture
+			SOIL_FLAG_DDS_LOAD_DIRECT); // load it from dds
+		
+
+	});
+	
+
+	
+
+	matSource = std::static_pointer_cast<OpenGLMaterialSource>(renderer.getMaterialSource("font"));
+	
+}
+
+OpenGLFont::~OpenGLFont()
+{
+	renderer.runOnRenderThreadSync([this]
+	{
+		glDeleteTextures(1, &tex);
+	});
 }
 
 OpenGLCharacterData OpenGLFont::getCharacterData(wchar_t ch)
@@ -59,3 +85,34 @@ OpenGLCharacterData OpenGLFont::getCharacterData(wchar_t ch)
 }
 
 std::shared_ptr<OpenGLMaterialSource> OpenGLFont::getMaterialSource() { return matSource; }
+
+void OpenGLFont::render(OpenGLTextBox & box)
+{
+	auto matID = **matSource;
+
+	glUseProgram(matID);
+
+	auto loccutoff = glGetUniformLocation(matID, "cutoff");
+	assert(loccutoff != -1);
+	glUniform1f(loccutoff, .5f); // TODO: use cutoff
+
+	glUniform1i(glGetUniformLocation(matID, "tex"), 0);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, tex);
+
+	glBindVertexArray(box.vertexArray);
+
+	glEnableVertexAttribArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, box.vertLocBuffer);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
+
+	glEnableVertexAttribArray(1);
+	glBindBuffer(GL_ARRAY_BUFFER, box.texCoordBuffer);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, box.elemBuffer);
+	glDrawElements(GL_TRIANGLES, (GLsizei)box.text.size() * 2 * 3, GL_UNSIGNED_INT, 0);
+
+	glDisableVertexAttribArray(0);
+	glDisableVertexAttribArray(1);
+}
