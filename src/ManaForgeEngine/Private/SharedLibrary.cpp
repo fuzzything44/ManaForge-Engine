@@ -11,7 +11,7 @@ SharedLibrary::SharedLibrary(const std::wstring& name)
 	handle = LoadLibraryW(pathWithExt.c_str());
 
 	if (handle == nullptr) {
-		
+
 		MFLOGW(Error) << L"Failed to load library. Name: " << name.c_str() << L" Error: " << GetLastError();
 	}
 }

@@ -36,7 +36,7 @@ bin/*/*/ManaForgeEngine.*
 bin/*/*/Game.*
 bin/*/*/Modules/OpenGLRenderer.*
 bin/*/*/Modules/DefaultWorld.*
-bin/*/*/Modules/lodepng.*
+bin/*/*/lodepng.*
 bin/*/*/StackWalker.*
 bin/*/*/Modules/TestContent.*
 bin/*/*/glew32*.*
@@ -48,6 +48,10 @@ bin/*/*/alut.*
 bin/*/*/Soil.*
 bin/*/*/GLFW3.*
 src/*/lib/*/*/*.*
+
+resource/fonts/fontgenerator/bin/*/*/fontgenerator.*
+resource/fonts/fontgenerator/bin/*/*/freetype.*
+
 
 .vs/
 .vs/config/

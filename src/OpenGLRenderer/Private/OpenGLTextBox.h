@@ -23,6 +23,7 @@ public:
 	virtual std::shared_ptr<Font> getFont() const override;
 
 	void render();
+
 private:
 	void regenerateBuffers();
 

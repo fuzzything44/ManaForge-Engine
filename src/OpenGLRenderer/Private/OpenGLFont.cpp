@@ -1,6 +1,8 @@
 #include "OpenGLRendererPCH.h"
 
 #include "OpenGLFont.h"
+#include "OpenGLTexture.h"
+#include "OpenGLRenderer.h"
 
 #include <boost/filesystem/fstream.hpp>
 
@@ -8,29 +10,39 @@
 #include <boost/serialization/nvp.hpp>
 #include <boost/serialization/unordered_map.hpp>
 
+#include <string>
 
-OpenGLFont::OpenGLFont()
+OpenGLFont::OpenGLFont(OpenGLRenderer& rendererIn, const std::string& name)
+	: fontName(std::string(name))
+	, renderer(rendererIn)
 {
-	boost::filesystem::wifstream i_stream{"drawData.txt"};
+	if (fontName.empty()) return;
 
-	if (!i_stream.is_open()) MFLOG(Error) << "Failed to open draw data for font" << fontName;
-
-	try
+	// load the drawData
 	{
+		boost::filesystem::wifstream i_stream{"fonts\\" + fontName + "\\drawData.txt"};
 
-		boost::archive::xml_wiarchive i_arch{ i_stream };
-		
+		if (!i_stream.is_open()) MFLOG(Error) << "Failed to open draw data for font" << fontName;
 
-		i_arch >> boost::serialization::make_nvp("charData", charData);
+		try
+		{
+
+			boost::archive::xml_wiarchive i_arch{i_stream};
+
+			i_arch >> boost::serialization::make_nvp("charData", charData);
+		}
+		catch (boost::archive::archive_exception& e)
+		{
+			std::cout << e.what();
+		}
+		catch (std::runtime_error& e)
+		{
+			std::cout << e.what();
+		}
 	}
-	catch (boost::archive::archive_exception& e)
-	{
-		std::cout << e.what();
-	}
-	catch (std::runtime_error& e)
-	{
-		std::cout << e.what();
-	}
+	using namespace std::string_literals;
+	// load the texture
+	tex = std::static_pointer_cast<OpenGLTexture>(renderer.getTexture("../fonts\\"s + fontName + "\\font"s));
 }
 
 OpenGLCharacterData OpenGLFont::getCharacterData(wchar_t ch)
@@ -46,7 +58,4 @@ OpenGLCharacterData OpenGLFont::getCharacterData(wchar_t ch)
 	return OpenGLCharacterData();
 }
 
-std::shared_ptr<OpenGLMaterialSource> OpenGLFont::getMaterialSource()
-{
-	return matSource;
-}
+std::shared_ptr<OpenGLMaterialSource> OpenGLFont::getMaterialSource() { return matSource; }

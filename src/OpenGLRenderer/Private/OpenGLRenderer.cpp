@@ -105,9 +105,12 @@ const Window& OpenGLRenderer::getWindow() const
 
 std::unique_ptr<Model> OpenGLRenderer::newModel() { return std::make_unique<OpenGLModel>(*this); }
 
-std::unique_ptr<TextBox> OpenGLRenderer::newTextBox() { return std::unique_ptr<OpenGLTextBox>(); }
+std::unique_ptr<TextBox> OpenGLRenderer::newTextBox() { return std::make_unique<OpenGLTextBox>(); }
 
-std::shared_ptr<Font> OpenGLRenderer::getFont() { return std::shared_ptr<OpenGLFont>(); }
+std::shared_ptr<Font> OpenGLRenderer::getFont(const std::string& name)
+{
+	return std::make_shared<OpenGLFont>(*this, name);
+}
 
 std::shared_ptr<Texture> OpenGLRenderer::getTexture(const path_t& name)
 {
