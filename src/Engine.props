@@ -4,6 +4,7 @@
   <PropertyGroup Label="UserMacros">
     <DefaultOutputDir>$(SolutionDir)bin\$(Platform)\$(Configuration)\</DefaultOutputDir>
     <ModuleOutputDir>$(DefaultOutputDir)\modules\</ModuleOutputDir>
+    <LodepngIncludeDir>$(SolutionDir)src\lodepng\public\</LodepngIncludeDir>
   </PropertyGroup>
   <PropertyGroup>
     <OutDir />
@@ -24,6 +25,9 @@
     </BuildMacro>
     <BuildMacro Include="ModuleOutputDir">
       <Value>$(ModuleOutputDir)</Value>
+    </BuildMacro>
+    <BuildMacro Include="LodepngIncludeDir">
+      <Value>$(LodepngIncludeDir)</Value>
     </BuildMacro>
   </ItemGroup>
 </Project>

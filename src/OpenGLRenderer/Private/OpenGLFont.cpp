@@ -42,4 +42,11 @@ OpenGLCharacterData OpenGLFont::getCharacterData(wchar_t ch)
 	}
 
 	MFLOG(Error) << "Cannot find char " << ch << " in font " << fontName;
+
+	return OpenGLCharacterData();
+}
+
+std::shared_ptr<OpenGLMaterialSource> OpenGLFont::getMaterialSource()
+{
+	return matSource;
 }

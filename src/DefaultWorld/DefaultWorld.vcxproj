@@ -75,14 +75,14 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(IncludePath)</IncludePath>
+    <IncludePath>$(LodepngIncludeDir);$(IncludePath)</IncludePath>
     <LibraryPath>$(LibraryPath)</LibraryPath>
     <OutDir>$(ModuleOutputDir)</OutDir>
     <TargetExt>.dll</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <TargetExt>.dll</TargetExt>
-    <IncludePath>$(IncludePath)</IncludePath>
+    <IncludePath>$(LodepngIncludeDir);$(IncludePath)</IncludePath>
     <LibraryPath>$(LibraryPath)</LibraryPath>
     <OutDir>$(ModuleOutputDir)</OutDir>
   </PropertyGroup>
@@ -90,11 +90,13 @@
     <OutDir>$(ModuleOutputDir)</OutDir>
     <TargetExt>.dll</TargetExt>
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(LodepngIncludeDir);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <TargetExt>.dll</TargetExt>
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(ModuleOutputDir)</OutDir>
+    <IncludePath>$(LodepngIncludeDir);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

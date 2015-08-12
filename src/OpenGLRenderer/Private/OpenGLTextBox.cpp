@@ -3,7 +3,7 @@
 #include "OpenGLTextBox.h"
 
 #include "OpenGLFont.h"
-
+#include "OpenGLMaterialSource.h"
 
 OpenGLTextBox::OpenGLTextBox()
 {
@@ -33,6 +33,36 @@ void OpenGLTextBox::setFont(std::shared_ptr<Font> newFont)
 }
 
 std::shared_ptr<Font> OpenGLTextBox::getFont() const { return font; }
+
+void OpenGLTextBox::render()
+{
+	auto matID = **font->getMaterialSource();
+
+	glUseProgram(matID);
+
+	auto loccutoff = glGetUniformLocation(matID, "cutoff");
+	auto locsize = glGetUniformLocation(matID, "size");
+	assert(loccutoff != -1);
+	assert(locsize != -1);
+	//glUniform1f(loccutoff, cutoff);
+	//glUniform1f(locsize, size);
+
+	glBindVertexArray(vertexArray);
+
+	glEnableVertexAttribArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, vertLocBuffer);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
+
+	glEnableVertexAttribArray(1);
+	glBindBuffer(GL_ARRAY_BUFFER, texCoordBuffer);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elemBuffer);
+	glDrawElements(GL_TRIANGLES, text.size() * 2 * 3, GL_UNSIGNED_INT, 0);
+
+	glDisableVertexAttribArray(0);
+	glDisableVertexAttribArray(1);
+}
 
 void OpenGLTextBox::regenerateBuffers()
 {

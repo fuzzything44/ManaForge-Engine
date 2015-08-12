@@ -5,7 +5,6 @@
 #include "Window.h"
 #include "ModuleManager.h"
 #include "ChangeDirectory.h"
-#include "ImageLoader.h"
 #include "MeshComponent.h"
 #include "PhysicsComponent.h"
 #include "PlayerController.h"
@@ -64,7 +63,6 @@ Runtime::Runtime(const path_t& worldPath)
 
 Runtime::~Runtime()
 {
-	ImageLoader::cleanUp();
 	logdetail::log_base::cleanup();
 }
 

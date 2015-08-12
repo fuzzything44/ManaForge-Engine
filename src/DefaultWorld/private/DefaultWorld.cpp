@@ -6,7 +6,6 @@
 #include "DefaultWorldLocation.h"
 
 #include <Helper.h>
-#include <ImageLoader.h>
 #include <PropertyManager.h>
 #include <Runtime.h>
 #include <Color.h>
@@ -16,6 +15,8 @@
 #include <Pawn.h>
 #include <PlayerController.h>
 #include <ModelData.h>
+
+#include <lodepng.h>
 
 #include <list>
 #include <fstream>
@@ -217,10 +218,13 @@ void DefaultWorld::init(const std::string& name)
 	// begin background loading
 	{
 
+		using namespace std::string_literals;
+
 		LOAD_PROPERTY_WITH_ERROR(propManager, "chunk.size", backgroundChunkSize);
 
 		std::vector<uint8> data;
-		uvec2 size = ImageLoader::load(folderLocation + "background.png", data);
+		uvec2 size;
+		lodepng::decode(data, size.x, size.y, folderLocation + "background.png"s);
 		numBackgroundChunks = size / backgroundChunkSize;
 
 		background = std::make_unique<ChunkActor* []>(numBackgroundChunks.x * numBackgroundChunks.y);

@@ -23,9 +23,6 @@
     <ClCompile Include="Private\ModuleManager.cpp">
       <Filter>Private</Filter>
     </ClCompile>
-    <ClCompile Include="Private\ImageLoader.cpp">
-      <Filter>Private</Filter>
-    </ClCompile>
     <ClCompile Include="Private\PropertyManager.cpp">
       <Filter>Private</Filter>
     </ClCompile>
@@ -125,9 +122,6 @@
       <Filter>Public</Filter>
     </ClInclude>
     <ClInclude Include="Public\Model.h">
-      <Filter>Public</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\ImageLoader.h">
       <Filter>Public</Filter>
     </ClInclude>
     <ClInclude Include="Public\PropertyManager.h">

@@ -239,7 +239,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Private\ImageLoader.cpp" />
     <ClCompile Include="Private\InputManager.cpp" />
     <ClCompile Include="Private\Logging.cpp" />
     <ClCompile Include="Private\Module.cpp" />
@@ -267,7 +266,6 @@
     <ClInclude Include="Public\Font.h" />
     <ClInclude Include="Public\glm-ortho-2d.h" />
     <ClInclude Include="public\Helper.h" />
-    <ClInclude Include="Public\ImageLoader.h" />
     <ClInclude Include="Public\InputManager.h" />
     <ClInclude Include="Public\KeyEnum.h" />
     <ClInclude Include="Public\Logging.h" />
