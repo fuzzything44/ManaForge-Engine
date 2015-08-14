@@ -42,7 +42,7 @@ void Pew::startContact(PhysicsComponent& other)
 {
 	using namespace std::string_literals;
 
-	textBox->setText(u"Contacts: "s + boost::convert<std::u16string>(contacts, boost::cnv::lexical_cast()).get_value_or(u"Error!"s));
+	textBox->setText(u"Contacts: "s + boost::convert<std::u16string>(++contacts, boost::cnv::lexical_cast()).get_value_or(u"Error!"s));
 
 	if (&other.getOwner() == reinterpret_cast<Actor*>(Runtime::get().pawn.get())) {
 		for (int i = 0; i < 100; ++i)
