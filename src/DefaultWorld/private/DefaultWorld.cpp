@@ -389,10 +389,7 @@ std::unique_ptr<Pawn> DefaultWorld::makePawn()
 		Runtime::get().moduleManager.spawnClass<Pawn>(pawnModuleName, pawnClassName)};
 }
 
-boost::signals2::connection DefaultWorld::registerTickingActor(Actor& toAdd)
+boost::signals2::connection DefaultWorld::registerTickingActor(const std::function<void(float)>& tickFun)
 {
-	return tickingActors.connect([&toAdd](float deltaTime)
-		{
-			toAdd.tick(deltaTime);
-		});
+	return tickingActors.connect(tickFun);
 }

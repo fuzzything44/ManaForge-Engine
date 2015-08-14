@@ -9,9 +9,9 @@ out vec2 fragTexCoord;
 
 void main()
 {
-	vec3 vec3location = MVPmat * vec3(vertLocationIn, 1.f);
 	
-	gl_Position = vec4(vec3location.x, vec3location.y, -renderOrder, vec3location.z);
+	gl_Position.xyw = MVPmat * vec3(vertLocationIn, 1.f);
+	gl_Position.z = -renderOrder;
 	
 	fragTexCoord = vertTexCoordIn;
 }

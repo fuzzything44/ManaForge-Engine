@@ -220,5 +220,8 @@
     <ClInclude Include="Public\Font.h">
       <Filter>Public</Filter>
     </ClInclude>
+    <ClInclude Include="Public\Clamp.h">
+      <Filter>Public</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

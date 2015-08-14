@@ -11,9 +11,19 @@
 
 class Component;
 
+// requirement: there MUST be a tick function for this to work
+// Use CRTP to avoid the vtable overhead (not important but is easy so why not!)
 template <typename Derived> struct TickingActor
 {
-	TickingActor() { connection = Runtime::get().world->registerTickingActor(static_cast<Derived&>(*this)); }
+	TickingActor()
+	{
+		connection = Runtime::get().world->registerTickingActor([this](float deltaTime)
+			{
+				// if you get an error here, there is no function with the following signature:
+				// void tick(float) in your class (Derived)
+				static_cast<Derived&>(*this).Derived::tick(deltaTime);
+			});
+	}
 
 	~TickingActor() { connection.disconnect(); }
 
@@ -77,11 +87,6 @@ public:
 	inline float getAngularVelocity();
 
 	inline void applyTorque(float magnituede);
-
-	/// <summary> Ticks the given delta time.</summary>
-	///
-	/// <param name="deltaTime"> The delta time.</param>
-	ENGINE_API virtual void tick(float deltaTime);
 
 protected:
 	std::unique_ptr<ActorTransformController> transController;

@@ -55,6 +55,10 @@ OpenGLFont::OpenGLFont(OpenGLRenderer& rendererIn, const path_t& name)
 		});
 
 	matSource = std::static_pointer_cast<OpenGLMaterialSource>(renderer.getMaterialSource("font"));
+
+	cutoffUniLoc = glGetUniformLocation(**matSource, "cutoff");
+	viewMatUniLoc = glGetUniformLocation(**matSource, "viewMat");
+	colorUniLoc = glGetUniformLocation(**matSource, "forgroundColor");
 }
 
 OpenGLFont::~OpenGLFont()
@@ -86,9 +90,14 @@ void OpenGLFont::render(OpenGLTextBox& box)
 
 	glUseProgram(matID);
 
-	auto loccutoff = glGetUniformLocation(matID, "cutoff");
-	assert(loccutoff != -1);
-	glUniform1f(loccutoff, .5f); // TODO: use cutoff
+	assert(cutoffUniLoc != -1);
+	glUniform1f(cutoffUniLoc, box.thickness);
+
+	assert(viewMatUniLoc != -1);
+	glUniformMatrix3fv(viewMatUniLoc, 1, GL_FALSE, &box.getMatrix()[0][0]);
+
+	assert(colorUniLoc != -1);
+	glUniform4f(colorUniLoc, box.color.r, box.color.g, box.color.b, box.color.a);
 
 	glUniform1i(glGetUniformLocation(matID, "tex"), 0);
 	glActiveTexture(GL_TEXTURE0);

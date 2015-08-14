@@ -53,10 +53,6 @@ Gate::Gate()
 	physComp = std::make_unique<PhysicsComponent>(*this, *shape, Transform{});
 	physComp->setDensity(1.f);
 
-	textBox = Runtime::get().renderer->newTextBox();
-	textBox->setFont(Runtime::get().renderer->getFont("Arial"));
-	textBox->setText(u"what, ");
-
 	using namespace std::chrono_literals;
 
 	Runtime::get().timerManager.addTimer(1s,

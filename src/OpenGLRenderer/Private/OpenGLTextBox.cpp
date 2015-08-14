@@ -5,13 +5,18 @@
 #include "OpenGLFont.h"
 #include "OpenGLMaterialSource.h"
 #include "OpenGLRenderer.h"
+#include "OpenGLWindow.h"
+
+#include <glm-ortho-2d.h>
 
 OpenGLTextBox::OpenGLTextBox(OpenGLRenderer& renderer)
 	: renderer(renderer)
+	, thickness(.5f)
+	, size(1.f)
 {
 	renderer.runOnRenderThreadSync([this]
 		{
-			location = this->renderer.textBoxes.insert(this->renderer.textBoxes.begin(), this);
+			locationIter = this->renderer.textBoxes.insert(this->renderer.textBoxes.begin(), this);
 
 			// just generate the buffers, there is no data yet.
 			glGenBuffers(1, &vertLocBuffer);
@@ -24,7 +29,7 @@ OpenGLTextBox::~OpenGLTextBox()
 {
 	renderer.runOnRenderThreadSync([this]
 		{
-			renderer.textBoxes.erase(location);
+			renderer.textBoxes.erase(locationIter);
 		});
 }
 
@@ -39,7 +44,23 @@ void OpenGLTextBox::setText(const std::u16string& textIn)
 	}
 }
 
-const std::u16string& OpenGLTextBox::getText() const { return text; }
+const std::u16string OpenGLTextBox::getText() const { return text; }
+
+void OpenGLTextBox::setSize(float newSize) { size = newSize; }
+
+float OpenGLTextBox::getSize() const { return size; }
+
+void OpenGLTextBox::setThickness(Clampf<0, 0, 1, 0> thicknessIn) { thickness = thicknessIn; }
+
+Clampf<0, 0, 1, 0> OpenGLTextBox::getThickness() const { return thickness; }
+
+void OpenGLTextBox::setColor(vec4 colorIn) { color = colorIn; }
+
+vec4 OpenGLTextBox::getColor() const { return color; }
+
+void OpenGLTextBox::setLocation(vec2 loc) { location = loc; }
+
+vec2 OpenGLTextBox::getLocation() const { return location; }
 
 void OpenGLTextBox::setFont(std::shared_ptr<Font> newFont)
 {
@@ -101,4 +122,17 @@ void OpenGLTextBox::regenerateBuffers()
 			glBufferData(
 				GL_ELEMENT_ARRAY_BUFFER, sizeof(uvec3) * elements.size(), &elements[0], GL_STATIC_DRAW);
 		});
+}
+
+mat3 OpenGLTextBox::getMatrix()
+{
+	auto windowSize = uvec2{renderer.window->getWindowProps().size};
+	float aspectRatio = ((float)windowSize.x) / ((float)windowSize.y);
+	mat3 ret = glm::ortho2d(0.f, aspectRatio, 0.f, 1.f);
+	ret = glm::translate(ret, location);
+	ret = glm::scale(ret, vec2{size, size});
+
+	auto a = ret * vec3{0.f, 0.f, 1.f};
+
+	return ret;
 }

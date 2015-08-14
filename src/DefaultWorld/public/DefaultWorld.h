@@ -38,7 +38,8 @@ public:
 	virtual std::unique_ptr<PlayerController> makePlayerController() override;
 	virtual std::unique_ptr<Pawn> makePawn() override;
 
-	virtual boost::signals2::connection registerTickingActor(Actor& toAdd) override;
+	virtual boost::signals2::connection registerTickingActor(
+		const std::function<void(float)>& tickFun) override;
 	// End World Interface
 private:
 	std::string folderLocation;

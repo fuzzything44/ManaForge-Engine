@@ -13,22 +13,22 @@
 class Pew;
 
 MFCLASS(Gate, Actor)
-class Gate : public Actor
+class Gate : public Actor, TickingActor<Gate>
 {
-	MFCLASS_BODY(Gate)
+	MFCLASS_BODY(Gate, isOpen)
 
 	std::unique_ptr<MeshComponent> meshComp;
 	std::unique_ptr<PhysicsComponent> physComp;
 
 	std::unique_ptr<MaterialInstance> mat;
 
-	std::unique_ptr<TextBox> textBox;
-
 	static bool isInitalized;
+
 
 public:
 	explicit Gate();
 	virtual ~Gate() override;
+	void tick(float) { MFLOG(Debug) << "IT WORKED B0SS"; }
 
 	bool isOpen;
 };

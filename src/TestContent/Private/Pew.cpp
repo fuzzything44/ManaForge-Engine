@@ -1,6 +1,13 @@
 #include "Pew.h"
 #include "Gate.h"
 
+#include <sstream>
+#include <locale>
+#include <string>
+
+#include <boost/convert.hpp>
+#include <boost/convert/lexical_cast.hpp>
+
 MFCLASS_SOURCE(Pew)
 
 Pew::Pew()
@@ -15,6 +22,12 @@ Pew::Pew()
 			startContact(other);
 		});
 
+	textBox = Runtime::get().renderer->newTextBox();
+	textBox->setFont(Runtime::get().renderer->getFont("Arial"));
+	textBox->setText(u"Contacts: 0");
+	textBox->setLocation({.5f, .4f});
+	textBox->setColor({.3f, 0.f, 1.f, 1.f});
+
 	Runtime::get().timerManager.addTimer(TimerManager::Double_duration_t(1.f),
 		[]
 		{
@@ -27,6 +40,9 @@ Pew::Pew()
 
 void Pew::startContact(PhysicsComponent& other)
 {
+	using namespace std::string_literals;
+
+	textBox->setText(u"Contacts: "s + boost::convert<std::u16string>(contacts, boost::cnv::lexical_cast()).get_value_or(u"Error!"s));
 
 	if (&other.getOwner() == reinterpret_cast<Actor*>(Runtime::get().pawn.get())) {
 		for (int i = 0; i < 100; ++i)

@@ -30,5 +30,5 @@ public:
 
 	virtual std::unique_ptr<ActorLocation> addActor(Actor& toAdd) = 0;
 
-	virtual boost::signals2::connection registerTickingActor(Actor& toAdd) = 0;
+	virtual boost::signals2::connection registerTickingActor(const std::function<void(float)>& tickFun) = 0;
 };

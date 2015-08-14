@@ -34,6 +34,9 @@ private:
 
 	std::shared_ptr<OpenGLMaterialSource> matSource;
 	GLuint tex;
+	GLint cutoffUniLoc;
+	GLint colorUniLoc;
+	GLint viewMatUniLoc;
 
 	OpenGLRenderer& renderer;
 };

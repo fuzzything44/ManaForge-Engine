@@ -12,10 +12,13 @@ public:
 	Pew();
 	~Pew() override {}
 
-	void startContact(PhysicsComponent& other);
+	TestContent_API void startContact(PhysicsComponent& other);
 
 private:
 	std::unique_ptr<PhysicsComponent> phys;
+	std::unique_ptr<TextBox> textBox;
 
 	float timeToSpawn;
+
+	int contacts = 0;
 };

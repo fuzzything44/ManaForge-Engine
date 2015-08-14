@@ -49,7 +49,7 @@ template <typename First, typename... Rest> struct serializeMembers_impl<First, 
 	{
 		ar& boost::serialization::make_nvp("member", first);
 
-		serializeMembers<Rest...>::apply(ar, rest...);
+		serializeMembers_impl<Rest...>::apply(ar, rest...);
 	}
 };
 

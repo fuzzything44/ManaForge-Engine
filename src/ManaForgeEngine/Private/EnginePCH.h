@@ -57,6 +57,10 @@
 
 #include <boost/date_time.hpp>
 
+#ifdef WIN32_MEAN_AND_LEAN
+#undef WIN32_MEAN_AND_LEAN
+#endif
+#define WIN32_MEAN_AND_LEAN 1
 #include <Windows.h>
 
 #include <glm/glm.hpp>
