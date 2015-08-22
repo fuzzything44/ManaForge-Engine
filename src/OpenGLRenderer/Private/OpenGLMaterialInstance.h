@@ -61,7 +61,7 @@ private:
 
 	std::shared_ptr<OpenGLMaterialSource> program;
 
-	std::unordered_map<std::string, std::tuple<int32, std::function<void(int32)>>> properties;
+	std::unordered_map<std::string, std::function<void()>> properties;
 
 	// vector of <texture ID>
 	std::array<boost::optional<std::shared_ptr<OpenGLTexture>>, maxTextures> textures;

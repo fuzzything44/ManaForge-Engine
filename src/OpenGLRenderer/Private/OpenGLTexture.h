@@ -16,7 +16,7 @@ class OpenGLTexture : public Texture
 	friend OpenGLRenderer;
 
 public:
-	explicit OpenGLTexture(const path_t& path);
+	explicit OpenGLTexture(OpenGLRenderer& renderer, const path_t& path = "");
 
 	uint32 getID();
 
@@ -33,10 +33,7 @@ private:
 
 	path_t path;
 
-	int32 loadDDS(const std::string& filename);
-	// void appendDDS(uint32 texToAppend, uint32 Xoffset, uint32 Yoffset, const char* filepath);
-	// uint32 allocateCompressedTextureLibraryFromDDS(uint32 num, const char* filepath);			// keeping
-	// just
-	// in
-	// case
+	// int32 loadDDS(const std::string& filename);
+
+	OpenGLRenderer& renderer;
 };

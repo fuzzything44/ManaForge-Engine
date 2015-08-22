@@ -43,91 +43,75 @@ void OpenGLMaterialInstance::setUpdateCallback(std::function<void(MaterialInstan
 void OpenGLMaterialInstance::setProperty(const std::string& propName, int i)
 {
 
-	renderer.runOnRenderThreadSync([ this, propName = std::string{std::move(propName)}, i ]
+	renderer.runOnRenderThreadAsync([this, propName, i]
 		{
-			properties[propName] = std::tuple<int32, std::function<void(int32)>>{
-				glGetUniformLocation(**program, propName.c_str()),
-				[i](int32 loc)
-				{
-					glUniform1i(loc, i);
-				}};
+			properties[propName] = [ i, loc = glGetUniformLocation(**program, propName.c_str()) ]()
+			{
+				glUniform1i(loc, i);
+			};
 		});
 }
 void OpenGLMaterialInstance::setProperty(const std::string& propName, const ivec2& i)
 {
-	renderer.runOnRenderThreadAsync([ this, propName = std::string{std::move(propName)}, i ]
+	renderer.runOnRenderThreadAsync([this, propName, i]
 		{
-			properties[propName] = std::tuple<int32, std::function<void(int32)>>{
-				glGetUniformLocation(**program, propName.c_str()),
-				[i](int32 loc)
-				{
-					glUniform2i(loc, i.x, i.y);
-				}};
+			properties[propName] = [ i, loc = glGetUniformLocation(**program, propName.c_str()) ]
+			{
+				glUniform2i(loc, i.x, i.y);
+			};
 		});
 }
 void OpenGLMaterialInstance::setProperty(const std::string& propName, const ivec3& i)
 {
 
-	renderer.runOnRenderThreadAsync([ this, propName = std::string{std::move(propName)}, i ]
+	renderer.runOnRenderThreadAsync([this, propName, i]
 		{
-			properties[propName] = std::tuple<int32, std::function<void(int32)>>{
-				glGetUniformLocation(**program, propName.c_str()),
-				[i](int32 loc)
-				{
-					glUniform3i(loc, i.x, i.y, i.z);
-				}};
+			properties[propName] = [ i, loc = glGetUniformLocation(**program, propName.c_str()) ]
+			{
+				glUniform3i(loc, i.x, i.y, i.z);
+			};
 		});
 }
 void OpenGLMaterialInstance::setProperty(const std::string& propName, const ivec4& i)
 {
 
-	renderer.runOnRenderThreadAsync([ this, propName = std::string{std::move(propName)}, i ]()
+	renderer.runOnRenderThreadAsync([this, propName, i]()
 		{
-			properties[propName] = std::tuple<int32, std::function<void(int32)>>{
-				glGetUniformLocation(**program, propName.c_str()),
-				[i](int32 loc)
-				{
-					glUniform4i(loc, i.x, i.y, i.z, i.w);
-				}};
+			properties[propName] = [ i, loc = glGetUniformLocation(**program, propName.c_str()) ]
+			{
+				glUniform4i(loc, i.x, i.y, i.z, i.w);
+			};
 		});
 }
 void OpenGLMaterialInstance::setProperty(const std::string& propName, int* i, size_t size)
 {
-	renderer.runOnRenderThreadAsync([ this, propName = std::string{std::move(propName)}, i, size ]
+	renderer.runOnRenderThreadAsync([this, propName, i, size]
 		{
 			switch (size)
 			{
 			case 1:
-				properties[propName] = std::tuple<int32, std::function<void(int32)>>{
-					glGetUniformLocation(**program, propName.c_str()),
-					[i](int32 loc)
-					{
-						glUniform1iv(loc, 1, i);
-					}};
+				properties[propName] = [ i, loc = glGetUniformLocation(**program, propName.c_str()) ]
+				{
+					glUniform1iv(loc, 1, i);
+				};
 				break;
 			case 2:
-				properties[propName] = std::tuple<int32, std::function<void(int32)>>{
-					glGetUniformLocation(**program, propName.c_str()),
-					[i](int32 loc)
-					{
-						glUniform2iv(loc, 1, i);
-					}};
+				properties[propName] = [ i, loc = glGetUniformLocation(**program, propName.c_str()) ]
+				{
+					glUniform2iv(loc, 1, i);
+				};
 				break;
 			case 3:
-				properties[propName] = std::tuple<int32, std::function<void(int32)>>{
-					glGetUniformLocation(**program, propName.c_str()),
-					[i](int32 loc)
-					{
-						glUniform3iv(loc, 1, i);
-					}};
+				properties[propName] = [ i, loc = glGetUniformLocation(**program, propName.c_str()) ]
+				{
+					glUniform3iv(loc, 1, i);
+				};
 				break;
 			case 4:
-				properties[propName] = std::tuple<int32, std::function<void(int32)>>(
-					glGetUniformLocation(**program, propName.c_str()),
-					[i](int32 loc)
-					{
-						glUniform4iv(loc, 1, i);
-					}); // here
+				properties[propName] = [ i, loc = glGetUniformLocation(**program, propName.c_str()) ]
+				{
+					glUniform4iv(loc, 1, i);
+				};
 				break;
 			}
 		});
@@ -135,163 +119,135 @@ void OpenGLMaterialInstance::setProperty(const std::string& propName, int* i, si
 void OpenGLMaterialInstance::setProperty(const std::string& propName, float i)
 {
 
-	renderer.runOnRenderThreadAsync([ this, propName = std::string{std::move(propName)}, i ]
+	renderer.runOnRenderThreadAsync([this, propName, i]
 		{
-			properties[propName] = std::tuple<int32, std::function<void(int32)>>{
-				glGetUniformLocation(**program, propName.c_str()),
-				[i](int32 loc)
-				{
-					glUniform1f(loc, i);
-				}};
+			properties[propName] = [ i, loc = glGetUniformLocation(**program, propName.c_str()) ]
+			{
+				glUniform1f(loc, i);
+			};
 		});
 }
 void OpenGLMaterialInstance::setProperty(const std::string& propName, const vec2& i)
 {
-	renderer.runOnRenderThreadAsync([ this, propName = std::string{std::move(propName)}, i ]
+	renderer.runOnRenderThreadAsync([this, propName, i]
 		{
-			properties[propName] = std::tuple<int32, std::function<void(int32)>>{
-				glGetUniformLocation(**program, propName.c_str()),
-				[i](int32 loc)
-				{
-					glUniform2f(loc, i.x, i.y);
-				}};
+			properties[propName] = [ i, loc = glGetUniformLocation(**program, propName.c_str()) ]
+			{
+				glUniform2f(loc, i.x, i.y);
+			};
 		});
 }
 void OpenGLMaterialInstance::setProperty(const std::string& propName, const vec3& i)
 {
-	renderer.runOnRenderThreadAsync([ this, propName = std::string{std::move(propName)}, i ]
+	renderer.runOnRenderThreadAsync([this, propName, i]
 		{
-			properties[propName] = std::tuple<int32, std::function<void(int32)>>{
-				glGetUniformLocation(**program, propName.c_str()),
-				[i](int32 loc)
-				{
-					glUniform3f(loc, i.x, i.y, i.z);
-				}};
+			properties[propName] = [ i, loc = glGetUniformLocation(**program, propName.c_str()) ]
+			{
+				glUniform3f(loc, i.x, i.y, i.z);
+			};
 		});
 }
 void OpenGLMaterialInstance::setProperty(const std::string& propName, const vec4& i)
 {
-	renderer.runOnRenderThreadAsync([ this, propName = std::string{std::move(propName)}, i ]
+	renderer.runOnRenderThreadAsync([this, propName, i]
 		{
-			properties[propName] = std::tuple<int32, std::function<void(int32)>>{
-				glGetUniformLocation(**program, propName.c_str()),
-				[i](int32 loc)
-				{
-					glUniform4f(loc, i.x, i.y, i.z, i.w);
-				}};
+			properties[propName] = [ i, loc = glGetUniformLocation(**program, propName.c_str()) ]
+			{
+				glUniform4f(loc, i.x, i.y, i.z, i.w);
+			};
 		});
 }
 void OpenGLMaterialInstance::setProperty(const std::string& propName, float* i, size_t size)
 {
-	renderer.runOnRenderThreadAsync([ this, propName = std::string{std::move(propName)}, i, size ]
+	renderer.runOnRenderThreadAsync([this, propName, i, size]
 		{
 			switch (size)
 			{
 			case 1:
-				properties[propName] = std::tuple<int32, std::function<void(int32)>>{
-					glGetUniformLocation(**program, propName.c_str()),
-					[i](int32 loc)
-					{
-						glUniform1fv(loc, 1, i);
-					}};
+				properties[propName] = [ i, loc = glGetUniformLocation(**program, propName.c_str()) ]
+				{
+					glUniform1fv(loc, 1, i);
+				};
 				break;
 			case 2:
-				properties[propName] = std::tuple<int32, std::function<void(int32)>>{
-					glGetUniformLocation(**program, propName.c_str()),
-					[i](int32 loc)
-					{
-						glUniform2fv(loc, 1, i);
-					}};
+				properties[propName] = [ i, loc = glGetUniformLocation(**program, propName.c_str()) ]
+				{
+					glUniform2fv(loc, 1, i);
+				};
 				break;
 			case 3:
-				properties[propName] = std::tuple<int32, std::function<void(int32)>>{
-					glGetUniformLocation(**program, propName.c_str()),
-					[i](int32 loc)
-					{
-						glUniform3fv(loc, 1, i);
-					}};
+				properties[propName] = [ i, loc = glGetUniformLocation(**program, propName.c_str()) ]
+				{
+					glUniform3fv(loc, 1, i);
+				};
 				break;
 			case 4:
-				properties[propName] = std::tuple<int32, std::function<void(int32)>>{
-					glGetUniformLocation(**program, propName.c_str()),
-					[i](int32 loc)
-					{
-						glUniform4fv(loc, 1, i);
-					}};
+				properties[propName] = [ i, loc = glGetUniformLocation(**program, propName.c_str()) ]
+				{
+					glUniform4fv(loc, 1, i);
+				};
 				break;
 			}
 		});
 }
 void OpenGLMaterialInstance::setPropertyMatrix(const std::string& propName, const mat2& i)
 {
-	renderer.runOnRenderThreadAsync([ this, propName = std::string{std::move(propName)}, i ]
+	renderer.runOnRenderThreadAsync([this, propName, i]
 		{
-			properties[propName] = std::tuple<int32, std::function<void(int32)>>{
-				glGetUniformLocation(**program, propName.c_str()),
-				[i](int32 loc)
-				{
-					glUniformMatrix2fv(loc, 1, GL_FALSE, &i[0][0]);
-				}};
+			properties[propName] = [ i, loc = glGetUniformLocation(**program, propName.c_str()) ]
+			{
+				glUniformMatrix2fv(loc, 1, GL_FALSE, &i[0][0]);
+			};
 		});
 }
 void OpenGLMaterialInstance::setPropertyMatrix(const std::string& propName, const mat3& i)
 {
-	renderer.runOnRenderThreadAsync([ this, propName = std::string{std::move(propName)}, i ]
+	renderer.runOnRenderThreadAsync([this, propName, i]
 		{
-			properties[propName] = std::tuple<int32, std::function<void(int32)>>{
-				glGetUniformLocation(**program, propName.c_str()),
-				[i](int32 loc)
-				{
-					glUniformMatrix3fv(loc, 1, GL_FALSE, &i[0][0]);
-				}};
+			properties[propName] = [ i, loc = glGetUniformLocation(**program, propName.c_str()) ]
+			{
+				glUniformMatrix3fv(loc, 1, GL_FALSE, &i[0][0]);
+			};
 		});
 }
 void OpenGLMaterialInstance::setPropertyMatrix(const std::string& propName, const mat4& i)
 {
-	renderer.runOnRenderThreadAsync([ this, propName = std::string{std::move(propName)}, i ]
+	renderer.runOnRenderThreadAsync([this, propName, i]
 		{
-			properties[propName] = std::tuple<int32, std::function<void(int32)>>{
-				glGetUniformLocation(**program, propName.c_str()),
-				[i](int32 loc)
-				{
-					glUniformMatrix4fv(loc, 1, GL_FALSE, &i[0][0]);
-				}};
+			properties[propName] = [ i, loc = glGetUniformLocation(**program, propName.c_str()) ]
+			{
+				glUniformMatrix4fv(loc, 1, GL_FALSE, &i[0][0]);
+			};
 		});
 }
 void OpenGLMaterialInstance::setPropertyMatrix2ptr(const std::string& propName, float* i)
 {
-	renderer.runOnRenderThreadAsync([ this, propName = std::string{std::move(propName)}, i ]
+	renderer.runOnRenderThreadAsync([this, propName, i]
 		{
-			properties[propName] = std::tuple<int32, std::function<void(int32)>>{
-				glGetUniformLocation(**program, propName.c_str()),
-				[i](int32 loc)
-				{
-					glUniformMatrix2fv(loc, 1, GL_FALSE, i);
-				}};
+			properties[propName] = [ i, loc = glGetUniformLocation(**program, propName.c_str()) ]
+			{
+				glUniformMatrix2fv(loc, 1, GL_FALSE, i);
+			};
 		}); // fds fdas
 }
 void OpenGLMaterialInstance::setPropertyMatrix3ptr(const std::string& propName, float* i)
 {
-	renderer.runOnRenderThreadAsync([ this, propName = std::string{std::move(propName)}, i ]
+	renderer.runOnRenderThreadAsync([this, propName, i]
 		{
-			properties[propName] = std::tuple<int32, std::function<void(int32)>>{
-				glGetUniformLocation(**program, propName.c_str()),
-				[i](int32 loc)
-				{
-					glUniformMatrix3fv(loc, 1, GL_FALSE, i);
-				}};
+			properties[propName] = [ i, loc = glGetUniformLocation(**program, propName.c_str()) ]
+			{
+				glUniformMatrix3fv(loc, 1, GL_FALSE, i);
+			};
 		});
 }
 void OpenGLMaterialInstance::setPropertyMatrix4ptr(const std::string& propName, float* i)
 {
-	renderer.runOnRenderThreadAsync([ this, propName = std::string{std::move(propName)}, i ]
+	renderer.runOnRenderThreadAsync([this, propName, i]
 		{
-			properties[propName] = std::tuple<int32, std::function<void(int32)>>{
-				glGetUniformLocation(**program, propName.c_str()),
-				[i](int32 loc)
-				{
-					glUniformMatrix4fv(loc, 1, GL_FALSE, i);
-				}};
+			properties[propName] = [ i, loc = glGetUniformLocation(**program, propName.c_str()) ]
+			{
+				glUniformMatrix4fv(loc, 1, GL_FALSE, i);
+			};
 		});
 }
 // end property interface
@@ -300,15 +256,11 @@ void OpenGLMaterialInstance::use()
 {
 	if (updateCallback) updateCallback(*this);
 
+	glUseProgram(**program);
 	for (auto&& elem : properties)
 	{
-		auto&& fun = std::get<1>(elem.second);
-		auto&& loc = std::get<0>(elem.second);
-
-		fun(loc);
+		elem.second();
 	}
-
-	glUseProgram(**program);
 
 	for (uint32 i = 0; i < maxTextures && textures[i]; i++)
 	{

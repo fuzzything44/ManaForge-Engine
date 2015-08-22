@@ -19,6 +19,7 @@ OpenGLTextBox::OpenGLTextBox(OpenGLRenderer& renderer)
 			locationIter = this->renderer.textBoxes.insert(this->renderer.textBoxes.begin(), this);
 
 			// just generate the buffers, there is no data yet.
+			glGenVertexArrays(1, &vertexArray);
 			glGenBuffers(1, &vertLocBuffer);
 			glGenBuffers(1, &texCoordBuffer);
 			glGenBuffers(1, &elemBuffer);

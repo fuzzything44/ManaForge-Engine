@@ -1,5 +1,6 @@
 #include "OpenGLRendererPCH.h"
 #include "OpenGLWindow.h"
+#include "OpenGLRenderer.h"
 
 #include <PropertyManager.h>
 
@@ -8,8 +9,8 @@
 
 std::map<GLFWwindow*, OpenGLWindow*> OpenGLWindow::windows = std::map<GLFWwindow*, OpenGLWindow*>();
 
-OpenGLWindow::OpenGLWindow()
-	: Window()
+OpenGLWindow::OpenGLWindow(OpenGLRenderer& renderer)
+	: renderer(renderer)
 {
 	PropertyManager& propManager = Runtime::get().propManager;
 
@@ -31,73 +32,77 @@ OpenGLWindow::OpenGLWindow()
 	GLFWmonitor* mon = glfwGetPrimaryMonitor();
 	const GLFWvidmode* mode = glfwGetVideoMode(mon);
 
-	// set AA
-	glfwWindowHint(GLFW_SAMPLES, 8);
+	renderer.runOnRenderThreadAsync([this, mon, mode]
+		{
 
-	glfwWindowHint(GL_DOUBLEBUFFER, false);
+			// set AA
+			glfwWindowHint(GLFW_SAMPLES, 8);
 
-	// set GL version
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+			glfwWindowHint(GL_DOUBLEBUFFER, false);
 
-	// set profile to core profile
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+			// set GL version
+			glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+			glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 
-	// set the window to non-resizable
-	glfwWindowHint(GLFW_RESIZABLE, false);
+			// set profile to core profile
+			glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	// create the winodw
-	switch (props.windowMode)
-	{
-	case WindowMode::FULLSCREEN:
-		window = glfwCreateWindow(props.size.x, props.size.y, props.title.c_str(), mon, nullptr);
-		break;
-	case WindowMode::FULLSCREEN_WINDOWED:
-		glfwWindowHint(GLFW_DECORATED, false);
-		window = glfwCreateWindow(mode->width, mode->height, props.title.c_str(), nullptr, nullptr);
+			// set the window to non-resizable
+			glfwWindowHint(GLFW_RESIZABLE, false);
 
-		props.size = uvec2(mode->width, mode->height);
-		break;
+			// create the winodw
+			switch (props.windowMode)
+			{
+			case WindowMode::FULLSCREEN:
+				window = glfwCreateWindow(props.size.x, props.size.y, props.title.c_str(), mon, nullptr);
+				break;
+			case WindowMode::FULLSCREEN_WINDOWED:
+				glfwWindowHint(GLFW_DECORATED, false);
+				window = glfwCreateWindow(mode->width, mode->height, props.title.c_str(), nullptr, nullptr);
 
-	case WindowMode::WINDOWED:
-		window = glfwCreateWindow(props.size.x, props.size.y, props.title.c_str(), nullptr, nullptr);
-		break;
+				props.size = uvec2(mode->width, mode->height);
+				break;
 
-	default: break;
-	}
+			case WindowMode::WINDOWED:
+				window = glfwCreateWindow(props.size.x, props.size.y, props.title.c_str(), nullptr, nullptr);
+				break;
 
-	// exit if the window wasn't initialized correctly
-	if (!window) {
-		glfwTerminate();
-		MFLOG(Fatal) << "\nWindow failed to create.";
-	}
+			default: break;
+			}
 
-	windows[window] = this;
+			// exit if the window wasn't initialized correctly
+			if (!window) {
+				glfwTerminate();
+				MFLOG(Fatal) << "\nWindow failed to create.";
+			}
 
-	// make context current in this thread
-	glfwMakeContextCurrent(window);
+			windows[window] = this;
 
-	// make sure the cursor is shown. Most likely want to change this in the future
-	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+			// make context current in this thread
+			glfwMakeContextCurrent(window);
 
-	// use newer GL
-	glewExperimental = GL_TRUE;
+			// make sure the cursor is shown. Most likely want to change this in the future
+			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 
-	// init GL (glew is an extension that does this for us)
+			// use newer GL
+			glewExperimental = GL_TRUE;
 
-	if (int err = glewInit() != GLEW_OK) {
-		glfwTerminate();
-		MFLOG(Fatal) << "GLEW failed to init. Error code: " << err;
-	}
-	// for some reason there is already an error, so clear that
-	glGetError();
+			// init GL (glew is an extension that does this for us)
 
-	// Ensure we can capture the escape key being pressed below
-	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
+			if (int err = glewInit() != GLEW_OK) {
+				glfwTerminate();
+				MFLOG(Fatal) << "GLEW failed to init. Error code: " << err;
+			}
+			// for some reason there is already an error, so clear that
+			glGetError();
 
-	glfwSetScrollCallback(window, &OpenGLWindow::scrollCallback);
+			// Ensure we can capture the escape key being pressed below
+			glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 
-	glfwSetWindowFocusCallback(window, &OpenGLWindow::focusCallback);
+			glfwSetScrollCallback(window, &OpenGLWindow::scrollCallback);
+
+			glfwSetWindowFocusCallback(window, &OpenGLWindow::focusCallback);
+		});
 }
 
 OpenGLWindow::~OpenGLWindow()

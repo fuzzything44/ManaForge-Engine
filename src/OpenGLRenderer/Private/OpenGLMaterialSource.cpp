@@ -26,93 +26,97 @@ OpenGLMaterialSource::~OpenGLMaterialSource()
 
 void OpenGLMaterialSource::init(const path_t& name)
 {
-	assert(renderer.isOnRenderThread());
+	this->name = name;
 
 	path_t vertexPath = L"shaders\\" + name.wstring() + L"vert.glsl";
 	path_t fragPath = L"shaders\\" + name.wstring() + L"frag.glsl";
 
-	// Create the shaders
-	GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+	renderer.runOnRenderThreadSync([this, &vertexPath, &fragPath, &name]
+		{
 
-	// Read the Vertex Shader code from the file
-	std::string&& VertexShaderCode = loadFileToStr(vertexPath);
+			// Create the shaders
+			GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
+			GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 
-	// Read the Fragment Shader code from the file
-	std::string&& FragmentShaderCode = loadFileToStr(fragPath);
+			// Read the Vertex Shader code from the file
+			std::string&& VertexShaderCode = loadFileToStr(vertexPath);
 
-	int32 Result = GL_FALSE;
-	int InfoLogLength;
+			// Read the Fragment Shader code from the file
+			std::string&& FragmentShaderCode = loadFileToStr(fragPath);
 
-	// Compile Vertex Shader
-	MFLOG(Trace) << "Compiling vertex Shader " << vertexPath;
+			int32 Result = GL_FALSE;
+			int InfoLogLength;
 
-	const char* VertexSourcePointer = VertexShaderCode.c_str();
-	glShaderSource(vertexShader, 1, &VertexSourcePointer, nullptr);
-	glCompileShader(vertexShader);
+			// Compile Vertex Shader
+			MFLOG(Trace) << "Compiling vertex Shader " << vertexPath;
 
-	// Check Vertex Shader
-	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &Result);
-	glGetShaderiv(vertexShader, GL_INFO_LOG_LENGTH, &InfoLogLength);
-	if (InfoLogLength > 1) {
-		auto VertexShaderErrorMessage = std::vector<char>(InfoLogLength + 1);
-		glGetShaderInfoLog(vertexShader, InfoLogLength, nullptr, VertexShaderErrorMessage.data());
-		MFLOG(Error) << VertexShaderErrorMessage.data();
-	}
-	else
-	{
-		MFLOG(Trace) << "\tShader " << vertexPath << " Successfully Compiled";
-	}
+			const char* VertexSourcePointer = VertexShaderCode.c_str();
+			glShaderSource(vertexShader, 1, &VertexSourcePointer, nullptr);
+			glCompileShader(vertexShader);
 
-	// Compile Fragment Shader
-	MFLOG(Trace) << "\tCompiling fragment Shader " << fragPath;
-	const char* FragmentSourcePointer = FragmentShaderCode.c_str();
-	glShaderSource(fragmentShader, 1, &FragmentSourcePointer, nullptr);
-	glCompileShader(fragmentShader);
+			// Check Vertex Shader
+			glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &Result);
+			glGetShaderiv(vertexShader, GL_INFO_LOG_LENGTH, &InfoLogLength);
+			if (InfoLogLength > 1) {
+				auto VertexShaderErrorMessage = std::vector<char>(InfoLogLength + 1);
+				glGetShaderInfoLog(vertexShader, InfoLogLength, nullptr, VertexShaderErrorMessage.data());
+				MFLOG(Error) << VertexShaderErrorMessage.data();
+			}
+			else
+			{
+				MFLOG(Trace) << "\tShader " << vertexPath << " Successfully Compiled";
+			}
 
-	// Check Fragment Shader
-	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &Result);
-	glGetShaderiv(fragmentShader, GL_INFO_LOG_LENGTH, &InfoLogLength);
-	if (InfoLogLength > 1) {
-		auto FragmentShaderErrorMessage = std::vector<char>(InfoLogLength + 1);
-		glGetShaderInfoLog(fragmentShader, InfoLogLength, nullptr, FragmentShaderErrorMessage.data());
-		MFLOG(Error) << FragmentShaderErrorMessage.data();
-	}
-	else
-	{
-		MFLOG(Trace) << "\tShader " << fragPath << " Successfully Compiled";
-	}
+			// Compile Fragment Shader
+			MFLOG(Trace) << "\tCompiling fragment Shader " << fragPath;
+			const char* FragmentSourcePointer = FragmentShaderCode.c_str();
+			glShaderSource(fragmentShader, 1, &FragmentSourcePointer, nullptr);
+			glCompileShader(fragmentShader);
 
-	// Link the program
-	MFLOG(Trace) << "\tLinking program " << name;
-	program = glCreateProgram();
-	glAttachShader(program, vertexShader);
-	glAttachShader(program, fragmentShader);
-	glLinkProgram(program);
+			// Check Fragment Shader
+			glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &Result);
+			glGetShaderiv(fragmentShader, GL_INFO_LOG_LENGTH, &InfoLogLength);
+			if (InfoLogLength > 1) {
+				auto FragmentShaderErrorMessage = std::vector<char>(InfoLogLength + 1);
+				glGetShaderInfoLog(fragmentShader, InfoLogLength, nullptr, FragmentShaderErrorMessage.data());
+				MFLOG(Error) << FragmentShaderErrorMessage.data();
+			}
+			else
+			{
+				MFLOG(Trace) << "\tShader " << fragPath << " Successfully Compiled";
+			}
 
-	// Check the program
-	glGetProgramiv(program, GL_LINK_STATUS, &Result);
-	glGetProgramiv(program, GL_INFO_LOG_LENGTH, &InfoLogLength);
-	if (InfoLogLength > 1) {
-		auto ProgramErrorMessage = std::vector<char>(InfoLogLength + 1);
-		glGetProgramInfoLog(program, InfoLogLength, nullptr, ProgramErrorMessage.data());
-		MFLOG(Error) << ProgramErrorMessage.data();
-	}
+			// Link the program
+			MFLOG(Trace) << "\tLinking program " << name;
+			program = glCreateProgram();
+			glAttachShader(program, vertexShader);
+			glAttachShader(program, fragmentShader);
+			glLinkProgram(program);
 
-	glDeleteShader(vertexShader);
-	glDeleteShader(fragmentShader);
+			// Check the program
+			glGetProgramiv(program, GL_LINK_STATUS, &Result);
+			glGetProgramiv(program, GL_INFO_LOG_LENGTH, &InfoLogLength);
+			if (InfoLogLength > 1) {
+				auto ProgramErrorMessage = std::vector<char>(InfoLogLength + 1);
+				glGetProgramInfoLog(program, InfoLogLength, nullptr, ProgramErrorMessage.data());
+				MFLOG(Error) << ProgramErrorMessage.data();
+			}
 
-	startTexUniform = glGetUniformLocation(program, "textures");
-	if (startTexUniform == -1) {
-		MFLOG(Warning) << "Could not find startTexUniform in program: " << name;
-	}
+			glDeleteShader(vertexShader);
+			glDeleteShader(fragmentShader);
 
-	MVPUniformLocation = glGetUniformLocation(program, "MVPmat");
-	if (MVPUniformLocation == -1) {
-		MFLOG(Warning) << "Could not find MVPUniformLocation in program: " << name;
-	}
+			startTexUniform = glGetUniformLocation(program, "textures");
+			if (startTexUniform == -1) {
+				MFLOG(Warning) << "Could not find startTexUniform in program: " << name;
+			}
 
-	MFLOG(Trace) << "\tSuccessfully Linked Program: " << name;
+			MVPUniformLocation = glGetUniformLocation(program, "MVPmat");
+			if (MVPUniformLocation == -1) {
+				MFLOG(Warning) << "Could not find MVPUniformLocation in program: " << name;
+			}
+
+			MFLOG(Trace) << "\tSuccessfully Linked Program: " << name;
+		});
 }
 
 path_t OpenGLMaterialSource::getName() const { return name; }

@@ -3,10 +3,12 @@
 
 #include "Window.h"
 
+class OpenGLRenderer;
+
 class OpenGLWindow : public Window
 {
 public:
-	explicit OpenGLWindow();
+	explicit OpenGLWindow(OpenGLRenderer& renderer);
 	virtual ~OpenGLWindow() override;
 
 	virtual const WindowProps& getWindowProps() const override;
@@ -35,4 +37,6 @@ private:
 
 	static void scrollCallback(GLFWwindow* window, double x, double y);
 	static void focusCallback(GLFWwindow* window, int x);
+
+	OpenGLRenderer& renderer;
 };
