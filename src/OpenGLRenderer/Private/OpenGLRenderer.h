@@ -11,7 +11,6 @@
 #include <utility>
 #include <memory>
 
-
 #include <call_from_tuple.h>
 
 #include <boost/lockfree/spsc_queue.hpp>
@@ -156,7 +155,6 @@ inline auto OpenGLRenderer::runOnRenderThreadSync(Function&& func, Args&&... arg
 	return task.get_future().get();
 }
 
-
 template <typename Function, typename... Args>
 inline auto OpenGLRenderer::runOnRenderThreadAsync(Function&& func, Args&&... args)
 {
@@ -165,17 +163,14 @@ inline auto OpenGLRenderer::runOnRenderThreadAsync(Function&& func, Args&&... ar
 
 	// this needs to be a shared_ptr because the lambda needs to be copied. If the queue had emplace
 	// functions...
-	auto task = std::make_shared<
-		std::packaged_task<retType(Args&&...)>
-	>(func);
+	auto task = std::make_shared<std::packaged_task<retType(Args && ...)>>(func);
 
 	auto ret = task->get_future(); // cache it because it will be moved from.
 
-
-	queue.push([pack = std::move(task), args = std::make_tuple(std::forward<Args>(args)...)]() mutable
-	{
-		callWithTuple(*pack, args);
-	});
+	queue.push([ pack = std::move(task), args = std::make_tuple(std::forward<Args>(args)...) ]() mutable
+		{
+			callWithTuple(*pack, args);
+		});
 
 	return ret;
 }

@@ -6,7 +6,6 @@
 #include "Runtime.h"
 #include "PhysicsSystem.h"
 
-
 BOOST_CLASS_EXPORT_IMPLEMENT(Actor);
 
 Actor::Actor()

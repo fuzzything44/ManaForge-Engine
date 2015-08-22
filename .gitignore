@@ -76,3 +76,5 @@ log.txt
 boost.props
 src/boostx64.props
 src/boostx64.props
+
+*.vsp

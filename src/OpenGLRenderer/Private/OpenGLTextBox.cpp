@@ -104,23 +104,41 @@ void OpenGLTextBox::regenerateBuffers()
 		cursorpos += d.advance;
 	}
 
-	renderer.runOnRenderThreadSync([this, &locations, &uvs, &elements]
+	if (text.size() > currentMaxLetters) reallocateBuffers();
+
+	renderer.runOnRenderThreadAsync([
+		this,
+		locations = std::vector<vec2>(std::move(locations)),
+		uvs = std::vector<vec2>(std::move(uvs)),
+		elements = std::vector<uvec3>(std::move(elements))
+	]
 		{
-			glGenVertexArrays(1, &vertexArray);
-			glBindVertexArray(vertexArray);
-
-			glGenBuffers(1, &vertLocBuffer);
 			glBindBuffer(GL_ARRAY_BUFFER, vertLocBuffer);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(vec2) * locations.size(), &locations[0], GL_STATIC_DRAW);
+			glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vec2) * locations.size(), locations.data());
 
-			glGenBuffers(1, &texCoordBuffer);
 			glBindBuffer(GL_ARRAY_BUFFER, texCoordBuffer);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(vec2) * uvs.size(), &uvs[0], GL_STATIC_DRAW);
+			glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vec2) * uvs.size(), uvs.data());
 
-			glGenBuffers(1, &elemBuffer);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elemBuffer);
+			glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(uvec3) * elements.size(), elements.data());
+		});
+}
+
+void OpenGLTextBox::reallocateBuffers()
+{
+	currentMaxLetters = text.size() + 5;
+
+	renderer.runOnRenderThreadAsync([this]
+		{
+			glBindBuffer(GL_ARRAY_BUFFER, vertLocBuffer);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(vec2) * currentMaxLetters * 4, nullptr, GL_DYNAMIC_DRAW);
+
+			glBindBuffer(GL_ARRAY_BUFFER, texCoordBuffer);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(vec2) * currentMaxLetters * 4, nullptr, GL_DYNAMIC_DRAW);
+
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elemBuffer);
 			glBufferData(
-				GL_ELEMENT_ARRAY_BUFFER, sizeof(uvec3) * elements.size(), &elements[0], GL_STATIC_DRAW);
+				GL_ELEMENT_ARRAY_BUFFER, sizeof(uvec3) * currentMaxLetters * 2, nullptr, GL_DYNAMIC_DRAW);
 		});
 }
 

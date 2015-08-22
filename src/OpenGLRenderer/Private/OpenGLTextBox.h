@@ -42,6 +42,7 @@ public:
 
 private:
 	void regenerateBuffers();
+	void reallocateBuffers();
 	mat3 getMatrix();
 
 	std::u16string text;
@@ -50,6 +51,8 @@ private:
 	uint32 vertLocBuffer;
 	uint32 texCoordBuffer;
 	uint32 elemBuffer;
+
+	size_t currentMaxLetters = 0;
 
 	vec4 color;
 	float size;
