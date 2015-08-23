@@ -154,27 +154,24 @@ std::shared_ptr<Texture> OpenGLRenderer::getTexture(const path_t& name)
 
 std::shared_ptr<MaterialSource> OpenGLRenderer::getMaterialSource(const path_t& name)
 {
-	auto iter = matSources.find(name);
+	return runOnRenderThreadSync([this, &name]
+	{
+		auto iter = matSources.find(name);
 
-	std::shared_ptr<OpenGLMaterialSource> ret;
+		std::shared_ptr<OpenGLMaterialSource> ret;
 
-	if (iter != matSources.end()) {
-		if (iter->second.expired()) {
-			iter->second = ret = std::make_shared<OpenGLMaterialSource>(*this, name);
+		if (iter != matSources.end()) {
+
+			return iter->second;
 		}
-		else
-		{
-			ret = std::shared_ptr<OpenGLMaterialSource>{iter->second};
-		}
+
+		ret = std::make_shared<OpenGLMaterialSource>(*this, name);
+
+		matSources.insert({ name, ret });
 
 		return ret;
-	}
+	});
 
-	ret = std::make_shared<OpenGLMaterialSource>(*this, name);
-
-	matSources.insert({name, ret});
-
-	return ret;
 }
 
 std::unique_ptr<TextureLibrary> OpenGLRenderer::newTextureLibrary()

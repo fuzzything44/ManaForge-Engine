@@ -132,7 +132,7 @@ private:
 	std::list<OpenGLTextBox*> textBoxes;
 	std::unordered_map<path_t, std::weak_ptr<OpenGLTexture>> textures;
 	std::unordered_map<path_t, std::shared_ptr<OpenGLFont>> fonts;
-	std::unordered_map<path_t, std::weak_ptr<OpenGLMaterialSource>> matSources;
+	std::unordered_map<path_t, std::shared_ptr<OpenGLMaterialSource>> matSources;
 	std::unordered_map<std::string, std::weak_ptr<OpenGLModelData>> modelDataCache;
 };
 

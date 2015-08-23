@@ -13,6 +13,7 @@ MFCLASS_SOURCE(Gate)
 
 bool Gate::isInitalized = false;
 
+
 Gate::Gate()
 	: Actor()
 {
