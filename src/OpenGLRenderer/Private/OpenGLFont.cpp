@@ -87,34 +87,39 @@ void OpenGLFont::render(OpenGLTextBox& box)
 {
 	auto matID = **matSource;
 
-	glUseProgram(matID);
+	renderer.runOnRenderThreadAsync([this, matID, &box]
+	{
 
-	assert(cutoffUniLoc != -1);
-	glUniform1f(cutoffUniLoc, box.thickness);
+		glUseProgram(matID);
 
-	assert(viewMatUniLoc != -1);
-	glUniformMatrix3fv(viewMatUniLoc, 1, GL_FALSE, &box.getMatrix()[0][0]);
+		assert(cutoffUniLoc != -1);
+		glUniform1f(cutoffUniLoc, box.thickness);
 
-	assert(colorUniLoc != -1);
-	glUniform4f(colorUniLoc, box.color.r, box.color.g, box.color.b, box.color.a);
+		assert(viewMatUniLoc != -1);
+		glUniformMatrix3fv(viewMatUniLoc, 1, GL_FALSE, &box.getMatrix()[0][0]);
 
-	glUniform1i(glGetUniformLocation(matID, "tex"), 0);
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, tex);
+		assert(colorUniLoc != -1);
+		glUniform4f(colorUniLoc, box.color.r, box.color.g, box.color.b, box.color.a);
 
-	glBindVertexArray(box.vertexArray);
+		glUniform1i(glGetUniformLocation(matID, "tex"), 0);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, tex);
 
-	glEnableVertexAttribArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, box.vertLocBuffer);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
+		glBindVertexArray(box.vertexArray);
 
-	glEnableVertexAttribArray(1);
-	glBindBuffer(GL_ARRAY_BUFFER, box.texCoordBuffer);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0);
+		glEnableVertexAttribArray(0);
+		glBindBuffer(GL_ARRAY_BUFFER, box.vertLocBuffer);
+		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, box.elemBuffer);
-	glDrawElements(GL_TRIANGLES, (GLsizei)box.text.size() * 2 * 3, GL_UNSIGNED_INT, 0);
+		glEnableVertexAttribArray(1);
+		glBindBuffer(GL_ARRAY_BUFFER, box.texCoordBuffer);
+		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0);
 
-	glDisableVertexAttribArray(0);
-	glDisableVertexAttribArray(1);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, box.elemBuffer);
+		glDrawElements(GL_TRIANGLES, (GLsizei)box.text.size() * 2 * 3, GL_UNSIGNED_INT, 0);
+
+		glDisableVertexAttribArray(0);
+		glDisableVertexAttribArray(1);
+	});
+
 }

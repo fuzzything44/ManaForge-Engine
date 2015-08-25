@@ -64,7 +64,6 @@ private:
 
 #include "World.h"
 
-// collapeed for quicker debugging -- not very important
 inline Runtime& Runtime::get()
 {
 	assert(currentRuntime);

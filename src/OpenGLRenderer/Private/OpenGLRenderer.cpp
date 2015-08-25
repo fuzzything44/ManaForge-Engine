@@ -154,24 +154,20 @@ std::shared_ptr<Texture> OpenGLRenderer::getTexture(const path_t& name)
 
 std::shared_ptr<MaterialSource> OpenGLRenderer::getMaterialSource(const path_t& name)
 {
-	return runOnRenderThreadSync([this, &name]
-	{
-		auto iter = matSources.find(name);
+	
+	auto iter = matSources.find(name);
 
-		std::shared_ptr<OpenGLMaterialSource> ret;
+	if (iter != matSources.end()) {
 
-		if (iter != matSources.end()) {
+		return iter->second;
+	}
 
-			return iter->second;
-		}
+	auto ret = std::make_shared<OpenGLMaterialSource>(*this, name);
 
-		ret = std::make_shared<OpenGLMaterialSource>(*this, name);
+	matSources.insert({ name, ret });
 
-		matSources.insert({ name, ret });
-
-		return ret;
-	});
-
+	return ret;
+	
 }
 
 std::unique_ptr<TextureLibrary> OpenGLRenderer::newTextureLibrary()
@@ -179,7 +175,7 @@ std::unique_ptr<TextureLibrary> OpenGLRenderer::newTextureLibrary()
 	return std::make_unique<OpenGLTextureLibrary>(*this);
 }
 
-std::unique_ptr<MaterialInstance> OpenGLRenderer::newMaterial(std::shared_ptr<MaterialSource> source)
+std::unique_ptr<MaterialInstance> OpenGLRenderer::newMaterialInstance(std::shared_ptr<MaterialSource> source)
 {
 	return std::make_unique<OpenGLMaterialInstance>(*this, source);
 }
@@ -218,33 +214,39 @@ bool OpenGLRenderer::update(float /*deltaTime*/)
 	// wait for the last frame's rendering to finish
 	if (lastFrame.valid()) lastFrame.wait();
 
-	lastFrame = runOnRenderThreadAsync([this] // caputre the renderer
+	lastFrame = runOnRenderThreadAsync([] 
 		{
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-			// call the draw function for all of the models
-			for (auto&& model : models)
-			{
-				model->draw();
-			}
-
-			glDisable(GL_DEPTH_TEST);
-
-			Runtime::get().physSystem->drawDebugPoints();
-
-			for (auto&& textBox : textBoxes)
-			{
-				textBox->render();
-			}
-
-			glEnable(GL_DEPTH_TEST);
-
-			window->swapBuffers();
-			window->pollEvents();
-
-			shouldExit = window->shouldClose();
-
 		});
+
+	// call the draw function for all of the models
+	for (auto&& model : models)
+	{
+		model->draw();
+	}
+
+	runOnRenderThreadAsync([]
+		{
+			glDisable(GL_DEPTH_TEST);
+		});
+
+	Runtime::get().physSystem->drawDebugPoints();
+
+	for (auto&& textBox : textBoxes)
+	{
+		textBox->render();
+	}
+
+	runOnRenderThreadAsync([]
+		{
+			glEnable(GL_DEPTH_TEST);
+		});
+
+	window->swapBuffers();
+	window->pollEvents();
+
+	shouldExit = window->shouldClose();
+
 
 	return !shouldExit;
 }
@@ -338,10 +340,11 @@ void OpenGLRenderer::showLoadingImage()
 			glDeleteVertexArrays(1, &vao);
 			glDeleteProgram(**program);
 
-			// display it
-			window->swapBuffers();
-			window->pollEvents();
 		});
+
+	// display it
+	window->swapBuffers();
+	window->pollEvents();
 }
 
 void OpenGLRenderer::setCurrentCamera(CameraComponent& newCamera) { currentCamera.store(&newCamera); }

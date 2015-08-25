@@ -82,7 +82,7 @@ public:
 	virtual std::shared_ptr<Texture> getTexture(const path_t& name) override;
 	virtual std::shared_ptr<MaterialSource> getMaterialSource(const path_t& name) override;
 	virtual std::unique_ptr<TextureLibrary> newTextureLibrary() override;
-	virtual std::unique_ptr<MaterialInstance> newMaterial(std::shared_ptr<MaterialSource> source) override;
+	virtual std::unique_ptr<MaterialInstance> newMaterialInstance(std::shared_ptr<MaterialSource> source) override;
 	virtual std::shared_ptr<ModelData> newModelData(const std::string& name) override;
 	virtual std::unique_ptr<ModelData> newModelData() override;
 
@@ -158,6 +158,7 @@ inline auto OpenGLRenderer::runOnRenderThreadSync(Function&& func, Args&&... arg
 template <typename Function, typename... Args>
 inline auto OpenGLRenderer::runOnRenderThreadAsync(Function&& func, Args&&... args)
 {
+	assert(!isOnRenderThread());
 
 	using retType = decltype(func(std::forward<Args>(args)...));
 

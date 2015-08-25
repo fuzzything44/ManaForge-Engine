@@ -69,7 +69,7 @@ void DefaultWorld::init(const std::string& name)
 	propManager.init(folderLocation + "world.json");
 
 	auto drawMaterial = std::shared_ptr<MaterialInstance>{
-		Runtime::get().renderer->newMaterial(Runtime::get().renderer->getMaterialSource("boilerplate"))};
+		Runtime::get().renderer->newMaterialInstance(Runtime::get().renderer->getMaterialSource("boilerplate"))};
 
 	auto backgroundImages = std::shared_ptr<TextureLibrary>{
 		Runtime::get().renderer->newTextureLibrary()}; // TODO: less hardcoded values
