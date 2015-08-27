@@ -130,7 +130,7 @@ Texture::FilterMode OpenGLTextureLibrary::getFilterMode() const
 
 void OpenGLTextureLibrary::setWrapMode(WrapMode newMode)
 {
-	renderer.runOnRenderThreadSync([this, newMode]
+	renderer.runOnRenderThreadAsync([this, newMode]
 		{
 			glBindTexture(GL_TEXTURE_2D, texHandle);
 			switch (newMode)

@@ -82,7 +82,8 @@ public:
 	virtual std::shared_ptr<Texture> getTexture(const path_t& name) override;
 	virtual std::shared_ptr<MaterialSource> getMaterialSource(const path_t& name) override;
 	virtual std::unique_ptr<TextureLibrary> newTextureLibrary() override;
-	virtual std::unique_ptr<MaterialInstance> newMaterialInstance(std::shared_ptr<MaterialSource> source) override;
+	virtual std::unique_ptr<MaterialInstance> newMaterialInstance(
+		std::shared_ptr<MaterialSource> source) override;
 	virtual std::shared_ptr<ModelData> newModelData(const std::string& name) override;
 	virtual std::unique_ptr<ModelData> newModelData() override;
 

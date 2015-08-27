@@ -67,16 +67,17 @@ void OpenGLModel::draw()
 		assert(material);
 		material->use();
 
-		renderer.runOnRenderThreadAsync([this
-			, matSource = std::static_pointer_cast<OpenGLMaterialSource>(material->getSource())
-			, MVPmat]
-		{
-			glUniformMatrix3fv(matSource->MVPUniformLocation, 1, GL_FALSE, &MVPmat[0][0]);
+		renderer.runOnRenderThreadAsync([
+			this,
+			matSource = std::static_pointer_cast<OpenGLMaterialSource>(material->getSource()),
+			MVPmat
+		]
+			{
+				glUniformMatrix3fv(matSource->MVPUniformLocation, 1, GL_FALSE, &MVPmat[0][0]);
 
-			glUniform1f(glGetUniformLocation(**matSource, "renderOrder"), 1.f);
+				glUniform1f(glGetUniformLocation(**matSource, "renderOrder"), 1.f);
 
-		});
-
+			});
 
 		modelData->draw();
 	}

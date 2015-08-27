@@ -279,23 +279,21 @@ void OpenGLMaterialInstance::use()
 	if (updateCallback) updateCallback(*this);
 
 	renderer.runOnRenderThreadAsync([this]
-	{
-		glUseProgram(**program);
-		for (auto&& elem : properties)
 		{
-			elem.second();
-		}
+			glUseProgram(**program);
+			for (auto&& elem : properties)
+			{
+				elem.second();
+			}
 
-		for (uint32 i = 0; i < maxTextures && textures[i]; i++)
-		{
-			assert(*textures[i]);
+			for (uint32 i = 0; i < maxTextures && textures[i]; i++)
+			{
+				assert(*textures[i]);
 
-			glUniform1i(program->startTexUniform + i, i);
+				glUniform1i(program->startTexUniform + i, i);
 
-			glActiveTexture(GL_TEXTURE0 + i);
-			glBindTexture(GL_TEXTURE_2D, (*textures[i])->getID());
-		}
-	});
-
-	
+				glActiveTexture(GL_TEXTURE0 + i);
+				glBindTexture(GL_TEXTURE_2D, (*textures[i])->getID());
+			}
+		});
 }

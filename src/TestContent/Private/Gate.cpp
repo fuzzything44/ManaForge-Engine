@@ -13,7 +13,6 @@ MFCLASS_SOURCE(Gate)
 
 bool Gate::isInitalized = false;
 
-
 Gate::Gate()
 	: Actor()
 {
@@ -21,7 +20,8 @@ Gate::Gate()
 
 	tex->setFilterMode(Texture::FilterMode::MIPMAP_LINEAR);
 
-	mat = Runtime::get().renderer->newMaterialInstance(Runtime::get().renderer->getMaterialSource("animation"));
+	mat =
+		Runtime::get().renderer->newMaterialInstance(Runtime::get().renderer->getMaterialSource("animation"));
 	mat->setProperty("tiles", 2);
 	mat->setUpdateCallback([time = 0.f](MaterialInstance & inst) mutable
 		{

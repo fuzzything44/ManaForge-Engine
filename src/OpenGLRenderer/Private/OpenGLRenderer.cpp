@@ -154,7 +154,7 @@ std::shared_ptr<Texture> OpenGLRenderer::getTexture(const path_t& name)
 
 std::shared_ptr<MaterialSource> OpenGLRenderer::getMaterialSource(const path_t& name)
 {
-	
+
 	auto iter = matSources.find(name);
 
 	if (iter != matSources.end()) {
@@ -164,10 +164,9 @@ std::shared_ptr<MaterialSource> OpenGLRenderer::getMaterialSource(const path_t& 
 
 	auto ret = std::make_shared<OpenGLMaterialSource>(*this, name);
 
-	matSources.insert({ name, ret });
+	matSources.insert({name, ret});
 
 	return ret;
-	
 }
 
 std::unique_ptr<TextureLibrary> OpenGLRenderer::newTextureLibrary()
@@ -214,7 +213,7 @@ bool OpenGLRenderer::update(float /*deltaTime*/)
 	// wait for the last frame's rendering to finish
 	if (lastFrame.valid()) lastFrame.wait();
 
-	lastFrame = runOnRenderThreadAsync([] 
+	lastFrame = runOnRenderThreadAsync([]
 		{
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		});
@@ -246,7 +245,6 @@ bool OpenGLRenderer::update(float /*deltaTime*/)
 	window->pollEvents();
 
 	shouldExit = window->shouldClose();
-
 
 	return !shouldExit;
 }

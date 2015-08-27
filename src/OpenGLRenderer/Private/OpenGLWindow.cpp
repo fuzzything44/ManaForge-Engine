@@ -142,20 +142,20 @@ vec2 OpenGLWindow::getCursorLocPixels()
 	return static_cast<vec2>(locationdouble);
 }
 
-void OpenGLWindow::swapBuffers() 
+void OpenGLWindow::swapBuffers()
 {
 	renderer.runOnRenderThreadAsync([window = window]
-	{
-		glfwSwapBuffers(window);
-	});
+		{
+			glfwSwapBuffers(window);
+		});
 }
 
-void OpenGLWindow::pollEvents() 
+void OpenGLWindow::pollEvents()
 {
 	renderer.runOnRenderThreadAsync([]
-	{
-		glfwPollEvents();
-	});
+		{
+			glfwPollEvents();
+		});
 }
 
 bool OpenGLWindow::shouldClose()

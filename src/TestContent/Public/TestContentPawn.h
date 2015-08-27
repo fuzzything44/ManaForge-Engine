@@ -45,8 +45,8 @@ public:
 		camera = std::make_unique<CameraComponent>(*this, Transform{}, aspectRatio, .1f);
 		Runtime::get().renderer->setCurrentCamera(*camera);
 
-		auto mat =
-			Runtime::get().renderer->newMaterialInstance(Runtime::get().renderer->getMaterialSource("boilerplate"));
+		auto mat = Runtime::get().renderer->newMaterialInstance(
+			Runtime::get().renderer->getMaterialSource("boilerplate"));
 
 		auto tex = Runtime::get().renderer->getTexture("4");
 
