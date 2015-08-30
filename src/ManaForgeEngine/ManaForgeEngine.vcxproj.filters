@@ -226,5 +226,8 @@
     <ClInclude Include="Public\call_from_tuple.h">
       <Filter>Public</Filter>
     </ClInclude>
+    <ClInclude Include="Public\Cacher.h">
+      <Filter>Public</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

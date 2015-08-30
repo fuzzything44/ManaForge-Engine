@@ -27,5 +27,5 @@ public:
 private:
 	std::list<OpenALSoundSource*> sources;
 
-	std::unordered_map<path_t, std::shared_ptr<OpenALSoundCue>> cues;
+	std::unordered_map<path_t, std::weak_ptr<OpenALSoundCue>> cues;
 };

@@ -12,7 +12,7 @@ std::map<GLFWwindow*, OpenGLWindow*> OpenGLWindow::windows = std::map<GLFWwindow
 OpenGLWindow::OpenGLWindow(OpenGLRenderer& renderer)
 	: renderer(renderer)
 {
-	PropertyManager& propManager = Runtime::get().propManager;
+	PropertyManager& propManager = Runtime::get().getPropertyManager();
 
 	LOAD_PROPERTY_WITH_WARNING(propManager, "window.size.x", props.size.x, 800);
 	LOAD_PROPERTY_WITH_WARNING(propManager, "window.size.y", props.size.y, 600);
@@ -124,12 +124,14 @@ void OpenGLWindow::setWindowProps(const WindowProps& props)
 
 void OpenGLWindow::saveWindowProps()
 {
-	Runtime::get().propManager.saveValue("window.size.x", props.size.x);
-	Runtime::get().propManager.saveValue("window.size.y", props.size.y);
+	auto&& propManager = Runtime::get().getPropertyManager();
 
-	Runtime::get().propManager.saveValue("window.renderMode", static_cast<uint8>(props.renderMode));
-	Runtime::get().propManager.saveValue("window.windowMode", static_cast<uint8>(props.windowMode));
-	Runtime::get().propManager.saveValue("window.title", props.title);
+	propManager.saveValue("window.size.x", props.size.x);
+	propManager.saveValue("window.size.y", props.size.y);
+
+	propManager.saveValue("window.renderMode", static_cast<uint8>(props.renderMode));
+	propManager.saveValue("window.windowMode", static_cast<uint8>(props.windowMode));
+	propManager.saveValue("window.title", props.title);
 }
 
 int OpenGLWindow::getIsKeyPressed(Keyboard key) { return glfwGetKey(window, static_cast<int>(key)); }

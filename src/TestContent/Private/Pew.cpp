@@ -5,6 +5,8 @@
 #include <locale>
 #include <string>
 
+#include <TimerManager.h>
+
 #include <boost/convert.hpp>
 #include <boost/convert/lexical_cast.hpp>
 
@@ -13,7 +15,7 @@ MFCLASS_SOURCE(Pew)
 Pew::Pew()
 	: timeToSpawn(0.f)
 {
-	auto shape = Runtime::get().physSystem->newPhysicsShape();
+	auto shape = Runtime::get().getPhysicsSystem().newPhysicsShape();
 	shape->asRectangle(2.f, 2.f);
 
 	phys = std::make_unique<PhysicsComponent>(*this, *shape);
@@ -22,13 +24,13 @@ Pew::Pew()
 			startContact(other);
 		});
 
-	textBox = Runtime::get().renderer->newTextBox();
-	textBox->setFont(Runtime::get().renderer->getFont("Arial"));
+	textBox = Runtime::get().getRenderer().newTextBox();
+	textBox->setFont(Runtime::get().getRenderer().getFont("Arial"));
 	textBox->setText(u"Contacts: 0");
 	textBox->setLocation({.5f, .4f});
 	textBox->setColor({.3f, 0.f, 1.f, 1.f});
 
-	Runtime::get().timerManager.addTimer(TimerManager::Double_duration_t(1.f),
+	Runtime::get().getTimerManager().addTimer(TimerManager::Double_duration_t(1.f),
 		[]
 		{
 			auto g = new Gate();

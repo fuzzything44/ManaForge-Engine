@@ -47,7 +47,7 @@ class OpenGLRenderer : public Renderer
 			thread = std::move(rightThread);
 			return *this;
 		};
-
+		
 		operator std::thread&() { return thread; }
 
 		std::thread& getThread() { return thread; }
@@ -69,7 +69,7 @@ public:
 
 	virtual ~OpenGLRenderer() override;
 
-	virtual void init() override;
+	void init();
 
 	void showLoadingImage();
 
@@ -88,7 +88,7 @@ public:
 	virtual std::unique_ptr<ModelData> newModelData() override;
 
 	/// <summary> Renders the next frame. </summary>
-	virtual bool update(float deltaTime) override;
+	bool update(float deltaTime);
 
 	/// <summary> Sets camera to render at. </summary>
 	///

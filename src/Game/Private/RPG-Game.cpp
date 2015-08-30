@@ -5,10 +5,10 @@ int32 main(int argc, char** argv)
 	try
 	{
 
-		auto runtime = std::make_unique<Runtime>("default");
+		Runtime runtime("default");
 
 		// run the runtime. consumes the thread until it returns
-		runtime->run();
+		runtime.run();
 	}
 	catch (const ENGException& /*e*/)
 	{

@@ -22,12 +22,12 @@ extern "C" OpenGLRenderer_API void registerModule(ModuleManager& mm)
 	mm.registerClass<OpenGLRenderer>(MODULE_NAME);
 	mm.addUpdateCallback([](float deltaTime)
 		{
-			return Runtime::get().renderer->update(deltaTime);
+			return static_cast<OpenGLRenderer&>(Runtime::get().getRenderer()).update(deltaTime);
 		});
 
 	mm.addInitCallback([]()
 		{
-			return Runtime::get().renderer->init();
+			return static_cast<OpenGLRenderer&>(Runtime::get().getRenderer()).init();
 		});
 }
 

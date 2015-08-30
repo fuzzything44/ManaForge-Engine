@@ -15,6 +15,7 @@
 #include <Pawn.h>
 #include <PlayerController.h>
 #include <ModelData.h>
+#include <ModuleManager.h>
 
 #include <lodepng.h>
 
@@ -68,11 +69,11 @@ void DefaultWorld::init(const std::string& name)
 	folderLocation = std::string("Worlds\\") + name + '\\';
 	propManager.init(folderLocation + "world.json");
 
-	auto drawMaterial = std::shared_ptr<MaterialInstance>{Runtime::get().renderer->newMaterialInstance(
-		Runtime::get().renderer->getMaterialSource("boilerplate"))};
+	auto drawMaterial = std::shared_ptr<MaterialInstance>{Runtime::get().getRenderer().newMaterialInstance(
+		Runtime::get().getRenderer().getMaterialSource("boilerplate"))};
 
 	auto backgroundImages = std::shared_ptr<TextureLibrary>{
-		Runtime::get().renderer->newTextureLibrary()}; // TODO: less hardcoded values
+		Runtime::get().getRenderer().newTextureLibrary()}; // TODO: less hardcoded values
 	backgroundImages->init(4, 256);
 
 	// Make sure a world folder was supplied.
@@ -302,7 +303,7 @@ void DefaultWorld::init(const std::string& name)
 					}
 				}
 
-				auto modelData = Runtime::get().renderer->newModelData();
+				auto modelData = Runtime::get().getRenderer().newModelData();
 				modelData->init(&locations[0],
 					&UVs[0],
 					backgroundChunkSize * backgroundChunkSize * 4,
@@ -379,14 +380,14 @@ void DefaultWorld::saveWorld()
 
 std::unique_ptr<PlayerController> DefaultWorld::makePlayerController()
 {
-	return std::unique_ptr<PlayerController>{Runtime::get().moduleManager.spawnClass<PlayerController>(
+	return std::unique_ptr<PlayerController>{Runtime::get().getModuleManager().spawnClass<PlayerController>(
 		playerControllerModuleName, playerControllerClassName)};
 }
 
 std::unique_ptr<Pawn> DefaultWorld::makePawn()
 {
 	return std::unique_ptr<Pawn>{
-		Runtime::get().moduleManager.spawnClass<Pawn>(pawnModuleName, pawnClassName)};
+		Runtime::get().getModuleManager().spawnClass<Pawn>(pawnModuleName, pawnClassName)};
 }
 
 boost::signals2::connection DefaultWorld::registerTickingActor(const std::function<void(float)>& tickFun)

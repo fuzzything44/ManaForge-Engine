@@ -256,6 +256,7 @@
     <ClInclude Include="Public\ActorTransformController.h" />
     <ClInclude Include="Public\AudioComponent.h" />
     <ClInclude Include="Public\AudioSystem.h" />
+    <ClInclude Include="Public\Cacher.h" />
     <ClInclude Include="Public\call_from_tuple.h" />
     <ClInclude Include="Public\CameraComponent.h" />
     <ClInclude Include="Public\ChangeDirectory.h" />

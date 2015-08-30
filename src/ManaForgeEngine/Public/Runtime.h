@@ -1,20 +1,21 @@
 #pragma once
 #include "Engine.h"
 
-#include "SaveData.h"
-#include "PropertyManager.h"
-#include "ModuleManager.h"
-#include "WindowProps.h"
-#include "InputManager.h"
-#include "TimerManager.h"
-
 #include <boost/core/noncopyable.hpp>
 
 #include <chrono>
 
 class PlayerController;
+class World;
 class Pawn;
 class Window;
+class Renderer;
+class PhysicsSystem;
+class AudioSystem;
+class ModuleManager;
+class PropertyManager;
+class InputManager;
+class TimerManager;
 
 class Runtime : boost::noncopyable
 {
@@ -32,14 +33,14 @@ public:
 
 	inline float getDeltaTime();
 
-	ModuleManager moduleManager;
-	PropertyManager propManager;
-	InputManager inputManager;
-	TimerManager timerManager;
+	inline ModuleManager& getModuleManager();
+	inline PropertyManager& getPropertyManager();
+	inline InputManager& getInputManager();
+	inline TimerManager& getTimerManager();
 
-	std::unique_ptr<Renderer> renderer;
-	std::unique_ptr<PhysicsSystem> physSystem;
-	std::unique_ptr<AudioSystem> audioSystem;
+	inline Renderer& getRenderer();
+	inline PhysicsSystem& getPhysicsSystem();
+	inline AudioSystem& getAudioSystem();
 
 	using clock = std::chrono::high_resolution_clock;
 
@@ -49,6 +50,15 @@ public:
 	std::unique_ptr<Pawn> pawn;
 
 private:
+	std::unique_ptr<ModuleManager> moduleManager;
+	std::unique_ptr<PropertyManager> propManager;
+	std::unique_ptr<InputManager> inputManager;
+	std::unique_ptr<TimerManager> timerManager;
+
+	std::unique_ptr<Renderer> renderer;
+	std::unique_ptr<PhysicsSystem> physSystem;
+	std::unique_ptr<AudioSystem> audioSystem;
+
 	std::string rendererModuleName;
 	std::string physicsSystemModuleName;
 	std::string audioSystemModuleName;
@@ -78,3 +88,17 @@ inline World* Runtime::setWorld(World* newWorld)
 }
 
 inline float Runtime::getDeltaTime() { return deltaTime; }
+
+inline ModuleManager& Runtime::getModuleManager() { return *moduleManager; }
+
+inline PropertyManager& Runtime::getPropertyManager() { return *propManager; }
+
+inline InputManager& Runtime::getInputManager() { return *inputManager; }
+
+inline TimerManager& Runtime::getTimerManager() { return *timerManager; }
+
+inline Renderer& Runtime::getRenderer() { return *renderer; }
+
+inline PhysicsSystem& Runtime::getPhysicsSystem() { return *physSystem; }
+
+inline AudioSystem& Runtime::getAudioSystem() { return *audioSystem; }

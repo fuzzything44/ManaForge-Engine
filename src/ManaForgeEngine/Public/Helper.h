@@ -155,12 +155,13 @@ inline std::ostream& operator<<(std::ostream& os, const mat4& mat)
 					   << " doesn't exist. Using default value of: " << defaultValue;                       \
 	}
 
-#define LOAD_PROPERTY_WITH_ERROR(propertyManager, key, value)                                               \
-	if (::boost::optional<decltype(value)> tempOptional = propertyManager.queryValue<decltype(value)>(key)) \
-	{                                                                                                       \
-		value = *tempOptional;                                                                              \
-	}                                                                                                       \
-	else                                                                                                    \
-	{                                                                                                       \
-		MFLOG(Fatal) << "Value from key " << key << " doesn't exist.";                                      \
+#define LOAD_PROPERTY_WITH_ERROR(propertyManager, key, value)            \
+	if (::boost::optional<decltype(value)> tempOptional =                \
+			(propertyManager).queryValue<decltype(value)>(key))          \
+	{                                                                    \
+		(value) = *tempOptional;                                         \
+	}                                                                    \
+	else                                                                 \
+	{                                                                    \
+		MFLOG(Fatal) << "Value from key " << (key) << " doesn't exist."; \
 	}

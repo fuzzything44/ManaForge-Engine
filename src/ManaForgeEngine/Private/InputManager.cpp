@@ -121,7 +121,7 @@ void InputManager::ActionMapping::operator()()
 	{
 		// if there is one that is pressed, the entire binding is pressed,
 		// so break
-		if (Runtime::get().inputManager.window->getIsKeyPressed(elem)) {
+		if (Runtime::get().getInputManager().window->getIsKeyPressed(elem)) {
 			isPressedNew = true;
 			break;
 		}
@@ -156,7 +156,7 @@ void InputManager::AxisMapping::operator()()
 	for (auto& elem : values)
 	{
 		// compute the amount to add -- without branches
-		totalValue += Runtime::get().inputManager.window->getIsKeyPressed(elem.first) * elem.second;
+		totalValue += Runtime::get().getInputManager().window->getIsKeyPressed(elem.first) * elem.second;
 	}
 
 	if (callback) callback(totalValue);

@@ -6,33 +6,25 @@
 #include <boost/filesystem.hpp>
 
 #if defined _WIN32 || defined WIN32
+#include <Windows.h>
 
 void changeDir()
 {
 	// changes the path so everything we open will be in Resoruce/
 	char ownPth[MAX_PATH];
 
-	// Will contain exe path
-	HMODULE hModule = GetModuleHandle(nullptr);
-	if (hModule == nullptr) {
-		MFLOG(Fatal) << "getModuleHandle failed";
-	}
-	// When passing NULL to GetModuleHandle, it returns handle of exe itself
-	GetModuleFileName(hModule, ownPth, (sizeof(ownPth)));
+	GetCurrentDirectory(MAX_PATH, ownPth);
 
-	std::string path = ownPth;
-	// path = path.substr(0, path.size() - 14);
+	path_t path = ownPth;
 
 	// remove the exe and the directory
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < 2; i++)
 	{
-
-		do
-		{
-			path = path.substr(0, path.size() - 1);
-		} while (path[path.size() - 1] != '\\');
+		assert(boost::filesystem::exists(path));
+		path = path.parent_path();
 	}
-	path += "Resource\\";
+	path += "\\Resource\\";
+	assert(boost::filesystem::exists(path));
 
 	boost::filesystem::current_path(path.c_str());
 }

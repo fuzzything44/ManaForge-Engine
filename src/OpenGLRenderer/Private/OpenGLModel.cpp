@@ -27,9 +27,9 @@ OpenGLModel::~OpenGLModel()
 {
 	isValid = false;
 
-	renderer.runOnRenderThreadSync([location = location]
+	renderer.runOnRenderThreadSync([this]
 		{
-			static_cast<OpenGLRenderer*>(Runtime::get().renderer.get())->models.erase(location);
+			renderer.models.erase(location);
 		});
 }
 

@@ -3,7 +3,6 @@
 #include "Runtime.h"
 
 #include "Window.h"
-#include "ModuleManager.h"
 #include "ChangeDirectory.h"
 #include "MeshComponent.h"
 #include "PhysicsComponent.h"
@@ -15,6 +14,11 @@
 #include "CameraComponent.h"
 #include "MaterialInstance.h"
 #include "ModelData.h"
+
+#include "ModuleManager.h"
+#include "PropertyManager.h"
+#include "InputManager.h"
+#include "TimerManager.h"
 
 #include <functional>
 #include <list>
@@ -32,15 +36,20 @@
 Runtime* Runtime::currentRuntime = nullptr;
 
 Runtime::Runtime(const path_t& worldPath)
-	: propManager((changeDir(), logdetail::log_base::init(), "props.json"))
-	, moduleManager()
 {
+	changeDir();
+	logdetail::log_base::init();
+
+	moduleManager = std::make_unique<ModuleManager>();
+	propManager = std::make_unique<PropertyManager>("props.json");
+	inputManager = std::make_unique<InputManager>();
+	timerManager = std::make_unique<TimerManager>();
 
 	// update current runtime to be the most recently created one
 	currentRuntime = this;
 
 	std::string modulesStr;
-	LOAD_PROPERTY_WITH_ERROR(propManager, "modules", modulesStr)
+	LOAD_PROPERTY_WITH_ERROR(getPropertyManager(), "modules", modulesStr);
 
 	// split into the individual modules
 	std::vector<std::string> modules;
@@ -49,16 +58,16 @@ Runtime::Runtime(const path_t& worldPath)
 	// load modules from the property sheet
 	for (auto& elem : modules)
 	{
-		if (elem != "" && elem != "\t" && elem != "\n") moduleManager.loadModule(elem);
+		if (elem != "" && elem != "\t" && elem != "\n") moduleManager->loadModule(elem);
 	}
 
-	LOAD_PROPERTY_WITH_ERROR(propManager, "Renderer.Module", rendererModuleName);
-	LOAD_PROPERTY_WITH_ERROR(propManager, "AudioSystem.Module", audioSystemModuleName);
-	LOAD_PROPERTY_WITH_ERROR(propManager, "PhysicsSystem.Module", physicsSystemModuleName);
+	LOAD_PROPERTY_WITH_ERROR(getPropertyManager(), "Renderer.Module", rendererModuleName);
+	LOAD_PROPERTY_WITH_ERROR(getPropertyManager(), "AudioSystem.Module", audioSystemModuleName);
+	LOAD_PROPERTY_WITH_ERROR(getPropertyManager(), "PhysicsSystem.Module", physicsSystemModuleName);
 
-	LOAD_PROPERTY_WITH_ERROR(propManager, "Renderer.Name", rendererName);
-	LOAD_PROPERTY_WITH_ERROR(propManager, "AudioSystem.Name", audioSystemName);
-	LOAD_PROPERTY_WITH_ERROR(propManager, "PhysicsSystem.Name", physicsSystemName);
+	LOAD_PROPERTY_WITH_ERROR(getPropertyManager(), "Renderer.Name", rendererName);
+	LOAD_PROPERTY_WITH_ERROR(getPropertyManager(), "AudioSystem.Name", audioSystemName);
+	LOAD_PROPERTY_WITH_ERROR(getPropertyManager(), "PhysicsSystem.Name", physicsSystemName);
 }
 
 Runtime::~Runtime() { logdetail::log_base::cleanup(); }
@@ -67,18 +76,18 @@ void Runtime::run()
 {
 	// create the systems.
 	renderer =
-		std::unique_ptr<Renderer>{moduleManager.spawnClass<Renderer>(rendererModuleName, rendererName)};
+		std::unique_ptr<Renderer>{getModuleManager().spawnClass<Renderer>(rendererModuleName, rendererName)};
 	physSystem = std::unique_ptr<PhysicsSystem>{
-		moduleManager.spawnClass<PhysicsSystem>(physicsSystemModuleName, physicsSystemName)};
+		getModuleManager().spawnClass<PhysicsSystem>(physicsSystemModuleName, physicsSystemName)};
 	audioSystem = std::unique_ptr<AudioSystem>{
-		moduleManager.spawnClass<AudioSystem>(audioSystemModuleName, audioSystemName)};
+		getModuleManager().spawnClass<AudioSystem>(audioSystemModuleName, audioSystemName)};
 	assert(renderer);
 	assert(physSystem);
 	assert(audioSystem);
 
 	{
 		// get the callbacks
-		auto initCallbacks = moduleManager.getInitCallbacks();
+		auto initCallbacks = getModuleManager().getInitCallbacks();
 
 		for (auto& callback : initCallbacks)
 		{
@@ -92,12 +101,12 @@ void Runtime::run()
 	}
 
 	// load the world
-	world = std::unique_ptr<World>{moduleManager.spawnClass<World>("DefaultWorld", "DefaultWorld")};
+	world = std::unique_ptr<World>{getModuleManager().spawnClass<World>("DefaultWorld", "DefaultWorld")};
 	world->init("default"); // load the test world
 
 	// let the input manager know of the window
-	Window& window = renderer->getWindow();
-	inputManager.setWindow(window);
+	Window& window = getRenderer().getWindow();
+	getInputManager().setWindow(window);
 
 	// spawn the new playercontrollers and pawns
 	controller = world->makePlayerController();
@@ -120,13 +129,13 @@ void Runtime::run()
 
 		lastTick = currentTick;
 
-		inputManager.update();
-		timerManager.update();
+		getInputManager().update();
+		getTimerManager().update();
 
-		Window& window = renderer->getWindow();
+		Window& window = getRenderer().getWindow();
 
 		// recieve the update callbacks
-		auto updateCallbacks = moduleManager.getUpdateCallbacks();
+		auto updateCallbacks = getModuleManager().getUpdateCallbacks();
 
 		shouldContinue = true;
 

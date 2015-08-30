@@ -6,6 +6,7 @@
 #include <Renderer.h>
 #include <MaterialInstance.h>
 #include <ModelData.h>
+#include <TimerManager.h>
 
 #include <cmath>
 
@@ -16,12 +17,12 @@ bool Gate::isInitalized = false;
 Gate::Gate()
 	: Actor()
 {
-	auto tex = Runtime::get().renderer->getTexture("water");
+	auto tex = Runtime::get().getRenderer().getTexture("water");
 
 	tex->setFilterMode(Texture::FilterMode::MIPMAP_LINEAR);
 
 	mat =
-		Runtime::get().renderer->newMaterialInstance(Runtime::get().renderer->getMaterialSource("animation"));
+		Runtime::get().getRenderer().newMaterialInstance(Runtime::get().getRenderer().getMaterialSource("animation"));
 	mat->setProperty("tiles", 2);
 	mat->setUpdateCallback([time = 0.f](MaterialInstance & inst) mutable
 		{
@@ -32,7 +33,7 @@ Gate::Gate()
 
 	mat->setTexture(0, tex);
 
-	auto modelData = Runtime::get().renderer->newModelData("GateMesh");
+	auto modelData = Runtime::get().getRenderer().newModelData("GateMesh");
 	if (!modelData->isInitialized()) {
 
 		vec2 vertLocs[] = {{-1.f, -1.f}, {+1.f, -1.f}, {-1.f, +1.f}, {+1.f, +1.f}};
@@ -45,7 +46,7 @@ Gate::Gate()
 	}
 	meshComp = std::make_unique<MeshComponent>(*this, Transform{}, std::move(mat), std::move(modelData));
 
-	auto shape = Runtime::get().physSystem->newPhysicsShape();
+	auto shape = Runtime::get().getPhysicsSystem().newPhysicsShape();
 
 	setPhysicsType(PhysicsType::DYNAMIC);
 
@@ -56,7 +57,7 @@ Gate::Gate()
 
 	using namespace std::chrono_literals;
 
-	Runtime::get().timerManager.addTimer(1s,
+	Runtime::get().getTimerManager().addTimer(1s,
 		[this]()
 		{
 			delete this;

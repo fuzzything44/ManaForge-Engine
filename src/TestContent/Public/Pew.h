@@ -2,6 +2,7 @@
 #include "TestContentConfig.h"
 #include <Actor.h>
 #include <PhysicsComponent.h>
+#include <TextBox.h>
 
 MFCLASS(Pew, Actor)
 class Pew : public Actor

@@ -9,7 +9,7 @@
 BOOST_CLASS_EXPORT_IMPLEMENT(Actor);
 
 Actor::Actor()
-	: transController(Runtime::get().physSystem->newActorTransformController(*this))
+	: transController(Runtime::get().getPhysicsSystem().newActorTransformController(*this))
 	, GUID(Runtime::get().world->addActor(*this))
 {
 }

@@ -28,11 +28,6 @@ public:
 	/// <summary> Destructor.</summary>
 	virtual ~Renderer() = default;
 
-	/// <summary> Renders the next frame. </summary>
-	virtual bool update(float deltaTime) = 0;
-
-	virtual void init() = 0;
-
 	/// <summary> Sets camera to render at. </summary>
 	///
 	/// <param name="newCamera"> The camera it should render at. </param>

@@ -13,7 +13,7 @@
 class Pew;
 
 MFCLASS(Gate, Actor)
-class Gate : public Actor, TickingActor<Gate>
+class Gate : public Actor
 {
 	MFCLASS_BODY(Gate, isOpen)
 
@@ -24,15 +24,9 @@ class Gate : public Actor, TickingActor<Gate>
 
 	static bool isInitalized;
 
-
 public:
 	explicit Gate();
 	virtual ~Gate() override;
-
-	void tick(float deltaTime)
-	{
-		MFLOGW(Trace) << L"EHELLO";
-	}
 
 	bool isOpen;
 };

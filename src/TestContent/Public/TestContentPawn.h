@@ -11,13 +11,14 @@
 #include <PhysicsComponent.h>
 #include <Window.h>
 #include <CameraComponent.h>
+#include <InputManager.h>
 
 class TestContentPawn : public Pawn
 {
 public:
 	TestContentPawn()
 	{
-		auto& inputManager = Runtime::get().inputManager;
+		auto&& inputManager = Runtime::get().getInputManager();
 
 		inputManager.bindAxisMapping("moveLeft",
 			[this](float amount)
@@ -38,21 +39,21 @@ public:
 				setAngularVelocity(0.f);
 			});
 
-		uvec2 windowSize = Runtime::get().renderer->getWindow().getWindowProps().size;
+		uvec2 windowSize = Runtime::get().getRenderer().getWindow().getWindowProps().size;
 
 		float aspectRatio = float(windowSize.y) / float(windowSize.x);
 
 		camera = std::make_unique<CameraComponent>(*this, Transform{}, aspectRatio, .1f);
-		Runtime::get().renderer->setCurrentCamera(*camera);
+		Runtime::get().getRenderer().setCurrentCamera(*camera);
 
-		auto mat = Runtime::get().renderer->newMaterialInstance(
-			Runtime::get().renderer->getMaterialSource("boilerplate"));
+		auto mat = Runtime::get().getRenderer().newMaterialInstance(
+			Runtime::get().getRenderer().getMaterialSource("boilerplate"));
 
-		auto tex = Runtime::get().renderer->getTexture("4");
+		auto tex = Runtime::get().getRenderer().getTexture("4");
 
 		mat->setTexture(0, tex);
 
-		auto meshData = Runtime::get().renderer->newModelData("PlayerModel");
+		auto meshData = Runtime::get().getRenderer().newModelData("PlayerModel");
 		if (!meshData->isInitialized()) {
 			std::array<vec2, 4> locations = {
 				vec2{-1.f, -1.f}, vec2{-1.f, +1.f}, vec2{+1.f, -1.f}, vec2{+1.f, +1.f}};
@@ -65,7 +66,7 @@ public:
 		}
 		mesh = std::make_unique<MeshComponent>(*this, Transform{}, std::move(mat), std::move(meshData));
 
-		auto shape = Runtime::get().physSystem->newPhysicsShape();
+		auto shape = Runtime::get().getPhysicsSystem().newPhysicsShape();
 		shape->asCircle(1.f);
 
 		phyMesh = std::make_unique<PhysicsComponent>(*this, *shape, Transform{});

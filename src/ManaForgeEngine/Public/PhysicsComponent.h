@@ -41,7 +41,7 @@ private:
 inline PhysicsComponent::PhysicsComponent(Actor& owner, PhysicsShape& shape, const Transform& trans)
 	: SceneComponent(owner, trans)
 {
-	body = Runtime::get().physSystem->newPhysicsBody(shape, *this);
+	body = Runtime::get().getPhysicsSystem().newPhysicsBody(shape, *this);
 }
 
 inline void PhysicsComponent::setRestitution(float newRestitution) { body->setRestitution(newRestitution); }

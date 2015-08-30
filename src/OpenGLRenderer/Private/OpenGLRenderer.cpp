@@ -229,7 +229,7 @@ bool OpenGLRenderer::update(float /*deltaTime*/)
 			glDisable(GL_DEPTH_TEST);
 		});
 
-	Runtime::get().physSystem->drawDebugPoints();
+	Runtime::get().getPhysicsSystem().drawDebugPoints();
 
 	for (auto&& textBox : textBoxes)
 	{
