@@ -118,12 +118,12 @@ std::shared_ptr<Font> OpenGLRenderer::getFont(const path_t& name)
 	return ret;
 }
 
-std::shared_ptr<Texture> OpenGLRenderer::getTexture(const path_t& name)
+Texture* OpenGLRenderer::getTexture(const path_t& name)
 {
 	if (auto&& ret = textures.get(name))
 		return ret;
 	else
-		return textures.set(name, std::make_shared<OpenGLTexture>(*this, name));
+		return textures.set(name, new OpenGLTexture(*this, name));
 }
 
 std::shared_ptr<MaterialSource> OpenGLRenderer::getMaterialSource(const path_t& name)

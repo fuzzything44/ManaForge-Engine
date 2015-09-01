@@ -20,7 +20,9 @@ public:
 	OpenGLMaterialInstance(OpenGLRenderer& renderer, std::shared_ptr<MaterialSource> source = nullptr);
 	virtual ~OpenGLMaterialInstance() override;
 
-	void virtual setTexture(uint32 ID, std::shared_ptr<Texture> texture) override;
+	virtual void setTexture(uint32 ID, Texture* texture) override; 
+	virtual void setTexture(uint32 ID, std::shared_ptr<Texture> texture) override;
+
 	virtual void init(std::shared_ptr<MaterialSource> source) override;
 
 	virtual std::shared_ptr<MaterialSource> getSource() override;
@@ -29,7 +31,7 @@ public:
 	virtual void setUpdateCallback(std::function<void(MaterialInstance&)>) override;
 
 	// property interface
-	virtual void setProperty(const std::string& propName, int i) override;
+	virtual void setProperty(const std::string& propName, int32 i) override;
 	virtual void setProperty(const std::string& propName, const ivec2& i) override;
 	virtual void setProperty(const std::string& propName, const ivec3& i) override;
 	virtual void setProperty(const std::string& propName, const ivec4& i) override;
@@ -64,5 +66,6 @@ private:
 	std::unordered_map<std::string, std::function<void()>> properties;
 
 	// vector of <texture ID>
-	std::array<boost::optional<std::shared_ptr<OpenGLTexture>>, maxTextures> textures;
+	std::array<OpenGLTexture*, maxTextures> textures;
+	std::array<std::shared_ptr<OpenGLTexture>, maxTextures> refCountedTextures; // TODO: think about this
 };

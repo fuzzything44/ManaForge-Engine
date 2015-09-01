@@ -20,10 +20,16 @@ OpenGLMaterialInstance::OpenGLMaterialInstance(
 
 OpenGLMaterialInstance::~OpenGLMaterialInstance() {}
 
+void OpenGLMaterialInstance::setTexture(uint32 ID, Texture* texture)
+{
+	assert(texture);
+	textures[ID] = static_cast<OpenGLTexture*>(texture);
+}
+
 void OpenGLMaterialInstance::setTexture(uint32 ID, std::shared_ptr<Texture> texture)
 {
 	assert(texture);
-	textures[ID] = std::static_pointer_cast<OpenGLTexture>(texture);
+	refCountedTextures[ID] = std::static_pointer_cast<OpenGLTexture>(texture);
 }
 
 void OpenGLMaterialInstance::init(std::shared_ptr<MaterialSource> source)
@@ -40,7 +46,7 @@ void OpenGLMaterialInstance::setUpdateCallback(std::function<void(MaterialInstan
 }
 
 // start property interface
-void OpenGLMaterialInstance::setProperty(const std::string& propName, int i)
+void OpenGLMaterialInstance::setProperty(const std::string& propName, int32 i)
 {
 
 	renderer.runOnRenderThreadAsync([this, propName, i]
@@ -288,12 +294,18 @@ void OpenGLMaterialInstance::use()
 
 			for (uint32 i = 0; i < maxTextures && textures[i]; i++)
 			{
-				assert(*textures[i]);
-
 				glUniform1i(program->startTexUniform + i, i);
 
 				glActiveTexture(GL_TEXTURE0 + i);
-				glBindTexture(GL_TEXTURE_2D, (*textures[i])->getID());
+				glBindTexture(GL_TEXTURE_2D, textures[i]->getID());
+			}
+
+			for (uint32 i = 0; i < maxTextures && refCountedTextures[i]; i++)
+			{
+				glUniform1i(program->startTexUniform + i, i);
+
+				glActiveTexture(GL_TEXTURE0 + i);
+				glBindTexture(GL_TEXTURE_2D, refCountedTextures[i]->getID());
 			}
 		});
 }

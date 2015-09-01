@@ -45,7 +45,7 @@ public:
 	virtual std::unique_ptr<Model> newModel() = 0;
 	virtual std::unique_ptr<TextBox> newTextBox() = 0;
 	virtual std::shared_ptr<Font> getFont(const path_t& name) = 0;
-	virtual std::shared_ptr<Texture> getTexture(const path_t& name) = 0;
+	virtual Texture* getTexture(const path_t& name) = 0;
 	virtual std::shared_ptr<MaterialSource> getMaterialSource(const path_t& name) = 0;
 	virtual std::unique_ptr<TextureLibrary> newTextureLibrary() = 0;
 	virtual std::unique_ptr<MaterialInstance> newMaterialInstance(std::shared_ptr<MaterialSource> source) = 0;

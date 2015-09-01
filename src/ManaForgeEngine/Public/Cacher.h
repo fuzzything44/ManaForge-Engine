@@ -5,9 +5,7 @@
 #include <utility>
 #include <type_traits>
 
-template <typename Key,
-	typename Val,
-	typename Container = std::unordered_map<Key, std::weak_ptr<Val>>>
+template <typename Key, typename Val, typename Container = std::unordered_map<Key, std::weak_ptr<Val>>>
 class WeakCacher
 {
 	static_assert(std::is_same<typename Container::mapped_type, std::weak_ptr<Val>>::value,
@@ -37,27 +35,56 @@ public:
 		return std::shared_ptr<Val>(nullptr);
 	}
 
-	template <typename InKey, typename InVal /*, typename =
-		  std::enable_if_t
-		  <
-			  std::is_same
-			  <
-				  std::decay_t<InKey>
-				  , Key
-			  >::value
-				  &&
-			  std::is_same
-			  <
-				  std::decay_t<InVal>
-				  , std::weak_ptr<Key>
-			  >::value
-		  >*/
-		>
+	template <typename InKey,
+		typename InVal,
+		typename = std::enable_if_t<std::is_same<std::decay_t<InKey>, Key>::value
+									&& std::is_convertible<std::decay_t<InVal>, std::weak_ptr<Val>>::value>>
 	std::shared_ptr<Val> set(InKey&& key, InVal&& val)
 	{
 		values[std::forward<InKey>(key)] = std::forward<InVal>(val);
 
 		return std::shared_ptr<Val>(val);
+	}
+
+private:
+	Container values;
+};
+
+template <typename Key, typename Val, typename Container = std::unordered_map<Key, Val*>> class StrongCacher
+{
+	static_assert(std::is_same<typename Container::mapped_type, Val*>::value,
+		"Wrong Container types. Value must be a Val*");
+
+public:
+	StrongCacher() = default;
+	StrongCacher(const StrongCacher& other) = delete;
+	StrongCacher(StrongCacher&& other) = default;
+
+	StrongCacher& operator=(const StrongCacher& other) = delete;
+	StrongCacher& operator=(StrongCacher&& other) = default;
+
+	template <typename In, typename = std::enable_if_t<std::is_same<std::decay_t<In>, Key>::value>>
+	Val* get(In&& key)
+	{
+		auto&& iter = values.find(std::forward<In>(key));
+
+		if (iter != values.end()) {
+			
+			return iter->second;
+		}
+
+		return nullptr;
+	}
+
+	template <typename InKey,
+		typename InVal,
+		typename = std::enable_if_t<std::is_same<std::decay_t<InKey>, Key>::value
+									&& std::is_convertible<std::decay_t<InVal>, Val*>::value>>
+	Val* set(InKey&& key, InVal&& val)
+	{
+		values[std::forward<InKey>(key)] = std::forward<InVal>(val);
+
+		return val;
 	}
 
 private:

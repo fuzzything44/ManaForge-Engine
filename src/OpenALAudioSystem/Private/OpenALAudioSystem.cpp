@@ -45,7 +45,6 @@ std::shared_ptr<SoundCue> OpenALAudioSystem::newSoundCue(const path_t& name)
 		return ret;
 	else
 		return cues.set(name, std::make_shared<OpenALSoundCue>(name));
-
 }
 
 std::unique_ptr<SoundSource> OpenALAudioSystem::newSoundSource(SoundCue& cue, AudioComponent& owner)

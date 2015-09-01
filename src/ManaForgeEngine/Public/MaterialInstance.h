@@ -14,6 +14,8 @@ public:
 	virtual ~MaterialInstance() = default;
 
 	virtual void init(std::shared_ptr<MaterialSource> source) = 0;
+
+	virtual void setTexture(uint32 ID, Texture* texture) = 0;
 	virtual void setTexture(uint32 ID, std::shared_ptr<Texture> texture) = 0;
 
 	virtual std::shared_ptr<MaterialSource> getSource() = 0;
@@ -21,7 +23,8 @@ public:
 
 	virtual void setUpdateCallback(std::function<void(MaterialInstance&)>) = 0;
 
-	virtual void setProperty(const std::string& propName, int i) = 0;
+
+	virtual void setProperty(const std::string& propName, int32 i) = 0;
 	virtual void setProperty(const std::string& propName, const ivec2& i) = 0;
 	virtual void setProperty(const std::string& propName, const ivec3& i) = 0;
 	virtual void setProperty(const std::string& propName, const ivec4& i) = 0;
