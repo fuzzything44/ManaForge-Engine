@@ -11,9 +11,10 @@ Box2DPhysicsSystem::Box2DPhysicsSystem()
 	world = std::make_unique<b2World>(gravity);
 
 	world->SetContactListener(&listener);
+	
 }
 
-Box2DPhysicsSystem::~Box2DPhysicsSystem() = default;
+Box2DPhysicsSystem::~Box2DPhysicsSystem() {};
 
 void Box2DPhysicsSystem::setGravity(vec2 newGravity)
 {

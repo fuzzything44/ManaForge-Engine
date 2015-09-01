@@ -70,7 +70,9 @@ Runtime::Runtime(const path_t& worldPath)
 	LOAD_PROPERTY_WITH_ERROR(getPropertyManager(), "PhysicsSystem.Name", physicsSystemName);
 }
 
-Runtime::~Runtime() { logdetail::log_base::cleanup(); }
+Runtime::~Runtime() { 
+	logdetail::log_base::cleanup(); 
+}
 
 void Runtime::run()
 {

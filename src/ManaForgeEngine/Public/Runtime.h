@@ -44,10 +44,6 @@ public:
 
 	using clock = std::chrono::high_resolution_clock;
 
-	std::unique_ptr<World> world;
-
-	std::unique_ptr<PlayerController> controller;
-	std::unique_ptr<Pawn> pawn;
 
 private:
 	std::unique_ptr<ModuleManager> moduleManager;
@@ -58,6 +54,14 @@ private:
 	std::unique_ptr<Renderer> renderer;
 	std::unique_ptr<PhysicsSystem> physSystem;
 	std::unique_ptr<AudioSystem> audioSystem;
+
+public:
+
+	std::unique_ptr<World> world;
+
+	std::unique_ptr<PlayerController> controller;
+	std::unique_ptr<Pawn> pawn;
+private:
 
 	std::string rendererModuleName;
 	std::string physicsSystemModuleName;
