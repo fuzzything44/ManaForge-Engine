@@ -78,7 +78,7 @@ float OpenALSoundSource::getReferenceDistance() const
 
 void OpenALSoundSource::update()
 {
-	auto&& loc		= ownerComponent.getWorldLocation();
+	auto&& loc = ownerComponent.getWorldLocation();
 	auto&& velocity = ownerComponent.getOwner().getVelocity();
 
 	// update runtime variables

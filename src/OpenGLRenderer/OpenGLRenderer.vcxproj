@@ -125,6 +125,8 @@
       <AdditionalOptions>-D_SCL_SECURE_NO_WARNINGS /Zm200 %(AdditionalOptions)</AdditionalOptions>
       <PrecompiledHeaderFile>OpenGLRendererPCH.h</PrecompiledHeaderFile>
       <CompileAs>Default</CompileAs>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <MinimalRebuild>false</MinimalRebuild>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

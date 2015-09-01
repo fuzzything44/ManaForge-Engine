@@ -23,7 +23,6 @@ OpenALAudioSystem::OpenALAudioSystem()
 					   << "\n If you recieve this error, you won't have sound.";
 	}
 
-
 	float orientation[] = {
 		0.f,
 		1.f,
@@ -42,21 +41,10 @@ void OpenALAudioSystem::addSource(OpenALSoundSource* source) { sources.push_back
 
 std::shared_ptr<SoundCue> OpenALAudioSystem::newSoundCue(const path_t& name)
 {
-	auto&& iter = cues.find(name);
-
-	if (iter != cues.end()) {
-		auto&& ptr = iter->second;
-		if (ptr.expired())
-		{
-			iter->second = std::make_shared<OpenALSoundCue>(name);
-		}
-		return std::shared_ptr<OpenALSoundCue>(iter->second);
-	}
-
-	auto&& ret = std::make_shared<OpenALSoundCue>(name);
-	cues.insert({ name, ret });
-
-	return ret;
+	if (auto&& ret = cues.get(name))
+		return ret;
+	else
+		return cues.set(name, std::make_shared<OpenALSoundCue>(name));
 
 }
 
@@ -68,7 +56,7 @@ std::unique_ptr<SoundSource> OpenALAudioSystem::newSoundSource(SoundCue& cue, Au
 bool OpenALAudioSystem::update()
 {
 	auto&& camera = Runtime::get().getRenderer().getCurrentCamera();
-	
+
 	// setup listener properities
 	auto&& cameraLoc = camera.getWorldLocation();
 	alListener3f(AL_POSITION, cameraLoc.x, cameraLoc.y, 0.f);

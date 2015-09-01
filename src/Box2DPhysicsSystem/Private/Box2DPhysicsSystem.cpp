@@ -13,7 +13,7 @@ Box2DPhysicsSystem::Box2DPhysicsSystem()
 	world->SetContactListener(&listener);
 }
 
-Box2DPhysicsSystem::~Box2DPhysicsSystem() {}
+Box2DPhysicsSystem::~Box2DPhysicsSystem() = default;
 
 void Box2DPhysicsSystem::setGravity(vec2 newGravity)
 {

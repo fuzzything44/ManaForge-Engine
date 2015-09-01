@@ -33,15 +33,7 @@ OpenGLRenderer::OpenGLRenderer()
 {
 }
 
-OpenGLRenderer::~OpenGLRenderer()
-{
-	assert(models.size() == 0);
-
-	runOnRenderThreadSync([]
-		{
-			glFinish();
-		});
-}
+OpenGLRenderer::~OpenGLRenderer() = default;
 
 void OpenGLRenderer::init()
 {
@@ -128,28 +120,10 @@ std::shared_ptr<Font> OpenGLRenderer::getFont(const path_t& name)
 
 std::shared_ptr<Texture> OpenGLRenderer::getTexture(const path_t& name)
 {
-	auto iter = textures.find(name);
-
-	std::shared_ptr<OpenGLTexture> ret;
-
-	if (iter != textures.end()) {
-		if (iter->second.expired()) {
-			iter->second = ret = std::make_shared<OpenGLTexture>(*this, name);
-		}
-		else
-		{
-			ret = std::shared_ptr<OpenGLTexture>{iter->second};
-		}
-
+	if (auto&& ret = textures.get(name))
 		return ret;
-	}
-
-	return std::make_shared<OpenGLTexture>(*this, name);
-
-	// make another
-	textures.insert({name, ret});
-
-	return ret;
+	else
+		return textures.set(name, std::make_shared<OpenGLTexture>(*this, name));
 }
 
 std::shared_ptr<MaterialSource> OpenGLRenderer::getMaterialSource(const path_t& name)

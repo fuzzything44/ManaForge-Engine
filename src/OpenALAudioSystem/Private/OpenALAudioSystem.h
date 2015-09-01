@@ -3,6 +3,7 @@
 #include "OpenALAudioSystemConfig.h"
 
 #include <AudioSystem.h>
+#include <Cacher.h>
 
 #include <list>
 #include <unordered_map>
@@ -27,5 +28,5 @@ public:
 private:
 	std::list<OpenALSoundSource*> sources;
 
-	std::unordered_map<path_t, std::weak_ptr<OpenALSoundCue>> cues;
+	WeakCacher<path_t, OpenALSoundCue> cues;
 };

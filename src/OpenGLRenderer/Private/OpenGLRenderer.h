@@ -1,5 +1,6 @@
 #pragma once
 #include <Renderer.h>
+#include <Cacher.h>
 
 #include <list>
 #include <vector>
@@ -47,7 +48,7 @@ class OpenGLRenderer : public Renderer
 			thread = std::move(rightThread);
 			return *this;
 		};
-		
+
 		operator std::thread&() { return thread; }
 
 		std::thread& getThread() { return thread; }
@@ -131,7 +132,8 @@ private:
 	// delete our caches and models first
 	std::list<OpenGLModel*> models;
 	std::list<OpenGLTextBox*> textBoxes;
-	std::unordered_map<path_t, std::weak_ptr<OpenGLTexture>> textures;
+
+	WeakCacher<path_t, OpenGLTexture> textures;
 	std::unordered_map<path_t, std::shared_ptr<OpenGLFont>> fonts;
 	std::unordered_map<path_t, std::shared_ptr<OpenGLMaterialSource>> matSources;
 	std::unordered_map<std::string, std::weak_ptr<OpenGLModelData>> modelDataCache;

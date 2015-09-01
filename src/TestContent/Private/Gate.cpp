@@ -21,8 +21,8 @@ Gate::Gate()
 
 	tex->setFilterMode(Texture::FilterMode::MIPMAP_LINEAR);
 
-	mat =
-		Runtime::get().getRenderer().newMaterialInstance(Runtime::get().getRenderer().getMaterialSource("animation"));
+	mat = Runtime::get().getRenderer().newMaterialInstance(
+		Runtime::get().getRenderer().getMaterialSource("animation"));
 	mat->setProperty("tiles", 2);
 	mat->setUpdateCallback([time = 0.f](MaterialInstance & inst) mutable
 		{
