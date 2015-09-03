@@ -79,12 +79,11 @@ public:
 
 	virtual std::unique_ptr<Model> newModel() override;
 	virtual std::unique_ptr<TextBox> newTextBox() override;
-	virtual std::shared_ptr<Font> getFont(const path_t& name) override;
+	virtual Font* getFont(const path_t& name) override;
 	virtual Texture* getTexture(const path_t& name) override;
-	virtual std::shared_ptr<MaterialSource> getMaterialSource(const path_t& name) override;
+	virtual MaterialSource* getMaterialSource(const path_t& name) override;
 	virtual std::unique_ptr<TextureLibrary> newTextureLibrary() override;
-	virtual std::unique_ptr<MaterialInstance> newMaterialInstance(
-		std::shared_ptr<MaterialSource> source) override;
+	virtual std::unique_ptr<MaterialInstance> newMaterialInstance(MaterialSource* source) override;
 	virtual std::shared_ptr<ModelData> newModelData(const std::string& name) override;
 	virtual std::unique_ptr<ModelData> newModelData() override;
 
@@ -134,8 +133,8 @@ private:
 	std::list<OpenGLTextBox*> textBoxes;
 
 	StrongCacher<path_t, OpenGLTexture> textures;
-	std::unordered_map<path_t, std::shared_ptr<OpenGLFont>> fonts;
-	std::unordered_map<path_t, std::shared_ptr<OpenGLMaterialSource>> matSources;
+	StrongCacher<path_t, OpenGLFont> fonts;
+	StrongCacher<path_t, OpenGLMaterialSource> matSources;
 	std::unordered_map<std::string, std::weak_ptr<OpenGLModelData>> modelDataCache;
 };
 

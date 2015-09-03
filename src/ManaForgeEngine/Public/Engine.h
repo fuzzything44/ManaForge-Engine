@@ -27,7 +27,8 @@
 namespace std
 {
 
-template <> struct std::hash<boost::filesystem::path>
+template <>
+struct std::hash<boost::filesystem::path>
 {
 
 	size_t operator()(const boost::filesystem::path& p) const

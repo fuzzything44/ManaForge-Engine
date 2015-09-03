@@ -34,8 +34,8 @@ public:
 	virtual void setLocation(vec2 loc) override;
 	virtual vec2 getLocation() const override;
 
-	virtual void setFont(std::shared_ptr<Font> newFont) override;
-	virtual std::shared_ptr<Font> getFont() const override;
+	virtual void setFont(Font* newFont) override;
+	virtual Font* getFont() const override;
 	// end TextBox interface
 
 	void render();
@@ -63,5 +63,5 @@ private:
 
 	std::list<OpenGLTextBox*>::iterator locationIter;
 
-	std::shared_ptr<OpenGLFont> font;
+	OpenGLFont* font;
 };

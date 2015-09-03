@@ -33,12 +33,14 @@ public:
 
 	ENGINE_API void loadModule(const std::string& name);
 
-	template <typename T> inline void registerClass(const std::string& moduleName, T* ptr = nullptr);
+	template <typename T>
+	inline void registerClass(const std::string& moduleName, T* ptr = nullptr);
 
 	ENGINE_API void addInitCallback(const initFun& function);
 	ENGINE_API void addUpdateCallback(const updateFun& function);
 
-	template <typename T> inline T* spawnClass(const std::string& moduleName, const std::string& className);
+	template <typename T>
+	inline T* spawnClass(const std::string& moduleName, const std::string& className);
 
 private:
 	// and finally the modules
@@ -61,13 +63,13 @@ private:
 
 #include <boost/type_index.hpp>
 
-template <typename T> inline void ModuleManager::registerClass(const std::string& moduleName, T* ptr)
+template <typename T>
+inline void ModuleManager::registerClass(const std::string& moduleName, T* ptr)
 {
 	std::string name = boost::typeindex::type_id<T>().pretty_name();
 
 	std::string::iterator iterAt = name.end();
-	for (auto iter = name.begin(); iter != name.end(); ++iter)
-	{
+	for (auto iter = name.begin(); iter != name.end(); ++iter) {
 		if (isspace(*iter)) {
 			iterAt = iter;
 			break;

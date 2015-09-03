@@ -13,7 +13,8 @@ struct OpenGLCharacterData
 	vec2 offset;
 	vec2 size;
 
-	template <typename Archive> void serialize(Archive& ar, unsigned int version)
+	template <typename Archive>
+	void serialize(Archive& ar, unsigned int version)
 	{
 		ar& BOOST_SERIALIZATION_NVP(uvBegin);
 		ar& BOOST_SERIALIZATION_NVP(uvEnd);

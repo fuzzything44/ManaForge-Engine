@@ -50,7 +50,8 @@ private:
 	Container values;
 };
 
-template <typename Key, typename Val, typename Container = std::unordered_map<Key, Val*>> class StrongCacher
+template <typename Key, typename Val, typename Container = std::unordered_map<Key, Val*>>
+class StrongCacher
 {
 	static_assert(std::is_same<typename Container::mapped_type, Val*>::value,
 		"Wrong Container types. Value must be a Val*");
@@ -63,13 +64,23 @@ public:
 	StrongCacher& operator=(const StrongCacher& other) = delete;
 	StrongCacher& operator=(StrongCacher&& other) = default;
 
+	~StrongCacher()
+	{
+		std::for_each(std::begin(values),
+			std::end(values),
+			[](Container::value_type elem)
+			{
+				delete elem.second;
+			});
+	}
+
 	template <typename In, typename = std::enable_if_t<std::is_same<std::decay_t<In>, Key>::value>>
 	Val* get(In&& key)
 	{
 		auto&& iter = values.find(std::forward<In>(key));
 
 		if (iter != values.end()) {
-			
+
 			return iter->second;
 		}
 

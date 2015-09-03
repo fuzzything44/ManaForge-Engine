@@ -30,8 +30,7 @@ inline std::string loadFileToStr(const path_t& filename)
 	std::string ret, build;
 
 	// while there is another line, append it to ret.
-	while (std::getline(stream, build))
-	{
+	while (std::getline(stream, build)) {
 		ret += build;
 		ret += "\n";
 	}
@@ -109,10 +108,8 @@ inline std::ostream& operator<<(std::ostream& os, const mat3& mat)
 	os.precision(4);
 	os.setf(std::ios::fixed, std::ios::floatfield); // floatfield set to fixed
 
-	for (int x = 0; x < 3; x++)
-	{
-		for (int y = 0; y < 3; y++)
-		{
+	for (int x = 0; x < 3; x++) {
+		for (int y = 0; y < 3; y++) {
 			os << mat[x][y] << " ";
 		}
 		os << std::endl;
@@ -130,10 +127,8 @@ inline std::ostream& operator<<(std::ostream& os, const mat4& mat)
 	os.precision(4);
 	os.setf(std::ios::fixed, std::ios::floatfield); // floatfield set to fixed
 
-	for (int x = 0; x < 4; x++)
-	{
-		for (int y = 0; y < 4; y++)
-		{
+	for (int x = 0; x < 4; x++) {
+		for (int y = 0; y < 4; y++) {
 			os << mat[x][y] << " ";
 		}
 		os << std::endl;

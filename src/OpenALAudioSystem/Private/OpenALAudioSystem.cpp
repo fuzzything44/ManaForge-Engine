@@ -63,8 +63,7 @@ bool OpenALAudioSystem::update()
 	auto&& cameraVel = camera.getOwner().getVelocity();
 	alListener3f(AL_VELOCITY, cameraVel.x, cameraVel.y, 0.f);
 
-	for (auto& elem : sources)
-	{
+	for (auto& elem : sources) {
 		elem->update();
 	}
 

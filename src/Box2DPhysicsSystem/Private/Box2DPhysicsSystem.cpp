@@ -41,11 +41,9 @@ bool Box2DPhysicsSystem::update(float deltaTime)
 	world->Step(deltaTime, 8, 3); // step once
 
 	auto nextElem = world->GetBodyList();
-	while (nextElem != nullptr)
-	{
+	while (nextElem != nullptr) {
 		auto nextFixture = nextElem->GetFixtureList();
-		while (nextFixture != nullptr)
-		{
+		while (nextFixture != nullptr) {
 			auto body = static_cast<Box2DPhysicsBody*>(nextFixture->GetUserData());
 			body->postStep();
 			nextFixture = nextFixture->GetNext();

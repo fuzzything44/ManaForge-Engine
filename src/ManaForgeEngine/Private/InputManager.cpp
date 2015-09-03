@@ -82,14 +82,12 @@ void InputManager::bindAxisMapping(const std::string& name, std::function<void(f
 bool InputManager::update()
 {
 
-	for (auto& elem : actionMappings)
-	{
+	for (auto& elem : actionMappings) {
 		// call the operator() function
 		elem.second();
 	}
 
-	for (auto& elem : axisMappings)
-	{
+	for (auto& elem : axisMappings) {
 		// call the operator() function
 		elem.second();
 	}
@@ -117,8 +115,7 @@ void InputManager::ActionMapping::operator()()
 	}
 
 	bool isPressedNew = false;
-	for (auto& elem : keysBound)
-	{
+	for (auto& elem : keysBound) {
 		// if there is one that is pressed, the entire binding is pressed,
 		// so break
 		if (Runtime::get().getInputManager().window->getIsKeyPressed(elem)) {
@@ -153,8 +150,7 @@ void InputManager::AxisMapping::operator()()
 {
 	float totalValue = 0.f;
 
-	for (auto& elem : values)
-	{
+	for (auto& elem : values) {
 		// compute the amount to add -- without branches
 		totalValue += Runtime::get().getInputManager().window->getIsKeyPressed(elem.first) * elem.second;
 	}

@@ -53,7 +53,8 @@ private:
 
 		void operator()();
 
-		template <typename Archive> void serialize(Archive& ar, const uint32 version)
+		template <typename Archive>
+		void serialize(Archive& ar, const uint32 version)
 		{
 			ar& BOOST_SERIALIZATION_NVP(keysBound);
 		}
@@ -77,7 +78,8 @@ private:
 
 		void operator()();
 
-		template <typename Archive> void serialize(Archive& ar, const uint32 version)
+		template <typename Archive>
+		void serialize(Archive& ar, const uint32 version)
 		{
 			ar& BOOST_SERIALIZATION_NVP(values);
 		}

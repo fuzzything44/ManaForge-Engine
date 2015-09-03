@@ -48,8 +48,7 @@ inline void TimerManager::update()
 
 	// check if the queue is empty first
 	// while the top element needs to be called
-	while (!queue.empty() && now >= queue[0]->getEndTime())
-	{
+	while (!queue.empty() && now >= queue[0]->getEndTime()) {
 
 		assert(std::is_heap(queue.begin(), queue.end(), &TimerManager::compHandle));
 

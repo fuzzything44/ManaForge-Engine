@@ -96,7 +96,8 @@ using day = boost::mpl::vector<time, std::ratio<60 * 60 * 24>>;
 using week = boost::mpl::vector<time, std::ratio<60 * 60 * 24 * 7>>;
 }
 
-template <typename Dimensions> class Quantity
+template <typename Dimensions>
+class Quantity
 {
 	float data;
 
@@ -134,7 +135,8 @@ public:
 		data = other.get() * multiplier;
 	}
 
-	template <typename DimensionsU> auto operator*(const Quantity<DimensionsU>& other)
+	template <typename DimensionsU>
+	auto operator*(const Quantity<DimensionsU>& other)
 	{
 		Quantity<boost::mpl::vector<boost::mpl::at_c<DimensionsU, 0>::type,
 			boost::mpl::at_c<Dimensions, 1>::type>> otherConverted = other;
@@ -147,7 +149,8 @@ public:
 			get() * otherConverted.get());
 	}
 
-	template <typename DimensionsU> auto operator/(const Quantity<DimensionsU>& other)
+	template <typename DimensionsU>
+	auto operator/(const Quantity<DimensionsU>& other)
 	{
 		// make sure we have the same multiplier
 		Quantity<boost::mpl::vector<boost::mpl::at_c<DimensionsU, 0>::type,

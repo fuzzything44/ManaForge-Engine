@@ -18,10 +18,12 @@ struct Transform
 	float rotation; // in radians, counter-clockwise
 	vec2 scale;
 
-	template <typename Archive> void serialize(Archive& ar, const uint32 version);
+	template <typename Archive>
+	void serialize(Archive& ar, const uint32 version);
 };
 
-template <typename Archive> void Transform::serialize(Archive& ar, const uint32 version)
+template <typename Archive>
+void Transform::serialize(Archive& ar, const uint32 version)
 {
 	ar& BOOST_SERIALIZATION_NVP(location);
 	ar& BOOST_SERIALIZATION_NVP(rotation);

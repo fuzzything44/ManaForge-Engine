@@ -7,8 +7,7 @@
 void DebugDraw::DrawPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color)
 {
 	auto verts = std::vector<vec2>(vertexCount);
-	for (int i = 0; i < vertexCount; ++i)
-	{
+	for (int i = 0; i < vertexCount; ++i) {
 		verts[i] = convertVec(vertices[i]);
 	}
 	Color col = Color(uint8(color.r * 255.f), uint8(color.g * 255.f), uint8(color.b * 255.f), 255);
@@ -19,8 +18,7 @@ void DebugDraw::DrawPolygon(const b2Vec2* vertices, int32 vertexCount, const b2C
 void DebugDraw::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color)
 {
 	auto verts = std::vector<vec2>(vertexCount);
-	for (int i = 0; i < vertexCount; ++i)
-	{
+	for (int i = 0; i < vertexCount; ++i) {
 		verts[i] = convertVec(vertices[i]);
 	}
 	Color col = Color(uint8(color.r * 255.f), uint8(color.g * 255.f), uint8(color.b * 255.f), 255);

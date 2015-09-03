@@ -24,7 +24,8 @@ struct Color
 		alpha = color[3];
 	}
 
-	template <typename Archive> void serialize(Archive& ar, const uint32 version)
+	template <typename Archive>
+	void serialize(Archive& ar, const uint32 version)
 	{
 		ar& BOOST_SERIALIZATION_NVP(red);
 		ar& BOOST_SERIALIZATION_NVP(green);

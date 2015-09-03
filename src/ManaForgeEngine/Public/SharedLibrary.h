@@ -37,14 +37,16 @@ public:
 
 	ENGINE_API static void Unload(SharedLibHandle handle);
 
-	template <typename T> inline T* getFunctionPtr(const std::string& functionName);
+	template <typename T>
+	inline T* getFunctionPtr(const std::string& functionName);
 
 private:
 	SharedLibHandle handle;
 };
 
 #if defined WIN32
-template <typename T> inline T* SharedLibrary::getFunctionPtr(const std::string& functionName)
+template <typename T>
+inline T* SharedLibrary::getFunctionPtr(const std::string& functionName)
 {
 	assert(handle);
 

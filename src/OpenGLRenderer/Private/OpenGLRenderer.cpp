@@ -47,8 +47,7 @@ void OpenGLRenderer::init()
 
 void OpenGLRenderer::renderLoop()
 {
-	while (renderThread.isInLoop)
-	{
+	while (renderThread.isInLoop) {
 		while (queue.empty() && renderThread.isInLoop)
 			;
 
@@ -97,25 +96,12 @@ std::unique_ptr<Model> OpenGLRenderer::newModel() { return std::make_unique<Open
 
 std::unique_ptr<TextBox> OpenGLRenderer::newTextBox() { return std::make_unique<OpenGLTextBox>(*this); }
 
-std::shared_ptr<Font> OpenGLRenderer::getFont(const path_t& name)
+Font* OpenGLRenderer::getFont(const path_t& name)
 {
-	auto iter = fonts.find(name);
-
-	std::shared_ptr<OpenGLFont> ret;
-
-	if (iter != fonts.end()) {
-
-		ret = std::shared_ptr<OpenGLFont>{iter->second};
-
+	if (auto&& ret = fonts.get(name))
 		return ret;
-	}
-
-	ret = std::make_shared<OpenGLFont>(*this, name);
-
-	// make another
-	fonts.insert({name, ret});
-
-	return ret;
+	else
+		return fonts.set(name, new OpenGLFont(*this, name));
 }
 
 Texture* OpenGLRenderer::getTexture(const path_t& name)
@@ -126,21 +112,12 @@ Texture* OpenGLRenderer::getTexture(const path_t& name)
 		return textures.set(name, new OpenGLTexture(*this, name));
 }
 
-std::shared_ptr<MaterialSource> OpenGLRenderer::getMaterialSource(const path_t& name)
+MaterialSource* OpenGLRenderer::getMaterialSource(const path_t& name)
 {
-
-	auto iter = matSources.find(name);
-
-	if (iter != matSources.end()) {
-
-		return iter->second;
-	}
-
-	auto ret = std::make_shared<OpenGLMaterialSource>(*this, name);
-
-	matSources.insert({name, ret});
-
-	return ret;
+	if (auto&& ret = matSources.get(name))
+		return ret;
+	else
+		return matSources.set(name, new OpenGLMaterialSource(*this, name));
 }
 
 std::unique_ptr<TextureLibrary> OpenGLRenderer::newTextureLibrary()
@@ -148,7 +125,7 @@ std::unique_ptr<TextureLibrary> OpenGLRenderer::newTextureLibrary()
 	return std::make_unique<OpenGLTextureLibrary>(*this);
 }
 
-std::unique_ptr<MaterialInstance> OpenGLRenderer::newMaterialInstance(std::shared_ptr<MaterialSource> source)
+std::unique_ptr<MaterialInstance> OpenGLRenderer::newMaterialInstance(MaterialSource* source)
 {
 	return std::make_unique<OpenGLMaterialInstance>(*this, source);
 }
@@ -193,8 +170,7 @@ bool OpenGLRenderer::update(float /*deltaTime*/)
 		});
 
 	// call the draw function for all of the models
-	for (auto&& model : models)
-	{
+	for (auto&& model : models) {
 		model->draw();
 	}
 
@@ -205,8 +181,7 @@ bool OpenGLRenderer::update(float /*deltaTime*/)
 
 	Runtime::get().getPhysicsSystem().drawDebugPoints();
 
-	for (auto&& textBox : textBoxes)
-	{
+	for (auto&& textBox : textBoxes) {
 		textBox->render();
 	}
 
@@ -476,8 +451,7 @@ void OpenGLRenderer::drawDebugOutlineCircle(vec2 center, float radius, Color col
 	const float k_increment = 2.0f * (float)M_PI / (float)k_segments::value;
 	float theta = 0.0f;
 	auto verts = std::array<vec2, k_segments::value>();
-	for (int32 i = 0; i < k_segments::value; ++i)
-	{
+	for (int32 i = 0; i < k_segments::value; ++i) {
 		verts[i] = center + radius * vec2(cosf(theta), sinf(theta));
 		theta += k_increment;
 	}
@@ -529,8 +503,7 @@ void OpenGLRenderer::drawDebugSolidCircle(vec2 center, float radius, Color color
 	const float k_increment = 2.0f * (float)M_PI / (float)k_segments::value;
 	float theta = 0.0f;
 	auto verts = std::array<vec2, k_segments::value>();
-	for (int32 i = 0; i < k_segments::value; ++i)
-	{
+	for (int32 i = 0; i < k_segments::value; ++i) {
 		verts[i] = center + radius * vec2(cosf(theta), sinf(theta));
 		theta += k_increment;
 	}

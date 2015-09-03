@@ -55,8 +55,7 @@ DefaultWorld::DefaultWorld(const std::string& name)
 DefaultWorld::~DefaultWorld()
 {
 
-	while (actors.end() != actors.begin())
-	{
+	while (actors.end() != actors.begin()) {
 		delete *(--actors.end());
 	}
 
@@ -69,8 +68,8 @@ void DefaultWorld::init(const std::string& name)
 	folderLocation = std::string("Worlds\\") + name + '\\';
 	propManager.init(folderLocation + "world.json");
 
-	auto drawMaterial = std::shared_ptr<MaterialInstance>{Runtime::get().getRenderer().newMaterialInstance(
-		Runtime::get().getRenderer().getMaterialSource("boilerplate"))};
+	auto drawMaterial = Runtime::get().getRenderer().newMaterialInstance(
+		Runtime::get().getRenderer().getMaterialSource("boilerplate"));
 
 	auto backgroundImages = std::shared_ptr<TextureLibrary>{
 		Runtime::get().getRenderer().newTextureLibrary()}; // TODO: less hardcoded values
@@ -115,8 +114,7 @@ void DefaultWorld::init(const std::string& name)
 		backgroundImages->setFilterMode(Texture::FilterMode::MIPMAP_LINEAR);
 
 		// load the images to the backgroundImages textureLibrary
-		for (auto& elem : imageToTextureAssoc)
-		{
+		for (auto& elem : imageToTextureAssoc) {
 			backgroundImages->addImage(elem.second);
 		}
 	}
@@ -235,10 +233,8 @@ void DefaultWorld::init(const std::string& name)
 		auto elems = std::vector<uvec3>{backgroundChunkSize * backgroundChunkSize * 2};
 
 		// generate location and elem data -- all the same
-		for (uint16 yTiles = 0; yTiles < backgroundChunkSize; ++yTiles)
-		{
-			for (uint16 xTiles = 0; xTiles < backgroundChunkSize; ++xTiles)
-			{
+		for (uint16 yTiles = 0; yTiles < backgroundChunkSize; ++yTiles) {
+			for (uint16 xTiles = 0; xTiles < backgroundChunkSize; ++xTiles) {
 				uint32 startIndex = yTiles * backgroundChunkSize * 4 + xTiles * 4;
 
 				locations[startIndex] = vec2(xTiles, yTiles);
@@ -254,14 +250,10 @@ void DefaultWorld::init(const std::string& name)
 		}
 
 		// generate UV
-		for (uint16 yChunks = 0; yChunks < numBackgroundChunks.y; ++yChunks)
-		{
-			for (uint16 xChunks = 0; xChunks < numBackgroundChunks.x; ++xChunks)
-			{
-				for (uint16 yTiles = 0; yTiles < backgroundChunkSize; ++yTiles)
-				{
-					for (uint16 xTiles = 0; xTiles < backgroundChunkSize; ++xTiles)
-					{
+		for (uint16 yChunks = 0; yChunks < numBackgroundChunks.y; ++yChunks) {
+			for (uint16 xChunks = 0; xChunks < numBackgroundChunks.x; ++xChunks) {
+				for (uint16 yTiles = 0; yTiles < backgroundChunkSize; ++yTiles) {
+					for (uint16 xTiles = 0; xTiles < backgroundChunkSize; ++xTiles) {
 
 						uint32 startColIndex =
 							((numBackgroundChunks.y - yChunks - 1) * numBackgroundChunks.x + xChunks) * 4
@@ -344,8 +336,7 @@ void DefaultWorld::saveWorld()
 	MFLOG(Trace) << "Saving world";
 	// Create list to save
 	std::deque<Actor*> toSave;
-	for (auto& elem : actors)
-	{
+	for (auto& elem : actors) {
 		if (elem->getSaved()) {
 			toSave.push_back(elem);
 		}

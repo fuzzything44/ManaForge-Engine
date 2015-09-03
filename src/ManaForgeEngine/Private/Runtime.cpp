@@ -56,8 +56,7 @@ Runtime::Runtime(const path_t& worldPath)
 	boost::algorithm::split(modules, modulesStr, boost::algorithm::is_any_of("\t\n "));
 
 	// load modules from the property sheet
-	for (auto& elem : modules)
-	{
+	for (auto& elem : modules) {
 		if (elem != "" && elem != "\t" && elem != "\n") moduleManager->loadModule(elem);
 	}
 
@@ -89,8 +88,7 @@ void Runtime::run()
 		// get the callbacks
 		auto initCallbacks = getModuleManager().getInitCallbacks();
 
-		for (auto& callback : initCallbacks)
-		{
+		for (auto& callback : initCallbacks) {
 			if (!callback) {
 				MFLOG(Warning) << "init callback empty.";
 			}
@@ -139,8 +137,7 @@ void Runtime::run()
 
 		shouldContinue = true;
 
-		for (auto& callback : updateCallbacks)
-		{
+		for (auto& callback : updateCallbacks) {
 			if (!callback) {
 				MFLOG(Warning) << "Update callback empty";
 			}

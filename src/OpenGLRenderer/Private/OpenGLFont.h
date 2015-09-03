@@ -23,7 +23,7 @@ public:
 	virtual ~OpenGLFont();
 
 	OpenGLCharacterData getCharacterData(wchar_t ch);
-	std::shared_ptr<OpenGLMaterialSource> getMaterialSource();
+	OpenGLMaterialSource* getMaterialSource();
 
 	void render(OpenGLTextBox& box);
 
@@ -32,7 +32,7 @@ private:
 
 	std::unordered_map<wchar_t, OpenGLCharacterData> charData;
 
-	std::shared_ptr<OpenGLMaterialSource> matSource;
+	OpenGLMaterialSource* matSource;
 	GLuint tex;
 	GLint cutoffUniLoc;
 	GLint colorUniLoc;

@@ -23,7 +23,6 @@ public:
 
 	virtual void setUpdateCallback(std::function<void(MaterialInstance&)>) = 0;
 
-
 	virtual void setProperty(const std::string& propName, int32 i) = 0;
 	virtual void setProperty(const std::string& propName, const ivec2& i) = 0;
 	virtual void setProperty(const std::string& propName, const ivec3& i) = 0;

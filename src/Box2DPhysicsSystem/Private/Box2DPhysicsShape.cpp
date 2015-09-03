@@ -22,8 +22,7 @@ void Box2DPhysicsShape::asPolygon(vec2* verts, uint32 numVerts)
 	b2Vec2* vec = new b2Vec2[numVerts];
 
 	// translate the points
-	for (uint32 i = 0; i < numVerts; ++i)
-	{
+	for (uint32 i = 0; i < numVerts; ++i) {
 		vec[i] = convertVec(verts[i] + location);
 	}
 

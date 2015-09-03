@@ -13,7 +13,8 @@ class Component;
 
 // requirement: there MUST be a tick function for this to work
 // Use CRTP to avoid the vtable overhead (not important but is easy so why not!)
-template <typename Derived> struct TickingActor
+template <typename Derived>
+struct TickingActor
 {
 	TickingActor()
 	{
@@ -94,9 +95,11 @@ protected:
 	std::deque<Component*> components;
 
 	// save and load functions
-	template <class Archive> inline void save(Archive& ar, const unsigned int version) const;
+	template <class Archive>
+	inline void save(Archive& ar, const unsigned int version) const;
 
-	template <class Archive> inline void load(Archive& ar, const unsigned int version);
+	template <class Archive>
+	inline void load(Archive& ar, const unsigned int version);
 
 	BOOST_SERIALIZATION_SPLIT_MEMBER();
 };
@@ -105,14 +108,16 @@ protected:
 ///// INLINE DEFINITIONS ///////////////////////////////////////
 ////////////////////////////////////////////////////////////////
 
-template <class Archive> inline void Actor::save(Archive& ar, const unsigned int version) const
+template <class Archive>
+inline void Actor::save(Archive& ar, const unsigned int version) const
 {
 	Transform trans = transController->getTransform();
 	vec2 velocity = transController->getVelocity();
 	ar& BOOST_SERIALIZATION_NVP(trans);
 	ar& BOOST_SERIALIZATION_NVP(velocity);
 }
-template <class Archive> inline void Actor::load(Archive& ar, const unsigned int version)
+template <class Archive>
+inline void Actor::load(Archive& ar, const unsigned int version)
 {
 	Transform trans;
 	vec2 velocity;

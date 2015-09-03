@@ -7,7 +7,8 @@ class TimerHandle
 	friend TimerManager;
 
 public:
-	template <typename... Args> static std::shared_ptr<TimerHandle> create(Args&&... args);
+	template <typename... Args>
+	static std::shared_ptr<TimerHandle> create(Args&&... args);
 
 	TimerHandle& operator=(const TimerHandle& other) = delete;
 	TimerHandle& operator=(TimerHandle&& other)
@@ -59,7 +60,8 @@ private:
 	TimerManager& manager;
 };
 
-template <typename... Args> std::shared_ptr<TimerHandle> TimerHandle::create(Args&&... args)
+template <typename... Args>
+std::shared_ptr<TimerHandle> TimerHandle::create(Args&&... args)
 {
 	return std::shared_ptr<TimerHandle>(new TimerHandle(std::forward<Args>(args)...));
 }

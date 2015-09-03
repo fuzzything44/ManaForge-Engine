@@ -20,7 +20,7 @@ public:
 	OpenGLMaterialInstance(OpenGLRenderer& renderer, std::shared_ptr<MaterialSource> source = nullptr);
 	virtual ~OpenGLMaterialInstance() override;
 
-	virtual void setTexture(uint32 ID, Texture* texture) override; 
+	virtual void setTexture(uint32 ID, Texture* texture) override;
 	virtual void setTexture(uint32 ID, std::shared_ptr<Texture> texture) override;
 
 	virtual void init(std::shared_ptr<MaterialSource> source) override;

@@ -52,7 +52,7 @@ OpenGLFont::OpenGLFont(OpenGLRenderer& rendererIn, const path_t& name)
 				0,							// create a new texture
 				SOIL_FLAG_DDS_LOAD_DIRECT); // load it from dds
 
-			matSource = std::static_pointer_cast<OpenGLMaterialSource>(renderer.getMaterialSource("font"));
+			matSource = static_cast<OpenGLMaterialSource*>(renderer.getMaterialSource("font"));
 
 			cutoffUniLoc = glGetUniformLocation(**matSource, "cutoff");
 			viewMatUniLoc = glGetUniformLocation(**matSource, "viewMat");
@@ -81,7 +81,7 @@ OpenGLCharacterData OpenGLFont::getCharacterData(wchar_t ch)
 	return OpenGLCharacterData();
 }
 
-std::shared_ptr<OpenGLMaterialSource> OpenGLFont::getMaterialSource() { return matSource; }
+OpenGLMaterialSource* OpenGLFont::getMaterialSource() { return matSource; }
 
 void OpenGLFont::render(OpenGLTextBox& box)
 {

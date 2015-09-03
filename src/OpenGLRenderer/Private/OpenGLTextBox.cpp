@@ -63,13 +63,13 @@ void OpenGLTextBox::setLocation(vec2 loc) { location = loc; }
 
 vec2 OpenGLTextBox::getLocation() const { return location; }
 
-void OpenGLTextBox::setFont(std::shared_ptr<Font> newFont)
+void OpenGLTextBox::setFont(Font* newFont)
 {
 	// if this fails we have problems anyway...
-	font = std::static_pointer_cast<OpenGLFont>(newFont);
+	font = static_cast<OpenGLFont*>(newFont);
 }
 
-std::shared_ptr<Font> OpenGLTextBox::getFont() const { return font; }
+Font* OpenGLTextBox::getFont() const { return font; }
 
 void OpenGLTextBox::render() { font->render(*this); }
 
@@ -82,8 +82,7 @@ void OpenGLTextBox::regenerateBuffers()
 
 	float cursorpos = 0;
 
-	for (decltype(text.size()) i = 0; i < text.size(); ++i)
-	{
+	for (decltype(text.size()) i = 0; i < text.size(); ++i) {
 		char16_t c = text[i];
 
 		OpenGLCharacterData d = font->getCharacterData(c);

@@ -230,8 +230,7 @@ void OpenGLTextureLibrary::appendDDS(uint32 texToAppend, uint32 Xoffset, uint32 
 
 	glBindTexture(GL_TEXTURE_2D, texToAppend);
 
-	for (unsigned int level = 0; level < mipMapCount && (width || height); ++level)
-	{
+	for (unsigned int level = 0; level < mipMapCount && (width || height); ++level) {
 
 		unsigned int size = ((width + 3) / 4) * ((height + 3) / 4) * blockSize;
 
@@ -305,8 +304,7 @@ uint32 OpenGLTextureLibrary::allocateCompressedTextureLibraryFromDDS(uint32 num,
 
 	std::vector<GLubyte> zeros(size);
 
-	for (uint32 i = 0; i < mipMapCount; i++)
-	{
+	for (uint32 i = 0; i < mipMapCount; i++) {
 
 		size = ((width + 3) / 4) * ((height + 3) / 4) * blockSize;
 

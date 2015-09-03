@@ -95,7 +95,8 @@ protected:
 };
 }
 
-template <severity_t sev> struct logger : logdetail::log_base
+template <severity_t sev>
+struct logger : logdetail::log_base
 {
 	inline logger()
 	{
@@ -108,7 +109,8 @@ template <severity_t sev> struct logger : logdetail::log_base
 
 	inline ~logger() { flush(); }
 
-	template <typename T> std::wostream& operator<<(const T& member)
+	template <typename T>
+	std::wostream& operator<<(const T& member)
 	{
 		*str << member;
 		return *str;

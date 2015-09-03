@@ -40,8 +40,7 @@ void Stack::OnCallstackEntry(CallstackEntryType eType, CallstackEntry& entry)
 			char lastThree[4] = "   ";
 
 			// go up to source -- this will be backwards
-			for (std::string::reverse_iterator iter = startFile.rbegin(); iter != startFile.rend(); ++iter)
-			{
+			for (std::string::reverse_iterator iter = startFile.rbegin(); iter != startFile.rend(); ++iter) {
 				if (lastThree[0] == 'c' && lastThree[1] == 'r' && lastThree[2] == 's') // src backward
 				{
 					fileOut.push_back(*iter);

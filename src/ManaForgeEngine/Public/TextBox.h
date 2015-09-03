@@ -25,6 +25,6 @@ public:
 	virtual void setLocation(vec2 loc) = 0;
 	virtual vec2 getLocation() const = 0;
 
-	virtual void setFont(std::shared_ptr<Font> newFont) = 0;
-	virtual std::shared_ptr<Font> getFont() const = 0;
+	virtual void setFont(Font* newFont) = 0;
+	virtual Font* getFont() const = 0;
 };
