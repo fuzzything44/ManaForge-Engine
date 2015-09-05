@@ -237,21 +237,21 @@ void OpenGLRenderer::showLoadingImage()
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uvec3) * 2, elems, GL_STATIC_DRAW);
 
-			auto program = std::static_pointer_cast<OpenGLMaterialSource>(getMaterialSource("boilerplate"));
+			auto program = static_cast<OpenGLMaterialSource&>(*getMaterialSource("boilerplate"));
 			auto texture = SOIL_load_OGL_texture("textures\\loading.dds", 4, 0, SOIL_FLAG_DDS_LOAD_DIRECT);
-			glUseProgram(**program);
+			glUseProgram(*program);
 
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-			glUniform1i(glGetUniformLocation(**program, "textures"), 0);
+			glUniform1i(glGetUniformLocation(*program, "textures"), 0);
 			glBindTexture(GL_TEXTURE_2D, texture);
 			glActiveTexture(GL_TEXTURE0);
 
 			glm::mat3 mvp = glm::ortho2d(-1.f, 1.f, -1.f, 1.f);
-			glUniformMatrix3fv(glGetUniformLocation(**program, "MVPmat"), 1, GL_FALSE, &mvp[0][0]);
+			glUniformMatrix3fv(glGetUniformLocation(*program, "MVPmat"), 1, GL_FALSE, &mvp[0][0]);
 
-			glUniform1f(glGetUniformLocation(**program, "renderOrder"), 1.f);
+			glUniform1f(glGetUniformLocation(*program, "renderOrder"), 1.f);
 
 			glEnableVertexAttribArray(0);
 			glBindBuffer(GL_ARRAY_BUFFER, vbo);
@@ -285,7 +285,7 @@ void OpenGLRenderer::showLoadingImage()
 			glDeleteBuffers(1, &ebo);
 
 			glDeleteVertexArrays(1, &vao);
-			glDeleteProgram(**program);
+			glDeleteProgram(*program);
 
 		});
 
@@ -315,7 +315,7 @@ void OpenGLRenderer::drawDebugOutlinePolygon(vec2* verts, uint32 numVerts, Color
 
 	debugDraw->use();
 
-	GLuint program = **std::static_pointer_cast<OpenGLMaterialSource>(debugDraw->getSource());
+	GLuint program = *static_cast<OpenGLMaterialSource&>(*debugDraw->getSource());
 
 	glUniform4f(glGetUniformLocation(program, "color"),
 		(float)color.red / 255.f,
@@ -355,7 +355,7 @@ void OpenGLRenderer::drawDebugOutlinePolygon(vec2* verts, uint32 numVerts, Color
 void OpenGLRenderer::drawDebugLine(vec2* locs, uint32 numLocs, Color color)
 {
 
-	GLuint program = **std::static_pointer_cast<OpenGLMaterialSource>(debugDraw->getSource());
+	GLuint program = *static_cast<OpenGLMaterialSource&>(*debugDraw->getSource());
 
 	glUniform4f(glGetUniformLocation(program, "color"),
 		(float)color.red / 255.f,
@@ -398,7 +398,7 @@ void OpenGLRenderer::drawDebugSolidPolygon(vec2* verts, uint32 numVerts, Color c
 
 	debugDraw->use();
 
-	GLuint program = **std::static_pointer_cast<OpenGLMaterialSource>(debugDraw->getSource());
+	GLuint program = *static_cast<OpenGLMaterialSource&>(*debugDraw->getSource());
 
 	glUniform4f(glGetUniformLocation(program, "color"),
 		.5f * (float)color.red / 255.f,
@@ -457,7 +457,7 @@ void OpenGLRenderer::drawDebugOutlineCircle(vec2 center, float radius, Color col
 	}
 
 	debugDraw->use();
-	GLuint program = **std::static_pointer_cast<OpenGLMaterialSource>(debugDraw->getSource());
+	GLuint program = *static_cast<OpenGLMaterialSource&>(*debugDraw->getSource());
 
 	glUniform4f(glGetUniformLocation(program, "color"),
 		(float)color.red / 255.f,
@@ -510,7 +510,7 @@ void OpenGLRenderer::drawDebugSolidCircle(vec2 center, float radius, Color color
 
 	debugDraw->use();
 
-	GLuint program = **std::static_pointer_cast<OpenGLMaterialSource>(debugDraw->getSource());
+	GLuint program = *static_cast<OpenGLMaterialSource&>(*debugDraw->getSource());
 
 	glUniform4f(glGetUniformLocation(program, "color"),
 		.5f * (float)color.red / 255.f,
@@ -561,7 +561,7 @@ void OpenGLRenderer::drawDebugSegment(vec2 p1, vec2 p2, Color color)
 
 	debugDraw->use();
 
-	GLuint program = **std::static_pointer_cast<OpenGLMaterialSource>(debugDraw->getSource());
+	GLuint program = *static_cast<OpenGLMaterialSource&>(*debugDraw->getSource());
 
 	glUniform4f(glGetUniformLocation(program, "color"),
 		(float)color.red / 255.f,

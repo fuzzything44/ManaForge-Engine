@@ -17,16 +17,16 @@ class OpenGLRenderer;
 class OpenGLMaterialInstance : public MaterialInstance
 {
 public:
-	OpenGLMaterialInstance(OpenGLRenderer& renderer, std::shared_ptr<MaterialSource> source = nullptr);
+	OpenGLMaterialInstance(OpenGLRenderer& renderer, MaterialSource* source = nullptr);
 	virtual ~OpenGLMaterialInstance() override;
 
 	virtual void setTexture(uint32 ID, Texture* texture) override;
 	virtual void setTexture(uint32 ID, std::shared_ptr<Texture> texture) override;
 
-	virtual void init(std::shared_ptr<MaterialSource> source) override;
+	virtual void init(MaterialSource* source) override;
 
-	virtual std::shared_ptr<MaterialSource> getSource() override;
-	virtual std::shared_ptr<const MaterialSource> getSource() const override;
+	virtual MaterialSource* getSource() override;
+	virtual const MaterialSource* getSource() const override;
 
 	virtual void setUpdateCallback(std::function<void(MaterialInstance&)>) override;
 
@@ -61,7 +61,7 @@ private:
 
 	std::function<void(MaterialInstance&)> updateCallback;
 
-	std::shared_ptr<OpenGLMaterialSource> program;
+	OpenGLMaterialSource* program;
 
 	std::unordered_map<std::string, std::function<void()>> properties;
 

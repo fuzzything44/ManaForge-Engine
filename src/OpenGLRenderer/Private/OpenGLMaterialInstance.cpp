@@ -12,7 +12,7 @@
 #include <OpenGLTexture.h>
 
 OpenGLMaterialInstance::OpenGLMaterialInstance(
-	OpenGLRenderer& renderer, std::shared_ptr<MaterialSource> source)
+	OpenGLRenderer& renderer, MaterialSource* source)
 	: renderer(renderer)
 {
 	if (source) init(source);
@@ -32,13 +32,13 @@ void OpenGLMaterialInstance::setTexture(uint32 ID, std::shared_ptr<Texture> text
 	refCountedTextures[ID] = std::static_pointer_cast<OpenGLTexture>(texture);
 }
 
-void OpenGLMaterialInstance::init(std::shared_ptr<MaterialSource> source)
+void OpenGLMaterialInstance::init(MaterialSource* source)
 {
-	program = std::static_pointer_cast<OpenGLMaterialSource>(source);
+	program = static_cast<OpenGLMaterialSource*>(source);
 }
 
-std::shared_ptr<MaterialSource> OpenGLMaterialInstance::getSource() { return program; }
-std::shared_ptr<const MaterialSource> OpenGLMaterialInstance::getSource() const { return program; }
+MaterialSource* OpenGLMaterialInstance::getSource() { return program; }
+const MaterialSource* OpenGLMaterialInstance::getSource() const { return program; }
 
 void OpenGLMaterialInstance::setUpdateCallback(std::function<void(MaterialInstance&)> func)
 {

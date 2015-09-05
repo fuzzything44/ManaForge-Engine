@@ -48,7 +48,7 @@ public:
 	virtual Texture* getTexture(const path_t& name) = 0;
 	virtual MaterialSource* getMaterialSource(const path_t& name) = 0;
 	virtual std::unique_ptr<TextureLibrary> newTextureLibrary() = 0;
-	virtual std::unique_ptr<MaterialInstance> newMaterialInstance(std::shared_ptr<MaterialSource> source) = 0;
+	virtual std::unique_ptr<MaterialInstance> newMaterialInstance(MaterialSource* source) = 0;
 	virtual std::shared_ptr<ModelData> newModelData(const std::string& name) = 0;
 	virtual std::unique_ptr<ModelData> newModelData() = 0;
 

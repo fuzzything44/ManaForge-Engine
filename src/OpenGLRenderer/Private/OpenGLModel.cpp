@@ -62,14 +62,14 @@ void OpenGLModel::draw()
 
 		mat3 MVPmat = view * model;
 
-		auto&& matSource = std::static_pointer_cast<OpenGLMaterialSource>(material->getSource());
+		auto&& matSource = static_cast<OpenGLMaterialSource*>(material->getSource());
 
 		assert(material);
 		material->use();
 
 		renderer.runOnRenderThreadAsync([
 			this,
-			matSource = std::static_pointer_cast<OpenGLMaterialSource>(material->getSource()),
+			matSource = static_cast<OpenGLMaterialSource*>(material->getSource()),
 			MVPmat
 		]
 			{
