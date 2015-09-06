@@ -249,6 +249,7 @@
     <ClCompile Include="Private\PropertyManager.cpp" />
     <ClCompile Include="Private\Runtime.cpp" />
     <ClCompile Include="Private\SharedLibrary.cpp" />
+    <ClCompile Include="Widget.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Private\EnginePCH.h" />
@@ -306,6 +307,7 @@
     <ClInclude Include="Public\Window.h" />
     <ClInclude Include="Public\WindowProps.h" />
     <ClInclude Include="public\World.h" />
+    <ClInclude Include="Widget.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
