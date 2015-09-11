@@ -9,7 +9,6 @@ out vec4 fragColor;
 void main()
 {
 	fragColor = texture2D(textures[0], fragTexCoord);
-	
 	if(fragColor.a < .1f)
 	{
 		discard;

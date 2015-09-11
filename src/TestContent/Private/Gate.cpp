@@ -22,14 +22,14 @@ Gate::Gate()
 	tex->setFilterMode(Texture::FilterMode::MIPMAP_LINEAR);
 
 	mat = Runtime::get().getRenderer().newMaterialInstance(
-		Runtime::get().getRenderer().getMaterialSource("animation"));
-	mat->setProperty("tiles", 2);
-	mat->setUpdateCallback([time = 0.f](MaterialInstance & inst) mutable
-		{
-			time += Runtime::get().getDeltaTime();
+		Runtime::get().getRenderer().getMaterialSource("boilerplate"));
+	//mat->setProperty("tiles", 2);
+	//mat->setUpdateCallback([time = 0.f](MaterialInstance & inst) mutable
+	//	{
+	//		time += Runtime::get().getDeltaTime();
 
-			inst.setProperty("currentTile", int(time * 10) % 4);
-		});
+	//		//inst.setProperty("currentTile", int(time * 10) % 4);
+	//	});
 
 	mat->setTexture(0, tex);
 

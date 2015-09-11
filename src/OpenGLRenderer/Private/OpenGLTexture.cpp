@@ -55,6 +55,8 @@ void OpenGLTexture::setFilterMode(FilterMode newMode)
 				break;
 			case FilterMode::NEAREST:
 				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
 				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 				break;
 			case FilterMode::MIPMAP_LINEAR:
