@@ -801,15 +801,18 @@ cellspacing="0" cellpadding="4">
 <td align="left" valign="top"><p class="table"><strong>Explanation</strong></p></td>
 </tr>
 <tr>
-<td align="left" valign="top"><p class="table"><code>std::unique_ptr&lt;ActorLocation&gt; GUID</code></p></td>
+<td align="left" valign="top"><p class="table"><a href="http://en.cppreference.com/w/cpp/memory/unique_ptr"><code>std::unique_ptr</code></a>
+<code>&lt;</code> <a href="ActorLocation.html"><code>ActorLocation</code></a> <code>&gt; GUID</code></p></td>
 <td align="left" valign="top"><p class="table">The GUID. Used for networking and memory management within the <a href="World.html"><code>World</code></a>.</p></td>
 </tr>
 <tr>
-<td align="left" valign="top"><p class="table"><code>protected std::unique_ptr&lt;ActorTransformController&gt; transController</code></p></td>
+<td align="left" valign="top"><p class="table"><code>protected</code> <a href="http://en.cppreference.com/w/cpp/memory/unique_ptr"><code>std::unique_ptr</code></a>
+<code>&lt;</code> <a href="ActorTransformController.html"><code>ActorTransformController</code></a> <code>&gt; transController</code></p></td>
 <td align="left" valign="top"><p class="table">The handle on the <a href="PhysicsSystem.html"><code>PhysicsSystem</code></a>. Used to get the transform of the <code>Actor</code>.</p></td>
 </tr>
 <tr>
-<td align="left" valign="top"><p class="table"><code>protected std::deque&lt;Component*&gt; components</code></p></td>
+<td align="left" valign="top"><p class="table"><code>protected</code> <a href="http://en.cppreference.com/w/cpp/container/deque"><code>std::deque</code></a>
+<code>&lt;</code> <a href="Component.html"><code>Component</code></a> <code>*&gt; components</code></p></td>
 <td align="left" valign="top"><p class="table">A <code>std::deque</code> of all of the <a href="Component.html"><code>Component</code></a>s that the <code>Actor</code> contains.</p></td>
 </tr>
 </tbody>
@@ -1171,7 +1174,7 @@ The magnitude of torque to apply to the <code>Actor</code>. May be negative.
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-09-11 21:33:15 Mountain Daylight Time
+Last updated 2015-09-12 10:55:33 Mountain Daylight Time
 </div>
 </div>
 </body>
