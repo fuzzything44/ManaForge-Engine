@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
 <meta name="generator" content="AsciiDoc 8.6.9" />
-<title>Class Name</title>
+<title>SceneComponent</title>
 <style type="text/css">
 /* Shared CSS for AsciiDoc xhtml11 and html5 backends */
 
@@ -767,7 +767,7 @@ asciidoc.install(2);
 </head>
 <body class="article">
 <div id="header">
-<h1>Class Name</h1>
+<h1>SceneComponent</h1>
 <div id="toc">
   <div id="toctitle">Table of Contents</div>
   <noscript><p><b>JavaScript must be enabled in your browser to display the table of contents.</b></p></noscript>
@@ -776,103 +776,37 @@ asciidoc.install(2);
 <div id="content">
 <div id="preamble">
 <div class="sectionbody">
-<div class="paragraph"><p>Defined in header <a href="HeaderName.h"><code>&lt;HeaderName.h&gt;</code></a></p></div>
-<div class="paragraph"><p>Inherits From: <a href="ParentClass.html">ParentClass</a></p></div>
-<div class="listingblock">
-<div class="title">Template Parameters</div>
-<div class="content">
-<pre><code><span style="color:#000000; font-weight:bold">template</span><span style="color:#000000">&lt;</span>
-    typename FirstTemplateParam<span style="color:#000000">,</span>                         <span style="color:#838183; font-style:italic">//<img src="icons\/callouts/1.png" alt="1" /></span>
-    typename SecondTemplateParam <span style="color:#000000">=</span> DefaultParam          <span style="color:#838183; font-style:italic">//<img src="icons\/callouts/2.png" alt="2" /></span>
-<span style="color:#000000">&gt;</span></code></pre>
-</div></div>
-<div class="colist arabic"><table>
-<tr><td><img src="icons\/callouts/1.png" alt="1" /></td><td>
-Explanation for <code>FirstTemplateParam</code>
-</td></tr>
-<tr><td><img src="icons\/callouts/2.png" alt="2" /></td><td>
-Explanation for <code>SecondTemplateParam</code>
-</td></tr>
-</table></div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_member_classes">Member Classes</h2>
-<div class="sectionbody">
-<div class="olist arabic"><ol class="arabic">
-<li>
-<p>
-<a href="MemberClass1">Member Class 1</a>
-</p>
-</li>
-<li>
-<p>
-<a href="MemberClass2">Member Class 2</a>
-</p>
-</li>
-</ol></div>
+<div class="paragraph"><p>Defined in header <a href="./../src/ManaForgeEngine/Public/AudioComponent.h"><code>&lt;SceneComponent.h&gt;</code></a></p></div>
+<div class="paragraph"><p>Inherits From: <a href="Component.html">Component</a></p></div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="_explanation">Explanation</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>An audio component is a <a href="SceneComponent.html">Scene Component</a> that contains a [Sound Source](Sound Source). It also provides an interface to interact with the [Audio System](Audio System).</p></div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_member_types">Member Types</h2>
-<div class="sectionbody">
-<div class="tableblock">
-<table rules="all"
-width="100%"
-frame="border"
-cellspacing="0" cellpadding="4">
-<col width="50%" />
-<col width="50%" />
-<tbody>
-<tr>
-<td align="left" valign="top"><p class="table"><strong>Type and name</strong></p></td>
-<td align="left" valign="top"><p class="table"><strong>Explanation</strong></p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p class="table"><code>Member Type 1</code> ex: <code>int count</code></p></td>
-<td align="left" valign="top"><p class="table">Explanation</p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p class="table"><code>Member Type 2</code></p></td>
-<td align="left" valign="top"><p class="table">Explanation</p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p class="table"><code>Member Type 3</code></p></td>
-<td align="left" valign="top"><p class="table">Explanation</p></td>
-</tr>
-</tbody>
-</table>
-</div>
+<div class="paragraph"><p>A <code>SceneComponent</code> is a <a href="Component.html">Component</a> that has a <a href="Transform.html">Transform</a></p></div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="_constructors">Constructors</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_constructor_1_main_constructor">Constructor #1 (Main Constructor)</h3>
+<h3 id="_main_constructor">Main Constructor</h3>
 <div class="listingblock">
 <div class="content">
-<pre><code><span style="color:#010181">ClassName</span><span style="color:#000000">(</span>
-    Type Name <span style="color:#000000; font-weight:bold">for</span> argument <span style="color:#008200">#1,</span>         <span style="color:#838183; font-style:italic">//<img src="icons\/callouts/1.png" alt="1" /></span>
-<span style="color:#008200"></span>    Type Name <span style="color:#000000; font-weight:bold">for</span> argument <span style="color:#008200">#2</span>          <span style="color:#838183; font-style:italic">//<img src="icons\/callouts/2.png" alt="2" /></span>
-<span style="color:#008200"></span><span style="color:#000000">)</span></code></pre>
+<pre><code><span style="color:#010181">SceneComponent</span><span style="color:#000000">(</span>
+    Actor<span style="color:#000000">&amp;</span> owner<span style="color:#000000">,</span>                         <span style="color:#838183; font-style:italic">//<img src="icons\/callouts/1.png" alt="1" /></span>
+    Transform trans <span style="color:#000000">=</span> Transform<span style="color:#000000">{}</span>         <span style="color:#838183; font-style:italic">//<img src="icons\/callouts/2.png" alt="2" /></span>
+<span style="color:#000000">)</span></code></pre>
 </div></div>
 <div class="colist arabic"><table>
 <tr><td><img src="icons\/callouts/1.png" alt="1" /></td><td>
-Explanation for argument #1
+A refrence to the owner actor. Often <code>*this</code>.
 </td></tr>
 <tr><td><img src="icons\/callouts/2.png" alt="2" /></td><td>
-Explanation for argument #2
+The transform to spawn the component at, relative to the owning <a href="Actor.html">Actor</a>.
 </td></tr>
 </table></div>
-<div class="paragraph"><div class="title">Explanation</div><p>A quick (possibly multiline)</p></div>
-<div class="paragraph"><p>explanation of what is does</p></div>
+<div class="paragraph"><div class="title">Explanation</div><p>The basic constructor for a brand new <code>SceneComponent</code> .</p></div>
 </div>
 </div>
 </div>
@@ -880,41 +814,166 @@ Explanation for argument #2
 <h2 id="_member_functions">Member Functions</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_memberfunction1name">MemberFunction1Name</h3>
+<h3 id="_code_getrelativetransform_code"><code>getRelativeTransform</code></h3>
 <div class="listingblock">
 <div class="content">
-<pre><code>ReturnType <span style="color:#010181">MemberFunction1Name</span><span style="color:#000000">(</span>
-   Parameter <span style="color:#b07e00">1</span>                     <span style="color:#838183; font-style:italic">//<img src="icons\/callouts/1.png" alt="1" /></span>
-<span style="color:#000000">)</span></code></pre>
+<pre><code>Transform <span style="color:#010181">getRelativeTransform</span><span style="color:#000000">()</span> <span style="color:#0057ae">const</span></code></pre>
 </div></div>
-<div class="colist arabic"><table>
-<tr><td><img src="icons\/callouts/1.png" alt="1" /></td><td>
-Explanation for parameter 1.
-</td></tr>
-</table></div>
-<div class="paragraph"><div class="title">Explanation</div><p>Explanation for the what the function does</p></div>
-<div class="paragraph"><div class="title">Return Value</div><p>Explanation of what the return type represents</p></div>
+<div class="paragraph"><div class="title">Explanation</div><p>Gets the <a href="Transform.html">Transform</a> relative to the owning <a href="Actor.html">Actor</a>.</p></div>
+<div class="paragraph"><div class="title">Return Value</div><p>Returns the <a href="Transform.html">Transform</a>.</p></div>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_non_member_functions">Non-Member Functions</h2>
-<div class="sectionbody">
 <div class="sect2">
-<h3 id="_non_memberfunction1name">Non-MemberFunction1Name</h3>
+<h3 id="_code_getworldtransform_code"><code>getWorldTransform</code></h3>
 <div class="listingblock">
 <div class="content">
-<pre><code>ReturnType Non<span style="color:#000000">-</span><span style="color:#010181">MemberFunction1Name</span><span style="color:#000000">(</span>
-   Parameter <span style="color:#b07e00">1</span>                           <span style="color:#838183; font-style:italic">//<img src="icons\/callouts/1.png" alt="1" /></span>
+<pre><code>Transform <span style="color:#010181">getWorldTransform</span><span style="color:#000000">()</span> <span style="color:#0057ae">const</span></code></pre>
+</div></div>
+<div class="paragraph"><div class="title">Explanation</div><p>Gets the <a href="Transform.html">Transform</a> relative to the origin.</p></div>
+<div class="paragraph"><div class="title">Return Value</div><p>Returns the <a href="Transform.html">Transform</a>.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_code_getworldlocation_code"><code>getWorldLocation</code></h3>
+<div class="listingblock">
+<div class="content">
+<pre><code>vec2 <span style="color:#010181">getWorldLocation</span><span style="color:#000000">()</span> <span style="color:#0057ae">const</span></code></pre>
+</div></div>
+<div class="paragraph"><div class="title">Explanation</div><p>Returns the location relative to the origin.</p></div>
+<div class="paragraph"><div class="title">Return Value</div><p>Reutrns the <code>vec2</code>.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_code_getrelativelocation_code"><code>getRelativeLocation</code></h3>
+<div class="listingblock">
+<div class="content">
+<pre><code>vec2 <span style="color:#010181">getRelativeLocation</span><span style="color:#000000">()</span> <span style="color:#0057ae">const</span></code></pre>
+</div></div>
+<div class="paragraph"><div class="title">Explanation</div><p>Returns the location relative to the owning <a href="Actor.html">Actor</a>.</p></div>
+<div class="paragraph"><div class="title">Return Value</div><p>Returns the vec2.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_code_getscale_code"><code>getScale</code></h3>
+<div class="listingblock">
+<div class="content">
+<pre><code>vec2 <span style="color:#010181">getScale</span><span style="color:#000000">()</span> <span style="color:#0057ae">const</span></code></pre>
+</div></div>
+<div class="paragraph"><div class="title">Explanation</div><p>Gets the scale.</p></div>
+<div class="paragraph"><div class="title">Return Value</div><p>Returns the <code>vec2</code> representing the scale.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_code_getrelativerotation_code"><code>getRelativeRotation</code></h3>
+<div class="listingblock">
+<div class="content">
+<pre><code><span style="color:#0057ae">float</span> <span style="color:#010181">getRelativeRotation</span><span style="color:#000000">()</span> <span style="color:#0057ae">const</span></code></pre>
+</div></div>
+<div class="paragraph"><div class="title">Explanation</div><p>Gets the Rotation relative to the owning <a href="Actor.html">Actor</a>.</p></div>
+<div class="paragraph"><div class="title">Return Value</div><p>Reutrns the rotation. Yaw only.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_code_getworldrotation_code"><code>getWorldRotation</code></h3>
+<div class="listingblock">
+<div class="content">
+<pre><code><span style="color:#0057ae">float</span> <span style="color:#010181">getWorldRotation</span><span style="color:#000000">()</span> <span style="color:#0057ae">const</span></code></pre>
+</div></div>
+<div class="paragraph"><div class="title">Explanation</div><p>Gets the rotation relative to the origin.</p></div>
+<div class="paragraph"><div class="title">Return Value</div><p>Returns the rotation value.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_code_setrelativelocation_code"><code>setRelativeLocation</code></h3>
+<div class="listingblock">
+<div class="content">
+<pre><code><span style="color:#0057ae">void</span> <span style="color:#010181">setRelativeLocation</span><span style="color:#000000">(</span>
+    vec2 newLoc                          <span style="color:#838183; font-style:italic">//<img src="icons\/callouts/1.png" alt="1" /></span>
 <span style="color:#000000">)</span></code></pre>
 </div></div>
 <div class="colist arabic"><table>
 <tr><td><img src="icons\/callouts/1.png" alt="1" /></td><td>
-Explanation for parameter 1.
+The new location relative to the owning <a href="Actor.html">Actor</a>.
 </td></tr>
 </table></div>
-<div class="paragraph"><div class="title">Explanation</div><p>Explanation for the what the function does</p></div>
-<div class="paragraph"><div class="title">Return Value</div><p>Explanation of what the return type represents</p></div>
+<div class="paragraph"><div class="title">Explanation</div><p>Sets the location relative to the owning <a href="Actor.html">Actor</a>. This is a sharp snap.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_code_setscale_code"><code>setScale</code></h3>
+<div class="listingblock">
+<div class="content">
+<pre><code><span style="color:#0057ae">void</span> <span style="color:#010181">setScale</span><span style="color:#000000">(</span>
+    vec2 newScale                     <span style="color:#838183; font-style:italic">// <img src="icons\/callouts/1.png" alt="1" /></span>
+<span style="color:#000000">)</span></code></pre>
+</div></div>
+<div class="colist arabic"><table>
+<tr><td><img src="icons\/callouts/1.png" alt="1" /></td><td>
+The new scale for the <a href="Component.html">Component</a>.
+</td></tr>
+</table></div>
+<div class="paragraph"><div class="title">Explanation</div><p>Sets the scale.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_code_setrelativerotation_code"><code>setRelativeRotation</code></h3>
+<div class="listingblock">
+<div class="content">
+<pre><code><span style="color:#0057ae">void</span> <span style="color:#010181">setRelativeRotation</span><span style="color:#000000">(</span>
+    <span style="color:#0057ae">float</span> newRot                      <span style="color:#838183; font-style:italic">// <img src="icons\/callouts/1.png" alt="1" /></span>
+<span style="color:#000000">)</span></code></pre>
+</div></div>
+<div class="colist arabic"><table>
+<tr><td><img src="icons\/callouts/1.png" alt="1" /></td><td>
+The new rotation for the <a href="Component.html">Component</a> relative to the owning <a href="Actor.html">Actor</a>.
+</td></tr>
+</table></div>
+<div class="paragraph"><div class="title">Explanation</div><p>Sets the new relative rotation.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_code_setrelativetransform_code"><code>setRelativeTransform</code></h3>
+<div class="listingblock">
+<div class="content">
+<pre><code><span style="color:#0057ae">void</span> <span style="color:#010181">setRelativeTransform</span><span style="color:#000000">(</span>
+    <span style="color:#0057ae">const</span> Transform<span style="color:#000000">&amp;</span> newTrans             <span style="color:#838183; font-style:italic">// <img src="icons\/callouts/1.png" alt="1" /></span>
+<span style="color:#000000">)</span></code></pre>
+</div></div>
+<div class="colist arabic"><table>
+<tr><td><img src="icons\/callouts/1.png" alt="1" /></td><td>
+The new <a href="Transform.html">Transform</a> relative to the owning <a href="Actor.html">Actor</a>.
+</td></tr>
+</table></div>
+<div class="paragraph"><div class="title">Explanation</div><p>Sets the <a href="Transform.html">Transform</a> relative to the owning <a href="Actor.html">Actor</a>.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_code_addrelativelocation_code"><code>addRelativeLocation</code></h3>
+<div class="listingblock">
+<div class="content">
+<pre><code><span style="color:#0057ae">void</span> <span style="color:#010181">addRelativeLocation</span><span style="color:#000000">(</span>
+    vec2 locToAdd                           <span style="color:#838183; font-style:italic">// <img src="icons\/callouts/1.png" alt="1" /></span>
+<span style="color:#000000">)</span></code></pre>
+</div></div>
+<div class="colist arabic"><table>
+<tr><td><img src="icons\/callouts/1.png" alt="1" /></td><td>
+The offset to add the the local rotation.
+</td></tr>
+</table></div>
+<div class="paragraph"><div class="title">Explanation</div><p>Adds an offset to the <a href="Component.html">Component</a>.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_code_addrelativerotation_code"><code>addRelativeRotation</code></h3>
+<div class="listingblock">
+<div class="content">
+<pre><code><span style="color:#0057ae">void</span> <span style="color:#010181">addRelativeRotation</span><span style="color:#000000">(</span>
+    <span style="color:#0057ae">float</span> rotToAdd                       <span style="color:#838183; font-style:italic">// <img src="icons\/callouts/1.png" alt="1" /></span>
+<span style="color:#000000">)</span></code></pre>
+</div></div>
+<div class="colist arabic"><table>
+<tr><td><img src="icons\/callouts/1.png" alt="1" /></td><td>
+The amount of rotation to offset the current rotation by.
+</td></tr>
+</table></div>
+<div class="paragraph"><div class="title">Explanation</div><p>Adds an amount of rotation to the current rotation amount.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_code_getmodelmatrix_code"><code>getModelMatrix</code></h3>
+<div class="listingblock">
+<div class="content">
+<pre><code>mat3 <span style="color:#010181">getModelMatrix</span><span style="color:#000000">()</span> <span style="color:#0057ae">const</span></code></pre>
+</div></div>
+<div class="paragraph"><div class="title">Explanation</div><p>Calculates the matrix for the model. Mainly useful for advanced location calculations and rendering.</p></div>
+<div class="paragraph"><div class="title">Return Value</div><p>Return a <code>mat3</code> representing all the transformation applied up to the point of the model.</p></div>
 </div>
 </div>
 </div>
@@ -924,7 +983,8 @@ Explanation for parameter 1.
 <div class="olist arabic"><ol class="arabic">
 <li>
 <p>
-Other related things to see.
+<a href="Component.html">Component</a>
+ .
 </p>
 </li>
 </ol></div>
@@ -934,7 +994,7 @@ Other related things to see.
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-09-11 20:51:26 Mountain Daylight Time
+Last updated 2015-09-11 21:09:17 Mountain Daylight Time
 </div>
 </div>
 </body>

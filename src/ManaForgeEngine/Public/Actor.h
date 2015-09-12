@@ -42,18 +42,16 @@ public:
 
 	ENGINE_API explicit Actor();
 
-	// there is no way to copy the components, so this will be a move only type --
-	// TODO: think about a clone method for component
 	Actor(const Actor& other) = delete;
 	Actor(Actor&& other) = default;
 
 	Actor& operator=(const Actor& other) = delete;
 	Actor& operator=(Actor&& other) = default;
 
+	ENGINE_API virtual ~Actor();
+
 	//<summary> returns if the actor should be saved or not.
 	ENGINE_API virtual bool getSaved() { return false; };
-
-	ENGINE_API virtual ~Actor();
 
 	// the global ID for this instatnce of the actor -- used mainly for networking
 	std::unique_ptr<ActorLocation> GUID;
@@ -87,7 +85,7 @@ public:
 	inline void setAngularVelocity(float newVelocity);
 	inline float getAngularVelocity();
 
-	inline void applyTorque(float magnituede);
+	inline void applyTorque(float magnitude);
 
 protected:
 	std::unique_ptr<ActorTransformController> transController;

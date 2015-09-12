@@ -802,7 +802,7 @@ asciidoc.install(2);
 </div></div>
 <div class="colist arabic"><table>
 <tr><td><img src="icons\/callouts/1.png" alt="1" /></td><td>
-The owning Actor
+The owning <a href="Actor.html"><code>Actor</code></a>
 </td></tr>
 <tr><td><img src="icons\/callouts/2.png" alt="2" /></td><td>
 The <a href="SoundCue.html"><code>SoundCue</code></a> to play.
@@ -961,10 +961,10 @@ The maximum distance that the source will be the loudest; for how far the source
 <div class="listingblock">
 <div class="content">
 <pre><code><span style="color:#0057ae">void</span> <span style="color:#010181">setConeParams</span><span style="color:#000000">(</span>
-                vec2 direction <span style="color:#000000">=</span> vec2<span style="color:#000000">{},</span>       <span style="color:#838183; font-style:italic">//<img src="icons\/callouts/1.png" alt="1" /></span>
-                <span style="color:#0057ae">float</span> innerAngle <span style="color:#000000">=</span> <span style="color:#b07e00">360</span><span style="color:#000000">.</span>f<span style="color:#000000">,</span>      <span style="color:#838183; font-style:italic">//<img src="icons\/callouts/2.png" alt="2" /></span>
-                <span style="color:#0057ae">float</span> outerAngle <span style="color:#000000">=</span> <span style="color:#b07e00">360</span><span style="color:#000000">.</span>f<span style="color:#000000">,</span>      <span style="color:#838183; font-style:italic">//<img src="icons\/callouts/3.png" alt="3" /></span>
-                <span style="color:#0057ae">float</span> outerGain <span style="color:#000000">=</span> <span style="color:#b07e00">0</span><span style="color:#000000">.</span>f          <span style="color:#838183; font-style:italic">//<img src="icons\/callouts/4.png" alt="4" /></span>
+    vec2 direction <span style="color:#000000">=</span> vec2<span style="color:#000000">{},</span>       <span style="color:#838183; font-style:italic">//<img src="icons\/callouts/1.png" alt="1" /></span>
+    <span style="color:#0057ae">float</span> innerAngle <span style="color:#000000">=</span> <span style="color:#b07e00">360</span><span style="color:#000000">.</span>f<span style="color:#000000">,</span>      <span style="color:#838183; font-style:italic">//<img src="icons\/callouts/2.png" alt="2" /></span>
+    <span style="color:#0057ae">float</span> outerAngle <span style="color:#000000">=</span> <span style="color:#b07e00">360</span><span style="color:#000000">.</span>f<span style="color:#000000">,</span>      <span style="color:#838183; font-style:italic">//<img src="icons\/callouts/3.png" alt="3" /></span>
+    <span style="color:#0057ae">float</span> outerGain <span style="color:#000000">=</span> <span style="color:#b07e00">0</span><span style="color:#000000">.</span>f          <span style="color:#838183; font-style:italic">//<img src="icons\/callouts/4.png" alt="4" /></span>
 <span style="color:#000000">)</span></code></pre>
 </div></div>
 <div class="colist arabic"><table>
@@ -983,13 +983,64 @@ The gain applied when outside the cone. Will usually be less than one.
 </table></div>
 <div class="paragraph"><div class="title">Explanation</div><p>Sets the parameters necessary to setup a cone effect, like a megephone.</p></div>
 </div>
+<div class="sect2">
+<h3 id="_code_setgainbounds_code"><code>setGainBounds</code></h3>
+<div class="listingblock">
+<div class="content">
+<pre><code><span style="color:#0057ae">void</span> <span style="color:#010181">setGainBounds</span><span style="color:#000000">(</span>
+    <span style="color:#0057ae">float</span> min<span style="color:#000000">,</span>                 <span style="color:#838183; font-style:italic">//<img src="icons\/callouts/1.png" alt="1" /></span>
+    <span style="color:#0057ae">float</span> max                  <span style="color:#838183; font-style:italic">//<img src="icons\/callouts/2.png" alt="2" /></span>
+<span style="color:#000000">)</span></code></pre>
+</div></div>
+<div class="colist arabic"><table>
+<tr><td><img src="icons\/callouts/1.png" alt="1" /></td><td>
+The maximum gain
+</td></tr>
+<tr><td><img src="icons\/callouts/2.png" alt="2" /></td><td>
+The minimum gain
+</td></tr>
+</table></div>
+<div class="paragraph"><div class="title">Explanation</div><p>Set the min and max gain.</p></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_see_also">See Also</h2>
+<div class="sectionbody">
+<div class="olist arabic"><ol class="arabic">
+<li>
+<p>
+<a href="Component.html"><code>Component</code></a>
+</p>
+</li>
+<li>
+<p>
+<a href="Actor.html"><code>Actor</code></a>
+</p>
+</li>
+<li>
+<p>
+<a href="AudioSystem.html"><code>AudioSystem</code></a>
+</p>
+</li>
+<li>
+<p>
+<a href="SoundSource.html"><code>SoundSource</code></a>
+</p>
+</li>
+<li>
+<p>
+<a href="SoundCue.html"><code>SoundCue</code></a>
+</p>
+</li>
+</ol></div>
 </div>
 </div>
 </div>
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-09-11 19:51:10 Mountain Daylight Time
+Last updated 2015-09-11 20:55:57 Mountain Daylight Time
 </div>
 </div>
 </body>
