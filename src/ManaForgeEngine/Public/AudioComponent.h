@@ -24,7 +24,7 @@ public:
 	inline void pause();
 	inline void stop();
 
-	inline void setMaxDistance(float maxDistacne);
+	inline void setMaxDistance(float maxDistance);
 	inline float getMaxDistance() const;
 
 	inline void setRolloffFactor(float rolloffFactor);
@@ -34,7 +34,7 @@ public:
 	inline float getReferenceDistance() const;
 
 	inline void setConeParams(
-		vec2 direction = vec2(), float innerAngle = 360.f, float outerAngle = 360.f, float outerGain = 0.f);
+		vec2 direction = vec2{}, float innerAngle = 360.f, float outerAngle = 360.f, float outerGain = 0.f);
 
 	inline void setGainBounds(float min, float max);
 
