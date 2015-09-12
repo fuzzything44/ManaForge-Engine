@@ -10,7 +10,7 @@ class AudioComponent : public SceneComponent
 {
 public:
 	ENGINE_API explicit AudioComponent(
-		Actor& owner, SoundCue& cue, Transform trans = Transform(), bool loops = false);
+		Actor& owner, SoundCue& cue, Transform trans = Transform{}, bool loops = false);
 	AudioComponent(const AudioComponent& other) = delete;
 	AudioComponent(AudioComponent&& other) = default;
 
