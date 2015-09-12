@@ -5,8 +5,6 @@
 #include <string>
 #include <memory>
 
-#include <boost/noncopyable.hpp>
-
 class SoundCue;
 class SoundSource;
 class AudioComponent;
