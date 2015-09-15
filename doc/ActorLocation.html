@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
 <meta name="generator" content="AsciiDoc 8.6.9" />
-<title>AudioSystem</title>
+<title>ActorLocation</title>
 <style type="text/css">
 /* Shared CSS for AsciiDoc xhtml11 and html5 backends */
 
@@ -767,7 +767,7 @@ asciidoc.install(2);
 </head>
 <body class="article">
 <div id="header">
-<h1>AudioSystem</h1>
+<h1>ActorLocation</h1>
 <div id="toc">
   <div id="toctitle">Table of Contents</div>
   <noscript><p><b>JavaScript must be enabled in your browser to display the table of contents.</b></p></noscript>
@@ -776,86 +776,28 @@ asciidoc.install(2);
 <div id="content">
 <div id="preamble">
 <div class="sectionbody">
-<div class="paragraph"><p>Defined in header <a href="./../src/ManaForgeEngine/Public/AudioSystem.h"><code>&lt;AudioSystem.h&gt;</code></a></p></div>
+<div class="paragraph"><p>Defined in header <a href="./../src/ManaForgeEngine/Public/World.h"><code>&lt;World.h&gt;</code></a></p></div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="_explanation">Explanation</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>A <code>AudioSystem</code> is an abstract class the defines an interface for communication with an audio API.</p></div>
-<div class="paragraph"><p>Anybody that implements <code>AudioSystem</code> should also implement <a href="SoundCue.html"><code>SoundCue</code></a> and <a href="SoundSource.html"><code>SoundSource</code></a>.</p></div>
+<div class="paragraph"><p>An <code>ActorLocation</code> is a empty interface class for the sole perpose of giving the world to associate an <a href="Actor.html"><code>Actor</code></a> to where it is stored in memory.</p></div>
+<div class="paragraph"><p>This class is usually implemented alongside the <a href="World.html"><code>World</code></a> class.</p></div>
+<div class="paragraph"><p>An <code>ActorLocation</code> is included in every <a href="Actor.html"><code>Actor</code></a>. It is also used for registering actors through the <a href="World.html#_code_addActor_code"><code>World::addActor</code></a> function.</p></div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="_constructors">Constructors</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>An <code>AudioSystem</code> is meant to be instanced by the <a href="ModuleManager.html"><code>ModuleManager</code></a>.</p></div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_member_functions">Member Functions</h2>
-<div class="sectionbody">
-<div class="sect2">
-<h3 id="_code_newsoundcue_code"><code>newSoundCue</code></h3>
-<div class="listingblock">
-<div class="content">
-<pre><code>std<span style="color:#000000">::</span>shared_ptr<span style="color:#000000">&lt;</span>SoundCue<span style="color:#000000">&gt;</span> <span style="color:#010181">newSoundCue</span><span style="color:#000000">(</span>
-   <span style="color:#0057ae">const</span> path_t<span style="color:#000000">&amp;</span> name                          <span style="color:#838183; font-style:italic">// <img src="icons\/callouts/1.png" alt="1" /></span>
-<span style="color:#000000">)</span></code></pre>
-</div></div>
-<div class="colist arabic"><table>
-<tr><td><img src="icons\/callouts/1.png" alt="1" /></td><td>
-The name of the .wav file to be found as a <a href="http://www.boost.org/doc/libs/1_53_0/libs/filesystem/doc/reference.html#class-path"><code>path_t</code></a>.
-The file will look like this: <code>Resource/sounds/&lt;name&gt;.wav</code>.
-</td></tr>
-</table></div>
-<div class="paragraph"><div class="title">Explanation</div><p>Creates (or finds from a cache) a new <a href="SoundCue.html"><code>SoundCue</code></a> object on the heap. It is refrenced counted by the <a href="http://en.cppreference.com/w/cpp/memory/shared_ptr"><code>std::shared_ptr</code></a>.</p></div>
-<div class="paragraph"><div class="title">Return Value</div><p>Returns a <a href="http://en.cppreference.com/w/cpp/memory/shared_ptr"><code>std::shared_ptr</code></a> representing the new <a href="SoundCue.html"><code>SoundCue</code></a>.</p></div>
-</div>
-<div class="sect2">
-<h3 id="_code_newsoundsource_code"><code>newSoundSource</code></h3>
-<div class="listingblock">
-<div class="content">
-<pre><code>std<span style="color:#000000">::</span>unique_ptr<span style="color:#000000">&lt;</span>SoundSource<span style="color:#000000">&gt;</span> <span style="color:#010181">newSoundSource</span><span style="color:#000000">(</span>
-    SoundCue<span style="color:#000000">&amp;</span> cue<span style="color:#000000">,</span>                             <span style="color:#838183; font-style:italic">// <img src="icons\/callouts/1.png" alt="1" /></span>
-    AudioComponent<span style="color:#000000">&amp;</span> owner                      <span style="color:#838183; font-style:italic">// <img src="icons\/callouts/2.png" alt="2" /></span>
-<span style="color:#000000">)</span></code></pre>
-</div></div>
-<div class="colist arabic"><table>
-<tr><td><img src="icons\/callouts/1.png" alt="1" /></td><td>
-The <a href="SoundCue.html"><code>SoundCue</code></a> to use.
-</td></tr>
-<tr><td><img src="icons\/callouts/2.png" alt="2" /></td><td>
-The owning <a href="AudioComponent.html"><code>AudioComponent</code></a>.
-</td></tr>
-</table></div>
-<div class="paragraph"><div class="title">Explanation</div><p>Creates a new <a href="SoundSource.html"><code>SoundSource</code></a> from the parameters.</p></div>
-<div class="paragraph"><div class="title">Return Value</div><p>Returns a <a href="http://en.cppreference.com/w/cpp/memory/unique_ptr"><code>std::unique_ptr</code></a> representing the new <a href="SoundSource.html"><code>SoundSource</code></a>.</p></div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_see_also">See Also</h2>
-<div class="sectionbody">
-<div class="olist arabic"><ol class="arabic">
-<li>
-<p>
-<a href="SoundCue.html"><code>SoundCue</code></a>
-</p>
-</li>
-<li>
-<p>
-<a href="SoundSource.html"><code>SoundSource</code></a>
-</p>
-</li>
-</ol></div>
+<div class="paragraph"><p>An <code>ActorLocation</code> is returned from the <a href="World.html#_code_addActor_code"><code>World::addActor</code></a> function, and is the only way to create one.</p></div>
 </div>
 </div>
 </div>
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-09-14 18:27:14 Mountain Daylight Time
+Last updated 2015-09-14 18:25:09 Mountain Daylight Time
 </div>
 </div>
 </body>

@@ -4,13 +4,14 @@
 
 class Actor;
 
-class Component : std::enable_shared_from_this<Component>
+class Component
 {
 public:
 	inline explicit Component(Actor& owner);
 	ENGINE_API virtual ~Component();
 
 	inline Actor& getOwner();
+	inline const Actor& getOwner() const;
 
 protected:
 	Actor& owner;
@@ -29,3 +30,5 @@ inline Component::Component(Actor& owner)
 }
 
 inline Actor& Component::getOwner() { return owner; }
+
+inline const Actor& Component::getOwner() const { return owner; }
