@@ -64,7 +64,7 @@ public:
 
 			meshData->init(locations.data(), UVs.data(), locations.size(), tris.data(), tris.size());
 		}
-		mesh = std::make_unique<MeshComponent>(*this, Transform{}, std::move(mat), std::move(meshData));
+		mesh = std::make_unique<MeshComponent>(*this, Transform{}, std::move(mat), std::move(meshData), 9);
 
 		auto shape = Runtime::get().getPhysicsSystem().newPhysicsShape();
 		shape->asCircle(1.f);

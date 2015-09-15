@@ -11,13 +11,12 @@ class ChunkActor : public Actor
 {
 public:
 	ChunkActor(const Transform& trans, std::shared_ptr<MaterialInstance> mat, std::shared_ptr<ModelData> data)
-		: Actor()
+		: Actor(),
+		meshComp(*this, Transform{}, mat, data, 1)
 	{
 		setWorldTransform(trans);
-
-		meshComp = std::make_shared<MeshComponent>(*this, Transform{}, mat, data);
 	}
 
 private:
-	std::shared_ptr<MeshComponent> meshComp;
+	MeshComponent meshComp;
 };

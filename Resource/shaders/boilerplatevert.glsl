@@ -11,7 +11,7 @@ void main()
 {
 	
 	gl_Position.xyw = MVPmat * vec3(vertLocationIn, 1.f);
-	gl_Position.z = -renderOrder;
+	gl_Position.z = float(renderOrder - 256) / 256;
 	
 	fragTexCoord = vertTexCoordIn;
 }

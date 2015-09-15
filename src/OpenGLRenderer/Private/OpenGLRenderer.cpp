@@ -66,8 +66,7 @@ void OpenGLRenderer::initRenderer()
 
 	runOnRenderThreadAsync([]
 		{
-			glEnable(GL_DEPTH_TEST);
-			glDepthFunc(GL_LESS);
+			glDisable(GL_DEPTH_TEST);
 
 			glEnable(GL_BLEND);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -92,7 +91,7 @@ const Window& OpenGLRenderer::getWindow() const
 	return *window;
 }
 
-std::unique_ptr<Model> OpenGLRenderer::newModel() { return std::make_unique<OpenGLModel>(*this); }
+std::unique_ptr<Model> OpenGLRenderer::newModel(uint8 renderOrder) { return std::make_unique<OpenGLModel>(*this, renderOrder); }
 
 std::unique_ptr<TextBox> OpenGLRenderer::newTextBox() { return std::make_unique<OpenGLTextBox>(*this); }
 
@@ -132,28 +131,10 @@ std::unique_ptr<MaterialInstance> OpenGLRenderer::newMaterialInstance(MaterialSo
 
 std::shared_ptr<ModelData> OpenGLRenderer::newModelData(const std::string& name)
 {
-	auto iter = modelDataCache.find(name);
-
-	std::shared_ptr<OpenGLModelData> ret;
-
-	if (iter != modelDataCache.end()) {
-		if (iter->second.expired()) {
-
-			ret = std::make_shared<OpenGLModelData>(*this);
-		}
-		else
-		{
-			ret = std::shared_ptr<OpenGLModelData>{iter->second};
-		}
-
+	if (auto&& ret = modelDataCache.get(name))
 		return ret;
-	}
-
-	ret = std::make_shared<OpenGLModelData>(*this);
-
-	modelDataCache.insert({name, ret});
-
-	return ret;
+	else
+		return modelDataCache.set(name, std::make_shared<OpenGLModelData>(*this));
 }
 
 std::unique_ptr<ModelData> OpenGLRenderer::newModelData() { return std::make_unique<OpenGLModelData>(*this); }
@@ -169,15 +150,19 @@ bool OpenGLRenderer::update(float /*deltaTime*/)
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		});
 
-	// call the draw function for all of the models
-	for (auto&& model : models) {
-		model->draw();
+	// call the draw function for all of the models in order of render order
+	for (auto&& renderLevel : models)
+	{
+		for (auto&& elem : renderLevel.second)
+		{
+			elem->draw();
+		}
 	}
 
-	runOnRenderThreadAsync([]
-		{
-			glDisable(GL_DEPTH_TEST);
-		});
+	//runOnRenderThreadAsync([]
+	//	{
+	//		glDisable(GL_DEPTH_TEST);
+	//	});
 
 	Runtime::get().getPhysicsSystem().drawDebugPoints();
 
@@ -185,10 +170,10 @@ bool OpenGLRenderer::update(float /*deltaTime*/)
 		textBox->render();
 	}
 
-	runOnRenderThreadAsync([]
-		{
-			glEnable(GL_DEPTH_TEST);
-		});
+	//runOnRenderThreadAsync([]
+	//	{
+	//		glEnable(GL_DEPTH_TEST);
+	//	});
 
 	window->swapBuffers();
 	window->pollEvents();

@@ -15,7 +15,7 @@ class OpenGLModel final : public Model
 public:
 	friend class OpenGLRenderer;
 
-	explicit OpenGLModel(OpenGLRenderer& renderer);
+	explicit OpenGLModel(OpenGLRenderer& renderer, uint8 renderOrder);
 	virtual ~OpenGLModel();
 
 	virtual void init(std::shared_ptr<MaterialInstance> mat,
@@ -28,15 +28,16 @@ public:
 	void draw();
 
 private:
+	uint8 renderOrder;
+
 	std::shared_ptr<OpenGLModelData> modelData;
+	std::shared_ptr<OpenGLMaterialInstance> material;
 
 	MeshComponent* parent;
-
-	OpenGLRenderer& renderer;
-
-	std::shared_ptr<OpenGLMaterialInstance> material;
 
 	std::list<OpenGLModel*>::iterator location;
 
 	std::atomic<bool> isValid;
+
+	OpenGLRenderer& renderer;
 };

@@ -77,7 +77,7 @@ public:
 	virtual Window& getWindow() override;
 	const Window& getWindow() const override;
 
-	virtual std::unique_ptr<Model> newModel() override;
+	virtual std::unique_ptr<Model> newModel(uint8 renderOrder) override;
 	virtual std::unique_ptr<TextBox> newTextBox() override;
 	virtual Font* getFont(const path_t& name) override;
 	virtual Texture* getTexture(const path_t& name) override;
@@ -129,13 +129,13 @@ private:
 	std::atomic<bool> shouldExit;
 
 	// delete our caches and models first
-	std::list<OpenGLModel*> models;
+	std::map<uint8, std::list<OpenGLModel*>> models;
 	std::list<OpenGLTextBox*> textBoxes;
 
 	StrongCacher<path_t, OpenGLTexture> textures;
 	StrongCacher<path_t, OpenGLFont> fonts;
 	StrongCacher<path_t, OpenGLMaterialSource> matSources;
-	std::unordered_map<std::string, std::weak_ptr<OpenGLModelData>> modelDataCache;
+	WeakCacher<std::string, OpenGLModelData> modelDataCache;
 };
 
 template <typename Function, typename... Args>

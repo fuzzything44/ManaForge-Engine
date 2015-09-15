@@ -15,12 +15,20 @@
 
 #include <glm-ortho-2d.h>
 
-OpenGLModel::OpenGLModel(OpenGLRenderer& renderer)
+OpenGLModel::OpenGLModel(OpenGLRenderer& renderer, uint8 renderOrder)
 	: renderer(renderer)
 	, isValid(true)
+	, renderOrder(renderOrder)
 {
-	// add model to renderer's list
-	location = renderer.models.insert(renderer.models.begin(), this);
+	renderer.runOnRenderThreadAsync([this]
+	{
+		// add model to renderer's list
+		auto&& modelList = this->renderer.models[this->renderOrder];
+
+		location = modelList.insert(modelList.begin(), this);
+	});
+
+
 }
 
 OpenGLModel::~OpenGLModel()
@@ -29,7 +37,7 @@ OpenGLModel::~OpenGLModel()
 
 	renderer.runOnRenderThreadSync([this]
 		{
-			renderer.models.erase(location);
+			renderer.models[renderOrder].erase(location);
 		});
 }
 
