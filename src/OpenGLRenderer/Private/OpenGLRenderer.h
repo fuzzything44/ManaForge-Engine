@@ -111,7 +111,10 @@ public:
 	template <typename Function, typename... Args>
 	inline auto runOnRenderThreadAsync(Function&& func, Args&&... args);
 
-	inline bool isOnRenderThread() { return std::this_thread::get_id() == renderThread.getThread().get_id(); }
+	inline bool isOnRenderThread() 
+	{ 
+		return std::this_thread::get_id() == renderThread.getThread().get_id(); 
+	}
 
 private:
 	void initRenderer();
@@ -141,39 +144,49 @@ private:
 template <typename Function, typename... Args>
 inline auto OpenGLRenderer::runOnRenderThreadSync(Function&& func, Args&&... args)
 {
-	if (isOnRenderThread()) {
-		return func(std::forward<Args>(args)...);
-	}
+	//if (isOnRenderThread()) {
+	//	return func(std::forward<Args>(args)...);
+	//}
 
-	using retType = decltype(func(Args && ...));
+	//using retType = decltype(func(Args && ...));
 
-	std::packaged_task<retType(Args && ...)> task{func};
+	//std::packaged_task<retType(Args && ...)> task{func};
 
-	queue.push([&task, &args...]
-		{
-			task(std::forward<Args>(args)...);
-		});
+	//queue.push([&task, &args...]
+	//	{
+	//		task(std::forward<Args>(args)...);
+	//	});
 
-	return task.get_future().get();
+	//return task.get_future().get();
+
+	return func(std::forward<Args>(args)...);
+
 }
 
 template <typename Function, typename... Args>
 inline auto OpenGLRenderer::runOnRenderThreadAsync(Function&& func, Args&&... args)
 {
-	assert(!isOnRenderThread());
+	//assert(!isOnRenderThread());
 
 	using retType = decltype(func(std::forward<Args>(args)...));
 
-	// this needs to be a shared_ptr because the lambda needs to be copied. If the queue had emplace
-	// functions...
-	auto task = std::make_shared<std::packaged_task<retType(Args && ...)>>(func);
+	//// this needs to be a shared_ptr because the lambda needs to be copied. If the queue had emplace
+	//// functions...
+	//auto task = std::make_shared<std::packaged_task<retType(Args && ...)>>(func);
 
-	auto ret = task->get_future(); // cache it because it will be moved from.
+	//auto ret = task->get_future(); // cache it because it will be moved from.
 
-	queue.push([ pack = std::move(task), args = std::make_tuple(std::forward<Args>(args)...) ]() mutable
-		{
-			callWithTuple(*pack, args);
-		});
+	//queue.push([ pack = std::move(task), args = std::make_tuple(std::forward<Args>(args)...) ]() mutable
+	//	{
+	//		callWithTuple(*pack, args);
+	//	});
 
-	return ret;
+	//return ret;
+
+	std::promise<retType> a;
+
+	a.set_value();
+	func(std::forward<Args>(args)...);
+	return a.get_future();
+
 }

@@ -286,6 +286,7 @@ void OpenGLMaterialInstance::use()
 
 	renderer.runOnRenderThreadAsync([this]
 		{
+			assert(glIsProgram(**program));
 			glUseProgram(**program);
 			for (auto&& elem : properties) {
 				elem.second();

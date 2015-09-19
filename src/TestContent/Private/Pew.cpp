@@ -4,6 +4,7 @@
 #include <sstream>
 #include <locale>
 #include <string>
+#include <chrono>
 
 #include <TimerManager.h>
 
@@ -46,11 +47,12 @@ void Pew::startContact(PhysicsComponent& other)
 
 	textBox->setText(u"Contacts: "s + reinterpret_cast<const char16_t*>(std::to_wstring(++contacts).c_str()));
 
-	if (&other.getOwner() == reinterpret_cast<Actor*>(Runtime::get().pawn.get())) {
+	if (reinterpret_cast<Pawn*>(&other.getOwner()) == Runtime::get().pawn.get()) {
 		for (int i = 0; i < 100; ++i) {
 			auto g = new Gate();
 			g->setWorldLocation(getWorldLocation() + vec2(2.f, 1.f));
 			g->setVelocity(vec2(1.f, .3f));
+
 			// not a memory leak: Gates clean theirselvs up.
 		}
 	}

@@ -21,4 +21,5 @@ Actor::~Actor()
 					   "std::shared_ptr for components.";
 		delete *components.begin();
 	}
+
 }

@@ -12,16 +12,17 @@ void changeDir()
 {
 	// changes the path so everything we open will be in Resoruce/
 	char ownPth[MAX_PATH];
-
-	GetCurrentDirectory(MAX_PATH, ownPth);
+	
+	GetModuleFileName(NULL, ownPth, MAX_PATH);
 
 	path_t path = ownPth;
 
 	// remove the exe and the directory
-	for (int i = 0; i < 2; i++) {
+	for (int i = 0; i < 4; i++) {
 		assert(boost::filesystem::exists(path));
 		path = path.parent_path();
 	}
+	assert(path.filename() == "ManaForge-Engine");
 	path += "\\Resource\\";
 	assert(boost::filesystem::exists(path));
 

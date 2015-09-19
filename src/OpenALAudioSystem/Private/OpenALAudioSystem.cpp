@@ -35,7 +35,7 @@ OpenALAudioSystem::OpenALAudioSystem()
 	alListenerfv(AL_ORIENTATION, orientation);
 }
 
-OpenALAudioSystem::~OpenALAudioSystem() {}
+OpenALAudioSystem::~OpenALAudioSystem() { alutExit(); }
 
 void OpenALAudioSystem::addSource(OpenALSoundSource* source) { sources.push_back(source); }
 

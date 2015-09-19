@@ -37,10 +37,10 @@ OpenGLRenderer::~OpenGLRenderer() = default;
 
 void OpenGLRenderer::init()
 {
-	renderThread = std::thread{[this]
-		{
-			renderLoop();
-		}};
+	//renderThread = std::thread{[this]
+	//	{
+	//		renderLoop();
+	//	}};
 
 	initRenderer();
 }
@@ -147,17 +147,19 @@ bool OpenGLRenderer::update(float /*deltaTime*/)
 
 	lastFrame = runOnRenderThreadAsync([]
 		{
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			glClear(GL_COLOR_BUFFER_BIT);
 		});
 
 	// call the draw function for all of the models in order of render order
+	size_t numModels = 0;
 	for (auto&& renderLevel : models)
 	{
 		for (auto&& elem : renderLevel.second)
 		{
-			elem->draw();
+			elem->draw(); ++numModels;
 		}
 	}
+	MFLOG(Debug) << "Num Models: " << numModels;
 
 	//runOnRenderThreadAsync([]
 	//	{
@@ -222,22 +224,14 @@ void OpenGLRenderer::showLoadingImage()
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uvec3) * 2, elems, GL_STATIC_DRAW);
 
-			auto program = static_cast<OpenGLMaterialSource&>(*getMaterialSource("boilerplate"));
-			auto texture = SOIL_load_OGL_texture("textures\\loading.dds", 4, 0, SOIL_FLAG_DDS_LOAD_DIRECT);
-			glUseProgram(*program);
-
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-			glUniform1i(glGetUniformLocation(*program, "textures"), 0);
-			glBindTexture(GL_TEXTURE_2D, texture);
-			glActiveTexture(GL_TEXTURE0);
-
-			glm::mat3 mvp = glm::ortho2d(-1.f, 1.f, -1.f, 1.f);
-			glUniformMatrix3fv(glGetUniformLocation(*program, "MVPmat"), 1, GL_FALSE, &mvp[0][0]);
-
-			glUniform1f(glGetUniformLocation(*program, "renderOrder"), 1.f);
-
+			auto&& source = static_cast<OpenGLMaterialSource*>(getMaterialSource("boilerplate"));
+			auto&& program = std::unique_ptr<OpenGLMaterialInstance>{
+				static_cast<OpenGLMaterialInstance*>(newMaterialInstance(source).release()) };
+			auto&& texture = static_cast<OpenGLTexture&>(*getTexture("loading"));
+			
+			program->setTexture(0, &texture);
+			program->use();
+			
 			glEnableVertexAttribArray(0);
 			glBindBuffer(GL_ARRAY_BUFFER, vbo);
 			glVertexAttribPointer(0, // location 0 (see shader)
@@ -270,8 +264,6 @@ void OpenGLRenderer::showLoadingImage()
 			glDeleteBuffers(1, &ebo);
 
 			glDeleteVertexArrays(1, &vao);
-			glDeleteProgram(*program);
-
 		});
 
 	// display it
