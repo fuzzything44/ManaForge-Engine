@@ -16,6 +16,8 @@
 
 #include <boost/lockfree/spsc_queue.hpp>
 
+#define USE_PARALLEL_RENDERER 1
+
 class OpenGLModel;
 class OpenGLMaterialInstance;
 class OpenGLTexture;
@@ -77,7 +79,7 @@ public:
 	virtual Window& getWindow() override;
 	const Window& getWindow() const override;
 
-	virtual std::unique_ptr<Model> newModel(uint8 renderOrder) override;
+	virtual std::unique_ptr<Model, void(*)(Model*)> newModel(uint8 renderOrder) override;
 	virtual std::unique_ptr<TextBox> newTextBox() override;
 	virtual Font* getFont(const path_t& name) override;
 	virtual Texture* getTexture(const path_t& name) override;
@@ -86,6 +88,9 @@ public:
 	virtual std::unique_ptr<MaterialInstance> newMaterialInstance(MaterialSource* source) override;
 	virtual std::shared_ptr<ModelData> newModelData(const std::string& name) override;
 	virtual std::unique_ptr<ModelData> newModelData() override;
+
+	virtual void deleteModel(Model* model) override;
+
 
 	/// <summary> Renders the next frame. </summary>
 	bool update(float deltaTime);
@@ -108,12 +113,17 @@ public:
 	template <typename Function, typename... Args>
 	inline auto runOnRenderThreadSync(Function&& func, Args&&... args);
 
+	// the futures from this function should NEVER be used in the render thread -- could produce deadlock
 	template <typename Function, typename... Args>
 	inline auto runOnRenderThreadAsync(Function&& func, Args&&... args);
 
 	inline bool isOnRenderThread() 
 	{ 
+#if USE_PARALLEL_RENDERER
 		return std::this_thread::get_id() == renderThread.getThread().get_id(); 
+#else
+		return true;
+#endif
 	}
 
 private:
@@ -139,54 +149,64 @@ private:
 	StrongCacher<path_t, OpenGLFont> fonts;
 	StrongCacher<path_t, OpenGLMaterialSource> matSources;
 	WeakCacher<std::string, OpenGLModelData> modelDataCache;
+
+	boost::lockfree::spsc_queue<OpenGLModel*> modelsToDelete;
+	boost::lockfree::spsc_queue<OpenGLModel*> modelsToAdd;
 };
 
 template <typename Function, typename... Args>
 inline auto OpenGLRenderer::runOnRenderThreadSync(Function&& func, Args&&... args)
 {
-	//if (isOnRenderThread()) {
-	//	return func(std::forward<Args>(args)...);
-	//}
+#if USE_PARALLEL_RENDERER
+	if (isOnRenderThread()) {
+		return func(std::forward<Args>(args)...);
+	}
 
-	//using retType = decltype(func(Args && ...));
+	using retType = decltype(func(Args && ...));
 
-	//std::packaged_task<retType(Args && ...)> task{func};
+	std::packaged_task<retType(Args && ...)> task{func};
 
-	//queue.push([&task, &args...]
-	//	{
-	//		task(std::forward<Args>(args)...);
-	//	});
+	queue.push([&task, &args...]
+		{
+			task(std::forward<Args>(args)...);
+		});
 
-	//return task.get_future().get();
-
+	return task.get_future().get();
+#else
 	return func(std::forward<Args>(args)...);
-
+#endif
 }
 
 template <typename Function, typename... Args>
 inline auto OpenGLRenderer::runOnRenderThreadAsync(Function&& func, Args&&... args)
 {
-	//assert(!isOnRenderThread());
-
 	using retType = decltype(func(std::forward<Args>(args)...));
 
-	//// this needs to be a shared_ptr because the lambda needs to be copied. If the queue had emplace
-	//// functions...
-	//auto task = std::make_shared<std::packaged_task<retType(Args && ...)>>(func);
+#if USE_PARALLEL_RENDERER
+	assert(!isOnRenderThread());
 
-	//auto ret = task->get_future(); // cache it because it will be moved from.
+	// this needs to be a shared_ptr because the lambda needs to be copied. If the queue had emplace
+	// functions...
+	auto task = std::make_shared<std::packaged_task<retType(Args && ...)>>(func);
 
-	//queue.push([ pack = std::move(task), args = std::make_tuple(std::forward<Args>(args)...) ]() mutable
-	//	{
-	//		callWithTuple(*pack, args);
-	//	});
+	auto ret = task->get_future(); // cache it because it will be moved from.
 
-	//return ret;
+	queue.push([ pack = std::move(task), args = std::make_tuple(std::forward<Args>(args)...) ]() mutable
+		{
+			callWithTuple(*pack, args);
+		});
 
+	return ret;
+#else
 	std::promise<retType> a;
 
 	a.set_value();
 	func(std::forward<Args>(args)...);
 	return a.get_future();
+#endif
 
 }
+
+
+
+// ~800

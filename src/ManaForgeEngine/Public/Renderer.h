@@ -14,12 +14,13 @@ class Texture;
 class MaterialInstance;
 class CameraComponent;
 class Window;
-class Model;
 class TextureLibrary;
 class ModelData;
 class MaterialSource;
 class Font;
+class Model;
 class TextBox;
+
 
 // a non - copyable abstract class that handles rendering
 class Renderer : boost::noncopyable
@@ -42,7 +43,7 @@ public:
 	/// <returns> null if it fails, else the camera.</returns>
 	virtual const CameraComponent& getCurrentCamera() const = 0;
 
-	virtual std::unique_ptr<Model> newModel(uint8 renderOrder/* = 0*/) = 0;
+	virtual std::unique_ptr<Model, void(*)(Model*)> newModel(uint8 renderOrder/* = 0*/) = 0;
 	virtual std::unique_ptr<TextBox> newTextBox() = 0;
 	virtual Font* getFont(const path_t& name) = 0;
 	virtual Texture* getTexture(const path_t& name) = 0;
@@ -51,6 +52,8 @@ public:
 	virtual std::unique_ptr<MaterialInstance> newMaterialInstance(MaterialSource* source) = 0;
 	virtual std::shared_ptr<ModelData> newModelData(const std::string& name) = 0;
 	virtual std::unique_ptr<ModelData> newModelData() = 0;
+
+	virtual void deleteModel(Model* model) = 0;
 
 	// gets the window
 	virtual Window& getWindow() = 0;

@@ -282,28 +282,28 @@ void OpenGLMaterialInstance::setPropertyMatrix4ptr(const std::string& propName, 
 
 void OpenGLMaterialInstance::use()
 {
+	assert(renderer.isOnRenderThread());
+
 	if (updateCallback) updateCallback(*this);
 
-	renderer.runOnRenderThreadAsync([this]
-		{
-			assert(glIsProgram(**program));
-			glUseProgram(**program);
-			for (auto&& elem : properties) {
-				elem.second();
-			}
+	assert(program);
+	assert(glIsProgram(**program));
+	glUseProgram(**program);
+	for (auto&& elem : properties) {
+		elem.second();
+	}
 
-			for (uint32 i = 0; i < maxTextures && textures[i]; i++) {
-				glUniform1i(program->startTexUniform + i, i);
+	for (uint32 i = 0; i < maxTextures && textures[i]; i++) {
+		glUniform1i(program->startTexUniform + i, i);
 
-				glActiveTexture(GL_TEXTURE0 + i);
-				glBindTexture(GL_TEXTURE_2D, textures[i]->getID());
-			}
+		glActiveTexture(GL_TEXTURE0 + i);
+		glBindTexture(GL_TEXTURE_2D, textures[i]->getID());
+	}
 
-			for (uint32 i = 0; i < maxTextures && refCountedTextures[i]; i++) {
-				glUniform1i(program->startTexUniform + i, i);
+	for (uint32 i = 0; i < maxTextures && refCountedTextures[i]; i++) {
+		glUniform1i(program->startTexUniform + i, i);
 
-				glActiveTexture(GL_TEXTURE0 + i);
-				glBindTexture(GL_TEXTURE_2D, refCountedTextures[i]->getID());
-			}
-		});
+		glActiveTexture(GL_TEXTURE0 + i);
+		glBindTexture(GL_TEXTURE_2D, refCountedTextures[i]->getID());
+	}
 }

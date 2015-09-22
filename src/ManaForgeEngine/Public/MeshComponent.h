@@ -4,7 +4,8 @@
 
 class MaterialInstance;
 class ModelData;
-class Model;
+
+#include "Model.h"
 
 class MeshComponent : public SceneComponent
 {
@@ -15,11 +16,12 @@ public:
 		std::shared_ptr<ModelData> data,
 		uint8 renderOrder);
 
+	inline virtual ~MeshComponent();
+
 protected:
-	std::unique_ptr<Model> model;
+	std::unique_ptr<Model, decltype(&Model::deleter)> model;
 };
 
-#include "Model.h"
 #include "Renderer.h"
 
 inline MeshComponent::MeshComponent(
@@ -29,3 +31,5 @@ inline MeshComponent::MeshComponent(
 {
 	model->init(mat, data, *this);
 }
+
+inline MeshComponent::~MeshComponent() = default;

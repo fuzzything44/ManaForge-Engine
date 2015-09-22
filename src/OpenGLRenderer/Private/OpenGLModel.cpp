@@ -17,29 +17,11 @@
 
 OpenGLModel::OpenGLModel(OpenGLRenderer& renderer, uint8 renderOrder)
 	: renderer(renderer)
-	, isValid(true)
 	, renderOrder(renderOrder)
-{
-	renderer.runOnRenderThreadAsync([this]
-	{
-		// add model to renderer's list
-		auto&& modelList = this->renderer.models[this->renderOrder];
+	, isValid(true)
+{ }
 
-		location = modelList.insert(modelList.begin(), this);
-	});
-
-
-}
-
-OpenGLModel::~OpenGLModel()
-{
-	isValid = false;
-
-	renderer.runOnRenderThreadSync([this]
-		{
-			renderer.models[renderOrder].erase(location);
-		});
-}
+OpenGLModel::~OpenGLModel() = default;
 
 void OpenGLModel::init(
 	std::shared_ptr<MaterialInstance> mat, std::shared_ptr<ModelData> data, MeshComponent& ownerComp)
@@ -61,32 +43,34 @@ const MeshComponent& OpenGLModel::getOwnerComponent() const
 	return *parent;
 }
 
+
+uint8 OpenGLModel::getRenderOrder() const
+{
+	return renderOrder;
+}
+
 void OpenGLModel::draw()
 {
+	assert(renderer.isOnRenderThread());
 
-	if (isValid) {
-		mat3 view = renderer.getCurrentCamera().getViewMat();
-		mat3 model = parent->getModelMatrix();
+	if (!isValid) return;
 
-		mat3 MVPmat = view * model;
+	mat3 view = renderer.getCurrentCamera().getViewMat();
+	mat3 model = parent->getModelMatrix();
 
-		auto&& matSource = static_cast<OpenGLMaterialSource*>(material->getSource());
+	mat3 MVPmat = view * model;
 
-		assert(material);
-		material->use();
+	auto&& matSource = static_cast<OpenGLMaterialSource*>(material->getSource());
 
-		renderer.runOnRenderThreadAsync([
-			this,
-			matSource = static_cast<OpenGLMaterialSource*>(material->getSource()),
-			MVPmat
-		]
-			{
-				glUniformMatrix3fv(matSource->MVPUniformLocation, 1, GL_FALSE, &MVPmat[0][0]);
+	assert(material);
+	material->use();
 
-				glUniform1f(glGetUniformLocation(**matSource, "renderOrder"), 1.f);
+	
+	glUniformMatrix3fv(matSource->MVPUniformLocation, 1, GL_FALSE, &MVPmat[0][0]);
 
-			});
+	glUniform1f(glGetUniformLocation(**matSource, "renderOrder"), 1.f);
 
-		modelData->draw();
-	}
+
+	modelData->draw();
+	
 }

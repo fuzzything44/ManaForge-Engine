@@ -29,7 +29,9 @@
 #include <boost/timer/timer.hpp>
 
 OpenGLRenderer::OpenGLRenderer()
-	: queue(100)
+	: queue(100),
+	modelsToDelete(100),
+	modelsToAdd(100)
 {
 }
 
@@ -37,10 +39,12 @@ OpenGLRenderer::~OpenGLRenderer() = default;
 
 void OpenGLRenderer::init()
 {
-	//renderThread = std::thread{[this]
-	//	{
-	//		renderLoop();
-	//	}};
+#if USE_PARALLEL_RENDERER
+	renderThread = std::thread{[this]
+		{
+			renderLoop();
+		}};
+#endif
 
 	initRenderer();
 }
@@ -91,7 +95,15 @@ const Window& OpenGLRenderer::getWindow() const
 	return *window;
 }
 
-std::unique_ptr<Model> OpenGLRenderer::newModel(uint8 renderOrder) { return std::make_unique<OpenGLModel>(*this, renderOrder); }
+std::unique_ptr<Model, decltype(&Model::deleter)> OpenGLRenderer::newModel(uint8 renderOrder) 
+{ 
+	auto&& ret = std::unique_ptr<OpenGLModel, void(*)(Model*)>(new OpenGLModel(*this, renderOrder), &Model::deleter);
+
+	modelsToAdd.push(ret.get());
+
+	return std::move(ret);
+
+}
 
 std::unique_ptr<TextBox> OpenGLRenderer::newTextBox() { return std::make_unique<OpenGLTextBox>(*this); }
 
@@ -139,27 +151,37 @@ std::shared_ptr<ModelData> OpenGLRenderer::newModelData(const std::string& name)
 
 std::unique_ptr<ModelData> OpenGLRenderer::newModelData() { return std::make_unique<OpenGLModelData>(*this); }
 
+void OpenGLRenderer::deleteModel(Model* model)
+{
+	auto casted = static_cast<OpenGLModel*>(model);
+	casted->isValid = false;
+	modelsToDelete.push(casted);
+
+}
+
 bool OpenGLRenderer::update(float /*deltaTime*/)
 {
 
 	// wait for the last frame's rendering to finish
 	if (lastFrame.valid()) lastFrame.wait();
 
-	lastFrame = runOnRenderThreadAsync([]
+	runOnRenderThreadAsync([]
 		{
 			glClear(GL_COLOR_BUFFER_BIT);
 		});
 
 	// call the draw function for all of the models in order of render order
-	size_t numModels = 0;
-	for (auto&& renderLevel : models)
+	runOnRenderThreadAsync([this]
 	{
-		for (auto&& elem : renderLevel.second)
+		for (auto&& renderLevel : models)
 		{
-			elem->draw(); ++numModels;
+			for (auto&& elem : renderLevel.second)
+			{
+				elem->draw();
+			}
 		}
-	}
-	MFLOG(Debug) << "Num Models: " << numModels;
+	});
+
 
 	//runOnRenderThreadAsync([]
 	//	{
@@ -176,9 +198,32 @@ bool OpenGLRenderer::update(float /*deltaTime*/)
 	//	{
 	//		glEnable(GL_DEPTH_TEST);
 	//	});
+	runOnRenderThreadAsync([this]
+	{
+		modelsToAdd.consume_all([this](OpenGLModel* elem)
+		{
+			auto&& list = models[elem->getRenderOrder()];
+			list.push_front(elem);
+
+			elem->location = list.begin();
+		});
+	});
+
+	runOnRenderThreadAsync([this]
+	{
+		modelsToDelete.consume_all([this](OpenGLModel* elem)
+		{
+			models[elem->getRenderOrder()].erase(elem->location);
+			delete elem;
+		});
+	});
+
 
 	window->swapBuffers();
 	window->pollEvents();
+
+	// acquire a future object for the end of this frame
+	lastFrame = runOnRenderThreadAsync([]{});
 
 	shouldExit = window->shouldClose();
 
@@ -187,84 +232,94 @@ bool OpenGLRenderer::update(float /*deltaTime*/)
 
 void OpenGLRenderer::showLoadingImage()
 {
-	runOnRenderThreadAsync([this]
-		{
+	auto&& source = static_cast<OpenGLMaterialSource*>(getMaterialSource("boilerplate"));
+	auto&& program = std::shared_ptr<OpenGLMaterialInstance>{
+		static_cast<OpenGLMaterialInstance*>(newMaterialInstance(source).release()) };
+	auto&& texture = static_cast<OpenGLTexture*>(getTexture("loading"));
 
-			glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
-			GLuint vao;
-			GLuint vbo;
-			GLuint texCoordBuffer;
-			GLuint ebo;
+	GLuint vao;
+	GLuint vbo;
+	GLuint texCoordBuffer;
+	GLuint ebo;
 
-			vec2 vertLocs[] = {
-				{-1.f, -1.f}, {+1.f, -1.f}, {-1.f, +1.f}, {+1.f, +1.f},
-			};
+	runOnRenderThreadSync([this, source, &program, texture, &vao, &vbo, &texCoordBuffer, &ebo]() mutable
+	{
 
-			vec2 texCoords[] = {
-				{+0.f, +1.f}, {+1.f, +1.f}, {+0.f, +0.f}, {+1.f, +0.f},
-			};
+		glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
-			uvec3 elems[] = {
-				{0, 1, 2}, {1, 2, 3},
-			};
 
-			glGenVertexArrays(1, &vao);
-			glBindVertexArray(vao);
+		vec2 vertLocs[] = {
+			{-1.f, -1.f}, {+1.f, -1.f}, {-1.f, +1.f}, {+1.f, +1.f},
+		};
 
-			glGenBuffers(1, &vbo);
-			glBindBuffer(GL_ARRAY_BUFFER, vbo);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(vec2) * 4, vertLocs, GL_STATIC_DRAW);
+		vec2 texCoords[] = {
+			{+0.f, +1.f}, {+1.f, +1.f}, {+0.f, +0.f}, {+1.f, +0.f},
+		};
 
-			glGenBuffers(1, &texCoordBuffer);
-			glBindBuffer(GL_ARRAY_BUFFER, texCoordBuffer);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(vec2) * 4, texCoords, GL_STATIC_DRAW);
+		uvec3 elems[] = {
+			{0, 1, 2}, {1, 2, 3},
+		};
 
-			glGenBuffers(1, &ebo);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uvec3) * 2, elems, GL_STATIC_DRAW);
+		glGenVertexArrays(1, &vao);
+		glBindVertexArray(vao);
 
-			auto&& source = static_cast<OpenGLMaterialSource*>(getMaterialSource("boilerplate"));
-			auto&& program = std::unique_ptr<OpenGLMaterialInstance>{
-				static_cast<OpenGLMaterialInstance*>(newMaterialInstance(source).release()) };
-			auto&& texture = static_cast<OpenGLTexture&>(*getTexture("loading"));
+		glGenBuffers(1, &vbo);
+		glBindBuffer(GL_ARRAY_BUFFER, vbo);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(vec2) * 4, vertLocs, GL_STATIC_DRAW);
+
+		glGenBuffers(1, &texCoordBuffer);
+		glBindBuffer(GL_ARRAY_BUFFER, texCoordBuffer);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(vec2) * 4, texCoords, GL_STATIC_DRAW);
+
+		glGenBuffers(1, &ebo);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uvec3) * 2, elems, GL_STATIC_DRAW);
+	});
+
+	program->setTexture(0, texture);
 			
-			program->setTexture(0, &texture);
-			program->use();
+	runOnRenderThreadSync([vbo, texCoordBuffer, ebo, vao, program]
+	{
+
+		program->use();
+		glEnableVertexAttribArray(0);
+		glBindBuffer(GL_ARRAY_BUFFER, vbo);
+		glVertexAttribPointer(0, // location 0 (see shader)
+			2,					 // two elements per vertex (x,y)
+			GL_FLOAT,			 // they are floats
+			GL_FALSE,			 // not normalized
+			sizeof(float) * 2,   // the next element is 2 floats later
+			nullptr				 // dont copy -- use the GL_ARRAY_BUFFER instead
+			);
+
+		// bind UV data to the element attrib array so it shows up in our sahders -- the location is
+		// (look in
+		// shader)
+		glEnableVertexAttribArray(1);
+		glBindBuffer(GL_ARRAY_BUFFER, texCoordBuffer);
+		glVertexAttribPointer(1, // location 1 (see shader)
+			2,					 // two elements per vertex (u,v)
+			GL_FLOAT,			 // they are floats
+			GL_FALSE,			 // not normalized
+			sizeof(float) * 2,   // the next element is 2 floats later
+			nullptr				 // use the GL_ARRAY_BUFFER instead of copying on the spot
+			);
+
+		// glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo); // we don't have to do this bc its already bound
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+
+		glDisableVertexAttribArray(0);
+		glDisableVertexAttribArray(1);
+
+		// cleanup
+		glDeleteBuffers(1, &vbo);
+		glDeleteBuffers(1, &texCoordBuffer);
+		glDeleteBuffers(1, &ebo);
+
+		glDeleteVertexArrays(1, &vao);
+	});
 			
-			glEnableVertexAttribArray(0);
-			glBindBuffer(GL_ARRAY_BUFFER, vbo);
-			glVertexAttribPointer(0, // location 0 (see shader)
-				2,					 // two elements per vertex (x,y)
-				GL_FLOAT,			 // they are floats
-				GL_FALSE,			 // not normalized
-				sizeof(float) * 2,   // the next element is 2 floats later
-				nullptr				 // dont copy -- use the GL_ARRAY_BUFFER instead
-				);
-
-			// bind UV data to the element attrib array so it shows up in our sahders -- the location is
-			// (look in
-			// shader)
-			glEnableVertexAttribArray(1);
-			glBindBuffer(GL_ARRAY_BUFFER, texCoordBuffer);
-			glVertexAttribPointer(1, // location 1 (see shader)
-				2,					 // two elements per vertex (u,v)
-				GL_FLOAT,			 // they are floats
-				GL_FALSE,			 // not normalized
-				sizeof(float) * 2,   // the next element is 2 floats later
-				nullptr				 // use the GL_ARRAY_BUFFER instead of copying on the spot
-				);
-
-			// glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo); // we don't have to do this bc its already bound
-			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-
-			// cleanup
-			glDeleteBuffers(1, &vbo);
-			glDeleteBuffers(1, &texCoordBuffer);
-			glDeleteBuffers(1, &ebo);
-
-			glDeleteVertexArrays(1, &vao);
-		});
 
 	// display it
 	window->swapBuffers();

@@ -25,10 +25,14 @@ public:
 	virtual MeshComponent& getOwnerComponent() override;
 	virtual const MeshComponent& getOwnerComponent() const override;
 
+	virtual uint8 getRenderOrder() const override;
+
 	void draw();
 
 private:
 	uint8 renderOrder;
+
+	std::atomic<bool> isValid;
 
 	std::shared_ptr<OpenGLModelData> modelData;
 	std::shared_ptr<OpenGLMaterialInstance> material;
@@ -36,8 +40,6 @@ private:
 	MeshComponent* parent;
 
 	std::list<OpenGLModel*>::iterator location;
-
-	std::atomic<bool> isValid;
 
 	OpenGLRenderer& renderer;
 };
