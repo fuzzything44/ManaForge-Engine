@@ -153,8 +153,11 @@ std::unique_ptr<ModelData> OpenGLRenderer::newModelData() { return std::make_uni
 
 void OpenGLRenderer::deleteModel(Model* model)
 {
+
 	auto casted = static_cast<OpenGLModel*>(model);
-	casted->isValid = false;
+	bool b = true;
+	while (!casted->isValid.compare_exchange_weak(b, false)) // get rid of the race condition of models being deleted while rendering them
+	{ b = true; }
 	modelsToDelete.push(casted);
 
 }

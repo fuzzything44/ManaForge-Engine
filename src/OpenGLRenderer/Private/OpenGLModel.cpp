@@ -54,6 +54,7 @@ void OpenGLModel::draw()
 	assert(renderer.isOnRenderThread());
 
 	if (!isValid) return;
+	isValid = false; // set this so it doesn't get destructed while this is happening.
 
 	mat3 view = renderer.getCurrentCamera().getViewMat();
 	mat3 model = parent->getModelMatrix();
@@ -73,4 +74,5 @@ void OpenGLModel::draw()
 
 	modelData->draw();
 	
+	isValid = true; // ok -- were done -- you can destruct me now.
 }

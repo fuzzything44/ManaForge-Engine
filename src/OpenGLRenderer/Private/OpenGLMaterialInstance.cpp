@@ -49,7 +49,7 @@ void OpenGLMaterialInstance::setUpdateCallback(std::function<void(MaterialInstan
 void OpenGLMaterialInstance::setProperty(const std::string& propName, int32 i)
 {
 
-	renderer.runOnRenderThreadAsync([this, propName, i]
+	renderer.runOnRenderThreadAsyncOrSync([this, propName, i]
 		{
 			properties[propName] = [ i, loc = glGetUniformLocation(**program, propName.c_str()) ]()
 			{
@@ -60,7 +60,7 @@ void OpenGLMaterialInstance::setProperty(const std::string& propName, int32 i)
 }
 void OpenGLMaterialInstance::setProperty(const std::string& propName, const ivec2& i)
 {
-	renderer.runOnRenderThreadAsync([this, propName, i]
+	renderer.runOnRenderThreadAsyncOrSync([this, propName, i]
 		{
 			properties[propName] = [ i, loc = glGetUniformLocation(**program, propName.c_str()) ]
 			{
@@ -72,7 +72,7 @@ void OpenGLMaterialInstance::setProperty(const std::string& propName, const ivec
 void OpenGLMaterialInstance::setProperty(const std::string& propName, const ivec3& i)
 {
 
-	renderer.runOnRenderThreadAsync([this, propName, i]
+	renderer.runOnRenderThreadAsyncOrSync([this, propName, i]
 		{
 			properties[propName] = [ i, loc = glGetUniformLocation(**program, propName.c_str()) ]
 			{
@@ -84,7 +84,7 @@ void OpenGLMaterialInstance::setProperty(const std::string& propName, const ivec
 void OpenGLMaterialInstance::setProperty(const std::string& propName, const ivec4& i)
 {
 
-	renderer.runOnRenderThreadAsync([this, propName, i]()
+	renderer.runOnRenderThreadAsyncOrSync([this, propName, i]()
 		{
 			properties[propName] = [ i, loc = glGetUniformLocation(**program, propName.c_str()) ]
 			{
@@ -95,7 +95,7 @@ void OpenGLMaterialInstance::setProperty(const std::string& propName, const ivec
 }
 void OpenGLMaterialInstance::setProperty(const std::string& propName, int* i, size_t size)
 {
-	renderer.runOnRenderThreadAsync([this, propName, i, size]
+	renderer.runOnRenderThreadAsyncOrSync([this, propName, i, size]
 		{
 			switch (size)
 			{
@@ -133,7 +133,7 @@ void OpenGLMaterialInstance::setProperty(const std::string& propName, int* i, si
 void OpenGLMaterialInstance::setProperty(const std::string& propName, float i)
 {
 
-	renderer.runOnRenderThreadAsync([this, propName, i]
+	renderer.runOnRenderThreadAsyncOrSync([this, propName, i]
 		{
 			properties[propName] = [ i, loc = glGetUniformLocation(**program, propName.c_str()) ]
 			{
@@ -144,7 +144,7 @@ void OpenGLMaterialInstance::setProperty(const std::string& propName, float i)
 }
 void OpenGLMaterialInstance::setProperty(const std::string& propName, const vec2& i)
 {
-	renderer.runOnRenderThreadAsync([this, propName, i]
+	renderer.runOnRenderThreadAsyncOrSync([this, propName, i]
 		{
 			properties[propName] = [ i, loc = glGetUniformLocation(**program, propName.c_str()) ]
 			{
@@ -155,7 +155,7 @@ void OpenGLMaterialInstance::setProperty(const std::string& propName, const vec2
 }
 void OpenGLMaterialInstance::setProperty(const std::string& propName, const vec3& i)
 {
-	renderer.runOnRenderThreadAsync([this, propName, i]
+	renderer.runOnRenderThreadAsyncOrSync([this, propName, i]
 		{
 			properties[propName] = [ i, loc = glGetUniformLocation(**program, propName.c_str()) ]
 			{
@@ -166,7 +166,7 @@ void OpenGLMaterialInstance::setProperty(const std::string& propName, const vec3
 }
 void OpenGLMaterialInstance::setProperty(const std::string& propName, const vec4& i)
 {
-	renderer.runOnRenderThreadAsync([this, propName, i]
+	renderer.runOnRenderThreadAsyncOrSync([this, propName, i]
 		{
 			properties[propName] = [ i, loc = glGetUniformLocation(**program, propName.c_str()) ]
 			{
@@ -177,7 +177,7 @@ void OpenGLMaterialInstance::setProperty(const std::string& propName, const vec4
 }
 void OpenGLMaterialInstance::setProperty(const std::string& propName, float* i, size_t size)
 {
-	renderer.runOnRenderThreadAsync([this, propName, i, size]
+	renderer.runOnRenderThreadAsyncOrSync([this, propName, i, size]
 		{
 			switch (size)
 			{
@@ -214,7 +214,7 @@ void OpenGLMaterialInstance::setProperty(const std::string& propName, float* i, 
 }
 void OpenGLMaterialInstance::setPropertyMatrix(const std::string& propName, const mat2& i)
 {
-	renderer.runOnRenderThreadAsync([this, propName, i]
+	renderer.runOnRenderThreadAsyncOrSync([this, propName, i]
 		{
 			properties[propName] = [ i, loc = glGetUniformLocation(**program, propName.c_str()) ]
 			{
@@ -225,7 +225,7 @@ void OpenGLMaterialInstance::setPropertyMatrix(const std::string& propName, cons
 }
 void OpenGLMaterialInstance::setPropertyMatrix(const std::string& propName, const mat3& i)
 {
-	renderer.runOnRenderThreadAsync([this, propName, i]
+	renderer.runOnRenderThreadAsyncOrSync([this, propName, i]
 		{
 			properties[propName] = [ i, loc = glGetUniformLocation(**program, propName.c_str()) ]
 			{
@@ -236,7 +236,7 @@ void OpenGLMaterialInstance::setPropertyMatrix(const std::string& propName, cons
 }
 void OpenGLMaterialInstance::setPropertyMatrix(const std::string& propName, const mat4& i)
 {
-	renderer.runOnRenderThreadAsync([this, propName, i]
+	renderer.runOnRenderThreadAsyncOrSync([this, propName, i]
 		{
 			properties[propName] = [ i, loc = glGetUniformLocation(**program, propName.c_str()) ]
 			{
@@ -247,7 +247,7 @@ void OpenGLMaterialInstance::setPropertyMatrix(const std::string& propName, cons
 }
 void OpenGLMaterialInstance::setPropertyMatrix2ptr(const std::string& propName, float* i)
 {
-	renderer.runOnRenderThreadAsync([this, propName, i]
+	renderer.runOnRenderThreadAsyncOrSync([this, propName, i]
 		{
 			properties[propName] = [ i, loc = glGetUniformLocation(**program, propName.c_str()) ]
 			{
@@ -258,7 +258,7 @@ void OpenGLMaterialInstance::setPropertyMatrix2ptr(const std::string& propName, 
 }
 void OpenGLMaterialInstance::setPropertyMatrix3ptr(const std::string& propName, float* i)
 {
-	renderer.runOnRenderThreadAsync([this, propName, i]
+	renderer.runOnRenderThreadAsyncOrSync([this, propName, i]
 		{
 			properties[propName] = [ i, loc = glGetUniformLocation(**program, propName.c_str()) ]
 			{
@@ -269,7 +269,7 @@ void OpenGLMaterialInstance::setPropertyMatrix3ptr(const std::string& propName, 
 }
 void OpenGLMaterialInstance::setPropertyMatrix4ptr(const std::string& propName, float* i)
 {
-	renderer.runOnRenderThreadAsync([this, propName, i]
+	renderer.runOnRenderThreadAsyncOrSync([this, propName, i]
 		{
 			properties[propName] = [ i, loc = glGetUniformLocation(**program, propName.c_str()) ]
 			{

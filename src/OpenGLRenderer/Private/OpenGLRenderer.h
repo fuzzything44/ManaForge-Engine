@@ -117,6 +117,24 @@ public:
 	template <typename Function, typename... Args>
 	inline auto runOnRenderThreadAsync(Function&& func, Args&&... args);
 
+	// chooses if it should be async or sync based on the thread
+	template <typename Function, typename... Args>
+	inline auto runOnRenderThreadAsyncOrSync(Function&& func, Args&&... args)
+	{
+		using retType = decltype(func(std::forward<Args>(args)...));
+
+		if (isOnRenderThread())
+		{
+			std::packaged_task<retType(Args&&...)> task{ func };
+			task(std::forward<Args>(args)...);
+			return task.get_future();
+		}
+		else
+		{
+			return runOnRenderThreadAsync(std::forward<Function>(func), std::forward<Args>(args)...);
+		}
+	}
+
 	inline bool isOnRenderThread() 
 	{ 
 #if USE_PARALLEL_RENDERER
