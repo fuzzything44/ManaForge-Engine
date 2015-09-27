@@ -153,6 +153,7 @@ std::unique_ptr<ModelData> OpenGLRenderer::newModelData() { return std::make_uni
 
 void OpenGLRenderer::deleteModel(Model* model)
 {
+	assert(!isOnRenderThread());
 
 	auto casted = static_cast<OpenGLModel*>(model);
 	bool b = true;
@@ -216,7 +217,8 @@ bool OpenGLRenderer::update(float /*deltaTime*/)
 	{
 		modelsToDelete.consume_all([this](OpenGLModel* elem)
 		{
-			models[elem->getRenderOrder()].erase(elem->location);
+			auto modelMap = models[elem->OpenGLModel::getRenderOrder()];
+			modelMap.erase(std::find(modelMap.begin(), modelMap.end(), elem));
 			delete elem;
 		});
 	});
