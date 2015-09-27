@@ -24,7 +24,7 @@ void main()
 	
 	fragTexCoord = vec2 (
 		(vertTexCoordIn.x / float(tiles)) + (column * uvCoordsPerTile),
-		1.f - ((vertTexCoordIn.y / float(tiles)) + (row * uvCoordsPerTile))
+		((vertTexCoordIn.y / float(tiles)) + (row * uvCoordsPerTile))
 	);
 	
 }

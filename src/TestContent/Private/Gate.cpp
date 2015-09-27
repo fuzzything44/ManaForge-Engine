@@ -17,7 +17,7 @@ bool Gate::isInitalized = false;
 Gate::Gate()
 	: Actor()
 {
-	auto tex = Runtime::get().getRenderer().getTexture("water");
+	auto tex = Runtime::get().getRenderer().getTexture("1234");
 
 	tex->setFilterMode(Texture::FilterMode::MIPMAP_LINEAR);
 
@@ -28,7 +28,7 @@ Gate::Gate()
 		{
 			time += Runtime::get().getDeltaTime();
 
-			inst.setProperty("currentTile", int(time * 10) % 4);
+			inst.setProperty("currentTile", 3-int(time * 1/*fps*/) % 4/*num frames*/);
 		});
 
 	mat->setTexture(0, tex);
@@ -57,7 +57,7 @@ Gate::Gate()
 
 	using namespace std::chrono_literals;
 
-	Runtime::get().getTimerManager().addTimer(1s,
+	Runtime::get().getTimerManager().addTimer(4s,
 		[this]()
 		{
 			delete this;

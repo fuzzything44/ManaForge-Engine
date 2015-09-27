@@ -11,7 +11,7 @@
 			<blue>0</blue>
 			<alpha>255</alpha>
 		</first>
-		<second>4</second>
+		<second>13</second>
 	</item>
 	<item>
 		<first>
