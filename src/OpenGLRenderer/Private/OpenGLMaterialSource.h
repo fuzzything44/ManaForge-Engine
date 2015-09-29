@@ -10,6 +10,7 @@ class OpenGLRenderer;
 class OpenGLMaterialSource : public MaterialSource
 {
 	friend StrongCacher<path_t, OpenGLMaterialSource>;
+
 public:
 	explicit OpenGLMaterialSource(OpenGLRenderer& renderer, const path_t& name = "");
 
@@ -18,10 +19,10 @@ public:
 
 	OpenGLMaterialSource& operator=(const OpenGLMaterialSource& other) = delete;
 	OpenGLMaterialSource& operator=(OpenGLMaterialSource&& other);
-	
+
 private:
 	virtual ~OpenGLMaterialSource();
-	
+
 public:
 	virtual void init(const path_t& name) override;
 

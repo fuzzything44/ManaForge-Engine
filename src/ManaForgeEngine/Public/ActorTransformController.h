@@ -22,8 +22,8 @@ public:
 	virtual void setVelocity(vec2 newVelocity) = 0;
 	virtual vec2 getVelocity() const = 0;
 
-	virtual Transform getTransform() const = 0;
 	virtual void setTransform(const Transform& newTrans) = 0;
+	virtual Transform getTransform() const = 0;
 
 	virtual Actor& getOwner() const = 0;
 

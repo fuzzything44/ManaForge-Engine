@@ -19,7 +19,8 @@ OpenGLModel::OpenGLModel(OpenGLRenderer& renderer, uint8 renderOrder)
 	: renderer(renderer)
 	, renderOrder(renderOrder)
 	, isValid(true)
-{ }
+{
+}
 
 OpenGLModel::~OpenGLModel() = default;
 
@@ -43,11 +44,7 @@ const MeshComponent& OpenGLModel::getOwnerComponent() const
 	return *parent;
 }
 
-
-uint8 OpenGLModel::getRenderOrder() const
-{
-	return renderOrder;
-}
+uint8 OpenGLModel::getRenderOrder() const { return renderOrder; }
 
 void OpenGLModel::draw()
 {
@@ -66,13 +63,11 @@ void OpenGLModel::draw()
 	assert(material);
 	material->use();
 
-	
 	glUniformMatrix3fv(matSource->MVPUniformLocation, 1, GL_FALSE, &MVPmat[0][0]);
 
 	glUniform1f(glGetUniformLocation(**matSource, "renderOrder"), 1.f);
 
-
 	modelData->draw();
-	
+
 	isValid = true; // ok -- were done -- you can destruct me now.
 }

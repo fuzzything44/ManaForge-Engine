@@ -12,7 +12,7 @@ void changeDir()
 {
 	// changes the path so everything we open will be in Resoruce/
 	char ownPth[MAX_PATH];
-	
+
 	GetModuleFileName(NULL, ownPth, MAX_PATH);
 
 	path_t path = ownPth;

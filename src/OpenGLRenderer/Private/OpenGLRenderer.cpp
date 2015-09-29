@@ -29,9 +29,9 @@
 #include <boost/timer/timer.hpp>
 
 OpenGLRenderer::OpenGLRenderer()
-	: queue(100),
-	modelsToDelete(100),
-	modelsToAdd(100)
+	: queue(100)
+	, modelsToDelete(100)
+	, modelsToAdd(100)
 {
 }
 
@@ -95,14 +95,14 @@ const Window& OpenGLRenderer::getWindow() const
 	return *window;
 }
 
-std::unique_ptr<Model, decltype(&Model::deleter)> OpenGLRenderer::newModel(uint8 renderOrder) 
-{ 
-	auto&& ret = std::unique_ptr<OpenGLModel, void(*)(Model*)>(new OpenGLModel(*this, renderOrder), &Model::deleter);
+std::unique_ptr<Model, decltype(&Model::deleter)> OpenGLRenderer::newModel(uint8 renderOrder)
+{
+	auto&& ret =
+		std::unique_ptr<OpenGLModel, void (*)(Model*)>(new OpenGLModel(*this, renderOrder), &Model::deleter);
 
 	modelsToAdd.push(ret.get());
 
 	return std::move(ret);
-
 }
 
 std::unique_ptr<TextBox> OpenGLRenderer::newTextBox() { return std::make_unique<OpenGLTextBox>(*this); }
@@ -157,10 +157,12 @@ void OpenGLRenderer::deleteModel(Model* model)
 
 	auto casted = static_cast<OpenGLModel*>(model);
 	bool b = true;
-	while (!casted->isValid.compare_exchange_weak(b, false)) // get rid of the race condition of models being deleted while rendering them
-	{ b = true; }
+	while (!casted->isValid.compare_exchange_weak(
+		b, false)) // get rid of the race condition of models being deleted while rendering them
+	{
+		b = true;
+	}
 	modelsToDelete.push(casted);
-
 }
 
 bool OpenGLRenderer::update(float /*deltaTime*/)
@@ -176,18 +178,15 @@ bool OpenGLRenderer::update(float /*deltaTime*/)
 
 	// call the draw function for all of the models in order of render order
 	runOnRenderThreadAsync([this]
-	{
-		for (auto&& renderLevel : models)
 		{
-			for (auto&& elem : renderLevel.second)
-			{
-				elem->draw();
+			for (auto&& renderLevel : models) {
+				for (auto&& elem : renderLevel.second) {
+					elem->draw();
+				}
 			}
-		}
-	});
+		});
 
-
-	//runOnRenderThreadAsync([]
+	// runOnRenderThreadAsync([]
 	//	{
 	//		glDisable(GL_DEPTH_TEST);
 	//	});
@@ -198,37 +197,38 @@ bool OpenGLRenderer::update(float /*deltaTime*/)
 		textBox->render();
 	}
 
-	//runOnRenderThreadAsync([]
+	// runOnRenderThreadAsync([]
 	//	{
 	//		glEnable(GL_DEPTH_TEST);
 	//	});
 	runOnRenderThreadAsync([this]
-	{
-		modelsToAdd.consume_all([this](OpenGLModel* elem)
 		{
-			auto&& list = models[elem->getRenderOrder()];
-			list.push_front(elem);
+			modelsToAdd.consume_all([this](OpenGLModel* elem)
+				{
+					auto&& list = models[elem->getRenderOrder()];
+					list.push_front(elem);
 
-			elem->location = list.begin();
+					elem->location = list.begin();
+				});
 		});
-	});
 
 	runOnRenderThreadAsync([this]
-	{
-		modelsToDelete.consume_all([this](OpenGLModel* elem)
 		{
-			auto modelMap = models[elem->OpenGLModel::getRenderOrder()];
-			modelMap.erase(std::find(modelMap.begin(), modelMap.end(), elem));
-			delete elem;
+			modelsToDelete.consume_all([this](OpenGLModel* elem)
+				{
+					auto modelMap = models[elem->OpenGLModel::getRenderOrder()];
+					modelMap.erase(std::find(modelMap.begin(), modelMap.end(), elem));
+					delete elem;
+				});
 		});
-	});
-
 
 	window->swapBuffers();
 	window->pollEvents();
 
 	// acquire a future object for the end of this frame
-	lastFrame = runOnRenderThreadAsync([]{});
+	lastFrame = runOnRenderThreadAsync([]
+		{
+		});
 
 	shouldExit = window->shouldClose();
 
@@ -239,9 +239,8 @@ void OpenGLRenderer::showLoadingImage()
 {
 	auto&& source = static_cast<OpenGLMaterialSource*>(getMaterialSource("boilerplate"));
 	auto&& program = std::shared_ptr<OpenGLMaterialInstance>{
-		static_cast<OpenGLMaterialInstance*>(newMaterialInstance(source).release()) };
+		static_cast<OpenGLMaterialInstance*>(newMaterialInstance(source).release())};
 	auto&& texture = static_cast<OpenGLTexture*>(getTexture("loading"));
-
 
 	GLuint vao;
 	GLuint vbo;
@@ -249,82 +248,80 @@ void OpenGLRenderer::showLoadingImage()
 	GLuint ebo;
 
 	runOnRenderThreadSync([this, source, &program, texture, &vao, &vbo, &texCoordBuffer, &ebo]() mutable
-	{
+		{
 
-		glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+			glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
+			vec2 vertLocs[] = {
+				{-1.f, -1.f}, {+1.f, -1.f}, {-1.f, +1.f}, {+1.f, +1.f},
+			};
 
-		vec2 vertLocs[] = {
-			{-1.f, -1.f}, {+1.f, -1.f}, {-1.f, +1.f}, {+1.f, +1.f},
-		};
+			vec2 texCoords[] = {
+				{+0.f, +1.f}, {+1.f, +1.f}, {+0.f, +0.f}, {+1.f, +0.f},
+			};
 
-		vec2 texCoords[] = {
-			{+0.f, +1.f}, {+1.f, +1.f}, {+0.f, +0.f}, {+1.f, +0.f},
-		};
+			uvec3 elems[] = {
+				{0, 1, 2}, {1, 2, 3},
+			};
 
-		uvec3 elems[] = {
-			{0, 1, 2}, {1, 2, 3},
-		};
+			glGenVertexArrays(1, &vao);
+			glBindVertexArray(vao);
 
-		glGenVertexArrays(1, &vao);
-		glBindVertexArray(vao);
+			glGenBuffers(1, &vbo);
+			glBindBuffer(GL_ARRAY_BUFFER, vbo);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(vec2) * 4, vertLocs, GL_STATIC_DRAW);
 
-		glGenBuffers(1, &vbo);
-		glBindBuffer(GL_ARRAY_BUFFER, vbo);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vec2) * 4, vertLocs, GL_STATIC_DRAW);
+			glGenBuffers(1, &texCoordBuffer);
+			glBindBuffer(GL_ARRAY_BUFFER, texCoordBuffer);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(vec2) * 4, texCoords, GL_STATIC_DRAW);
 
-		glGenBuffers(1, &texCoordBuffer);
-		glBindBuffer(GL_ARRAY_BUFFER, texCoordBuffer);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vec2) * 4, texCoords, GL_STATIC_DRAW);
-
-		glGenBuffers(1, &ebo);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uvec3) * 2, elems, GL_STATIC_DRAW);
-	});
+			glGenBuffers(1, &ebo);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uvec3) * 2, elems, GL_STATIC_DRAW);
+		});
 
 	program->setTexture(0, texture);
-			
+
 	runOnRenderThreadSync([vbo, texCoordBuffer, ebo, vao, program]
-	{
+		{
 
-		program->use();
-		glEnableVertexAttribArray(0);
-		glBindBuffer(GL_ARRAY_BUFFER, vbo);
-		glVertexAttribPointer(0, // location 0 (see shader)
-			2,					 // two elements per vertex (x,y)
-			GL_FLOAT,			 // they are floats
-			GL_FALSE,			 // not normalized
-			sizeof(float) * 2,   // the next element is 2 floats later
-			nullptr				 // dont copy -- use the GL_ARRAY_BUFFER instead
-			);
+			program->use();
+			glEnableVertexAttribArray(0);
+			glBindBuffer(GL_ARRAY_BUFFER, vbo);
+			glVertexAttribPointer(0, // location 0 (see shader)
+				2,					 // two elements per vertex (x,y)
+				GL_FLOAT,			 // they are floats
+				GL_FALSE,			 // not normalized
+				sizeof(float) * 2,   // the next element is 2 floats later
+				nullptr				 // dont copy -- use the GL_ARRAY_BUFFER instead
+				);
 
-		// bind UV data to the element attrib array so it shows up in our sahders -- the location is
-		// (look in
-		// shader)
-		glEnableVertexAttribArray(1);
-		glBindBuffer(GL_ARRAY_BUFFER, texCoordBuffer);
-		glVertexAttribPointer(1, // location 1 (see shader)
-			2,					 // two elements per vertex (u,v)
-			GL_FLOAT,			 // they are floats
-			GL_FALSE,			 // not normalized
-			sizeof(float) * 2,   // the next element is 2 floats later
-			nullptr				 // use the GL_ARRAY_BUFFER instead of copying on the spot
-			);
+			// bind UV data to the element attrib array so it shows up in our sahders -- the location is
+			// (look in
+			// shader)
+			glEnableVertexAttribArray(1);
+			glBindBuffer(GL_ARRAY_BUFFER, texCoordBuffer);
+			glVertexAttribPointer(1, // location 1 (see shader)
+				2,					 // two elements per vertex (u,v)
+				GL_FLOAT,			 // they are floats
+				GL_FALSE,			 // not normalized
+				sizeof(float) * 2,   // the next element is 2 floats later
+				nullptr				 // use the GL_ARRAY_BUFFER instead of copying on the spot
+				);
 
-		// glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo); // we don't have to do this bc its already bound
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+			// glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo); // we don't have to do this bc its already bound
+			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
-		glDisableVertexAttribArray(0);
-		glDisableVertexAttribArray(1);
+			glDisableVertexAttribArray(0);
+			glDisableVertexAttribArray(1);
 
-		// cleanup
-		glDeleteBuffers(1, &vbo);
-		glDeleteBuffers(1, &texCoordBuffer);
-		glDeleteBuffers(1, &ebo);
+			// cleanup
+			glDeleteBuffers(1, &vbo);
+			glDeleteBuffers(1, &texCoordBuffer);
+			glDeleteBuffers(1, &ebo);
 
-		glDeleteVertexArrays(1, &vao);
-	});
-			
+			glDeleteVertexArrays(1, &vao);
+		});
 
 	// display it
 	window->swapBuffers();

@@ -79,7 +79,7 @@ public:
 	virtual Window& getWindow() override;
 	const Window& getWindow() const override;
 
-	virtual std::unique_ptr<Model, void(*)(Model*)> newModel(uint8 renderOrder) override;
+	virtual std::unique_ptr<Model, void (*)(Model*)> newModel(uint8 renderOrder) override;
 	virtual std::unique_ptr<TextBox> newTextBox() override;
 	virtual Font* getFont(const path_t& name) override;
 	virtual Texture* getTexture(const path_t& name) override;
@@ -90,7 +90,6 @@ public:
 	virtual std::unique_ptr<ModelData> newModelData() override;
 
 	virtual void deleteModel(Model* model) override;
-
 
 	/// <summary> Renders the next frame. </summary>
 	bool update(float deltaTime);
@@ -123,9 +122,8 @@ public:
 	{
 		using retType = decltype(func(std::forward<Args>(args)...));
 
-		if (isOnRenderThread())
-		{
-			std::packaged_task<retType(Args&&...)> task{ func };
+		if (isOnRenderThread()) {
+			std::packaged_task<retType(Args && ...)> task{func};
 			task(std::forward<Args>(args)...);
 			return task.get_future();
 		}
@@ -135,10 +133,10 @@ public:
 		}
 	}
 
-	inline bool isOnRenderThread() 
-	{ 
+	inline bool isOnRenderThread()
+	{
 #if USE_PARALLEL_RENDERER
-		return std::this_thread::get_id() == renderThread.getThread().get_id(); 
+		return std::this_thread::get_id() == renderThread.getThread().get_id();
 #else
 		return true;
 #endif
@@ -222,9 +220,6 @@ inline auto OpenGLRenderer::runOnRenderThreadAsync(Function&& func, Args&&... ar
 	func(std::forward<Args>(args)...);
 	return a.get_future();
 #endif
-
 }
-
-
 
 // ~800

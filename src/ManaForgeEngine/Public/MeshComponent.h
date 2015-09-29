@@ -24,8 +24,11 @@ protected:
 
 #include "Renderer.h"
 
-inline MeshComponent::MeshComponent(
-	Actor& owner, Transform trans, std::shared_ptr<MaterialInstance> mat, std::shared_ptr<ModelData> data, uint8 renderOrder)
+inline MeshComponent::MeshComponent(Actor& owner,
+	Transform trans,
+	std::shared_ptr<MaterialInstance> mat,
+	std::shared_ptr<ModelData> data,
+	uint8 renderOrder)
 	: SceneComponent(owner, trans)
 	, model(Runtime::get().getRenderer().newModel(renderOrder))
 {

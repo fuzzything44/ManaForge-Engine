@@ -15,7 +15,7 @@ OpenGLMaterialSource::OpenGLMaterialSource(OpenGLRenderer& renderer, const path_
 	if (!name.empty()) init(name);
 }
 
-OpenGLMaterialSource & OpenGLMaterialSource::operator=(OpenGLMaterialSource && other)
+OpenGLMaterialSource& OpenGLMaterialSource::operator=(OpenGLMaterialSource&& other)
 {
 	assert(&this->renderer == &other.renderer);
 
@@ -45,9 +45,8 @@ void OpenGLMaterialSource::init(const path_t& name)
 
 	path_t vertexPath = L"shaders\\" + name.wstring() + L"vert.glsl";
 	path_t fragPath = L"shaders\\" + name.wstring() + L"frag.glsl";
-	assert(boost::filesystem::exists(vertexPath));	
+	assert(boost::filesystem::exists(vertexPath));
 	assert(boost::filesystem::exists(fragPath));
-
 
 	renderer.runOnRenderThreadSync([this, &vertexPath, &fragPath, &name]
 		{

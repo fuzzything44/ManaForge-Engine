@@ -28,7 +28,7 @@ Gate::Gate()
 		{
 			time += Runtime::get().getDeltaTime();
 
-			inst.setProperty("currentTile", 3-int(time * 1/*fps*/) % 4/*num frames*/);
+			inst.setProperty("currentTile", 3 - int(time * 1 /*fps*/) % 4 /*num frames*/);
 		});
 
 	mat->setTexture(0, tex);

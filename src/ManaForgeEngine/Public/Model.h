@@ -11,8 +11,8 @@ class Model
 {
 protected:
 	virtual ~Model() = default;
-public:
 
+public:
 	inline static void deleter(Model* ptr);
 
 	virtual void init(
@@ -27,7 +27,4 @@ public:
 #include "Runtime.h"
 #include "Renderer.h"
 
-inline void Model::deleter(Model* ptr)
-{
-	Runtime::get().getRenderer().deleteModel(ptr);
-}
+inline void Model::deleter(Model* ptr) { Runtime::get().getRenderer().deleteModel(ptr); }

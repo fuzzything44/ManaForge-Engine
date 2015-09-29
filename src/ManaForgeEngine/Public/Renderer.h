@@ -21,7 +21,6 @@ class Font;
 class Model;
 class TextBox;
 
-
 // a non - copyable abstract class that handles rendering
 class Renderer : boost::noncopyable
 {
@@ -43,7 +42,7 @@ public:
 	/// <returns> null if it fails, else the camera.</returns>
 	virtual const CameraComponent& getCurrentCamera() const = 0;
 
-	virtual std::unique_ptr<Model, void(*)(Model*)> newModel(uint8 renderOrder/* = 0*/) = 0;
+	virtual std::unique_ptr<Model, void (*)(Model*)> newModel(uint8 renderOrder /* = 0*/) = 0;
 	virtual std::unique_ptr<TextBox> newTextBox() = 0;
 	virtual Font* getFont(const path_t& name) = 0;
 	virtual Texture* getTexture(const path_t& name) = 0;

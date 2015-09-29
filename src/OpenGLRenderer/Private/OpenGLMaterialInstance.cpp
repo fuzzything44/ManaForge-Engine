@@ -11,8 +11,7 @@
 
 #include <OpenGLTexture.h>
 
-OpenGLMaterialInstance::OpenGLMaterialInstance(
-	OpenGLRenderer& renderer, MaterialSource* source)
+OpenGLMaterialInstance::OpenGLMaterialInstance(OpenGLRenderer& renderer, MaterialSource* source)
 	: renderer(renderer)
 {
 	if (source) init(source);
