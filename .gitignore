@@ -78,3 +78,4 @@ src/boostx64.props
 src/boostx64.props
 
 *.vsp
+src/OpenGLRenderer/Debug/openglrenderer.obj.enc

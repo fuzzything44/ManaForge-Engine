@@ -30,8 +30,8 @@
 
 OpenGLRenderer::OpenGLRenderer()
 	: queue(100)
-	, modelsToDelete(100)
-	, modelsToAdd(100)
+	, modelsToDelete(1000)
+	, modelsToAdd(1000)
 {
 }
 
@@ -162,6 +162,7 @@ void OpenGLRenderer::deleteModel(Model* model)
 	{
 		b = true;
 	}
+	assert(!casted->isValid);
 	modelsToDelete.push(casted);
 }
 
@@ -217,7 +218,7 @@ bool OpenGLRenderer::update(float /*deltaTime*/)
 			modelsToDelete.consume_all([this](OpenGLModel* elem)
 				{
 					auto modelMap = models[elem->OpenGLModel::getRenderOrder()];
-					modelMap.erase(std::find(modelMap.begin(), modelMap.end(), elem));
+					modelMap.erase(elem->location);
 					delete elem;
 				});
 		});
