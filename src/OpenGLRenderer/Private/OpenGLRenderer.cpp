@@ -182,7 +182,7 @@ bool OpenGLRenderer::update(float /*deltaTime*/)
 		{
 			for (auto&& renderLevel : models) {
 				for (auto&& elem : renderLevel.second) {
-					elem->draw();
+ 					elem->draw();
 				}
 			}
 		});
@@ -217,6 +217,7 @@ bool OpenGLRenderer::update(float /*deltaTime*/)
 		{
 			modelsToDelete.consume_all([this](OpenGLModel* elem)
 				{
+					assert(!elem->isValid);
 					auto modelMap = models[elem->OpenGLModel::getRenderOrder()];
 					modelMap.erase(elem->location);
 					delete elem;
