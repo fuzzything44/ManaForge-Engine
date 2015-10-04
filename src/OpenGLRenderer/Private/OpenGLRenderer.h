@@ -27,10 +27,34 @@ class OpenGLModelData;
 class OpenGLTextBox;
 class OpenGLFont;
 
+class OpenGLRenderer;
+
+template <typename T>
+class RenderThreadOnly
+{
+public:
+	RenderThreadOnly(OpenGLRenderer& renderer, T&& obj = T{}) : data(obj), renderer(renderer)
+	{}
+
+	T& get()
+	{
+		assert(renderer.isOnRenderThread()); // this is easier if we are in debug mode
+
+		if (!renderer.isOnRenderThread())
+			MFLOG(Error) << "Cannot access a renderThreadOnly object from the non-render thread.";
+
+		return data;
+	}
+
+private:
+	T data;
+
+	OpenGLRenderer& renderer;
+};
+
 class OpenGLRenderer : public Renderer
 {
 
-	friend class OpenGLModel;
 	friend class OpenGLTextBox;
 
 	struct RenderThread
@@ -158,7 +182,7 @@ private:
 	std::atomic<bool> shouldExit;
 
 	// delete our caches and models first
-	std::map<uint8, std::list<OpenGLModel*>> models;
+	RenderThreadOnly<std::map<uint8, std::list<OpenGLModel*>>> models;
 	std::list<OpenGLTextBox*> textBoxes;
 
 	StrongCacher<path_t, OpenGLTexture> textures;

@@ -32,6 +32,7 @@ OpenGLRenderer::OpenGLRenderer()
 	: queue(100)
 	, modelsToDelete(1000)
 	, modelsToAdd(1000)
+	, models(*this)
 {
 }
 
@@ -180,7 +181,7 @@ bool OpenGLRenderer::update(float /*deltaTime*/)
 	// call the draw function for all of the models in order of render order
 	runOnRenderThreadAsync([this]
 		{
-			for (auto&& renderLevel : models) {
+			for (auto&& renderLevel : models.get()) {
 				for (auto&& elem : renderLevel.second) {
  					elem->draw();
 				}
@@ -206,7 +207,7 @@ bool OpenGLRenderer::update(float /*deltaTime*/)
 		{
 			modelsToAdd.consume_all([this](OpenGLModel* elem)
 				{
-					auto&& list = models[elem->getRenderOrder()];
+					auto&& list = models.get()[elem->getRenderOrder()];
 					list.push_front(elem);
 
 					elem->location = list.begin();
@@ -218,8 +219,8 @@ bool OpenGLRenderer::update(float /*deltaTime*/)
 			modelsToDelete.consume_all([this](OpenGLModel* elem)
 				{
 					assert(!elem->isValid);
-					auto modelMap = models[elem->OpenGLModel::getRenderOrder()];
-					modelMap.erase(elem->location);
+					auto&& list = models.get()[elem->OpenGLModel::getRenderOrder()];
+					list.erase(std::find(list.begin(), list.end(), elem));
 					delete elem;
 				});
 		});
