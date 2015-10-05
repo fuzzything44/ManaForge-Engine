@@ -25,12 +25,12 @@ void OpenGLTextureLibrary::init(uint16 maxElems, uint16 indSize)
 	individualSize = indSize;
 
 	// if it isn't a square number...
-	if (floor(sqrt(float(maxElems))) != sqrt(float(maxElems)))
-	{
+	if (floor(sqrt(float(maxElems))) != sqrt(float(maxElems))) {
 		int c = 1;
-		for (; maxElems >= c*c; ++c);
+		for (; maxElems >= c * c; ++c)
+			;
 
-		maxElems = c*c;
+		maxElems = c * c;
 	}
 	maxElements = maxElems;
 

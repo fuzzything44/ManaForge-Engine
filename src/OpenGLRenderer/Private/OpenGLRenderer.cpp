@@ -4,7 +4,7 @@
 
 #include "OpenGLRenderer.h"
 #include "OpenGLMaterialInstance.h"
-#include "OpenGLWindow.h"
+#include "OpenGLWindowWidget.h"
 #include "OpenGLTexture.h"
 #include "OpenGLTextureLibrary.h"
 #include "OpenGLModel.h"
@@ -66,7 +66,7 @@ void OpenGLRenderer::renderLoop()
 void OpenGLRenderer::initRenderer()
 {
 
-	window = std::make_unique<OpenGLWindow>(*this);
+	window = std::make_unique<OpenGLWindowWidget>(*this);
 	debugDraw = std::make_unique<OpenGLMaterialInstance>(*this, getMaterialSource("debugdraw"));
 
 	runOnRenderThreadAsync([]
@@ -82,14 +82,14 @@ void OpenGLRenderer::initRenderer()
 	showLoadingImage();
 }
 
-Window& OpenGLRenderer::getWindow()
+WindowWidget& OpenGLRenderer::getWindow()
 {
 	assert(window);
 
 	return *window;
 }
 
-const Window& OpenGLRenderer::getWindow() const
+const WindowWidget& OpenGLRenderer::getWindow() const
 {
 	assert(window);
 
@@ -183,7 +183,7 @@ bool OpenGLRenderer::update(float /*deltaTime*/)
 		{
 			for (auto&& renderLevel : models.get()) {
 				for (auto&& elem : renderLevel.second) {
- 					elem->draw();
+					elem->draw();
 				}
 			}
 		});
@@ -193,11 +193,7 @@ bool OpenGLRenderer::update(float /*deltaTime*/)
 	//		glDisable(GL_DEPTH_TEST);
 	//	});
 
-	Runtime::get().getPhysicsSystem().drawDebugPoints();
-
-	for (auto&& textBox : textBoxes) {
-		textBox->render();
-	}
+	Runtime::get().getPhysicsSystem().drawDebugPoints(); // TODO: Better system here
 
 	// runOnRenderThreadAsync([]
 	//	{

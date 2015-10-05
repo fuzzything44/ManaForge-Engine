@@ -5,7 +5,7 @@
 #include "OpenGLFont.h"
 #include "OpenGLMaterialSource.h"
 #include "OpenGLRenderer.h"
-#include "OpenGLWindow.h"
+#include "OpenGLWindowWidget.h"
 
 #include <glm-ortho-2d.h>
 
@@ -71,7 +71,7 @@ void OpenGLTextBox::setFont(Font* newFont)
 
 Font* OpenGLTextBox::getFont() const { return font; }
 
-void OpenGLTextBox::render() { font->render(*this); }
+void OpenGLTextBox::draw() { font->render(*this); }
 
 void OpenGLTextBox::regenerateBuffers()
 {

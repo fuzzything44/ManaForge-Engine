@@ -17,9 +17,6 @@
     <ClCompile Include="Private\OpenGLModel.cpp">
       <Filter>Private</Filter>
     </ClCompile>
-    <ClCompile Include="Private\OpenGLWindow.cpp">
-      <Filter>Private</Filter>
-    </ClCompile>
     <ClCompile Include="Private\OpenGLRendererConfig.cpp">
       <Filter>Private</Filter>
     </ClCompile>
@@ -53,15 +50,15 @@
     <ClCompile Include="Private\OpenGLFont.cpp">
       <Filter>Private</Filter>
     </ClCompile>
+    <ClCompile Include="Private\OpenGLWindowWidget.cpp">
+      <Filter>Private</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Private\OpenGLModel.h">
       <Filter>Private</Filter>
     </ClInclude>
     <ClInclude Include="Private\OpenGLRenderer.h">
-      <Filter>Private</Filter>
-    </ClInclude>
-    <ClInclude Include="Private\OpenGLWindow.h">
       <Filter>Private</Filter>
     </ClInclude>
     <ClInclude Include="Private\OpenGLRendererConfig.h">
@@ -98,6 +95,9 @@
       <Filter>Private</Filter>
     </ClInclude>
     <ClInclude Include="Private\OpenGLCharacterData.h">
+      <Filter>Private</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\OpenGLWindowWidget.h">
       <Filter>Private</Filter>
     </ClInclude>
   </ItemGroup>

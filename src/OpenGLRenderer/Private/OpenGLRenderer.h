@@ -21,7 +21,7 @@
 class OpenGLModel;
 class OpenGLMaterialInstance;
 class OpenGLTexture;
-class OpenGLWindow;
+class OpenGLWindowWidget;
 class OpenGLMaterialSource;
 class OpenGLModelData;
 class OpenGLTextBox;
@@ -33,8 +33,11 @@ template <typename T>
 class RenderThreadOnly
 {
 public:
-	RenderThreadOnly(OpenGLRenderer& renderer, T&& obj = T{}) : data(obj), renderer(renderer)
-	{}
+	RenderThreadOnly(OpenGLRenderer& renderer, T&& obj = T{})
+		: data(obj)
+		, renderer(renderer)
+	{
+	}
 
 	T& get()
 	{
@@ -100,8 +103,8 @@ public:
 
 	void showLoadingImage();
 
-	virtual Window& getWindow() override;
-	const Window& getWindow() const override;
+	virtual WindowWidget& getWindow() override;
+	const WindowWidget& getWindow() const override;
 
 	virtual std::unique_ptr<Model, void (*)(Model*)> newModel(uint8 renderOrder) override;
 	virtual std::unique_ptr<TextBox> newTextBox() override;
@@ -173,7 +176,7 @@ private:
 	boost::lockfree::spsc_queue<std::function<void()>> queue;
 	RenderThread renderThread;
 
-	std::unique_ptr<OpenGLWindow> window;
+	std::unique_ptr<OpenGLWindowWidget> window;
 	std::unique_ptr<OpenGLMaterialInstance> debugDraw;
 
 	// then delete our atomics

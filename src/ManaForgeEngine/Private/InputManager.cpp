@@ -4,13 +4,13 @@
 
 #include "Runtime.h"
 #include "SaveData.h"
-#include "Window.h"
+#include "WindowWidget.h"
 
 #include <boost/archive/xml_iarchive.hpp>
 
 #include <boost/lexical_cast.hpp>
 
-InputManager::InputManager(Window* window)
+InputManager::InputManager(WindowWidget* window)
 	: window(window)
 {
 	std::ifstream i_stream{"bindings.txt"};
@@ -38,7 +38,7 @@ InputManager::InputManager(Window* window)
 	}
 }
 
-void InputManager::setWindow(Window& newWindow) { window = &newWindow; }
+void InputManager::setWindow(WindowWidget& newWindow) { window = &newWindow; }
 
 void InputManager::bindActionMappingPressed(const std::string& name, std::function<void()> callback)
 {

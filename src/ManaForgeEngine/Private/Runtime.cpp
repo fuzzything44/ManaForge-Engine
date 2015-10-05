@@ -2,7 +2,7 @@
 
 #include "Runtime.h"
 
-#include "Window.h"
+#include "WindowWidget.h"
 #include "ChangeDirectory.h"
 #include "MeshComponent.h"
 #include "PhysicsComponent.h"
@@ -103,7 +103,7 @@ void Runtime::run()
 	world->init("default"); // load the test world
 
 	// let the input manager know of the window
-	Window& window = getRenderer().getWindow();
+	WindowWidget& window = getRenderer().getWindow();
 	getInputManager().setWindow(window);
 
 	// spawn the new playercontrollers and pawns
@@ -130,7 +130,7 @@ void Runtime::run()
 		getInputManager().update();
 		getTimerManager().update();
 
-		Window& window = getRenderer().getWindow();
+		WindowWidget& window = getRenderer().getWindow();
 
 		// recieve the update callbacks
 		auto updateCallbacks = getModuleManager().getUpdateCallbacks();

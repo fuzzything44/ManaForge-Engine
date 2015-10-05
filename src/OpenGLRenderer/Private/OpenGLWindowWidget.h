@@ -1,21 +1,21 @@
 #pragma once
 #include "OpenGLRendererConfig.h"
 
-#include "Window.h"
+#include "WindowWidget.h"
 
 class OpenGLRenderer;
 
-class OpenGLWindow : public Window
+class OpenGLWindowWidget : public WindowWidget
 {
 public:
-	explicit OpenGLWindow(OpenGLRenderer& renderer);
-	virtual ~OpenGLWindow() override;
+	explicit OpenGLWindowWidget(OpenGLRenderer& renderer);
+	virtual ~OpenGLWindowWidget() override;
 
 	virtual const WindowProps& getWindowProps() const override;
 	virtual void setWindowProps(const WindowProps& props) override;
 	void saveWindowProps() override;
 
-	virtual int32 getIsKeyPressed(Keyboard key) override;
+	virtual int32 getIsKeyPressed(const Keyboard& key) override;
 	virtual vec2 getCursorLocPixels() override;
 
 	virtual void swapBuffers();
@@ -32,8 +32,6 @@ private:
 
 	/// <summary> The window.</summary>
 	GLFWwindow* window;
-
-	static std::map<GLFWwindow*, OpenGLWindow*> windows;
 
 	static void scrollCallback(GLFWwindow* window, double x, double y);
 	static void focusCallback(GLFWwindow* window, int x);

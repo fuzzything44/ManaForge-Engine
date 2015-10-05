@@ -184,7 +184,7 @@
     <ClCompile Include="Private\OpenGLTextBox.cpp" />
     <ClCompile Include="Private\OpenGLTexture.cpp" />
     <ClCompile Include="Private\OpenGLTextureLibrary.cpp" />
-    <ClCompile Include="Private\OpenGLWindow.cpp" />
+    <ClCompile Include="Private\OpenGLWindowWidget.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Private\OpenGLCharacterData.h" />
@@ -199,7 +199,7 @@
     <ClInclude Include="Private\OpenGLTextBox.h" />
     <ClInclude Include="Private\OpenGLTexture.h" />
     <ClInclude Include="Private\OpenGLTextureLibrary.h" />
-    <ClInclude Include="Private\OpenGLWindow.h" />
+    <ClInclude Include="Private\OpenGLWindowWidget.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

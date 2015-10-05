@@ -1,15 +1,13 @@
 #include "OpenGLRendererPCH.h"
-#include "OpenGLWindow.h"
+#include "OpenGLWindowWidget.h"
+
 #include "OpenGLRenderer.h"
 
 #include <PropertyManager.h>
-
 #include <Runtime.h>
 #include <Helper.h>
 
-std::map<GLFWwindow*, OpenGLWindow*> OpenGLWindow::windows = std::map<GLFWwindow*, OpenGLWindow*>();
-
-OpenGLWindow::OpenGLWindow(OpenGLRenderer& renderer)
+OpenGLWindowWidget::OpenGLWindowWidget(OpenGLRenderer& renderer)
 	: renderer(renderer)
 {
 	PropertyManager& propManager = Runtime::get().getPropertyManager();
@@ -76,7 +74,7 @@ OpenGLWindow::OpenGLWindow(OpenGLRenderer& renderer)
 				MFLOG(Fatal) << "\nWindow failed to create.";
 			}
 
-			windows[window] = this;
+			glfwSetWindowUserPointer(window, this);
 
 			// make context current in this thread
 			glfwMakeContextCurrent(window);
@@ -99,13 +97,13 @@ OpenGLWindow::OpenGLWindow(OpenGLRenderer& renderer)
 			// Ensure we can capture the escape key being pressed below
 			glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 
-			glfwSetScrollCallback(window, &OpenGLWindow::scrollCallback);
+			glfwSetScrollCallback(window, &OpenGLWindowWidget::scrollCallback);
 
-			glfwSetWindowFocusCallback(window, &OpenGLWindow::focusCallback);
+			glfwSetWindowFocusCallback(window, &OpenGLWindowWidget::focusCallback);
 		});
 }
 
-OpenGLWindow::~OpenGLWindow()
+OpenGLWindowWidget::~OpenGLWindowWidget()
 {
 
 	glfwDestroyWindow(window);
@@ -113,16 +111,16 @@ OpenGLWindow::~OpenGLWindow()
 	glfwTerminate();
 }
 
-const WindowProps& OpenGLWindow::getWindowProps() const { return props; }
+const WindowProps& OpenGLWindowWidget::getWindowProps() const { return props; }
 
-void OpenGLWindow::setWindowProps(const WindowProps& props)
+void OpenGLWindowWidget::setWindowProps(const WindowProps& props)
 {
 	this->props = props;
 
 	updateProps();
 }
 
-void OpenGLWindow::saveWindowProps()
+void OpenGLWindowWidget::saveWindowProps()
 {
 	auto&& propManager = Runtime::get().getPropertyManager();
 
@@ -134,9 +132,9 @@ void OpenGLWindow::saveWindowProps()
 	propManager.saveValue("window.title", props.title);
 }
 
-int OpenGLWindow::getIsKeyPressed(Keyboard key) { return glfwGetKey(window, static_cast<int>(key)); }
+int OpenGLWindowWidget::getIsKeyPressed(const Keyboard& key) { return glfwGetKey(window, static_cast<int>(key)); }
 
-vec2 OpenGLWindow::getCursorLocPixels()
+vec2 OpenGLWindowWidget::getCursorLocPixels()
 {
 	dvec2 locationdouble;
 	glfwGetCursorPos(window, &locationdouble.x, &locationdouble.y);
@@ -144,7 +142,7 @@ vec2 OpenGLWindow::getCursorLocPixels()
 	return static_cast<vec2>(locationdouble);
 }
 
-void OpenGLWindow::swapBuffers()
+void OpenGLWindowWidget::swapBuffers()
 {
 	renderer.runOnRenderThreadAsync([window = window]
 		{
@@ -152,7 +150,7 @@ void OpenGLWindow::swapBuffers()
 		});
 }
 
-void OpenGLWindow::pollEvents()
+void OpenGLWindowWidget::pollEvents()
 {
 	renderer.runOnRenderThreadAsync([]
 		{
@@ -160,13 +158,13 @@ void OpenGLWindow::pollEvents()
 		});
 }
 
-bool OpenGLWindow::shouldClose()
+bool OpenGLWindowWidget::shouldClose()
 {
 	// we need to do this because glfwWindowShouldClose returns an int as a bool -- godda love C libraries
 	return glfwWindowShouldClose(window) != 0;
 }
 
-void OpenGLWindow::updateProps()
+void OpenGLWindowWidget::updateProps()
 {
 	glfwSetWindowSize(window, props.size.x, props.size.y);
 	glfwSetWindowTitle(window, props.title.c_str());
@@ -184,18 +182,13 @@ void OpenGLWindow::updateProps()
 	props.visible ? glfwShowWindow(window) : glfwHideWindow(window);
 }
 
-void OpenGLWindow::scrollCallback(GLFWwindow* window, double x, double y)
+void OpenGLWindowWidget::scrollCallback(GLFWwindow* window, double x, double y)
 {
-	auto iter = windows.find(window);
-	if (iter != windows.end()) {
-		// iter->second->scroll(x, y);
-	}
+	// static_cast<OpenGLWindowWidget*>(glfwGetWindowUserPointer(window))->scroll(); TODO: implement this
 }
 
-void OpenGLWindow::focusCallback(GLFWwindow* window, int x)
+void OpenGLWindowWidget::focusCallback(GLFWwindow* window, int x)
 {
-	auto iter = windows.find(window);
-	if (iter != windows.end()) {
-		// iter->second->focus(x);
-	}
+	// static_cast<OpenGLWindowWidget*>(glfwGetWindowUserPointer(window))->focus(); TODO: implement this
+
 }

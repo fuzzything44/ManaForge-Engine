@@ -8,7 +8,6 @@
 class PlayerController;
 class World;
 class Pawn;
-class Window;
 class Renderer;
 class PhysicsSystem;
 class AudioSystem;

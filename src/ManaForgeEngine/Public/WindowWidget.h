@@ -2,22 +2,25 @@
 #include <Engine.h>
 #include <map>
 
-#include <boost/core/noncopyable.hpp>
+#include "Widget.h"
 
-#include "WindowProps.h"
 
-#include "KeyEnum.h"
+struct WindowProps;
+enum class Keyboard;
 
 /// <summary> A window.</summary>
-class Window : boost::noncopyable
+class WindowWidget : public Widget
 {
 public:
-	virtual ~Window() = default;
+	inline WindowWidget() : Widget(nullptr){} // Widget is top-level widget -- no owner.
 
 	virtual const WindowProps& getWindowProps() const = 0;
 	virtual void setWindowProps(const WindowProps& props) = 0;
 	virtual void saveWindowProps() = 0;
 
-	virtual int getIsKeyPressed(Keyboard key) = 0;
+	virtual int getIsKeyPressed(const Keyboard& key) = 0;
 	virtual vec2 getCursorLocPixels() = 0;
 };
+
+#include "KeyEnum.h"
+#include "WindowProps.h"

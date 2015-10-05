@@ -10,14 +10,14 @@
 #include <SaveData.h>
 
 class Runtime;
-class Window;
+class WindowWidget;
 
 class InputManager
 {
 public:
-	ENGINE_API explicit InputManager(Window* window = nullptr);
+	ENGINE_API explicit InputManager(WindowWidget* window = nullptr);
 
-	ENGINE_API void setWindow(Window& newWindow);
+	ENGINE_API void setWindow(WindowWidget& newWindow);
 
 	ENGINE_API void bindActionMappingPressed(const std::string& name, std::function<void()> callback);
 	ENGINE_API void bindActionMappingReleased(const std::string& name, std::function<void()> callback);
@@ -27,7 +27,7 @@ public:
 private:
 	bool update();
 
-	Window* window;
+	WindowWidget* window;
 
 	struct ActionMapping
 	{

@@ -13,7 +13,7 @@ class MeshComponent;
 class Texture;
 class MaterialInstance;
 class CameraComponent;
-class Window;
+class WindowWidget;
 class TextureLibrary;
 class ModelData;
 class MaterialSource;
@@ -55,9 +55,9 @@ public:
 	virtual void deleteModel(Model* model) = 0;
 
 	// gets the window
-	virtual Window& getWindow() = 0;
+	virtual WindowWidget& getWindow() = 0;
 	// and the const version
-	virtual const Window& getWindow() const = 0;
+	virtual const WindowWidget& getWindow() const = 0;
 
 	virtual void drawDebugOutlinePolygon(vec2* verts, uint32 numVerts, Color color) = 0;
 	virtual void drawDebugLine(vec2* locs, uint32 numLocs, Color color) = 0;

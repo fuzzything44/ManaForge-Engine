@@ -9,7 +9,7 @@
 #include <ModelData.h>
 #include <PhysicsShape.h>
 #include <PhysicsComponent.h>
-#include <Window.h>
+#include <WindowWidget.h>
 #include <CameraComponent.h>
 #include <InputManager.h>
 

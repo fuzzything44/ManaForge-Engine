@@ -38,7 +38,7 @@ public:
 	virtual Font* getFont() const override;
 	// end TextBox interface
 
-	void render();
+	virtual void draw() override;
 
 private:
 	void regenerateBuffers();

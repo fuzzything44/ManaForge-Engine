@@ -53,7 +53,6 @@ void OpenGLModel::draw()
 
 	assert(renderer.isOnRenderThread());
 
-
 	mat3 view = renderer.getCurrentCamera().getViewMat();
 	mat3 model = parent->getModelMatrix();
 

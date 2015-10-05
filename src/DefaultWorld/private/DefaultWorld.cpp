@@ -71,9 +71,7 @@ void DefaultWorld::init(const std::string& name)
 	auto drawMaterial = std::shared_ptr<MaterialInstance>{Runtime::get().getRenderer().newMaterialInstance(
 		Runtime::get().getRenderer().getMaterialSource("boilerplate"))};
 
-	auto backgroundImages = std::shared_ptr<TextureLibrary>{
-		Runtime::get().getRenderer().newTextureLibrary() };
-
+	auto backgroundImages = std::shared_ptr<TextureLibrary>{Runtime::get().getRenderer().newTextureLibrary()};
 
 	// Make sure a world folder was supplied.
 	if (name.empty() || name == "") {
@@ -111,7 +109,6 @@ void DefaultWorld::init(const std::string& name)
 
 		// load the map from the file
 		arch >> boost::serialization::make_nvp("assoc", imageToTextureAssoc);
-
 
 		backgroundImages->init(imageToTextureAssoc.size(), 256); // TODO: less hardcoded values
 
