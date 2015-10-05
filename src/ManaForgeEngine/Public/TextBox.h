@@ -27,4 +27,6 @@ public:
 
 	virtual void setFont(Font* newFont) = 0;
 	virtual Font* getFont() const = 0;
+
+	virtual void draw() = 0;
 };

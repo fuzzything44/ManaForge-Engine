@@ -220,7 +220,7 @@ bool OpenGLRenderer::update(float /*deltaTime*/)
 				{
 					assert(!elem->isValid);
 					auto&& list = models.get()[elem->OpenGLModel::getRenderOrder()];
-					list.erase(std::find(list.begin(), list.end(), elem));
+					list.erase(elem->location);
 					delete elem;
 				});
 		});

@@ -249,7 +249,6 @@
     <ClCompile Include="Private\PropertyManager.cpp" />
     <ClCompile Include="Private\Runtime.cpp" />
     <ClCompile Include="Private\SharedLibrary.cpp" />
-    <ClCompile Include="Widget.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Private\EnginePCH.h" />
@@ -298,16 +297,17 @@
     <ClInclude Include="Public\SoundCue.h" />
     <ClInclude Include="Public\SoundSource.h" />
     <ClInclude Include="Public\TextBox.h" />
+    <ClInclude Include="Public\TextBoxWidget.h" />
     <ClInclude Include="Public\Texture.h" />
     <ClInclude Include="Public\TextureLibrary.h" />
     <ClInclude Include="Public\TimerManager.h" />
     <ClInclude Include="Public\TimerHandle.h" />
     <ClInclude Include="Public\Transform.h" />
     <ClInclude Include="Public\UVData.h" />
+    <ClInclude Include="Public\Widget.h" />
     <ClInclude Include="Public\Window.h" />
     <ClInclude Include="Public\WindowProps.h" />
     <ClInclude Include="public\World.h" />
-    <ClInclude Include="Widget.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

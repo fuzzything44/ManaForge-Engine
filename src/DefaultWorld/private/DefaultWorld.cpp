@@ -72,8 +72,8 @@ void DefaultWorld::init(const std::string& name)
 		Runtime::get().getRenderer().getMaterialSource("boilerplate"))};
 
 	auto backgroundImages = std::shared_ptr<TextureLibrary>{
-		Runtime::get().getRenderer().newTextureLibrary()}; // TODO: less hardcoded values
-	backgroundImages->init(4, 256);
+		Runtime::get().getRenderer().newTextureLibrary() };
+
 
 	// Make sure a world folder was supplied.
 	if (name.empty() || name == "") {
@@ -92,6 +92,7 @@ void DefaultWorld::init(const std::string& name)
 	// load the image associations
 	try
 	{
+
 		// We should probably just have the images we use in the same file as chunk size.
 		std::ifstream stream
 		{
@@ -111,7 +112,8 @@ void DefaultWorld::init(const std::string& name)
 		// load the map from the file
 		arch >> boost::serialization::make_nvp("assoc", imageToTextureAssoc);
 
-		backgroundImages->setFilterMode(Texture::FilterMode::MIPMAP_LINEAR);
+
+		backgroundImages->init(imageToTextureAssoc.size(), 256); // TODO: less hardcoded values
 
 		// load the images to the backgroundImages textureLibrary
 		for (auto& elem : imageToTextureAssoc) {

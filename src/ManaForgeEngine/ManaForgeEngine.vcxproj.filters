@@ -62,9 +62,6 @@
     <ClCompile Include="Private\SharedLibrary.cpp">
       <Filter>Private</Filter>
     </ClCompile>
-    <ClCompile Include="Widget.cpp">
-      <Filter>Private</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="public\Actor.h">
@@ -232,7 +229,10 @@
     <ClInclude Include="Public\Cacher.h">
       <Filter>Public</Filter>
     </ClInclude>
-    <ClInclude Include="Widget.h">
+    <ClInclude Include="Public\Widget.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\TextBoxWidget.h">
       <Filter>Public</Filter>
     </ClInclude>
   </ItemGroup>
