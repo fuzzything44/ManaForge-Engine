@@ -6,6 +6,7 @@
 #include <string>
 #include <chrono>
 
+#include <WindowWidget.h>
 #include <TimerManager.h>
 
 #include <boost/convert.hpp>
@@ -25,11 +26,11 @@ Pew::Pew()
 			startContact(other);
 		});
 
-	textBox = Runtime::get().getRenderer().newTextBox();
-	textBox->setFont(Runtime::get().getRenderer().getFont("Arial"));
-	textBox->setText(u"Contacts: 0");
-	textBox->setLocation({.5f, .4f});
-	textBox->setColor({.3f, 0.f, 1.f, 1.f});
+	textBoxWidget = Runtime::get().getRenderer().newTextBoxWidget(Runtime::get().getRenderer().getWindow());
+	textBoxWidget->setFont(Runtime::get().getRenderer().getFont("Arial"));
+	textBoxWidget->setText(u"Contacts: 0");
+	//textBoxWidget->setLocation({.5f, .4f}); TODO: implement
+	textBoxWidget->setColor({.3f, 0.f, 1.f, 1.f});
 
 	Runtime::get().getTimerManager().addTimer(TimerManager::Double_duration_t(1.f),
 		[]
@@ -45,7 +46,7 @@ void Pew::startContact(PhysicsComponent& other)
 {
 	using namespace std::string_literals;
 
-	textBox->setText(u"Contacts: "s + reinterpret_cast<const char16_t*>(std::to_wstring(++contacts).c_str()));
+	textBoxWidget->setText(u"Contacts: "s + reinterpret_cast<const char16_t*>(std::to_wstring(++contacts).c_str()));
 
 	if (reinterpret_cast<Pawn*>(&other.getOwner()) == Runtime::get().pawn.get()) {
 		for (int i = 0; i < 100; ++i) {

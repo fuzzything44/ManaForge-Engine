@@ -2,7 +2,7 @@
 #include "TestContentConfig.h"
 #include <Actor.h>
 #include <PhysicsComponent.h>
-#include <TextBox.h>
+#include <TextBoxWidget.h>
 
 MFCLASS(Pew, Actor)
 class Pew : public Actor
@@ -17,7 +17,7 @@ public:
 
 private:
 	std::unique_ptr<PhysicsComponent> phys;
-	std::unique_ptr<TextBox> textBox;
+	std::unique_ptr<TextBoxWidget> textBoxWidget;
 
 	float timeToSpawn;
 

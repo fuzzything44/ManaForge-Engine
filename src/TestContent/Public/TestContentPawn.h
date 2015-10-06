@@ -39,7 +39,7 @@ public:
 				setAngularVelocity(0.f);
 			});
 
-		uvec2 windowSize = Runtime::get().getRenderer().getWindow().getWindowProps().size;
+		uvec2 windowSize = Runtime::get().getRenderer().getWindow()->getWindowProps().size;
 
 		float aspectRatio = float(windowSize.y) / float(windowSize.x);
 

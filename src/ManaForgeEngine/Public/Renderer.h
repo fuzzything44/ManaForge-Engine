@@ -19,7 +19,8 @@ class ModelData;
 class MaterialSource;
 class Font;
 class Model;
-class TextBox;
+class Widget;
+class TextBoxWidget;
 
 // a non - copyable abstract class that handles rendering
 class Renderer : boost::noncopyable
@@ -43,7 +44,7 @@ public:
 	virtual const CameraComponent& getCurrentCamera() const = 0;
 
 	virtual std::unique_ptr<Model, void (*)(Model*)> newModel(uint8 renderOrder /* = 0*/) = 0;
-	virtual std::unique_ptr<TextBox> newTextBox() = 0;
+	virtual std::unique_ptr<TextBoxWidget> newTextBoxWidget(Widget* owner) = 0;
 	virtual Font* getFont(const path_t& name) = 0;
 	virtual Texture* getTexture(const path_t& name) = 0;
 	virtual MaterialSource* getMaterialSource(const path_t& name) = 0;
@@ -55,9 +56,9 @@ public:
 	virtual void deleteModel(Model* model) = 0;
 
 	// gets the window
-	virtual WindowWidget& getWindow() = 0;
+	virtual WindowWidget* getWindow() = 0;
 	// and the const version
-	virtual const WindowWidget& getWindow() const = 0;
+	virtual const WindowWidget* getWindow() const = 0;
 
 	virtual void drawDebugOutlinePolygon(vec2* verts, uint32 numVerts, Color color) = 0;
 	virtual void drawDebugLine(vec2* locs, uint32 numLocs, Color color) = 0;

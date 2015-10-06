@@ -18,9 +18,9 @@ public:
 	virtual int32 getIsKeyPressed(const Keyboard& key) override;
 	virtual vec2 getCursorLocPixels() override;
 
-	virtual void swapBuffers();
-	virtual void pollEvents();
 	bool shouldClose();
+
+	virtual void draw(const mat3& mat) override;
 
 private:
 	void updateProps();

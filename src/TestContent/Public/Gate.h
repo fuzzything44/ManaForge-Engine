@@ -8,7 +8,6 @@
 #include <MeshComponent.h>
 #include <AudioComponent.h>
 #include <PhysicsComponent.h>
-#include <TextBox.h>
 
 class Pew;
 

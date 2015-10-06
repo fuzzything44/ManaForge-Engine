@@ -142,26 +142,20 @@ vec2 OpenGLWindowWidget::getCursorLocPixels()
 	return static_cast<vec2>(locationdouble);
 }
 
-void OpenGLWindowWidget::swapBuffers()
-{
-	renderer.runOnRenderThreadAsync([window = window]
-		{
-			glfwSwapBuffers(window);
-		});
-}
-
-void OpenGLWindowWidget::pollEvents()
-{
-	renderer.runOnRenderThreadAsync([]
-		{
-			glfwPollEvents();
-		});
-}
 
 bool OpenGLWindowWidget::shouldClose()
 {
 	// we need to do this because glfwWindowShouldClose returns an int as a bool -- godda love C libraries
 	return glfwWindowShouldClose(window) != 0;
+}
+
+void OpenGLWindowWidget::draw(const mat3 & mat)
+{
+	renderer.runOnRenderThreadAsync([this]
+	{
+		glfwSwapBuffers(window);
+		glfwPollEvents();
+	});
 }
 
 void OpenGLWindowWidget::updateProps()

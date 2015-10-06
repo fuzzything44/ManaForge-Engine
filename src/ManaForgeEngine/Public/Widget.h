@@ -66,8 +66,9 @@ inline Widget::~Widget()
 
 inline void Widget::drawSubObjects(const mat3& drawMat)
 {
+	auto&& nextMat = glm::translate(drawMat, trans.location);
 	for (auto&& elem : subWidgets) {
-		elem->draw(drawMat);
-		elem->drawSubObjects(drawMat); // recursively draw subobjects
+		elem->draw(nextMat);
+		elem->drawSubObjects(nextMat); // recursively draw subobjects
 	}
 }

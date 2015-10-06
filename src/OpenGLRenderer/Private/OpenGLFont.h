@@ -11,7 +11,7 @@
 class OpenGLMaterialSource;
 class OpenGLTexture;
 class OpenGLRenderer;
-class OpenGLTextBox;
+class OpenGLTextBoxWidget;
 
 class OpenGLFont : public Font
 {
@@ -25,7 +25,7 @@ public:
 	OpenGLCharacterData getCharacterData(wchar_t ch);
 	OpenGLMaterialSource* getMaterialSource();
 
-	void render(OpenGLTextBox& box);
+	void render(OpenGLTextBoxWidget& box, const mat3& mat);
 
 private:
 	path_t fontName;

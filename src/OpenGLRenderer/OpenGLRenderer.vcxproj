@@ -181,7 +181,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Private\OpenGLTextBox.cpp" />
+    <ClCompile Include="Private\OpenGLTextBoxWidget.cpp" />
     <ClCompile Include="Private\OpenGLTexture.cpp" />
     <ClCompile Include="Private\OpenGLTextureLibrary.cpp" />
     <ClCompile Include="Private\OpenGLWindowWidget.cpp" />
@@ -196,7 +196,7 @@
     <ClInclude Include="Private\OpenGLRenderer.h" />
     <ClInclude Include="Private\OpenGLRendererConfig.h" />
     <ClInclude Include="Private\OpenGLRendererPCH.h" />
-    <ClInclude Include="Private\OpenGLTextBox.h" />
+    <ClInclude Include="Private\OpenGLTextBoxWidget.h" />
     <ClInclude Include="Private\OpenGLTexture.h" />
     <ClInclude Include="Private\OpenGLTextureLibrary.h" />
     <ClInclude Include="Private\OpenGLWindowWidget.h" />

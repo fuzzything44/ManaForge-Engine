@@ -12,9 +12,9 @@ enum class Keyboard;
 class WindowWidget : public Widget
 {
 public:
-	inline WindowWidget() : Widget(nullptr){} // Widget is top-level widget -- no owner.
+	inline WindowWidget() : Widget(nullptr){} // WindowWidget is top-level widget -- no owner.
 
-	virtual const WindowProps& getWindowProps() const = 0;
+	virtual const WindowProps& getWindowProps() const = 0; // TODO: reimplement with better functions
 	virtual void setWindowProps(const WindowProps& props) = 0;
 	virtual void saveWindowProps() = 0;
 

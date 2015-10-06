@@ -103,8 +103,8 @@ void Runtime::run()
 	world->init("default"); // load the test world
 
 	// let the input manager know of the window
-	WindowWidget& window = getRenderer().getWindow();
-	getInputManager().setWindow(window);
+	auto&& window = getRenderer().getWindow();
+	getInputManager().setWindow(*window);
 
 	// spawn the new playercontrollers and pawns
 	controller = world->makePlayerController();
@@ -130,7 +130,7 @@ void Runtime::run()
 		getInputManager().update();
 		getTimerManager().update();
 
-		WindowWidget& window = getRenderer().getWindow();
+		auto&& window = getRenderer().getWindow();
 
 		// recieve the update callbacks
 		auto updateCallbacks = getModuleManager().getUpdateCallbacks();

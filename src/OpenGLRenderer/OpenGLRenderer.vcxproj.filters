@@ -38,9 +38,6 @@
     <ClCompile Include="Private\OpenGLMaterialSource.cpp">
       <Filter>Private</Filter>
     </ClCompile>
-    <ClCompile Include="Private\OpenGLTextBox.cpp">
-      <Filter>Private</Filter>
-    </ClCompile>
     <ClCompile Include="Private\OpenGLRendererPCH.cpp">
       <Filter>PCH</Filter>
     </ClCompile>
@@ -51,6 +48,9 @@
       <Filter>Private</Filter>
     </ClCompile>
     <ClCompile Include="Private\OpenGLWindowWidget.cpp">
+      <Filter>Private</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\OpenGLTextBoxWidget.cpp">
       <Filter>Private</Filter>
     </ClCompile>
   </ItemGroup>
@@ -79,9 +79,6 @@
     <ClInclude Include="Private\OpenGLMaterialSource.h">
       <Filter>Private</Filter>
     </ClInclude>
-    <ClInclude Include="Private\OpenGLTextBox.h">
-      <Filter>Private</Filter>
-    </ClInclude>
     <ClInclude Include="Private\OpenGLRendererPCH.h">
       <Filter>PCH</Filter>
     </ClInclude>
@@ -98,6 +95,9 @@
       <Filter>Private</Filter>
     </ClInclude>
     <ClInclude Include="Private\OpenGLWindowWidget.h">
+      <Filter>Private</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\OpenGLTextBoxWidget.h">
       <Filter>Private</Filter>
     </ClInclude>
   </ItemGroup>

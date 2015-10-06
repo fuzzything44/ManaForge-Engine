@@ -4,7 +4,7 @@
 #include "OpenGLTexture.h"
 #include "OpenGLRenderer.h"
 #include "OpenGLMaterialSource.h"
-#include "OpenGLTextBox.h"
+#include "OpenGLTextBoxWidget.h"
 
 #include <boost/filesystem/fstream.hpp>
 
@@ -83,11 +83,11 @@ OpenGLCharacterData OpenGLFont::getCharacterData(wchar_t ch)
 
 OpenGLMaterialSource* OpenGLFont::getMaterialSource() { return matSource; }
 
-void OpenGLFont::render(OpenGLTextBox& box)
+void OpenGLFont::render(OpenGLTextBoxWidget& box, const mat3& mat)
 {
 	auto matID = **matSource;
 
-	renderer.runOnRenderThreadAsync([this, matID, &box]
+	renderer.runOnRenderThreadAsync([this, matID, &box, mat]
 		{
 
 			glUseProgram(matID);
@@ -96,7 +96,7 @@ void OpenGLFont::render(OpenGLTextBox& box)
 			glUniform1f(cutoffUniLoc, box.thickness);
 
 			assert(viewMatUniLoc != -1);
-			glUniformMatrix3fv(viewMatUniLoc, 1, GL_FALSE, &box.getMatrix()[0][0]);
+			glUniformMatrix3fv(viewMatUniLoc, 1, GL_FALSE, &mat[0][0]);
 
 			assert(colorUniLoc != -1);
 			glUniform4f(colorUniLoc, box.color.r, box.color.g, box.color.b, box.color.a);

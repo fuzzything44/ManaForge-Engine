@@ -10,7 +10,7 @@
 #include "OpenGLModel.h"
 #include "OpenGLModelData.h"
 #include "OpenGLMaterialSource.h"
-#include "OpenGLTextBox.h"
+#include "OpenGLTextBoxWidget.h"
 #include "OpenGLFont.h"
 
 #include <SOIL/SOIL.h>
@@ -33,6 +33,7 @@ OpenGLRenderer::OpenGLRenderer()
 	, modelsToDelete(1000)
 	, modelsToAdd(1000)
 	, models(*this)
+	, textBoxes(*this)
 {
 }
 
@@ -82,18 +83,18 @@ void OpenGLRenderer::initRenderer()
 	showLoadingImage();
 }
 
-WindowWidget& OpenGLRenderer::getWindow()
+WindowWidget* OpenGLRenderer::getWindow()
 {
 	assert(window);
 
-	return *window;
+	return window.get();
 }
 
-const WindowWidget& OpenGLRenderer::getWindow() const
+const WindowWidget* OpenGLRenderer::getWindow() const
 {
 	assert(window);
 
-	return *window;
+	return window.get();
 }
 
 std::unique_ptr<Model, decltype(&Model::deleter)> OpenGLRenderer::newModel(uint8 renderOrder)
@@ -106,7 +107,7 @@ std::unique_ptr<Model, decltype(&Model::deleter)> OpenGLRenderer::newModel(uint8
 	return std::move(ret);
 }
 
-std::unique_ptr<TextBox> OpenGLRenderer::newTextBox() { return std::make_unique<OpenGLTextBox>(*this); }
+std::unique_ptr<TextBoxWidget> OpenGLRenderer::newTextBoxWidget(Widget* owner) { return std::make_unique<OpenGLTextBoxWidget>(owner, *this); }
 
 Font* OpenGLRenderer::getFont(const path_t& name)
 {
@@ -220,9 +221,10 @@ bool OpenGLRenderer::update(float /*deltaTime*/)
 					delete elem;
 				});
 		});
-
-	window->swapBuffers();
-	window->pollEvents();
+	
+	mat3 defMat;
+	window->draw(defMat);
+	window->drawSubObjects(defMat);
 
 	// acquire a future object for the end of this frame
 	lastFrame = runOnRenderThreadAsync([]
@@ -322,9 +324,7 @@ void OpenGLRenderer::showLoadingImage()
 			glDeleteVertexArrays(1, &vao);
 		});
 
-	// display it
-	window->swapBuffers();
-	window->pollEvents();
+	window->draw(mat3{}); // this does swap buffers and poll events
 }
 
 void OpenGLRenderer::setCurrentCamera(CameraComponent& newCamera) { currentCamera.store(&newCamera); }

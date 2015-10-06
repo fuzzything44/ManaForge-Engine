@@ -18,13 +18,15 @@
 
 #define USE_PARALLEL_RENDERER 1
 
+class Widget;
+
 class OpenGLModel;
 class OpenGLMaterialInstance;
 class OpenGLTexture;
 class OpenGLWindowWidget;
 class OpenGLMaterialSource;
 class OpenGLModelData;
-class OpenGLTextBox;
+class OpenGLTextBoxWidget;
 class OpenGLFont;
 
 class OpenGLRenderer;
@@ -58,7 +60,7 @@ private:
 class OpenGLRenderer : public Renderer
 {
 
-	friend class OpenGLTextBox;
+	friend class OpenGLTextBoxWidget;
 
 	struct RenderThread
 	{
@@ -103,11 +105,11 @@ public:
 
 	void showLoadingImage();
 
-	virtual WindowWidget& getWindow() override;
-	const WindowWidget& getWindow() const override;
+	virtual WindowWidget* getWindow() override;
+	const WindowWidget* getWindow() const override;
 
 	virtual std::unique_ptr<Model, void (*)(Model*)> newModel(uint8 renderOrder) override;
-	virtual std::unique_ptr<TextBox> newTextBox() override;
+	virtual std::unique_ptr<TextBoxWidget> newTextBoxWidget(Widget* owner) override;
 	virtual Font* getFont(const path_t& name) override;
 	virtual Texture* getTexture(const path_t& name) override;
 	virtual MaterialSource* getMaterialSource(const path_t& name) override;
@@ -186,7 +188,7 @@ private:
 
 	// delete our caches and models first
 	RenderThreadOnly<std::map<uint8, std::list<OpenGLModel*>>> models;
-	std::list<OpenGLTextBox*> textBoxes;
+	RenderThreadOnly<std::list<OpenGLTextBoxWidget*>> textBoxes;
 
 	StrongCacher<path_t, OpenGLTexture> textures;
 	StrongCacher<path_t, OpenGLFont> fonts;

@@ -1,6 +1,6 @@
 #include "OpenGLRendererPCH.h"
 
-#include "OpenGLTextBox.h"
+#include "OpenGLTextBoxWidget.h"
 
 #include "OpenGLFont.h"
 #include "OpenGLMaterialSource.h"
@@ -9,14 +9,15 @@
 
 #include <glm-ortho-2d.h>
 
-OpenGLTextBox::OpenGLTextBox(OpenGLRenderer& renderer)
-	: renderer(renderer)
+OpenGLTextBoxWidget::OpenGLTextBoxWidget(Widget* owner, OpenGLRenderer& renderer)
+	: TextBoxWidget(owner)
+	, renderer(renderer)
 	, thickness(.5f)
 	, size(1.f)
 {
 	renderer.runOnRenderThreadSync([this]
 		{
-			locationIter = this->renderer.textBoxes.insert(this->renderer.textBoxes.begin(), this);
+			locationIter = this->renderer.textBoxes.get().insert(this->renderer.textBoxes.get().begin(), this);
 
 			// just generate the buffers, there is no data yet.
 			glGenVertexArrays(1, &vertexArray);
@@ -26,15 +27,15 @@ OpenGLTextBox::OpenGLTextBox(OpenGLRenderer& renderer)
 		});
 }
 
-OpenGLTextBox::~OpenGLTextBox()
+OpenGLTextBoxWidget::~OpenGLTextBoxWidget()
 {
 	renderer.runOnRenderThreadSync([this]
 		{
-			renderer.textBoxes.erase(locationIter);
+			renderer.textBoxes.get().erase(locationIter);
 		});
 }
 
-void OpenGLTextBox::setText(const std::u16string& textIn)
+void OpenGLTextBoxWidget::setText(const std::u16string& textIn)
 {
 	// if the texts are the same, forget it.
 	if (text != textIn) {
@@ -45,35 +46,31 @@ void OpenGLTextBox::setText(const std::u16string& textIn)
 	}
 }
 
-const std::u16string OpenGLTextBox::getText() const { return text; }
+const std::u16string OpenGLTextBoxWidget::getText() const { return text; }
 
-void OpenGLTextBox::setSize(float newSize) { size = newSize; }
+void OpenGLTextBoxWidget::setSize(float newSize) { size = newSize; }
 
-float OpenGLTextBox::getSize() const { return size; }
+float OpenGLTextBoxWidget::getSize() const { return size; }
 
-void OpenGLTextBox::setThickness(Clampf<0, 0, 1, 0> thicknessIn) { thickness = thicknessIn; }
+void OpenGLTextBoxWidget::setThickness(Clampf<0, 0, 1, 0> thicknessIn) { thickness = thicknessIn; }
 
-Clampf<0, 0, 1, 0> OpenGLTextBox::getThickness() const { return thickness; }
+Clampf<0, 0, 1, 0> OpenGLTextBoxWidget::getThickness() const { return thickness; }
 
-void OpenGLTextBox::setColor(vec4 colorIn) { color = colorIn; }
+void OpenGLTextBoxWidget::setColor(vec4 colorIn) { color = colorIn; }
 
-vec4 OpenGLTextBox::getColor() const { return color; }
+vec4 OpenGLTextBoxWidget::getColor() const { return color; }
 
-void OpenGLTextBox::setLocation(vec2 loc) { location = loc; }
-
-vec2 OpenGLTextBox::getLocation() const { return location; }
-
-void OpenGLTextBox::setFont(Font* newFont)
+void OpenGLTextBoxWidget::setFont(Font* newFont)
 {
 	// if this fails we have problems anyway...
 	font = static_cast<OpenGLFont*>(newFont);
 }
 
-Font* OpenGLTextBox::getFont() const { return font; }
+Font* OpenGLTextBoxWidget::getFont() const { return font; }
 
-void OpenGLTextBox::draw() { font->render(*this); }
+void OpenGLTextBoxWidget::draw(const mat3& mat) { font->render(*this, mat); }
 
-void OpenGLTextBox::regenerateBuffers()
+void OpenGLTextBoxWidget::regenerateBuffers()
 {
 	// this MUST be a vector because contiguity is important
 	std::vector<vec2> locations;
@@ -124,7 +121,7 @@ void OpenGLTextBox::regenerateBuffers()
 		});
 }
 
-void OpenGLTextBox::reallocateBuffers()
+void OpenGLTextBoxWidget::reallocateBuffers()
 {
 	currentMaxLetters = text.size() + 5;
 
@@ -140,17 +137,4 @@ void OpenGLTextBox::reallocateBuffers()
 			glBufferData(
 				GL_ELEMENT_ARRAY_BUFFER, sizeof(uvec3) * currentMaxLetters * 2, nullptr, GL_DYNAMIC_DRAW);
 		});
-}
-
-mat3 OpenGLTextBox::getMatrix()
-{
-	auto windowSize = uvec2{renderer.window->getWindowProps().size};
-	float aspectRatio = ((float)windowSize.x) / ((float)windowSize.y);
-	mat3 ret = glm::ortho2d(0.f, aspectRatio, 0.f, 1.f);
-	ret = glm::translate(ret, location);
-	ret = glm::scale(ret, vec2{size, size});
-
-	auto a = ret * vec3{0.f, 0.f, 1.f};
-
-	return ret;
 }

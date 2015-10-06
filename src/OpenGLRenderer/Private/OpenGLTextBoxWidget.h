@@ -1,7 +1,7 @@
 #pragma once
 #include "OpenGLRendererConfig.h"
 
-#include <TextBox.h>
+#include <TextBoxWidget.h>
 
 #include <string>
 
@@ -9,13 +9,13 @@ class Font;
 class OpenGLFont;
 class OpenGLRenderer;
 
-class OpenGLTextBox : public TextBox
+class OpenGLTextBoxWidget : public TextBoxWidget
 {
 	friend class OpenGLFont;
 
 public:
-	OpenGLTextBox(OpenGLRenderer& renderer);
-	virtual ~OpenGLTextBox();
+	OpenGLTextBoxWidget(Widget* owner, OpenGLRenderer& renderer);
+	virtual ~OpenGLTextBoxWidget();
 
 	// start TextBox interface
 	virtual void setText(const std::u16string& text) override;
@@ -30,20 +30,18 @@ public:
 	virtual void setColor(vec4 color) override;
 	virtual vec4 getColor() const override;
 
-	// on a scale from 0-1
-	virtual void setLocation(vec2 loc) override;
-	virtual vec2 getLocation() const override;
+	virtual Widget* getOwner() override { return owner; }
+	virtual const Widget* getOwner() const { return owner; }
 
 	virtual void setFont(Font* newFont) override;
 	virtual Font* getFont() const override;
 	// end TextBox interface
 
-	virtual void draw() override;
+	virtual void draw(const mat3& matAtOriginOfParent) override;
 
 private:
 	void regenerateBuffers();
 	void reallocateBuffers();
-	mat3 getMatrix();
 
 	std::u16string text;
 
@@ -61,7 +59,7 @@ private:
 
 	OpenGLRenderer& renderer;
 
-	std::list<OpenGLTextBox*>::iterator locationIter;
+	std::list<OpenGLTextBoxWidget*>::iterator locationIter;
 
 	OpenGLFont* font;
 };
