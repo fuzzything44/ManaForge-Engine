@@ -17,7 +17,8 @@ OpenGLTextBoxWidget::OpenGLTextBoxWidget(Widget* owner, OpenGLRenderer& renderer
 {
 	renderer.runOnRenderThreadSync([this]
 		{
-			locationIter = this->renderer.textBoxes.get().insert(this->renderer.textBoxes.get().begin(), this);
+			locationIter =
+				this->renderer.textBoxes.get().insert(this->renderer.textBoxes.get().begin(), this);
 
 			// just generate the buffers, there is no data yet.
 			glGenVertexArrays(1, &vertexArray);
@@ -68,7 +69,7 @@ void OpenGLTextBoxWidget::setFont(Font* newFont)
 
 Font* OpenGLTextBoxWidget::getFont() const { return font; }
 
-void OpenGLTextBoxWidget::draw(const mat3& mat) { font->render(*this, mat); }
+void OpenGLTextBoxWidget::draw(const mat3& mat) { font->render(*this, glm::translate(mat, getStartRelativeLocation())); }
 
 void OpenGLTextBoxWidget::regenerateBuffers()
 {
@@ -85,15 +86,15 @@ void OpenGLTextBoxWidget::regenerateBuffers()
 		OpenGLCharacterData d = font->getCharacterData(c);
 
 		// add uvs
-		uvs.emplace_back(d.uvBegin);
-		uvs.emplace_back(d.uvEnd.x, d.uvBegin.y);
-		uvs.emplace_back(d.uvBegin.x, d.uvEnd.y);
-		uvs.emplace_back(d.uvEnd);
+		uvs.emplace_back(d.uvBegin.x, d.uvEnd.y);				// lower left
+		uvs.emplace_back(d.uvEnd);								// lower right
+		uvs.emplace_back(d.uvBegin);							// upper left
+		uvs.emplace_back(d.uvEnd.x, d.uvBegin.y);				// upper right
 
-		locations.emplace_back(cursorpos + d.offset.x, d.offset.y);
-		locations.emplace_back(cursorpos + d.offset.x + d.size.x, d.offset.y);
-		locations.emplace_back(cursorpos + d.offset.x, d.offset.y - d.size.y);
-		locations.emplace_back(cursorpos + d.offset.x + d.size.x, d.offset.y - d.size.y);
+		locations.emplace_back(cursorpos + d.offset.x, d.size.y - d.offset.y);				// lower left
+		locations.emplace_back(cursorpos + d.offset.x + d.size.x, d.size.y - d.offset.y);	// lower right
+		locations.emplace_back(cursorpos + d.offset.x, -d.offset.y);							// upper left
+		locations.emplace_back(cursorpos + d.offset.x + d.size.x, -d.offset.y);				// upper right
 
 		elements.emplace_back(i * 4, i * 4 + 1, i * 4 + 2);
 		elements.emplace_back(i * 4 + 1, i * 4 + 2, i * 4 + 3);

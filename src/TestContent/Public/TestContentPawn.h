@@ -6,6 +6,7 @@
 #include <Runtime.h>
 #include <MaterialInstance.h>
 #include <Texture.h>
+#include <Renderer.h>
 #include <ModelData.h>
 #include <PhysicsShape.h>
 #include <PhysicsComponent.h>
@@ -39,7 +40,7 @@ public:
 				setAngularVelocity(0.f);
 			});
 
-		uvec2 windowSize = Runtime::get().getRenderer().getWindow()->getWindowProps().size;
+		uvec2 windowSize = Runtime::get().getRenderer().getWindow()->getSize();
 
 		float aspectRatio = float(windowSize.y) / float(windowSize.x);
 

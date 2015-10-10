@@ -12,15 +12,14 @@ OpenGLWindowWidget::OpenGLWindowWidget(OpenGLRenderer& renderer)
 {
 	PropertyManager& propManager = Runtime::get().getPropertyManager();
 
-	LOAD_PROPERTY_WITH_WARNING(propManager, "window.size.x", props.size.x, 800);
-	LOAD_PROPERTY_WITH_WARNING(propManager, "window.size.y", props.size.y, 600);
+	ivec2 size;
+	LOAD_PROPERTY_WITH_WARNING(propManager, "window.size.x", size.x, 800);
+	LOAD_PROPERTY_WITH_WARNING(propManager, "window.size.y", size.y, 600);
 
-	LOAD_PROPERTY_WITH_WARNING(propManager, "window.renderMode", props.renderMode, RenderMode::NORMAL);
-	LOAD_PROPERTY_WITH_WARNING(propManager, "window.windowMode", props.windowMode, WindowMode::FULLSCREEN);
+	LOAD_PROPERTY_WITH_WARNING(propManager, "window.renderMode", renderMode, RenderMode::NORMAL);
+	LOAD_PROPERTY_WITH_WARNING(propManager, "window.windowMode", windowMode, WindowMode::FULLSCREEN);
 
-	LOAD_PROPERTY_WITH_WARNING(propManager, "window.title", props.title, "WARNING- NO TITLE GIVEN");
-
-	hasFocus = true;
+	LOAD_PROPERTY_WITH_WARNING(propManager, "window.title", title, "WARNING- NO TITLE GIVEN");
 
 	// init GLFW (our window handler)
 	if (int err = glfwInit() != 1) {
@@ -30,7 +29,7 @@ OpenGLWindowWidget::OpenGLWindowWidget(OpenGLRenderer& renderer)
 	GLFWmonitor* mon = glfwGetPrimaryMonitor();
 	const GLFWvidmode* mode = glfwGetVideoMode(mon);
 
-	renderer.runOnRenderThreadAsync([this, mon, mode]
+	renderer.runOnRenderThreadAsync([this, mon, mode, size]
 		{
 
 			// set AA
@@ -49,23 +48,23 @@ OpenGLWindowWidget::OpenGLWindowWidget(OpenGLRenderer& renderer)
 			glfwWindowHint(GLFW_RESIZABLE, false);
 
 			// create the winodw
-			switch (props.windowMode)
+			switch (windowMode)
 			{
 			case WindowMode::FULLSCREEN:
-				window = glfwCreateWindow(props.size.x, props.size.y, props.title.c_str(), mon, nullptr);
+				window = glfwCreateWindow(size.x, size.y, title.c_str(), mon, nullptr);
 				break;
 			case WindowMode::FULLSCREEN_WINDOWED:
 				glfwWindowHint(GLFW_DECORATED, false);
-				window = glfwCreateWindow(mode->width, mode->height, props.title.c_str(), nullptr, nullptr);
-
-				props.size = uvec2(mode->width, mode->height);
+				window = glfwCreateWindow(mode->width, mode->height, title.c_str(), nullptr, nullptr);
 				break;
 
 			case WindowMode::WINDOWED:
-				window = glfwCreateWindow(props.size.x, props.size.y, props.title.c_str(), nullptr, nullptr);
+				window = glfwCreateWindow(size.x, size.y, title.c_str(), nullptr, nullptr);
 				break;
 
-			default: break;
+			default: 
+				MFLOG(Error) << "Unrecgonized WindowMode.";
+				break;
 			}
 
 			// exit if the window wasn't initialized correctly
@@ -111,28 +110,81 @@ OpenGLWindowWidget::~OpenGLWindowWidget()
 	glfwTerminate();
 }
 
-const WindowProps& OpenGLWindowWidget::getWindowProps() const { return props; }
-
-void OpenGLWindowWidget::setWindowProps(const WindowProps& props)
+WindowWidget::WindowMode OpenGLWindowWidget::getWindowMode() 
 {
-	this->props = props;
+	return windowMode;
+}
 
-	updateProps();
+void OpenGLWindowWidget::setRenderMode(WindowWidget::RenderMode newRenderMode) 
+{
+	renderMode = newRenderMode;
+}
+WindowWidget::RenderMode OpenGLWindowWidget::getRenderMode() const 
+{
+	return renderMode;
+}
+
+void OpenGLWindowWidget::setTitle(std::string& newTitle) 
+{
+	title = newTitle;
+	glfwSetWindowTitle(window, newTitle.c_str());
+}
+std::string OpenGLWindowWidget::getTitle() const
+{
+	return title;
+}
+
+void OpenGLWindowWidget::setSize(const ivec2& newSize) 
+{
+	glfwSetWindowSize(window, newSize.x, newSize.y);
+}
+ivec2 OpenGLWindowWidget::OpenGLWindowWidget::getSize() const
+{
+	ivec2 ret;
+	glfwGetWindowSize(window, &ret.x, &ret.y);
+
+	return ret;
+}
+
+void OpenGLWindowWidget::setLocation(const ivec2& newLocation) 
+{
+	glfwSetWindowPos(window, newLocation.x, newLocation.y);
+}
+ivec2 OpenGLWindowWidget::getLocation() const 
+{
+	ivec2 ret;
+	glfwGetWindowPos(window, &ret.x, &ret.y);
+
+	return ret;
+}
+
+void OpenGLWindowWidget::setVisible(bool isVisible) 
+{
+	
+}
+bool OpenGLWindowWidget::getVisible() const 
+{
+	return true; // TODO: implement
 }
 
 void OpenGLWindowWidget::saveWindowProps()
 {
 	auto&& propManager = Runtime::get().getPropertyManager();
 
-	propManager.saveValue("window.size.x", props.size.x);
-	propManager.saveValue("window.size.y", props.size.y);
+	ivec2 size;
+	glfwGetWindowSize(window, &size.x, &size.y);
+	propManager.saveValue("window.size.x", size.x);
+	propManager.saveValue("window.size.y", size.y);
 
-	propManager.saveValue("window.renderMode", static_cast<uint8>(props.renderMode));
-	propManager.saveValue("window.windowMode", static_cast<uint8>(props.windowMode));
-	propManager.saveValue("window.title", props.title);
+	propManager.saveValue("window.renderMode", static_cast<uint8>(renderMode));
+	propManager.saveValue("window.windowMode", static_cast<uint8>(windowMode));
+	propManager.saveValue("window.title", title);
 }
 
-int OpenGLWindowWidget::getIsKeyPressed(const Keyboard& key) { return glfwGetKey(window, static_cast<int>(key)); }
+int OpenGLWindowWidget::getIsKeyPressed(const Keyboard& key)
+{
+	return glfwGetKey(window, static_cast<int>(key));
+}
 
 vec2 OpenGLWindowWidget::getCursorLocPixels()
 {
@@ -142,38 +194,19 @@ vec2 OpenGLWindowWidget::getCursorLocPixels()
 	return static_cast<vec2>(locationdouble);
 }
 
-
 bool OpenGLWindowWidget::shouldClose()
 {
 	// we need to do this because glfwWindowShouldClose returns an int as a bool -- godda love C libraries
 	return glfwWindowShouldClose(window) != 0;
 }
 
-void OpenGLWindowWidget::draw(const mat3 & mat)
+void OpenGLWindowWidget::postDraw(const mat3& /*mat*/)
 {
 	renderer.runOnRenderThreadAsync([this]
-	{
-		glfwSwapBuffers(window);
-		glfwPollEvents();
-	});
-}
-
-void OpenGLWindowWidget::updateProps()
-{
-	glfwSetWindowSize(window, props.size.x, props.size.y);
-	glfwSetWindowTitle(window, props.title.c_str());
-
-	glViewport(0, 0, props.size.x, props.size.y);
-
-	switch (props.renderMode)
-	{
-	case RenderMode::NORMAL: glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); break;
-	case RenderMode::WIREFRAME: glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); break;
-	default: glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); break;
-	}
-
-	// show the window if it should be visible
-	props.visible ? glfwShowWindow(window) : glfwHideWindow(window);
+		{
+			glfwSwapBuffers(window);
+			glfwPollEvents();
+		});
 }
 
 void OpenGLWindowWidget::scrollCallback(GLFWwindow* window, double x, double y)
@@ -184,5 +217,4 @@ void OpenGLWindowWidget::scrollCallback(GLFWwindow* window, double x, double y)
 void OpenGLWindowWidget::focusCallback(GLFWwindow* window, int x)
 {
 	// static_cast<OpenGLWindowWidget*>(glfwGetWindowUserPointer(window))->focus(); TODO: implement this
-
 }

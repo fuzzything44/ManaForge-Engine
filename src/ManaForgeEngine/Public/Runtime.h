@@ -1,8 +1,6 @@
 #pragma once
 #include "Engine.h"
 
-#include <boost/core/noncopyable.hpp>
-
 #include <chrono>
 
 class PlayerController;
@@ -16,10 +14,15 @@ class PropertyManager;
 class InputManager;
 class TimerManager;
 
-class Runtime : boost::noncopyable
+class Runtime
 {
 public:
 	ENGINE_API explicit Runtime(const path_t& world);
+	Runtime(const Runtime& lhs) = delete;
+	Runtime(Runtime&& lhs) = default;
+
+	Runtime& operator=(const Runtime& lhs) = delete;
+	Runtime& operator=(Runtime&& lhs) = delete;
 
 	ENGINE_API ~Runtime();
 

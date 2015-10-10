@@ -27,9 +27,9 @@ Pew::Pew()
 		});
 
 	textBoxWidget = Runtime::get().getRenderer().newTextBoxWidget(Runtime::get().getRenderer().getWindow());
-	textBoxWidget->setFont(Runtime::get().getRenderer().getFont("Arial"));
+	textBoxWidget->setFont(Runtime::get().getRenderer().getFont("Sassy Molassy"));
 	textBoxWidget->setText(u"Contacts: 0");
-	//textBoxWidget->setLocation({.5f, .4f}); TODO: implement
+	textBoxWidget->setStartRelativeLocation({.5f, .4f}); 
 	textBoxWidget->setColor({.3f, 0.f, 1.f, 1.f});
 
 	Runtime::get().getTimerManager().addTimer(TimerManager::Double_duration_t(1.f),
@@ -46,7 +46,8 @@ void Pew::startContact(PhysicsComponent& other)
 {
 	using namespace std::string_literals;
 
-	textBoxWidget->setText(u"Contacts: "s + reinterpret_cast<const char16_t*>(std::to_wstring(++contacts).c_str()));
+	textBoxWidget->setText(
+		u"Contacts: "s + reinterpret_cast<const char16_t*>(std::to_wstring(++contacts).c_str()));
 
 	if (reinterpret_cast<Pawn*>(&other.getOwner()) == Runtime::get().pawn.get()) {
 		for (int i = 0; i < 100; ++i) {

@@ -1,8 +1,10 @@
 #pragma once
-#include <Engine.h>
-#include <map>
+#include "Engine.h"
 
 #include "Widget.h"
+
+#include <map>
+#include <type_traits>
 
 
 struct WindowProps;
@@ -12,15 +14,85 @@ enum class Keyboard;
 class WindowWidget : public Widget
 {
 public:
-	inline WindowWidget() : Widget(nullptr){} // WindowWidget is top-level widget -- no owner.
+	/// <summary> Values that represent window modes.</summary>
+	enum class WindowMode : uint8
+	{
+		FULLSCREEN = '0',			// Fullscreen - Steals the graphics card to render your game
+		FULLSCREEN_WINDOWED = '1',	// Fullscreen windowed - Creates a borderless window that seems fullscren.
+									//		Nice because it can be switched out very fast
+		WINDOWED = '2'				// Windowed - Created a decorated window
+	};
 
-	virtual const WindowProps& getWindowProps() const = 0; // TODO: reimplement with better functions
-	virtual void setWindowProps(const WindowProps& props) = 0;
+	/// <summary> Values that represent render modes.</summary>
+	enum class RenderMode : uint8
+	{
+		NORMAL = 0,   // The normal render mode -- shaded polygons
+		WIREFRAME = 1 // Render in wireframe
+	};
+
+
+	inline WindowWidget()
+		: Widget(nullptr)
+	{
+	} // WindowWidget is top-level widget -- no owner.
+
+	virtual WindowMode getWindowMode() = 0;
+
+	virtual void setRenderMode(RenderMode newRenderMode) = 0;
+	virtual RenderMode getRenderMode() const = 0;
+
+	virtual void setTitle(std::string& newTitle) = 0;
+	virtual std::string getTitle() const = 0;
+
+	virtual void setSize(const ivec2& newSize) = 0;
+	virtual ivec2 getSize() const = 0;
+
+	virtual void setLocation(const ivec2& newLocation) = 0;
+	virtual ivec2 getLocation() const = 0;
+
+	virtual void setVisible(bool isVisible) = 0;
+	virtual bool getVisible() const = 0;
+
 	virtual void saveWindowProps() = 0;
 
 	virtual int getIsKeyPressed(const Keyboard& key) = 0;
 	virtual vec2 getCursorLocPixels() = 0;
 };
 
+// quick way to ostream the enum. Needed for serialization
+template <typename char_t, typename traits>
+std::basic_ostream<char_t, traits>& operator<<(std::basic_ostream<char_t, traits>& stream, WindowWidget::WindowMode mode)
+{
+	stream << static_cast<std::underlying_type_t<WindowWidget::WindowMode>>(mode);
+	return stream;
+}
+// and of course the istream
+template <typename char_t, typename traits>
+std::basic_istream<char_t, traits>& operator>>(std::basic_istream<char_t, traits>& stream, WindowWidget::WindowMode& mode)
+{
+	std::underlying_type_t<WindowWidget::WindowMode> index;
+	stream >> index;
+	mode = static_cast<WindowWidget::WindowMode>(index);
+
+	return stream;
+}
+
+
+template <typename char_t, typename traits>
+std::basic_ostream<char_t, traits>& operator<<(std::basic_ostream<char_t, traits>& stream, WindowWidget::RenderMode mode)
+{
+	stream << static_cast<std::underlying_type_t<WindowWidget::RenderMode>>(mode);
+	return stream;
+}
+
+template <typename char_t, typename traits>
+std::basic_istream<char_t, traits>& operator>>(std::basic_istream<char_t, traits>& stream, WindowWidget::RenderMode& mode)
+{
+	std::underlying_type_t<WindowWidget::RenderMode> index;
+	stream >> index;
+	mode = static_cast<WindowWidget::RenderMode>(index);
+
+	return stream;
+}
+
 #include "KeyEnum.h"
-#include "WindowProps.h"

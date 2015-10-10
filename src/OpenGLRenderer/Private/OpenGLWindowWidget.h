@@ -11,8 +11,23 @@ public:
 	explicit OpenGLWindowWidget(OpenGLRenderer& renderer);
 	virtual ~OpenGLWindowWidget() override;
 
-	virtual const WindowProps& getWindowProps() const override;
-	virtual void setWindowProps(const WindowProps& props) override;
+	virtual WindowMode getWindowMode() override;
+
+	virtual void setRenderMode(RenderMode newRenderMode) override;
+	virtual RenderMode getRenderMode() const override;
+
+	virtual void setTitle(std::string& newTitle) override;
+	virtual std::string getTitle() const override;
+
+	virtual void setSize(const ivec2& newSize) override;
+	virtual ivec2 getSize() const override;
+
+	virtual void setLocation(const ivec2& newLocation) override;
+	virtual ivec2 getLocation() const override;
+
+	virtual void setVisible(bool isVisible) override;
+	virtual bool getVisible() const override;
+
 	void saveWindowProps() override;
 
 	virtual int32 getIsKeyPressed(const Keyboard& key) override;
@@ -20,15 +35,9 @@ public:
 
 	bool shouldClose();
 
-	virtual void draw(const mat3& mat) override;
+	virtual void postDraw(const mat3& mat) override;
 
 private:
-	void updateProps();
-
-	WindowProps props;
-
-	/// <summary> true if this object has focus.</summary>
-	bool hasFocus;
 
 	/// <summary> The window.</summary>
 	GLFWwindow* window;
@@ -37,4 +46,8 @@ private:
 	static void focusCallback(GLFWwindow* window, int x);
 
 	OpenGLRenderer& renderer;
+
+	RenderMode renderMode;
+	WindowMode windowMode;
+	std::string title;
 };

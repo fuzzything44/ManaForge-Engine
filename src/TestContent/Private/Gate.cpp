@@ -1,4 +1,5 @@
 #include "Gate.h"
+
 #include <Runtime.h>
 #include <TextureLibrary.h>
 #include <AudioSystem.h>

@@ -10,7 +10,10 @@ class Font;
 class TextBoxWidget : public Widget
 {
 public:
-	TextBoxWidget(Widget* owner) : Widget{ nullptr } {}
+	TextBoxWidget(Widget* owner)
+		: Widget{owner}
+	{
+	}
 
 	virtual void setText(const std::u16string& text) = 0;
 	virtual const std::u16string getText() const = 0;

@@ -127,9 +127,6 @@
     <ClInclude Include="Public\Runtime.h">
       <Filter>Public</Filter>
     </ClInclude>
-    <ClInclude Include="Public\WindowProps.h">
-      <Filter>Public</Filter>
-    </ClInclude>
     <ClInclude Include="Public\KeyEnum.h">
       <Filter>Public</Filter>
     </ClInclude>

@@ -1,9 +1,9 @@
 #pragma once
 
 #include "Engine.h"
-#include "Transform.h"
 
 #include <vector>
+#include <limits>
 
 class Widget
 {
@@ -20,12 +20,23 @@ public:
 
 	inline void drawSubObjects(const mat3& drawmat);
 
+	inline virtual void postDraw(const mat3& drawMat){};
+
+	inline const Widget* getOwner() const { return owner; }
+	inline Widget* getOwner() { return owner; }
+
+	inline void setStartRelativeLocation(const vec2& newLoc) { locationStart = newLoc; }
+	inline vec2 getStartRelativeLocation() const { return locationStart; }
+	
+	inline void setEndRelativeLocation(const vec2& newLoc) { locationEnd = newLoc; }
+	inline vec2 getEndRelativeLocation() const { return locationEnd; }
+
 protected:
 	std::vector<Widget*> subWidgets;
 	std::vector<Widget*>::size_type location;
 
-	// the relative transform
-	Transform trans;
+	vec2 locationStart;
+	vec2 locationEnd;
 
 	Widget* const owner;
 };
@@ -39,20 +50,25 @@ Widget::Widget(Widget* owner)
 	}
 }
 
+#ifdef max
+#undef max
+#endif
+
 Widget::Widget(Widget&& other)
 	: owner{other.owner}
 	, location{other.location}
 	, subWidgets(std::move(other.subWidgets))
-	, trans{other.trans}
+	, locationStart{ other.locationStart }
+	, locationEnd{ other.locationEnd }
 {
+
 	owner->subWidgets[other.location] = this;
-	other.location = MAXSIZE_T; // change this to an invalid location
+	other.location = std::numeric_limits<std::vector<Widget*>::size_type>().max(); // change this to an invalid location
 }
 
 inline Widget::~Widget()
 {
-	if (owner)
-	{
+	if (owner) {
 		auto&& lastElem = owner->subWidgets[owner->subWidgets.size() - 1]; // get the last element
 
 		lastElem->location = location; // make it's location equal to our location.
@@ -61,14 +77,14 @@ inline Widget::~Widget()
 
 		owner->subWidgets.pop_back(); // then remove the last element
 	}
-
 }
 
 inline void Widget::drawSubObjects(const mat3& drawMat)
 {
-	auto&& nextMat = glm::translate(drawMat, trans.location);
+	auto&& nextMat = glm::translate(drawMat, locationStart);
 	for (auto&& elem : subWidgets) {
 		elem->draw(nextMat);
 		elem->drawSubObjects(nextMat); // recursively draw subobjects
+		elem->postDraw(nextMat);
 	}
 }

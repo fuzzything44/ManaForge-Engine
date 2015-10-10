@@ -107,7 +107,10 @@ std::unique_ptr<Model, decltype(&Model::deleter)> OpenGLRenderer::newModel(uint8
 	return std::move(ret);
 }
 
-std::unique_ptr<TextBoxWidget> OpenGLRenderer::newTextBoxWidget(Widget* owner) { return std::make_unique<OpenGLTextBoxWidget>(owner, *this); }
+std::unique_ptr<TextBoxWidget> OpenGLRenderer::newTextBoxWidget(Widget* owner)
+{
+	return std::make_unique<OpenGLTextBoxWidget>(owner, *this);
+}
 
 Font* OpenGLRenderer::getFont(const path_t& name)
 {
@@ -221,10 +224,12 @@ bool OpenGLRenderer::update(float /*deltaTime*/)
 					delete elem;
 				});
 		});
-	
-	mat3 defMat;
+
+	float aspectRatio = static_cast<float>(window->getSize().x) / static_cast<float>(window->getSize().y);
+	auto defMat = glm::ortho2d(0.f, aspectRatio, 1.f, 0.f);
 	window->draw(defMat);
 	window->drawSubObjects(defMat);
+	window->postDraw(defMat);
 
 	// acquire a future object for the end of this frame
 	lastFrame = runOnRenderThreadAsync([]

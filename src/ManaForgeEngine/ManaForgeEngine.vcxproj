@@ -305,7 +305,6 @@
     <ClInclude Include="Public\UVData.h" />
     <ClInclude Include="Public\Widget.h" />
     <ClInclude Include="Public\WindowWidget.h" />
-    <ClInclude Include="Public\WindowProps.h" />
     <ClInclude Include="public\World.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

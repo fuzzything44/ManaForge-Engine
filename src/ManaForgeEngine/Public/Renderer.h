@@ -1,7 +1,6 @@
 #pragma once
 #include "Engine.h"
 
-#include "WindowProps.h"
 #include "Color.h"
 
 #include <vector>

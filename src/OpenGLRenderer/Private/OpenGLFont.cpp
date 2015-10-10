@@ -23,7 +23,10 @@ OpenGLFont::OpenGLFont(OpenGLRenderer& rendererIn, const path_t& name)
 
 	// load the drawData
 	{
-		boost::filesystem::wifstream i_stream{L"fonts\\" + fontName.wstring() + L"\\drawData.txt"};
+		path_t drawDataPath = L"fonts\\" + fontName.wstring() + L"\\drawData.txt";
+		assert(boost::filesystem::exists(drawDataPath));
+
+		boost::filesystem::wifstream i_stream{drawDataPath};
 
 		if (!i_stream.is_open()) MFLOG(Error) << "Failed to open draw data for font" << fontName;
 
@@ -47,7 +50,11 @@ OpenGLFont::OpenGLFont(OpenGLRenderer& rendererIn, const path_t& name)
 
 	renderer.runOnRenderThreadSync([this]
 		{
-			tex = SOIL_load_OGL_texture(("fonts\\" + fontName.string() + "\\font.dds").c_str(),
+
+			path_t ddsPath = L"fonts\\" + fontName.wstring() + L"\\font.dds";
+			assert(boost::filesystem::exists(ddsPath));
+
+			tex = SOIL_load_OGL_texture(ddsPath.string().c_str(),
 				1,							// 1 channel
 				0,							// create a new texture
 				SOIL_FLAG_DDS_LOAD_DIRECT); // load it from dds
