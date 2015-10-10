@@ -176,8 +176,8 @@ void OpenGLWindowWidget::saveWindowProps()
 	propManager.saveValue("window.size.x", size.x);
 	propManager.saveValue("window.size.y", size.y);
 
-	propManager.saveValue("window.renderMode", static_cast<uint8>(renderMode));
-	propManager.saveValue("window.windowMode", static_cast<uint8>(windowMode));
+	propManager.saveValue("window.renderMode", static_cast<std::underlying_type_t<decltype(renderMode)>>(renderMode));
+	propManager.saveValue("window.windowMode", static_cast<std::underlying_type_t<decltype(windowMode)>>(windowMode));
 	propManager.saveValue("window.title", title);
 }
 
