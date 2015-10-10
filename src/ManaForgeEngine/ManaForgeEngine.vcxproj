@@ -296,7 +296,6 @@
     <ClInclude Include="Public\SharedLibrary.h" />
     <ClInclude Include="Public\SoundCue.h" />
     <ClInclude Include="Public\SoundSource.h" />
-    <ClInclude Include="Public\TextBoxWidget.h" />
     <ClInclude Include="Public\Texture.h" />
     <ClInclude Include="Public\TextureLibrary.h" />
     <ClInclude Include="Public\TimerManager.h" />
@@ -304,7 +303,6 @@
     <ClInclude Include="Public\Transform.h" />
     <ClInclude Include="Public\UVData.h" />
     <ClInclude Include="Public\Widget.h" />
-    <ClInclude Include="Public\WindowWidget.h" />
     <ClInclude Include="public\World.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

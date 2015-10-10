@@ -223,11 +223,5 @@
     <ClInclude Include="Public\Widget.h">
       <Filter>Public</Filter>
     </ClInclude>
-    <ClInclude Include="Public\WindowWidget.h">
-      <Filter>Public</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\TextBoxWidget.h">
-      <Filter>Public</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

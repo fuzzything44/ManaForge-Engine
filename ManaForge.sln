@@ -133,6 +133,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FontGenerator", "Resource\f
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "freetype", "Resource\fonts\FontGenerator\freetype\freetype.vcxproj", "{78B079BD-9FC7-4B9E-B4A6-96DA0F00248B}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ManaForgeUI", "src\ManaForgeUI\ManaForgeUI.vcxproj", "{580E6643-4BD6-41FA-A812-DC27938E83DF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -277,6 +279,14 @@ Global
 		{78B079BD-9FC7-4B9E-B4A6-96DA0F00248B}.Release|Win32.Build.0 = Release|Win32
 		{78B079BD-9FC7-4B9E-B4A6-96DA0F00248B}.Release|x64.ActiveCfg = Release|x64
 		{78B079BD-9FC7-4B9E-B4A6-96DA0F00248B}.Release|x64.Build.0 = Release|x64
+		{580E6643-4BD6-41FA-A812-DC27938E83DF}.Debug|Win32.ActiveCfg = Debug|Win32
+		{580E6643-4BD6-41FA-A812-DC27938E83DF}.Debug|Win32.Build.0 = Debug|Win32
+		{580E6643-4BD6-41FA-A812-DC27938E83DF}.Debug|x64.ActiveCfg = Debug|x64
+		{580E6643-4BD6-41FA-A812-DC27938E83DF}.Debug|x64.Build.0 = Debug|x64
+		{580E6643-4BD6-41FA-A812-DC27938E83DF}.Release|Win32.ActiveCfg = Release|Win32
+		{580E6643-4BD6-41FA-A812-DC27938E83DF}.Release|Win32.Build.0 = Release|Win32
+		{580E6643-4BD6-41FA-A812-DC27938E83DF}.Release|x64.ActiveCfg = Release|x64
+		{580E6643-4BD6-41FA-A812-DC27938E83DF}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
