@@ -18,8 +18,5 @@
     <ClInclude Include="..\ManaForgeEngine\Public\TextBoxWidget.h">
       <Filter>Public</Filter>
     </ClInclude>
-    <ClInclude Include="..\ManaForgeEngine\Public\WindowWidget.h">
-      <Filter>Public</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

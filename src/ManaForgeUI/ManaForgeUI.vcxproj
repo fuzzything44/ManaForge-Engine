@@ -20,7 +20,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\ManaForgeEngine\Public\TextBoxWidget.h" />
-    <ClInclude Include="..\ManaForgeEngine\Public\WindowWidget.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{580E6643-4BD6-41FA-A812-DC27938E83DF}</ProjectGuid>
