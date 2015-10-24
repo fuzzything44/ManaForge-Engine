@@ -4,18 +4,18 @@
 #include <TextBoxWidget.h>
 
 #include <string>
+#include <list>
 
 class Font;
 class OpenGLFont;
 class OpenGLRenderer;
 
-class OpenGLTextBoxWidget : public TextBoxWidget
+class OpenGLTextBoxWidget : public MFUI::TextBoxWidget
 {
 	friend class OpenGLFont;
 
 public:
 	OpenGLTextBoxWidget(Widget* owner, OpenGLRenderer& renderer);
-	virtual ~OpenGLTextBoxWidget();
 
 	// start TextBox interface
 	virtual void setText(const std::u16string& text) override;

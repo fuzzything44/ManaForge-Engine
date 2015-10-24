@@ -226,5 +226,17 @@
     <ClInclude Include="Public\WindowWidget.h">
       <Filter>Public</Filter>
     </ClInclude>
+    <ClInclude Include="Public\Manager.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\MPLHelp.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\CoreManager.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\Entity.h">
+      <Filter>Public</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

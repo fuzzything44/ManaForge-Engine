@@ -27,7 +27,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>LLVM-vs2014</PlatformToolset>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>NotSet</CharacterSet>
   </PropertyGroup>
@@ -121,7 +121,8 @@
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <EnableParallelCodeGeneration>true</EnableParallelCodeGeneration>
       <OmitDefaultLibName>false</OmitDefaultLibName>
-      <AdditionalOptions>-D_SCL_SECURE_NO_WARNINGS -Zm200 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>-D_SCL_SECURE_NO_WARNINGS -Zm200 -Xclang -std=c++14 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <TargetMachine>MachineX86</TargetMachine>
@@ -149,7 +150,8 @@
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <EnableParallelCodeGeneration>true</EnableParallelCodeGeneration>
       <OmitDefaultLibName>false</OmitDefaultLibName>
-      <AdditionalOptions>-D_SCL_SECURE_NO_WARNINGS -Zm200 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>-D_SCL_SECURE_NO_WARNINGS -Zm200 -Xclang -std=c++14 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>Debug</GenerateDebugInformation>
@@ -176,6 +178,8 @@
       <OmitFramePointers>true</OmitFramePointers>
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
       <WholeProgramOptimization>true</WholeProgramOptimization>
+      <AdditionalOptions>-D_SCL_SECURE_NO_WARNINGS -Zm200 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <TargetMachine>MachineX86</TargetMachine>
@@ -209,6 +213,8 @@
       <OmitFramePointers>true</OmitFramePointers>
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
       <WholeProgramOptimization>true</WholeProgramOptimization>
+      <AdditionalOptions>-D_SCL_SECURE_NO_WARNINGS -Zm200 -Xclang -std=c++14 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -264,14 +270,17 @@
     <ClInclude Include="Public\Component.h" />
     <ClInclude Include="public\Color.h" />
     <ClInclude Include="Public\Controller.h" />
+    <ClInclude Include="Public\CoreManager.h" />
     <ClInclude Include="Public\ENGException.h" />
     <ClInclude Include="Public\Engine.h" />
+    <ClInclude Include="Public\Entity.h" />
     <ClInclude Include="Public\Font.h" />
     <ClInclude Include="Public\glm-ortho-2d.h" />
     <ClInclude Include="public\Helper.h" />
     <ClInclude Include="Public\InputManager.h" />
     <ClInclude Include="Public\KeyEnum.h" />
     <ClInclude Include="Public\Logging.h" />
+    <ClInclude Include="Public\Manager.h" />
     <ClInclude Include="Public\MaterialInstance.h" />
     <ClInclude Include="Public\MaterialSource.h" />
     <ClInclude Include="Public\MeshComponent.h" />
@@ -279,6 +288,7 @@
     <ClInclude Include="Public\ModelData.h" />
     <ClInclude Include="Public\Module.h" />
     <ClInclude Include="Public\ModuleManager.h" />
+    <ClInclude Include="Public\MPLHelp.h" />
     <ClInclude Include="Public\Pawn.h" />
     <ClInclude Include="Public\PhysicsBody.h" />
     <ClInclude Include="Public\PhysicsComponent.h" />

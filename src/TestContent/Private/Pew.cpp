@@ -5,6 +5,7 @@
 #include <locale>
 #include <string>
 #include <chrono>
+#include <memory>
 
 #include <WindowWidget.h>
 #include <TimerManager.h>

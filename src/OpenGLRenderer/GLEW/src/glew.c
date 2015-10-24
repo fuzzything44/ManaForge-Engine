@@ -10067,7 +10067,7 @@ GLboolean GLEWAPIENTRY glewGetExtension (const char* name)
 
 	for (int i = 0; i < num; ++i)
 	{
-		const char* testName = glGetStringi(GL_EXTENSIONS, i);
+		const char* testName = (const char*)glGetStringi(GL_EXTENSIONS, i);
 		if (testName == name)
 		{
 			return GL_TRUE;
