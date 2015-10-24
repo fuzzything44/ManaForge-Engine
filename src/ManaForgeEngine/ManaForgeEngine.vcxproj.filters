@@ -11,16 +11,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="private\Actor.cpp">
-      <Filter>Private</Filter>
-    </ClCompile>
-    <ClCompile Include="Private\Module.cpp">
-      <Filter>Private</Filter>
-    </ClCompile>
     <ClCompile Include="private\ENGException.cpp">
-      <Filter>Private</Filter>
-    </ClCompile>
-    <ClCompile Include="Private\ModuleManager.cpp">
       <Filter>Private</Filter>
     </ClCompile>
     <ClCompile Include="Private\PropertyManager.cpp">
@@ -32,31 +23,10 @@
     <ClCompile Include="Private\ChangeDirectory.cpp">
       <Filter>Private</Filter>
     </ClCompile>
-    <ClCompile Include="Private\PlayerController.cpp">
-      <Filter>Private</Filter>
-    </ClCompile>
-    <ClCompile Include="Private\Pawn.cpp">
-      <Filter>Private</Filter>
-    </ClCompile>
-    <ClCompile Include="Private\InputManager.cpp">
-      <Filter>Private</Filter>
-    </ClCompile>
-    <ClCompile Include="Private\AudioComponent.cpp">
-      <Filter>Private</Filter>
-    </ClCompile>
     <ClCompile Include="Private\EnginePCH.cpp">
       <Filter>Private</Filter>
     </ClCompile>
-    <ClCompile Include="Private\PhysicsComponent.cpp">
-      <Filter>Private</Filter>
-    </ClCompile>
     <ClCompile Include="Private\Logging.cpp">
-      <Filter>Private</Filter>
-    </ClCompile>
-    <ClCompile Include="Private\Component.cpp">
-      <Filter>Private</Filter>
-    </ClCompile>
-    <ClCompile Include="Private\Controller.cpp">
       <Filter>Private</Filter>
     </ClCompile>
     <ClCompile Include="Private\SharedLibrary.cpp">
@@ -64,19 +34,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="public\Actor.h">
-      <Filter>Public</Filter>
-    </ClInclude>
     <ClInclude Include="public\Helper.h">
       <Filter>Public</Filter>
     </ClInclude>
     <ClInclude Include="Public\Engine.h">
-      <Filter>Public</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\Renderer.h">
-      <Filter>Public</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\ModuleManager.h">
       <Filter>Public</Filter>
     </ClInclude>
     <ClInclude Include="Public\Module.h">
@@ -91,34 +52,13 @@
     <ClInclude Include="public\Color.h">
       <Filter>Public</Filter>
     </ClInclude>
-    <ClInclude Include="Public\Component.h">
-      <Filter>Public</Filter>
-    </ClInclude>
     <ClInclude Include="Public\SharedLibrary.h">
-      <Filter>Public</Filter>
-    </ClInclude>
-    <ClInclude Include="public\World.h">
-      <Filter>Public</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\UVData.h">
       <Filter>Public</Filter>
     </ClInclude>
     <ClInclude Include="Public\Logging.h">
       <Filter>Public</Filter>
     </ClInclude>
-    <ClInclude Include="Public\CameraComponent.h">
-      <Filter>Public</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\SceneComponent.h">
-      <Filter>Public</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\MeshComponent.h">
-      <Filter>Public</Filter>
-    </ClInclude>
     <ClInclude Include="Public\SaveData.h">
-      <Filter>Public</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\Model.h">
       <Filter>Public</Filter>
     </ClInclude>
     <ClInclude Include="Public\PropertyManager.h">
@@ -136,34 +76,7 @@
     <ClInclude Include="Public\SerializeGLM.h">
       <Filter>Public</Filter>
     </ClInclude>
-    <ClInclude Include="Public\PlayerController.h">
-      <Filter>Public</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\Pawn.h">
-      <Filter>Public</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\InputManager.h">
-      <Filter>Public</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\Texture.h">
-      <Filter>Public</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\TextureLibrary.h">
-      <Filter>Public</Filter>
-    </ClInclude>
     <ClInclude Include="Public\QuadUVCoords.h">
-      <Filter>Public</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\AudioSystem.h">
-      <Filter>Public</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\SoundSource.h">
-      <Filter>Public</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\SoundCue.h">
-      <Filter>Public</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\AudioComponent.h">
       <Filter>Public</Filter>
     </ClInclude>
     <ClInclude Include="Public\glm-ortho-2d.h">
@@ -171,33 +84,6 @@
     </ClInclude>
     <ClInclude Include="Private\EnginePCH.h">
       <Filter>Private</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\PhysicsSystem.h">
-      <Filter>Public</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\PhysicsBody.h">
-      <Filter>Public</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\PhysicsComponent.h">
-      <Filter>Public</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\PhysicsShape.h">
-      <Filter>Public</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\ActorTransformController.h">
-      <Filter>Public</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\Controller.h">
-      <Filter>Public</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\ModelData.h">
-      <Filter>Public</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\MaterialSource.h">
-      <Filter>Public</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\MaterialInstance.h">
-      <Filter>Public</Filter>
     </ClInclude>
     <ClInclude Include="Public\Quantity.h">
       <Filter>Public</Filter>
@@ -208,9 +94,6 @@
     <ClInclude Include="Public\TimerManager.h">
       <Filter>Public</Filter>
     </ClInclude>
-    <ClInclude Include="Public\Font.h">
-      <Filter>Public</Filter>
-    </ClInclude>
     <ClInclude Include="Public\Clamp.h">
       <Filter>Public</Filter>
     </ClInclude>
@@ -218,12 +101,6 @@
       <Filter>Public</Filter>
     </ClInclude>
     <ClInclude Include="Public\Cacher.h">
-      <Filter>Public</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\Widget.h">
-      <Filter>Public</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\WindowWidget.h">
       <Filter>Public</Filter>
     </ClInclude>
     <ClInclude Include="Public\Manager.h">

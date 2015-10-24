@@ -13,10 +13,13 @@ public:
 	Runtime();
 	void run();
 
+	~Runtime();
+
 	std::shared_ptr<CoreManager_t> coreManager;
 
-	TimerManager timeManager;
+	TimerManager timerManager;
+
+private:
+	bool shouldContinue = true;
 
 };
-
-#include "World.h"

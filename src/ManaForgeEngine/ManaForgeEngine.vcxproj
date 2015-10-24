@@ -27,7 +27,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>LLVM-vs2014</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>NotSet</CharacterSet>
   </PropertyGroup>
@@ -121,7 +121,7 @@
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <EnableParallelCodeGeneration>true</EnableParallelCodeGeneration>
       <OmitDefaultLibName>false</OmitDefaultLibName>
-      <AdditionalOptions>-D_SCL_SECURE_NO_WARNINGS -Zm200 -Xclang -std=c++14 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>-D_SCL_SECURE_NO_WARNINGS -Zm200 %(AdditionalOptions)</AdditionalOptions>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -150,7 +150,7 @@
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <EnableParallelCodeGeneration>true</EnableParallelCodeGeneration>
       <OmitDefaultLibName>false</OmitDefaultLibName>
-      <AdditionalOptions>-D_SCL_SECURE_NO_WARNINGS -Zm200 -Xclang -std=c++14 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>-D_SCL_SECURE_NO_WARNINGS -Zm200 %(AdditionalOptions)</AdditionalOptions>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -213,7 +213,7 @@
       <OmitFramePointers>true</OmitFramePointers>
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
       <WholeProgramOptimization>true</WholeProgramOptimization>
-      <AdditionalOptions>-D_SCL_SECURE_NO_WARNINGS -Zm200 -Xclang -std=c++14 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>-D_SCL_SECURE_NO_WARNINGS -Zm200 %(AdditionalOptions)</AdditionalOptions>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -235,86 +235,45 @@
     </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="private\Actor.cpp" />
-    <ClCompile Include="Private\AudioComponent.cpp" />
     <ClCompile Include="Private\ChangeDirectory.cpp" />
-    <ClCompile Include="Private\Component.cpp" />
-    <ClCompile Include="Private\Controller.cpp" />
     <ClCompile Include="private\ENGException.cpp" />
     <ClCompile Include="Private\EnginePCH.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Private\InputManager.cpp" />
     <ClCompile Include="Private\Logging.cpp" />
-    <ClCompile Include="Private\Module.cpp" />
-    <ClCompile Include="Private\ModuleManager.cpp" />
-    <ClCompile Include="Private\Pawn.cpp" />
-    <ClCompile Include="Private\PhysicsComponent.cpp" />
-    <ClCompile Include="Private\PlayerController.cpp" />
     <ClCompile Include="Private\PropertyManager.cpp" />
     <ClCompile Include="Private\Runtime.cpp" />
     <ClCompile Include="Private\SharedLibrary.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Private\EnginePCH.h" />
-    <ClInclude Include="public\Actor.h" />
-    <ClInclude Include="Public\ActorTransformController.h" />
-    <ClInclude Include="Public\AudioComponent.h" />
-    <ClInclude Include="Public\AudioSystem.h" />
     <ClInclude Include="Public\Cacher.h" />
     <ClInclude Include="Public\call_from_tuple.h" />
-    <ClInclude Include="Public\CameraComponent.h" />
     <ClInclude Include="Public\ChangeDirectory.h" />
     <ClInclude Include="Public\Clamp.h" />
-    <ClInclude Include="Public\Component.h" />
     <ClInclude Include="public\Color.h" />
-    <ClInclude Include="Public\Controller.h" />
     <ClInclude Include="Public\CoreManager.h" />
     <ClInclude Include="Public\ENGException.h" />
     <ClInclude Include="Public\Engine.h" />
     <ClInclude Include="Public\Entity.h" />
-    <ClInclude Include="Public\Font.h" />
     <ClInclude Include="Public\glm-ortho-2d.h" />
     <ClInclude Include="public\Helper.h" />
-    <ClInclude Include="Public\InputManager.h" />
     <ClInclude Include="Public\KeyEnum.h" />
     <ClInclude Include="Public\Logging.h" />
     <ClInclude Include="Public\Manager.h" />
-    <ClInclude Include="Public\MaterialInstance.h" />
-    <ClInclude Include="Public\MaterialSource.h" />
-    <ClInclude Include="Public\MeshComponent.h" />
-    <ClInclude Include="Public\Model.h" />
-    <ClInclude Include="Public\ModelData.h" />
     <ClInclude Include="Public\Module.h" />
-    <ClInclude Include="Public\ModuleManager.h" />
     <ClInclude Include="Public\MPLHelp.h" />
-    <ClInclude Include="Public\Pawn.h" />
-    <ClInclude Include="Public\PhysicsBody.h" />
-    <ClInclude Include="Public\PhysicsComponent.h" />
-    <ClInclude Include="Public\PhysicsShape.h" />
-    <ClInclude Include="Public\PhysicsSystem.h" />
-    <ClInclude Include="Public\PlayerController.h" />
     <ClInclude Include="Public\PropertyManager.h" />
     <ClInclude Include="Public\QuadUVCoords.h" />
     <ClInclude Include="Public\Quantity.h" />
-    <ClInclude Include="Public\Renderer.h" />
     <ClInclude Include="Public\Runtime.h" />
     <ClInclude Include="Public\SaveData.h" />
-    <ClInclude Include="Public\SceneComponent.h" />
     <ClInclude Include="Public\SerializeGLM.h" />
     <ClInclude Include="Public\SharedLibrary.h" />
-    <ClInclude Include="Public\SoundCue.h" />
-    <ClInclude Include="Public\SoundSource.h" />
-    <ClInclude Include="Public\Texture.h" />
-    <ClInclude Include="Public\TextureLibrary.h" />
     <ClInclude Include="Public\TimerManager.h" />
     <ClInclude Include="Public\TimerHandle.h" />
     <ClInclude Include="Public\Transform.h" />
-    <ClInclude Include="Public\UVData.h" />
-    <ClInclude Include="Public\Widget.h" />
-    <ClInclude Include="Public\WindowWidget.h" />
-    <ClInclude Include="public\World.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
