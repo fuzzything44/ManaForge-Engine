@@ -162,22 +162,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Private\Box2DActorTransformController.h" />
-    <ClInclude Include="Private\Box2DContactListener.h" />
-    <ClInclude Include="Private\Box2DDebugDraw.h" />
-    <ClInclude Include="Private\Box2DPhysicsBody.h" />
-    <ClInclude Include="Private\Box2DPhysicsShape.h" />
-    <ClInclude Include="Private\Box2DPhysicsSystem.h" />
+    <ClInclude Include="Private\CBox2DCollision.h" />
+    <ClInclude Include="Private\Box2DPhysicsManager.h" />
     <ClInclude Include="Private\Box2DPhysicsSystemConfig.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Private\Box2DActorTransformController.cpp" />
-    <ClCompile Include="Private\Box2DContactListener.cpp" />
-    <ClCompile Include="Private\Box2DDebugDraw.cpp" />
-    <ClCompile Include="Private\Box2DPhysicsBody.cpp" />
-    <ClCompile Include="Private\Box2DPhysicsShape.cpp" />
-    <ClCompile Include="Private\Box2DPhysicsSystem.cpp" />
-    <ClCompile Include="Private\Box2DPhysicsSystemConfig.cpp" />
+    <ClCompile Include="Private\Box2DPhysicsManager.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -51,9 +51,8 @@ struct ModuleHandler
 {
 	void init(const std::vector<path_t> modulesToLoad)
 	{
-		modules.resize(modulesToLoad.size());
 
-		std::transform(modulesToLoad.cbegin(), modulesToLoad.cend(), modules.begin(), 
+		std::transform(modulesToLoad.begin(), modulesToLoad.end(), std::back_inserter(modules),
 			[](const path_t& path)
 		{
 			return SharedLibrary{ L"modules\\" + path.wstring() };

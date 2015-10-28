@@ -46,6 +46,15 @@ struct ManagerBase : std::enable_shared_from_this<ManagerBase>
 template<typename Manager>
 void updateManager(Manager& man){}
 
+template<typename Manager>
+void initManager(Manager& man){}
+
+template<typename Manager>
+void exitManager(Manager& man){}
+
+template<typename Manager>
+struct ManagerData {};
+
 namespace detail
 {
 	template<typename ThisType, typename ManagerToGet>
@@ -929,10 +938,12 @@ public:// TODO:
 public:
 
 	std::shared_ptr<ThisType> getPtr() { return shared_from_this(); }
-
+	
 	static std::shared_ptr<ThisType> factory(const BasePtrStorage_t& bases = BasePtrStorage_t{})
 	{
+		
 		auto ret = std::shared_ptr<ThisType>(new ThisType{ bases });
+		initManager<ThisType>(*ret);
 
 		boost::fusion::for_each(bases,
 			[ret](auto elem)
@@ -962,13 +973,27 @@ public:
 		return ret;
 	}
 
+	
+	ManagerData<ThisType>& getManagerData()
+	{
+		return myManagerData;
+	}
+
 private:
 
+	ManagerData<ThisType> myManagerData;
 
 
 	Manager(const BasePtrStorage_t& bases)
 		: basePtrStorage(bases)
 	{
 
+	}
+
+public:
+
+	~Manager()
+	{
+		exitManager<ThisType>(*this);
 	}
 };

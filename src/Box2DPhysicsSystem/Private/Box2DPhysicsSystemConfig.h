@@ -14,5 +14,4 @@
 #include <Box2D/Box2D.h>
 
 inline b2Vec2 convertVec(const vec2& other) { return b2Vec2(other.x, other.y); }
-
 inline vec2 convertVec(const b2Vec2& other) { return vec2(other.x, other.y); }

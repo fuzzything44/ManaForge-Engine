@@ -9,7 +9,7 @@ Runtime::Runtime()
 	changeDir();
 	logdetail::log_base::init();
 
-	moduleHandler.init({ "OpenALAudioSystem" });
+	moduleHandler.init({ "OpenALAudioSystem", "Box2DPhysicsSystem" });
 
 
 }

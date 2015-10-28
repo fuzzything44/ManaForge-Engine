@@ -14,45 +14,15 @@
     <ClInclude Include="Private\Box2DPhysicsSystemConfig.h">
       <Filter>Private</Filter>
     </ClInclude>
-    <ClInclude Include="Private\Box2DPhysicsSystem.h">
+    <ClInclude Include="Private\CBox2DCollision.h">
       <Filter>Private</Filter>
     </ClInclude>
-    <ClInclude Include="Private\Box2DPhysicsShape.h">
-      <Filter>Private</Filter>
-    </ClInclude>
-    <ClInclude Include="Private\Box2DPhysicsBody.h">
-      <Filter>Private</Filter>
-    </ClInclude>
-    <ClInclude Include="Private\Box2DActorTransformController.h">
-      <Filter>Private</Filter>
-    </ClInclude>
-    <ClInclude Include="Private\Box2DDebugDraw.h">
-      <Filter>Private</Filter>
-    </ClInclude>
-    <ClInclude Include="Private\Box2DContactListener.h">
+    <ClInclude Include="Private\Box2DPhysicsManager.h">
       <Filter>Private</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Private\Box2DPhysicsSystemConfig.cpp">
-      <Filter>Private</Filter>
-    </ClCompile>
-    <ClCompile Include="Private\Box2DPhysicsSystem.cpp">
-      <Filter>Private</Filter>
-    </ClCompile>
-    <ClCompile Include="Private\Box2DPhysicsShape.cpp">
-      <Filter>Private</Filter>
-    </ClCompile>
-    <ClCompile Include="Private\Box2DPhysicsBody.cpp">
-      <Filter>Private</Filter>
-    </ClCompile>
-    <ClCompile Include="Private\Box2DActorTransformController.cpp">
-      <Filter>Private</Filter>
-    </ClCompile>
-    <ClCompile Include="Private\Box2DDebugDraw.cpp">
-      <Filter>Private</Filter>
-    </ClCompile>
-    <ClCompile Include="Private\Box2DContactListener.cpp">
+    <ClCompile Include="Private\Box2DPhysicsManager.cpp">
       <Filter>Private</Filter>
     </ClCompile>
   </ItemGroup>

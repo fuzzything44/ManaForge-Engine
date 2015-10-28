@@ -87,7 +87,7 @@ public:
 		alSourcef(sourceHandle, AL_MAX_GAIN, max);
 	}
 
-private:
+	// data
 	std::shared_ptr<OpenALSoundCue> cue;
 	ALuint sourceHandle;
 };
