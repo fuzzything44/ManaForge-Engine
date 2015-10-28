@@ -3,19 +3,13 @@
 #include "OpenALAudioSystem.h"
 
 #include <Runtime.h>
-#include <ModuleManager.h>
 
 #pragma comment(lib, "OpenAL.lib")
 #pragma comment(lib, "alut.lib")
 
-extern "C" OpenALAudioSystem_API void registerModule(ModuleManager& manager)
+extern "C" OpenALAudioSystem_API void registerModule()
 {
-	manager.registerClass<OpenALAudioSystem>(MODULE_NAME);
-	manager.addUpdateCallback([&manager](float delta)
-		{
-			return static_cast<OpenALAudioSystem&>(Runtime::get().getAudioSystem()).update();
-
-		});
+	audioManager = AudioManager_t::factory(std::make_tuple(coreManager));
 }
 
 extern "C" OpenALAudioSystem_API float getModuleEngineVersion() { return ENGINE_VERSION; }

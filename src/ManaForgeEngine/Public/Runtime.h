@@ -5,19 +5,19 @@
 
 #include "CoreManager.h"
 #include "TimerManager.h"
+#include "ModuleHandler.h"
 
 class Runtime
 {
 public:
 
-	Runtime();
-	void run();
+	ENGINE_API Runtime();
+	ENGINE_API void run();
 
-	~Runtime();
-
-	std::shared_ptr<CoreManager_t> coreManager;
+	ENGINE_API ~Runtime();
 
 	TimerManager timerManager;
+	ModuleHandler moduleHandler;
 
 private:
 	bool shouldContinue = true;

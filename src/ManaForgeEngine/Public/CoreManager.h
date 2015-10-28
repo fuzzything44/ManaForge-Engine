@@ -1,3 +1,5 @@
+#pragma once
+
 #include "Engine.h"
 #include "Manager.h"
 
@@ -23,4 +25,6 @@ using CoreManager_t =
 		, boost::mpl::vector0<>
 		, boost::mpl::vector0<>
 	>;
+
+ENGINE_API extern std::shared_ptr<CoreManager_t> coreManager;
 

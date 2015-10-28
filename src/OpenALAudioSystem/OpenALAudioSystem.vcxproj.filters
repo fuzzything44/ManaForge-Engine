@@ -14,27 +14,18 @@
     <ClInclude Include="Private\OpenALAudioSystemConfig.h">
       <Filter>Private</Filter>
     </ClInclude>
-    <ClInclude Include="Private\OpenALAudioSystem.h">
-      <Filter>Private</Filter>
+    <ClInclude Include="Public\COpenALSoundSource.h">
+      <Filter>Public</Filter>
     </ClInclude>
-    <ClInclude Include="Private\OpenALSoundSource.h">
-      <Filter>Private</Filter>
+    <ClInclude Include="Public\OpenALAudioSystem.h">
+      <Filter>Public</Filter>
     </ClInclude>
-    <ClInclude Include="Private\OpenALSoundCue.h">
-      <Filter>Private</Filter>
+    <ClInclude Include="Public\OpenALSoundCue.h">
+      <Filter>Public</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Private\OpenALAudioSystemConfig.cpp">
-      <Filter>Private</Filter>
-    </ClCompile>
-    <ClCompile Include="Private\OpenALAudioSystem.cpp">
-      <Filter>Private</Filter>
-    </ClCompile>
-    <ClCompile Include="Private\OpenALSoundSource.cpp">
-      <Filter>Private</Filter>
-    </ClCompile>
-    <ClCompile Include="Private\OpenALSoundCue.cpp">
       <Filter>Private</Filter>
     </ClCompile>
   </ItemGroup>

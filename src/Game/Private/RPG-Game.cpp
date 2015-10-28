@@ -9,7 +9,7 @@ int32 main(int argc, char** argv)
 	try
 	{
 
-		Runtime runtime("default");
+		Runtime runtime;
 
 		// run the runtime. consumes the thread until it returns
 		runtime.run();

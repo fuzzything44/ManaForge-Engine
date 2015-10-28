@@ -235,6 +235,7 @@
     </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CoreManager.cpp" />
     <ClCompile Include="Private\ChangeDirectory.cpp" />
     <ClCompile Include="private\ENGException.cpp" />
     <ClCompile Include="Private\EnginePCH.cpp">
@@ -242,9 +243,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Private\Logging.cpp" />
+    <ClCompile Include="Private\ModuleHandler.cpp" />
     <ClCompile Include="Private\PropertyManager.cpp" />
     <ClCompile Include="Private\Runtime.cpp" />
-    <ClCompile Include="Private\SharedLibrary.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Private\EnginePCH.h" />
@@ -263,6 +264,7 @@
     <ClInclude Include="Public\Logging.h" />
     <ClInclude Include="Public\Manager.h" />
     <ClInclude Include="Public\Module.h" />
+    <ClInclude Include="Public\ModuleHandler.h" />
     <ClInclude Include="Public\MPLHelp.h" />
     <ClInclude Include="Public\PropertyManager.h" />
     <ClInclude Include="Public\QuadUVCoords.h" />
@@ -270,7 +272,6 @@
     <ClInclude Include="Public\Runtime.h" />
     <ClInclude Include="Public\SaveData.h" />
     <ClInclude Include="Public\SerializeGLM.h" />
-    <ClInclude Include="Public\SharedLibrary.h" />
     <ClInclude Include="Public\TimerManager.h" />
     <ClInclude Include="Public\TimerHandle.h" />
     <ClInclude Include="Public\Transform.h" />

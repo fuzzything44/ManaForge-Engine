@@ -9,7 +9,8 @@ Runtime::Runtime()
 	changeDir();
 	logdetail::log_base::init();
 
-	coreManager = CoreManager_t::factory();
+	moduleHandler.init({ "OpenALAudioSystem" });
+
 
 }
 
@@ -29,6 +30,8 @@ void Runtime::run()
 		lastTick = currentTick;
 
 		timerManager.update();
+
+		coreManager->update();
 
 		shouldContinue = true;
 

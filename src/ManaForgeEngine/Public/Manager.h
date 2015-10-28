@@ -38,8 +38,13 @@
 #include "MPLHelp.h"
 #include "Entity.h"
 
+struct ManagerBase : std::enable_shared_from_this<ManagerBase>
+{
 
-struct ManagerBase : std::enable_shared_from_this<ManagerBase> {};
+};
+
+template<typename Manager>
+void updateManager(Manager& man){}
 
 namespace detail
 {
@@ -80,23 +85,40 @@ namespace detail
 		}
 		for (auto&& elem : thisTypeDerived.children)
 		{
-			elem.first(*elem.second, append, sigToTest);
+			elem.first.getAllMatching(*elem.second, append, sigToTest);
 		}
 	}
+
+	template<typename ThisManager, typename BaseManager>
+	struct Update_t
+	{
+		static void update(ManagerBase& thisManager, BaseManager& baseManager)
+		{
+			auto&& castedManager = static_cast<ThisManager&>(thisManager);
+
+			updateManager(castedManager);
+
+			for (auto&& child : castedManager.children)
+			{
+				child.first.update(*child.second, castedManager);
+			}
+		}
+	};
 
 }
 
 
-template<typename ManagerBase>
+template<typename BaseManager>
 struct EntityHandle
 {
-	friend ManagerBase;
+	friend BaseManager;
 private:
 	explicit EntityHandle(size_t handle, size_t entityID_) : GUID{ handle }, entityID{ entityID_ } {}
 public:
 	const size_t GUID;
 	const size_t entityID;
 };
+
 
 
 template <typename Components_, typename Tags_, typename Bases_ = boost::mpl::vector0<> >
@@ -237,9 +259,7 @@ public:
 
 private:
 	template<typename ComponentOrTag, bool = isTag<ComponentOrTag>()>
-	struct GetTagOrComponentIMPL;
-	template<typename Tag>
-	struct GetTagOrComponentIMPL<Tag, true>
+	struct GetTagOrComponentIMPL
 	{
 		static const constexpr size_t value = getTagID<Tag>();
 	};
@@ -300,12 +320,12 @@ public:
 		return
 			std::is_same
 			<
-			typename boost::mpl::find
-			<
-			Transformed
-			, std::false_type
-			>::type
-			, typename boost::mpl::end<Transformed>::type
+				typename boost::mpl::find
+				<
+					Transformed
+					, std::false_type
+				>::type
+				, typename boost::mpl::end<Transformed>::type
 			>::value;
 
 	}
@@ -391,9 +411,6 @@ private:
 		//		static_assert(false, "ERROR, COULD NOT FIND COMPONENT IN ANY MANAGERS");
 	};
 
-	template<typename ComponentOrTag, bool = isTag<ComponentOrTag>()>
-	struct GetManagerFromComponentOrTag;
-
 
 public:
 
@@ -417,10 +434,11 @@ public:
 		;
 
 private:
-	template<typename Tag>
-	struct GetManagerFromComponentOrTag<Tag, true>
+
+	template<typename ComponentOrTag, bool = isTag<ComponentOrTag>()>
+	struct GetManagerFromComponentOrTag
 	{
-		using type = GetManagerFromTag_t<Tag>;
+		using type = GetManagerFromTag_t<ComponentOrTag>;
 	};
 	template<typename Component>
 	struct GetManagerFromComponentOrTag<Component, false>
@@ -759,10 +777,7 @@ public:
 
 private:
 	template<typename CurrentIter, typename EndIter, bool isTypeTag = isTag<typename boost::mpl::deref<CurrentIter>::type>()>
-	struct CallFunctionWighSigParamsIMPL;
-
-	template<typename CurrentIter, typename EndIter>
-	struct CallFunctionWighSigParamsIMPL<CurrentIter, EndIter, true>
+	struct CallFunctionWighSigParamsIMPL
 	{
 
 		template<typename F, typename...Args>
@@ -858,6 +873,17 @@ public:
 
 	}
 
+
+	void update()
+	{
+		updateManager(*this);
+
+		for (auto&& child : children)
+		{
+			child.first.update(*child.second, *this);
+		}
+	}
+
 public:// TODO:
 
 	std::vector<EntityType> entityStorage;
@@ -873,20 +899,31 @@ public:// TODO:
 	using BasePtrStorage_t = ExpandSequenceToVaraidic_t<MyBases, TupleOfSharedPtrs>;
 	BasePtrStorage_t basePtrStorage;
 
-	using GetAllMatching_t =
-		void(*)
-		(
-			ManagerBase&
-			, std::vector<size_t>&
-			, const RuntimeSignature_t&
-			);
+
+	struct FunctionPointerStorage
+	{
+
+		using GetAllMatching_t =
+			void(*)
+			(
+				ManagerBase&
+				, std::vector<size_t>&
+				, const RuntimeSignature_t&
+				);
+
+		using Update_t =
+			void(*)(ManagerBase&, ThisType&);
+
+		GetAllMatching_t getAllMatching;
+		Update_t update;
+	};
 	std::vector
 		<
 		std::pair
-		<
-		GetAllMatching_t
-		, std::shared_ptr<ManagerBase>
-		>
+			<
+				FunctionPointerStorage
+				, std::shared_ptr<ManagerBase>
+			>
 		> children;
 
 public:
@@ -904,11 +941,14 @@ public:
 			using BaseType = std::decay_t<decltype(*elem)>;
 			static_assert(ThisType::template isManager<BaseType>(), "Error, not a manager");
 
-			void(*ptr)(ManagerBase&, std::vector<size_t>&, const typename BaseType::RuntimeSignature_t&) =
+			typename BaseType::FunctionPointerStorage::GetAllMatching_t getAllMatchingPtr =
 				&detail::getAllMatching<BaseType, ThisType>;
 
+			typename BaseType::FunctionPointerStorage::Update_t updatePtr = 
+				&detail::Update_t<ThisType, BaseType>::update;
+
 			elem->children.push_back(
-				std::make_pair(ptr, ret)
+				std::make_pair(typename BaseType::FunctionPointerStorage{ getAllMatchingPtr, updatePtr}, ret)
 				);
 
 			ret->nextIndex = elem->nextIndex;

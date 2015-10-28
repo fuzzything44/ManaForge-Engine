@@ -29,7 +29,10 @@
     <ClCompile Include="Private\Logging.cpp">
       <Filter>Private</Filter>
     </ClCompile>
-    <ClCompile Include="Private\SharedLibrary.cpp">
+    <ClCompile Include="CoreManager.cpp">
+      <Filter>Private</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\ModuleHandler.cpp">
       <Filter>Private</Filter>
     </ClCompile>
   </ItemGroup>
@@ -50,9 +53,6 @@
       <Filter>Public</Filter>
     </ClInclude>
     <ClInclude Include="public\Color.h">
-      <Filter>Public</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\SharedLibrary.h">
       <Filter>Public</Filter>
     </ClInclude>
     <ClInclude Include="Public\Logging.h">
@@ -113,6 +113,9 @@
       <Filter>Public</Filter>
     </ClInclude>
     <ClInclude Include="Public\Entity.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\ModuleHandler.h">
       <Filter>Public</Filter>
     </ClInclude>
   </ItemGroup>
