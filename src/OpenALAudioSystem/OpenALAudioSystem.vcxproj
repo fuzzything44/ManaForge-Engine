@@ -153,13 +153,12 @@
     </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Private\OpenALAudioSystemConfig.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Private\OpenALAudioSystemConfig.h" />
     <ClInclude Include="Public\COpenALSoundSource.h" />
     <ClInclude Include="Public\OpenALAudioSystem.h" />
     <ClInclude Include="Public\OpenALSoundCue.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Private\OpenALAudioSystem.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

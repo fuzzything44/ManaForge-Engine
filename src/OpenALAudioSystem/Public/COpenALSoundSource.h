@@ -1,13 +1,11 @@
 #pragma once
+#include "Engine.h"
 
-#include "OpenALAudioSystemConfig.h"
+#include <memory>
 
 #include <AL/alut.h>
 
 struct OpenALSoundCue;
-class OpenALAudioSystem;
-
-
 
 class COpenALSoundSource
 {

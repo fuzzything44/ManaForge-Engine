@@ -1,14 +1,11 @@
 #pragma once
-
-#include "OpenALAudioSystemConfig.h"
-
 #include "COpenALSoundSource.h"
 
 #include <CoreManager.h>
 
 
 
-using AudioManager_t =
+using OpenALAudioManager_t =
 	Manager
 	<
 		boost::mpl::vector<COpenALSoundSource>
@@ -17,9 +14,9 @@ using AudioManager_t =
 	>;
 
 template<> 
-void updateManager<AudioManager_t>(AudioManager_t& manager)
+void updateManager<OpenALAudioManager_t>(OpenALAudioManager_t& manager)
 {
 	std::cout << "HEY";
 }
 
-std::shared_ptr<AudioManager_t> audioManager = AudioManager_t::factory(std::make_tuple(coreManager));
+extern std::shared_ptr<OpenALAudioManager_t> audioManager;

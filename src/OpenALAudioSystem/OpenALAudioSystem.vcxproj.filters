@@ -11,9 +11,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Private\OpenALAudioSystemConfig.h">
-      <Filter>Private</Filter>
-    </ClInclude>
     <ClInclude Include="Public\COpenALSoundSource.h">
       <Filter>Public</Filter>
     </ClInclude>
@@ -25,7 +22,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Private\OpenALAudioSystemConfig.cpp">
+    <ClCompile Include="Private\OpenALAudioSystem.cpp">
       <Filter>Private</Filter>
     </ClCompile>
   </ItemGroup>

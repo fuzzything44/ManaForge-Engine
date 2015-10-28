@@ -1,9 +1,5 @@
 #pragma once
-
-#include "OpenALAudioSystemConfig.h"
-
-#include <string>
-
+#include "Engine.h"
 
 #include <AL/alut.h>
 
