@@ -14,6 +14,8 @@
 
 
 #ifdef WIN32
+#define WIN32_MEAN_AND_LEAN 1
+#include <Windows.h>
 class SharedLibrary // windows impl
 {
 	using SharedLibHandle = HINSTANCE;
@@ -24,7 +26,13 @@ public:
 
 	// make it move only
 	SharedLibrary(const SharedLibrary& other) = delete;
-	SharedLibrary(SharedLibrary&& other) = default;
+	SharedLibrary(SharedLibrary&& other)
+		:handle(other.handle)
+		, name(other.name)
+	{
+		other.handle = nullptr;
+		other.name = "";
+	}
 
 	const SharedLibrary& operator=(const SharedLibrary& other) = delete;
 	const SharedLibrary& operator=(SharedLibrary&& other)
@@ -35,7 +43,7 @@ public:
 	}
 
 	template <typename FunctionType>
-	FunctionType* getFunctionPtr(const std::string& functionName);
+	ENGINE_API FunctionType* getFunctionPtr(const std::string& functionName);
 
 	~SharedLibrary();
 
@@ -43,7 +51,7 @@ public:
 
 private:
 	SharedLibHandle handle = nullptr;
-	const path_t name;
+	path_t name;
 };
 #endif
 
@@ -57,6 +65,11 @@ struct ModuleHandler
 		{
 			return SharedLibrary{ L"modules\\" + path.wstring() };
 		});
+
+		for (auto&& elem : modules)
+		{
+			elem.getFunctionPtr<void()>("init")();
+		}
 	}
 
 	std::vector<SharedLibrary> modules;

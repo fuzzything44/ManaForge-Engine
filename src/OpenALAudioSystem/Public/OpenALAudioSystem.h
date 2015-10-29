@@ -29,7 +29,13 @@ void updateManager<OpenALAudioManager_t>(OpenALAudioManager_t& manager)
 	{
 		// update runtime variables
 		alSource3f(src.sourceHandle, AL_POSITION, pos.value.x, pos.value.y, 0.f);
-		//alSource3f(sourceHandle, AL_VELOCITY, velocity.x, velocity.y, 0.f); TODO: implement
+
+	});
+
+	manager.runAllMatching<boost::mpl::vector<COpenALSoundSource, CVelocity>>([](COpenALSoundSource& src, CVelocity& vel)
+	{
+		// update runtime variables
+		alSource3f(src.sourceHandle, AL_VELOCITY, vel.value.x, vel.value.y, 0.f);
 
 	});
 
