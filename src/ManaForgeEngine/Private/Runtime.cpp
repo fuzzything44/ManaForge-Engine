@@ -9,7 +9,7 @@ Runtime::Runtime()
 	changeDir();
 	logdetail::log_base::init();
 
-	moduleHandler.init({ "OpenALAudioSystem", "Box2DPhysicsSystem" });
+	moduleHandler.init({ "OpenALAudioSystem", "Box2DPhysicsSystem", "TestContent" });
 
 
 }
@@ -18,6 +18,8 @@ Runtime::~Runtime() { logdetail::log_base::cleanup(); }
 
 void Runtime::run()
 {
+	coreManager->beginPlay();
+
 	std::chrono::system_clock::time_point lastTick = std::chrono::system_clock::now();
 	do
 	{

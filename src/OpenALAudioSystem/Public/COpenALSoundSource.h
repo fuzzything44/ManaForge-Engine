@@ -4,13 +4,20 @@
 #include <memory>
 
 #include <AL/alut.h>
+#include <../../OpenALAudioSystem/alut/include/AL/alut.h>
 
 struct OpenALSoundCue;
 
 class COpenALSoundSource
 {
 public:
-	inline explicit COpenALSoundSource(std::shared_ptr<OpenALSoundCue>& cue);
+	inline explicit COpenALSoundSource(const std::shared_ptr<OpenALSoundCue>& cue = { nullptr })
+	{
+		if (cue)
+			init(cue);
+	}
+
+	void init(const std::shared_ptr<OpenALSoundCue>& cue_);
 
 	void setLoops(bool loops)
 	{
@@ -94,9 +101,10 @@ public:
 
 #include "OpenALSoundCue.h"
 
-COpenALSoundSource::COpenALSoundSource(std::shared_ptr<OpenALSoundCue>& cue)
-	:cue(cue)
+void COpenALSoundSource::init(const std::shared_ptr<OpenALSoundCue>& cue_)
 {
+	cue = cue_;
+
 	alGenSources(1, &sourceHandle);
-	alSourcei(sourceHandle, AL_BUFFER, cue->bufferHandle);	
+	alSourcei(sourceHandle, AL_BUFFER, cue->bufferHandle);
 }

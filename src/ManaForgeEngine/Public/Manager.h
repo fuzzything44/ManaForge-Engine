@@ -20,6 +20,7 @@
 #include <boost/mpl/transform.hpp>
 #include <boost/mpl/pop_front.hpp>
 #include <boost/mpl/find_if.hpp>
+#include <boost/mpl/remove.hpp>
 
 #include <boost/serialization/strong_typedef.hpp>
 
@@ -50,6 +51,9 @@ template<typename Manager>
 void initManager(Manager& man){}
 
 template<typename Manager>
+void beginPlayManager(Manager& man){}
+
+template<typename Manager>
 void exitManager(Manager& man){}
 
 template<typename Manager>
@@ -63,9 +67,8 @@ namespace detail
 		static ManagerToGet& apply(ThisType& data)
 		{
 			static_assert(ThisType::template isManager<ManagerToGet>(), "ManagerToGet must be a manager");
-			static_assert(ThisType::template isManager<ThisType>(), "ManagerToGet must be a manager");
 
-			constexpr auto managerID = ThisType::template getManagerID<ManagerToGet>();
+			constexpr auto managerID = ThisType::template getManagerExceptThisID<ManagerToGet>();
 
 			return *std::get<managerID>(data.basePtrStorage);
 		}
@@ -110,6 +113,23 @@ namespace detail
 			for (auto&& child : castedManager.children)
 			{
 				child.first.update(*child.second, castedManager);
+			}
+		}
+	};
+
+
+	template<typename ThisManager, typename BaseManager>
+	struct BeginPlay_t
+	{
+		static void beginPlay(ManagerBase& thisManager, BaseManager& baseManager)
+		{
+			auto&& castedManager = static_cast<ThisManager&>(thisManager);
+
+			::beginPlayManager(castedManager);
+
+			for (auto&& child : castedManager.children)
+			{
+				child.first.beginPlay(*child.second, castedManager);
 			}
 		}
 	};
@@ -194,6 +214,7 @@ private:
 
 public:
 	using AllManagers = typename FindManagers<boost::mpl::vector<ThisType>>::type;
+	using AllManagersButThis = typename boost::mpl::remove<AllManagers, ThisType>::type;
 	static_assert(boost::mpl::is_sequence<AllManagers>::value, "AllManagers needs to be a sequence.");
 
 private:
@@ -298,6 +319,15 @@ public:
 			typename boost::mpl::find<AllManagers, Comp>::type
 		>::type::value;
 	}
+	template<typename Mana> static constexpr size_t getManagerExceptThisID()
+	{
+		static_assert(isManager<Mana>(), "Must be a Manager");
+
+		return boost::mpl::distance<
+			typename boost::mpl::begin<AllManagersButThis>::type,
+			typename boost::mpl::find<AllManagersButThis, Mana>::type
+		>::type::value;
+	}
 	template<typename Test> static constexpr bool isManager()
 	{
 		return boost::mpl::contains<AllManagers, Test>::value;
@@ -329,12 +359,12 @@ public:
 		return
 			std::is_same
 			<
-				typename boost::mpl::find
-				<
-					Transformed
-					, std::false_type
-				>::type
-				, typename boost::mpl::end<Transformed>::type
+			typename boost::mpl::find
+			<
+			Transformed
+			, std::false_type
+			>::type
+			, typename boost::mpl::end<Transformed>::type
 			>::value;
 
 	}
@@ -893,6 +923,16 @@ public:
 		}
 	}
 
+	void beginPlay()
+	{
+		beginPlayManager(*this);
+
+		for (auto&& child : children)
+		{
+			child.first.beginPlay(*child.second, *this);
+		}
+	}
+
 public:// TODO:
 
 	std::vector<EntityType> entityStorage;
@@ -905,7 +945,13 @@ public:// TODO:
 
 	template<typename... Args>
 	using TupleOfSharedPtrs = std::tuple<std::shared_ptr<Args>...>;
-	using BasePtrStorage_t = ExpandSequenceToVaraidic_t<MyBases, TupleOfSharedPtrs>;
+	using BasePtrStorage_t = 
+		ExpandSequenceToVaraidic_t
+		<
+			AllManagersButThis // we dont' want to store the pointers for ThisType: it is just this!
+			, TupleOfSharedPtrs
+		>; 
+	using MyBasePtrStorage_t = ExpandSequenceToVaraidic_t<MyBases, TupleOfSharedPtrs>;
 	BasePtrStorage_t basePtrStorage;
 
 
@@ -923,8 +969,12 @@ public:// TODO:
 		using Update_t =
 			void(*)(ManagerBase&, ThisType&);
 
+		using BeginPlay_t =
+			void(*)(ManagerBase&, ThisType&);
+
 		GetAllMatching_t getAllMatching;
 		Update_t update;
+		BeginPlay_t beginPlay;
 	};
 	std::vector
 		<
@@ -939,7 +989,7 @@ public:
 
 	std::shared_ptr<ThisType> getPtr() { return shared_from_this(); }
 	
-	static std::shared_ptr<ThisType> factory(const BasePtrStorage_t& bases = BasePtrStorage_t{})
+	static std::shared_ptr<ThisType> factory(const MyBasePtrStorage_t& bases = MyBasePtrStorage_t{})
 	{
 		
 		auto ret = std::shared_ptr<ThisType>(new ThisType{ bases });
@@ -958,8 +1008,11 @@ public:
 			typename BaseType::FunctionPointerStorage::Update_t updatePtr = 
 				&detail::Update_t<ThisType, BaseType>::update;
 
+			typename BaseType::FunctionPointerStorage::BeginPlay_t beginPlayPtr =
+				&detail::BeginPlay_t<ThisType, BaseType>::beginPlay;
+
 			elem->children.push_back(
-				std::make_pair(typename BaseType::FunctionPointerStorage{ getAllMatchingPtr, updatePtr}, ret)
+				std::make_pair(typename BaseType::FunctionPointerStorage{ getAllMatchingPtr, updatePtr, beginPlayPtr }, ret)
 				);
 
 			ret->nextIndex = elem->nextIndex;
@@ -984,10 +1037,30 @@ private:
 	ManagerData<ThisType> myManagerData;
 
 
-	Manager(const BasePtrStorage_t& bases)
-		: basePtrStorage(bases)
+	Manager(const MyBasePtrStorage_t& bases)
 	{
+		tuple_for_each_with_index(bases, [thisptr = this](auto& ptr, auto)
+		{
+			using BaseType = std::decay_t<decltype(*ptr)>;
+			static_assert(ThisType::template isManager<BaseType>(), "Must be a manager");
 
+
+			constexpr size_t managerID = ThisType::template getManagerID<BaseType>();
+
+			std::get<managerID>(thisptr->basePtrStorage) = ptr;
+
+			tuple_for_each_with_index(ptr->basePtrStorage, [thisptr](auto ptrIndBase, auto)
+			{
+				using IndBaseType = std::decay_t<decltype(*ptrIndBase)>;
+				static_assert(ThisType::template isManager<IndBaseType>(), "Must be a manager");
+
+
+				constexpr size_t managerID = ThisType::template getManagerID<IndBaseType>();
+
+				std::get<managerID>(thisptr->basePtrStorage) = ptrIndBase;
+			});
+
+		});
 	}
 
 public:

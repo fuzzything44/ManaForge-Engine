@@ -157,6 +157,7 @@
     <ClInclude Include="Public\COpenALSoundSource.h" />
     <ClInclude Include="Public\OpenALAudioSystem.h" />
     <ClInclude Include="Public\OpenALSoundCue.h" />
+    <ClInclude Include="Public\OpenALSoundSystemConfig.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Private\OpenALAudioSystem.cpp" />

@@ -20,6 +20,9 @@
     <ClInclude Include="Public\OpenALSoundCue.h">
       <Filter>Public</Filter>
     </ClInclude>
+    <ClInclude Include="Public\OpenALSoundSystemConfig.h">
+      <Filter>Public</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Private\OpenALAudioSystem.cpp">

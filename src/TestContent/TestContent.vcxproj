@@ -103,10 +103,14 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>TestContent_Source;WIN32;_DEBUG;_WINDOWS;_USRDLL;TESTCONTENT_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>../OpenALAudioSystem/alut/include/;../OpenALAudioSystem/Public;../OpenALAudioSystem/OpenAL/include/;../Box2DPhysicsSystem/Public/;../Box2DPhysicsSystem/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ShowProgress>NotSet</ShowProgress>
+      <AdditionalLibraryDirectories>$(ModuleOutputDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>alut.lib;openal.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -121,6 +125,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>alut.lib;openal.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -138,6 +143,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>alut.lib;openal.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -155,19 +161,15 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>alut.lib;openal.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Public\Gate.h" />
-    <ClInclude Include="Public\pew.h" />
     <ClInclude Include="Public\TestContentConfig.h" />
-    <ClInclude Include="Public\TestContentPawn.h" />
+    <ClInclude Include="TestContentSystem.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Private\Pew.cpp" />
-    <ClCompile Include="Private\Gate.cpp" />
-    <ClCompile Include="Private\TestContentConfig.cpp" />
-    <ClCompile Include="Private\TestContentPawn.cpp" />
+    <ClCompile Include="TestContentSystem.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

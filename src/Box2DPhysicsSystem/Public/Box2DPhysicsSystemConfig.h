@@ -8,7 +8,7 @@
 #define Box2DPhysicsSystem_API __declspec(dllexport)
 #else
 #define Box2DPhysicsSystem_API __declspec(dllimport)
-#pragma comment(lib, BOOST_PP_CAT("modules\\", BOOST_PP_CAT(Box2DPhysicsSystem_Name, ".lib")))
+#pragma comment(lib, "Box2DPhysicsSystem.lib")
 #endif
 
 #include <Box2D/Box2D.h>

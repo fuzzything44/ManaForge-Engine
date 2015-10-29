@@ -11,19 +11,19 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Private\Box2DPhysicsSystemConfig.h">
-      <Filter>Private</Filter>
-    </ClInclude>
-    <ClInclude Include="Private\CBox2DCollision.h">
-      <Filter>Private</Filter>
-    </ClInclude>
-    <ClInclude Include="Private\Box2DPhysicsManager.h">
-      <Filter>Private</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="Private\Box2DPhysicsManager.cpp">
       <Filter>Private</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Public\Box2DPhysicsManager.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\Box2DPhysicsSystemConfig.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\CBox2DCollision.h">
+      <Filter>Public</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

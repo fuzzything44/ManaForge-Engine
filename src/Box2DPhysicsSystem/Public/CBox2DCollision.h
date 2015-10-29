@@ -5,7 +5,8 @@ namespace detail
 {
 	inline void bodyDeleter(b2Body* body)
 	{
-		body->GetWorld()->DestroyBody(body);
+		if(body)
+			body->GetWorld()->DestroyBody(body);
 	}
 }
 
@@ -13,6 +14,7 @@ namespace detail
 
 struct CBox2DCollision
 {
+	CBox2DCollision() : body{ nullptr, &detail::bodyDeleter } {}
 
 	CBox2DCollision(b2World* world, b2BodyDef bodyDef)
 		: body{ world->CreateBody(&bodyDef), &detail::bodyDeleter }

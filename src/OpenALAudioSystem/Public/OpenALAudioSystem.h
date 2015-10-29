@@ -1,5 +1,6 @@
 #pragma once
 #include "COpenALSoundSource.h"
+#include "OpenALSoundSystemConfig.h"
 
 #include <CoreManager.h>
 
@@ -70,4 +71,4 @@ void initManager<OpenALAudioManager_t>(OpenALAudioManager_t& manager)
 	alListenerfv(AL_ORIENTATION, orientation);
 }
 
-extern std::shared_ptr<OpenALAudioManager_t> audioManager;
+extern OpenALAudioSystem_API std::shared_ptr<OpenALAudioManager_t> openALAudioManager;

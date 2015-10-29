@@ -21,7 +21,7 @@ struct CAcceleration
 using CoreManager_t =
 	Manager
 	<
-		boost::mpl::vector<CPosition, CVelocity, CAcceleration>
+		boost::mpl::vector3<CPosition, CVelocity, CAcceleration>
 		, boost::mpl::vector0<>
 		, boost::mpl::vector0<>
 	>;

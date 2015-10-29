@@ -1,11 +1,11 @@
 #include "OpenALAudioSystem.h"
 
 
-std::shared_ptr<OpenALAudioManager_t> audioManager;
+std::shared_ptr<OpenALAudioManager_t> openALAudioManager;
 
 extern "C" __declspec(dllexport) void init()
 {
-	audioManager = OpenALAudioManager_t::factory(std::make_tuple(coreManager));
+	openALAudioManager = OpenALAudioManager_t::factory(std::make_tuple(coreManager));
 }
 
 

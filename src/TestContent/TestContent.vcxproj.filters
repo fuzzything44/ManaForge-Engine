@@ -11,30 +11,15 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Public\Gate.h">
-      <Filter>Public</Filter>
-    </ClInclude>
     <ClInclude Include="Public\TestContentConfig.h">
       <Filter>Private</Filter>
     </ClInclude>
-    <ClInclude Include="Public\pew.h">
-      <Filter>Public</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\TestContentPawn.h">
+    <ClInclude Include="TestContentSystem.h">
       <Filter>Public</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Private\Gate.cpp">
-      <Filter>Private</Filter>
-    </ClCompile>
-    <ClCompile Include="Private\TestContentConfig.cpp">
-      <Filter>Private</Filter>
-    </ClCompile>
-    <ClCompile Include="Private\Pew.cpp">
-      <Filter>Private</Filter>
-    </ClCompile>
-    <ClCompile Include="Private\TestContentPawn.cpp">
+    <ClCompile Include="TestContentSystem.cpp">
       <Filter>Private</Filter>
     </ClCompile>
   </ItemGroup>
