@@ -1,5 +1,7 @@
 #pragma once
 
+#include <mutex>
+
 template<typename Manager>
 void updateManager(Manager& man) {}
 
@@ -43,12 +45,19 @@ namespace detail
 		{
 			auto&& castedManager = static_cast<ThisManager&>(thisManager);
 
-			updateManager(castedManager);
-
-			for (auto&& child : castedManager.children)
+			if (castedManager.tickNumber + 1 == baseManager.tickNumber) // make sure that update isn't called twice per frame
 			{
-				child.first.update(*child.second, castedManager);
+				updateManager(castedManager);
+
+				for (auto&& child : castedManager.children)
+				{
+					child.first.update(*child.second, castedManager);
+				}
+
+				++castedManager.tickNumber;
 			}
+
+			
 		}
 	};
 
@@ -60,12 +69,17 @@ namespace detail
 		{
 			auto&& castedManager = static_cast<ThisManager&>(thisManager);
 
-			::beginPlayManager(castedManager);
-
-			for (auto&& child : castedManager.children)
+			if (!castedManager.hasBegunPlay)
 			{
-				child.first.beginPlay(*child.second, castedManager);
+				::beginPlayManager(castedManager);
+
+				for (auto&& child : castedManager.children)
+				{
+					child.first.beginPlay(*child.second, castedManager);
+				}
+				castedManager.hasBegunPlay = true;
 			}
+
 		}
 	};
 

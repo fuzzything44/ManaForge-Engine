@@ -592,6 +592,9 @@ public:
 
 	void update()
 	{
+		// increment the tick number so the updates are called.
+		++tickNumber;
+		
 		updateManager(*this);
 
 		for (auto&& child : children)
@@ -653,6 +656,11 @@ public:// TODO:
 		Update_t update;
 		BeginPlay_t beginPlay;
 	};
+	bool hasBegunPlay = false;
+	bool hasBeenCleandUp = false;
+
+	size_t tickNumber = 0;
+
 	std::vector
 		<
 		std::pair
