@@ -7,7 +7,7 @@
 
 namespace detail
 {
-	template<typename ManagerType, typename ComponentOrTag, bool = ManagerType::template isTag<ComponentOrTag>()>
+	template<typename ManagerType, typename Tag, bool = ManagerType::template isTag<Tag>()>
 	struct GetTagOrComponentID_IMPL
 	{
 		static const constexpr size_t value = ManagerType::template getTagID<Tag>();
@@ -135,7 +135,7 @@ namespace detail
 			>::type
 			;
 
-		static const constexpr bool runningNext = !std::is_same<ManagerWithComponent, boost::mpl::na>::value;
+		static const constexpr bool runningNext = !std::is_same<ManagerWithComponent, boost::mpl::void_>::value;
 
 		using type =
 			std::conditional_t
@@ -155,6 +155,30 @@ namespace detail
 	struct FindMostBaseManagerForSignature<Manager, SequenceToFind, false>
 	{
 		using type = Manager;
+	};
+
+
+
+
+	template<typename ThisManager, typename BaseManager, size_t current, size_t end>
+	struct BaseRuntimeSignatureToThisRuntimeSignature_IMPL
+	{
+		static void apply(typename ThisManager::RuntimeSignature_t& ret, const typename BaseManager::RuntimeSignature_t& toConvert)
+		{
+			using ThisComponentType = BaseManager::template ComponentOrTagByID<current>;
+			constexpr size_t thisComponentID = ThisManager::template getTagOrComponentID<ThisComponentType>();
+
+			ret[thisComponentID] = toConvert[current];
+
+			BaseRuntimeSignatureToThisRuntimeSignature_IMPL<ThisManager, BaseManager, current + 1, end>::apply(ret, toConvert);
+		}
+	};
+
+	template<typename ThisManager, typename BaseManager, size_t end>
+	struct BaseRuntimeSignatureToThisRuntimeSignature_IMPL<ThisManager, BaseManager, end, end>
+	{
+		static void apply(typename ThisManager::RuntimeSignature_t& ret, const typename BaseManager::RuntimeSignature_t& toConvert)
+		{ }
 	};
 
 }

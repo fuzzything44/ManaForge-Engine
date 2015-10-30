@@ -81,8 +81,7 @@ public:
 	using AllTags = ExpandSequenceToVaraidic_t<AllManagers, CatTags>;
 
 	// CONSTEXPR FUNCTIONS/TESTS
-	template<size_t at> using ComponentByID =
-		typename boost::mpl::at_c<MyComponents, at>::type;
+
 
 	static constexpr size_t getNumComponents()
 	{
@@ -102,11 +101,11 @@ public:
 	}
 	template <typename Comp> static constexpr size_t getComponentID()
 	{
-		static_assert(isMyComponent<Comp>(), "Must be my component");
+		static_assert(isComponent<Comp>(), "Must be component");
 
 		return boost::mpl::distance<
-			typename boost::mpl::begin<MyComponents>::type
-			, typename boost::mpl::find<MyComponents, Comp>::type
+			typename boost::mpl::begin<AllComponents>::type
+			, typename boost::mpl::find<AllComponents, Comp>::type
 		>::type::value;
 	}
 
@@ -128,11 +127,11 @@ public:
 	}
 	template <typename Tag> static constexpr size_t getTagID()
 	{
-		static_assert(isMyTag<Tag>(), "Must be my tag");
+		static_assert(isTag<Tag>(), "Must be tag");
 
 		return getNumComponents() + boost::mpl::distance<
-			typename boost::mpl::begin<MyTags>::type
-			, typename boost::mpl::find<MyTags, Tag>::type
+			typename boost::mpl::begin<AllTags>::type
+			, typename boost::mpl::find<AllTags, Tag>::type
 		>::type::value;
 	}
 
@@ -170,6 +169,27 @@ public:
 	}
 	template<size_t ID>
 	using ManagerFromID = typename boost::mpl::at_c<AllManagers, ID>::type;
+
+	template<size_t at> using ComponentByID =
+		typename boost::mpl::at_c<AllComponents, at>::type;
+
+	template<size_t at> using TagByID =
+		typename boost::mpl::at_c<AllTags, at - getNumComponents()>::type;
+
+private:
+	template<size_t at, bool isComponent = (at < getNumComponents())>
+	struct ComponentOrTagByID_IMPL
+	{
+		using type = TagByID<at>;
+	};
+	template<size_t at>
+	struct ComponentOrTagByID_IMPL<at, true>
+	{
+		using type = ComponentByID<at>;
+	};
+public:
+
+	template<size_t at> using ComponentOrTagByID = typename ComponentOrTagByID_IMPL<at>::type;
 
 private:
 	template<typename TypeToCheck>
@@ -245,9 +265,9 @@ public:
 
 		auto myIndex = (*nextIndex)++;
 
-		getEntityStorage().emplace_back(myIndex);
+		entityStorage.emplace_back(myIndex);
 
-		return HandleType{ myIndex, getEntityStorage().size() - 1 };
+		return HandleType{ myIndex, entityStorage.size() - 1 };
 	}
 
 	template<typename Component, typename... Args>
@@ -262,10 +282,10 @@ public:
 		constexpr size_t componentID = ManagerForComponent::template getComponentID<Component>();
 
 		// get the entity
-		EntityType& entity = getEntityStorage()[handle.entityID];
+		EntityType& entity = entityStorage[handle.entityID];
 
 		// check if this entity already has this component
-		bool alreadyHasComponent = std::get<managerID>(entity.components)[componentID] = true;
+		bool alreadyHasComponent = entity.components[componentID] = true;
 
 		// if the Entity already has the component, make sure to destruct the current one.
 		if (alreadyHasComponent)
@@ -278,7 +298,7 @@ public:
 
 
 		// set the bitset value to true so signature checking works
-		std::get<managerID>(entity.components)[componentID] = true;
+		entity.components[componentID] = true;
 
 		return getComponentStorage<Component>()[handle.GUID];
 	}
@@ -425,14 +445,6 @@ public:
 		return detail::GetRefToManager<ThisType, ManagerToGet>::apply(*this);
 	}
 
-	template<typename ManagerToGet = ThisType>
-	std::vector<Entity<ManagerToGet>>& getEntityStorage()
-	{
-		static_assert(isManager<ManagerToGet>(), "Must be a manager");
-
-		return getRefToManager<ManagerToGet>().getEntityStorage();
-	}
-
 	template<typename SequenceToFind>
 	using FindMostBaseManagerForSignature_t = typename detail::FindMostBaseManagerForSignature<ThisType, SequenceToFind, true>::type;
 
@@ -453,7 +465,7 @@ public:
 			constexpr const auto componentOrTagID = Manager_t::getTagOrComponentID<ComponentOrTag_t>();
 			constexpr const auto managerID = getManagerID<Manager_t>();
 
-			std::get<managerID>(ret)[componentOrTagID] = true;
+			ret[componentOrTagID] = true;
 		});
 
 		return ret;
@@ -468,20 +480,13 @@ public:
 	using SignatureToFunction = ExpandSequenceToVaraidic_t<Signature, VoidStdFunctionArguments>;
 
 	template<typename BaseManager>
-	RuntimeSignature_t baseRuntimeSignatureToThisRuntimeSignature(typename BaseManager::RuntimeSignature_t toConvert)
+	RuntimeSignature_t baseRuntimeSignatureToThisRuntimeSignature(const typename BaseManager::RuntimeSignature_t& toConvert)
 	{
 		RuntimeSignature_t ret;
 
-		tuple_for_each_with_index(toConvert, [&ret, &toConvert](auto elem, auto indexType)
-		{
-			constexpr const size_t index = decltype(indexType)::value;
-			using ManagerForBitset = typename BaseManager::template ManagerFromID<index>;
+		const constexpr size_t sizeOfToConvertBitset = getBitsetSize<decltype(toConvert)>();
 
-			constexpr const size_t retIndex = ThisType::template getManagerID<ManagerForBitset>();
-
-			std::get<retIndex>(ret) = std::get<index>(toConvert);
-
-		});
+		detail::BaseRuntimeSignatureToThisRuntimeSignature_IMPL<ThisType, BaseManager, 0, sizeOfToConvertBitset>::apply(ret, toConvert);
 
 		return ret;
 	}

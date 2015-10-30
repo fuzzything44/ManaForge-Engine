@@ -21,18 +21,7 @@ struct Entity
 
 	bool matchesSignature(typename ManagerType::RuntimeSignature_t toTest)
 	{
-		bool matches = true;
-		tuple_for_each_with_index(toTest, [&matches, this](auto value, auto index)
-		{
-			if (!matches) return;
-
-			const constexpr auto managerID = decltype(index)::value;
-
-			matches = (value & std::get<managerID>(components)) == value;
-		});
-
-
-		return matches;
+		return (components & toTest) == toTest;
 
 	}
 

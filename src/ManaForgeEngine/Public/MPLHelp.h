@@ -201,3 +201,27 @@ void tuple_for_each_with_index(Tuple&& tup, F&& functor)
 {
 	detail::tuple_for_each_with_index_impl<0, std::tuple_size<std::decay_t<Tuple>>::value>::apply(tup, functor);
 }
+
+namespace detail
+{
+
+	template<typename BitsetType>
+	struct BitsetSize
+	{
+		template<size_t size>
+		static auto test(std::bitset<size> b)
+		{
+			return boost::mpl::long_<size>{};
+		}
+
+		static constexpr const size_t value = decltype(test(BitsetType{}))::value;
+	};
+
+}
+
+template<typename BitsetType>
+constexpr size_t getBitsetSize()
+{
+	return detail::BitsetSize<BitsetType>::value;
+}
+

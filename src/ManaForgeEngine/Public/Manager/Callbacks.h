@@ -26,7 +26,7 @@ namespace detail
 		auto& thisTypeDerived = static_cast<ThisManager&>(thisType);
 
 		auto&& sigToTest = thisTypeDerived.template baseRuntimeSignatureToThisRuntimeSignature<BaseManagerType>(toTest);
-		for (auto&& elem : thisTypeDerived.getEntityStorage())
+		for (auto&& elem : thisTypeDerived.entityStorage)
 		{
 			if (elem.matchesSignature(sigToTest)) append.push_back(elem.GUID);
 		}
