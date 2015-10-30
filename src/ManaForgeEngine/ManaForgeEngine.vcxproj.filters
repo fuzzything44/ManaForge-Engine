@@ -9,6 +9,9 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
+    <Filter Include="Public\ManagerDetail">
+      <UniqueIdentifier>{22a8d473-d293-4bd3-9e06-19f3cc83a9ff}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="private\ENGException.cpp">
@@ -112,11 +115,26 @@
     <ClInclude Include="Public\CoreManager.h">
       <Filter>Public</Filter>
     </ClInclude>
-    <ClInclude Include="Public\Entity.h">
-      <Filter>Public</Filter>
-    </ClInclude>
     <ClInclude Include="Public\ModuleHandler.h">
       <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\Manager\GetRefToManager.h">
+      <Filter>Public\ManagerDetail</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\Manager\Callbacks.h">
+      <Filter>Public\ManagerDetail</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\Manager\EntityHandle.h">
+      <Filter>Public\ManagerDetail</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\Manager\Entity.h">
+      <Filter>Public\ManagerDetail</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\Manager\FindAllManagers.h">
+      <Filter>Public\ManagerDetail</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\Manager\MiscMetafunctions.h">
+      <Filter>Public\ManagerDetail</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

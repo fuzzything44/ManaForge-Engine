@@ -37,123 +37,25 @@
 #include <cassert>
 
 #include "MPLHelp.h"
-#include "Entity.h"
+
+#include "Manager/Entity.h"
+#include "Manager/Callbacks.h"
+#include "Manager/GetRefToManager.h"
+#include "Manager/EntityHandle.h"
+#include "Manager/FindAllManagers.h"
+#include "Manager/MiscMetafunctions.h"
 
 struct ManagerBase : std::enable_shared_from_this<ManagerBase>
 {
 
 };
 
-template<typename Manager>
-void updateManager(Manager& man){}
-
-template<typename Manager>
-void initManager(Manager& man){}
-
-template<typename Manager>
-void beginPlayManager(Manager& man){}
-
-template<typename Manager>
-void exitManager(Manager& man){}
-
-template<typename Manager>
-struct ManagerData {};
-
-namespace detail
-{
-	template<typename ThisType, typename ManagerToGet>
-	struct GetRefToManager
-	{
-		static ManagerToGet& apply(ThisType& data)
-		{
-			static_assert(ThisType::template isManager<ManagerToGet>(), "ManagerToGet must be a manager");
-
-			constexpr auto managerID = ThisType::template getManagerExceptThisID<ManagerToGet>();
-
-			return *std::get<managerID>(data.basePtrStorage);
-		}
-	};
-
-	template<typename ThisType>
-	struct GetRefToManager<ThisType, ThisType>
-	{
-		static ThisType& apply(ThisType& data)
-		{
-			static_assert(ThisType::template isManager<ThisType>(), "ManagerToGet must be a manager");
-
-			return data;
-		}
-	};
-
-	template<typename BaseManagerType, typename ThisManager>
-	void getAllMatching(ManagerBase& thisType, std::vector<size_t>& append, const typename BaseManagerType::RuntimeSignature_t& toTest)
-	{
-		auto& thisTypeDerived = static_cast<ThisManager&>(thisType);
-
-		auto&& sigToTest = thisTypeDerived.template baseRuntimeSignatureToThisRuntimeSignature<BaseManagerType>(toTest);
-		for (auto&& elem : thisTypeDerived.getEntityStorage())
-		{
-			if (elem.matchesSignature(sigToTest)) append.push_back(elem.GUID);
-		}
-		for (auto&& elem : thisTypeDerived.children)
-		{
-			elem.first.getAllMatching(*elem.second, append, sigToTest);
-		}
-	}
-
-	template<typename ThisManager, typename BaseManager>
-	struct Update_t
-	{
-		static void update(ManagerBase& thisManager, BaseManager& baseManager)
-		{
-			auto&& castedManager = static_cast<ThisManager&>(thisManager);
-
-			updateManager(castedManager);
-
-			for (auto&& child : castedManager.children)
-			{
-				child.first.update(*child.second, castedManager);
-			}
-		}
-	};
-
-
-	template<typename ThisManager, typename BaseManager>
-	struct BeginPlay_t
-	{
-		static void beginPlay(ManagerBase& thisManager, BaseManager& baseManager)
-		{
-			auto&& castedManager = static_cast<ThisManager&>(thisManager);
-
-			::beginPlayManager(castedManager);
-
-			for (auto&& child : castedManager.children)
-			{
-				child.first.beginPlay(*child.second, castedManager);
-			}
-		}
-	};
-
-}
-
-
-template<typename BaseManager>
-struct EntityHandle
-{
-	friend BaseManager;
-private:
-	explicit EntityHandle(size_t handle, size_t entityID_) : GUID{ handle }, entityID{ entityID_ } {}
-public:
-	const size_t GUID;
-	const size_t entityID;
-};
-
-
-
 template <typename Components_, typename Tags_, typename Bases_ = boost::mpl::vector0<> >
 struct Manager : ManagerBase
 {
 	static_assert(boost::mpl::is_sequence<Components_>::value, "Components must be a sequence");
+	static_assert(boost::mpl::is_sequence<Tags_>::value, "Tags must be a sequence");
+	static_assert(boost::mpl::is_sequence<Bases_>::value, "Bases must be a sequence");
 
 	// GLOBAL TYPEDEFS
 	using MyComponents = Components_;
@@ -163,59 +65,11 @@ struct Manager : ManagerBase
 	using EntityType = Entity<ThisType>;
 	using HandleType = EntityHandle<ThisType>;
 
-
-private:
-	template<typename SequenceOfManagers, bool needsExit = false>
-	struct FindManagers
-	{
-		static_assert(boost::mpl::is_sequence<SequenceOfManagers>::value, "SequenceOfManagers must be a sequence");
-
-		template<typename... Args>
-		using FindUpperManagers =
-			CatSequences_t<typename Args::MyBases...>;
-
-		using ExpandedManagers =
-			Unduplicate_t
-			<
-			CatSequences_t
-			<
-			SequenceOfManagers,
-			ExpandSequenceToVaraidic_t
-			<
-			SequenceOfManagers
-			, FindUpperManagers
-			>
-			>
-			>
-			;
-
-		static constexpr const bool needsExitNext =
-			boost::mpl::equal_to
-			<
-			typename boost::mpl::size<SequenceOfManagers>::type
-			, typename boost::mpl::size<ExpandedManagers>::type
-			>::type::value
-			;
-
-		using type =
-			typename FindManagers
-			<
-			ExpandedManagers
-			, needsExitNext
-			>::type
-			;
-	};
-	template<typename SequenceOfManagers>
-	struct FindManagers<SequenceOfManagers, true>
-	{
-		using type = SequenceOfManagers;
-		static_assert(boost::mpl::is_sequence<type>::value, "SequenceOfManagers needs to be a sequence.");
-	};
-
-public:
-	using AllManagers = typename FindManagers<boost::mpl::vector<ThisType>>::type;
-	using AllManagersButThis = typename boost::mpl::remove<AllManagers, ThisType>::type;
+	using AllManagers = typename detail::FindManagers<boost::mpl::vector<ThisType>>::type;
 	static_assert(boost::mpl::is_sequence<AllManagers>::value, "AllManagers needs to be a sequence.");
+
+	using AllManagersButThis = typename boost::mpl::remove<AllManagers, ThisType>::type;
+	static_assert(boost::mpl::is_sequence<AllManagersButThis>::value, "AllManagers needs to be a sequence.");
 
 private:
 	template<typename... Args>
@@ -226,7 +80,7 @@ public:
 	using AllComponents = ExpandSequenceToVaraidic_t<AllManagers, CatComponents_t>;
 	using AllTags = ExpandSequenceToVaraidic_t<AllManagers, CatTags>;
 
-	// CONSTEXPR TESTS
+	// CONSTEXPR FUNCTIONS/TESTS
 	template<size_t at> using ComponentByID =
 		typename boost::mpl::at_c<MyComponents, at>::type;
 
@@ -246,7 +100,6 @@ public:
 	{
 		return boost::mpl::contains<MyComponents, Test>::value;
 	}
-	static const constexpr size_t numMyComponents = getNumMyComponents(); // this is a workaround. Turns out you can't use varaidcs here!
 	template <typename Comp> static constexpr size_t getComponentID()
 	{
 		static_assert(isMyComponent<Comp>(), "Must be my component");
@@ -256,7 +109,6 @@ public:
 			, typename boost::mpl::find<MyComponents, Comp>::type
 		>::type::value;
 	}
-
 
 	static constexpr size_t getNumTags()
 	{
@@ -274,7 +126,6 @@ public:
 	{
 		return boost::mpl::contains<MyTags, Test>::value;
 	}
-	static const constexpr size_t numMyTags = getNumMyTags(); // this is a workaround. Turns out you can't use varaidcs here!
 	template <typename Tag> static constexpr size_t getTagID()
 	{
 		static_assert(isMyTag<Tag>(), "Must be my tag");
@@ -285,25 +136,10 @@ public:
 		>::type::value;
 	}
 
-	static const constexpr size_t numComponentsAndTags = numMyComponents + numMyTags;
-
-private:
-	template<typename ComponentOrTag, bool = isTag<ComponentOrTag>()>
-	struct GetTagOrComponentIMPL
-	{
-		static const constexpr size_t value = getTagID<Tag>();
-	};
-	template<typename Component>
-	struct GetTagOrComponentIMPL<Component, false>
-	{
-		static const constexpr size_t value = getComponentID<Component>();
-	};
-public:
-
 	template<typename ComponentOrTag>
 	static constexpr size_t getTagOrComponentID()
 	{
-		return GetTagOrComponentIMPL<ComponentOrTag>::value;
+		return detail::GetTagOrComponentID_IMPL<ThisType, ComponentOrTag>::value;
 	}
 
 	static constexpr size_t getNumManagers()
@@ -341,9 +177,9 @@ private:
 	{
 		using type = std::conditional_t
 			<
-			isComponent<TypeToCheck>() || isTag<TypeToCheck>()
-			, std::true_type
-			, std::false_type
+				isComponent<TypeToCheck>() || isTag<TypeToCheck>()
+				, std::true_type
+				, std::false_type
 			>
 			;
 	};
@@ -356,119 +192,27 @@ public:
 
 		using Transformed = typename boost::mpl::transform<SignatureToCheck, IsSignatureIMPL<boost::mpl::placeholders::_1>>::type;
 
-		return
-			std::is_same
-			<
-			typename boost::mpl::find
-			<
-			Transformed
-			, std::false_type
-			>::type
-			, typename boost::mpl::end<Transformed>::type
-			>::value;
-
+		return !boost::mpl::contains<Transformed, std::false_type>::type::value;
 	}
-
-private:
-
-
-	template<typename ComponentToCheckFor, typename CurrentIter, typename EndIter,
-		typename = std::conditional_t
-		<
-		boost::mpl::contains
-		<
-		typename boost::mpl::deref<CurrentIter>::type::MyComponents
-		, ComponentToCheckFor
-		>::value
-		, std::true_type
-		, std::false_type
-		>
-	>
-	struct GetManagerFromComponent
-	{
-		static_assert(isComponent<ComponentToCheckFor>(), "needs to be a component");
-
-		using type =
-			typename GetManagerFromComponent
-			<
-			ComponentToCheckFor
-			, typename boost::mpl::next<CurrentIter>::type
-			, EndIter
-			>::type
-			;
-	};
-
-	template<typename ComponentToCheckFor, typename CurrentIter, typename EndIter>
-	struct GetManagerFromComponent<ComponentToCheckFor, CurrentIter, EndIter, std::true_type>
-	{
-		using type = typename boost::mpl::deref<CurrentIter>::type;
-		static_assert(isManager<type>(), "Internal Error");
-	};
-
-	template<typename ComponentToCheckFor, typename EndIter>
-	struct GetManagerFromComponent<ComponentToCheckFor, EndIter, EndIter, std::false_type>
-	{
-		//		static_assert(false, "ERROR, COULD NOT FIND COMPONENT IN ANY MANAGERS");
-	};
-
-	template<typename TagToCheckFor, typename CurrentIter, typename EndIter,
-		typename = std::conditional_t
-		<
-		boost::mpl::contains
-		<
-		typename boost::mpl::deref<CurrentIter>::type::MyTags
-		, TagToCheckFor
-		>::value
-		, std::true_type
-		, std::false_type
-		>
-	>
-	struct GetManagerFromTag
-	{
-		static_assert(isTag<TagToCheckFor>(), "needs to be a tag");
-
-		using type =
-			typename GetManagerFromTag
-			<
-			TagToCheckFor
-			, typename boost::mpl::next<CurrentIter>::type
-			, EndIter
-			>::type
-			;
-	};
-
-	template<typename TagToCheckFor, typename CurrentIter, typename EndIter>
-	struct GetManagerFromTag<TagToCheckFor, CurrentIter, EndIter, std::true_type>
-	{
-		using type = typename boost::mpl::deref<CurrentIter>::type;
-		static_assert(isManager<type>(), "Internal Error");
-	};
-
-	template<typename TagToCheckFor, typename EndIter>
-	struct GetManagerFromTag<TagToCheckFor, EndIter, EndIter, std::false_type>
-	{
-		//		static_assert(false, "ERROR, COULD NOT FIND COMPONENT IN ANY MANAGERS");
-	};
-
-
-public:
 
 	template<typename Component>
 	using GetManagerFromComponent_t =
-		typename GetManagerFromComponent
+		typename detail::GetManagerFromComponent
 		<
-		Component
-		, typename boost::mpl::begin<AllManagers>::type
-		, typename boost::mpl::end<AllManagers>::type
+			ThisType
+			, Component
+			, typename boost::mpl::begin<AllManagers>::type
+			, typename boost::mpl::end<AllManagers>::type
 		>::type
 		;
 	template<typename Tag>
 	using GetManagerFromTag_t =
-		typename GetManagerFromTag
+		typename detail::GetManagerFromTag
 		<
-		Tag
-		, typename boost::mpl::begin<AllManagers>::type
-		, typename boost::mpl::end<AllManagers>::type
+			ThisType
+			, Tag
+			, typename boost::mpl::begin<AllManagers>::type
+			, typename boost::mpl::end<AllManagers>::type
 		>::type
 		;
 
@@ -489,9 +233,8 @@ public:
 	template<typename ComponentOrTag>
 	using GetManagerFromComponentOrTag_t = typename GetManagerFromComponentOrTag<ComponentOrTag>::type;
 
-
-
 public:
+	static const constexpr size_t numComponentsAndTags = getNumComponents() + getNumTags();
 	template<typename... Managers>
 	using TupleOfBitmaps = std::tuple<std::bitset<Managers::numComponentsAndTags>...>;
 	// Bitset that each Sequence and Entity has. This is the type.
