@@ -2,6 +2,7 @@
 #include <type_traits>
 
 #include <boost/mpl/contains.hpp>
+#include <boost/mpl/transform.hpp>
 #include <boost/mpl/deref.hpp>
 
 namespace detail
@@ -98,6 +99,62 @@ namespace detail
 	struct GetManagerFromTag<ManagerType, TagToCheckFor, EndIter, EndIter, std::false_type>
 	{
 		//		static_assert(false, "ERROR, COULD NOT FIND COMPONENT IN ANY MANAGERS");
+	};
+	
+	template<typename Manager, typename Signature>
+	struct IsSignature
+	{
+		using type =
+			std::conditional_t
+			<
+				Manager::template isSignature<Signature>()
+				, std::true_type
+				, std::false_type
+			>
+			;
+	};
+
+	template<typename Manager, typename SignatureToFind, bool running>
+	struct FindMostBaseManagerForSignature
+	{
+		static_assert(boost::mpl::is_sequence<SignatureToFind>::value, "Signatures are sequences");
+		static_assert(Manager::template isSignature<SignatureToFind>(), "Must be a signature");
+
+		using ManagerWithComponent =
+			typename boost::mpl::deref
+			<
+				typename boost::mpl::find
+				<
+					typename boost::mpl::transform
+					<
+						typename Manager::MyBases
+						, IsSignature<boost::mpl::placeholders::_1, SignatureToFind>
+					>
+					, std::true_type
+				>::type
+			>::type
+			;
+
+		static const constexpr bool runningNext = !std::is_same<ManagerWithComponent, boost::mpl::na>::value;
+
+		using type =
+			std::conditional_t
+			<
+				runningNext
+				, typename FindMostBaseManagerForSignature
+				<
+					ManagerWithComponent
+					, SignatureToFind
+					, runningNext
+				>::type
+				, Manager
+			>
+			;
+	};
+	template<typename Manager, typename SequenceToFind>
+	struct FindMostBaseManagerForSignature<Manager, SequenceToFind, false>
+	{
+		using type = Manager;
 	};
 
 }

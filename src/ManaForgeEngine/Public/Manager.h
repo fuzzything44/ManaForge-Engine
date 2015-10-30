@@ -234,11 +234,9 @@ public:
 	using GetManagerFromComponentOrTag_t = typename GetManagerFromComponentOrTag<ComponentOrTag>::type;
 
 public:
-	static const constexpr size_t numComponentsAndTags = getNumComponents() + getNumTags();
-	template<typename... Managers>
-	using TupleOfBitmaps = std::tuple<std::bitset<Managers::numComponentsAndTags>...>;
-	// Bitset that each Sequence and Entity has. This is the type.
-	using RuntimeSignature_t = ExpandSequenceToVaraidic_t<AllManagers, TupleOfBitmaps>;
+	// Bitset that each Signature and Entity has. This is the type. Just a bitset of the possible components and tags
+	static constexpr const size_t numComponentsAndTags = getNumComponents() + getNumTags();
+	using RuntimeSignature_t = std::bitset<numComponentsAndTags>;
 
 	// FUNCTIONS FOR ENTITES - CREATING, DESTROYING, COMPONENT HANDLING
 	HandleType createEntity()
@@ -252,17 +250,6 @@ public:
 		return HandleType{ myIndex, getEntityStorage().size() - 1 };
 	}
 
-	template<typename Component>
-	std::vector<Component>& getComponentStorage()
-	{
-		static_assert(isComponent<Component>(), "Component must be a component");
-
-		using Manager_Type = GetManagerFromComponent_t<Component>;
-
-		constexpr auto ID = Manager_Type::template getComponentID<Component>();
-
-		return std::get<ID>(getRefToManager<Manager_Type>().componentStorage);
-	}
 	template<typename Component, typename... Args>
 	Component& addComponent(HandleType handle, Args... args)
 	{
@@ -320,6 +307,20 @@ public:
 
 		return getComponentStorage<Component>()[handle.GUID];
 	}
+	template<typename Component>
+	bool hasComponent(HandleType handle)
+	{
+		static_assert(isComponent<Component>(), "Component must be a Component");
+		// get constants for convience
+		using ManagerForComponent = GetManagerFromComponent_t<Component>;
+		constexpr size_t managerID = getManagerID<ManagerForTag>();
+		constexpr size_t componentID = ManagerForComponent::template getComponentID<Component>();
+
+		// get the entity
+		EntityType& entity = getEntityStorage()[handle.entityID];
+
+		return std::get<managerID>(entity.components)[componentID];
+	}
 
 	template<typename Tag>
 	void addTag(HandleType handle)
@@ -364,15 +365,6 @@ public:
 		return std::get<managerID>(entity.components)[tagID];
 	}
 
-	std::vector<EntityType>& getEntityStorage()
-	{
-		return entityStorage;
-	}
-
-private:
-
-
-public:
 
 	// ALLOCATION/DATA STORAGE FUNCTION
 	void reallocateIfNecessary()
@@ -413,6 +405,18 @@ public:
 		}
 	}
 
+	template<typename Component>
+	std::vector<Component>& getComponentStorage()
+	{
+		static_assert(isComponent<Component>(), "Component must be a component");
+
+		using Manager_Type = GetManagerFromComponent_t<Component>;
+
+		constexpr auto ID = Manager_Type::template getComponentID<Component>();
+
+		return std::get<ID>(getRefToManager<Manager_Type>().componentStorage);
+	}
+
 	template<typename ManagerToGet>
 	ManagerToGet& getRefToManager()
 	{
@@ -421,91 +425,16 @@ public:
 		return detail::GetRefToManager<ThisType, ManagerToGet>::apply(*this);
 	}
 
-	template<typename ManagerToGet>
+	template<typename ManagerToGet = ThisType>
 	std::vector<Entity<ManagerToGet>>& getEntityStorage()
 	{
-		static_assert(isManager<ManagerToGet>(), "");
+		static_assert(isManager<ManagerToGet>(), "Must be a manager");
 
 		return getRefToManager<ManagerToGet>().getEntityStorage();
 	}
 
-private:
-
-
-	template<typename BeginIter, typename EndIter, typename Sequence, bool shouldExit = false>
-	struct CheckManagersForSequence
-	{
-		using Manager_t = typename boost::mpl::deref<BeginIter>::type;
-		static_assert(isManager<Manager_t>(), "");
-
-		static_assert(isManager<Manager_t>(), "");
-
-		static constexpr const bool couldHaveSeq = Manager_t::template isSignature<Sequence>();
-
-		using type =
-			std::conditional_t
-			<
-			couldHaveSeq
-			, Manager_t
-			, typename CheckManagersForSequence
-			<
-			typename boost::mpl::next<BeginIter>::type
-			, EndIter
-			, Sequence
-			, couldHaveSeq
-			>::type
-			>;
-	};
-	template<typename BeginIter, typename EndIter, typename Sequence>
-	struct CheckManagersForSequence<BeginIter, EndIter, Sequence, true>
-	{
-		using type = typename boost::mpl::deref<BeginIter>::type;
-	};
-	template<typename EndIter, typename Sequence>
-	struct CheckManagersForSequence<EndIter, EndIter, Sequence, false>
-	{
-		using type = boost::mpl::na;
-	};
-
-	template<typename Manager, typename SignatureToFind, bool running>
-	struct FindMostBaseManagerForSignature
-	{
-		static_assert(boost::mpl::is_sequence<SignatureToFind>::value, "Signatures are sequences");
-		static_assert(isSignature<SignatureToFind>(), "Must be a signature");
-
-		using ManagerWithComponent =
-			typename CheckManagersForSequence
-			<
-			typename boost::mpl::begin<typename Manager::MyBases>::type
-			, typename boost::mpl::end<typename Manager::MyBases>::type
-			, SignatureToFind
-			>::type
-			;
-
-		static const constexpr bool runningNext = !std::is_same<ManagerWithComponent, boost::mpl::na>::value;
-
-		using type =
-			std::conditional_t
-			<
-			runningNext
-			, typename FindMostBaseManagerForSignature
-			<
-			ManagerWithComponent
-			, SignatureToFind
-			, runningNext
-			>::type
-			, Manager
-			>
-			;
-	};
-	template<typename Manager, typename SequenceToFind>
-	struct FindMostBaseManagerForSignature<Manager, SequenceToFind, false>
-	{
-		using type = Manager;
-	};
-public:
 	template<typename SequenceToFind>
-	using FindMostBaseManagerForSignature_t = typename FindMostBaseManagerForSignature<ThisType, SequenceToFind, true>::type;
+	using FindMostBaseManagerForSignature_t = typename detail::FindMostBaseManagerForSignature<ThisType, SequenceToFind, true>::type;
 
 	template<typename Signature>
 	static RuntimeSignature_t generateRuntimeSignature()
