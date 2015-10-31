@@ -136,5 +136,8 @@
     <ClInclude Include="Public\Manager\MiscMetafunctions.h">
       <Filter>Public\ManagerDetail</Filter>
     </ClInclude>
+    <ClInclude Include="Public\RefCounted.h">
+      <Filter>Public</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

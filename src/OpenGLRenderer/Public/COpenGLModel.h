@@ -13,6 +13,6 @@ public:
 private:
 	uint8 renderOrder;
 	
-	std::shared_ptr<OpenGLModelData> modelData;
+	OpenGLModelData modelData;
 	std::shared_ptr<OpenGLMaterialInstance> material;
 };

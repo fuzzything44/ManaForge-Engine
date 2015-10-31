@@ -274,6 +274,7 @@
     <ClInclude Include="Public\PropertyManager.h" />
     <ClInclude Include="Public\QuadUVCoords.h" />
     <ClInclude Include="Public\Quantity.h" />
+    <ClInclude Include="Public\RefCounted.h" />
     <ClInclude Include="Public\Runtime.h" />
     <ClInclude Include="Public\SaveData.h" />
     <ClInclude Include="Public\SerializeGLM.h" />
