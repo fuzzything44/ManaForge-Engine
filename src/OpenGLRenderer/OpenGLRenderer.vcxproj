@@ -170,33 +170,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Private\OpenGLFont.cpp" />
-    <ClCompile Include="Private\OpenGLMaterialInstance.cpp" />
-    <ClCompile Include="Private\OpenGLMaterialSource.cpp" />
-    <ClCompile Include="Private\OpenGLRenderer.cpp" />
-    <ClCompile Include="Private\OpenGLRendererConfig.cpp" />
+    <ClCompile Include="Private\OpenGLRendererManager.cpp" />
     <ClCompile Include="Private\OpenGLRendererPCH.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Private\OpenGLTextBoxWidget.cpp" />
-    <ClCompile Include="Private\OpenGLTexture.cpp" />
-    <ClCompile Include="Private\OpenGLTextureLibrary.cpp" />
-    <ClCompile Include="Private\OpenGLWindowWidget.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Private\OpenGLCharacterData.h" />
-    <ClInclude Include="Private\OpenGLFont.h" />
-    <ClInclude Include="Private\OpenGLMaterialInstance.h" />
-    <ClInclude Include="Private\OpenGLMaterialSource.h" />
-    <ClInclude Include="Private\OpenGLModelData.h" />
-    <ClInclude Include="Private\OpenGLRendererConfig.h" />
     <ClInclude Include="Private\OpenGLRendererPCH.h" />
-    <ClInclude Include="Private\OpenGLTextBoxWidget.h" />
-    <ClInclude Include="Private\OpenGLTexture.h" />
-    <ClInclude Include="Private\OpenGLTextureLibrary.h" />
-    <ClInclude Include="Private\OpenGLWindowWidget.h" />
     <ClInclude Include="Public\COpenGLModel.h" />
+    <ClInclude Include="Public\COpenGLWindow.h" />
+    <ClInclude Include="Public\OpenGLRendererConfig.h" />
     <ClInclude Include="Public\OpenGLRendererManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -2,8 +2,8 @@
 
 #include <Engine.h>
 
-#include "OpenGLModelData.h"
-#include "OpenGLMaterialInstance.h"
+//#include "OpenGLModelData.h"
+//#include "OpenGLMaterialInstance.h"
 
 class COpenGLModel 
 {
@@ -13,6 +13,6 @@ public:
 private:
 	uint8 renderOrder;
 	
-	OpenGLModelData modelData;
-	std::shared_ptr<OpenGLMaterialInstance> material;
+	//OpenGLModelData modelData;
+	//std::shared_ptr<OpenGLMaterialInstance> material;
 };

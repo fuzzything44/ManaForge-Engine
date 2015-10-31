@@ -271,7 +271,7 @@ public:
 	}
 
 	template<typename Component, typename... Args>
-	Component& addComponent(HandleType handle, Args... args)
+	Component& addComponent(HandleType handle, Args&&... args)
 	{
 		static_assert(isComponent<Component>(), "Component must be a component");
 
@@ -723,6 +723,7 @@ private:
 
 
 	Manager(const MyBasePtrStorage_t& bases)
+		:myManagerData{}
 	{
 		tuple_for_each_with_index(bases, [thisptr = this](auto& ptr, auto)
 		{
