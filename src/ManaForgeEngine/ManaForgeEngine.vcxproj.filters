@@ -139,5 +139,8 @@
     <ClInclude Include="Public\RefCounted.h">
       <Filter>Public</Filter>
     </ClInclude>
+    <ClInclude Include="Public\MappedVector.h">
+      <Filter>Public</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
