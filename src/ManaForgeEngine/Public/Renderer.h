@@ -19,7 +19,12 @@ class MaterialSource;
 class Font;
 class Model;
 class Widget;
-class TextBoxWidget;
+
+namespace MFUI
+{
+	class TextBoxWidget;
+}
+
 
 // a non - copyable abstract class that handles rendering
 class Renderer : boost::noncopyable
@@ -43,7 +48,7 @@ public:
 	virtual const CameraComponent& getCurrentCamera() const = 0;
 
 	virtual std::unique_ptr<Model, void (*)(Model*)> newModel(uint8 renderOrder /* = 0*/) = 0;
-	virtual std::unique_ptr<TextBoxWidget> newTextBoxWidget(Widget* owner) = 0;
+	virtual std::unique_ptr<MFUI::TextBoxWidget> newTextBoxWidget(Widget* owner) = 0;
 	virtual Font* getFont(const path_t& name) = 0;
 	virtual Texture* getTexture(const path_t& name) = 0;
 	virtual MaterialSource* getMaterialSource(const path_t& name) = 0;

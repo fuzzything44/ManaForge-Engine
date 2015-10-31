@@ -109,7 +109,7 @@ public:
 	const WindowWidget* getWindow() const override;
 
 	virtual std::unique_ptr<Model, void (*)(Model*)> newModel(uint8 renderOrder) override;
-	virtual std::unique_ptr<TextBoxWidget> newTextBoxWidget(Widget* owner) override;
+	virtual std::unique_ptr<MFUI::TextBoxWidget> newTextBoxWidget(Widget* owner) override;
 	virtual Font* getFont(const path_t& name) override;
 	virtual Texture* getTexture(const path_t& name) override;
 	virtual MaterialSource* getMaterialSource(const path_t& name) override;

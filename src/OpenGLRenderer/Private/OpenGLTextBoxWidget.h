@@ -9,7 +9,7 @@ class Font;
 class OpenGLFont;
 class OpenGLRenderer;
 
-class OpenGLTextBoxWidget : public TextBoxWidget
+class OpenGLTextBoxWidget : public MFUI::TextBoxWidget
 {
 	friend class OpenGLFont;
 

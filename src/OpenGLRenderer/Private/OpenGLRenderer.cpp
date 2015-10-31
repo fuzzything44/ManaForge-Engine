@@ -19,6 +19,7 @@
 #include <Renderer.h>
 #include <Helper.h>
 #include <Logging.h>
+#include <TextBoxWidget.h>
 #include <PhysicsSystem.h>
 #include <CameraComponent.h>
 
@@ -107,7 +108,7 @@ std::unique_ptr<Model, decltype(&Model::deleter)> OpenGLRenderer::newModel(uint8
 	return std::move(ret);
 }
 
-std::unique_ptr<TextBoxWidget> OpenGLRenderer::newTextBoxWidget(Widget* owner)
+std::unique_ptr<MFUI::TextBoxWidget> OpenGLRenderer::newTextBoxWidget(Widget* owner)
 {
 	return std::make_unique<OpenGLTextBoxWidget>(owner, *this);
 }

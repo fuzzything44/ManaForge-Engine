@@ -17,7 +17,7 @@ public:
 
 private:
 	std::unique_ptr<PhysicsComponent> phys;
-	std::unique_ptr<TextBoxWidget> textBoxWidget;
+	std::unique_ptr<MFUI::TextBoxWidget> textBoxWidget;
 
 	float timeToSpawn;
 
