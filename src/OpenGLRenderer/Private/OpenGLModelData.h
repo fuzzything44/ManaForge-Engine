@@ -2,28 +2,34 @@
 
 #include "OpenGLRendererConfig.h"
 
-#include "OpenGLRenderer.h"
-
-#include <ModelData.h>
-
-class OpenGLRenderer;
-
-class OpenGLModelData final : public ModelData
+class OpenGLModelData
 {
 public:
-	OpenGLModelData(OpenGLRenderer& renderer)
-		: renderer(renderer)
-		, bisInitialized(false)
+	OpenGLModelData(const vec2* vertLocs, const vec2* UVs, size_t numVerts, const uvec3* elems, size_t numElems)
 	{
+		assert(vertLocs);
+		assert(UVs);
+		assert(elems);
+
+		// init GL buffers
+		glGenVertexArrays(1, &vertexArray);
+		glBindVertexArray(vertexArray);
+
+		// init location buffer
+		glGenBuffers(1, &vertexLocationBuffer);
+		glBindBuffer(GL_ARRAY_BUFFER, vertexLocationBuffer);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(vec2) * numVerts, vertLocs, GL_STATIC_DRAW);
+
+		// init UV buffer
+		glGenBuffers(1, &texCoordBuffer);
+		glBindBuffer(GL_ARRAY_BUFFER, texCoordBuffer);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(vec2) * numVerts, UVs, GL_STATIC_DRAW);
+
+		// init elem buffer
+		glGenBuffers(1, &elemBuffer);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elemBuffer);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uvec3) * numElems, elems, GL_STATIC_DRAW);
 	}
-
-	virtual ~OpenGLModelData();
-
-	// ModelData Interface
-	virtual void init(
-		const vec2* vertLocs, const vec2* UVs, size_t numVerts, const uvec3* elems, size_t numElems) override;
-	virtual bool isInitialized() override;
-	// end ModelData Interface
 
 	inline void draw();
 
@@ -35,10 +41,6 @@ private:
 
 	size_t numVerts;
 	size_t numElems;
-
-	OpenGLRenderer& renderer;
-
-	bool bisInitialized;
 };
 
 inline void OpenGLModelData::draw()

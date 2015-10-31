@@ -14,9 +14,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Private\OpenGLModel.cpp">
-      <Filter>Private</Filter>
-    </ClCompile>
     <ClCompile Include="Private\OpenGLRendererConfig.cpp">
       <Filter>Private</Filter>
     </ClCompile>
@@ -27,9 +24,6 @@
       <Filter>Private</Filter>
     </ClCompile>
     <ClCompile Include="Private\OpenGLTextureLibrary.cpp">
-      <Filter>Private</Filter>
-    </ClCompile>
-    <ClCompile Include="Private\OpenGLModelData.cpp">
       <Filter>Private</Filter>
     </ClCompile>
     <ClCompile Include="Private\OpenGLMaterialInstance.cpp">
@@ -55,12 +49,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Private\OpenGLModel.h">
-      <Filter>Private</Filter>
-    </ClInclude>
-    <ClInclude Include="Private\OpenGLRenderer.h">
-      <Filter>Private</Filter>
-    </ClInclude>
     <ClInclude Include="Private\OpenGLRendererConfig.h">
       <Filter>Private</Filter>
     </ClInclude>
@@ -99,6 +87,12 @@
     </ClInclude>
     <ClInclude Include="Private\OpenGLTextBoxWidget.h">
       <Filter>Private</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\COpenGLModel.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\OpenGLRendererManager.h">
+      <Filter>Public</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
