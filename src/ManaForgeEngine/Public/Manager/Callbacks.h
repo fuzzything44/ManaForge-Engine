@@ -30,7 +30,7 @@ namespace detail
 		auto&& sigToTest = thisTypeDerived.template baseRuntimeSignatureToThisRuntimeSignature<BaseManagerType>(toTest);
 		for (auto&& elem : thisTypeDerived.entityStorage)
 		{
-			if (elem.matchesSignature(sigToTest)) append.push_back(elem.GUID);
+			if (elem.second.matchesSignature(sigToTest)) append.push_back(elem.first);
 		}
 		for (auto&& elem : thisTypeDerived.children)
 		{

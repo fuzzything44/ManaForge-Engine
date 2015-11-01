@@ -45,6 +45,8 @@
 #include "Manager/FindAllManagers.h"
 #include "Manager/MiscMetafunctions.h"
 
+#include "MappedVector.h"
+
 struct ManagerBase : std::enable_shared_from_this<ManagerBase>
 {
 
@@ -261,13 +263,11 @@ public:
 	// FUNCTIONS FOR ENTITES - CREATING, DESTROYING, COMPONENT HANDLING
 	HandleType createEntity()
 	{
-		reallocateIfNecessary();
-
 		auto myIndex = (*nextIndex)++;
 
-		entityStorage.emplace_back(myIndex);
+		entityStorage.emplace(myIndex);
 
-		return HandleType{ myIndex, entityStorage.size() - 1 };
+		return HandleType{ myIndex };
 	}
 
 	template<typename Component, typename... Args>
@@ -282,19 +282,10 @@ public:
 		constexpr size_t componentID = ManagerForComponent::template getComponentID<Component>();
 
 		// get the entity
-		EntityType& entity = entityStorage[handle.entityID];
-
-		// check if this entity already has this component
-		bool alreadyHasComponent = entity.components[componentID] = true;
-
-		// if the Entity already has the component, make sure to destruct the current one.
-		if (alreadyHasComponent)
-		{
-			getComponentStorage<Component>()[handle.GUID].~Component();
-		}
+		EntityType& entity = entityStorage[handle.GUID];
 
 		// set the component with the arguments passed
-		getComponentStorage<Component>()[handle.GUID] = Component(std::forward<Args>(args)...);
+		getComponentStorage<Component>().emplace(handle.GUID, std::forward<Args>(args)...);
 
 
 		// set the bitset value to true so signature checking works
@@ -385,48 +376,8 @@ public:
 		return std::get<managerID>(entity.components)[tagID];
 	}
 
-
-	// ALLOCATION/DATA STORAGE FUNCTION
-	void reallocateIfNecessary()
-	{
-		if (*nextIndex >= getComponentStorage<typename boost::mpl::at_c<AllComponents, 0>::type>().size())
-		{
-			auto newSize = 2 * (*nextIndex + 3);
-
-			// loop through this class AND the bases
-			for_each_no_construct_ptr<typename boost::mpl::push_back<MyBases, ThisType>::type>(
-				[ptr = this, newSize](auto man)
-			{
-				using Manager_t = std::remove_pointer_t<decltype(man)>;
-				static_assert(ThisType::template isManager<Manager_t>(), "Internal error");
-
-				auto&& refToManager = ptr->getRefToManager<Manager_t>();
-
-				for_each_no_construct_ptr<typename Manager_t::MyComponents>(
-					[ptr, newSize, man](auto comp)
-				{
-					using Manager_t = std::remove_pointer_t<decltype(man)>;
-					static_assert(isManager<Manager_t>(), "Internal error");
-					using Component_t = std::remove_pointer_t<decltype(comp)>;
-					static_assert(isComponent<Component_t>(), "Internal error");
-
-					const constexpr auto componentID = Manager_t::template getComponentID<Component_t>();
-
-					auto&& refToManager = ptr->getRefToManager<Manager_t>();
-					auto&& componentStorageTuple = refToManager.componentStorage;
-					auto&& componentStorageVector = std::get<componentID>(componentStorageTuple);
-
-					componentStorageVector.resize(newSize);
-
-				});
-			});
-
-
-		}
-	}
-
 	template<typename Component>
-	std::vector<Component>& getComponentStorage()
+	MappedVector<Component>& getComponentStorage()
 	{
 		static_assert(isComponent<Component>(), "Component must be a component");
 
@@ -583,7 +534,7 @@ public:
 
 		for (auto&& elem : vec)
 		{
-			callFunctionWithSigParams<SignatureToRun>(HandleType{ elem, elem }, std::forward<F>(functor));
+			callFunctionWithSigParams<SignatureToRun>(HandleType{ elem }, std::forward<F>(functor));
 		}
 
 
@@ -615,12 +566,12 @@ public:
 
 public:// TODO:
 
-	std::vector<EntityType> entityStorage;
+	MappedVector<EntityType> entityStorage;
 
 	std::shared_ptr<size_t> nextIndex;
 
 	template<typename... Args>
-	using TupleOfVectors = std::tuple<std::vector<Args>...>;
+	using TupleOfVectors = std::tuple<MappedVector<Args>...>;
 	ExpandSequenceToVaraidic_t<MyComponents, TupleOfVectors> componentStorage;
 
 	template<typename... Args>
