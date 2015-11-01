@@ -40,6 +40,6 @@ void updateManager<TestContentManager_t>(TestContentManager_t& manager)
 
 
 
-extern TestContent_API std::shared_ptr<TestContentManager_t> testContentManager;
+extern TestContent_API std::weak_ptr<TestContentManager_t> testContentManager;
 
 

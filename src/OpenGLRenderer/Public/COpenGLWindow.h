@@ -24,5 +24,10 @@ struct COpenGLWindow
 		assert(window);
 	}
 
+	~COpenGLWindow()
+	{
+		glfwDestroyWindow(window);
+	}
+
 	GLFWwindow* window;
 };

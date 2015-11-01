@@ -566,6 +566,8 @@ public:
 
 public:// TODO:
 
+	ManagerData<ThisType> myManagerData;
+
 	MappedVector<EntityType> entityStorage;
 
 	std::shared_ptr<size_t> nextIndex;
@@ -575,14 +577,14 @@ public:// TODO:
 	ExpandSequenceToVaraidic_t<MyComponents, TupleOfVectors> componentStorage;
 
 	template<typename... Args>
-	using TupleOfSharedPtrs = std::tuple<std::shared_ptr<Args>...>;
+	using TupleOfPtrs = std::tuple<Args*...>;
 	using BasePtrStorage_t = 
 		ExpandSequenceToVaraidic_t
 		<
 			AllManagersButThis // we dont' want to store the pointers for ThisType: it is just this!
-			, TupleOfSharedPtrs
+			, TupleOfPtrs
 		>; 
-	using MyBasePtrStorage_t = ExpandSequenceToVaraidic_t<MyBases, TupleOfSharedPtrs>;
+	using MyBasePtrStorage_t = ExpandSequenceToVaraidic_t<MyBases, TupleOfPtrs>;
 	BasePtrStorage_t basePtrStorage;
 
 
@@ -669,9 +671,6 @@ public:
 	}
 
 private:
-
-	ManagerData<ThisType> myManagerData;
-
 
 	Manager(const MyBasePtrStorage_t& bases)
 		:myManagerData{}

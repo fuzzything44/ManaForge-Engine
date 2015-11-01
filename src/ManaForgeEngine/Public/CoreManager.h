@@ -26,5 +26,5 @@ using CoreManager_t =
 		, boost::mpl::vector0<>
 	>;
 
-ENGINE_API extern std::shared_ptr<CoreManager_t> coreManager;
+ENGINE_API extern std::weak_ptr<CoreManager_t> coreManager;
 

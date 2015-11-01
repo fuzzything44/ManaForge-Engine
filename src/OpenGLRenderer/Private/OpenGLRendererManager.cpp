@@ -2,11 +2,11 @@
 
 #include "OpenGLRendererManager.h"
 
-std::shared_ptr<OpenGLRendererManager_t> openGLRendererManager = nullptr;
+std::weak_ptr<OpenGLRendererManager_t> openGLRendererManager = {};
 
 extern"C" __declspec(dllexport) void init()
 {
-	openGLRendererManager = OpenGLRendererManager_t::factory(std::make_tuple(coreManager));
+	openGLRendererManager = OpenGLRendererManager_t::factory(std::make_tuple(coreManager.lock().get()));
 }
 
 

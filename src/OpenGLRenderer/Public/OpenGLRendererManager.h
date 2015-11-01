@@ -48,5 +48,10 @@ void updateManager<>(OpenGLRendererManager_t& manager)
 	});
 }
 
+template<>
+void exitManager<>(OpenGLRendererManager_t& manager)
+{
+	glfwTerminate();
+}
 
-extern std::shared_ptr<OpenGLRendererManager_t> openGLRendererManager;
+extern std::weak_ptr<OpenGLRendererManager_t> openGLRendererManager;

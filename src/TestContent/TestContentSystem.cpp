@@ -1,8 +1,8 @@
 #include "TestContentSystem.h"
 
-std::shared_ptr<TestContentManager_t> testContentManager{ nullptr };
+std::weak_ptr<TestContentManager_t> testContentManager = {};
 
 extern"C" __declspec(dllexport) void init()
 {
-	testContentManager = TestContentManager_t::factory(std::make_tuple(openALAudioManager, box2DPhysicsManager));
+	testContentManager = TestContentManager_t::factory(std::make_tuple(openALAudioManager.lock().get(), box2DPhysicsManager.lock().get()));
 }
