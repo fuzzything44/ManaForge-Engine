@@ -1,6 +1,7 @@
 #include "OpenGLRendererConfig.h"
 
 #include <CoreManager.h>
+#include <Runtime.h>
 
 #include "COpenGLModel.h"
 #include "COpenGLWindow.h"
@@ -27,6 +28,24 @@ void beginPlayManager<>(OpenGLRendererManager_t& manager)
 {
 	auto window = manager.createEntity();
 	manager.addComponent<COpenGLWindow>(window); // default construct a Window
+
+	manager.getManagerData().currentWindow = window;
+
+}
+
+template<>
+void updateManager<>(OpenGLRendererManager_t& manager)
+{
+	manager.runAllMatching <boost::mpl::vector<COpenGLWindow>>([](COpenGLWindow& window)
+	{
+		glfwSwapBuffers(window.window);
+		glfwPollEvents();
+
+		if (glfwWindowShouldClose(window.window))
+		{
+			Runtime::get().requestExit();
+		}
+	});
 }
 
 

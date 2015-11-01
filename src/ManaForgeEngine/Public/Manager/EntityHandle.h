@@ -4,8 +4,10 @@ template<typename BaseManager>
 struct EntityHandle
 {
 	friend BaseManager;
-private:
 	explicit EntityHandle(size_t handle = SIZE_MAX) : GUID{ handle } {}
-public:
-	const size_t GUID;
+	EntityHandle(const EntityHandle<BaseManager>& other) = default;
+
+	EntityHandle<BaseManager>& operator=(const EntityHandle<BaseManager>& other) = default;
+
+	size_t GUID;
 };

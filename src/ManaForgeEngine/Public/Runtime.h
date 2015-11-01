@@ -19,7 +19,19 @@ public:
 	TimerManager timerManager;
 	ModuleHandler moduleHandler;
 
+	void requestExit()
+	{
+		shouldContinue = false;
+	}
+
+	static Runtime& get()
+	{
+		return *runtimeObj;
+	}
+
 private:
+	ENGINE_API static Runtime* runtimeObj;
+
 	bool shouldContinue = true;
 
 };

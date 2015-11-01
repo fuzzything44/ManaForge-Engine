@@ -4,8 +4,12 @@
 #include "ChangeDirectory.h"
 #include "Logging.h"
 
+Runtime* Runtime::runtimeObj = nullptr;
+
 Runtime::Runtime()
 {
+	runtimeObj = this;
+
 	changeDir();
 	logdetail::log_base::init();
 
@@ -34,10 +38,6 @@ void Runtime::run()
 		timerManager.update();
 
 		coreManager->update();
-
-		shouldContinue = true;
-
-		// some kind of update callbacks
 
 	} while (shouldContinue);
 }
