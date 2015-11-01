@@ -22,56 +22,60 @@ struct MappedVector
 			, std::pair<size_t&, T&>
 		>
 	{
-		iterator(size_t index, MappedVector<T>& vector)
-			:index{ index }
-			, vector{ vector }
+		iterator(
+			std::vector<size_t>::iterator indexIter,
+			typename std::vector<T>::iterator dataIter)
+			: indexIter{ indexIter }
+			, dataIter{ dataIter }
 		{}
 
-		size_t index;
-
-		MappedVector<T>& vector;
+		std::vector<size_t>::iterator indexIter;
+		typename std::vector<T>::iterator dataIter;
 
 		std::pair<size_t&, T&> dereference() const
 		{
-			return { vector.indicies[index], vector.data[index] };
+			return { *indexIter, *dataIter };
 		}
 
 		bool equal(const iterator& other) const
 		{
-			return index == other.index && &vector == &other.vector;
+			return
+				indexIter == other.indexIter &&
+				dataIter == other.dataIter;
 		}
 
 		void increment()
 		{
-			++index;
+			++indexIter;
+			++dataIter;
 		}
 
 		void decrement()
 		{
-			--index;
+			--indexIter;
+			--dataIter;
 		}
 
 		void advance(size_t num)
 		{
-			index += num;
+			std::advance(indexIter, num);
+			std::advance(dataIter, num);
 		}
 
 		size_t distance_to(const iterator& iter) const
 		{
-			assert(&vector == &iter.vector);
-
-			return iter.index - index;
+			return std::distance(indexIter, iter.indexIter);
 		}
 	};
 
 	iterator begin()
 	{
-		return iterator{ 0, *this };
+		return iterator{ indicies.begin(), data.begin() };
 	}
 
 	iterator end()
 	{
-		return iterator{ indicies.size(), *this };
+		return iterator{ indicies.end(), data.end() };
 	}
 
 
