@@ -181,5 +181,53 @@ namespace detail
 		{ }
 	};
 
+	template<
+		typename ManagerType
+		, typename Sequence
+		, size_t ID = 0
+		, bool = ManagerType::template isTag<typename boost::mpl::at_c<Sequence, ID>::type>()
+		, bool = boost::mpl::size<Sequence>::type::value == ID
+	>
+	struct RemoveTags
+	{
+		using Tag_t = typename boost::mpl::at_c<Sequence, ID>::type;
+
+		using NewSequence = typename boost::mpl::remove<Sequence, Tag_t>::type;
+
+		using type =
+			typename RemoveTags
+			<
+				ManagerType
+				, NewSequence
+				, ID
+			>::type;
+
+	};
+
+	template<typename ManagerType, typename Sequence, size_t ID>
+	struct RemoveTags<ManagerType, Sequence, ID, false, false>
+	{
+		using type =
+			std::conditional_t
+			<
+				ID < boost::mpl::size<Sequence>::size::value
+				,typename RemoveTags
+				<
+					ManagerType
+					, Sequence
+					, ID + 1
+				>::type
+				, Sequence
+			>
+			;
+	};
+
+	template<typename ManagerType, typename Sequence, size_t ID>
+	struct RemoveTags<ManagerType, Sequence, ID, false, true>
+	{
+		using type =
+			Sequence;
+	};
+
 }
 

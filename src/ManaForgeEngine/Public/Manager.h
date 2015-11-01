@@ -250,10 +250,18 @@ private:
 	{
 		using type = GetManagerFromComponent_t<Component>;
 	};
+
+
+
 public:
 
 	template<typename ComponentOrTag>
 	using GetManagerFromComponentOrTag_t = typename GetManagerFromComponentOrTag<ComponentOrTag>::type;
+
+private:
+	template<typename Sequence>
+	using RemoveTags_t = typename detail::RemoveTags<ThisType, Sequence>::type;
+public:
 
 public:
 	// Bitset that each Signature and Entity has. This is the type. Just a bitset of the possible components and tags
@@ -298,13 +306,17 @@ public:
 	{
 		static_assert(isComponent<Component>(), "Component must be a component");
 
-		Entity<ThisType>& ent = getEntityStorage()[handle.entityID];
+		Entity<ThisType>& ent = entityStorage[handle.GUID];
 
 		using Manager_t = GetManagerFromComponent_t<Component>;
 		const constexpr size_t managerID = getManagerID<Manager_t>();
 		const constexpr size_t componentID = Manager_t::template getComponentID<Component>();
 
-		std::get<managerID>(ent.components)[componentID] = false;
+		// delete the component
+		auto&& storage = getComponentStorage<Component>();
+		storage.erase(storage.get_elem_at(handle.GUID));
+
+		ent.components[componentID] = false;
 	}
 	template<typename Component>
 	Component& getComponent(HandleType handle)
@@ -316,6 +328,9 @@ public:
 		constexpr size_t managerID = getManagerID<ManagerForComponent>();
 		constexpr size_t componentID = ManagerForComponent::template getComponentID<Component>();
 
+		// make sure that the entity actually has the component
+		assert(entityStorage[handle.GUID].components[componentID]);
+
 		return getComponentStorage<Component>()[handle.GUID];
 	}
 	template<typename Component>
@@ -324,13 +339,13 @@ public:
 		static_assert(isComponent<Component>(), "Component must be a Component");
 		// get constants for convience
 		using ManagerForComponent = GetManagerFromComponent_t<Component>;
-		constexpr size_t managerID = getManagerID<ManagerForTag>();
+		constexpr size_t managerID = getManagerID<ManagerForComponent>();
 		constexpr size_t componentID = ManagerForComponent::template getComponentID<Component>();
 
 		// get the entity
-		EntityType& entity = getEntityStorage()[handle.entityID];
+		EntityType& entity = entityStorage[handle.GUID];
 
-		return std::get<managerID>(entity.components)[componentID];
+		return entity.components[componentID];
 	}
 
 	template<typename Tag>
@@ -357,9 +372,9 @@ public:
 		constexpr size_t tagID = ManagerForTag::template getTagID<Tag>();
 
 		// get the entity
-		EntityType& entity = getEntityStorage()[handle.entityID];
+		EntityType& entity = entityStorage[handle.GUID];
 
-		std::get<managerID>(entity.components)[tagID] = false;
+		entity.components[tagID] = false;
 	}
 	template<typename Tag>
 	bool hasTag(HandleType handle)
@@ -371,9 +386,9 @@ public:
 		constexpr size_t tagID = ManagerForTag::template getTagID<Tag>();
 
 		// get the entity
-		EntityType& entity = getEntityStorage()[handle.entityID];
+		EntityType& entity = entityStorage[handle.GUID];
 
-		return std::get<managerID>(entity.components)[tagID];
+		return entity.components[tagID];
 	}
 
 	template<typename Component>
@@ -450,8 +465,6 @@ private:
 		template<typename F, typename...Args>
 		static void apply(ThisType& manager, HandleType ID, F&& func, Args&&...args)
 		{
-			typename boost::mpl::deref<CurrentIter>::type nextTag;
-
 			using NextIter = typename boost::mpl::next<CurrentIter>::type;
 
 			CallFunctionWighSigParamsIMPL
@@ -464,7 +477,6 @@ private:
 					, ID
 					, std::forward<F>(func)
 					, std::forward<Args>(args)...
-					, nextTag
 					);
 		}
 	};
@@ -536,8 +548,6 @@ public:
 		{
 			callFunctionWithSigParams<SignatureToRun>(HandleType{ elem }, std::forward<F>(functor));
 		}
-
-
 	}
 
 
@@ -643,7 +653,7 @@ public:
 			typename BaseType::FunctionPointerStorage::GetAllMatching_t getAllMatchingPtr =
 				&detail::getAllMatching<BaseType, ThisType>;
 
-			typename BaseType::FunctionPointerStorage::Update_t updatePtr = 
+			typename BaseType::FunctionPointerStorage::Update_t updatePtr =
 				&detail::Update_t<ThisType, BaseType>::update;
 
 			typename BaseType::FunctionPointerStorage::BeginPlay_t beginPlayPtr =

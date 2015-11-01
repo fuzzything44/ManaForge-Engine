@@ -134,6 +134,23 @@ struct MappedVector
 		*iterInData = T(std::forward<Args>(args)...);
 	}
 
+	void erase(iterator it)
+	{
+		indicies.erase(it.indexIter);
+		data.erase(it.dataIter);
+	}
+
+	iterator get_elem_at(size_t ID)
+	{
+		auto&& indiciesIter = std::lower_bound(indicies.begin(), indicies.end(), ID);
+		
+		if (indiciesIter == indicies.end() || *indiciesIter != ID) return end(); // if it doesn't exist, then quit!
+
+		size_t loc = std::distance(indicies.begin(), indiciesIter); // get the index in either vector
+		auto&& dataIter = data.begin();  std::advance(dataIter, loc); // get the iterator in data
+		return iterator{ indiciesIter, dataIter };
+	}
+
 private:
 	std::vector<size_t> indicies;
 	std::vector<T> data;

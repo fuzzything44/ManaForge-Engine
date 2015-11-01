@@ -26,12 +26,21 @@ void beginPlayManager<TestContentManager_t>(TestContentManager_t& manager)
 
 	manager.addComponent<CBox2DCollision>(ent1, &manager.getRefToManager<Box2DPhysicsManager_t>().getManagerData().world, bdef);
 	manager.addTag<TPew>(ent1);
+	assert(manager.hasTag<TPew>(ent1));
+	manager.removeTag<TPew>(ent1);
+	manager.removeComponent<CBox2DCollision>(ent1);
+	
+	assert(!manager.hasTag<TPew>(ent1));
+
+	if(manager.hasComponent<CBox2DCollision>(ent1)) 
+		manager.getComponent<CBox2DCollision>(ent1).body->GetAngle();
+
 }
 
 template<>
 void updateManager<TestContentManager_t>(TestContentManager_t& manager)
 {
-	manager.runAllMatching<boost::mpl::vector<CBox2DCollision>>([](CBox2DCollision& collision)
+	manager.runAllMatching<boost::mpl::vector<TPew>>([]()
 	{
 		std::cout << "HEY!\t";
 	});
