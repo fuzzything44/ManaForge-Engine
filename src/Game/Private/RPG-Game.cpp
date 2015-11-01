@@ -4,6 +4,8 @@
 
 int32 main(int argc, char** argv)
 {
+
+	new int(2000);
 	try
 	{
 

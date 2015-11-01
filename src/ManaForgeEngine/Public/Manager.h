@@ -343,9 +343,9 @@ public:
 		constexpr size_t tagID = ManagerForTag::template getTagID<Tag>();
 
 		// get the entity
-		EntityType& entity = getEntityStorage()[handle.entityID];
+		EntityType& entity = entityStorage[handle.GUID];
 
-		std::get<managerID>(entity.components)[tagID] = true;
+		entity.components[tagID] = true;
 	}
 	template<typename Tag>
 	void removeTag(HandleType handle)

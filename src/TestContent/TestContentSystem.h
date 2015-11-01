@@ -25,6 +25,7 @@ void beginPlayManager<TestContentManager_t>(TestContentManager_t& manager)
 	b2BodyDef bdef;
 
 	manager.addComponent<CBox2DCollision>(ent1, &manager.getRefToManager<Box2DPhysicsManager_t>().getManagerData().world, bdef);
+	manager.addTag<TPew>(ent1);
 }
 
 template<>
