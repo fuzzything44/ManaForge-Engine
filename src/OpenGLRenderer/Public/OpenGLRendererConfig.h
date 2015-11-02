@@ -11,4 +11,5 @@
 #	define OpenGLRenderer_API __declspec(dllexport)
 #else
 #	define OpenGLRenderer_API __declspec(dllimport)
+#	pragma comment(lib, "OpenGLRenderer.lib")
 #endif

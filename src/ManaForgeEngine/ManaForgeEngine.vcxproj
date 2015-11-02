@@ -269,7 +269,6 @@
     <ClInclude Include="Public\Manager\GetRefToManager.h" />
     <ClInclude Include="Public\Manager\MiscMetafunctions.h" />
     <ClInclude Include="Public\MappedVector.h" />
-    <ClInclude Include="Public\Module.h" />
     <ClInclude Include="Public\ModuleHandler.h" />
     <ClInclude Include="Public\MPLHelp.h" />
     <ClInclude Include="Public\PropertyManager.h" />

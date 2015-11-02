@@ -4,12 +4,12 @@
 template<typename Derived>
 struct RefCounted
 {
-	explicit RefCounted(nullptr_t)
+	explicit RefCounted()
 		:refCount{ new size_t{ 1 } }
 	{
 	}
 
-	RefCounted(const Derived& other)
+	RefCounted(const RefCounted<Derived>& other)
 		:refCount{other.refCount}
 	{
 
@@ -17,35 +17,31 @@ struct RefCounted
 		++(*refCount);
 	}
 
-	RefCounted(Derived&& other)
+	RefCounted(RefCounted<Derived>&& other)
 		:refCount{other.refCount}
 	{
 
 	}
 
-	RefCounted& operator=(Derived&& other)
+	RefCounted<Derived>& operator=(RefCounted<Derived>&& other)
 	{
-		if(refCount) --(*refCount);
-		if (*refCount == 0)
-		{
-			other.destroy();
-		}
+		this->~RefCounted();
 
 		refCount = other.refCount;
 
 		other.refCount = nullptr;
+
+		return *this;
 	}
-	RefCounted& operator=(const Derived& other)
+	RefCounted<Derived>& operator=(const RefCounted<Derived>& other)
 	{
-		if (refCount) --*(refCount);
-		if (*refCount == 0)
-		{
-			other.destroy();
-		}
+		this->~RefCounted();
 
 		refCount = other.refCount;
 
 		++(*refCount);
+
+		return *this;
 	}
 
 
@@ -59,7 +55,7 @@ struct RefCounted
 			// if refCount == 0
 			if (!*refCount)
 			{
-				static_cast<Derived&>(*this).destroy();
+				static_cast<Derived&>(*this).Derived::destroy();
 				delete refCount;
 			}
 		}

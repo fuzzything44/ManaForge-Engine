@@ -17,9 +17,6 @@
     <ClCompile Include="Private\OpenGLRendererPCH.cpp">
       <Filter>PCH</Filter>
     </ClCompile>
-    <ClCompile Include="Private\OpenGLFont.cpp">
-      <Filter>Private</Filter>
-    </ClCompile>
     <ClCompile Include="Private\OpenGLRendererManager.cpp">
       <Filter>Private</Filter>
     </ClCompile>
@@ -27,12 +24,6 @@
   <ItemGroup>
     <ClInclude Include="Private\OpenGLRendererPCH.h">
       <Filter>PCH</Filter>
-    </ClInclude>
-    <ClInclude Include="Private\OpenGLFont.h">
-      <Filter>Private</Filter>
-    </ClInclude>
-    <ClInclude Include="Private\OpenGLCharacterData.h">
-      <Filter>Private</Filter>
     </ClInclude>
     <ClInclude Include="Public\COpenGLModel.h">
       <Filter>Public</Filter>
@@ -43,7 +34,7 @@
     <ClInclude Include="Public\OpenGLRendererConfig.h">
       <Filter>Public</Filter>
     </ClInclude>
-    <ClInclude Include="Public\COpenGLWindow.h">
+    <ClInclude Include="Public\OpenGLModelData.h">
       <Filter>Public</Filter>
     </ClInclude>
   </ItemGroup>

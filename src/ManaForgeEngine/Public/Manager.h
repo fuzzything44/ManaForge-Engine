@@ -277,6 +277,12 @@ public:
 
 		return HandleType{ myIndex };
 	}
+	void destroyEntity(HandleType handle)
+	{
+		auto&& iterToEntity = entityStorage.begin(); std::advance(iterToEntity, handle.GUID);
+
+		entityStorage.erase(iterToEntity);
+	}
 
 	template<typename Component, typename... Args>
 	Component& addComponent(HandleType handle, Args&&... args)

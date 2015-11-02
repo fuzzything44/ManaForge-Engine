@@ -179,7 +179,7 @@
   <ItemGroup>
     <ClInclude Include="Private\OpenGLRendererPCH.h" />
     <ClInclude Include="Public\COpenGLModel.h" />
-    <ClInclude Include="Public\COpenGLWindow.h" />
+    <ClInclude Include="Public\OpenGLModelData.h" />
     <ClInclude Include="Public\OpenGLRendererConfig.h" />
     <ClInclude Include="Public\OpenGLRendererManager.h" />
   </ItemGroup>

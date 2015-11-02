@@ -2,7 +2,7 @@
 
 #include "OpenGLRendererManager.h"
 
-std::weak_ptr<OpenGLRendererManager_t> openGLRendererManager = {};
+__declspec(dllexport) std::weak_ptr<OpenGLRendererManager_t> openGLRendererManager = {};
 
 extern"C" __declspec(dllexport) void init()
 {

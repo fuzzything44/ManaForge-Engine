@@ -17,7 +17,7 @@ Runtime::Runtime()
 	manager = CoreManager_t::factory();
 	coreManager = manager;
 
-	moduleHandler.init({ "OpenALAudioSystem", "Box2DPhysicsSystem", "TestContent", "OpenGLRenderer" });
+	moduleHandler.init({ "OpenALAudioSystem", "Box2DPhysicsSystem", "OpenGLRenderer", "TestContent" });
 
 
 }

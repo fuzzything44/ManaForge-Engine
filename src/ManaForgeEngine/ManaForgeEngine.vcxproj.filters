@@ -46,9 +46,6 @@
     <ClInclude Include="Public\Engine.h">
       <Filter>Public</Filter>
     </ClInclude>
-    <ClInclude Include="Public\Module.h">
-      <Filter>Public</Filter>
-    </ClInclude>
     <ClInclude Include="Public\ENGException.h">
       <Filter>Public</Filter>
     </ClInclude>

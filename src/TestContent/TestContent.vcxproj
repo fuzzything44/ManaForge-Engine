@@ -103,7 +103,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>TestContent_Source;WIN32;_DEBUG;_WINDOWS;_USRDLL;TESTCONTENT_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>../OpenALAudioSystem/alut/include/;../OpenALAudioSystem/Public;../OpenALAudioSystem/OpenAL/include/;../Box2DPhysicsSystem/Public/;../Box2DPhysicsSystem/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\OpenGLRenderer\GLEW\include\;..\OpenGLRenderer\GLFW\include\;..\OpenALAudioSystem\OpenAL\include;..\OpenALAudioSystem\ALUT\include;..\Box2DPhysicsSystem\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -121,6 +121,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>TestContent_Source;WIN32;_DEBUG;_WINDOWS;_USRDLL;TESTCONTENT_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>..\OpenGLRenderer\GLEW\include\;..\OpenGLRenderer\GLFW\include\;..\OpenALAudioSystem\OpenAL\include;..\OpenALAudioSystem\ALUT\include;..\Box2DPhysicsSystem\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -137,6 +138,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;TESTCONTENT_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>..\OpenGLRenderer\GLEW\include\;..\OpenGLRenderer\GLFW\include\;..\OpenALAudioSystem\OpenAL\include;..\OpenALAudioSystem\ALUT\include;..\Box2DPhysicsSystem\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -155,6 +157,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;TESTCONTENT_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>..\OpenGLRenderer\GLEW\include\;..\OpenGLRenderer\GLFW\include\;..\OpenALAudioSystem\OpenAL\include;..\OpenALAudioSystem\ALUT\include;..\Box2DPhysicsSystem\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
