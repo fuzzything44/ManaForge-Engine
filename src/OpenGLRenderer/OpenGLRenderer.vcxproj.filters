@@ -37,5 +37,14 @@
     <ClInclude Include="Public\OpenGLModelData.h">
       <Filter>Public</Filter>
     </ClInclude>
+    <ClInclude Include="Public\OpenGLMaterialInstance.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\OpenGLTexture.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\OpenGLMaterialSource.h">
+      <Filter>Public</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

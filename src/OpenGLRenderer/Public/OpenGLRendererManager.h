@@ -68,6 +68,35 @@ void beginPlayManager<>(OpenGLRendererManager_t& manager)
 template<>
 void updateManager<>(OpenGLRendererManager_t& manager)
 {
+	// draw the models
+	manager.runAllMatching<boost::mpl::vector<COpenGLModel, CPosition>>(
+		[](COpenGLModel& model, CPosition& pos)
+	{
+		mat3 MVPmat;
+		MVPmat = glm::translate(MVPmat, pos.value);
+		
+		auto&& material = *model.material;
+		auto&& modelData = model.modelData;
+
+		material.use(MVPmat);
+
+		glBindBuffer(GL_VERTEX_ARRAY, modelData.locBuffer);
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(1, sizeof(vec2), GL_FLOAT, GL_FALSE, 0, nullptr);
+
+
+		glBindBuffer(GL_VERTEX_ARRAY, modelData.UVbuffer);
+		glEnableVertexAttribArray(1);
+		glVertexAttribPointer(1, sizeof(vec2), GL_FLOAT, GL_FALSE, 0, nullptr);
+
+
+		//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, modelData.indexBuffer);
+		//glDrawElements(GL_TRIANGLES, modelData.numTriangles * 3, GL_UNSIGNED_INT, nullptr);
+
+		glDisableVertexAttribArray(0);
+		glDisableVertexAttribArray(1);
+	});
+
 	auto&& window = manager.getManagerData().window;
 
 	glfwSwapBuffers(window);

@@ -6,6 +6,7 @@
 #else
 #	pragma comment(lib, "glew32.lib")
 #endif
+#pragma comment(lib, "OpenGL32.lib")
 
 #ifdef OpenGLRenderer_Source
 #	define OpenGLRenderer_API __declspec(dllexport)

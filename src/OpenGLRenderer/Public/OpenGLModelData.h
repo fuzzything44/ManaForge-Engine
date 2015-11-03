@@ -8,6 +8,7 @@
 struct OpenGLModelData : RefCounted<OpenGLModelData>
 {
 	OpenGLModelData(const vec2* locations, const vec2* UVs, size_t numVerts, const uvec3* triangleIndicies, size_t numTriangles)
+		:numTriangles(numTriangles)
 	{
 		glGenVertexArrays(1, &vertexArray);
 		glBindVertexArray(vertexArray);
@@ -36,6 +37,12 @@ struct OpenGLModelData : RefCounted<OpenGLModelData>
 
 		glDeleteVertexArrays(1, &vertexArray);
 	}
+	void invalidate()
+	{
+		vertexArray = locBuffer = UVbuffer = indexBuffer = 0;
+	}
+
+	size_t numTriangles;
 
 	GLuint vertexArray;
 

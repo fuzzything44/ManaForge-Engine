@@ -179,9 +179,12 @@
   <ItemGroup>
     <ClInclude Include="Private\OpenGLRendererPCH.h" />
     <ClInclude Include="Public\COpenGLModel.h" />
+    <ClInclude Include="Public\OpenGLMaterialInstance.h" />
+    <ClInclude Include="Public\OpenGLMaterialSource.h" />
     <ClInclude Include="Public\OpenGLModelData.h" />
     <ClInclude Include="Public\OpenGLRendererConfig.h" />
     <ClInclude Include="Public\OpenGLRendererManager.h" />
+    <ClInclude Include="Public\OpenGLTexture.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

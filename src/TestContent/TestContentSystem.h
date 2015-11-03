@@ -23,19 +23,6 @@ void beginPlayManager<TestContentManager_t>(TestContentManager_t& manager)
 {
 	auto ent1 = manager.createEntity();
 
-	b2BodyDef bdef;
-
-	manager.addComponent<CBox2DCollision>(ent1, &manager.getRefToManager<Box2DPhysicsManager_t>().getManagerData().world, bdef);
-	manager.addTag<TPew>(ent1);
-	assert(manager.hasTag<TPew>(ent1));
-	manager.removeComponent<CBox2DCollision>(ent1);
-	
-
-	if(manager.hasComponent<CBox2DCollision>(ent1)) 
-		manager.getComponent<CBox2DCollision>(ent1).body->GetAngle();
-
-	manager.destroyEntity(ent1);
-
 	std::vector<vec2> locs = { 
 		{ 0.f, 0.f }, 
 		{ 0.f, 1.f }, 
@@ -49,9 +36,11 @@ void beginPlayManager<TestContentManager_t>(TestContentManager_t& manager)
 	};
 
 	OpenGLModelData data{ locs.data(), locs.data(), locs.size(), tris.data(), tris.size() };
+	OpenGLMaterialSource src{ "Boilerplate" };
+	std::shared_ptr<OpenGLMaterialInstance> inst = std::make_shared<OpenGLMaterialInstance>(src);
 
-	ent1 = manager.createEntity();
-	manager.addComponent<COpenGLModel>(ent1, data);
+	manager.addComponent<COpenGLModel>(ent1, data, inst);
+	manager.addComponent<CPosition>(ent1) = { { 0.f, 0.f } };
 }
 
 template<>
@@ -61,8 +50,6 @@ void updateManager<TestContentManager_t>(TestContentManager_t& manager)
 	{
 		std::cout << "HEY!\t";
 	});
-
-	std::cout << std::endl;
 }
 
 

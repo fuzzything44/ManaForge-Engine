@@ -93,7 +93,7 @@ struct MappedVector
 
 	bool elemExists(size_t elem)
 	{
-		return indicies.end() != std::binary_search(indicies.begin(), indicies.end(), elem);
+		return std::binary_search(indicies.begin(), indicies.end(), elem);
 	}
 
 	T& operator[](size_t index)

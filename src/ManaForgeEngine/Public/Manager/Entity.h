@@ -12,7 +12,7 @@ struct Entity
 {
 	friend ManagerType;
 
-	explicit Entity(size_t GUID_ = std::numeric_limits<size_t>::max())
+	explicit Entity(size_t GUID_)
 		:// components{ components_ }
 		GUID{ GUID_ } {}
 

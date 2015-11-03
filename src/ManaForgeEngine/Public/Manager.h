@@ -110,6 +110,15 @@ public:
 			, typename boost::mpl::find<AllComponents, Comp>::type
 		>::type::value;
 	}
+	template <typename Comp> static constexpr size_t getMyComponentID()
+	{
+		static_assert(isMyComponent<Comp>(), "Must be component");
+
+		return boost::mpl::distance<
+			typename boost::mpl::begin<MyComponents>::type
+			, typename boost::mpl::find<MyComponents, Comp>::type
+		>::type::value;
+	}
 
 	static constexpr size_t getNumTags()
 	{
@@ -273,7 +282,7 @@ public:
 	{
 		auto myIndex = (*nextIndex)++;
 
-		entityStorage.emplace(myIndex);
+		entityStorage.emplace(myIndex, myIndex);
 
 		return HandleType{ myIndex };
 	}
@@ -293,7 +302,7 @@ public:
 		using ManagerForComponent = GetManagerFromComponent_t<Component>;
 		constexpr size_t managerID = getManagerID<ManagerForComponent>();
 
-		constexpr size_t componentID = ManagerForComponent::template getComponentID<Component>();
+		constexpr size_t componentID = getComponentID<Component>();
 
 		// get the entity
 		EntityType& entity = entityStorage[handle.GUID];
@@ -310,35 +319,41 @@ public:
 	template<typename Component>
 	void removeComponent(HandleType handle)
 	{
-		static_assert(isComponent<Component>(), "Component must be a component");
-
-		Entity<ThisType>& ent = entityStorage[handle.GUID];
-
-		using Manager_t = GetManagerFromComponent_t<Component>;
-		const constexpr size_t managerID = getManagerID<Manager_t>();
-		const constexpr size_t componentID = Manager_t::template getComponentID<Component>();
-
-		// delete the component
-		auto&& storage = getComponentStorage<Component>();
-		storage.erase(storage.get_elem_at(handle.GUID));
-
-		ent.components[componentID] = false;
+		getComponent(handle.GUID);
 	}
 	template<typename Component>
 	Component& getComponent(HandleType handle)
 	{
-		static_assert(isComponent<Component>(), "Component must be a component");
+		static_assert(isMyComponent<Component>(), "Component must be a component");
 
 		// get constants for convience
 		using ManagerForComponent = GetManagerFromComponent_t<Component>;
 		constexpr size_t managerID = getManagerID<ManagerForComponent>();
-		constexpr size_t componentID = ManagerForComponent::template getComponentID<Component>();
+		constexpr size_t componentID = ManagerForComponent::template getMyComponentID<Component>();
 
 		// make sure that the entity actually has the component
 		assert(entityStorage[handle.GUID].components[componentID]);
 
 		return getComponentStorage<Component>()[handle.GUID];
 	}
+
+
+	template<typename Component>
+	Component& getComponent(size_t handle)
+	{
+		static_assert(isMyComponent<Component>(), "Component must be a component");
+		
+
+		// get constants for convience
+		using ManagerForComponent = GetManagerFromComponent_t<Component>;
+		constexpr size_t managerID = getManagerID<ManagerForComponent>();
+		constexpr size_t componentID = ManagerForComponent::template getMyComponentID<Component>();
+
+		assert(std::get<componentID>(componentStorage).elemExists(handle));
+		
+		return getComponentStorage<Component>()[handle];
+	}
+
 	template<typename Component>
 	bool hasComponent(HandleType handle)
 	{
@@ -464,14 +479,16 @@ public:
 	}
 
 private:
-	template<typename CurrentIter, typename EndIter, bool isTypeTag = isTag<typename boost::mpl::deref<CurrentIter>::type>()>
+	
+	template<typename CurrentIter, typename EndIter>
 	struct CallFunctionWighSigParamsIMPL
 	{
-
 		template<typename F, typename...Args>
-		static void apply(ThisType& manager, HandleType ID, F&& func, Args&&...args)
+		static void apply(ThisType& manager, size_t ID, F&& func, Args&&...args)
 		{
 			using NextIter = typename boost::mpl::next<CurrentIter>::type;
+			using ComponentType = typename boost::mpl::deref<CurrentIter>::type;
+			using ManagerType = ThisType::template GetManagerFromComponent_t<ComponentType>;
 
 			CallFunctionWighSigParamsIMPL
 				<
@@ -483,45 +500,25 @@ private:
 					, ID
 					, std::forward<F>(func)
 					, std::forward<Args>(args)...
-					);
-		}
-	};
-	template<typename CurrentIter, typename EndIter>
-	struct CallFunctionWighSigParamsIMPL<CurrentIter, EndIter, false>
-	{
-		template<typename F, typename...Args>
-		static void apply(ThisType& manager, HandleType ID, F&& func, Args&&...args)
-		{
-			using NextIter = typename boost::mpl::next<CurrentIter>::type;
-
-			CallFunctionWighSigParamsIMPL
-				<
-				NextIter
-				, EndIter
-				>::apply
-				(
-					manager
-					, ID
-					, std::forward<F>(func)
-					, std::forward<Args>(args)...
-					, manager.getComponent<typename boost::mpl::deref<CurrentIter>::type>(ID)
-					);
+					, manager.getRefToManager<ManagerType>().template getComponent<ComponentType>(ID)
+				);
 		}
 	};
 	template<typename EndIter>
-	struct CallFunctionWighSigParamsIMPL<EndIter, EndIter, false>
+	struct CallFunctionWighSigParamsIMPL<EndIter, EndIter>
 	{
 		template<typename F, typename...Args>
-		static void apply(ThisType& manager, HandleType ID, F&& func, Args&&...args)
+		static void apply(ThisType& manager, size_t ID, F&& func, Args&&...args)
 		{
 			std::forward<F>(func)(std::forward<Args>(args)...);
 		}
 	};
+	template<typename A, typename B> friend struct CallFunctionWighSigParamsIMPL;
 public:
 
 	// CALLING FUNCTIONS ON ENTITIES
 	template<typename SignatureToRun, typename F>
-	void callFunctionWithSigParams(HandleType ID, F&& func)
+	void callFunctionWithSigParams(size_t ID, F&& func)
 	{
 		CallFunctionWighSigParamsIMPL
 			<
@@ -552,7 +549,7 @@ public:
 
 		for (auto&& elem : vec)
 		{
-			callFunctionWithSigParams<SignatureToRun>(HandleType{ elem }, std::forward<F>(functor));
+			callFunctionWithSigParams<RemoveTags_t<SignatureToRun>>(elem, std::forward<F>(functor));
 		}
 	}
 
