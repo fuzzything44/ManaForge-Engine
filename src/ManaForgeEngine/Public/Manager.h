@@ -303,7 +303,7 @@ private:
 
 			auto&& storageToCopy = std::get<ID>(components);
 
-			storage.data.insert(storage.data.end(), storageToCopy.begin(), storageToCopy.end());
+			storage.data.insert(storage.data.end(), std::make_move_iterator(storageToCopy.begin()), std::make_move_iterator(storageToCopy.end()));
 			storage.indicies.insert(storage.indicies.end(), indicies.begin(), indicies.end());
 			
 			CreateEntityBatch_IMPL<TupleType, Sequence, ID + 1>::apply(manager, components, indicies);
@@ -514,8 +514,7 @@ public:
 			using Manager_t = GetManagerFromComponentOrTag_t<ComponentOrTag_t>;
 			static_assert(isManager<Manager_t>(), "Must be a manager");
 
-			constexpr const auto componentOrTagID = Manager_t::getTagOrComponentID<ComponentOrTag_t>();
-			constexpr const auto managerID = getManagerID<Manager_t>();
+			constexpr const auto componentOrTagID = ThisType::template getTagOrComponentID<ComponentOrTag_t>();
 
 			ret[componentOrTagID] = true;
 		});
