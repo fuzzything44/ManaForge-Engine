@@ -156,14 +156,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="private\DefaultWorldConfig.h" />
-    <ClInclude Include="Public\ChunkActor.h" />
-    <ClInclude Include="Public\DefaultWorld.h" />
-    <ClInclude Include="Public\DefaultWorldLocation.h" />
+    <ClInclude Include="Public\WorldLoader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="private\DefaultWorld.cpp" />
-    <ClCompile Include="Private\DefaultWorldConfig.cpp" />
-    <ClCompile Include="Private\DefaultWorldLocation.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

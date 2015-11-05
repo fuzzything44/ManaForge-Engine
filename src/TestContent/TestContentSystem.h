@@ -17,6 +17,9 @@ using TestContentManager_t =
 		, boost::mpl::vector3<OpenALAudioManager_t, Box2DPhysicsManager_t, OpenGLRendererManager_t>
 	>;
 
+template<typename... Args>
+using TupleOfVectorRefrences = std::tuple<std::vector<Args>&...>;
+
 
 template<>
 void beginPlayManager<TestContentManager_t>(TestContentManager_t& manager)
@@ -51,15 +54,17 @@ void beginPlayManager<TestContentManager_t>(TestContentManager_t& manager)
 
 	manager.addComponent<COpenGLModel>(ent1, data, inst);
 	manager.addComponent<CPosition>(ent1) = { { 0.f, 0.f } };
+
+	std::vector<CPosition> pos = { {{3.f, 1.f}},{{2.f, 1.f}} };
+
+	auto&& newEnts = manager.createEntityBatch<boost::mpl::vector<CPosition>>(std::forward_as_tuple(pos), pos.size());
+
+
 }
 
 template<>
 void updateManager<TestContentManager_t>(TestContentManager_t& manager)
 {
-	manager.runAllMatching<boost::mpl::vector<TPew>>([]()
-	{
-		std::cout << "HEY!\t";
-	});
 }
 
 

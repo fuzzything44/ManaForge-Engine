@@ -12,9 +12,10 @@ struct Entity
 {
 	friend ManagerType;
 
-	explicit Entity(size_t GUID_)
-		:// components{ components_ }
-		GUID{ GUID_ } {}
+	explicit Entity(size_t GUID_, typename ManagerType::RuntimeSignature_t components_ = typename ManagerType::RuntimeSignature_t{})
+		: GUID{ GUID_ }
+		, components{ components }
+	{}
 
 	size_t GUID;
 

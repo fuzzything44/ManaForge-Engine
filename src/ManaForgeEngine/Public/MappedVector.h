@@ -151,7 +151,6 @@ struct MappedVector
 		return iterator{ indiciesIter, dataIter };
 	}
 
-private:
 	std::vector<size_t> indicies;
 	std::vector<T> data;
 };

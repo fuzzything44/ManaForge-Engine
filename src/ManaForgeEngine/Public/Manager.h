@@ -267,12 +267,9 @@ public:
 	template<typename ComponentOrTag>
 	using GetManagerFromComponentOrTag_t = typename GetManagerFromComponentOrTag<ComponentOrTag>::type;
 
-private:
 	template<typename Sequence>
 	using RemoveTags_t = typename detail::RemoveTags<ThisType, Sequence>::type;
-public:
 
-public:
 	// Bitset that each Signature and Entity has. This is the type. Just a bitset of the possible components and tags
 	static constexpr const size_t numComponentsAndTags = getNumComponents() + getNumTags();
 	using RuntimeSignature_t = std::bitset<numComponentsAndTags>;
@@ -285,6 +282,74 @@ public:
 		entityStorage.emplace(myIndex, myIndex);
 
 		return HandleType{ myIndex };
+	}
+
+private:
+	template<typename TupleType, typename Sequence, size_t ID = 0
+		, bool needsExit = boost::mpl::size<Sequence>::type::value == ID
+	>
+	struct CreateEntityBatch_IMPL
+	{
+		using Component = typename boost::mpl::at_c<Sequence, ID>::type;
+		using ManagerType = GetManagerFromComponent_t<Component>;
+
+		static_assert(ThisType::template isComponent<Component>(), "Must be a component");
+
+		static void apply(ThisType& manager, TupleType& components, std::vector<size_t>& indicies)
+		{
+			auto&& storage = manager.template getRefToManager<ManagerType>().template getComponentStorage<Component>();
+
+			MappedVector<int> a;
+
+			auto&& storageToCopy = std::get<ID>(components);
+
+			storage.data.insert(storage.data.end(), storageToCopy.begin(), storageToCopy.end());
+			storage.indicies.insert(storage.indicies.end(), indicies.begin(), indicies.end());
+			
+			CreateEntityBatch_IMPL<TupleType, Sequence, ID + 1>::apply(manager, components, indicies);
+			
+		}
+	};
+	template<typename TupleType, typename Sequence, size_t ID>
+	struct CreateEntityBatch_IMPL<TupleType, Sequence, ID, true>
+	{
+		static void apply(ThisType& manager, TupleType& components, std::vector<size_t>& indicies)
+			{}
+	};
+
+public:
+	template<typename...Args>
+	using TupleOfVectorRefrences = std::tuple<std::vector<Args>&...>;
+
+	template<typename Signature>
+	std::vector<HandleType> createEntityBatch(
+		ExpandSequenceToVaraidic_t<RemoveTags_t<Signature>, TupleOfVectorRefrences> components, 
+		size_t numToConstruct)
+	{
+		static_assert(isSignature<Signature>(), "Must be a signagure");
+
+		using Components = RemoveTags_t<Signature>;
+
+		RuntimeSignature_t bitset = generateRuntimeSignature<Signature>();
+		
+		size_t nextIndexForEnt = *nextIndex;
+		size_t endIndex = nextIndexForEnt + numToConstruct;
+		*nextIndex += numToConstruct;
+
+		std::vector<size_t> indicies(numToConstruct);
+
+		for (size_t localID = 0; nextIndexForEnt != endIndex; ++nextIndexForEnt, ++localID)
+		{
+			indicies[localID] = nextIndexForEnt;
+			entityStorage.emplace(nextIndexForEnt, nextIndexForEnt, bitset);
+		}
+
+		CreateEntityBatch_IMPL<decltype(components), Components>::apply(*this, components, indicies);
+
+		std::vector<HandleType> ret(indicies.size());
+		std::transform(indicies.begin(), indicies.end(), ret.begin(), [](size_t ID) { return HandleType{ ID }; });
+
+		return std::move(ret);
 	}
 	void destroyEntity(HandleType handle)
 	{
@@ -324,7 +389,7 @@ public:
 	template<typename Component>
 	Component& getComponent(HandleType handle)
 	{
-		static_assert(isMyComponent<Component>(), "Component must be a component");
+		static_assert(isComponent<Component>(), "Component must be a component");
 
 		// get constants for convience
 		using ManagerForComponent = GetManagerFromComponent_t<Component>;
