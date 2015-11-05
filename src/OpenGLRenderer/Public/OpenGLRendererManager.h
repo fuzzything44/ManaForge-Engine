@@ -7,6 +7,7 @@
 
 #include <gl/glew.h>
 #include <GLFW/glfw3.h>
+#include <glm-ortho-2d.h>
 
 using OpenGLRendererManager_t =
 	Manager
@@ -53,7 +54,9 @@ void initManager<>(OpenGLRendererManager_t& manager)
 			MFLOG(Error) << "Failed to initalize glew with error: " << glewGetErrorString(err);
 		}
 	}
-
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 template<>
@@ -70,11 +73,20 @@ void updateManager<>(OpenGLRendererManager_t& manager)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	// get aspect ratio
+	float aspectRatio = 0.f;
+	{
+		int w, h;
+		glfwGetWindowSize(manager.getManagerData().window, &w, &h);
+
+		aspectRatio = (float)w / (float)h;
+	}
 	// draw the models
 	manager.runAllMatching<boost::mpl::vector<COpenGLModel, CPosition>>(
-		[](COpenGLModel& model, CPosition& pos)
+		[aspectRatio](COpenGLModel& model, CPosition& pos)
 	{
 		mat3 MVPmat;
+		MVPmat = glm::ortho2d(-aspectRatio, aspectRatio, -1.f, 1.f);
 		MVPmat = glm::translate(MVPmat, pos.value);
 		
 		auto&& material = *model.material;

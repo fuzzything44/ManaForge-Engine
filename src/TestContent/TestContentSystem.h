@@ -23,19 +23,26 @@ void beginPlayManager<TestContentManager_t>(TestContentManager_t& manager)
 {
 	auto ent1 = manager.createEntity();
 
-	std::vector<vec2> locs = { 
-		{ 0.f, 0.f }, 
-		{ 0.f, 1.f }, 
-		{ 1.f, 0.f }, 
-		{ 1.f, 1.f } 
-	};
+	std::array<vec2, 4> locs = { {
+		{ 0.f, 0.f },
+		{ 0.f, 1.f },
+		{ 1.f, 0.f },
+		{ 1.f, 1.f }
+	} };
 
-	std::vector<uvec3> tris = { 
-		{ 0, 1, 2 }, 
-		{ 1, 2, 3 } 
-	};
+	std::array<vec2, 4> UVs = { {
+		{ 0.f, 1.f },
+		{ 0.f, 0.f },
+		{ 1.f, 1.f },
+		{ 1.f, 0.f }
+	} };
 
-	OpenGLModelData data{ locs.data(), locs.data(), locs.size(), tris.data(), tris.size() };
+	std::array<uvec3, 2> tris = { {
+		{ 0, 1, 2 },
+		{ 1, 2, 3 }
+	} };
+
+	OpenGLModelData data{ locs.data(), UVs.data(), locs.size(), tris.data(), tris.size() };
 	OpenGLMaterialSource src{ "Boilerplate" };
 	std::shared_ptr<OpenGLMaterialInstance> inst = std::make_shared<OpenGLMaterialInstance>(src);
 
