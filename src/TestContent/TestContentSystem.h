@@ -39,6 +39,9 @@ void beginPlayManager<TestContentManager_t>(TestContentManager_t& manager)
 	OpenGLMaterialSource src{ "Boilerplate" };
 	std::shared_ptr<OpenGLMaterialInstance> inst = std::make_shared<OpenGLMaterialInstance>(src);
 
+	OpenGLTexture tex{ "4" };
+	inst->textures[0] = tex;
+
 	manager.addComponent<COpenGLModel>(ent1, data, inst);
 	manager.addComponent<CPosition>(ent1) = { { 0.f, 0.f } };
 }

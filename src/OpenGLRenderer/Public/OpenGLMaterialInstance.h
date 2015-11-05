@@ -20,15 +20,14 @@ struct OpenGLMaterialInstance
 		glUseProgram(source.program);
 
 		// apply textures
-		for (auto&& tex : textures)
+		for (auto&& ID = 0; ID != textures.size(); ++ID)
 		{
-			if (tex.handle)
+			if (textures[ID].handle)
 			{
-				glUniform1i(source.startTexUniform, tex.handle);
-			}
-			else
-			{
-				break;
+				glUniform1i(source.startTexUniform + ID, ID);
+				glActiveTexture(GL_TEXTURE0 + ID);
+				glBindTexture(GL_TEXTURE_2D, textures[ID].handle);
+				
 			}
 		}
 

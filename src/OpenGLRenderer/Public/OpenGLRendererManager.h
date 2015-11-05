@@ -68,6 +68,8 @@ void beginPlayManager<>(OpenGLRendererManager_t& manager)
 template<>
 void updateManager<>(OpenGLRendererManager_t& manager)
 {
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 	// draw the models
 	manager.runAllMatching<boost::mpl::vector<COpenGLModel, CPosition>>(
 		[](COpenGLModel& model, CPosition& pos)
@@ -80,18 +82,18 @@ void updateManager<>(OpenGLRendererManager_t& manager)
 
 		material.use(MVPmat);
 
-		glBindBuffer(GL_VERTEX_ARRAY, modelData.locBuffer);
+		glBindBuffer(GL_ARRAY_BUFFER, modelData.locBuffer);
 		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(1, sizeof(vec2), GL_FLOAT, GL_FALSE, 0, nullptr);
+		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(vec2), nullptr);
 
 
-		glBindBuffer(GL_VERTEX_ARRAY, modelData.UVbuffer);
+		glBindBuffer(GL_ARRAY_BUFFER, modelData.UVbuffer);
 		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(1, sizeof(vec2), GL_FLOAT, GL_FALSE, 0, nullptr);
+		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(vec2), nullptr);
 
 
-		//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, modelData.indexBuffer);
-		//glDrawElements(GL_TRIANGLES, modelData.numTriangles * 3, GL_UNSIGNED_INT, nullptr);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, modelData.indexBuffer);
+		glDrawElements(GL_TRIANGLES, modelData.numTriangles * 3, GL_UNSIGNED_INT, nullptr);
 
 		glDisableVertexAttribArray(0);
 		glDisableVertexAttribArray(1);
