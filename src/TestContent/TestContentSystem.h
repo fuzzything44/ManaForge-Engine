@@ -25,6 +25,7 @@ template<>
 void beginPlayManager<TestContentManager_t>(TestContentManager_t& manager)
 {
 	auto ent1 = manager.createEntity();
+	manager.addComponent<CPosition>(ent1);
 
 	std::array<vec2, 4> locs = { {
 		{ 0.f, 0.f },

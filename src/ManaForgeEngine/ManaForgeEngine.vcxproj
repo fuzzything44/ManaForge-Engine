@@ -263,8 +263,6 @@
     <ClInclude Include="Public\Logging.h" />
     <ClInclude Include="Public\Manager.h" />
     <ClInclude Include="Public\Manager\Callbacks.h" />
-    <ClInclude Include="Public\Manager\Entity.h" />
-    <ClInclude Include="Public\Manager\EntityHandle.h" />
     <ClInclude Include="Public\Manager\FindAllManagers.h" />
     <ClInclude Include="Public\Manager\GetRefToManager.h" />
     <ClInclude Include="Public\Manager\MiscMetafunctions.h" />

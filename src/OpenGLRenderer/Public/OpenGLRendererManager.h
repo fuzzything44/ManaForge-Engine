@@ -81,6 +81,9 @@ void updateManager<>(OpenGLRendererManager_t& manager)
 
 		aspectRatio = (float)w / (float)h;
 	}
+
+	constexpr bool a = OpenGLRendererManager_t::isComponent<COpenGLModel>();
+
 	// draw the models
 	manager.runAllMatching<boost::mpl::vector<COpenGLModel, CPosition>>(
 		[aspectRatio](COpenGLModel& model, CPosition& pos)

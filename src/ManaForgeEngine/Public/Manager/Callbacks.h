@@ -21,23 +21,6 @@ struct ManagerBase;
 
 namespace detail
 {
-
-	template<typename BaseManagerType, typename ThisManager>
-	void getAllMatching(ManagerBase& thisType, std::vector<size_t>& append, const typename BaseManagerType::RuntimeSignature_t& toTest)
-	{
-		auto& thisTypeDerived = static_cast<ThisManager&>(thisType);
-
-		auto&& sigToTest = thisTypeDerived.template baseRuntimeSignatureToThisRuntimeSignature<BaseManagerType>(toTest);
-		for (auto&& elem : thisTypeDerived.entityStorage)
-		{
-			if (elem.second.matchesSignature(sigToTest)) append.push_back(elem.first);
-		}
-		for (auto&& elem : thisTypeDerived.children)
-		{
-			elem.first.getAllMatching(*elem.second, append, sigToTest);
-		}
-	}
-
 	template<typename ThisManager, typename BaseManager>
 	struct Update_t
 	{

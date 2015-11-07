@@ -27,6 +27,7 @@
 #include <boost/fusion/adapted/std_tuple.hpp>
 #include <boost/fusion/algorithm/iteration/for_each.hpp>
 
+#include <boost/dynamic_bitset.hpp>
 
 #include <vector>
 #include <utility>
@@ -38,10 +39,8 @@
 
 #include "MPLHelp.h"
 
-#include "Manager/Entity.h"
 #include "Manager/Callbacks.h"
 #include "Manager/GetRefToManager.h"
-#include "Manager/EntityHandle.h"
 #include "Manager/FindAllManagers.h"
 #include "Manager/MiscMetafunctions.h"
 
@@ -64,8 +63,6 @@ struct Manager : ManagerBase
 	using MyTags = Tags_;
 	using MyBases = Bases_;
 	using ThisType = Manager<MyComponents, MyTags, MyBases>;
-	using EntityType = Entity<ThisType>;
-	using HandleType = EntityHandle<ThisType>;
 
 	using AllManagers = typename detail::FindManagers<boost::mpl::vector<ThisType>>::type;
 	static_assert(boost::mpl::is_sequence<AllManagers>::value, "AllManagers needs to be a sequence.");
@@ -75,12 +72,12 @@ struct Manager : ManagerBase
 
 private:
 	template<typename... Args>
-	using CatComponents_t = CatSequences_t<typename Args::MyComponents...>;
+	using CatComponents_t = CatSequences_t<typename Args::AllComponents...>;
 	template<typename... Args>
-	using CatTags = CatSequences_t<typename Args::MyTags...>;
+	using CatTags_t = CatSequences_t<typename Args::AllTags...>;
 public:
-	using AllComponents = ExpandSequenceToVaraidic_t<AllManagers, CatComponents_t>;
-	using AllTags = ExpandSequenceToVaraidic_t<AllManagers, CatTags>;
+	using AllComponents = CatSequences_t<MyComponents, Unduplicate_t<ExpandSequenceToVaraidic_t<AllManagersButThis, CatComponents_t>>>;
+	using AllTags = CatSequences_t<MyTags, Unduplicate_t<ExpandSequenceToVaraidic_t<AllManagersButThis, CatTags_t>>>;
 
 	// CONSTEXPR FUNCTIONS/TESTS
 
@@ -130,7 +127,7 @@ public:
 	}
 	template<typename Test> static constexpr bool isTag()
 	{
-		return boost::mpl::contains<AllTags, Test>::value;
+		return boost::mpl::contains<AllTags, Test>::type::value;
 	}
 	template<typename Test> static constexpr bool isMyTag()
 	{
@@ -270,18 +267,15 @@ public:
 	template<typename Sequence>
 	using RemoveTags_t = typename detail::RemoveTags<ThisType, Sequence>::type;
 
-	// Bitset that each Signature and Entity has. This is the type. Just a bitset of the possible components and tags
-	static constexpr const size_t numComponentsAndTags = getNumComponents() + getNumTags();
-	using RuntimeSignature_t = std::bitset<numComponentsAndTags>;
+	template<typename Sequence>
+	using RemoveComponents_t = typename detail::RemoveComponents<ThisType, Sequence>::type;
 
 	// FUNCTIONS FOR ENTITES - CREATING, DESTROYING, COMPONENT HANDLING
-	HandleType createEntity()
+	size_t createEntity()
 	{
 		auto myIndex = (*nextIndex)++;
 
-		entityStorage.emplace(myIndex, myIndex);
-
-		return HandleType{ myIndex };
+		return myIndex;
 	}
 
 private:
@@ -322,44 +316,25 @@ public:
 	using TupleOfVectorRefrences = std::tuple<std::vector<Args>&...>;
 
 	template<typename Signature>
-	std::vector<HandleType> createEntityBatch(
+	std::vector<size_t> createEntityBatch(
 		ExpandSequenceToVaraidic_t<RemoveTags_t<Signature>, TupleOfVectorRefrences> components, 
 		size_t numToConstruct)
 	{
 		static_assert(isSignature<Signature>(), "Must be a signagure");
 
-		using Components = RemoveTags_t<Signature>;
+		// TODO: reimplement
 
-		RuntimeSignature_t bitset = generateRuntimeSignature<Signature>();
-		
-		size_t nextIndexForEnt = *nextIndex;
-		size_t endIndex = nextIndexForEnt + numToConstruct;
-		*nextIndex += numToConstruct;
-
-		std::vector<size_t> indicies(numToConstruct);
-
-		for (size_t localID = 0; nextIndexForEnt != endIndex; ++nextIndexForEnt, ++localID)
-		{
-			indicies[localID] = nextIndexForEnt;
-			entityStorage.emplace(nextIndexForEnt, nextIndexForEnt, bitset);
-		}
-
-		CreateEntityBatch_IMPL<decltype(components), Components>::apply(*this, components, indicies);
-
-		std::vector<HandleType> ret(indicies.size());
-		std::transform(indicies.begin(), indicies.end(), ret.begin(), [](size_t ID) { return HandleType{ ID }; });
-
-		return std::move(ret);
+		return std::vector<size_t>();
 	}
-	void destroyEntity(HandleType handle)
+	void destroyEntity(size_t handle)
 	{
-		auto&& iterToEntity = entityStorage.begin(); std::advance(iterToEntity, handle.GUID);
+		auto&& iterToEntity = entityStorage.begin(); std::advance(iterToEntity, handle);
 
 		entityStorage.erase(iterToEntity);
 	}
 
 	template<typename Component, typename... Args>
-	Component& addComponent(HandleType handle, Args&&... args)
+	Component& addComponent(size_t handle, Args&&... args)
 	{
 		static_assert(isComponent<Component>(), "Component must be a component");
 
@@ -369,40 +344,16 @@ public:
 
 		constexpr size_t componentID = getComponentID<Component>();
 
-		// get the entity
-		EntityType& entity = entityStorage[handle.GUID];
-
 		// set the component with the arguments passed
-		getComponentStorage<Component>().emplace(handle.GUID, std::forward<Args>(args)...);
+		auto&& iter = getComponentStorage<Component>().emplace(handle, std::forward<Args>(args)...);
 
-
-		// set the bitset value to true so signature checking works
-		entity.components[componentID] = true;
-
-		return getComponentStorage<Component>()[handle.GUID];
+		return getComponentStorage<Component>()[handle];
 	}
 	template<typename Component>
-	void removeComponent(HandleType handle)
+	void removeComponent(size_t handle)
 	{
-		getComponent(handle.GUID);
+		getComponent(handle);
 	}
-	template<typename Component>
-	Component& getComponent(HandleType handle)
-	{
-		static_assert(isComponent<Component>(), "Component must be a component");
-
-		// get constants for convience
-		using ManagerForComponent = GetManagerFromComponent_t<Component>;
-		constexpr size_t managerID = getManagerID<ManagerForComponent>();
-		constexpr size_t componentID = ManagerForComponent::template getMyComponentID<Component>();
-
-		// make sure that the entity actually has the component
-		assert(entityStorage[handle.GUID].components[componentID]);
-
-		return getComponentStorage<Component>()[handle.GUID];
-	}
-
-
 	template<typename Component>
 	Component& getComponent(size_t handle)
 	{
@@ -411,7 +362,6 @@ public:
 
 		// get constants for convience
 		using ManagerForComponent = GetManagerFromComponent_t<Component>;
-		constexpr size_t managerID = getManagerID<ManagerForComponent>();
 		constexpr size_t componentID = ManagerForComponent::template getMyComponentID<Component>();
 
 		assert(std::get<componentID>(componentStorage).elemExists(handle));
@@ -420,7 +370,7 @@ public:
 	}
 
 	template<typename Component>
-	bool hasComponent(HandleType handle)
+	bool hasComponent(size_t handle)
 	{
 		static_assert(isComponent<Component>(), "Component must be a Component");
 		// get constants for convience
@@ -429,27 +379,27 @@ public:
 		constexpr size_t componentID = ManagerForComponent::template getComponentID<Component>();
 
 		// get the entity
-		EntityType& entity = entityStorage[handle.GUID];
+		EntityType& entity = entityStorage[handle];
 
 		return entity.components[componentID];
 	}
 
 	template<typename Tag>
-	void addTag(HandleType handle)
+	void addTag(size_t handle)
 	{
-		static_assert(isTag<Tag>(), "Tag must be a Tag");
+		static_assert(ThisType::template isTag<Tag>(), "Tag must be a Tag");
 		// get constants for convience
 		using ManagerForTag = GetManagerFromTag_t<Tag>;
 		constexpr size_t managerID = getManagerID<ManagerForTag>();
 		constexpr size_t tagID = ManagerForTag::template getTagID<Tag>();
 
 		// get the entity
-		EntityType& entity = entityStorage[handle.GUID];
+		EntityType& entity = entityStorage[handle];
 
 		entity.components[tagID] = true;
 	}
 	template<typename Tag>
-	void removeTag(HandleType handle)
+	void removeTag(size_t handle)
 	{
 		static_assert(isTag<Tag>(), "Tag must be a Tag");
 		// get constants for convience
@@ -458,12 +408,12 @@ public:
 		constexpr size_t tagID = ManagerForTag::template getTagID<Tag>();
 
 		// get the entity
-		EntityType& entity = entityStorage[handle.GUID];
+		EntityType& entity = entityStorage[handle];
 
 		entity.components[tagID] = false;
 	}
 	template<typename Tag>
-	bool hasTag(HandleType handle)
+	bool hasTag(size_t handle)
 	{
 		static_assert(isTag<Tag>(), "Tag must be a Tag");
 		// get constants for convience
@@ -472,7 +422,7 @@ public:
 		constexpr size_t tagID = ManagerForTag::template getTagID<Tag>();
 
 		// get the entity
-		EntityType& entity = entityStorage[handle.GUID];
+		EntityType& entity = entityStorage[handle];
 
 		return entity.components[tagID];
 	}
@@ -484,7 +434,7 @@ public:
 
 		using Manager_Type = GetManagerFromComponent_t<Component>;
 
-		constexpr auto ID = Manager_Type::template getComponentID<Component>();
+		constexpr auto ID = Manager_Type::template getMyComponentID<Component>();
 
 		return std::get<ID>(getRefToManager<Manager_Type>().componentStorage);
 	}
@@ -500,28 +450,6 @@ public:
 	template<typename SequenceToFind>
 	using FindMostBaseManagerForSignature_t = typename detail::FindMostBaseManagerForSignature<ThisType, SequenceToFind, true>::type;
 
-	template<typename Signature>
-	static RuntimeSignature_t generateRuntimeSignature()
-	{
-		static_assert(boost::mpl::is_sequence<Signature>::value, "");
-
-		RuntimeSignature_t ret;
-
-		for_each_no_construct_ptr<Signature>([&ret](auto a)
-		{
-			using ComponentOrTag_t = std::remove_pointer_t<decltype(a)>;
-			static_assert(isComponent<ComponentOrTag_t>() || isTag<ComponentOrTag_t>(), "Must be a component");
-			using Manager_t = GetManagerFromComponentOrTag_t<ComponentOrTag_t>;
-			static_assert(isManager<Manager_t>(), "Must be a manager");
-
-			constexpr const auto componentOrTagID = ThisType::template getTagOrComponentID<ComponentOrTag_t>();
-
-			ret[componentOrTagID] = true;
-		});
-
-		return ret;
-	}
-
 private:
 	template<typename...Args>
 	using VoidStdFunctionArguments = std::function<void(Args...)>;
@@ -529,18 +457,6 @@ public:
 
 	template<typename Signature>
 	using SignatureToFunction = ExpandSequenceToVaraidic_t<Signature, VoidStdFunctionArguments>;
-
-	template<typename BaseManager>
-	RuntimeSignature_t baseRuntimeSignatureToThisRuntimeSignature(const typename BaseManager::RuntimeSignature_t& toConvert)
-	{
-		RuntimeSignature_t ret;
-
-		const constexpr size_t sizeOfToConvertBitset = getBitsetSize<decltype(toConvert)>();
-
-		detail::BaseRuntimeSignatureToThisRuntimeSignature_IMPL<ThisType, BaseManager, 0, sizeOfToConvertBitset>::apply(ret, toConvert);
-
-		return ret;
-	}
 
 private:
 	
@@ -604,17 +520,7 @@ public:
 	{
 		static_assert (std::is_same<FindMostBaseManagerForSignature_t<SignatureToRun>, ThisType>::value, "Please use runAllMatching instead");
 
-		RuntimeSignature_t checkBitset = generateRuntimeSignature<SignatureToRun>();
-
-		// get all of the entities that match the signature
-		std::vector<size_t> vec;
-
-		detail::getAllMatching<ThisType, ThisType>(*this, vec, checkBitset);
-
-		for (auto&& elem : vec)
-		{
-			callFunctionWithSigParams<RemoveTags_t<SignatureToRun>>(elem, std::forward<F>(functor));
-		}
+		// TODO: reimplement
 	}
 
 
@@ -645,7 +551,7 @@ public:// TODO:
 
 	ManagerData<ThisType> myManagerData;
 
-	MappedVector<EntityType> entityStorage;
+	std::array<boost::dynamic_bitset<>, (ThisType::getNumMyTags())> tags;
 
 	std::shared_ptr<size_t> nextIndex;
 
@@ -668,21 +574,12 @@ public:// TODO:
 	struct FunctionPointerStorage
 	{
 
-		using GetAllMatching_t =
-			void(*)
-			(
-				ManagerBase&
-				, std::vector<size_t>&
-				, const RuntimeSignature_t&
-				);
-
 		using Update_t =
 			void(*)(ManagerBase&, ThisType&);
 
 		using BeginPlay_t =
 			void(*)(ManagerBase&, ThisType&);
 
-		GetAllMatching_t getAllMatching;
 		Update_t update;
 		BeginPlay_t beginPlay;
 	};
@@ -717,9 +614,6 @@ public:
 			using BaseType = std::decay_t<decltype(*elem)>;
 			static_assert(ThisType::template isManager<BaseType>(), "Error, not a manager");
 
-			typename BaseType::FunctionPointerStorage::GetAllMatching_t getAllMatchingPtr =
-				&detail::getAllMatching<BaseType, ThisType>;
-
 			typename BaseType::FunctionPointerStorage::Update_t updatePtr =
 				&detail::Update_t<ThisType, BaseType>::update;
 
@@ -727,7 +621,7 @@ public:
 				&detail::BeginPlay_t<ThisType, BaseType>::beginPlay;
 
 			elem->children.push_back(
-				std::make_pair(typename BaseType::FunctionPointerStorage{ getAllMatchingPtr, updatePtr, beginPlayPtr }, ret)
+				std::make_pair(typename BaseType::FunctionPointerStorage{ updatePtr, beginPlayPtr }, ret)
 				);
 
 			ret->nextIndex = elem->nextIndex;

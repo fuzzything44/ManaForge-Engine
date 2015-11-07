@@ -114,11 +114,11 @@ namespace detail
 			;
 	};
 
-	template<typename Manager, typename SignatureToFind, bool running>
+	template<typename ManagerType, typename SignatureToFind, bool running>
 	struct FindMostBaseManagerForSignature
 	{
 		static_assert(boost::mpl::is_sequence<SignatureToFind>::value, "Signatures are sequences");
-		static_assert(Manager::template isSignature<SignatureToFind>(), "Must be a signature");
+		static_assert(ManagerType::template isSignature<SignatureToFind>(), "Must be a signature");
 
 		using ManagerWithComponent =
 			typename boost::mpl::deref
@@ -127,7 +127,7 @@ namespace detail
 				<
 					typename boost::mpl::transform
 					<
-						typename Manager::MyBases
+						typename ManagerType::MyBases
 						, IsSignature<boost::mpl::placeholders::_1, SignatureToFind>
 					>
 					, std::true_type
@@ -147,7 +147,7 @@ namespace detail
 					, SignatureToFind
 					, runningNext
 				>::type
-				, Manager
+				, ManagerType
 			>
 			;
 	};
@@ -224,6 +224,55 @@ namespace detail
 
 	template<typename ManagerType, typename Sequence, size_t ID>
 	struct RemoveTags<ManagerType, Sequence, ID, false, true>
+	{
+		using type =
+			Sequence;
+	};
+
+	
+	template<
+		typename ManagerType
+		, typename Sequence
+		, size_t ID = 0
+		, bool = ManagerType::template isComponent<typename boost::mpl::at_c<Sequence, ID>::type>()
+		, bool = boost::mpl::size<Sequence>::type::value == ID
+	>
+	struct RemoveComponents
+	{
+		using Component = typename boost::mpl::at_c<Sequence, ID>::type;
+
+		using NewSequence = typename boost::mpl::remove<Sequence, Component>::type;
+
+		using type =
+			typename RemoveComponents
+			<
+				ManagerType
+				, NewSequence
+				, ID
+			>::type;
+
+	};
+
+	template<typename ManagerType, typename Sequence, size_t ID>
+	struct RemoveComponents<ManagerType, Sequence, ID, false, false>
+	{
+		using type =
+			std::conditional_t
+			<
+				ID < boost::mpl::size<Sequence>::size::value
+				,typename RemoveComponents
+				<
+					ManagerType
+					, Sequence
+					, ID + 1
+				>::type
+				, Sequence
+			>
+			;
+	};
+
+	template<typename ManagerType, typename Sequence, size_t ID>
+	struct RemoveComponents<ManagerType, Sequence, ID, false, true>
 	{
 		using type =
 			Sequence;

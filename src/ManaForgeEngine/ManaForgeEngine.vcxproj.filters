@@ -121,12 +121,6 @@
     <ClInclude Include="Public\Manager\Callbacks.h">
       <Filter>Public\ManagerDetail</Filter>
     </ClInclude>
-    <ClInclude Include="Public\Manager\EntityHandle.h">
-      <Filter>Public\ManagerDetail</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\Manager\Entity.h">
-      <Filter>Public\ManagerDetail</Filter>
-    </ClInclude>
     <ClInclude Include="Public\Manager\FindAllManagers.h">
       <Filter>Public\ManagerDetail</Filter>
     </ClInclude>

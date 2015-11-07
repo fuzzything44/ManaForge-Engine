@@ -112,7 +112,7 @@ struct MappedVector
 	}
 
 	template<typename... Args>
-	void emplace(size_t location, Args&&... args)
+	iterator emplace(size_t location, Args&&... args)
 	{
 		auto&& iter = std::lower_bound(indicies.begin(), indicies.end(), location);
 
@@ -120,18 +120,21 @@ struct MappedVector
 		auto iterInData = data.begin();
 		std::advance(iterInData, indexInData);
 
+
 		// if the location doesn't exist
 		if (iter == indicies.end() || *iter != location)
 		{
-			indicies.emplace(iter, location);
+			auto&& indiciesRetIter = indicies.emplace(iter, location);
 			
-			data.emplace(iterInData, std::forward<Args>(args)...);
+			auto&& dataRetIter = data.emplace(iterInData, std::forward<Args>(args)...);
 
-			return;
+			return iterator{ indiciesRetIter, dataRetIter };
 		}
 
 		// and if it does...
 		*iterInData = T(std::forward<Args>(args)...);
+
+		return iterator{ iter, iterInData };
 	}
 
 	void erase(iterator it)
