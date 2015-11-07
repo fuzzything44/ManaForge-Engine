@@ -6,7 +6,8 @@ struct call_with_tuple_impl
 	template <typename Fun, typename... Args>
 	static auto apply(Fun&& fun, std::tuple<TupleArgs...>& tup, Args&&... args)
 	{
-		return call_with_tuple_impl<numLeft - 1, TupleArgs...>::apply(std::forward<Fun>(fun),
+		return call_with_tuple_impl<numLeft - 1, TupleArgs...>::apply(
+			std::forward<Fun>(fun),
 			tup,
 			std::forward<Args>(args)...,
 			std::get<sizeof...(TupleArgs)-numLeft>(tup));

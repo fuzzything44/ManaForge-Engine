@@ -23,8 +23,8 @@ struct MappedVector
 		>
 	{
 		iterator(
-			std::vector<size_t>::iterator indexIter,
-			typename std::vector<T>::iterator dataIter)
+			std::vector<size_t>::iterator indexIter = std::vector<size_t>::iterator{},
+			typename std::vector<T>::iterator dataIter = std::vector<T>::iterator{})
 			: indexIter{ indexIter }
 			, dataIter{ dataIter }
 		{}
