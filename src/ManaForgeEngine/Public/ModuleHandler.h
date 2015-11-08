@@ -3,30 +3,27 @@
 #include "Engine.h"
 #include "boost/filesystem.hpp"
 
-
-#pragma once
-#include "Engine.h"
-
 #include <Helper.h>
 
 #include <stdexcept>
 
+#include <boost/container/flat_map.hpp>
 
+struct ModuleHandler;
 
 #ifdef WIN32
 #define WIN32_MEAN_AND_LEAN 1
 #include <Windows.h>
-class SharedLibrary // windows impl
+class Module // windows impl
 {
 	using SharedLibHandle = HINSTANCE;
 public:
-
-	SharedLibrary() = default;
-	SharedLibrary(const path_t& name);
+	Module() = default;
+	ENGINE_API Module(ModuleHandler& handler, const path_t& name);
 
 	// make it move only
-	SharedLibrary(const SharedLibrary& other) = delete;
-	SharedLibrary(SharedLibrary&& other)
+	Module(const Module&) = delete;
+	Module(Module&& other)
 		:handle(other.handle)
 		, name(other.name)
 	{
@@ -34,43 +31,51 @@ public:
 		other.name = "";
 	}
 
-	const SharedLibrary& operator=(const SharedLibrary& other) = delete;
-	const SharedLibrary& operator=(SharedLibrary&& other)
+	const Module& operator=(const Module& other) = delete;
+	const Module& operator=(Module&& other)
 	{
 		handle = other.handle;
 		other.handle = nullptr;
 		return *this;
 	}
 
-	template <typename FunctionType>
-	ENGINE_API FunctionType* getFunctionPtr(const std::string& functionName);
+	ENGINE_API ~Module();
 
-	~SharedLibrary();
-
-	const path_t& getName() { return name; }
+	const path_t& getName() const { return name; }
 
 private:
+
+	using InitFuncPtr_t = void(*)(ModuleHandler&);
+
+
 	SharedLibHandle handle = nullptr;
 	path_t name;
 };
+
+inline bool operator<(const Module& lhs, const Module& rhs)
+{
+	return lhs.getName().wstring() < rhs.getName().wstring();
+}
+
 #endif
 
 struct ModuleHandler
 {
 	void init(const std::vector<path_t> modulesToLoad)
 	{
-
-		std::transform(modulesToLoad.begin(), modulesToLoad.end(), std::back_inserter(modules),
-			[](const path_t& path)
+		for (auto&& elem : modulesToLoad)
 		{
-			return SharedLibrary{ L"modules\\" + path.wstring() };
-		});
-
-		for (auto&& elem : modules)
-		{
-			elem.getFunctionPtr<void()>("init")();
+			modules.emplace(std::make_pair(elem, Module{ *this, elem }));
 		}
 	}
 
-	std::vector<SharedLibrary> modules;
+	void loadModule(const path_t& path)
+	{
+		auto&& iter = modules.find(path);
+
+		if(iter == modules.end())
+			modules.emplace(std::make_pair(path, Module{ *this, path }));
+	}
+
+	boost::container::flat_map<path_t, Module> modules;
 };

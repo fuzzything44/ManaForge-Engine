@@ -572,49 +572,6 @@ public:
 		return sig;
 	}
 
-	template<typename Tuple>
-	bool areAnyEqual(const Tuple& lhs, const Tuple& rhs)
-	{
-		bool areEqual = false;
-
-		tuple_for_each_with_index(lhs, [&rhs, &areEqual](auto&& elem, auto ID_t)
-		{
-			constexpr size_t ID = decltype(ID_t)::value;
-
-			auto&& rhsElem = std::get<ID>(rhs);
-
-			if (!areEqual)
-			{
-				if (elem == rhsElem)
-				{
-					areEqual = true;
-				}
-			}
-		});
-
-		return areEqual;
-	}
-
-	template<typename Tuple>
-	bool allSameIndex(Tuple&& tup, size_t& index)
-	{
-		index = std::get<0>(std::forward<Tuple>(tup)).first;
-
-		bool areSame = true;
-
-		tuple_for_each_with_index(std::forward<Tuple>(tup), [&index, &areSame](auto&& elem, auto)
-		{
-			if (index != elem.first)
-			{
-				areSame = false;
-			}
-		});
-
-		return areSame;
-	}
-
-
-
 	template<typename TupleOfIters>
 	bool advanceUntilEqualIndex(TupleOfIters&& iters, TupleOfIters&& endIters)
 	{

@@ -1,11 +1,7 @@
 #include <Runtime.h>
 
-#include <boost/signals2/connection.hpp>
-
 int32 main(int argc, char** argv)
 {
-
-	new int(2000);
 	try
 	{
 

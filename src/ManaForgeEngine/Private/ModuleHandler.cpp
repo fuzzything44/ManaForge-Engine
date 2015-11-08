@@ -10,35 +10,31 @@
 #include <Windows.h>
 
 
-SharedLibrary::SharedLibrary(const path_t& name)
+Module::Module(ModuleHandler& handler, const path_t& name)
 	:name(name)
 {
-	path_t pathWithExt = name.wstring() + L".dll";
+	path_t pathWithExt = L"modules\\" + name.wstring() + L".dll";
 
 	handle = LoadLibraryW(pathWithExt.c_str());
 
 	if (handle == nullptr) {
 		MFLOGW(Error) << L"Failed to load library. Name: " << name.c_str() << L" Error: " << GetLastError();
 	}
-}
-
-template <typename FunctionType>
-FunctionType* SharedLibrary::getFunctionPtr(const std::string& functionName)
-{
-	assert(handle);
 
 	// FARPROC is a generic fucntion pointer
 	// gets the pointer to the function name specified
-	FARPROC addr = GetProcAddress(handle, functionName.c_str());
+	InitFuncPtr_t addr = reinterpret_cast<InitFuncPtr_t>(GetProcAddress(handle, "init"));
 
 	if (addr == nullptr) {
-		MFLOG(Fatal) << "Failed to get function address. Name: " << functionName;
+		MFLOG(Error) << "Failed to get init function address!";
 	}
 
-	return reinterpret_cast<FunctionType*>(addr);
+	addr(handler);
+	
 }
 
-SharedLibrary::~SharedLibrary()
+
+Module::~Module()
 {
 	if (handle)
 	{
