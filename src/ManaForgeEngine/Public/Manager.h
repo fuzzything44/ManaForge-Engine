@@ -48,6 +48,8 @@
 
 #include "MappedVector.h"
 
+#undef max
+
 struct ManagerBase : std::enable_shared_from_this<ManagerBase>
 {
 
@@ -611,6 +613,47 @@ public:
 		return areSame;
 	}
 
+
+
+	template<typename TupleOfIters>
+	bool advanceUntilEqualIndex(TupleOfIters&& iters, TupleOfIters&& endIters)
+	{
+		size_t largest = 0;
+
+		// find largest index
+		tuple_for_each_with_index(iters, [&largest, &endIters](auto&& iter, auto ID)
+		{
+
+			if(iter != std::get<decltype(ID)::value>(endIters)) largest = std::max(largest, iter->first);
+		});
+
+		bool succeded = true;
+
+		// advance iterators
+		tuple_for_each_with_index(iters, [largest, &succeded, &endIters](auto&& iter, auto ID)
+		{
+			constexpr size_t index = decltype(ID)::value;
+
+			if (succeded)
+			{
+
+				if (iter == std::get<index>(endIters))
+				{
+					succeded = false;
+					return;
+				}
+
+				while (iter->first < largest)
+				{
+					++iter;
+				}
+			}
+
+		});
+
+		return succeded;
+	}
+
 	template<typename SignatureToRun, typename F>
 	void runAllMatchingIMPL(F&& functor)
 	{
@@ -622,30 +665,35 @@ public:
 		ComponentIterTypes<SignatureToRun> componentIters = generateBeginIters<SignatureToRun>();
 		ComponentIterTypes<SignatureToRun> componentEndIters = generateEndIters<SignatureToRun>();
 
-		while (!areAnyEqual(componentIters, componentEndIters))
+		bool shouldCont = advanceUntilEqualIndex(componentIters, componentEndIters);
+
+		while (shouldCont)
 		{
-			// derefrence iters
-			auto values = callWithTuple([](auto&&... iters) //-> std::tuple<typename std::iterator_traits<std::decay_t<decltype(iters)>>::refrence_type...>
+			bool matches = true;
+
+			size_t index = std::get<0>(componentIters)->first;
+
+			// check for matching tags
+			boost::mpl::for_each<Tags>([this, &matches, index](auto&& tag)
 			{
-				return std::forward_as_tuple(*iters...);
-			}, componentIters);
+				using TagType = std::decay_t<decltype(tag)>;
+				using Manager_t = GetManagerFromTag_t<TagType>;
 
-			size_t index;
+				constexpr const size_t compID = Manager_t::template getMyTagID<TagType>();
 
-			if (allSameIndex(values, index))
+				if (matches) matches = std::get<compID>(this->getRefToManager<Manager_t>().tagStorage)[index];
+			});
+
+			if (matches)
 			{
-				bool matches = true;
-
-				boost::mpl::for_each<Tags>([this, &matches, index](auto&& tag)
-				{
-					using TagType = std::decay_t<decltype(tag)>;
-					using Manager_t = GetManagerFromTag_t<TagType>;
-
-					constexpr const size_t compID = Manager_t::template getMyTagID<TagType>();
-
-					if (matches) matches = std::get<compID>(this->getRefToManager<Manager_t>().tagStorage)[index];
-				});
+				callFunctionWithSigParams<SignatureToRun>(index, std::forward<F>(functor));
 			}
+			
+			// iterate it so it gets used as the next index
+			++std::get<0>(componentIters);
+
+			shouldCont = advanceUntilEqualIndex(componentIters, componentEndIters);
+
 			
 		}
 
