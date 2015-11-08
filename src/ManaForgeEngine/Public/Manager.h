@@ -240,10 +240,10 @@ public:
 	using GetManagerFromComponent_t =
 		typename detail::GetManagerFromComponent
 		<
-		ThisType
-		, Component
-		, typename boost::mpl::begin<AllManagers>::type
-		, typename boost::mpl::end<AllManagers>::type
+			ThisType
+			, Component
+			, typename boost::mpl::begin<AllManagers>::type
+			, typename boost::mpl::end<AllManagers>::type
 		>::type
 		;
 	template<typename Tag>
@@ -573,7 +573,7 @@ public:
 	}
 
 	template<typename TupleOfIters>
-	bool advanceUntilEqualIndex(TupleOfIters&& iters, TupleOfIters&& endIters)
+	static bool advanceUntilEqualIndex(TupleOfIters&& iters, TupleOfIters&& endIters)
 	{
 		size_t largest = 0;
 
@@ -611,6 +611,104 @@ public:
 		return succeded;
 	}
 
+	template<typename Signature, size_t numComponents>
+	struct runAllMatchingIMPL_IMPL
+	{
+		// implementation with components
+		template<typename F>
+		static void apply(F&& functor, ThisType& manager)
+		{
+			using Components = RemoveTags_t<Signature>;
+			using Tags = RemoveComponents_t<Signature>;
+
+
+			ComponentIterTypes<Components> componentIters = manager.generateBeginIters<Components>();
+			ComponentIterTypes<Components> componentEndIters = manager.generateEndIters<Components>();
+
+			bool shouldCont = advanceUntilEqualIndex(componentIters, componentEndIters);
+
+			while (shouldCont)
+			{
+				bool matches = true;
+
+				size_t index = std::get<0>(componentIters)->first;
+
+				// check for matching tags
+				boost::mpl::for_each<Tags>([&manager, &matches, index](auto&& tag)
+				{
+					using TagType = std::decay_t<decltype(tag)>;
+					using Manager_t = GetManagerFromTag_t<TagType>;
+
+					constexpr const size_t compID = Manager_t::template getMyTagID<TagType>();
+
+					if (matches) matches = std::get<compID>(manager.getRefToManager<Manager_t>().tagStorage)[index];
+				});
+
+				if (matches)
+				{
+					manager.callFunctionWithSigParams<Components>(index, std::forward<F>(functor));
+				}
+
+				// iterate it so it gets used as the next index
+				++std::get<0>(componentIters);
+
+				shouldCont = manager.advanceUntilEqualIndex(componentIters, componentEndIters);
+
+
+			}
+
+		}
+	};
+
+	template<typename Signature>
+	struct runAllMatchingIMPL_IMPL<Signature, 0>
+	{
+		// implementation with no components
+		template<typename F>
+		static void apply(F&& functor, ThisType& manager)
+		{
+			using Components = RemoveTags_t<Signature>;
+			using Tags = RemoveComponents_t<Signature>;
+
+			size_t index = 0;
+			bool shouldContinue = true;
+			while (shouldContinue)
+			{
+
+				bool matches = true;
+
+
+				// check for matching tags
+				boost::mpl::for_each<Tags>([&manager, &matches, index, &shouldContinue](auto&& tag)
+				{
+					using TagType = std::decay_t<decltype(tag)>;
+					using Manager_t = GetManagerFromTag_t<TagType>;
+
+					constexpr const size_t compID = Manager_t::template getMyTagID<TagType>();
+
+					auto&& storage = std::get<compID>(manager.getRefToManager<Manager_t>().tagStorage);
+					if (storage.size() <= index)
+					{
+						shouldContinue = false;
+						matches = false;
+					}
+					else
+					{
+						if (matches) matches = (storage.size() > index) && storage[index];
+					}
+				});
+
+				if (matches)
+				{
+					manager.callFunctionWithSigParams<Components>(index, std::forward<F>(functor));
+				}
+
+				++index;
+			}
+
+		}
+	};
+
 	template<typename SignatureToRun, typename F>
 	void runAllMatchingIMPL(F&& functor)
 	{
@@ -619,42 +717,11 @@ public:
 		using Components = RemoveTags_t<SignatureToRun>;
 		using Tags = RemoveComponents_t<SignatureToRun>;
 
-		ComponentIterTypes<SignatureToRun> componentIters = generateBeginIters<SignatureToRun>();
-		ComponentIterTypes<SignatureToRun> componentEndIters = generateEndIters<SignatureToRun>();
+		constexpr size_t numComponents = boost::mpl::size<Components>::type::value;
 
-		bool shouldCont = advanceUntilEqualIndex(componentIters, componentEndIters);
-
-		while (shouldCont)
-		{
-			bool matches = true;
-
-			size_t index = std::get<0>(componentIters)->first;
-
-			// check for matching tags
-			boost::mpl::for_each<Tags>([this, &matches, index](auto&& tag)
-			{
-				using TagType = std::decay_t<decltype(tag)>;
-				using Manager_t = GetManagerFromTag_t<TagType>;
-
-				constexpr const size_t compID = Manager_t::template getMyTagID<TagType>();
-
-				if (matches) matches = std::get<compID>(this->getRefToManager<Manager_t>().tagStorage)[index];
-			});
-
-			if (matches)
-			{
-				callFunctionWithSigParams<SignatureToRun>(index, std::forward<F>(functor));
-			}
-			
-			// iterate it so it gets used as the next index
-			++std::get<0>(componentIters);
-
-			shouldCont = advanceUntilEqualIndex(componentIters, componentEndIters);
-
-			
-		}
-
+		runAllMatchingIMPL_IMPL<SignatureToRun, numComponents>::apply(std::forward<F>(functor), *this);
 	}
+
 
 
 	void update()
