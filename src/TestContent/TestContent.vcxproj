@@ -18,6 +18,13 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\TestContentConfig.h" />
+    <ClInclude Include="include\TestContentSystem.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\TestContentSystem.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{88DA2862-2AA2-4738-81CE-48F84016EA71}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
@@ -103,7 +110,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>TestContent_Source;WIN32;_DEBUG;_WINDOWS;_USRDLL;TESTCONTENT_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\OpenGLRenderer\GLEW\include\;..\OpenGLRenderer\GLFW\include\;..\OpenALAudioSystem\OpenAL\include;..\OpenALAudioSystem\ALUT\include;..\Box2DPhysicsSystem\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\..\OpenALAudioSystem\include\;$(ProjectDir)\..\OpenGLRenderer\include\;$(ProjectDir)\..\Box2DPhysicsSystem\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -121,7 +128,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>TestContent_Source;WIN32;_DEBUG;_WINDOWS;_USRDLL;TESTCONTENT_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\OpenGLRenderer\GLEW\include\;..\OpenGLRenderer\GLFW\include\;..\OpenALAudioSystem\OpenAL\include;..\OpenALAudioSystem\ALUT\include;..\Box2DPhysicsSystem\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\..\OpenALAudioSystem\include\;$(ProjectDir)\..\OpenGLRenderer\include\;$(ProjectDir)\..\Box2DPhysicsSystem\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -139,7 +146,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;TESTCONTENT_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\OpenGLRenderer\GLEW\include\;..\OpenGLRenderer\GLFW\include\;..\OpenALAudioSystem\OpenAL\include;..\OpenALAudioSystem\ALUT\include;..\Box2DPhysicsSystem\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\..\OpenALAudioSystem\include\;$(ProjectDir)\..\OpenGLRenderer\include\;$(ProjectDir)\..\Box2DPhysicsSystem\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -159,7 +166,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;TESTCONTENT_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\OpenGLRenderer\GLEW\include\;..\OpenGLRenderer\GLFW\include\;..\OpenALAudioSystem\OpenAL\include;..\OpenALAudioSystem\ALUT\include;..\Box2DPhysicsSystem\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\..\OpenALAudioSystem\include\;$(ProjectDir)\..\OpenGLRenderer\include\;$(ProjectDir)\..\Box2DPhysicsSystem\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -170,13 +177,6 @@
       <AdditionalLibraryDirectories>$(ModuleOutputDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="Public\TestContentConfig.h" />
-    <ClInclude Include="TestContentSystem.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="TestContentSystem.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

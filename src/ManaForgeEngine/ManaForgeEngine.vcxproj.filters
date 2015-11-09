@@ -1,137 +1,143 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Private">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Public">
+    <Filter Include="include">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="Public\ManagerDetail">
+    <Filter Include="include\ManagerDetail">
       <UniqueIdentifier>{22a8d473-d293-4bd3-9e06-19f3cc83a9ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="private\ENGException.cpp">
-      <Filter>Private</Filter>
-    </ClCompile>
-    <ClCompile Include="Private\PropertyManager.cpp">
-      <Filter>Private</Filter>
-    </ClCompile>
-    <ClCompile Include="Private\Runtime.cpp">
-      <Filter>Private</Filter>
-    </ClCompile>
-    <ClCompile Include="Private\ChangeDirectory.cpp">
-      <Filter>Private</Filter>
-    </ClCompile>
-    <ClCompile Include="Private\EnginePCH.cpp">
-      <Filter>Private</Filter>
-    </ClCompile>
-    <ClCompile Include="Private\Logging.cpp">
-      <Filter>Private</Filter>
-    </ClCompile>
-    <ClCompile Include="CoreManager.cpp">
-      <Filter>Private</Filter>
-    </ClCompile>
-    <ClCompile Include="Private\ModuleHandler.cpp">
-      <Filter>Private</Filter>
-    </ClCompile>
+    <ClInclude Include="src\EnginePCH.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Manager\Callbacks.h">
+      <Filter>include\ManagerDetail</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Manager\FindAllManagers.h">
+      <Filter>include\ManagerDetail</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Manager\GetRefToManager.h">
+      <Filter>include\ManagerDetail</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Manager\MiscMetafunctions.h">
+      <Filter>include\ManagerDetail</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Cacher.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\call_from_tuple.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ChangeDirectory.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Clamp.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Color.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CoreManager.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ENGException.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Engine.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\glm-ortho-2d.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Helper.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\KeyEnum.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Logging.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Manager.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MappedVector.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MeshActor.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ModuleHandler.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MPLHelp.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\PropertyManager.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\QuadUVCoords.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Quantity.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RefCounted.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Runtime.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SaveData.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SerializeGLM.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\TextBoxWidget.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\TimerHandle.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\TimerManager.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Transform.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="public\Helper.h">
-      <Filter>Public</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\Engine.h">
-      <Filter>Public</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\ENGException.h">
-      <Filter>Public</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\Transform.h">
-      <Filter>Public</Filter>
-    </ClInclude>
-    <ClInclude Include="public\Color.h">
-      <Filter>Public</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\Logging.h">
-      <Filter>Public</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\SaveData.h">
-      <Filter>Public</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\PropertyManager.h">
-      <Filter>Public</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\Runtime.h">
-      <Filter>Public</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\KeyEnum.h">
-      <Filter>Public</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\ChangeDirectory.h">
-      <Filter>Public</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\SerializeGLM.h">
-      <Filter>Public</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\QuadUVCoords.h">
-      <Filter>Public</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\glm-ortho-2d.h">
-      <Filter>Public</Filter>
-    </ClInclude>
-    <ClInclude Include="Private\EnginePCH.h">
-      <Filter>Private</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\Quantity.h">
-      <Filter>Public</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\TimerHandle.h">
-      <Filter>Public</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\TimerManager.h">
-      <Filter>Public</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\Clamp.h">
-      <Filter>Public</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\call_from_tuple.h">
-      <Filter>Public</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\Cacher.h">
-      <Filter>Public</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\Manager.h">
-      <Filter>Public</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\MPLHelp.h">
-      <Filter>Public</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\CoreManager.h">
-      <Filter>Public</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\ModuleHandler.h">
-      <Filter>Public</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\Manager\GetRefToManager.h">
-      <Filter>Public\ManagerDetail</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\Manager\Callbacks.h">
-      <Filter>Public\ManagerDetail</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\Manager\FindAllManagers.h">
-      <Filter>Public\ManagerDetail</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\Manager\MiscMetafunctions.h">
-      <Filter>Public\ManagerDetail</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\RefCounted.h">
-      <Filter>Public</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\MappedVector.h">
-      <Filter>Public</Filter>
-    </ClInclude>
+    <ClCompile Include="src\ChangeDirectory.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ENGException.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\EnginePCH.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Logging.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ModuleHandler.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PropertyManager.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Runtime.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CoreManager.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

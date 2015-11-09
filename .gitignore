@@ -95,3 +95,4 @@ src/boostx64.props
 *.vsp
 src/OpenGLRenderer/Debug/openglrenderer.obj.enc
 *.obj-2284f8f7
+*.enc

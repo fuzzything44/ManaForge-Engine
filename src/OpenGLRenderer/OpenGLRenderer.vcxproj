@@ -108,6 +108,7 @@
       <PrecompiledHeaderFile>OpenGLRendererPCH.h</PrecompiledHeaderFile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -127,6 +128,7 @@
       <CompileAs>Default</CompileAs>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -143,6 +145,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -161,6 +164,7 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <CompileAs>Default</CompileAs>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -170,21 +174,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Private\OpenGLRendererManager.cpp" />
-    <ClCompile Include="Private\OpenGLRendererPCH.cpp">
+    <ClInclude Include="include\COpenGLModel.h" />
+    <ClInclude Include="include\OpenGLMaterialInstance.h" />
+    <ClInclude Include="include\OpenGLMaterialSource.h" />
+    <ClInclude Include="include\OpenGLModelData.h" />
+    <ClInclude Include="include\OpenGLRendererConfig.h" />
+    <ClInclude Include="include\OpenGLRendererManager.h" />
+    <ClInclude Include="include\OpenGLTexture.h" />
+    <ClInclude Include="src\OpenGLRendererPCH.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\OpenGLRendererManager.cpp" />
+    <ClCompile Include="src\OpenGLRendererPCH.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Private\OpenGLRendererPCH.h" />
-    <ClInclude Include="Public\COpenGLModel.h" />
-    <ClInclude Include="Public\OpenGLMaterialInstance.h" />
-    <ClInclude Include="Public\OpenGLMaterialSource.h" />
-    <ClInclude Include="Public\OpenGLModelData.h" />
-    <ClInclude Include="Public\OpenGLRendererConfig.h" />
-    <ClInclude Include="Public\OpenGLRendererManager.h" />
-    <ClInclude Include="Public\OpenGLTexture.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

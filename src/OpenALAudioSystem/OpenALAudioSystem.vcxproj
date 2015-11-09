@@ -78,29 +78,30 @@
     <OutDir>$(ModuleOutputDir)</OutDir>
     <LinkIncremental>false</LinkIncremental>
     <TargetExt>.dll</TargetExt>
-    <IncludePath>$(ProjectDir)\alut\include\;$(ProjectDir)\openal\include\;$(IncludePath)</IncludePath>
+    <IncludePath>$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <TargetExt>.dll</TargetExt>
     <OutDir>$(ModuleOutputDir)</OutDir>
-    <IncludePath>$(ProjectDir)\alut\include\;$(ProjectDir)\openal\include\;$(IncludePath)</IncludePath>
+    <IncludePath>$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(ModuleOutputDir)</OutDir>
     <TargetExt>.dll</TargetExt>
-    <IncludePath>$(ProjectDir)\alut\include\;$(ProjectDir)\openal\include\;$(IncludePath)</IncludePath>
+    <IncludePath>$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <TargetExt>.dll</TargetExt>
     <OutDir>$(ModuleOutputDir)</OutDir>
-    <IncludePath>$(ProjectDir)\alut\include\;$(ProjectDir)\openal\include\;$(IncludePath)</IncludePath>
+    <IncludePath>$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -112,6 +113,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -125,6 +127,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -144,6 +147,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -157,13 +161,13 @@
     </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Public\COpenALSoundSource.h" />
-    <ClInclude Include="Public\OpenALAudioSystem.h" />
-    <ClInclude Include="Public\OpenALSoundCue.h" />
-    <ClInclude Include="Public\OpenALSoundSystemConfig.h" />
+    <ClCompile Include="src\OpenALAudioSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Private\OpenALAudioSystem.cpp" />
+    <ClInclude Include="include\COpenALSoundSource.h" />
+    <ClInclude Include="include\OpenALAudioSystem.h" />
+    <ClInclude Include="include\OpenALSoundCue.h" />
+    <ClInclude Include="include\OpenALSoundSystemConfig.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

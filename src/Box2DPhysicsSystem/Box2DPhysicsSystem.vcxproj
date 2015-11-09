@@ -162,12 +162,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Private\Box2DPhysicsManager.cpp" />
+    <ClCompile Include="src\Box2DPhysicsManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Public\Box2DPhysicsManager.h" />
-    <ClInclude Include="Public\Box2DPhysicsSystemConfig.h" />
-    <ClInclude Include="Public\CBox2DCollision.h" />
+    <ClInclude Include="include\Box2DPhysicsManager.h" />
+    <ClInclude Include="include\Box2DPhysicsSystemConfig.h" />
+    <ClInclude Include="include\CBox2DCollision.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

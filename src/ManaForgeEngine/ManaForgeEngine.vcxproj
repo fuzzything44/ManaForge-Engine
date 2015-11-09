@@ -93,7 +93,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ProjectDir)/Public;$(SolutionDir)/include</IncludePath>
+    <IncludePath>$(IncludePath)</IncludePath>
     <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(SolutionDir)/library/</LibraryPath>
     <TargetExt>.dll</TargetExt>
     <OutDir>$(DefaultOutputDir)</OutDir>
@@ -235,50 +235,51 @@
     </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="CoreManager.cpp" />
-    <ClCompile Include="Private\ChangeDirectory.cpp" />
-    <ClCompile Include="private\ENGException.cpp" />
-    <ClCompile Include="Private\EnginePCH.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="Private\Logging.cpp" />
-    <ClCompile Include="Private\ModuleHandler.cpp" />
-    <ClCompile Include="Private\PropertyManager.cpp" />
-    <ClCompile Include="Private\Runtime.cpp" />
+    <ClInclude Include="include\Cacher.h" />
+    <ClInclude Include="include\call_from_tuple.h" />
+    <ClInclude Include="include\ChangeDirectory.h" />
+    <ClInclude Include="include\Clamp.h" />
+    <ClInclude Include="include\Color.h" />
+    <ClInclude Include="include\CoreManager.h" />
+    <ClInclude Include="include\ENGException.h" />
+    <ClInclude Include="include\Engine.h" />
+    <ClInclude Include="include\glm-ortho-2d.h" />
+    <ClInclude Include="include\Helper.h" />
+    <ClInclude Include="include\KeyEnum.h" />
+    <ClInclude Include="include\Logging.h" />
+    <ClInclude Include="include\Manager.h" />
+    <ClInclude Include="include\Manager\Callbacks.h" />
+    <ClInclude Include="include\Manager\FindAllManagers.h" />
+    <ClInclude Include="include\Manager\GetRefToManager.h" />
+    <ClInclude Include="include\Manager\MiscMetafunctions.h" />
+    <ClInclude Include="include\MappedVector.h" />
+    <ClInclude Include="include\MeshActor.h" />
+    <ClInclude Include="include\ModuleHandler.h" />
+    <ClInclude Include="include\MPLHelp.h" />
+    <ClInclude Include="include\PropertyManager.h" />
+    <ClInclude Include="include\QuadUVCoords.h" />
+    <ClInclude Include="include\Quantity.h" />
+    <ClInclude Include="include\RefCounted.h" />
+    <ClInclude Include="include\Runtime.h" />
+    <ClInclude Include="include\SaveData.h" />
+    <ClInclude Include="include\SerializeGLM.h" />
+    <ClInclude Include="include\TextBoxWidget.h" />
+    <ClInclude Include="include\TimerHandle.h" />
+    <ClInclude Include="include\TimerManager.h" />
+    <ClInclude Include="include\Transform.h" />
+    <ClInclude Include="src\EnginePCH.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Private\EnginePCH.h" />
-    <ClInclude Include="Public\Cacher.h" />
-    <ClInclude Include="Public\call_from_tuple.h" />
-    <ClInclude Include="Public\ChangeDirectory.h" />
-    <ClInclude Include="Public\Clamp.h" />
-    <ClInclude Include="public\Color.h" />
-    <ClInclude Include="Public\CoreManager.h" />
-    <ClInclude Include="Public\ENGException.h" />
-    <ClInclude Include="Public\Engine.h" />
-    <ClInclude Include="Public\glm-ortho-2d.h" />
-    <ClInclude Include="public\Helper.h" />
-    <ClInclude Include="Public\KeyEnum.h" />
-    <ClInclude Include="Public\Logging.h" />
-    <ClInclude Include="Public\Manager.h" />
-    <ClInclude Include="Public\Manager\Callbacks.h" />
-    <ClInclude Include="Public\Manager\FindAllManagers.h" />
-    <ClInclude Include="Public\Manager\GetRefToManager.h" />
-    <ClInclude Include="Public\Manager\MiscMetafunctions.h" />
-    <ClInclude Include="Public\MappedVector.h" />
-    <ClInclude Include="Public\ModuleHandler.h" />
-    <ClInclude Include="Public\MPLHelp.h" />
-    <ClInclude Include="Public\PropertyManager.h" />
-    <ClInclude Include="Public\QuadUVCoords.h" />
-    <ClInclude Include="Public\Quantity.h" />
-    <ClInclude Include="Public\RefCounted.h" />
-    <ClInclude Include="Public\Runtime.h" />
-    <ClInclude Include="Public\SaveData.h" />
-    <ClInclude Include="Public\SerializeGLM.h" />
-    <ClInclude Include="Public\TimerManager.h" />
-    <ClInclude Include="Public\TimerHandle.h" />
-    <ClInclude Include="Public\Transform.h" />
+    <ClCompile Include="src\ChangeDirectory.cpp" />
+    <ClCompile Include="src\CoreManager.cpp" />
+    <ClCompile Include="src\ENGException.cpp" />
+    <ClCompile Include="src\EnginePCH.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="src\Logging.cpp" />
+    <ClCompile Include="src\ModuleHandler.cpp" />
+    <ClCompile Include="src\PropertyManager.cpp" />
+    <ClCompile Include="src\Runtime.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
