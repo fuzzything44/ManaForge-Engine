@@ -68,9 +68,6 @@
     <ClInclude Include="include\Manager.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\MappedVector.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="include\MeshActor.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -112,6 +109,9 @@
     </ClInclude>
     <ClInclude Include="include\Transform.h">
       <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Manager\Entity.h">
+      <Filter>include\ManagerDetail</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

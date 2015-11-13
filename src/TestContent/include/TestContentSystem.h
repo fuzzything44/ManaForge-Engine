@@ -24,8 +24,7 @@ using TupleOfVectorRefrences = std::tuple<std::vector<Args>&...>;
 template<>
 void beginPlayManager<TestContentManager_t>(TestContentManager_t& manager)
 {
-	auto ent1 = manager.createEntity();
-	manager.addComponent<CPosition>(ent1);
+	auto ent1 = manager.newEntity<boost::mpl::vector<CPosition>>();
 
 	manager.addTag<TPew>(ent1);
 	assert(manager.hasTag<TPew>(ent1));

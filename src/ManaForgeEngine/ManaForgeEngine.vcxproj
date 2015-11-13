@@ -249,10 +249,10 @@
     <ClInclude Include="include\Logging.h" />
     <ClInclude Include="include\Manager.h" />
     <ClInclude Include="include\Manager\Callbacks.h" />
+    <ClInclude Include="include\Manager\Entity.h" />
     <ClInclude Include="include\Manager\FindAllManagers.h" />
     <ClInclude Include="include\Manager\GetRefToManager.h" />
     <ClInclude Include="include\Manager\MiscMetafunctions.h" />
-    <ClInclude Include="include\MappedVector.h" />
     <ClInclude Include="include\MeshActor.h" />
     <ClInclude Include="include\ModuleHandler.h" />
     <ClInclude Include="include\MPLHelp.h" />

@@ -8,10 +8,12 @@
 class COpenGLModel 
 {
 public:
-	COpenGLModel(const OpenGLModelData& data, const std::shared_ptr<OpenGLMaterialInstance>& mat)
+	COpenGLModel(const OpenGLModelData& data = {}, const std::shared_ptr<OpenGLMaterialInstance>& mat = {})
 		: modelData{ data }
 		, material(mat)
 	{}
+
+
 
 	friend class OpenGLRenderer;
 	

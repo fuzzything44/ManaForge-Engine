@@ -7,7 +7,7 @@
 
 struct OpenGLModelData : RefCounted<OpenGLModelData>
 {
-	OpenGLModelData(const vec2* locations, const vec2* UVs, size_t numVerts, const uvec3* triangleIndicies, size_t numTriangles)
+	OpenGLModelData(const vec2* locations = nullptr, const vec2* UVs = nullptr, size_t numVerts = 0, const uvec3* triangleIndicies = nullptr, size_t numTriangles = 0)
 		:numTriangles((GLsizei)numTriangles)
 	{
 		glGenVertexArrays(1, &vertexArray);

@@ -88,6 +88,8 @@ void updateManager<>(OpenGLRendererManager_t& manager)
 	manager.runAllMatching<boost::mpl::vector<COpenGLModel, CPosition>>(
 		[aspectRatio](COpenGLModel& model, CPosition& pos)
 	{
+		assert(model.modelData.indexBuffer);
+
 		mat3 MVPmat;
 		MVPmat = glm::ortho2d(-aspectRatio, aspectRatio, -1.f, 1.f);
 		MVPmat = glm::translate(MVPmat, pos.value);
