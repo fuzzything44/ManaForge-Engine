@@ -8,6 +8,10 @@
 #pragma comment(lib, "ManaForgeEngine.lib")
 #endif
 
+
+#pragma warning(disable:4503)
+
+
 // ALWAYS link to stackwalker.lib
 #pragma comment(lib, "StackWalker.lib")
 

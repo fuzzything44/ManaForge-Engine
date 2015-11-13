@@ -8,12 +8,12 @@
 namespace detail
 {
 	template<typename ManagerType, typename Tag, bool = ManagerType::template isTag<Tag>()>
-	struct GetTagOrComponentID_IMPL
+	struct getComponentOrTagID_IMPL
 	{
 		static const constexpr size_t value = ManagerType::template getTagID<Tag>();
 	};
 	template<typename ManagerType, typename Component>
-	struct GetTagOrComponentID_IMPL<ManagerType, Component, false>
+	struct getComponentOrTagID_IMPL<ManagerType, Component, false>
 	{
 		static const constexpr size_t value = ManagerType::template getComponentID<Component>();
 	};
