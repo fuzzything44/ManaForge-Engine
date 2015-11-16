@@ -96,3 +96,13 @@ src/boostx64.props
 src/OpenGLRenderer/Debug/openglrenderer.obj.enc
 *.obj-2284f8f7
 *.enc
+
+CMakeCache.txt
+Makefile
+
+/CMakeFiles/
+/*/*/CMakeFiles/
+
+cmake_install.cmake
+/*/cmake_install.cmake
+
