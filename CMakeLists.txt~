@@ -1,0 +1,6 @@
+CMAKE_MINIMUM_REQUIRED(3.0)
+
+project(ManaForgeEngine)
+
+
+
