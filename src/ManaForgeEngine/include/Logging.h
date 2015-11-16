@@ -1,5 +1,4 @@
 #pragma once
-#include "ENGException.h"
 
 #include <fstream>
 #include <iostream>
@@ -11,6 +10,10 @@
 #include <boost/iostreams/categories.hpp>
 
 #include <boost/date_time.hpp>
+
+#include <exception>
+
+#include "Engine.h"
 
 enum class severity_t
 {
@@ -129,7 +132,7 @@ struct logger : logdetail::log_base
 		}                                                                                                \
 		else if (::severity_t:: sev == ::severity_t::Error)                                             \
 		{                                                                                                \
-			throw ::ENGException();                                                                      \
+			throw ::std::runtime_error("");                                                            \
 		}                                                                                                \
 		 }())                                                                                            \
 	std::get<1>(data)
@@ -145,7 +148,7 @@ struct logger : logdetail::log_base
 		}                                                    \
 		else if (::severity_t::  sev == ::severity_t::Error) \
 		{                                                    \
-			throw ::ENGException();                          \
+			throw ::std::runtime_error("");                          \
 		}                                                    \
 		 }())                                                \
 	::logger<severity_t:: sev >()

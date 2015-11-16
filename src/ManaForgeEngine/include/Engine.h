@@ -27,7 +27,6 @@
 #include <glm/gtx/matrix_transform_2d.hpp>
 
 #include "Logging.h"
-#include "ENGException.h"
 
 #include <boost/filesystem/path.hpp>
 

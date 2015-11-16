@@ -5,9 +5,9 @@
 #pragma comment(lib, "Box2D.lib")
 
 #ifdef Box2DPhysicsSystem_Source
-#define Box2DPhysicsSystem_API __declspec(dllexport)
+#define Box2DPhysicsSystem_API DLLEXPORT
 #else
-#define Box2DPhysicsSystem_API __declspec(dllimport)
+#define Box2DPhysicsSystem_API DLLIMPORT
 #pragma comment(lib, "Box2DPhysicsSystem.lib")
 #endif
 

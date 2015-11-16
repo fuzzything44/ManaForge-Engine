@@ -2,6 +2,8 @@
 
 #include <Engine.h>
 
+#include <boost/serialization/nvp.hpp>
+
 // serialization functions for vectors
 namespace boost
 {
