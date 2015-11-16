@@ -317,40 +317,6 @@ public:
 		return entRet;
 	}
 
-private:
-	template<typename TupleType, typename Sequence, size_t ID = 0
-		, bool needsExit = boost::mpl::size<Sequence>::type::value == ID
-	>
-	struct CreateEntityBatch_IMPL
-	{
-		using Component = typename boost::mpl::at_c<Sequence, ID>::type;
-		using ManagerType = GetManagerFromComponent_t<Component>;
-
-		static_assert(ThisType::template isComponent<Component>(), "Must be a component");
-
-		static void apply(ThisType& manager, TupleType& components, std::vector<size_t>& indicies)
-		{
-			auto&& storage = manager.template getRefToManager<ManagerType>().template getComponentStorage<Component>();
-
-			MappedVector<int> a;
-
-			auto&& storageToCopy = std::get<ID>(components);
-
-			storage.data.insert(storage.data.end(), std::make_move_iterator(storageToCopy.begin()), std::make_move_iterator(storageToCopy.end()));
-			storage.indicies.insert(storage.indicies.end(), indicies.begin(), indicies.end());
-
-			CreateEntityBatch_IMPL<TupleType, Sequence, ID + 1>::apply(manager, components, indicies);
-
-		}
-	};
-	template<typename TupleType, typename Sequence, size_t ID>
-	struct CreateEntityBatch_IMPL<TupleType, Sequence, ID, true>
-	{
-		static void apply(ThisType& manager, TupleType& components, std::vector<size_t>& indicies)
-		{}
-	};
-
-public:
 	template<typename...Args>
 	using TupleOfVectorRefrences = std::tuple<std::vector<Args>&...>;
 
@@ -381,7 +347,7 @@ public:
 		// add components
 		boost::fusion::for_each(components, [this, &indiciesToConstruct](auto&& componentVector)
 		{
-			using ComponentType = std::decay_t<decltype(componentVector)>::value_type;
+			using ComponentType = typename std::decay_t<decltype(componentVector)>::value_type;
 			using ManagerType = GetManagerFromComponent_t<ComponentType>;
 
 			constexpr const size_t componentID = ManagerType::template getMyComponentID<ComponentType>();
@@ -405,7 +371,7 @@ public:
 			using TagType = decltype(tag);
 			using ManagerForTag = GetManagerFromTag_t<TagType>;
 
-			const constexpr tagID = ManagerForTag::template getMyTagID<TagType>();
+			const constexpr size_t tagID = ManagerForTag::template getMyTagID<TagType>();
 
 			auto&& tagStorage = std::get<tagID>(this->getRefToManager<ManagerForTag>().tagStorage);
 
@@ -436,16 +402,7 @@ public:
 	template<typename Component>
 	bool hasComponent(size_t handle)
 	{
-		static_assert(isComponent<Component>(), "Component must be a Component");
-		// get constants for convience
-		using ManagerForComponent = GetManagerFromComponent_t<Component>;
-		constexpr size_t managerID = getManagerID<ManagerForComponent>();
-		constexpr size_t componentID = ManagerForComponent::template getComponentID<Component>();
-
-		// get the entity
-		EntityType& entity = entityStorage[handle];
-
-		return entity.components[componentID];
+		//TODO: reimplement
 	}
 
 	template<typename Tag>
@@ -767,7 +724,8 @@ private:
 	Manager(const MyBasePtrStorage_t& bases)
 		:myManagerData{}
 	{
-		tuple_for_each_with_index(bases, [thisptr = this](auto& ptr, auto)
+		auto thisptr = this; // funky workaround
+		tuple_for_each_with_index(bases, [thisptr](auto& ptr, auto)
 		{
 			using BaseType = std::decay_t<decltype(*ptr)>;
 			static_assert(ThisType::template isManager<BaseType>(), "Must be a manager");

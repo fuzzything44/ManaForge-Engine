@@ -1,10 +1,19 @@
 #pragma once
 #define ENGINE_VERSION 0.1f
 
+// setup dllexport and import for cross-platform
+#if defined __GNUC__
+#define DLLEXPORT // TODO: implement
+#define DLLIMPORT 
+#elif defined MSVC
+#define DLLEXPORT _declspec(dllexport)
+#define DLLIMPORT _declspec(dllimport)
+#endif
+
 #ifdef ManaForgeEngine_Source
-#define ENGINE_API _declspec(dllexport)
+#define ENGINE_API DLLEXPORT
 #else
-#define ENGINE_API _declspec(dllimport)
+#define ENGINE_API DLLIMPORT
 #pragma comment(lib, "ManaForgeEngine.lib")
 #endif
 
@@ -12,15 +21,10 @@
 #pragma warning(disable:4503)
 
 
-// ALWAYS link to stackwalker.lib
-#pragma comment(lib, "StackWalker.lib")
-
 #include <glm/glm.hpp>
 #include <glm/gtx/type_aligned.hpp>
 #include <glm/gtx/transform.hpp>
 #include <glm/gtx/matrix_transform_2d.hpp>
-
-#include <StackWalker/StackWalker.h>
 
 #include "Logging.h"
 #include "ENGException.h"

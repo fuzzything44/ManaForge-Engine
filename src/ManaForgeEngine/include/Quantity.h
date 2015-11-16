@@ -108,8 +108,8 @@ public:
 	}
 
 	template <typename DimensionsU,
-		typename = std::enable_if<boost::mpl::equal<boost::mpl::at_c<DimensionsU, 0>::type,
-			boost::mpl::at_c<Dimensions, 0>::type>::type::value>>
+		typename = std::enable_if_t<boost::mpl::equal<typename boost::mpl::at_c<DimensionsU, 0>::type,
+			typename boost::mpl::at_c<Dimensions, 0>::type>::type::value>>
 	Quantity(const Quantity<DimensionsU>& other)
 	{
 		constexpr float multiplier = ((float)boost::mpl::at_c<DimensionsU, 1>::type::num
@@ -124,8 +124,8 @@ public:
 	float get() const { return data; }
 
 	template <typename DimensionsU,
-		typename = std::enable_if<boost::mpl::equal<boost::mpl::at_c<DimensionsU, 0>::type,
-			boost::mpl::at_c<Dimensions, 0>::type>::type::value>>
+		typename = std::enable_if_t<boost::mpl::equal<typename boost::mpl::at_c<DimensionsU, 0>::type,
+			typename boost::mpl::at_c<Dimensions, 0>::type>::type::value>>
 	const Quantity<Dimensions>& operator=(const Quantity<DimensionsU>& other)
 	{
 		constexpr float multiplier =
@@ -138,14 +138,14 @@ public:
 	template <typename DimensionsU>
 	auto operator*(const Quantity<DimensionsU>& other)
 	{
-		Quantity<boost::mpl::vector<boost::mpl::at_c<DimensionsU, 0>::type,
-			boost::mpl::at_c<Dimensions, 1>::type>> otherConverted = other;
+		Quantity<boost::mpl::vector<typename boost::mpl::at_c<DimensionsU, 0>::type,
+			typename boost::mpl::at_c<Dimensions, 1>::type>> otherConverted = other;
 
-		using outputDims = boost::mpl::transform<boost::mpl::at_c<Dimensions, 0>::type,
-			boost::mpl::at_c<DimensionsU, 0>::type,
-			boost::mpl::plus<boost::mpl::placeholders::_1, boost::mpl::placeholders::_2>>;
+		using outputDims = typename boost::mpl::transform<typename boost::mpl::at_c<Dimensions, 0>::type,
+			typename boost::mpl::at_c<DimensionsU, 0>::type,
+			boost::mpl::plus<boost::mpl::placeholders::_1, boost::mpl::placeholders::_2>>::type;
 
-		return Quantity<boost::mpl::vector<outputDims, boost::mpl::at_c<Dimensions, 1>::type>>(
+		return Quantity<boost::mpl::vector<outputDims, typename boost::mpl::at_c<Dimensions, 1>::type>>(
 			get() * otherConverted.get());
 	}
 
@@ -153,14 +153,14 @@ public:
 	auto operator/(const Quantity<DimensionsU>& other)
 	{
 		// make sure we have the same multiplier
-		Quantity<boost::mpl::vector<boost::mpl::at_c<DimensionsU, 0>::type,
-			boost::mpl::at_c<Dimensions, 1>::type>> otherConverted = other;
+		Quantity<boost::mpl::vector<typename boost::mpl::at_c<DimensionsU, 0>::type,
+			typename boost::mpl::at_c<Dimensions, 1>::type>> otherConverted = other;
 
-		using outputDims = boost::mpl::transform<boost::mpl::at_c<Dimensions, 0>::type,
-			boost::mpl::at_c<DimensionsU, 0>::type,
+		using outputDims = boost::mpl::transform<typename boost::mpl::at_c<Dimensions, 0>::type,
+			typename boost::mpl::at_c<DimensionsU, 0>::type,
 			boost::mpl::minus<boost::mpl::placeholders::_1, boost::mpl::placeholders::_2>>;
 
-		return Quantity<boost::mpl::vector<outputDims, boost::mpl::at_c<Dimensions, 1>::type>>(
+		return Quantity<boost::mpl::vector<outputDims, typename boost::mpl::at_c<Dimensions, 1>::type>>(
 			get() / otherConverted.get());
 	}
 };

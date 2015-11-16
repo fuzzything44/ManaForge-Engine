@@ -50,4 +50,32 @@ set(MANAFORGE_ENGINE_PUBLIC_FILES
 	"
 	)
 
-add_executable(ManaForgeEngine ${MANAFORGE_ENGINE_PRIVATE_FILES})  
+# find boost
+find_package(Boost 1.59.0 REQUIRED)
+
+include_directories(${Boost_INCLUDE_DIRS})
+include_directories("${CMAKE_SOURCE_DIR}/include/")
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/include")
+
+
+add_library(ManaForgeEngine SHARED ${MANAFORGE_ENGINE_PRIVATE_FILES})  
+
+
+# will make sure we have a proper C++11 compiler
+target_compile_features(ManaForgeEngine PRIVATE 
+	cxx_constexpr 
+	cxx_alias_templates
+	cxx_decltype 
+	cxx_lambdas
+	cxx_lambda_init_captures
+	cxx_nullptr
+	cxx_override
+	cxx_range_for
+	cxx_right_angle_brackets
+	cxx_static_assert
+	cxx_strong_enums
+	cxx_variadic_macros
+	cxx_variadic_templates
+	cxx_template_template_parameters
+	
+	 )

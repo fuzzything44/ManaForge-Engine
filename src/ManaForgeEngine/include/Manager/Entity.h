@@ -48,10 +48,10 @@ struct Entity : EntityBase
 		{
 			auto casted = static_cast<Entity<ManagerType, Signature>&>(*base);
 
-			using Components = ManagerType::template RemoveTags_t<Signature>;
+			using Components = typename ManagerType::template RemoveTags_t<Signature>;
 
 			for_each_no_construct_ptr<Components>(
-				[](auto ptr)
+				[casted](auto ptr)
 			{
 				using ComponentType = std::decay_t<std::remove_pointer_t<decltype(ptr)>>;
 
@@ -59,10 +59,10 @@ struct Entity : EntityBase
 
 				constexpr size_t componentID = ManagerType::template getComponentID<ComponentType>();
 
-				auto&& componentStorage = manager.template getComponentStorage<ComponentType>();
+				auto&& componentStorage = casted.template getComponentStorage<ComponentType>();
 
 				// call destructor 
-				compoentStorage[componentIDs[componentID]].~ComponentType();
+				componentStorage[casted.componentIDs[componentID]].~ComponentType();
 
 				// get last element to swap with
 

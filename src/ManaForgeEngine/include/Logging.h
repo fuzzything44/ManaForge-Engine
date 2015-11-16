@@ -122,12 +122,12 @@ struct logger : logdetail::log_base
 	for (std::tuple<bool, std::stringstream> data{true, std::stringstream()}; std::get<0>(data); [&data] \
 		 {                                                                                               \
 		std::get<0>(data) = false;                                                                       \
-		::logger<::severity_t::##sev>() << ::logdetail::stringToWstring(::std::get<1>(data).str());      \
-		if (::severity_t::##sev == ::severity_t::Fatal) {                                                \
+		::logger<::severity_t:: sev >() << ::logdetail::stringToWstring(::std::get<1>(data).str());      \
+		if (::severity_t:: sev == ::severity_t::Fatal) {                                                \
 			::logdetail::log_base::cleanup();                                                            \
 			::std::terminate();                                                                          \
 		}                                                                                                \
-		else if (::severity_t::##sev == ::severity_t::Error)                                             \
+		else if (::severity_t:: sev == ::severity_t::Error)                                             \
 		{                                                                                                \
 			throw ::ENGException();                                                                      \
 		}                                                                                                \
@@ -139,13 +139,13 @@ struct logger : logdetail::log_base
 	for (bool needsRun = true; needsRun; [&needsRun]         \
 		 {                                                   \
 		needsRun = false;                                    \
-		if (::severity_t::##sev == ::severity_t::Fatal) {    \
+		if (::severity_t::  sev == ::severity_t::Fatal) {    \
 			::logdetail::log_base::cleanup();                \
 			::std::terminate();                              \
 		}                                                    \
-		else if (::severity_t::##sev == ::severity_t::Error) \
+		else if (::severity_t::  sev == ::severity_t::Error) \
 		{                                                    \
 			throw ::ENGException();                          \
 		}                                                    \
 		 }())                                                \
-	::logger<severity_t::##sev>()
+	::logger<severity_t:: sev >()

@@ -165,7 +165,7 @@ namespace detail
 	{
 		static void apply(typename ThisManager::RuntimeSignature_t& ret, const typename BaseManager::RuntimeSignature_t& toConvert)
 		{
-			using ThisComponentType = BaseManager::template ComponentOrTagByID<current>;
+			using ThisComponentType = typename BaseManager::template ComponentOrTagByID<current>;
 			constexpr size_t thisComponentID = ThisManager::template getTagOrComponentID<ThisComponentType>();
 
 			ret[thisComponentID] = toConvert[current];

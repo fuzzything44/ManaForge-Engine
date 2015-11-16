@@ -35,7 +35,6 @@ void changeDir()
 {
 	// TODO write linux code
 
-	return 0;
 }
 
 #elif defined __APPLE__

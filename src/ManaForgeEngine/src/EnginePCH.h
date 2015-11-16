@@ -57,14 +57,15 @@
 
 #include <boost/date_time.hpp>
 
+#ifdef WIN32
 #ifdef WIN32_MEAN_AND_LEAN
 #undef WIN32_MEAN_AND_LEAN
 #endif
 #define WIN32_MEAN_AND_LEAN 1
 #include <Windows.h>
+#endif
 
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
 #include <glm/gtx/matrix_transform_2d.hpp>
 
-#include <StackWalker/StackWalker.h>

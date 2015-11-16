@@ -45,4 +45,48 @@ Module::~Module()
 	}
 
 }
+
+// START LINUX IMPL
+///////////////////
+
+#elif defined __GNUC__
+
+#include <dlfcn.h>
+
+Module::Module(ModuleHandler& handler, const path_t& name)
+	:name(name)
+{
+	path_t pathWithExt = L"modules\\" + name.wstring() + L".so";
+
+	handle = dlopen(pathWithExt.string().c_str(), RTLD_NOW); // TODO: do more research here
+	
+
+	if (handle == nullptr) {
+		MFLOGW(Error) << L"Failed to load library. Name: " << name.c_str() << L" Error: " << dlerror();
+	}
+
+	InitFuncPtr_t addr = reinterpret_cast<InitFuncPtr_t>(dlsym(handle, "init"));
+
+	if (addr == nullptr) {
+		MFLOG(Error) << "Failed to get init function address!";
+	}
+
+	addr(handler);
+	
+}
+
+
+Module::~Module()
+{
+	if (handle)
+	{
+		int result = dlclose(handle);
+		if (result != 0) {
+			MFLOG(Error) << "Could not unload dll.";
+		}
+	}
+
+}
+
+
 #endif
