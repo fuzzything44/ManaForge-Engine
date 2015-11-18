@@ -1,5 +1,6 @@
 
 include_directories("${GLFW_SOURCE_DIR}/src"
+					"${GLFW_SOURCE_DIR}/src/../../"
                     "${GLFW_BINARY_DIR}/src"
                     ${glfw_INCLUDE_DIRS})
 
@@ -7,8 +8,8 @@ add_definitions(-D_GLFW_USE_CONFIG_H)
 
 set(common_HEADERS internal.h
                    "${GLFW_BINARY_DIR}/src/glfw_config.h"
-                   "${GLFW_SOURCE_DIR}/include/GLFW/glfw3.h"
-                   "${GLFW_SOURCE_DIR}/include/GLFW/glfw3native.h")
+                   "${GLFW_SOURCE_DIR}/../../include/GLFW/glfw3.h"
+                   "${GLFW_SOURCE_DIR}/../../include/GLFW/glfw3native.h")
 set(common_SOURCES context.c init.c input.c monitor.c window.c)
 
 if (_GLFW_COCOA)

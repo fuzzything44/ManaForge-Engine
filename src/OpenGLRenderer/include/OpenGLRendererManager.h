@@ -5,7 +5,7 @@
 
 #include "COpenGLModel.h"
 
-#include <gl/glew.h>
+#include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm-ortho-2d.h>
 

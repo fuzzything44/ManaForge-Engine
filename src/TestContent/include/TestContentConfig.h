@@ -2,8 +2,8 @@
 #include <Engine.h>
 
 #ifdef TestContent_Source
-#define TestContent_API __declspec(dllexport)
+#define TestContent_API DLLEXPORT
 #else
-#define TestContent_API __declspec(dllimport)
+#define TestContent_API DLLIMPORT
 #pragma comment(lib, "TestContent.lib")
 #endif

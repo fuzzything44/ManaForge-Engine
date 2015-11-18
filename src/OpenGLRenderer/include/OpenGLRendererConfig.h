@@ -9,8 +9,8 @@
 #pragma comment(lib, "OpenGL32.lib")
 
 #ifdef OpenGLRenderer_Source
-#	define OpenGLRenderer_API __declspec(dllexport)
+#	define OpenGLRenderer_API DLLEXPORT
 #else
-#	define OpenGLRenderer_API __declspec(dllimport)
+#	define OpenGLRenderer_API DLLIMPORT
 #	pragma comment(lib, "OpenGLRenderer.lib")
 #endif

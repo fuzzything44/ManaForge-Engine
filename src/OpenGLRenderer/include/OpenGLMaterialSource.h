@@ -4,7 +4,7 @@
 
 #include <RefCounted.h>
 
-#include <gl/glew.h>
+#include <GL/glew.h>
 
 struct OpenGLMaterialSource : RefCounted<OpenGLMaterialSource>
 {

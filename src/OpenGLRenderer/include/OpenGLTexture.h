@@ -6,7 +6,7 @@
 
 #include "SOIL/SOIL.h"
 
-#include <gl/glew.h>
+#include <GL/glew.h>
 
 struct OpenGLTexture : RefCounted<OpenGLTexture>
 {

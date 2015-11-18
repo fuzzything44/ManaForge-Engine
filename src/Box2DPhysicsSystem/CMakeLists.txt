@@ -24,6 +24,9 @@ include_directories("${CMAKE_CURRENT_SOURCE_DIR}/include")
 
 add_library(Box2DPhysicsSystem SHARED ${BOX2D_PHYSICS_SYSTEM_PRIVATE_FILES} ${BOX2D_PHYSICS_SYSTEM_PUBLIC_FILES})
 
+add_dependencies(Box2DPhysicsSystem ManaForgeEngine Box2D)
+
+
 # will make sure we have a proper C++11 compiler
 target_compile_features(Box2DPhysicsSystem PRIVATE 
 	cxx_constexpr 

@@ -4,7 +4,7 @@
 #include "ChangeDirectory.h"
 #include "Logging.h"
 
-Runtime* Runtime::runtimeObj = nullptr;
+ENGINE_API Runtime* Runtime::runtimeObj = nullptr;
 
 Runtime::Runtime()
 {

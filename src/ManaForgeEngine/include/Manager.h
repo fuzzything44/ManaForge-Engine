@@ -196,10 +196,10 @@ public:
 		typename boost::mpl::at_c<AllComponents, at>::type;
 
 	template<size_t at> using TagByID =
-		typename boost::mpl::at_c<AllTags, at - getNumComponents()>::type;
+		typename boost::mpl::at_c<AllTags, at - ThisType::getNumComponents()>::type;
 
 private:
-	template<size_t at, bool isComponent = (at < getNumComponents())>
+	template<size_t at, bool isComponent = (at < ThisType::getNumComponents())>
 		struct ComponentOrTagByID_IMPL
 		{
 			using type = TagByID<at>;
@@ -261,7 +261,7 @@ public:
 
 private:
 
-	template<typename ComponentOrTag, bool = isTag<ComponentOrTag>()>
+	template<typename ComponentOrTag, bool = ThisType::template isTag<ComponentOrTag>()>
 	struct GetManagerFromComponentOrTag
 	{
 		using type = GetManagerFromTag_t<ComponentOrTag>;
@@ -290,7 +290,7 @@ public:
 	{
 		using ManagerType = FindMostBaseManagerForSignature_t<Signature>;
 		
-		auto entRet = std::make_unique<Entity<ManagerType, Signature>>();
+		auto entRet = std::make_unique<Entity<ManagerType, Signature>>(*this);
 
 		auto&& storage = getRefToManager<ManagerType>().entityStorage;
 		
@@ -439,7 +439,7 @@ public:
 		{
 			using NextIter = typename boost::mpl::next<CurrentIter>::type;
 			using ComponentType = typename boost::mpl::deref<CurrentIter>::type;
-			using ManagerType = ThisType::template GetManagerFromComponent_t<ComponentType>;
+			using ManagerType = typename ThisType::template GetManagerFromComponent_t<ComponentType>;
 
 			CallFunctionWighSigParamsIMPL
 				<
@@ -451,7 +451,7 @@ public:
 					, ID
 					, std::forward<F>(func)
 					, std::forward<Args>(args)...
-					, manager.getRefToManager<ManagerType>().template getComponent<ComponentType>(ID)
+					, manager.template getRefToManager<ManagerType>().template getComponent<ComponentType>(ID)
 					);
 		}
 	};

@@ -32,7 +32,8 @@ struct Entity : EntityBase
 		}
 	};
 
-	Entity()
+	Entity(ManagerType& manager)
+		:manager(manager)
 	{
 		hasComponentOrTag = 
 			[](size_t ID)
@@ -51,7 +52,7 @@ struct Entity : EntityBase
 			using Components = typename ManagerType::template RemoveTags_t<Signature>;
 
 			for_each_no_construct_ptr<Components>(
-				[casted](auto ptr)
+				[&casted](auto ptr)
 			{
 				using ComponentType = std::decay_t<std::remove_pointer_t<decltype(ptr)>>;
 
@@ -59,7 +60,7 @@ struct Entity : EntityBase
 
 				constexpr size_t componentID = ManagerType::template getComponentID<ComponentType>();
 
-				auto&& componentStorage = casted.template getComponentStorage<ComponentType>();
+				auto&& componentStorage = casted.manager.template getComponentStorage<ComponentType>();
 
 				// call destructor 
 				componentStorage[casted.componentIDs[componentID]].~ComponentType();

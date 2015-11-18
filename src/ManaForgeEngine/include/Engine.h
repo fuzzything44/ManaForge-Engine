@@ -3,7 +3,7 @@
 
 // setup dllexport and import for cross-platform
 #if defined __GNUC__
-#define DLLEXPORT // TODO: implement
+#define DLLEXPORT __attribute__ ((visibility ("default")))
 #define DLLIMPORT 
 #elif defined MSVC
 #define DLLEXPORT _declspec(dllexport)
@@ -35,7 +35,7 @@ namespace std
 {
 
 template <>
-struct std::hash<boost::filesystem::path>
+struct hash<boost::filesystem::path>
 {
 
 	size_t operator()(const boost::filesystem::path& p) const

@@ -4,7 +4,7 @@
 
 std::weak_ptr<TestContentManager_t> testContentManager = {};
 
-extern"C" __declspec(dllexport) void init(ModuleHandler& handler)
+extern"C" DLLEXPORT void init(ModuleHandler& handler)
 {
 	// load dependent modules
 	handler.loadModule("OpenALAudioSystem");
