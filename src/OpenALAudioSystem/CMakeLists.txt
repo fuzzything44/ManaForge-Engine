@@ -27,7 +27,14 @@ include_directories("${CMAKE_CURRENT_SOURCE_DIR}/include")
 
 add_library(OpenALAudioSystem SHARED ${OPENAL_AUDIO_PRIVATE_FILES} ${OPENAL_AUDIO_PUBLIC_FILES})  
 
-add_dependencies(OpenALAudioSystem ManaForgeEngine openal alut)
+add_dependencies(OpenALAudioSystem ManaForgeEngine alut)
+
+if(WIN32)
+	add_dependencies(OpenALAudioSystem OpenAL32)
+else()
+	add_dependencies(OpenALAudioSystem openal)
+endif()
+
 
 
 # will make sure we have a proper C++11 compiler

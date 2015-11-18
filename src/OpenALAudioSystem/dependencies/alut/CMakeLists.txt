@@ -39,6 +39,9 @@ option(BUILD_USE_WERROR "enable fail on all warning" OFF)
 # Dependencies
 ###
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../../include")
+if(MSVC)
+	include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../../include/AL")
+endif()
 
 ###
 # Checking for types

@@ -60,6 +60,8 @@ include_directories("${CMAKE_SOURCE_DIR}/src/ManaForgeEngine/include/")
 include_directories("${Boost_INCLUDE_DIR}")
 include_directories("${CMAKE_SOURCE_DIR}/include")
 
+add_definitions(-DManaForgeEngine_Source=1)
+
 add_library(ManaForgeEngine SHARED ${MANAFORGE_ENGINE_PRIVATE_FILES} ${MANAFORGE_ENGINE_PUBLIC_FILES})  
 
 

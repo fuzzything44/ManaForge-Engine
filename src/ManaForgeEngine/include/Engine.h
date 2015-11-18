@@ -5,9 +5,9 @@
 #if defined __GNUC__
 #define DLLEXPORT __attribute__ ((visibility ("default")))
 #define DLLIMPORT 
-#elif defined MSVC
-#define DLLEXPORT _declspec(dllexport)
-#define DLLIMPORT _declspec(dllimport)
+#elif defined _MSC_VER 
+#define DLLEXPORT __declspec(dllexport)
+#define DLLIMPORT __declspec(dllimport)
 #endif
 
 #ifdef ManaForgeEngine_Source

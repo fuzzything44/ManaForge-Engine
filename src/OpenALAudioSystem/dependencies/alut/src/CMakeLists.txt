@@ -79,7 +79,13 @@ set_target_properties(alut
 	${MAJOR_VERSION}
 	SOVERSION
 	${MAJOR_VERSION})
-add_dependencies(alut openal)
+if(WIN32)
+	add_dependencies(alut OpenAL32)
+	target_link_libraries(alut "OpenAL32")
+else()
+	add_dependencies(alut openal)
+	target_link_libraries(alut "openal")
+endif()
 if(UNIX)
 	target_link_libraries(alut m)
 endif()	
