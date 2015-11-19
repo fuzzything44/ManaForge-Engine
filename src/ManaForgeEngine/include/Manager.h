@@ -294,6 +294,7 @@ public:
 
 		auto&& storage = getRefToManager<ManagerType>().entityStorage;
 		
+		
 		size_t entID = storage.size();
 
 		boost::fusion::for_each(components, 
@@ -312,9 +313,10 @@ public:
 
 		});
 
+		auto&& ret = entRet.get();
+		storage.emplace_back(std::move(entRet));
 
-
-		return entRet;
+		return ret;
 	}
 
 	template<typename...Args>
@@ -388,15 +390,13 @@ public:
 	}
 
 	template<typename Component>
-	Component& getComponent(size_t handle)
+	Component& getComponent(EntityBase* handle)
 	{
-		static_assert(isMyComponent<Component>(), "Component must be a component");
-
-
-		// get constants for convience
 		using ManagerForComponent = GetManagerFromComponent_t<Component>;
-		
-		return getComponentStorage<Component>()[handle];
+
+		auto&& manager = this->template getRefToManager<ManagerForComponent>();
+
+		return manager.template getComponentStorage<Component>()[handle->getComponentID(handle, getComponentID<Component>())];
 	}
 
 	template<typename Component>
@@ -435,7 +435,7 @@ public:
 	struct CallFunctionWighSigParamsIMPL
 	{
 		template<typename F, typename...Args>
-		static void apply(ThisType& manager, size_t ID, F&& func, Args&&...args)
+		static void apply(ThisType& manager, EntityBase* ID, F&& func, Args&&...args)
 		{
 			using NextIter = typename boost::mpl::next<CurrentIter>::type;
 			using ComponentType = typename boost::mpl::deref<CurrentIter>::type;
@@ -459,7 +459,7 @@ public:
 	struct CallFunctionWighSigParamsIMPL<EndIter, EndIter>
 	{
 		template<typename F, typename...Args>
-		static void apply(ThisType& manager, size_t ID, F&& func, Args&&...args)
+		static void apply(ThisType& manager, EntityBase* ID, F&& func, Args&&...args)
 		{
 			std::forward<F>(func)(std::forward<Args>(args)...);
 		}
@@ -489,13 +489,13 @@ public:
 
 	// CALLING FUNCTIONS ON ENTITIES
 	template<typename SignatureToRun, typename F>
-	void callFunctionWithSigParams(size_t ID, F&& func)
+	void callFunctionWithSigParams(EntityBase* ent, F&& func)
 	{
 		CallFunctionWighSigParamsIMPL
 			<
 			typename boost::mpl::begin<SignatureToRun>::type
 			, typename boost::mpl::end<SignatureToRun>::type
-			>::apply(*this, ID, std::forward<F>(func));
+			>::apply(*this, ent, std::forward<F>(func));
 	}
 
 	template<typename SignatureToRun, typename F>
@@ -506,88 +506,29 @@ public:
 		getRefToManager<Manager_t>().template runAllMatchingIMPL<SignatureToRun>(std::forward<F>(functor));
 	}
 
-	template<typename... Args>
-	using TupleOfVectorIterators = std::tuple<typename std::vector<Args>::iterator...>;
-
-	template<typename Signature>
-	using ComponentIterTypes = ExpandSequenceToVaraidic_t<Signature, TupleOfVectorIterators>;
-
-	template<typename Signature>
-	ComponentIterTypes<Signature> generateBeginIters()
-	{
-		ComponentIterTypes<Signature> sig;
-
-		boost::fusion::for_each(sig, [this](auto&& a)
-		{
-			using ComponentType = std::decay_t<typename std::iterator_traits<std::decay_t<decltype(a)>>::value_type::second_type>;
-
-			a = getComponentStorage<ComponentType>().begin();
-		});
-
-		return sig;
-	}
-
-	template<typename Signature>
-	ComponentIterTypes<Signature> generateEndIters()
-	{
-		ComponentIterTypes<Signature> sig;
-
-		boost::fusion::for_each(sig, [this](auto&& a)
-		{
-			using ComponentType = std::decay_t<typename std::iterator_traits<std::decay_t<decltype(a)>>::value_type::second_type>;
-			using ManagerType = GetManagerFromComponent_t<ComponentType>;
-
-			constexpr const size_t componentID = ManagerType::template getMyComponentID<ComponentType>();
-
-			a = std::get<componentID>(this->getRefToManager<ManagerType>().componentStorage).end();
-		});
-
-		return sig;
-	}
-
-	template<typename TupleOfIters>
-	static bool advanceUntilEqualIndex(TupleOfIters&& iters, TupleOfIters&& endIters)
-	{
-		size_t largest = 0;
-
-		// find largest index
-		tuple_for_each_with_index(iters, [&largest, &endIters](auto&& iter, auto ID)
-		{
-
-			if(iter != std::get<decltype(ID)::value>(endIters)) largest = std::max(largest, iter->first);
-		});
-
-		bool succeded = true;
-
-		// advance iterators
-		tuple_for_each_with_index(iters, [largest, &succeded, &endIters](auto&& iter, auto ID)
-		{
-			constexpr size_t index = decltype(ID)::value;
-
-			if (succeded)
-			{
-
-				if (iter == std::get<index>(endIters))
-				{
-					succeded = false;
-					return;
-				}
-
-				while (iter->first < largest)
-				{
-					++iter;
-				}
-			}
-
-		});
-
-		return succeded;
-	}
-
 	template<typename SignatureToRun, typename F>
 	void runAllMatchingIMPL(F&& functor)
 	{
-		// TODO: reimplement
+		using Tags = RemoveComponents_t<SignatureToRun>;
+		using Components = RemoveTags_t<SignatureToRun>;
+
+		using FirstComponent = typename boost::mpl::at_c<Components, 0>::type;
+
+		auto&& componentEntStorage = getComponentEntityStorage<FirstComponent>();
+
+		for (auto&& ent : componentEntStorage)
+		{
+			bool matches = true;
+			for_each_no_construct_ptr<SignatureToRun>(
+				[&functor, &ent, &matches](auto ptr)
+			{
+				using Comp = std::decay_t<decltype(*ptr)>;
+				if (matches) matches = ent->hasComponentOrTag(ThisType::template getComponentID<Comp>());
+			});
+
+			callFunctionWithSigParams<SignatureToRun>(ent, std::forward<F>(functor));
+		}
+
 	}
 
 
@@ -618,8 +559,6 @@ public:
 public:// TODO:
 
 	ManagerData<ThisType> myManagerData;
-
-	std::array<boost::dynamic_bitset<>, (ThisType::getNumMyTags())> tagStorage;
 
 	std::shared_ptr<size_t> nextIndex;
 

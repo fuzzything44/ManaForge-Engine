@@ -7,9 +7,12 @@
 
 #include <boost/mpl/size.hpp>
 
+#include <boost/fusion/algorithm.hpp>
+
 struct EntityBase
 {
 	bool(*hasComponentOrTag)(size_t componentOrTagID);
+	size_t(*getComponentID)(EntityBase*, size_t componentID);
 	void(*deleteComponents)(EntityBase*);
 
 	~EntityBase()
@@ -23,6 +26,7 @@ struct EntityBase
 template<typename ManagerType, typename Signature>
 struct Entity : EntityBase
 {
+
 	template<typename... Components>
 	struct ComponentsOrTagsToIDs
 	{
@@ -69,6 +73,19 @@ struct Entity : EntityBase
 
 
 			});
+		};
+
+		getComponentID = [](EntityBase* base, size_t componentID)
+		{
+			assert(base->hasComponentOrTag(componentID));
+
+			auto&& casted = static_cast<Entity<ManagerType, Signature>&>(*base);
+
+			constexpr std::array<size_t, boost::mpl::size<Signature>::type::value> IDs =
+				ExpandSequenceToVaraidic_t<Signature, ComponentsOrTagsToIDs>::apply();
+
+			return *std::find(IDs.begin(), IDs.end(), componentID);
+
 		};
 	}
 
