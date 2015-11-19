@@ -33,7 +33,7 @@
 *.vspx
 
 bin/*/ManaForgeEngine.*
-bin/*/Game.*
+bin/*/Game*
 bin/*/OpenGLRenderer.*
 bin/*/DefaultWorld.*
 bin/*/lodepng.*
@@ -42,7 +42,7 @@ bin/*/TestContent.*
 bin/*/glew32*.*
 bin/*/libglew*.*
 bin/*/box2d.*
-bin/*/Box2dPhysicsSystem.*
+bin/*/Box2DPhysicsSystem.*
 bin/*/OpenALAudioSystem.*
 bin/*/OpenAL32.*
 bin/*/OpenAL.*
@@ -51,6 +51,17 @@ bin/*/Soil.*
 bin/*/GLFW3.*
 bin/*/glfw3dll.*
 src/lib/*/*/*.*
+
+lib/
+
+*~
+
+bin/*/libBox2DPhysicsSystem.*
+bin/*/libManaForgeEngine.*
+bin/*/libOpenALAudioSystem.*
+bin/*/libTestContent.*
+bin/*/libDefaultWorld.*
+bin/*/libOpenGLRenderer.*
 
 src/stackwalker/release/
 src/stackwalker/debug/

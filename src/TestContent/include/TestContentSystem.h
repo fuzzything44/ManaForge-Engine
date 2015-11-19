@@ -66,7 +66,7 @@ void beginPlayManager<TestContentManager_t>(TestContentManager_t& manager)
 template<>
 void updateManager<TestContentManager_t>(TestContentManager_t& manager)
 {
-	manager.runAllMatching<boost::mpl::vector<CPosition, TPew>>([]
+	manager.runAllMatching<boost::mpl::vector<CPosition, TPew>>([](CPosition& pos)
 	{
 		
 	});

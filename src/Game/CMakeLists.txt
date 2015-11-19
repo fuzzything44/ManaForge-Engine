@@ -11,11 +11,19 @@ include_directories("${CMAKE_SOURCE_DIR}/include/")
 include_directories("${CMAKE_SOURCE_DIR}/src/")
 
 
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG "${CMAKE_SOURCE_DIR}/bin/debug/")
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_DEBUG "${CMAKE_SOURCE_DIR}/bin/debug/")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_SOURCE_DIR}/bin/debug/")
+
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}/bin/release/")
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}/bin/release/")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}/bin/release/")
+
 add_executable(Game "${CMAKE_CURRENT_SOURCE_DIR}/src/RPG-Game.cpp")
 
 add_dependencies(Game ManaForgeEngine)
 target_link_libraries(Game ManaForgeEngine)
-if(LINUX)
+if(${UNIX})
 	target_link_libraries(Game "stdc++")
 	target_link_libraries(Game "dl")
 endif()
@@ -25,17 +33,7 @@ target_link_libraries(Game ${Boost_SYSTEM_LIBRARY})
 add_definitions("-DGame_Source")
 add_definitions("-DBOOST_ALL_NO_LIB")
 
-set_target_properties( Game
-	PROPERTIES
-	ARCHIVE_OUTPUT_DIRECTORY_DEBUG "${CMAKE_BINARY_DIR}/bin/debug/"
-	LIBRARY_OUTPUT_DIRECTORY_DEBUG "${CMAKE_BINARY_DIR}/bin/debug/"
-	RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_BINARY_DIR}/bin/debug/"
-	
-	
-	ARCHIVE_OUTPUT_DIRECTORY_RELEASE "${CMAKE_BINARY_DIR}/bin/release/"
-	LIBRARY_OUTPUT_DIRECTORY_RELEASE "${CMAKE_BINARY_DIR}/bin/release/"
-	RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_BINARY_DIR}/bin/release/"
-)
+
 
 
 # will make sure we have a proper C++11 compiler

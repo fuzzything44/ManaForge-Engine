@@ -17,3 +17,11 @@ set(LIB_INSTALL_DIR lib${LIB_SUFFIX})
 
 # The Box2D library.
 add_subdirectory(Box2D)
+
+# needed if it is included in a .so or .dll.
+if(${UNIX})
+	SET_TARGET_PROPERTIES(Box2D PROPERTIES
+		COMPILE_FLAGS "-fPIC"
+	)
+
+endif()

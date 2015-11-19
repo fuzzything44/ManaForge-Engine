@@ -15,29 +15,27 @@ macro(buildmodule MODULE_NAME MODULE_FILES)
 	include_directories("${CMAKE_SOURCE_DIR}/src/")
 
 
+
+	set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG "${CMAKE_SOURCE_DIR}/bin/debug/")
+	set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_DEBUG "${CMAKE_SOURCE_DIR}/bin/debug/")
+	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_SOURCE_DIR}/bin/debug/")
+
+	set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}/bin/release/")
+	set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}/bin/release/")
+	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}/bin/release/")
+
 	add_library(${MODULE_NAME} SHARED ${MODULE_FILES})
 
-	if(LINUX)
+	if(${UNIX})
 		target_link_libraries(${MODULE_NAME} "stdc++")
 		target_link_libraries(${MODULE_NAME} "dl")
 	endif()
+	
 	target_link_libraries(${MODULE_NAME} ${Boost_FILESYSTEM_LIBRARY})
 	target_link_libraries(${MODULE_NAME} ${Boost_SYSTEM_LIBRARY})
 
 	add_definitions("-D${MODULE_NAME}_Source")
 	add_definitions("-DBOOST_ALL_NO_LIB")
-	
-	set_target_properties( ${MODULE_NAME}
-		PROPERTIES
-		ARCHIVE_OUTPUT_DIRECTORY_DEBUG "${CMAKE_BINARY_DIR}/bin/debug/"
-		LIBRARY_OUTPUT_DIRECTORY_DEBUG "${CMAKE_BINARY_DIR}/bin/debug/"
-		RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_BINARY_DIR}/bin/debug/"
-		
-		
-		ARCHIVE_OUTPUT_DIRECTORY_RELEASE "${CMAKE_BINARY_DIR}/bin/release/"
-		LIBRARY_OUTPUT_DIRECTORY_RELEASE "${CMAKE_BINARY_DIR}/bin/release/"
-		RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_BINARY_DIR}/bin/release/"
-	)
 	
 	# will make sure we have a proper C++11 compiler
 	target_compile_features(${MODULE_NAME} PRIVATE 

@@ -509,11 +509,18 @@ public:
 	template<typename SignatureToRun, typename F>
 	void runAllMatchingIMPL(F&& functor)
 	{
+		static_assert(boost::mpl::is_sequence<SignatureToRun>::type::value, "Signatures are sequences.");		
+
 		using Tags = RemoveComponents_t<SignatureToRun>;
 		using Components = RemoveTags_t<SignatureToRun>;
 
+		// TODO: need this for now -- will implement comonentless iteration eventually
+		static_assert(boost::mpl::size<Components>::type::value > 0, "Must be at least one component in iteration. This will be implemented later.");
+
 		using FirstComponent = typename boost::mpl::at_c<Components, 0>::type;
 
+		static_assert(isComponent<FirstComponent>(), "Error, not a component.");
+		
 		auto&& componentEntStorage = getComponentEntityStorage<FirstComponent>();
 
 		for (auto&& ent : componentEntStorage)
@@ -523,10 +530,10 @@ public:
 				[&functor, &ent, &matches](auto ptr)
 			{
 				using Comp = std::decay_t<decltype(*ptr)>;
-				if (matches) matches = ent->hasComponentOrTag(ThisType::template getComponentID<Comp>());
+				if (matches) matches = ent->hasComponentOrTag(ThisType::template getComponentOrTagID<Comp>());
 			});
 
-			callFunctionWithSigParams<SignatureToRun>(ent, std::forward<F>(functor));
+			callFunctionWithSigParams<Components>(ent, std::forward<F>(functor));
 		}
 
 	}

@@ -16,6 +16,13 @@ add_subdirectory("dependencies/GLFW/")
 
 add_subdirectory("dependencies/SOIL")
 
+if(${UNIX})
+	SET_TARGET_PROPERTIES(glew_s PROPERTIES
+		COMPILE_FLAGS "-fPIC"
+	)
+
+endif()
+
 
 set(OPENGL_PRIVATE_FILES
 	"src/OpenGLRendererManager.cpp;"
