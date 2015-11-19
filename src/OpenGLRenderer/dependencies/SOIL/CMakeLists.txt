@@ -8,4 +8,5 @@ include_directories("../../include/")
 
 add_library(SOIL "image_DXT.c" "image_helper.c" "SOIL.c" "stb_image_aug.c")
 
+add_definitions("-DSOIL_Source")
 target_link_libraries(SOIL "opengl32")

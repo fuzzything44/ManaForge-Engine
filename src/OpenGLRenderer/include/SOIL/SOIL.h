@@ -40,12 +40,11 @@
 #ifndef HEADER_SIMPLE_OPENGL_IMAGE_LIBRARY
 #define HEADER_SIMPLE_OPENGL_IMAGE_LIBRARY
 
-#ifdef MSVC
+#ifdef _MSC_VER
 #	ifdef SOIL_Source
 #		define SOIL_API __declspec(dllexport)
 #	else
 #		define SOIL_API __declspec(dllimport)
-#		pragma comment(lib, "SOIL.lib")
 #	endif
 #else
 #	define SOIL_API

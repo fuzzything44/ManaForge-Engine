@@ -14,7 +14,6 @@
 #define ENGINE_API DLLEXPORT
 #else
 #define ENGINE_API DLLIMPORT
-#pragma comment(lib, "ManaForgeEngine.lib")
 #endif
 
 

@@ -43,6 +43,8 @@
 #include <boost/archive/polymorphic_iarchive.hpp>
 #include <boost/archive/polymorphic_oarchive.hpp>
 
+#include <boost/thread.hpp>
+
 #include <boost/serialization/base_object.hpp>
 #include <boost/serialization/access.hpp>
 #include <boost/serialization/nvp.hpp>

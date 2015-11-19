@@ -18,7 +18,7 @@ void changeDir()
 	path_t path = ownPth;
 
 	// remove the exe and the directory
-	for (int i = 0; i < 4; i++) {
+	for (int i = 0; i < 3; i++) {
 		assert(boost::filesystem::exists(path));
 		path = path.parent_path();
 	}

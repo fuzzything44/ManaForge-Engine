@@ -13,7 +13,7 @@
 Module::Module(ModuleHandler& handler, const path_t& name)
 	:name(name)
 {
-	path_t pathWithExt = L"modules\\" + name.wstring() + L".dll";
+	path_t pathWithExt = name.wstring() + L".dll";
 
 	handle = LoadLibraryW(pathWithExt.c_str());
 
@@ -56,7 +56,7 @@ Module::~Module()
 Module::Module(ModuleHandler& handler, const path_t& name)
 	:name(name)
 {
-	path_t pathWithExt = L"modules\\" + name.wstring() + L".so";
+	path_t pathWithExt = name.wstring() + L".so";
 
 	handle = dlopen(pathWithExt.string().c_str(), RTLD_NOW); // TODO: do more research here
 	

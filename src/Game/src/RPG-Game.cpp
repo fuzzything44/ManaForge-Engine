@@ -2,17 +2,17 @@
 
 int32 main(int argc, char** argv)
 {
-	//try
-	//{
+	try
+	{
 
-	//	Runtime runtime;
+		Runtime runtime;
 
-		// run the runtime. consumes the thread until it returns
-	//	runtime.run();
-	//}
-	//catch (const std::exception& /*e*/)
-	//{
-	//}
+		//run the runtime. consumes the thread until it returns
+		runtime.run();
+	}
+	catch (const std::exception& /*e*/)
+	{
+	}
 
 	return 0;
 }

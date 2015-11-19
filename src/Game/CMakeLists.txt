@@ -1,30 +1,41 @@
-cmake_minimum_required (VERSION 3.0)
 
 project(Game)
 
 
 # find boost
-find_package(Boost 1.59.0 REQUIRED)
+find_package(Boost 1.59.0 REQUIRED filesystem system)
 
 include_directories("${Boost_INCLUDE_DIR}")
 include_directories("${CMAKE_SOURCE_DIR}/src/ManaForgeEngine/include/")
 include_directories("${CMAKE_SOURCE_DIR}/include/")
+include_directories("${CMAKE_SOURCE_DIR}/src/")
 
-link_directories("${Boost_LIBRARY_DIRS}/clang 3.6.2")
 
-
-add_executable(Game "src/RPG-Game.cpp")
+add_executable(Game "${CMAKE_CURRENT_SOURCE_DIR}/src/RPG-Game.cpp")
 
 add_dependencies(Game ManaForgeEngine)
 target_link_libraries(Game ManaForgeEngine)
-target_link_libraries(Game "stdc++")
-target_link_libraries(Game "boost_system")
-target_link_libraries(Game "boost_filesystem")
+if(LINUX)
+	target_link_libraries(Game "stdc++")
+	target_link_libraries(Game "dl")
+endif()
+target_link_libraries(Game ${Boost_FILESYSTEM_LIBRARY})
+target_link_libraries(Game ${Boost_SYSTEM_LIBRARY})
 
+add_definitions("-DGame_Source")
+add_definitions("-DBOOST_ALL_NO_LIB")
+
+set_target_properties( Game
+	PROPERTIES
+	ARCHIVE_OUTPUT_DIRECTORY_DEBUG "${CMAKE_BINARY_DIR}/bin/debug/"
+	LIBRARY_OUTPUT_DIRECTORY_DEBUG "${CMAKE_BINARY_DIR}/bin/debug/"
+	RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_BINARY_DIR}/bin/debug/"
 	
-target_link_libraries(Game "dl")
-
-
+	
+	ARCHIVE_OUTPUT_DIRECTORY_RELEASE "${CMAKE_BINARY_DIR}/bin/release/"
+	LIBRARY_OUTPUT_DIRECTORY_RELEASE "${CMAKE_BINARY_DIR}/bin/release/"
+	RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_BINARY_DIR}/bin/release/"
+)
 
 
 # will make sure we have a proper C++11 compiler
@@ -45,3 +56,6 @@ target_compile_features(Game PRIVATE
 	cxx_template_template_parameters
 	
 	 )
+
+add_dependencies(Game ManaForgeEngine TestContent)
+target_link_libraries(Game ManaForgeEngine)
