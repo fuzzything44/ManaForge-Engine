@@ -40,13 +40,16 @@ bin/*/lodepng.*
 bin/*/StackWalker.*
 bin/*/TestContent.*
 bin/*/glew32*.*
+bin/*/libglew*.*
 bin/*/box2d.*
 bin/*/Box2dPhysicsSystem.*
 bin/*/OpenALAudioSystem.*
+bin/*/OpenAL32.*
 bin/*/OpenAL.*
 bin/*/alut.*
 bin/*/Soil.*
 bin/*/GLFW3.*
+bin/*/glfw3dll.*
 src/lib/*/*/*.*
 
 src/stackwalker/release/
