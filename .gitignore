@@ -102,6 +102,8 @@ log.txt
 *.cfg
 *.xdc
 
+launch.json
+
 boost.props
 src/boostx64.props
 src/boostx64.props
