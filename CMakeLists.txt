@@ -3,6 +3,9 @@ cmake_minimum_required (VERSION 3.0)
 
 project(ManaForgeEngine)
 
+if(${UNIX})
+	SET(CMAKE_CXX_FLAGS "-g")
+endif()
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG "${CMAKE_SOURCE_DIR}/bin/debug/")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_DEBUG "${CMAKE_SOURCE_DIR}/bin/debug/")
