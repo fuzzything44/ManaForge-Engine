@@ -27,7 +27,6 @@ macro(buildmodule MODULE_NAME MODULE_FILES)
 	add_library(${MODULE_NAME} SHARED ${MODULE_FILES})
 
 	if(${UNIX})
-		target_link_libraries(${MODULE_NAME} "stdc++")
 		target_link_libraries(${MODULE_NAME} "dl")
 	endif()
 	

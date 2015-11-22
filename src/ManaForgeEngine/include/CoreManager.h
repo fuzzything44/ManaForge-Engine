@@ -23,7 +23,6 @@ using CoreManager_t =
 	<
 		boost::mpl::vector3<CPosition, CVelocity, CAcceleration>
 		, boost::mpl::vector0<>
-		, boost::mpl::vector0<>
 	>;
 
 ENGINE_API extern std::weak_ptr<CoreManager_t> coreManager;

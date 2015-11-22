@@ -7,20 +7,6 @@
 
 namespace detail
 {
-	template<typename ManagerType, typename Tag, bool = ManagerType::template isTag<Tag>()>
-	struct getComponentOrTagID_IMPL
-	{
-		static const constexpr size_t value = ManagerType::template getTagID<Tag>();
-	};
-	template<typename ManagerType, typename Component>
-	struct getComponentOrTagID_IMPL<ManagerType, Component, false>
-	{
-		static const constexpr size_t value = ManagerType::template getComponentID<Component>();
-	};
-
-
-
-
 	template<typename ManagerType, typename ComponentToCheckFor, typename CurrentIter, typename EndIter,
 		typename = std::conditional_t
 		<
@@ -60,46 +46,6 @@ namespace detail
 	{
 		//		static_assert(false, "ERROR, COULD NOT FIND COMPONENT IN ANY MANAGERS");
 	};
-
-	template<typename ManagerType, typename TagToCheckFor, typename CurrentIter, typename EndIter,
-		typename = std::conditional_t
-		<
-			boost::mpl::contains
-			<
-				typename boost::mpl::deref<CurrentIter>::type::MyTags
-				, TagToCheckFor
-			>::value
-			, std::true_type
-			, std::false_type
-		>
-	>
-	struct GetManagerFromTag
-	{
-		static_assert(ManagerType::template isTag<TagToCheckFor>(), "needs to be a tag");
-
-		using type =
-			typename GetManagerFromTag
-			<
-				ManagerType
-				, TagToCheckFor
-				, typename boost::mpl::next<CurrentIter>::type
-				, EndIter
-			>::type
-			;
-	};
-
-	template<typename ManagerType, typename TagToCheckFor, typename CurrentIter, typename EndIter>
-	struct GetManagerFromTag<ManagerType, TagToCheckFor, CurrentIter, EndIter, std::true_type>
-	{
-		using type = typename boost::mpl::deref<CurrentIter>::type;
-		static_assert(ManagerType::template isManager<type>(), "Internal Error");
-	};
-
-	template<typename ManagerType, typename TagToCheckFor, typename EndIter>
-	struct GetManagerFromTag<ManagerType, TagToCheckFor, EndIter, EndIter, std::false_type>
-	{
-		//		static_assert(false, "ERROR, COULD NOT FIND COMPONENT IN ANY MANAGERS");
-	};
 	
 	template<typename Manager, typename Signature>
 	struct IsSignature
@@ -113,29 +59,42 @@ namespace detail
 			>
 			;
 	};
-
 	template<typename ManagerType, typename SignatureToFind, bool running>
 	struct FindMostBaseManagerForSignature
 	{
+		static_assert(std::is_base_of<ManagerBase, ManagerType>::value, "Must be a subclass of ManagerBase");
+		
 		static_assert(boost::mpl::is_sequence<SignatureToFind>::value, "Signatures are sequences");
 		static_assert(ManagerType::template isSignature<SignatureToFind>(), "Must be a signature");
-
-		using ManagerWithComponent =
-			typename boost::mpl::deref
+		
+		using Transformed_Bools = 
+			typename boost::mpl::transform // when searching for std::true type
 			<
-				typename boost::mpl::find
-				<
-					typename boost::mpl::transform
-					<
-						typename ManagerType::MyBases
-						, IsSignature<boost::mpl::placeholders::_1, SignatureToFind>
-					>
-					, std::true_type
-				>::type
+				typename ManagerType::MyBases
+				, IsSignature<boost::mpl::placeholders::_1, SignatureToFind>
 			>::type
 			;
+		
+		// Get the manager above this that has the correct components
+		
+		static const constexpr size_t ManagerID =
+			boost::mpl::distance
+			<	
+				typename boost::mpl::begin<Transformed_Bools>::type
+				, typename boost::mpl::find // that was found
+				<
+					Transformed_Bools // in the vector of std::true_type (matches component) or std::false_type (doesn't match component)
+					, std::true_type // when searching for std::true_type (matches component)
+				>::type
+			>::type::value
+			;
+		
+		using ManagerWithComponent = typename boost::mpl::at_c<typename ManagerType::MyBases, ManagerID>::type;
 
 		static const constexpr bool runningNext = !std::is_same<ManagerWithComponent, boost::mpl::void_>::value;
+		
+		// make sure we either found a Manager or not -- not some other case.
+		static_assert(ManagerType::template isManager<ManagerWithComponent>() ^ !runningNext, "INTERNAL ERROR: must be a manager!");
 
 		using type =
 			std::conditional_t
@@ -151,51 +110,29 @@ namespace detail
 			>
 			;
 	};
-	template<typename Manager, typename SequenceToFind>
-	struct FindMostBaseManagerForSignature<Manager, SequenceToFind, false>
+	template<typename ManagerType, typename SignatureToFind>
+	struct FindMostBaseManagerForSignature<ManagerType, SignatureToFind, false>
 	{
-		using type = Manager;
+		using type = ManagerType;
 	};
+	
 
-
-
-
-	template<typename ThisManager, typename BaseManager, size_t current, size_t end>
-	struct BaseRuntimeSignatureToThisRuntimeSignature_IMPL
-	{
-		static void apply(typename ThisManager::RuntimeSignature_t& ret, const typename BaseManager::RuntimeSignature_t& toConvert)
-		{
-			using ThisComponentType = typename BaseManager::template ComponentOrTagByID<current>;
-			constexpr size_t thisComponentID = ThisManager::template getTagOrComponentID<ThisComponentType>();
-
-			ret[thisComponentID] = toConvert[current];
-
-			BaseRuntimeSignatureToThisRuntimeSignature_IMPL<ThisManager, BaseManager, current + 1, end>::apply(ret, toConvert);
-		}
-	};
-
-	template<typename ThisManager, typename BaseManager, size_t end>
-	struct BaseRuntimeSignatureToThisRuntimeSignature_IMPL<ThisManager, BaseManager, end, end>
-	{
-		static void apply(typename ThisManager::RuntimeSignature_t& ret, const typename BaseManager::RuntimeSignature_t& toConvert)
-		{ }
-	};
 
 	template<
 		typename ManagerType
 		, typename Sequence
 		, size_t ID = 0
-		, bool = ManagerType::template isTag<typename boost::mpl::at_c<Sequence, ID>::type>()
+		, bool = ManagerType::template isTagComponent<typename boost::mpl::at_c<Sequence, ID>::type>()
 		, bool = boost::mpl::size<Sequence>::type::value == ID
 	>
-	struct RemoveTags
+	struct IsolateStorageComponents
 	{
 		using Tag_t = typename boost::mpl::at_c<Sequence, ID>::type;
 
 		using NewSequence = typename boost::mpl::remove<Sequence, Tag_t>::type;
-
+		
 		using type =
-			typename RemoveTags
+			typename IsolateStorageComponents
 			<
 				ManagerType
 				, NewSequence
@@ -205,13 +142,13 @@ namespace detail
 	};
 
 	template<typename ManagerType, typename Sequence, size_t ID>
-	struct RemoveTags<ManagerType, Sequence, ID, false, false>
+	struct IsolateStorageComponents<ManagerType, Sequence, ID, false, false>
 	{
 		using type =
 			std::conditional_t
 			<
 				ID < boost::mpl::size<Sequence>::size::value
-				,typename RemoveTags
+				,typename IsolateStorageComponents
 				<
 					ManagerType
 					, Sequence
@@ -223,7 +160,7 @@ namespace detail
 	};
 
 	template<typename ManagerType, typename Sequence, size_t ID>
-	struct RemoveTags<ManagerType, Sequence, ID, false, true>
+	struct IsolateStorageComponents<ManagerType, Sequence, ID, false, true>
 	{
 		using type =
 			Sequence;
@@ -234,17 +171,17 @@ namespace detail
 		typename ManagerType
 		, typename Sequence
 		, size_t ID = 0
-		, bool = ManagerType::template isComponent<typename boost::mpl::at_c<Sequence, ID>::type>()
+		, bool = ManagerType::template isStorageComponent<typename boost::mpl::at_c<Sequence, ID>::type>()
 		, bool = boost::mpl::size<Sequence>::type::value == ID
 	>
-	struct RemoveComponents
+	struct IsolateTagComponents
 	{
 		using Component = typename boost::mpl::at_c<Sequence, ID>::type;
 
 		using NewSequence = typename boost::mpl::remove<Sequence, Component>::type;
 
 		using type =
-			typename RemoveComponents
+			typename IsolateTagComponents
 			<
 				ManagerType
 				, NewSequence
@@ -254,13 +191,13 @@ namespace detail
 	};
 
 	template<typename ManagerType, typename Sequence, size_t ID>
-	struct RemoveComponents<ManagerType, Sequence, ID, false, false>
+	struct IsolateTagComponents<ManagerType, Sequence, ID, false, false>
 	{
 		using type =
 			std::conditional_t
 			<
 				ID < boost::mpl::size<Sequence>::size::value
-				,typename RemoveComponents
+				,typename IsolateTagComponents
 				<
 					ManagerType
 					, Sequence
@@ -272,7 +209,7 @@ namespace detail
 	};
 
 	template<typename ManagerType, typename Sequence, size_t ID>
-	struct RemoveComponents<ManagerType, Sequence, ID, false, true>
+	struct IsolateTagComponents<ManagerType, Sequence, ID, false, true>
 	{
 		using type =
 			Sequence;

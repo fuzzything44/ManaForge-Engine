@@ -12,8 +12,7 @@ struct TPew{};
 using TestContentManager_t =
 	Manager
 	<
-		boost::mpl::vector0<>
-		, boost::mpl::vector1<TPew>
+		boost::mpl::vector1<TPew>
 		, boost::mpl::vector3<OpenALAudioManager_t, Box2DPhysicsManager_t, OpenGLRendererManager_t>
 	>;
 
@@ -24,7 +23,7 @@ using TupleOfVectorRefrences = std::tuple<std::vector<Args>&...>;
 template<>
 void beginPlayManager<TestContentManager_t>(TestContentManager_t& manager)
 {
-	auto ent1 = manager.newEntity<boost::mpl::vector1<CPosition>>(std::forward_as_tuple(CPosition{{.3f, 2.f}}));
+	auto ent1 = manager.newEntity<boost::mpl::vector1<CPosition>>(std::make_tuple(CPosition{{.3f, 2.f}}));
 
 	//manager.addTag<TPew>(ent1);
 	//assert(manager.hasTag<TPew>(ent1));

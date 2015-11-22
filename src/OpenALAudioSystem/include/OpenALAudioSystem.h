@@ -10,7 +10,6 @@ using OpenALAudioManager_t =
 	Manager
 	<
 		boost::mpl::vector1<COpenALSoundSource>
-		, boost::mpl::vector0<>
 		, boost::mpl::vector1<CoreManager_t>
 	>;
 

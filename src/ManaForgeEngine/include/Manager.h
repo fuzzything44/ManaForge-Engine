@@ -20,6 +20,7 @@
 #include <boost/mpl/transform.hpp>
 #include <boost/mpl/pop_front.hpp>
 #include <boost/mpl/find_if.hpp>
+#include <boost/mpl/copy_if.hpp>
 #include <boost/mpl/remove.hpp>
 
 #include <call_from_tuple.h>
@@ -56,18 +57,16 @@ struct ManagerBase : std::enable_shared_from_this<ManagerBase>
 
 };
 
-template <typename Components_, typename Tags_, typename Bases_ = boost::mpl::vector0<> >
+template <typename Components_, typename Bases_ = boost::mpl::vector0<> >
 struct Manager : ManagerBase
 {
 	static_assert(boost::mpl::is_sequence<Components_>::value, "Components must be a sequence");
-	static_assert(boost::mpl::is_sequence<Tags_>::value, "Tags must be a sequence");
 	static_assert(boost::mpl::is_sequence<Bases_>::value, "Bases must be a sequence");
 	
 	// GLOBAL TYPEDEFS
 	using MyComponents = Components_;
-	using MyTags = Tags_;
 	using MyBases = Bases_;
-	using ThisType = Manager<MyComponents, MyTags, MyBases>;
+	using ThisType = Manager<MyComponents, MyBases>;
 
 	using AllManagers = typename detail::FindManagers<boost::mpl::vector<ThisType>>::type;
 	static_assert(boost::mpl::is_sequence<AllManagers>::value, "AllManagers needs to be a sequence.");
@@ -78,12 +77,29 @@ struct Manager : ManagerBase
 private:
 	template<typename... Args>
 	using CatComponents_t = CatSequences_t<typename Args::AllComponents...>;
-	template<typename... Args>
-	using CatTags_t = CatSequences_t<typename Args::AllTags...>;
 public:
 	using AllComponents = CatSequences_t<MyComponents, Unduplicate_t<ExpandSequenceToVaraidic_t<AllManagersButThis, CatComponents_t>>>;
-	using AllTags = CatSequences_t<MyTags, Unduplicate_t<ExpandSequenceToVaraidic_t<AllManagersButThis, CatTags_t>>>;
 
+private:
+	template<typename Component>
+	struct IsSizeOne
+	{
+		static constexpr const bool value = sizeof(Component) == 1;
+	};
+	
+	template<typename Component>
+	struct IsSizeGreaterThanOne
+	{
+		static constexpr const bool value = sizeof(Component) > 1;
+	};
+public:
+	using MyStorageComponents = typename boost::mpl::copy_if<MyComponents, IsSizeGreaterThanOne<boost::mpl::placeholders::_1>>::type;
+	using MyTagComponents = typename boost::mpl::copy_if<MyComponents, IsSizeOne<boost::mpl::placeholders::_1>>::type;
+	
+
+	using AllStorageComponents = typename boost::mpl::copy_if<AllComponents, IsSizeGreaterThanOne<boost::mpl::placeholders::_1>>::type;
+	using AllTagComponents = typename boost::mpl::copy_if<AllComponents, IsSizeOne<boost::mpl::placeholders::_1>>::type;
+	
 	// CONSTEXPR FUNCTIONS/TESTS
 
 
@@ -121,48 +137,58 @@ public:
 			, typename boost::mpl::find<MyComponents, Comp>::type
 		>::type::value;
 	}
-
-	static constexpr size_t getNumTags()
+	
+	static constexpr size_t getNumStorageComponents()
 	{
-		return boost::mpl::size<AllTags>::value;
+		return boost::mpl::size<AllStorageComponents>::value;
 	}
-	static constexpr size_t getNumMyTags()
+	static constexpr size_t getNumMyStorageComponents()
 	{
-		return boost::mpl::size<MyTags>::value;
+		return boost::mpl::size<MyStorageComponents>::value;
 	}
-	template<typename Test> static constexpr bool isTag()
+	template<typename Test> static constexpr bool isStorageComponent()
 	{
-		return boost::mpl::contains<AllTags, Test>::type::value;
+		return boost::mpl::contains<AllStorageComponents, Test>::value;
 	}
-	template<typename Test> static constexpr bool isMyTag()
+	template<typename Test> static constexpr bool isMyStorageComponent()
 	{
-		return boost::mpl::contains<MyTags, Test>::value;
+		return boost::mpl::contains<MyStorageComponents, Test>::value;
 	}
-	template <typename Tag> static constexpr size_t getTagID()
+	template <typename Comp> static constexpr size_t getMyStorageComponentID()
 	{
-		static_assert(isTag<Tag>(), "Must be tag");
-
-		return getNumComponents() + boost::mpl::distance<
-			typename boost::mpl::begin<AllTags>::type
-			, typename boost::mpl::find<AllTags, Tag>::type
-		>::type::value;
-	}
-	template <typename Tag> static constexpr size_t getMyTagID()
-	{
-		static_assert(isTag<Tag>(), "Must be tag");
+		static_assert(isMyStorageComponent<Comp>(), "Must be a storage component");
 
 		return boost::mpl::distance<
-			typename boost::mpl::begin<MyTags>::type
-			, typename boost::mpl::find<MyTags, Tag>::type
+			typename boost::mpl::begin<MyStorageComponents>::type
+			, typename boost::mpl::find<MyStorageComponents, Comp>::type
 		>::type::value;
 	}
 
-	template<typename ComponentOrTag>
-	static constexpr size_t getComponentOrTagID()
+	static constexpr size_t getNumTagComponents()
 	{
-		return detail::getComponentOrTagID_IMPL<ThisType, ComponentOrTag>::value;
+		return boost::mpl::size<AllTagComponents>::value;
 	}
+	static constexpr size_t getNumMyTagComponents()
+	{
+		return boost::mpl::size<MyTagComponents>::value;
+	}
+	template<typename Test> static constexpr bool isTagComponent()
+	{
+		return boost::mpl::contains<AllTagComponents, Test>::type::value;
+	}
+	template<typename Test> static constexpr bool isMyTagComponent()
+	{
+		return boost::mpl::contains<MyTagComponents, Test>::value;
+	}
+	template <typename Tag> static constexpr size_t getMyTagComponentID()
+	{
+		static_assert(isTagComponent<Tag>(), "Must be tag");
 
+		return boost::mpl::distance<
+			typename boost::mpl::begin<MyTagComponents>::type
+			, typename boost::mpl::find<MyTagComponents, Tag>::type
+		>::type::value;
+	}
 	static constexpr size_t getNumManagers()
 	{
 		return boost::mpl::size<AllManagers>::value;
@@ -195,45 +221,19 @@ public:
 	template<size_t at> using ComponentByID =
 		typename boost::mpl::at_c<AllComponents, at>::type;
 
-	template<size_t at> using TagByID =
-		typename boost::mpl::at_c<AllTags, at - ThisType::getNumComponents()>::type;
-
 private:
-	template<size_t at, bool isComponent = (at < ThisType::getNumComponents())>
-		struct ComponentOrTagByID_IMPL
-		{
-			using type = TagByID<at>;
-		};
-		template<size_t at>
-		struct ComponentOrTagByID_IMPL<at, true>
-		{
-			using type = ComponentByID<at>;
-		};
+	// turns a signature into a vector of bool_ if it is a valid component
+	template<typename... T>
+	using isSignature_IMPL = boost::mpl::vector<boost::mpl::bool_<ThisType::template isComponent<T>()>...>;
 public:
-
-	template<size_t at> using ComponentOrTagByID = typename ComponentOrTagByID_IMPL<at>::type;
-
-private:
-	template<typename TypeToCheck>
-	struct IsSignatureIMPL
-	{
-		using type = std::conditional_t
-			<
-				isComponent<TypeToCheck>() || isTag<TypeToCheck>()
-				, std::true_type
-				, std::false_type
-			>;
-	};
-public:
-
 	template<typename SignatureToCheck>
 	static constexpr bool isSignature()
 	{
 		static_assert(boost::mpl::is_sequence<SignatureToCheck>::value, "Must be a sequence");
 
-		// make a new sequence -- each element is if the element is a component or a tag
-		using Transformed = typename boost::mpl::transform<SignatureToCheck, IsSignatureIMPL<boost::mpl::placeholders::_1>>::type;
-
+		// make a new sequence -- each element is if (the element is a component)
+		using Transformed = ExpandSequenceToVaraidic_t<SignatureToCheck, isSignature_IMPL>;
+		
 		// if there are no false types, then it is a signature
 		return !boost::mpl::contains<Transformed, std::false_type>::type::value;
 	}
@@ -248,75 +248,22 @@ public:
 			, typename boost::mpl::end<AllManagers>::type
 		>::type
 		;
-	template<typename Tag>
-	using GetManagerFromTag_t =
-		typename detail::GetManagerFromTag
-		<
-			ThisType
-			, Tag
-			, typename boost::mpl::begin<AllManagers>::type
-			, typename boost::mpl::end<AllManagers>::type
-		>::type
-		;
-
-private:
-
-	template<typename ComponentOrTag, bool = ThisType::template isTag<ComponentOrTag>()>
-	struct GetManagerFromComponentOrTag
-	{
-		using type = GetManagerFromTag_t<ComponentOrTag>;
-	};
-	template<typename Component>
-	struct GetManagerFromComponentOrTag<Component, false>
-	{
-		using type = GetManagerFromComponent_t<Component>;
-	};
-
-public:
-
-	template<typename ComponentOrTag>
-	using GetManagerFromComponentOrTag_t = typename GetManagerFromComponentOrTag<ComponentOrTag>::type;
 
 	template<typename Sequence>
-	using RemoveTags_t = typename detail::RemoveTags<ThisType, Sequence>::type;
+	using IsolateStorageComponents_t = typename detail::IsolateStorageComponents<ThisType, Sequence>::type;
 
 	template<typename Sequence>
-	using RemoveComponents_t = typename detail::RemoveComponents<ThisType, Sequence>::type;
+	using IsolateTagComponents_t = typename detail::IsolateTagComponents<ThisType, Sequence>::type;
 
 	template<typename... Types>
-	using TupleOfConstRefs_t = std::tuple<const Types&...>;
-	template<typename Signature /*a boost vector*/>
-	auto newEntity(ExpandSequenceToVaraidic_t<Signature, TupleOfConstRefs_t> components/*tuple of the components*/)
+	using TupleOfConstRefs_t = std::tuple<Types...>;
+	
+	template<typename Signature>
+	auto newEntity(const ExpandSequenceToVaraidic_t<Signature, TupleOfConstRefs_t>& components/*tuple of the components*/)
 	{
-		using ManagerType = FindMostBaseManagerForSignature_t<Signature>;
+		// TODO: impmenet
 		
-		auto entRet = std::make_unique<Entity<ManagerType, Signature>>(*this);
-
-		auto&& storage = getRefToManager<ManagerType>().entityStorage;
-		
-		
-		size_t entID = storage.size();
-
-		boost::fusion::for_each(components, 
-			[this, &entRet, entID](auto&& a)
-		{
-			using ComponentOrTagType = std::decay_t<decltype(a)>;
-
-			auto&& compStorage = this->template getComponentStorage<ComponentOrTagType>();
-			compStorage.emplace_back(std::move(a));
-			size_t compID = compStorage.size() - 1;
-
-			auto&& compEntStorage = this->template getComponentEntityStorage<ComponentOrTagType>();
-			compEntStorage.push_back(entRet.get());
-
-			entRet->componentIDs[ManagerType::template getComponentOrTagID<ComponentOrTagType>()] = compID;
-
-		});
-
-		auto&& ret = entRet.get();
-		storage.emplace_back(std::move(entRet));
-
-		return ret;
+		return true;
 	}
 
 	template<typename...Args>
@@ -326,62 +273,10 @@ public:
 	// returns the elements created [first, last)
 	template<typename Signature>
 	std::pair<size_t, size_t> createEntityBatch(
-		ExpandSequenceToVaraidic_t<RemoveTags_t<Signature>, TupleOfVectorRefrences> components,
+		ExpandSequenceToVaraidic_t<IsolateStorageComponents_t<Signature>, TupleOfVectorRefrences> components,
 		size_t numToConstruct)
 	{
-		static_assert(isSignature<Signature>(), "Must be a signagure");
-		
-
-		size_t firstIndex = (*nextIndex)++;
-		size_t onePastLastIndex = firstIndex + numToConstruct;
-
-		using Components = RemoveTags_t<Signature>;
-		using Tags = RemoveComponents_t<Signature>;
-
-		std::vector<size_t> indiciesToConstruct(numToConstruct);
-
-		// make a vector that stores the elements firstIndex...onePastLastIndex
-		for (auto ind = firstIndex; ind != onePastLastIndex; ++ind)
-		{
-			indiciesToConstruct[ind - firstIndex] = ind;
-		}
-		
-		// add components
-		boost::fusion::for_each(components, [this, &indiciesToConstruct](auto&& componentVector)
-		{
-			using ComponentType = typename std::decay_t<decltype(componentVector)>::value_type;
-			using ManagerType = GetManagerFromComponent_t<ComponentType>;
-
-			constexpr const size_t componentID = ManagerType::template getMyComponentID<ComponentType>();
-
-			auto&& componentStorage = std::get<componentID>(this->getRefToManager<ManagerType>().componentStorage);
-
-			std::vector<std::pair<size_t, ComponentType>> transformed(componentVector.size());
-
-			std::transform(indiciesToConstruct.begin(), indiciesToConstruct.end(), componentVector.begin(), transformed.begin(), 
-				[](size_t& index, ComponentType& comp)
-			{
-				return std::pair<size_t, ComponentType>{ index, std::move(comp) };
-			});
-
-			componentStorage.insert(transformed.begin(), transformed.end());
-		});
-
-		// add tags
-		boost::mpl::for_each<Tags>([this, onePastLastIndex](auto tag)
-		{
-			using TagType = decltype(tag);
-			using ManagerForTag = GetManagerFromTag_t<TagType>;
-
-			const constexpr size_t tagID = ManagerForTag::template getMyTagID<TagType>();
-
-			auto&& tagStorage = std::get<tagID>(this->getRefToManager<ManagerForTag>().tagStorage);
-
-			tagStorage.resize(onePastLastIndex, true);
-
-		});
-
-		return std::make_pair(firstIndex, onePastLastIndex);
+		// TODO: implement
 	}
 	void destroyEntity(EntityBase handle)
 	{
@@ -392,11 +287,7 @@ public:
 	template<typename Component>
 	Component& getComponent(EntityBase* handle)
 	{
-		using ManagerForComponent = GetManagerFromComponent_t<Component>;
-
-		auto&& manager = this->template getRefToManager<ManagerForComponent>();
-
-		return manager.template getComponentStorage<Component>()[handle->getComponentID(handle, getComponentID<Component>())];
+		// TODO: implement
 	}
 
 	template<typename Component>
@@ -408,15 +299,7 @@ public:
 	template<typename Tag>
 	bool hasTag(size_t handle)
 	{
-		static_assert(isTag<Tag>(), "Tag must be a Tag");
-		// get constants for convience
-		using ManagerForTag = GetManagerFromTag_t<Tag>;
-		constexpr size_t managerID = getManagerID<ManagerForTag>();
-		constexpr size_t tagID = ManagerForTag::template getMyTagID<Tag>();
-
-		auto&& tagStorage = std::get<tagID>(getRefToManager<ManagerForTag>().tagStorage);
-
-		return tagStorage[handle];
+		// TODO: implement
 	}
 
 	template<typename ManagerToGet>
@@ -509,32 +392,7 @@ public:
 	template<typename SignatureToRun, typename F>
 	void runAllMatchingIMPL(F&& functor)
 	{
-		static_assert(boost::mpl::is_sequence<SignatureToRun>::type::value, "Signatures are sequences.");		
-
-		using Tags = RemoveComponents_t<SignatureToRun>;
-		using Components = RemoveTags_t<SignatureToRun>;
-
-		// TODO: need this for now -- will implement comonentless iteration eventually
-		static_assert(boost::mpl::size<Components>::type::value > 0, "Must be at least one component in iteration. This will be implemented later.");
-
-		using FirstComponent = typename boost::mpl::at_c<Components, 0>::type;
-
-		static_assert(isComponent<FirstComponent>(), "Error, not a component.");
-		
-		auto&& componentEntStorage = getComponentEntityStorage<FirstComponent>();
-
-		for (auto&& ent : componentEntStorage)
-		{
-			bool matches = true;
-			for_each_no_construct_ptr<SignatureToRun>(
-				[&functor, &ent, &matches](auto ptr)
-			{
-				using Comp = std::decay_t<decltype(*ptr)>;
-				if (matches) matches = ent->hasComponentOrTag(ThisType::template getComponentOrTagID<Comp>());
-			});
-
-			callFunctionWithSigParams<Components>(ent, std::forward<F>(functor));
-		}
+		// TODO: reimplement
 
 	}
 
@@ -569,19 +427,7 @@ public:// TODO:
 
 	std::shared_ptr<size_t> nextIndex;
 
-
-	template<typename... Args>
-	using TupleOfComponentStorage = std::tuple
-		<
-			std::pair
-			<
-				std::vector<EntityBase*>, std::vector<Args>
-			>...
-		>;
-	ExpandSequenceToVaraidic_t<MyComponents, TupleOfComponentStorage> componentStorage;
-
 	
-	std::vector<std::unique_ptr<EntityBase>> entityStorage;
 
 	template<typename... Args>
 	using TupleOfPtrs = std::tuple<Args*...>;

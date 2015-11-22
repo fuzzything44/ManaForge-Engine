@@ -2,4 +2,4 @@
 
 #include "CoreManager.h"
 
-ENGINE_API std::weak_ptr<CoreManager_t> coreManager = {};
+DLLEXPORT std::weak_ptr<CoreManager_t> coreManager = {};
