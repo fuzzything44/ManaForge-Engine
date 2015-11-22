@@ -4,7 +4,7 @@ cmake_minimum_required (VERSION 3.0)
 project(ManaForgeEngine)
 
 if(${UNIX})
-	SET(CMAKE_CXX_FLAGS "-g -stdlib=libc++")
+	SET(CMAKE_CXX_FLAGS "-g -stdlib=libc++ -fvisibility=hidden")
 endif()
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG "${CMAKE_SOURCE_DIR}/bin/debug/")

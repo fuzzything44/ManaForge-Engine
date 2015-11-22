@@ -6,6 +6,10 @@ project (glew)
 
 cmake_minimum_required (VERSION 2.4)
 
+if(${UNIX})
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fvisibility=hidden")
+endif()
+
 if (COMMAND cmake_policy)
   cmake_policy (SET CMP0003 NEW)
 endif()

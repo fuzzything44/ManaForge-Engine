@@ -6,7 +6,7 @@
 
 ENGINE_API Runtime* Runtime::runtimeObj = nullptr;
 
-Runtime::Runtime()
+DLLEXPORT Runtime::Runtime()
 {
 
 	runtimeObj = this;
@@ -22,9 +22,9 @@ Runtime::Runtime()
 
 }
 
-Runtime::~Runtime() { logdetail::log_base::cleanup(); }
+DLLEXPORT Runtime::~Runtime() { logdetail::log_base::cleanup(); }
 
-void Runtime::run()
+DLLEXPORT void Runtime::run()
 {
 	manager->beginPlay();
 

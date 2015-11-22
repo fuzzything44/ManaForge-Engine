@@ -4,7 +4,7 @@
 // setup dllexport and import for cross-platform
 #if defined __GNUC__
 #define DLLEXPORT __attribute__ ((visibility ("default")))
-#define DLLIMPORT 
+#define DLLIMPORT __attribute__ ((visibility ("default")))
 #elif defined _MSC_VER 
 #define DLLEXPORT __declspec(dllexport)
 #define DLLIMPORT __declspec(dllimport)
