@@ -2,4 +2,4 @@
 
 #include "CoreManager.h"
 
-DLLEXPORT std::weak_ptr<CoreManager_t> coreManager = {};
+DLLEXPORT CoreManager_t* coreManager = {};

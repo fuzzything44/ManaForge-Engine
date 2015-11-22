@@ -37,7 +37,7 @@ public:
 private:
 	ENGINE_API static Runtime* runtimeObj;
 
-	std::shared_ptr<CoreManager_t> manager;
+	CoreManager_t* manager;
 
 	bool shouldContinue = true;
 

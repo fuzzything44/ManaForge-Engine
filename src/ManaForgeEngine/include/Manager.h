@@ -36,7 +36,6 @@
 #include <utility>
 #include <bitset>
 #include <tuple>
-#include <memory>
 #include <type_traits>
 #include <cassert>
 #include <unordered_map>
@@ -52,10 +51,7 @@
 
 #undef max
 
-struct ManagerBase : std::enable_shared_from_this<ManagerBase>
-{
-
-};
+struct ManagerBase{};
 
 template <typename Components_, typename Bases_ = boost::mpl::vector0<> >
 struct Manager : ManagerBase
@@ -463,15 +459,13 @@ public:// TODO:
 		std::pair
 			<
 				FunctionPointerStorage
-				, std::shared_ptr<ManagerBase>
+				, ManagerBase*
 			>
 		> children;
 
 public:
 
-	std::shared_ptr<ThisType> getPtr() { return shared_from_this(); }
-	
-	static std::shared_ptr<ThisType> factory(const MyBasePtrStorage_t& bases = MyBasePtrStorage_t{})
+	static ThisType* factory(const MyBasePtrStorage_t& bases = MyBasePtrStorage_t{})
 	{
 		
 		auto ret = std::shared_ptr<ThisType>(new ThisType{ bases });
