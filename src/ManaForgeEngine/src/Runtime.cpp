@@ -8,7 +8,6 @@ ENGINE_API Runtime* Runtime::runtimeObj = nullptr;
 
 DLLEXPORT Runtime::Runtime()
 {
-
 	runtimeObj = this;
 
 	changeDir();

@@ -11,16 +11,6 @@ include_directories("${CMAKE_SOURCE_DIR}/include/")
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/include/")
 include_directories("${CMAKE_SOURCE_DIR}/src/")
 
-
-
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG "${CMAKE_SOURCE_DIR}/bin/debug/")
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_DEBUG "${CMAKE_SOURCE_DIR}/bin/debug/")
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_SOURCE_DIR}/bin/debug/")
-
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}/bin/release/")
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}/bin/release/")
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}/bin/release/")
-
 add_executable(Game "src/RPG-Game.cpp")
 
 if(${UNIX})
@@ -29,9 +19,20 @@ endif()
 
 add_dependencies(Game ManaForgeEngine OpenALAudioSystem OpenGLRenderer TestContent Box2DPhysicsSystem)
 
-target_link_libraries(Game ${Boost_FILESYSTEM_LIBRARY})
-target_link_libraries(Game ${Boost_SYSTEM_LIBRARY})
-target_link_libraries(Game ManaForgeEngine)
+target_link_libraries(Game ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY} ManaForgeEngine)
+
+set_target_properties(Game
+	PROPERTIES
+	
+	ARCHIVE_OUTPUT_DIRECTORY_DEBUG "${CMAKE_SOURCE_DIR}/bin/debug/"
+	LIBRARY_OUTPUT_DIRECTORY_DEBUG "${CMAKE_SOURCE_DIR}/bin/debug/"
+	RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_SOURCE_DIR}/bin/debug/"
+
+	ARCHIVE_OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}/bin/release/"
+	LIBRARY_OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}/bin/release/"
+	RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}/bin/release/"
+
+)
 
 add_definitions("-DGame_Source")
 add_definitions("-DBOOST_ALL_NO_LIB")

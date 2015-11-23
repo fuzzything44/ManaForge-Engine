@@ -70,7 +70,8 @@ Module::Module(ModuleHandler& handler_, const path_t& name)
 	:name(name)
 	, handler(&handler_)
 {
-	path_t pathWithExt = L"lib" + name.wstring() + L".so";
+	
+	path_t pathWithExt = "lib" + name.string() + ".so";
 
 	handle = dlopen(pathWithExt.string().c_str(), RTLD_NOW); // TODO: do more research here
 	
@@ -92,6 +93,7 @@ Module::Module(ModuleHandler& handler_, const path_t& name)
 
 Module::~Module()
 {
+	
 	if (handle)
 	{
 		InitFuncPtr_t addr = reinterpret_cast<InitFuncPtr_t>(dlsym(handle, "cleanup"));
@@ -108,6 +110,7 @@ Module::~Module()
 			MFLOG(Error) << "Could not unload dll.";
 		}
 	}
+	
 
 }
 

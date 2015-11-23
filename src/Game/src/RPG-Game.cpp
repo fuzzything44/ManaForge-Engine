@@ -1,6 +1,8 @@
+#include <exception>
+
 #include <Runtime.h>
 
-int32 main(int argc, char** argv)
+int main(int argc, char** argv)
 {
 	try
 	{

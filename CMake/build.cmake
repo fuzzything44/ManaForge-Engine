@@ -5,9 +5,6 @@ macro(buildmodule MODULE_NAME MODULE_FILES)
 	project(${MODULE_NAME})
 
 
-	# find boost
-	find_package(Boost 1.59.0 REQUIRED filesystem system)
-
 	include_directories("${Boost_INCLUDE_DIR}")
 	include_directories("${CMAKE_SOURCE_DIR}/src/ManaForgeEngine/include/")
 	include_directories("${CMAKE_SOURCE_DIR}/include/")
@@ -30,11 +27,23 @@ macro(buildmodule MODULE_NAME MODULE_FILES)
 		target_link_libraries(${MODULE_NAME} "dl")
 	endif()
 	
-	target_link_libraries(${MODULE_NAME} ${Boost_FILESYSTEM_LIBRARY})
-	target_link_libraries(${MODULE_NAME} ${Boost_SYSTEM_LIBRARY})
+	target_link_libraries(${MODULE_NAME} ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY})
 
 	add_definitions("-D${MODULE_NAME}_Source")
 	add_definitions("-DBOOST_ALL_NO_LIB")
+	
+	set_target_properties(${MODULE_NAME}
+		PROPERTIES
+		
+		ARCHIVE_OUTPUT_DIRECTORY_DEBUG "${CMAKE_SOURCE_DIR}/bin/debug/"
+		LIBRARY_OUTPUT_DIRECTORY_DEBUG "${CMAKE_SOURCE_DIR}/bin/debug/"
+		RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_SOURCE_DIR}/bin/debug/"
+
+		ARCHIVE_OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}/bin/release/"
+		LIBRARY_OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}/bin/release/"
+		RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}/bin/release/"
+
+	)
 	
 	# will make sure we have a proper C++11 compiler
 	target_compile_features(${MODULE_NAME} PRIVATE 
