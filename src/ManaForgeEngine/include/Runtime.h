@@ -1,7 +1,7 @@
 #pragma once
 #include "Engine.h"
 
-#include <chrono>
+#include <memory>
 
 #include "CoreManager.h"
 #include "TimerManager.h"
@@ -37,7 +37,6 @@ public:
 private:
 	ENGINE_API static Runtime* runtimeObj;
 
-	CoreManager_t* manager;
 
 	bool shouldContinue = true;
 

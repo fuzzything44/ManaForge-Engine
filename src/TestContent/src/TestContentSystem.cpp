@@ -2,7 +2,7 @@
 
 #include <ModuleHandler.h>
 
-std::weak_ptr<TestContentManager_t> testContentManager = {};
+TestContentManager_t* testContentManager = nullptr;
 
 extern"C" DLLEXPORT void init(ModuleHandler& handler)
 {
@@ -14,9 +14,15 @@ extern"C" DLLEXPORT void init(ModuleHandler& handler)
 	testContentManager = TestContentManager_t::factory
 		(
 			std::make_tuple(
-				openALAudioManager.lock().get()
-				, box2DPhysicsManager.lock().get()
-				, openGLRendererManager.lock().get()
+				openALAudioManager
+				, box2DPhysicsManager
+				, openGLRendererManager
 			)
 		);
+}
+
+extern"C" DLLEXPORT void cleanup(ModuleHandler& handler)
+{
+	delete testContentManager;
+	testContentManager = nullptr;
 }

@@ -14,19 +14,24 @@ DLLEXPORT Runtime::Runtime()
 	changeDir();
 	logdetail::log_base::init();
 
-	manager = CoreManager_t::factory();
-	coreManager = manager;
+	coreManager = CoreManager_t::factory();
 
 	moduleHandler.init({ "OpenALAudioSystem", "Box2DPhysicsSystem", "OpenGLRenderer", "TestContent" });
 
 
 }
 
-DLLEXPORT Runtime::~Runtime() { logdetail::log_base::cleanup(); }
+DLLEXPORT Runtime::~Runtime() 
+{ 
+	logdetail::log_base::cleanup(); 
+	
+	delete coreManager;
+}
+
 
 DLLEXPORT void Runtime::run()
 {
-	manager->beginPlay();
+	coreManager->beginPlay();
 
 	std::chrono::system_clock::time_point lastTick = std::chrono::system_clock::now();
 	do
@@ -41,7 +46,7 @@ DLLEXPORT void Runtime::run()
 
 		timerManager.update();
 
-		manager->update();
+		coreManager->update();
 
 	} while (shouldContinue);
 }

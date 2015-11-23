@@ -2,12 +2,16 @@
 
 #include <ModuleHandler.h>
 
-std::weak_ptr<OpenALAudioManager_t> openALAudioManager = {};
+OpenALAudioManager_t* openALAudioManager = nullptr;
 
 extern "C" DLLEXPORT void init(ModuleHandler&)
 {
-	openALAudioManager = OpenALAudioManager_t::factory(OpenALAudioManager_t::MyBasePtrStorage_t(coreManager.lock().get()));
+	openALAudioManager = OpenALAudioManager_t::factory(OpenALAudioManager_t::MyBasePtrStorage_t(coreManager));
 }
 
-
+extern"C" DLLEXPORT void cleanup(ModuleHandler& handler)
+{
+	delete openALAudioManager;
+	openALAudioManager = nullptr;
+}
 

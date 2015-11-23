@@ -2,11 +2,16 @@
 
 #include "OpenGLRenderer/include/OpenGLRendererManager.h"
 
-DLLEXPORT std::weak_ptr<OpenGLRendererManager_t> openGLRendererManager = {};
+DLLEXPORT OpenGLRendererManager_t* openGLRendererManager = nullptr;
 
 extern"C" DLLEXPORT void init(ModuleHandler&)
 {
-	openGLRendererManager = OpenGLRendererManager_t::factory(std::make_tuple(coreManager.lock().get()));
+	openGLRendererManager = OpenGLRendererManager_t::factory(std::make_tuple(coreManager));
 }
 
+extern"C" DLLEXPORT void cleanup(ModuleHandler& handler)
+{
+	delete openGLRendererManager;
+	openGLRendererManager = nullptr;
+}
 

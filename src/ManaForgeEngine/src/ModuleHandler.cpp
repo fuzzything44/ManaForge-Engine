@@ -10,8 +10,9 @@
 #include <Windows.h>
 
 
-Module::Module(ModuleHandler& handler, const path_t& name)
+Module::Module(ModuleHandler& handler_, const path_t& name)
 	:name(name)
+	, handler(&handler_)
 {
 	path_t pathWithExt = name.wstring() + L".dll";
 
@@ -29,7 +30,7 @@ Module::Module(ModuleHandler& handler, const path_t& name)
 		MFLOG(Error) << "Failed to get init function address!";
 	}
 
-	addr(handler);
+	addr(*handler);
 	
 }
 
@@ -38,6 +39,18 @@ Module::~Module()
 {
 	if (handle)
 	{
+		
+		// FARPROC is a generic fucntion pointer
+		// gets the pointer to the function name specified
+		CleanupFuncPtr_t addr = reinterpret_cast<CleanupFuncPtr_t>(GetProcAddress(handle, "cleanup"));
+	
+		if (addr == nullptr) {
+			MFLOG(Error) << "Failed to get cleanup function address!";
+		}
+	
+		addr(*handler);
+		
+		
 		BOOL result = FreeLibrary(handle);
 		if (result == FALSE) {
 			MFLOG(Error) << "Could not unload dll.";
@@ -53,8 +66,9 @@ Module::~Module()
 
 #include <dlfcn.h>
 
-Module::Module(ModuleHandler& handler, const path_t& name)
+Module::Module(ModuleHandler& handler_, const path_t& name)
 	:name(name)
+	, handler(&handler_)
 {
 	path_t pathWithExt = L"lib" + name.wstring() + L".so";
 
@@ -71,7 +85,7 @@ Module::Module(ModuleHandler& handler, const path_t& name)
 		MFLOG(Error) << "Failed to get init function address!";
 	}
 
-	addr(handler);
+	addr(*handler);
 	
 }
 
@@ -80,6 +94,15 @@ Module::~Module()
 {
 	if (handle)
 	{
+		InitFuncPtr_t addr = reinterpret_cast<InitFuncPtr_t>(dlsym(handle, "cleanup"));
+
+		if (addr == nullptr) {
+			MFLOG(Error) << "Failed to get cleanup function address!";
+		}
+	
+		addr(*handler);
+	
+		
 		int result = dlclose(handle);
 		if (result != 0) {
 			MFLOG(Error) << "Could not unload dll.";

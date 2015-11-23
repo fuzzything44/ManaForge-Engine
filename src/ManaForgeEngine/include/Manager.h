@@ -468,7 +468,7 @@ public:
 	static ThisType* factory(const MyBasePtrStorage_t& bases = MyBasePtrStorage_t{})
 	{
 		
-		auto ret = std::shared_ptr<ThisType>(new ThisType{ bases });
+		auto ret = new ThisType{ bases };
 		initManager<ThisType>(*ret);
 
 		boost::fusion::for_each(bases,

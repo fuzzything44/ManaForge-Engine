@@ -133,4 +133,4 @@ void exitManager<>(OpenGLRendererManager_t& manager)
 	glfwTerminate();
 }
 
-OpenGLRenderer_API extern std::weak_ptr<OpenGLRendererManager_t> openGLRendererManager;
+OpenGLRenderer_API extern OpenGLRendererManager_t* openGLRendererManager;

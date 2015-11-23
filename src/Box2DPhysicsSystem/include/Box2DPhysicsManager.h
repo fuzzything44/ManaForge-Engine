@@ -45,4 +45,4 @@ void updateManager<Box2DPhysicsManager_t>(Box2DPhysicsManager_t& manager)
 }
 
 
-Box2DPhysicsSystem_API extern std::weak_ptr<Box2DPhysicsManager_t> box2DPhysicsManager;
+Box2DPhysicsSystem_API extern Box2DPhysicsManager_t* box2DPhysicsManager;

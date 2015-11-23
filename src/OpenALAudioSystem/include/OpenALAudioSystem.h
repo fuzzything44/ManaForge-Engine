@@ -70,4 +70,4 @@ void initManager<OpenALAudioManager_t>(OpenALAudioManager_t& manager)
 	alListenerfv(AL_ORIENTATION, orientation);
 }
 
-extern OpenALAudioSystem_API std::weak_ptr<OpenALAudioManager_t> openALAudioManager;
+extern OpenALAudioSystem_API OpenALAudioManager_t* openALAudioManager;
