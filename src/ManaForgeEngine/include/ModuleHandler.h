@@ -7,7 +7,7 @@
 
 #include <stdexcept>
 #include <string>
-#include <map>
+#include <boost/container/flat_map.hpp>
 
 struct ModuleHandler;
 
@@ -80,5 +80,5 @@ struct ModuleHandler
 			modules.emplace(std::make_pair(path, Module{ *this, path }));
 	}
 	
-	std::map<path_t, Module> modules;
+	boost::container::flat_map<path_t, Module> modules;
 };

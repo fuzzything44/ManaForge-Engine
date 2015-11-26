@@ -255,11 +255,54 @@ public:
 	using TupleOfConstRefs_t = std::tuple<Types...>;
 	
 	template<typename Signature>
-	auto newEntity(const ExpandSequenceToVaraidic_t<Signature, TupleOfConstRefs_t>& components/*tuple of the components*/)
-	{
-		// TODO: impmenet
+	EntityBase* newEntity(const ExpandSequenceToVaraidic_t<IsolateStorageComponents_t<Signature>, TupleOfConstRefs_t>& components/*tuple of the components*/)
+	{		
+		static_assert(isSignature<Signature>(), "Must be a signature");
 		
-		return true;
+		// allocate the new Entity.
+		auto ent = new Entity<ThisType, Signature>(*this);
+		
+		using StorageComponents = IsolateStorageComponents_t<Signature>;
+		using TagComponents = IsolateTagComponents_t<Signature>;
+		
+		// add the storage components
+		tuple_for_each_with_index(components,
+			[this, ent](auto& component, auto index_type)
+			{
+				const constexpr size_t ID = decltype(index_type)::value;
+				using StorageComp = std::decay_t<decltype(component)>;
+				
+				static_assert(ThisType::template isStorageComponent<StorageComp>(), "Must be a storage component");
+				
+				using ManagerType = ThisType::template GetManagerFromComponent_t<StorageComp>;
+				
+				auto&& manager = this->template getRefToManager<ManagerType>();
+				
+				auto&& storage = manager.template getComponentStorage<StorageComp>();
+				
+				storage.emplace_back(std::move(component));
+				
+				ent->componentIDs[ID] = storage.size() - 1;
+			}
+		);
+		
+		// set the pointers in componentEntityStorage
+		for_each_no_construct_ptr<Signature>(
+			[this, ent](auto ptr)
+			{
+				using type = std::remove_pointer_t<decltype(ptr)>;
+				
+				using Manager_t = ThisType::template GetManagerFromComponent_t<type>;
+				
+				auto&& manager = this->template getRefToManager<Manager_t>();
+				
+				auto&& entCompStorage = manager.template getComponentEntityStorage<type>();
+				
+				entCompStorage.emplace_back(ent);
+			}
+		);
+		
+		return ent;
 	}
 
 	template<typename...Args>
@@ -274,9 +317,11 @@ public:
 	{
 		// TODO: implement
 	}
-	void destroyEntity(EntityBase handle)
+	void destroyEntity(EntityBase* handle)
 	{
-		// TODO: reimplement
+		handle->deleteComponents(handle);
+		
+		// TODO: finish
 		
 	}
 
@@ -289,14 +334,10 @@ public:
 	template<typename Component>
 	bool hasComponent(size_t handle)
 	{
+		static_assert(isComponent<Component>(), "Must be a component");
 		//TODO: reimplement
 	}
 
-	template<typename Tag>
-	bool hasTag(size_t handle)
-	{
-		// TODO: implement
-	}
 
 	template<typename ManagerToGet>
 	ManagerToGet& getRefToManager()
@@ -348,20 +389,27 @@ public:
 	template<typename Component>
 	std::vector<Component>& getComponentStorage()
 	{
-		using ManagerType = GetManagerFromComponent_t<Component>;
-		const constexpr size_t ID = ManagerType::template getMyComponentID<Component>();
-
-		return std::get<ID>(getRefToManager<ManagerType>().componentStorage).second;
+		static_assert(isStorageComponent<Component>(), "Must be a storage component");
+		
+		using Manager_t = GetManagerFromComponent_t<Component>;
+		
+		const constexpr size_t ID = Manager_t::template getMyStorageComponentID<Component>();
+		
+		return std::get<ID>(getRefToManager<Manager_t>().storageComponentStorage);
+		
 	}
 
+
 	template<typename Component>
-	auto& getComponentEntityStorage()
+	std::vector<EntityBase*>& getComponentEntityStorage()
 	{
-		using ManagerType = GetManagerFromComponent_t<Component>;
-
-		const constexpr size_t componentID = ManagerType::template getMyComponentID<Component>();
-
-		return std::get<componentID>(getRefToManager<ManagerType>().componentStorage).first;
+		static_assert(isComponent<Component>(), "Must be a component");
+		
+		using Manager_t = GetManagerFromComponent_t<Component>;
+		
+		const constexpr size_t ID = Manager_t::template getMyComponentID<Component>();
+		
+		return std::get<ID>(getRefToManager<Manager_t>().componentEntityStorage);
 	}
 
 public:
@@ -388,8 +436,45 @@ public:
 	template<typename SignatureToRun, typename F>
 	void runAllMatchingIMPL(F&& functor)
 	{
-		// TODO: reimplement
-
+		static_assert(boost::mpl::is_sequence<SignatureToRun>:::value, "signatures are sequences!");
+		static_assert(isSignature<SignatureToRun>(), "must be a signature!");
+		
+		// get the component with the least amount of entities
+		size_t sizeOfSmallest = SIZE_MAX;
+		std::vector<EntityBase*>* smallest = nullptr;
+		
+		for_each_no_construct_ptr<SignatureToRun>(
+			[&sizeOfSmallest, &smallest](auto ptr)
+		{
+			using ComponentType = std::remove_pointer_t<decltype(ptr)>;
+			
+			static_assert(isComponent<ComponentType>(), "Must be a component!");
+			
+			using ManagerForComponent = GetManagerFromComponent_t<ComponentType>;
+			
+			auto&& storage = this->template getRefToManager<ManagerForComponent>().getComponentEntityStorage<ComponentType>();
+			size_t size = storage.size();
+			
+			if(size < sizeOfSmallest)
+			{
+				sizeOfSmallest = size;
+				smallest = &storage;
+			}
+		});
+		
+		assert(smallest);
+		
+		// loop through it.
+		auto(auto ptrToEntity : *smallest)
+		{
+			assert(ptrToEntity);
+			
+			bool matches = true;
+			
+			// TODO: finish
+			
+		}
+		
 	}
 
 
@@ -423,6 +508,12 @@ public:// TODO:
 
 	std::shared_ptr<size_t> nextIndex;
 
+	// storage for the actual components
+	template<typename... Args>
+	using StorageComponentStorage_t = std::tuple<std::vector<Args>...>;
+	ExpandSequenceToVaraidic_t<MyStorageComponents, StorageComponentStorage_t> storageComponentStorage;
+	
+	std::array<std::vector<EntityBase*>, getNumMyComponents()> componentEntityStorage;
 	
 
 	template<typename... Args>

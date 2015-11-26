@@ -26,13 +26,16 @@ struct EntityBase
 template<typename ManagerType, typename Signature>
 struct Entity : EntityBase
 {
+	static_assert(std::is_base_of<ManagerBase, ManagerType>::value, "Must be a subclass of manager!");
+	static_assert(boost::mpl::is_sequence<Signature>::type::value, "Must be a sequence!");
+	static_assert(ManagerType::template isSignature<Signature>(), "Must be a valid signature!");
 
 	template<typename... Components>
-	struct ComponentsOrTagsToIDs
+	struct getComponentID_IMPL
 	{
 		constexpr static std::array<size_t, sizeof...(Components)> apply()
 		{
-			return std::array<size_t, sizeof...(Components)>({ ManagerType::template getComponentOrTagID<Components>()... });
+			return std::array<size_t, sizeof...(Components)>({ ManagerType::template getComponentID<Components>()... });
 		}
 	};
 
@@ -43,7 +46,7 @@ struct Entity : EntityBase
 			[](size_t ID)
 		{
 			constexpr std::array<size_t, boost::mpl::size<Signature>::type::value> IDs = 
-				ExpandSequenceToVaraidic_t<Signature, ComponentsOrTagsToIDs>::apply();
+				ExpandSequenceToVaraidic_t<Signature, getComponentID_IMPL>::apply();
 
 			return std::find(IDs.begin(), IDs.end(), ID) != IDs.end();
 		};
@@ -53,9 +56,9 @@ struct Entity : EntityBase
 		{
 			auto casted = static_cast<Entity<ManagerType, Signature>&>(*base);
 
-			using Components = typename ManagerType::template RemoveTags_t<Signature>;
+			using StorageComponents = typename ManagerType::template IsolateStorageComponents_t<Signature>;
 
-			for_each_no_construct_ptr<Components>(
+			for_each_no_construct_ptr<StorageComponents>(
 				[&casted](auto ptr)
 			{
 				using ComponentType = std::decay_t<std::remove_pointer_t<decltype(ptr)>>;
@@ -82,7 +85,7 @@ struct Entity : EntityBase
 			auto&& casted = static_cast<Entity<ManagerType, Signature>&>(*base);
 
 			constexpr std::array<size_t, boost::mpl::size<Signature>::type::value> IDs =
-				ExpandSequenceToVaraidic_t<Signature, ComponentsOrTagsToIDs>::apply();
+				ExpandSequenceToVaraidic_t<Signature, getComponentID_IMPL>::apply();
 
 			return *std::find(IDs.begin(), IDs.end(), componentID);
 

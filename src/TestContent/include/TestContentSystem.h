@@ -24,7 +24,7 @@ template<>
 void beginPlayManager<TestContentManager_t>(TestContentManager_t& manager)
 {
 	auto ent1 = manager.newEntity<boost::mpl::vector1<CPosition>>(std::make_tuple(CPosition{{.3f, 2.f}}));
-
+	
 	//manager.addTag<TPew>(ent1);
 	//assert(manager.hasTag<TPew>(ent1));
 	//manager.removeTag<TPew>(ent1);

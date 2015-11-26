@@ -4,7 +4,7 @@ cmake_minimum_required (VERSION 3.0)
 project(ManaForgeEngine)
 
 if(${UNIX})
-	SET(CMAKE_CXX_FLAGS "-stdlib=libc++ -fsanitize=address -O0")
+	SET(CMAKE_CXX_FLAGS "-stdlib=libc++ -O0")
 endif()
 
 # find boost
