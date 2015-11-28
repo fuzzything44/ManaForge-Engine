@@ -1,15 +1,6 @@
 
 include(${CMAKE_SOURCE_DIR}/CMake/build.cmake)
 
-
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG ${CMAKE_BINARY_DIR}/bin/debug)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_DEBUG ${CMAKE_BINARY_DIR}/bin/debug)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_BINARY_DIR}/bin/debug)
-
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/bin/release)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/bin/release)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/bin/release)
-
 add_subdirectory("dependencies/GLEW/build/cmake/")
 
 add_subdirectory("dependencies/GLFW/")
@@ -29,7 +20,7 @@ set(OPENGL_PRIVATE_FILES
 	"src/OpenGLRendererPCH.cpp;"
 	"src/OpenGLRendererPCH.h;"
 	)
-	
+
 set(OPENGL_PUBLIC_FILES
 	"include/COpenGLModel.h;"
 	"include/OpenGLMaterialInstance.h;"

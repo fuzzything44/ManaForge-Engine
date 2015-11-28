@@ -117,7 +117,7 @@ set(NEW_FLAGS)
 set(POTENTIAL_FLAGS)
 if(NOT MSVC)
 	if(BUILD_OPTIMIZATION)
-		list(APPEND POTENTIAL_FLAGS -finline-functions -ffast-math)
+		list(APPEND POTENTIAL_FLAGS -ffast-math)
 	endif()
 
 	if(BUILD_PROFILE)

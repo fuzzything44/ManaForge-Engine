@@ -23,11 +23,10 @@ target_link_libraries(Game ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY} M
 
 set_target_properties(Game
 	PROPERTIES
-	
+
 	ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin/"
 	LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin/"
 	RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin/"
-
 
 )
 
@@ -35,10 +34,10 @@ add_definitions("-DGame_Source")
 add_definitions("-DBOOST_ALL_NO_LIB")
 
 # will make sure we have a proper C++11 compiler
-target_compile_features(Game PRIVATE 
-	cxx_constexpr 
+target_compile_features(Game PRIVATE
+	cxx_constexpr
 	cxx_alias_templates
-	cxx_decltype 
+	cxx_decltype
 	cxx_lambdas
 	cxx_lambda_init_captures
 	cxx_nullptr
@@ -50,6 +49,6 @@ target_compile_features(Game PRIVATE
 	cxx_variadic_macros
 	cxx_variadic_templates
 	cxx_template_template_parameters
-	
+
 		)
 

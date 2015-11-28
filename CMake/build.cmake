@@ -16,27 +16,29 @@ macro(buildmodule MODULE_NAME MODULE_FILES)
 	if(${UNIX})
 		target_link_libraries(${MODULE_NAME} "dl")
 	endif()
-	
+
 	target_link_libraries(${MODULE_NAME} ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY})
+
+
 
 	add_definitions("-D${MODULE_NAME}_Source")
 	add_definitions("-DBOOST_ALL_NO_LIB")
-	
+
 	set_target_properties(${MODULE_NAME}
 		PROPERTIES
-		
-		ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin/"
-		LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin/"
-		RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin/"
 
+		ARCHIVE_OUTPUT_DIRECTORY ${MF_BIN_DIR}
+		LIBRARY_OUTPUT_DIRECTORY ${MF_BIN_DIR}
+		RUNTIME_OUTPUT_DIRECTORY ${MF_BIN_DIR}
 
 	)
-	
+    message(${MF_BIN_DIR})
+
 	# will make sure we have a proper C++11 compiler
-	target_compile_features(${MODULE_NAME} PRIVATE 
-		cxx_constexpr 
+	target_compile_features(${MODULE_NAME} PRIVATE
+		cxx_constexpr
 		cxx_alias_templates
-		cxx_decltype 
+		cxx_decltype
 		cxx_lambdas
 		cxx_lambda_init_captures
 		cxx_nullptr
@@ -48,7 +50,7 @@ macro(buildmodule MODULE_NAME MODULE_FILES)
 		cxx_variadic_macros
 		cxx_variadic_templates
 		cxx_template_template_parameters
-		
+
 		 )
 
 

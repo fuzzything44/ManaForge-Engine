@@ -20,10 +20,10 @@ DLLEXPORT Runtime::Runtime()
 
 }
 
-DLLEXPORT Runtime::~Runtime() 
-{ 
-	logdetail::log_base::cleanup(); 
-	
+DLLEXPORT Runtime::~Runtime()
+{
+	logdetail::log_base::cleanup();
+
 	delete coreManager;
 }
 
