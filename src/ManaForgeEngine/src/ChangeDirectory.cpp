@@ -5,6 +5,8 @@
 
 #include <boost/filesystem.hpp>
 
+#include <iostream>
+
 #if defined _WIN32 || defined WIN32
 #include <Windows.h>
 
@@ -31,9 +33,33 @@ void changeDir()
 
 #elif defined __linux__
 
+#include <unistd.h>
+#include <limits.h>
+
 void changeDir()
 {
-	// TODO write linux code
+	char ownPth[PATH_MAX];
+	readlink("/proc/self/exe", ownPth, PATH_MAX);
+
+	path_t path = ownPth;
+
+	path = path.parent_path().parent_path();
+
+	if(path.filename() != "ManaForge-Engine")
+	{
+        std::cout << "Error: cound not find ManaForge-Engine folder! The folder that was found was " << path.string();
+        return;
+	}
+
+	path += "/Resource/";
+
+	if(!boost::filesystem::exists(path))
+	{
+        std::cout << "Error: could not find resource direcotry! The folder that was found was " << path.string();
+        return;
+	}
+	boost::filesystem::current_path(path.c_str());
+
 
 }
 

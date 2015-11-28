@@ -80,13 +80,13 @@ private:
 	template<typename Component>
 	struct IsSizeOne
 	{
-		static constexpr const bool value = sizeof(Component) == 1;
+		static constexpr const bool value = std::is_empty<Component>::value;
 	};
 	
 	template<typename Component>
 	struct IsSizeGreaterThanOne
 	{
-		static constexpr const bool value = sizeof(Component) > 1;
+		static constexpr const bool value = !std::is_empty<Component>::value;
 	};
 public:
 	using MyStorageComponents = typename boost::mpl::copy_if<MyComponents, IsSizeGreaterThanOne<boost::mpl::placeholders::_1>>::type;
@@ -231,7 +231,7 @@ public:
 		using Transformed = ExpandSequenceToVaraidic_t<SignatureToCheck, isSignature_IMPL>;
 		
 		// if there are no false types, then it is a signature
-		return !boost::mpl::contains<Transformed, std::false_type>::type::value;
+		return !boost::mpl::contains<Transformed, boost::mpl::bool_<false>>::type::value;
 	}
 
 	template<typename Component>
@@ -436,7 +436,7 @@ public:
 	template<typename SignatureToRun, typename F>
 	void runAllMatchingIMPL(F&& functor)
 	{
-		static_assert(boost::mpl::is_sequence<SignatureToRun>:::value, "signatures are sequences!");
+		static_assert(boost::mpl::is_sequence<SignatureToRun>::value, "signatures are sequences!");
 		static_assert(isSignature<SignatureToRun>(), "must be a signature!");
 		
 		// get the component with the least amount of entities
@@ -444,15 +444,15 @@ public:
 		std::vector<EntityBase*>* smallest = nullptr;
 		
 		for_each_no_construct_ptr<SignatureToRun>(
-			[&sizeOfSmallest, &smallest](auto ptr)
+			[&sizeOfSmallest, &smallest, this](auto ptr)
 		{
-			using ComponentType = std::remove_pointer_t<decltype(ptr)>;
+			using ComponentType = std::decay_t<std::remove_pointer_t<decltype(ptr)>>;
 			
 			static_assert(isComponent<ComponentType>(), "Must be a component!");
 			
 			using ManagerForComponent = GetManagerFromComponent_t<ComponentType>;
 			
-			auto&& storage = this->template getRefToManager<ManagerForComponent>().getComponentEntityStorage<ComponentType>();
+			auto&& storage = this->template getRefToManager<ManagerForComponent>().template getComponentEntityStorage<ComponentType>();
 			size_t size = storage.size();
 			
 			if(size < sizeOfSmallest)
@@ -465,13 +465,22 @@ public:
 		assert(smallest);
 		
 		// loop through it.
-		auto(auto ptrToEntity : *smallest)
+		for(auto ptrToEntity : *smallest)
 		{
 			assert(ptrToEntity);
 			
 			bool matches = true;
 			
-			// TODO: finish
+			for_each_no_construct_ptr<SignatureToRun>(
+				[](auto ptr)
+				{
+					using ComponentType = std::remove_pointer_t<decltype(ptr)>;
+					using ManagerType = GetManagerFromComponent_t<ComponentType>;
+					
+					
+					//const constexpr size_t ID = ManagerType::template getComponentID<
+				}
+			);
 			
 		}
 		
