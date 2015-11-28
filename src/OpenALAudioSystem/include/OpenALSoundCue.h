@@ -1,16 +1,27 @@
 #pragma once
 #include "Engine.h"
 
+#include <RefCounted.h>
+
 #include <boost/filesystem.hpp>
 
 #include <AL/alut.h>
 
-struct OpenALSoundCue
+struct OpenALSoundCue : RefCounted<OpenALSoundCue>
 {
-	explicit OpenALSoundCue(const path_t& name)
+	explicit OpenALSoundCue(const path_t& name = "")
 		:name(name)
 	{
-		path_t path = "sounds/" + name.string() + ".wav";
+        if(!name.empty())
+        {
+            init(name);
+        }
+
+	}
+
+    void init(const path_t& name)
+    {
+        path_t path = "sounds/" + name.string() + ".wav";
 
 		if(!boost::filesystem::exists(path)) MFLOG(Error) << "Cannot find " << path.string();
 
@@ -28,7 +39,26 @@ struct OpenALSoundCue
 		if (amtChannels == 2) {
 			MFLOG(Info) << "using stereo buffer: " << name << ". The sound will not be location based";
 		}
-	}
+    }
+
+    OpenALSoundCue(const OpenALSoundCue& other) = default;
+    OpenALSoundCue(OpenALSoundCue&& other) = default;
+
+    OpenALSoundCue& operator=(const OpenALSoundCue& other) = default;
+    OpenALSoundCue& operator=(OpenALSoundCue&& other) = default;
+
+    void destroy()
+    {
+        alDeleteBuffers(1, &bufferHandle);
+    }
+
+    void invalidate()
+    {
+        bufferHandle = 0;
+        name = "";
+    }
+
+
 
 	ALuint bufferHandle;
 	path_t name;

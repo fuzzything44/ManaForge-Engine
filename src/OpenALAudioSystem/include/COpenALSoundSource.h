@@ -1,5 +1,7 @@
 #pragma once
-#include "Engine.h"
+#include <Engine.h>
+
+#include "OpenALSoundCue.h"
 
 #include <memory>
 
@@ -11,13 +13,18 @@ struct OpenALSoundCue;
 class COpenALSoundSource
 {
 public:
-	inline explicit COpenALSoundSource(const std::shared_ptr<OpenALSoundCue>& cue = { nullptr })
+	inline explicit COpenALSoundSource(const OpenALSoundCue& cue = OpenALSoundCue{})
 	{
-		if (cue)
+		if (cue.bufferHandle)
 			init(cue);
 	}
 
-	void init(const std::shared_ptr<OpenALSoundCue>& cue_);
+    ~COpenALSoundSource()
+    {
+        alDeleteSources(1, &sourceHandle);
+    }
+
+	void init(const OpenALSoundCue& cue_);
 
 	void setLoops(bool loops)
 	{
@@ -95,16 +102,16 @@ public:
 	}
 
 	// data
-	std::shared_ptr<OpenALSoundCue> cue;
+	OpenALSoundCue cue;
 	ALuint sourceHandle;
 };
 
 #include "OpenALSoundCue.h"
 
-void COpenALSoundSource::init(const std::shared_ptr<OpenALSoundCue>& cue_)
+void COpenALSoundSource::init(const OpenALSoundCue& cue_)
 {
 	cue = cue_;
 
 	alGenSources(1, &sourceHandle);
-	alSourcei(sourceHandle, AL_BUFFER, cue->bufferHandle);
+	alSourcei(sourceHandle, AL_BUFFER, cue.bufferHandle);
 }
