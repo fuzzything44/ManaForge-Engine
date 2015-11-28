@@ -58,7 +58,7 @@ struct Manager : ManagerBase
 {
 	static_assert(boost::mpl::is_sequence<Components_>::value, "Components must be a sequence");
 	static_assert(boost::mpl::is_sequence<Bases_>::value, "Bases must be a sequence");
-	
+
 	// GLOBAL TYPEDEFS
 	using MyComponents = Components_;
 	using MyBases = Bases_;
@@ -82,7 +82,7 @@ private:
 	{
 		static constexpr const bool value = std::is_empty<Component>::value;
 	};
-	
+
 	template<typename Component>
 	struct IsSizeGreaterThanOne
 	{
@@ -91,11 +91,15 @@ private:
 public:
 	using MyStorageComponents = typename boost::mpl::copy_if<MyComponents, IsSizeGreaterThanOne<boost::mpl::placeholders::_1>>::type;
 	using MyTagComponents = typename boost::mpl::copy_if<MyComponents, IsSizeOne<boost::mpl::placeholders::_1>>::type;
-	
+
 
 	using AllStorageComponents = typename boost::mpl::copy_if<AllComponents, IsSizeGreaterThanOne<boost::mpl::placeholders::_1>>::type;
 	using AllTagComponents = typename boost::mpl::copy_if<AllComponents, IsSizeOne<boost::mpl::placeholders::_1>>::type;
-	
+
+
+	template<typename... Args>
+	using TupleOfPtrs = std::tuple<Args*...>;
+
 	// CONSTEXPR FUNCTIONS/TESTS
 
 
@@ -133,7 +137,7 @@ public:
 			, typename boost::mpl::find<MyComponents, Comp>::type
 		>::type::value;
 	}
-	
+
 	static constexpr size_t getNumStorageComponents()
 	{
 		return boost::mpl::size<AllStorageComponents>::value;
@@ -229,7 +233,7 @@ public:
 
 		// make a new sequence -- each element is if (the element is a component)
 		using Transformed = ExpandSequenceToVaraidic_t<SignatureToCheck, isSignature_IMPL>;
-		
+
 		// if there are no false types, then it is a signature
 		return !boost::mpl::contains<Transformed, boost::mpl::bool_<false>>::type::value;
 	}
@@ -253,56 +257,41 @@ public:
 
 	template<typename... Types>
 	using TupleOfConstRefs_t = std::tuple<Types...>;
-	
+
+
+	template<typename SequenceToFind>
+	using FindMostBaseManagerForSignature_t =
+		typename detail::FindMostBaseManagerForSignature<ThisType, SequenceToFind, true>::type;
+
+
+    template<typename T>
+    struct GetBaseManager_STRUCT
+    {
+        using type = ThisType::template GetManagerFromComponent_t<T>;
+    };
+
+
+
 	template<typename Signature>
-	EntityBase* newEntity(const ExpandSequenceToVaraidic_t<IsolateStorageComponents_t<Signature>, TupleOfConstRefs_t>& components/*tuple of the components*/)
-	{		
+	auto newEntity(const ExpandSequenceToVaraidic_t<IsolateStorageComponents_t<Signature>, TupleOfConstRefs_t>& components/*tuple of the components*/)
+        -> Entity<FindMostBaseManagerForSignature_t<Signature>>*
+	{
 		static_assert(isSignature<Signature>(), "Must be a signature");
-		
-		// allocate the new Entity.
-		auto ent = new Entity<ThisType, Signature>(*this);
-		
+
 		using StorageComponents = IsolateStorageComponents_t<Signature>;
 		using TagComponents = IsolateTagComponents_t<Signature>;
-		
-		// add the storage components
-		tuple_for_each_with_index(components,
-			[this, ent](auto& component, auto index_type)
-			{
-				const constexpr size_t ID = decltype(index_type)::value;
-				using StorageComp = std::decay_t<decltype(component)>;
-				
-				static_assert(ThisType::template isStorageComponent<StorageComp>(), "Must be a storage component");
-				
-				using ManagerType = ThisType::template GetManagerFromComponent_t<StorageComp>;
-				
-				auto&& manager = this->template getRefToManager<ManagerType>();
-				
-				auto&& storage = manager.template getComponentStorage<StorageComp>();
-				
-				storage.emplace_back(std::move(component));
-				
-				ent->componentIDs[ID] = storage.size() - 1;
-			}
-		);
-		
-		// set the pointers in componentEntityStorage
-		for_each_no_construct_ptr<Signature>(
-			[this, ent](auto ptr)
-			{
-				using type = std::remove_pointer_t<decltype(ptr)>;
-				
-				using Manager_t = ThisType::template GetManagerFromComponent_t<type>;
-				
-				auto&& manager = this->template getRefToManager<Manager_t>();
-				
-				auto&& entCompStorage = manager.template getComponentEntityStorage<type>();
-				
-				entCompStorage.emplace_back(ent);
-			}
-		);
-		
-		return ent;
+
+        // get managers for the entity
+        using MostBaseManager = FindMostBaseManagerForSignature_t<Signature>;
+        using Managers_DUP = typename boost::mpl::transform<Signature, GetBaseManager_STRUCT<boost::mpl::placeholders::_1>>::type;
+        using ManagersForSiganture = Unduplicate_t<boost::mpl::push_back<Managers_DUP, MostBaseManager>>;
+
+        // tuple of the bases we have -- used for construction of Entity types later.
+
+
+
+        return nullptr;
+
 	}
 
 	template<typename...Args>
@@ -317,16 +306,16 @@ public:
 	{
 		// TODO: implement
 	}
-	void destroyEntity(EntityBase* handle)
+	void destroyEntity(Entity<ThisType>* handle)
 	{
 		handle->deleteComponents(handle);
-		
+
 		// TODO: finish
-		
+
 	}
 
 	template<typename Component>
-	Component& getComponent(EntityBase* handle)
+	Component& getComponent(Entity<ThisType>* handle)
 	{
 		// TODO: implement
 	}
@@ -347,15 +336,11 @@ public:
 		return detail::GetRefToManager<ThisType, ManagerToGet>::apply(*this);
 	}
 
-	template<typename SequenceToFind>
-	using FindMostBaseManagerForSignature_t = 
-		typename detail::FindMostBaseManagerForSignature<ThisType, SequenceToFind, true>::type;
-
 	template<typename CurrentIter, typename EndIter>
 	struct CallFunctionWighSigParamsIMPL
 	{
 		template<typename F, typename...Args>
-		static void apply(ThisType& manager, EntityBase* ID, F&& func, Args&&...args)
+		static void apply(ThisType& manager, Entity<ThisType>* ID, F&& func, Args&&...args)
 		{
 			using NextIter = typename boost::mpl::next<CurrentIter>::type;
 			using ComponentType = typename boost::mpl::deref<CurrentIter>::type;
@@ -379,7 +364,7 @@ public:
 	struct CallFunctionWighSigParamsIMPL<EndIter, EndIter>
 	{
 		template<typename F, typename...Args>
-		static void apply(ThisType& manager, EntityBase* ID, F&& func, Args&&...args)
+		static void apply(ThisType& manager, Entity<ThisType>* ID, F&& func, Args&&...args)
 		{
 			std::forward<F>(func)(std::forward<Args>(args)...);
 		}
@@ -390,25 +375,25 @@ public:
 	std::vector<Component>& getComponentStorage()
 	{
 		static_assert(isStorageComponent<Component>(), "Must be a storage component");
-		
+
 		using Manager_t = GetManagerFromComponent_t<Component>;
-		
+
 		const constexpr size_t ID = Manager_t::template getMyStorageComponentID<Component>();
-		
+
 		return std::get<ID>(getRefToManager<Manager_t>().storageComponentStorage);
-		
+
 	}
 
 
 	template<typename Component>
-	std::vector<EntityBase*>& getComponentEntityStorage()
+	std::vector<Entity<ThisType>*>& getComponentEntityStorage()
 	{
 		static_assert(isComponent<Component>(), "Must be a component");
-		
+
 		using Manager_t = GetManagerFromComponent_t<Component>;
-		
+
 		const constexpr size_t ID = Manager_t::template getMyComponentID<Component>();
-		
+
 		return std::get<ID>(getRefToManager<Manager_t>().componentEntityStorage);
 	}
 
@@ -416,7 +401,7 @@ public:
 
 	// CALLING FUNCTIONS ON ENTITIES
 	template<typename SignatureToRun, typename F>
-	void callFunctionWithSigParams(EntityBase* ent, F&& func)
+	void callFunctionWithSigParams(Entity<ThisType>* ent, F&& func)
 	{
 		CallFunctionWighSigParamsIMPL
 			<
@@ -436,54 +421,8 @@ public:
 	template<typename SignatureToRun, typename F>
 	void runAllMatchingIMPL(F&& functor)
 	{
-		static_assert(boost::mpl::is_sequence<SignatureToRun>::value, "signatures are sequences!");
-		static_assert(isSignature<SignatureToRun>(), "must be a signature!");
-		
-		// get the component with the least amount of entities
-		size_t sizeOfSmallest = SIZE_MAX;
-		std::vector<EntityBase*>* smallest = nullptr;
-		
-		for_each_no_construct_ptr<SignatureToRun>(
-			[&sizeOfSmallest, &smallest, this](auto ptr)
-		{
-			using ComponentType = std::decay_t<std::remove_pointer_t<decltype(ptr)>>;
-			
-			static_assert(isComponent<ComponentType>(), "Must be a component!");
-			
-			using ManagerForComponent = GetManagerFromComponent_t<ComponentType>;
-			
-			auto&& storage = this->template getRefToManager<ManagerForComponent>().template getComponentEntityStorage<ComponentType>();
-			size_t size = storage.size();
-			
-			if(size < sizeOfSmallest)
-			{
-				sizeOfSmallest = size;
-				smallest = &storage;
-			}
-		});
-		
-		assert(smallest);
-		
-		// loop through it.
-		for(auto ptrToEntity : *smallest)
-		{
-			assert(ptrToEntity);
-			
-			bool matches = true;
-			
-			for_each_no_construct_ptr<SignatureToRun>(
-				[](auto ptr)
-				{
-					using ComponentType = std::remove_pointer_t<decltype(ptr)>;
-					using ManagerType = GetManagerFromComponent_t<ComponentType>;
-					
-					
-					//const constexpr size_t ID = ManagerType::template getComponentID<
-				}
-			);
-			
-		}
-		
+        // TODO: make
+
 	}
 
 
@@ -492,7 +431,7 @@ public:
 	{
 		// increment the tick number so the updates are called.
 		++tickNumber;
-		
+
 		updateManager(*this);
 
 		for (auto&& child : children)
@@ -521,18 +460,16 @@ public:// TODO:
 	template<typename... Args>
 	using StorageComponentStorage_t = std::tuple<std::vector<Args>...>;
 	ExpandSequenceToVaraidic_t<MyStorageComponents, StorageComponentStorage_t> storageComponentStorage;
-	
-	std::array<std::vector<EntityBase*>, getNumMyComponents()> componentEntityStorage;
-	
 
-	template<typename... Args>
-	using TupleOfPtrs = std::tuple<Args*...>;
-	using BasePtrStorage_t = 
+	std::array<std::vector<Entity<ThisType>*>, getNumMyComponents()> componentEntityStorage;
+
+
+	using BasePtrStorage_t =
 		ExpandSequenceToVaraidic_t
 		<
 			AllManagersButThis // we dont' want to store the pointers for ThisType: it is just this!
 			, TupleOfPtrs
-		>; 
+		>;
 	using MyBasePtrStorage_t = ExpandSequenceToVaraidic_t<MyBases, TupleOfPtrs>;
 	BasePtrStorage_t basePtrStorage;
 
@@ -567,7 +504,7 @@ public:
 
 	static ThisType* factory(const MyBasePtrStorage_t& bases = MyBasePtrStorage_t{})
 	{
-		
+
 		auto ret = new ThisType{ bases };
 		initManager<ThisType>(*ret);
 
@@ -599,7 +536,7 @@ public:
 		return ret;
 	}
 
-	
+
 	ManagerData<ThisType>& getManagerData()
 	{
 		return myManagerData;
