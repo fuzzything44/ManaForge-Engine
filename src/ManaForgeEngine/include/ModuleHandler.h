@@ -11,11 +11,18 @@
 
 struct ModuleHandler;
 
+#ifdef WIN32
+#	define WIN32_LEAN_AND_MEAN
+#	include <Windows.h>
+#endif
 
 class Module
 {
-	// I don't know of an operating system that doens't use a pointer for shared library handles.
+#ifdef __linux__
 	using SharedLibHandle = void*; 
+#elif defined WIN32
+	using SharedLibHandle = HMODULE;
+#endif
 public:
 	Module() = default;
 	ENGINE_API Module(ModuleHandler& handler, const path_t& name);
