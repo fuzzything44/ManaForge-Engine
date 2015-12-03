@@ -10,6 +10,11 @@ if(${UNIX})
     SET(CMAKE_C_FLAGS "-O0 -UNDEBUG -DDEBUG -D_DEBUG")
 endif()
 
+if(${MSVC})
+	set(CMAKE_VS_PLATFORM_TOOLSET "LLVM-vs2014")
+	set(CMAKE_GENERATOR_TOOLSET "LLVM-vs2014")
+endif()
+
 # find boost
 find_package(Boost 1.59.0 REQUIRED filesystem system)
 

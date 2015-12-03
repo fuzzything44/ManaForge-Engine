@@ -224,7 +224,7 @@ public:
 private:
 	// turns a signature into a vector of bool_ if it is a valid component
 	template<typename... T>
-	using isSignature_IMPL = boost::mpl::vector<boost::mpl::bool_<ThisType::template isComponent<T>()>...>;
+	using isSignature_IMPL = boost::mpl::vector_c<bool, isComponent<T>()...>;
 public:
 	template<typename SignatureToCheck>
 	static constexpr bool isSignature()
@@ -529,7 +529,7 @@ public:// TODO:
 	using StorageComponentStorage_t = std::tuple<std::vector<Args>...>;
 	ExpandSequenceToVaraidic_t<MyStorageComponents, StorageComponentStorage_t> storageComponentStorage;
 
-	std::array<std::vector<Entity<ThisType>*>, getNumMyComponents()> componentEntityStorage;
+	std::array<std::vector<Entity<ThisType>*>, (ThisType::getNumMyComponents())> componentEntityStorage;
 
 
 	using BasePtrStorage_t =
