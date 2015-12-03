@@ -10,6 +10,7 @@ namespace detail
     template<typename ManagerType, typename CurrentIter, typename EndIter, typename CurrentVector>
     struct IsolateComponentsFromThisManager
     {
+        using Component = typename boost::mpl::deref<CurrentIter>::type;
 
         using type =
             typename IsolateComponentsFromThisManager
@@ -19,8 +20,8 @@ namespace detail
 				, EndIter
                 , std::conditional_t
                 <
-                    ManagerType::template isComponent<typename boost::mpl::deref<CurrentIter>::type>()
-					, typename boost::mpl::push_back<CurrentVector, typename boost::mpl::deref<CurrentIter>::type>::type
+                    ManagerType::template isComponent<Component>()
+					, typename boost::mpl::push_back<CurrentVector, Component>::type
 					, CurrentVector
 				>
 			>::type;

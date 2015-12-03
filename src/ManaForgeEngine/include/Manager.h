@@ -224,7 +224,7 @@ public:
 private:
 	// turns a signature into a vector of bool_ if it is a valid component
 	template<typename... T>
-	using isSignature_IMPL = boost::mpl::vector_c<bool, isComponent<T>()...>;
+	using isSignature_IMPL = boost::mpl::vector<boost::mpl::bool_<isComponent<T>()>...>;
 public:
 	template<typename SignatureToCheck>
 	static constexpr bool isSignature()
@@ -288,7 +288,8 @@ public:
         for_each_no_construct_ptr<Signature>(
 		[&ret](auto ptr)
 		{
-            using Component_t = std::decay_t<std::remove_pointer_t<std::decay_t<decltype(ptr)>>>;
+
+            using Component_t = std::remove_pointer_t<decltype(ptr)>;
 			static_assert(isComponent<Component_t>(), "INTERNAL ERROR: must be a component");
 
             constexpr size_t ID = getComponentID<Component_t>();
@@ -306,10 +307,12 @@ public:
     using TupleOfPtrs = std::tuple<T*...>;
 
 	template<typename Signature>
-	auto newEntity(const ExpandSequenceToVaraidic_t<IsolateStorageComponents_t<Signature>, TupleOfConstRefs_t>& components/*tuple of the components*/)
+	auto newEntity(const ExpandSequenceToVaraidic_t<IsolateStorageComponents_t<Signature>, TupleOfConstRefs_t>& components
+			= decltype(components){} /*tuple of the components*/)
         -> Entity<FindMostBaseManagerForSignature_t<Signature>>*
 	{
 		static_assert(isSignature<Signature>(), "Must be a signature");
+        static_assert(boost::mpl::size<Signature>::value > 0, "There is literally no point in an empty entity. Rethink your life.");
 
 		using StorageComponents = IsolateStorageComponents_t<Signature>;
 		using TagComponents = IsolateTagComponents_t<Signature>;
@@ -324,7 +327,7 @@ public:
         ExpandSequenceToVaraidic_t<ManagersForSiganture, TupleOfEntityPtrs> entities;
 
 		// construct the entities
-		boost::fusion::for_each(entities, 
+		boost::fusion::for_each(entities,
 			[](auto& entPtr)
 		{
 			entPtr = new std::decay_t<decltype(*entPtr)>{};
@@ -370,11 +373,12 @@ public:
             using EntityType = std::decay_t<decltype(*ptr)>;
             using ManagerType = typename EntityType::ManagerType;
 
-            using SignatureForManager = IsolateComponentsFromThisManager_t<Signature>;
+            using SignatureForManager = typename ManagerType::template IsolateComponentsFromThisManager_t<Signature>;
+            static_assert(ManagerType::template isSignature<SignatureForManager>(), "Error, some components aren't valid.");
 			using StorageComponents = IsolateStorageComponents_t<SignatureForManager>;
 
 			ptr->signature = ManagerType::template generateRuntimeSignature<SignatureForManager>();
-			
+
 			auto&& comps = ptr->components;
 			// construct the components vector
 			for_each_no_construct_ptr<StorageComponents>(
@@ -405,23 +409,47 @@ public:
 	}
 	void destroyEntity(Entity<ThisType>* handle)
 	{
-		handle->deleteComponents(handle);
-
-		// TODO: finish
 
 	}
 
 	template<typename Component>
-	Component& getComponent(Entity<ThisType>* handle)
+	Component& getStorageComponent(Entity<ThisType>* handle)
 	{
-		// TODO: implement
+        static_assert(isStorageComponent<Component>(), "Must be a storage component");
+        constexpr size_t compID = getComponentID<Component>();
+
+        using Manager_t = GetManagerFromComponent_t<Component>;
+
+        assert(handle->signature[ID]);
+		// TODO: better error handling
+
+        auto&& sig = handle->signature;
+
+        // TODO: optimize
+        size_t ID = ~0;
+        {
+            size_t count = 0;
+
+            size_t index = 0;
+
+            while(index != compID)
+            {
+                count += sig[index];
+            }
+            ID = count;
+        }
+
+        return getRefToManager<Manager_t>().template getComponentStorage<Component>()[handle->components[ID]];
+
 	}
 
 	template<typename Component>
-	bool hasComponent(size_t handle)
+	bool hasComponent(Entity<ThisType>* entity)
 	{
 		static_assert(isComponent<Component>(), "Must be a component");
-		//TODO: reimplement
+
+        return entity->signature[getComponentID<Component>()];
+
 	}
 
 

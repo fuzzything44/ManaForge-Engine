@@ -6,7 +6,7 @@ project(ManaForgeEngine)
 
 
 if(${UNIX})
-	SET(CMAKE_CXX_FLAGS "-stdlib=libc++ -O0 -UNDEBUG -DDEBUG -D_DEBUG")
+	SET(CMAKE_CXX_FLAGS "-stdlib=libc++ -O0 -UNDEBUG -DDEBUG -D_DEBUG -v")
     SET(CMAKE_C_FLAGS "-O0 -UNDEBUG -DDEBUG -D_DEBUG")
 endif()
 
