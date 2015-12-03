@@ -275,7 +275,7 @@ public:
         using type = ThisType::template GetManagerFromComponent_t<T>;
     };
 
-    using RuntimeSignature_t = std::bitset<getNumComponents()>;
+    using RuntimeSignature_t = std::bitset<size_t(ThisType::getNumComponents())>;
 
     template<typename Signature>
     static RuntimeSignature_t generateRuntimeSignature()
@@ -288,7 +288,8 @@ public:
         for_each_no_construct_ptr<Signature>(
 		[&ret](auto ptr)
 		{
-            using Component_t = std::remove_pointer_t<decltype(ptr)>;
+            using Component_t = std::decay_t<std::remove_pointer_t<std::decay_t<decltype(ptr)>>>;
+			static_assert(isComponent<Component_t>(), "INTERNAL ERROR: must be a component");
 
             constexpr size_t ID = getComponentID<Component_t>();
 
@@ -320,11 +321,20 @@ public:
 
 
         // construct the components
+        ExpandSequenceToVaraidic_t<ManagersForSiganture, TupleOfEntityPtrs> entities;
+
+		// construct the entities
+		boost::fusion::for_each(entities, 
+			[](auto& entPtr)
+		{
+			entPtr = new std::decay_t<decltype(*entPtr)>{};
+		});
+
         std::array<size_t, boost::mpl::size<StorageComponents>::value> IDs;
         ExpandSequenceToVaraidic_t<StorageComponents, TupleOfPtrs> componentPtrs;
 
         tuple_for_each_with_index(componentPtrs,
-        [this, &IDs, &componentPtrs, &components](auto& ptr, auto ID_t)
+        [this, &IDs, &componentPtrs, &components, &entities](auto& ptr, auto ID_t)
         {
             using ComponentType = std::remove_pointer_t<std::decay_t<decltype(ptr)>>;
             constexpr size_t ID = decltype(ID_t)::value;
@@ -338,24 +348,43 @@ public:
             size_t compID = compStorage.size() - 1;
             std::get<ID>(componentPtrs) = &compStorage[compID];
             IDs[ID] = compID;
+
+			// assign the entity
+			auto&& entityStorage = this->template getRefToManager<ManagerType>()
+				.template getComponentEntityStorage<ComponentType>();
+
+			// acquire the pointer
+			auto ptrToEntity = std::get<boost::mpl::distance<typename boost::mpl::begin<ManagersForSiganture>::type,
+				typename boost::mpl::find<ManagersForSiganture, ManagerType>::type
+			>::type::value>(entities);
+
+			// assign it
+			entityStorage.emplace_back(ptrToEntity);
+
         });
 
 
-        // construct the bases
-        ExpandSequenceToVaraidic_t<ManagersForSiganture, TupleOfEntityPtrs> entities;
-
         boost::fusion::for_each(entities,
-			[](auto& ptr)
+			[&IDs](auto& ptr)
 		{
             using EntityType = std::decay_t<decltype(*ptr)>;
             using ManagerType = typename EntityType::ManagerType;
 
             using SignatureForManager = IsolateComponentsFromThisManager_t<Signature>;
+			using StorageComponents = IsolateStorageComponents_t<SignatureForManager>;
 
-            auto sig = generateRuntimeSignature<SignatureForManager>();
+			ptr->signature = ManagerType::template generateRuntimeSignature<SignatureForManager>();
+			
+			auto&& comps = ptr->components;
+			// construct the components vector
+			for_each_no_construct_ptr<StorageComponents>(
+				[&comps, &IDs](auto ptr)
+			{
+				using ComponentType = std::remove_pointer_t<decltype(ptr)>;
 
-
-
+				size_t ID = std::get<boost::mpl::distance<typename boost::mpl::begin<StorageComponents>::type,
+					typename boost::mpl::find<StorageComponents, ComponentType>::type>::type::value>(IDs);
+			});
 		});
 
         return nullptr;
