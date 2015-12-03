@@ -255,6 +255,11 @@ public:
 	template<typename Sequence>
 	using IsolateTagComponents_t = typename detail::IsolateTagComponents<ThisType, Sequence>::type;
 
+    template<typename Sequence>
+    using IsolateComponentsFromThisManager_t =
+		typename detail::IsolateComponentsFromThisManager<ThisType, typename boost::mpl::begin<Sequence>::type,
+		typename boost::mpl::end<Sequence>::type, boost::mpl::vector0<>>::type;
+
 	template<typename... Types>
 	using TupleOfConstRefs_t = std::tuple<Types...>;
 
@@ -270,7 +275,34 @@ public:
         using type = ThisType::template GetManagerFromComponent_t<T>;
     };
 
+    using RuntimeSignature_t = std::bitset<getNumComponents()>;
 
+    template<typename Signature>
+    static RuntimeSignature_t generateRuntimeSignature()
+    {
+
+        static_assert(isSignature<Signature>(), "Must be a signature");
+
+        RuntimeSignature_t ret;
+
+        for_each_no_construct_ptr<Signature>(
+		[&ret](auto ptr)
+		{
+            using Component_t = std::remove_pointer_t<decltype(ptr)>;
+
+            constexpr size_t ID = getComponentID<Component_t>();
+
+            ret[ID] = true;
+		});
+
+		return ret;
+    }
+
+    template<typename... T>
+    using TupleOfEntityPtrs = std::tuple<Entity<T>*...>;
+
+    template<typename... T>
+    using TupleOfPtrs = std::tuple<T*...>;
 
 	template<typename Signature>
 	auto newEntity(const ExpandSequenceToVaraidic_t<IsolateStorageComponents_t<Signature>, TupleOfConstRefs_t>& components/*tuple of the components*/)
@@ -284,11 +316,47 @@ public:
         // get managers for the entity
         using MostBaseManager = FindMostBaseManagerForSignature_t<Signature>;
         using Managers_DUP = typename boost::mpl::transform<Signature, GetBaseManager_STRUCT<boost::mpl::placeholders::_1>>::type;
-        using ManagersForSiganture = Unduplicate_t<boost::mpl::push_back<Managers_DUP, MostBaseManager>>;
-
-        // tuple of the bases we have -- used for construction of Entity types later.
+        using ManagersForSiganture = Unduplicate_t<typename boost::mpl::push_back<Managers_DUP, MostBaseManager>::type>;
 
 
+        // construct the components
+        std::array<size_t, boost::mpl::size<StorageComponents>::value> IDs;
+        ExpandSequenceToVaraidic_t<StorageComponents, TupleOfPtrs> componentPtrs;
+
+        tuple_for_each_with_index(componentPtrs,
+        [this, &IDs, &componentPtrs, &components](auto& ptr, auto ID_t)
+        {
+            using ComponentType = std::remove_pointer_t<std::decay_t<decltype(ptr)>>;
+            constexpr size_t ID = decltype(ID_t)::value;
+
+            using ManagerType = GetManagerFromComponent_t<ComponentType>;
+
+            auto&& compStorage = this->template getRefToManager<ManagerType>().template getComponentStorage<ComponentType>();
+
+            compStorage.emplace_back(std::move(std::get<ID>(components)));
+
+            size_t compID = compStorage.size() - 1;
+            std::get<ID>(componentPtrs) = &compStorage[compID];
+            IDs[ID] = compID;
+        });
+
+
+        // construct the bases
+        ExpandSequenceToVaraidic_t<ManagersForSiganture, TupleOfEntityPtrs> entities;
+
+        boost::fusion::for_each(entities,
+			[](auto& ptr)
+		{
+            using EntityType = std::decay_t<decltype(*ptr)>;
+            using ManagerType = typename EntityType::ManagerType;
+
+            using SignatureForManager = IsolateComponentsFromThisManager_t<Signature>;
+
+            auto sig = generateRuntimeSignature<SignatureForManager>();
+
+
+
+		});
 
         return nullptr;
 

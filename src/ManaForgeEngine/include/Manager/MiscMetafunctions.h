@@ -7,6 +7,32 @@
 
 namespace detail
 {
+    template<typename ManagerType, typename CurrentIter, typename EndIter, typename CurrentVector>
+    struct IsolateComponentsFromThisManager
+    {
+
+        using type =
+            typename IsolateComponentsFromThisManager
+            <
+				ManagerType
+				, typename boost::mpl::next<CurrentIter>::type
+				, EndIter
+                , std::conditional_t
+                <
+                    ManagerType::template isComponent<typename boost::mpl::deref<CurrentIter>::type>()
+					, typename boost::mpl::push_back<CurrentVector, typename boost::mpl::deref<CurrentIter>::type>::type
+					, CurrentVector
+				>
+			>::type;
+	};
+
+    template<typename ManagerType, typename EndIter, typename CurrentVector>
+    struct IsolateComponentsFromThisManager<ManagerType, EndIter, EndIter, CurrentVector>
+    {
+        using type = CurrentVector;
+    };
+
+
 	template<typename ManagerType, typename ComponentToCheckFor, typename CurrentIter, typename EndIter,
 		typename = std::conditional_t
 		<
@@ -46,7 +72,7 @@ namespace detail
 	{
 		//		static_assert(false, "ERROR, COULD NOT FIND COMPONENT IN ANY MANAGERS");
 	};
-	
+
 	template<typename Manager, typename Signature>
 	struct IsSignature
 	{
@@ -63,23 +89,23 @@ namespace detail
 	struct FindMostBaseManagerForSignature
 	{
 		static_assert(std::is_base_of<ManagerBase, ManagerType>::value, "Must be a subclass of ManagerBase");
-		
+
 		static_assert(boost::mpl::is_sequence<SignatureToFind>::value, "Signatures are sequences");
 		static_assert(ManagerType::template isSignature<SignatureToFind>(), "Must be a signature");
-		
-		using Transformed_Bools = 
+
+		using Transformed_Bools =
 			typename boost::mpl::transform // when searching for std::true type
 			<
 				typename ManagerType::MyBases
 				, IsSignature<boost::mpl::placeholders::_1, SignatureToFind>
 			>::type
 			;
-		
+
 		// Get the manager above this that has the correct components
-		
+
 		static const constexpr size_t ManagerID =
 			boost::mpl::distance
-			<	
+			<
 				typename boost::mpl::begin<Transformed_Bools>::type
 				, typename boost::mpl::find // that was found
 				<
@@ -88,11 +114,11 @@ namespace detail
 				>::type
 			>::type::value
 			;
-		
+
 		using ManagerWithComponent = typename boost::mpl::at_c<typename ManagerType::MyBases, ManagerID>::type;
 
 		static const constexpr bool runningNext = !std::is_same<ManagerWithComponent, boost::mpl::void_>::value;
-		
+
 		// make sure we either found a Manager or not -- not some other case.
 		static_assert(ManagerType::template isManager<ManagerWithComponent>() ^ !runningNext, "INTERNAL ERROR: must be a manager!");
 
@@ -115,7 +141,7 @@ namespace detail
 	{
 		using type = ManagerType;
 	};
-	
+
 
 
 	template<
@@ -130,7 +156,7 @@ namespace detail
 		using Tag_t = typename boost::mpl::at_c<Sequence, ID>::type;
 
 		using NewSequence = typename boost::mpl::remove<Sequence, Tag_t>::type;
-		
+
 		using type =
 			typename IsolateStorageComponents
 			<
@@ -166,7 +192,7 @@ namespace detail
 			Sequence;
 	};
 
-	
+
 	template<
 		typename ManagerType
 		, typename Sequence
