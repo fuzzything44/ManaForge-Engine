@@ -366,6 +366,25 @@ public:
 
         });
 
+        // assign bases
+        boost::fusion::for_each(entities,
+			[&entities](auto& entity)
+		{
+            using EntityType = std::decay_t<decltype(*entity)>;
+            using ManagerType = typename EntityType::ManagerType;
+            using Bases = typename Manager::MyBases;
+
+            boost::fusion::for_each(entity->bases,
+				[&entities](auto basePtr)
+			{
+                using Entity_t = std::decay_t<decltype(*basePtr)>;
+                using BaseManager_t = typename Entity_t::ManagerType;
+
+                detail::AssignBasePointer_t<ManagersForSiganture, BaseManager_t>::apply(basePtr, entities);
+
+			});
+		});
+
 
         boost::fusion::for_each(entities,
 			[&IDs](auto& ptr)
@@ -420,7 +439,7 @@ public:
 
         using Manager_t = GetManagerFromComponent_t<Component>;
 
-        assert(handle->signature[ID]);
+        assert(handle->signature[compID]);
 		// TODO: better error handling
 
         auto&& sig = handle->signature;

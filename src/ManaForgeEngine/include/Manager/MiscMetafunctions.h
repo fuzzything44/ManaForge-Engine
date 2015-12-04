@@ -5,8 +5,41 @@
 #include <boost/mpl/transform.hpp>
 #include <boost/mpl/deref.hpp>
 
+#include "Entity.h"
+
 namespace detail
 {
+
+    template<typename Managers, typename ManagerToTest, bool = boost::mpl::contains<Managers, ManagerToTest>::type::value>
+    struct AssignBasePointer_t
+    {
+        static_assert(boost::mpl::is_sequence<Managers>::value, "Must be a sequence");
+        static_assert(std::is_base_of<ManagerBase, ManagerToTest>::value, "Must be a manager");
+
+        template<typename... Args>
+        using TupleOfEntityPointers = std::tuple<Entity<Args>*...>;
+
+
+        static void apply(Entity<ManagerToTest>* toApplyTo,  ExpandSequenceToVaraidic_t<Managers, TupleOfEntityPointers> bases)
+        {
+            constexpr size_t ID = boost::mpl::distance<typename boost::mpl::begin<Managers>::type,
+				typename boost::mpl::find<Managers, ManagerToTest>::type>::type::value;
+
+            toApplyTo = std::get<ID>(bases);
+        }
+    };
+
+    template<typename Managers, typename ManagerToTest>
+    struct AssignBasePointer_t<Managers, ManagerToTest, false>
+    {
+        template<typename... Args>
+        using TupleOfEntityPointers = std::tuple<Entity<Args>*...>;
+
+
+        static void apply(Entity<ManagerToTest>* toApplyTo,  ExpandSequenceToVaraidic_t<Managers, TupleOfEntityPointers> bases)
+		{}
+    };
+
     template<typename ManagerType, typename CurrentIter, typename EndIter, typename CurrentVector>
     struct IsolateComponentsFromThisManager
     {

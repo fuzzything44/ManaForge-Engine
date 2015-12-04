@@ -1,3 +1,7 @@
+# cmake -DBoost_INCLUDE_DIR="/home/russellg/Documents/boost/boost_1_59_0/"
+#  -DBoost_LIBRARY_DIR="/home/russellg/Documents/boost/boost_1_59_0/lib/clang 3.6.2"
+#  -DCMAKE_C_COMPILER="clang" -DCMAKE_CXX_COMPILER="clang++" -DCMAKE_BUILD_TYPE="DEBUG" ..
+
 cmake_minimum_required (VERSION 3.0)
 
 
@@ -6,13 +10,8 @@ project(ManaForgeEngine)
 
 
 if(${UNIX})
-	SET(CMAKE_CXX_FLAGS "-stdlib=libc++ -O0 -UNDEBUG -DDEBUG -D_DEBUG -v")
+	SET(CMAKE_CXX_FLAGS "-stdlib=libc++ -O0 -UNDEBUG -DDEBUG -D_DEBUG -fsanitize=address")
     SET(CMAKE_C_FLAGS "-O0 -UNDEBUG -DDEBUG -D_DEBUG")
-endif()
-
-if(${MSVC})
-	set(CMAKE_VS_PLATFORM_TOOLSET "LLVM-vs2014")
-	set(CMAKE_GENERATOR_TOOLSET "LLVM-vs2014")
 endif()
 
 # find boost

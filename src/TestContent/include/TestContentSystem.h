@@ -25,12 +25,11 @@ void beginPlayManager<TestContentManager_t>(TestContentManager_t& manager)
 {
 	auto ent1 = manager.newEntity<boost::mpl::vector2<CPosition, TPew>>(std::make_tuple(CPosition{{.3f, 2.f}}));
 
-    assert(manager.hasComponent<CPosition>(ent));
-    assert(manager.hasComponent<TPew>(ent));
-    assert(!manager.hasComponent<CVelocity>());
-    assert(manager.getStorageComponent<CPosition>().value == vec2(.3f, 2.f));
+    assert(manager.hasComponent<CPosition>(ent1));
+    assert(manager.hasComponent<TPew>(ent1));
+    assert(!manager.hasComponent<CVelocity>(ent1));
+    assert(manager.getStorageComponent<CPosition>(ent1).value == vec2(.3f, 2.f));
 
-    auto ent2 = manager.newEntity<boost::mpl::vector0<>>();
 
 }
 
