@@ -260,6 +260,12 @@ public:
 		typename detail::IsolateComponentsFromThisManager<ThisType, typename boost::mpl::begin<Sequence>::type,
 		typename boost::mpl::end<Sequence>::type, boost::mpl::vector0<>>::type;
 
+    template<typename Sequence>
+    using IsolateMyComponents_t =
+		typename detail::IsolateMyComponents<ThisType, typename boost::mpl::begin<Sequence>::type,
+		typename boost::mpl::end<Sequence>::type, boost::mpl::vector0<>>::type;
+
+
 	template<typename... Types>
 	using TupleOfConstRefs_t = std::tuple<Types...>;
 
@@ -276,6 +282,7 @@ public:
     };
 
     using RuntimeSignature_t = std::bitset<size_t(ThisType::getNumComponents())>;
+    using MyRuntimeSignature_t = std::bitset<size_t(ThisType::getNumComponents())>;
 
     template<typename Signature>
     static RuntimeSignature_t generateRuntimeSignature()
@@ -293,6 +300,30 @@ public:
 			static_assert(isComponent<Component_t>(), "INTERNAL ERROR: must be a component");
 
             constexpr size_t ID = getComponentID<Component_t>();
+
+            ret[ID] = true;
+		});
+
+		return ret;
+    }
+
+    template<typename Signature>
+    static MyRuntimeSignature_t generateMyRuntimeSignature()
+    {
+		static_assert(isSignature<Signature>(), "Must be a signature");
+
+        MyRuntimeSignature_t ret;
+
+        using OnlyMineSig = IsolateMyComponents_t<Signature>;
+
+        for_each_no_construct_ptr<OnlyMineSig>(
+		[&ret](auto ptr)
+		{
+
+            using Component_t = std::remove_pointer_t<decltype(ptr)>;
+			static_assert(isMyComponent<Component_t>(), "INTERNAL ERROR: must be my component");
+
+            constexpr size_t ID = getMyComponentID<Component_t>();
 
             ret[ID] = true;
 		});
@@ -320,11 +351,11 @@ public:
         // get managers for the entity
         using MostBaseManager = FindMostBaseManagerForSignature_t<Signature>;
         using Managers_DUP = typename boost::mpl::transform<Signature, GetBaseManager_STRUCT<boost::mpl::placeholders::_1>>::type;
-        using ManagersForSiganture = Unduplicate_t<typename boost::mpl::push_back<Managers_DUP, MostBaseManager>::type>;
+        using ManagersForSignature = Unduplicate_t<typename boost::mpl::push_back<Managers_DUP, MostBaseManager>::type>;
 
 
         // construct the components
-        ExpandSequenceToVaraidic_t<ManagersForSiganture, TupleOfEntityPtrs> entities;
+        ExpandSequenceToVaraidic_t<ManagersForSignature, TupleOfEntityPtrs> entities;
 
 		// construct the entities
 		boost::fusion::for_each(entities,
@@ -357,8 +388,8 @@ public:
 				.template getComponentEntityStorage<ComponentType>();
 
 			// acquire the pointer
-			auto ptrToEntity = std::get<boost::mpl::distance<typename boost::mpl::begin<ManagersForSiganture>::type,
-				typename boost::mpl::find<ManagersForSiganture, ManagerType>::type
+			auto ptrToEntity = std::get<boost::mpl::distance<typename boost::mpl::begin<ManagersForSignature>::type,
+				typename boost::mpl::find<ManagersForSignature, ManagerType>::type
 			>::type::value>(entities);
 
 			// assign it
@@ -380,7 +411,7 @@ public:
                 using Entity_t = std::decay_t<decltype(*basePtr)>;
                 using BaseManager_t = typename Entity_t::ManagerType;
 
-                detail::AssignBasePointer_t<ManagersForSiganture, BaseManager_t>::apply(basePtr, entities);
+                detail::AssignBasePointer_t<ManagersForSignature, BaseManager_t>::apply(basePtr, entities);
 
 			});
 		});
@@ -396,21 +427,25 @@ public:
             static_assert(ManagerType::template isSignature<SignatureForManager>(), "Error, some components aren't valid.");
 			using StorageComponents = IsolateStorageComponents_t<SignatureForManager>;
 
-			ptr->signature = ManagerType::template generateRuntimeSignature<SignatureForManager>();
+			ptr->signature = ManagerType::template generateMyRuntimeSignature<SignatureForManager>();
 
 			auto&& comps = ptr->components;
-			// construct the components vector
+			// construct the components array
 			for_each_no_construct_ptr<StorageComponents>(
 				[&comps, &IDs](auto ptr)
 			{
 				using ComponentType = std::remove_pointer_t<decltype(ptr)>;
+				using ManagerType = GetManagerFromComponent_t<ComponentType>;
 
 				size_t ID = std::get<boost::mpl::distance<typename boost::mpl::begin<StorageComponents>::type,
 					typename boost::mpl::find<StorageComponents, ComponentType>::type>::type::value>(IDs);
+
+                comps[ManagerType::template getMyComponentID<ComponentType>()] = ID;
 			});
 		});
 
-        return nullptr;
+        return std::get<boost::mpl::distance<typename boost::mpl::begin<ManagersForSignature>::type,
+			typename boost::mpl::find<ManagersForSignature, MostBaseManager>::type>::type::value>(entities);
 
 	}
 
@@ -467,7 +502,7 @@ public:
 	{
 		static_assert(isComponent<Component>(), "Must be a component");
 
-        return entity->signature[getComponentID<Component>()];
+        return entity->signature[getMyComponentID<Component>()];
 
 	}
 

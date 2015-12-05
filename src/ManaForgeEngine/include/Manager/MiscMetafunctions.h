@@ -41,6 +41,33 @@ namespace detail
     };
 
     template<typename ManagerType, typename CurrentIter, typename EndIter, typename CurrentVector>
+    struct IsolateMyComponents
+    {
+        using Component = typename boost::mpl::deref<CurrentIter>::type;
+
+        using type =
+            typename IsolateMyComponents
+            <
+				ManagerType
+				, typename boost::mpl::next<CurrentIter>::type
+				, EndIter
+                , std::conditional_t
+                <
+                    ManagerType::template isMyComponent<Component>()
+					, typename boost::mpl::push_back<CurrentVector, Component>::type
+					, CurrentVector
+				>
+			>::type;
+	};
+
+    template<typename ManagerType, typename EndIter, typename CurrentVector>
+    struct IsolateMyComponents<ManagerType, EndIter, EndIter, CurrentVector>
+    {
+        using type = CurrentVector;
+    };
+
+
+    template<typename ManagerType, typename CurrentIter, typename EndIter, typename CurrentVector>
     struct IsolateComponentsFromThisManager
     {
         using Component = typename boost::mpl::deref<CurrentIter>::type;
