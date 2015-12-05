@@ -10,6 +10,31 @@
 namespace detail
 {
 
+    template<typename CurrentIter, typename EndIter, typename Component,
+		bool = boost::mpl::deref<CurrentIter>::type::template isComponent<Component>()
+	>
+    struct GetBaseManagerWithComponent
+    {
+        using type = typename boost::mpl::deref<CurrentIter>::type;
+    };
+
+    template<typename EndIter, typename Component, bool b>
+    struct GetBaseManagerWithComponent<EndIter, EndIter, Component, b>
+    {
+        using type = boost::mpl::void_;
+    };
+
+    template<typename CurrentIter, typename EndIter, typename Component>
+    struct GetBaseManagerWithComponent<CurrentIter, EndIter, Component, false>
+    {
+        using type =
+			typename GetBaseManagerWithComponent<typename boost::mpl::next<CurrentIter>::type, EndIter, Component>::type;
+    };
+
+
+
+
+
     template<typename Managers, typename ManagerToTest, bool = boost::mpl::contains<Managers, ManagerToTest>::type::value>
     struct AssignBasePointer_t
     {

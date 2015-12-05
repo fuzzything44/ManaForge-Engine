@@ -221,6 +221,30 @@ public:
 	template<size_t at> using ComponentByID =
 		typename boost::mpl::at_c<AllComponents, at>::type;
 
+
+    template<typename ToTest> static constexpr bool isBase()
+    {
+        return boost::mpl::contains<MyBases, ToTest>::type::value;
+    }
+
+	static constexpr size_t getNumBases()
+	{
+		return boost::mpl::size<MyBases>::value;
+	}
+	template <typename Comp> static constexpr size_t getBaseID()
+	{
+		static_assert(isBase<Comp>(), "Must be a Base");
+
+		return boost::mpl::distance<
+			typename boost::mpl::begin<MyBases>::type,
+			typename boost::mpl::find<MyBases, Comp>::type
+		>::type::value;
+	}
+	template<size_t ID>
+	using BaseFromID = typename boost::mpl::at_c<MyBases, ID>::type;
+
+
+
 private:
 	// turns a signature into a vector of bool_ if it is a valid component
 	template<typename... T>
@@ -265,6 +289,11 @@ public:
 		typename detail::IsolateMyComponents<ThisType, typename boost::mpl::begin<Sequence>::type,
 		typename boost::mpl::end<Sequence>::type, boost::mpl::vector0<>>::type;
 
+
+    template<typename Manager, typename Component>
+    using GetBaseManagerWithComponent_t =
+        typename detail::GetBaseManagerWithComponent<typename boost::mpl::begin<typename Manager::MyBases>::type,
+        typename boost::mpl::end<typename Manager::MyBases>::type, Component>;
 
 	template<typename... Types>
 	using TupleOfConstRefs_t = std::tuple<Types...>;
@@ -500,11 +529,38 @@ public:
 	template<typename Component>
 	bool hasComponent(Entity<ThisType>* entity)
 	{
-		static_assert(isComponent<Component>(), "Must be a component");
+        using NextBaseManager = GetBaseManagerWithComponent_t<ThisType, Component>;
+        static_assert(isManager<NextBaseManager>(), "Must be a manager");
 
-        return entity->signature[getMyComponentID<Component>()];
+        return NextBaseManager::template HasComponent_t<Component, ThisType>::apply(*this, entity);
 
 	}
+
+    template<typename Component, typename Manager>
+    struct HasComponent_t
+    {
+		static bool apply(Manager& manager, Entity<Manager>* entity)
+		{
+			static_assert(isMyComponent<Component>(), "INTERNAL ERROR, this should be my component");
+
+
+		}
+    };
+
+    template<typename Component>
+    struct HasComponent_t<Component, ThisType>
+    {
+		static_assert(std::is_same<Manager, ThisType>::value, "INTERNAL ERROR");
+
+		static bool apply(Manager& manager, Entity<Manager>* entity)
+		{
+			static_assert(isMyComponent<Component>(), "INTERNAL ERROR, this should be my component");
+
+            return entity->signature[ThisType::template getMyComponentID<Component>];
+		}
+    };
+
+
 
 
 	template<typename ManagerToGet>
