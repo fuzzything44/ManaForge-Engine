@@ -290,10 +290,10 @@ public:
 		typename boost::mpl::end<Sequence>::type, boost::mpl::vector0 < >> ::type;
 
 
-	template<typename Component>
-	using GetBaseManagerWithComponent_t =
-		typename detail::GetBaseManagerWithComponent<ThisType, typename boost::mpl::begin<typename Manager::MyBases>::type,
-		typename boost::mpl::end<typename Manager::MyBases>::type, Component>::type;
+	template<typename ManagerToFind>
+	using GetBaseManagerWithBase_t =
+		typename detail::GetBaseManagerWithBase<ThisType, typename boost::mpl::begin<MyBases>::type,
+		typename boost::mpl::end<MyBases>::type, ManagerToFind>::type;
 
 	template<typename... Types>
 	using TupleOfConstRefs_t = std::tuple<Types...>;
@@ -458,18 +458,19 @@ public:
 
 			ptr->signature = ManagerType::template generateMyRuntimeSignature<SignatureForManager>();
 
-			auto&& comps = ptr->components;
 			// construct the components array
 			for_each_no_construct_ptr<StorageComponents>(
-				[&comps, &IDs](auto ptr)
+				[&ptr, &IDs](auto ptr)
 			{
 				using ComponentType = std::remove_pointer_t<decltype(ptr)>;
-				using ManagerType = GetManagerFromComponent_t<ComponentType>;
+				using ComponentManagerType = GetManagerFromComponent_t<ComponentType>;
+
 
 				size_t ID = std::get<boost::mpl::distance<typename boost::mpl::begin<StorageComponents>::type,
 					typename boost::mpl::find<StorageComponents, ComponentType>::type>::type::value>(IDs);
 
-				comps[ManagerType::template getMyComponentID<ComponentType>()] = ID;
+				ManagerType::template getEntityPtr<ComponentManagerType>(ptr)->components
+					[ComponentManagerType::template getMyStorageComponentID<ComponentType>()] = ID;
 			});
 		});
 
@@ -529,44 +530,44 @@ public:
 	template<typename Component>
 	bool hasComponent(Entity<ThisType>* entity)
 	{
-		using NextBaseManager = GetBaseManagerWithComponent_t<Component>;
-		static_assert(isManager<NextBaseManager>(), "Must be a manager");
+		//TODO: implement
 
-		return NextBaseManager::template HasComponent_IMPL<Component>::apply(entity);
-
+		return false;
 	}
 
-	template<typename Component, bool = isMyComponent<Component>()>
-	struct HasComponent_IMPL
+	template<typename ManagerToGet>
+	static Entity<ManagerToGet>* getEntityPtr(Entity<ThisType>* ent)
+	{
+		static_assert(isManager<ManagerToGet>(), "Must be a manager");
+
+		return GetEntityPtr_IMPL<ManagerToGet>::apply(ent);
+	}
+
+	template<typename ManagerTypeToGet, bool = std::is_same<ManagerTypeToGet, ThisType>::value>
+	struct GetEntityPtr_IMPL
 	{
 		template<typename Manager_t>
-		static bool apply(Entity<Manager_t>* entChild)
+		static Entity<ThisType>* apply(Entity<Manager_t>* entChild)
 		{
 			static_assert(Manager_t::isBase<ThisType>(), "INTERNAL ERROR: must be base");
 
 			Entity<ThisType>* ent = std::get<Manager_t::getBaseID<ThisType>()>(entChild->bases);
 
-			return ent->signature[getMyComponentID<Component>()];
-		}
-
-		static bool apply(Entity<ThisType>* ent)
-		{
-			return ent->signature[getMyComponentID<Component>()];
+			return ent;
 		}
 	};
 
-	template<typename Component>
-	struct HasComponent_IMPL<Component, false>
+	template<typename ManagerTypeToGet>
+	struct GetEntityPtr_IMPL<ManagerTypeToGet, false>
 	{
 		template<typename Manager_t>
-		static bool apply(Entity<Manager_t>* entChild)
+		static Entity<ThisType>* apply(Entity<Manager_t>* entChild)
 		{
 			static_assert(Manager_t::isBase<ThisType>(), "INTERNAL ERROR: must be my base");
 
 			// get this entity
 			Entity<ThisType>* ent = std::get<Manager_t::getBaseID<ThisType>()>(entChild->bases);
 
-			using NextManager = GetBaseManagerWithComponent_t<Component>;
 			return NextManager::template HasComponent_IMPL<Component>::apply(ent);
 		}
 	};

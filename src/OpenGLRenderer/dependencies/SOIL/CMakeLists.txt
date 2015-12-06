@@ -15,6 +15,4 @@ find_package(OpenGL REQUIRED)
 include_directories(${OPENGL_INCLUDE_DIRS})
 target_link_libraries(SOIL ${OPENGL_LIBRARIES})
 
-message(${OPENGL_LIBRARIES})
-
 

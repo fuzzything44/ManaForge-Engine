@@ -12,14 +12,14 @@ namespace detail
 	struct dummy
 	{
 		template<typename T>
-		static constexpr bool isComponent() { return true; }
+		static constexpr bool isManager() { return true; }
 	};
 
-    template<typename Manager, typename CurrentIter, typename EndIter, typename Component,
+    template<typename Manager, typename CurrentIter, typename EndIter, typename ManagerToFind,
 		bool = std::conditional_t<std::is_same<CurrentIter, EndIter>::value, dummy, 
-		typename boost::mpl::deref<CurrentIter>::type>::template isComponent<Component>()
+		typename boost::mpl::deref<CurrentIter>::type>::template isManager<ManagerToFind>()
 	>
-    struct GetBaseManagerWithComponent
+    struct GetBaseManagerWithBase
     {
         using type = typename boost::mpl::deref<CurrentIter>::type;
 
@@ -27,18 +27,18 @@ namespace detail
     };
 
 
-	template<typename Manager, typename EndIter, typename Component>
-	struct GetBaseManagerWithComponent<Manager, EndIter, EndIter, Component, true>
+	template<typename Manager, typename EndIter, typename ManagerToFind>
+	struct GetBaseManagerWithBase<Manager, EndIter, EndIter, ManagerToFind, true>
 	{
 		using type = Manager;
 	};
 
-    template<typename Manager, typename CurrentIter, typename EndIter, typename Component>
-    struct GetBaseManagerWithComponent<Manager, CurrentIter, EndIter, Component, false>
+    template<typename Manager, typename CurrentIter, typename EndIter, typename ManagerToFind>
+    struct GetBaseManagerWithBase<Manager, CurrentIter, EndIter, ManagerToFind, false>
     {
         using type =
-			typename GetBaseManagerWithComponent<Manager, 
-			typename boost::mpl::next<CurrentIter>::type, EndIter, Component>::type;
+			typename GetBaseManagerWithBase<Manager,
+			typename boost::mpl::next<CurrentIter>::type, EndIter, ManagerToFind>::type;
 		
 
 		static_assert(std::is_base_of<ManagerBase, type>::value, "INTERNAL ERROR: must be a manager");

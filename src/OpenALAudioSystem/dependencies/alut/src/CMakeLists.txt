@@ -79,6 +79,14 @@ set_target_properties(alut
 	${MAJOR_VERSION}
 	SOVERSION
 	${MAJOR_VERSION})
+set_target_properties(alut
+	PROPERTIES
+
+	ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin
+	LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin
+	RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin
+
+)
 if(WIN32)
 	add_dependencies(alut OpenAL32)
 	target_link_libraries(alut "OpenAL32")

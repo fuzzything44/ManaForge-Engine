@@ -65,6 +65,14 @@ set_target_properties(glfw PROPERTIES
                       SOVERSION ${GLFW_VERSION_MAJOR}
                       POSITION_INDEPENDENT_CODE ON
                       FOLDER "GLFW3")
+set_target_properties(glfw
+	PROPERTIES
+
+	ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin
+	LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin
+	RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin
+
+)
 
 if (BUILD_SHARED_LIBS)
     if (WIN32)
