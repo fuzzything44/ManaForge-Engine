@@ -554,12 +554,19 @@ public:
 		{
 			static_assert(Manager_t::template isBase<ThisType>(), "INTERNAL ERROR: must be base");
 
+			if(!entChild)
+			{
+                std::cout << "DAMMIT NULLPTR";
+			}
+			 // TODO: remove for optimization
+
 			return std::get<Manager_t::template getBaseID<ThisType>()>(entChild->bases);
 
 		}
 
         static Entity<ManagerTypeToGet>* apply(Entity<ManagerTypeToGet>* ent)
         {
+			assert(ent); // TODO: remove for optimziation
             return ent;
         }
 	};
@@ -570,6 +577,11 @@ public:
 		template<typename Manager_t>
 		static Entity<ManagerTypeToGet>* apply(Entity<Manager_t>* entChild)
 		{
+			// TODO: remove
+            if(!entChild)
+            {
+				std::cout << "NULLPTR DAMMIT";
+            }
 			static_assert(Manager_t::template isBase<ThisType>(), "INTERNAL ERROR: must be my base");
 
 			// get this entity
