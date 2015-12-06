@@ -248,7 +248,7 @@ public:
 private:
 	// turns a signature into a vector of bool_ if it is a valid component
 	template<typename... T>
-	using isSignature_IMPL = boost::mpl::vector<boost::mpl::bool_<isComponent<T>()>...>;
+	using isSignature_IMPL = boost::mpl::vector<boost::mpl::bool_<(isComponent<T>())>...>;
 public:
 	template<typename SignatureToCheck>
 	static constexpr bool isSignature()
