@@ -222,10 +222,10 @@ public:
 		typename boost::mpl::at_c<AllComponents, at>::type;
 
 
-    template<typename ToTest> static constexpr bool isBase()
-    {
-        return boost::mpl::contains<MyBases, ToTest>::type::value;
-    }
+	template<typename ToTest> static constexpr bool isBase()
+	{
+		return boost::mpl::contains<MyBases, ToTest>::type::value;
+	}
 
 	static constexpr size_t getNumBases()
 	{
@@ -246,9 +246,9 @@ public:
 
 
 private:
-	// turns a signature into a vector of bool_ if it is a valid component
+	// turns a signature into a vector of interal_c if it is a valid component
 	template<typename... T>
-	using isSignature_IMPL = boost::mpl::vector<boost::mpl::bool_<(isComponent<T>())>...>;
+	using isSignature_IMPL = boost::mpl::vector_c<bool, isComponent<T>()...>;
 public:
 	template<typename SignatureToCheck>
 	static constexpr bool isSignature()
@@ -259,17 +259,17 @@ public:
 		using Transformed = ExpandSequenceToVaraidic_t<SignatureToCheck, isSignature_IMPL>;
 
 		// if there are no false types, then it is a signature
-		return !boost::mpl::contains<Transformed, boost::mpl::bool_<false>>::type::value;
+		return !boost::mpl::contains<Transformed, boost::mpl::integral_c<bool, false>>::type::value;
 	}
 
 	template<typename Component>
 	using GetManagerFromComponent_t =
 		typename detail::GetManagerFromComponent
 		<
-			ThisType
-			, Component
-			, typename boost::mpl::begin<AllManagers>::type
-			, typename boost::mpl::end<AllManagers>::type
+		ThisType
+		, Component
+		, typename boost::mpl::begin<AllManagers>::type
+		, typename boost::mpl::end<AllManagers>::type
 		>::type
 		;
 
@@ -279,21 +279,21 @@ public:
 	template<typename Sequence>
 	using IsolateTagComponents_t = typename detail::IsolateTagComponents<ThisType, Sequence>::type;
 
-    template<typename Sequence>
-    using IsolateComponentsFromThisManager_t =
-		typename detail::IsolateComponentsFromThisManager<ThisType, typename boost::mpl::begin<Sequence>::type,
-		typename boost::mpl::end<Sequence>::type, boost::mpl::vector0<>>::type;
+	template<typename Sequence>
+	using IsolateComponentsFromThisManager_t =
+		typename detail::IsolateComponentsFromThisManager < ThisType, typename boost::mpl::begin<Sequence>::type,
+		typename boost::mpl::end<Sequence>::type, boost::mpl::vector0 < >> ::type;
 
-    template<typename Sequence>
-    using IsolateMyComponents_t =
-		typename detail::IsolateMyComponents<ThisType, typename boost::mpl::begin<Sequence>::type,
-		typename boost::mpl::end<Sequence>::type, boost::mpl::vector0<>>::type;
+	template<typename Sequence>
+	using IsolateMyComponents_t =
+		typename detail::IsolateMyComponents < ThisType, typename boost::mpl::begin<Sequence>::type,
+		typename boost::mpl::end<Sequence>::type, boost::mpl::vector0 < >> ::type;
 
 
-    template<typename Manager, typename Component>
-    using GetBaseManagerWithComponent_t =
-        typename detail::GetBaseManagerWithComponent<typename boost::mpl::begin<typename Manager::MyBases>::type,
-        typename boost::mpl::end<typename Manager::MyBases>::type, Component>;
+	template<typename Component>
+	using GetBaseManagerWithComponent_t =
+		typename detail::GetBaseManagerWithComponent<ThisType, typename boost::mpl::begin<typename Manager::MyBases>::type,
+		typename boost::mpl::end<typename Manager::MyBases>::type, Component>::type;
 
 	template<typename... Types>
 	using TupleOfConstRefs_t = std::tuple<Types...>;
@@ -304,87 +304,87 @@ public:
 		typename detail::FindMostBaseManagerForSignature<ThisType, SequenceToFind, true>::type;
 
 
-    template<typename T>
-    struct GetBaseManager_STRUCT
-    {
-        using type = ThisType::template GetManagerFromComponent_t<T>;
-    };
+	template<typename T>
+	struct GetBaseManager_STRUCT
+	{
+		using type = ThisType::template GetManagerFromComponent_t<T>;
+	};
 
-    using RuntimeSignature_t = std::bitset<size_t(ThisType::getNumComponents())>;
-    using MyRuntimeSignature_t = std::bitset<size_t(ThisType::getNumComponents())>;
+	using RuntimeSignature_t = std::bitset<size_t(ThisType::getNumComponents())>;
+	using MyRuntimeSignature_t = std::bitset<size_t(ThisType::getNumComponents())>;
 
-    template<typename Signature>
-    static RuntimeSignature_t generateRuntimeSignature()
-    {
+	template<typename Signature>
+	static RuntimeSignature_t generateRuntimeSignature()
+	{
 
-        static_assert(isSignature<Signature>(), "Must be a signature");
-
-        RuntimeSignature_t ret;
-
-        for_each_no_construct_ptr<Signature>(
-		[&ret](auto ptr)
-		{
-
-            using Component_t = std::remove_pointer_t<decltype(ptr)>;
-			static_assert(isComponent<Component_t>(), "INTERNAL ERROR: must be a component");
-
-            constexpr size_t ID = getComponentID<Component_t>();
-
-            ret[ID] = true;
-		});
-
-		return ret;
-    }
-
-    template<typename Signature>
-    static MyRuntimeSignature_t generateMyRuntimeSignature()
-    {
 		static_assert(isSignature<Signature>(), "Must be a signature");
 
-        MyRuntimeSignature_t ret;
+		RuntimeSignature_t ret;
 
-        using OnlyMineSig = IsolateMyComponents_t<Signature>;
-
-        for_each_no_construct_ptr<OnlyMineSig>(
-		[&ret](auto ptr)
+		for_each_no_construct_ptr<Signature>(
+			[&ret](auto ptr)
 		{
 
-            using Component_t = std::remove_pointer_t<decltype(ptr)>;
-			static_assert(isMyComponent<Component_t>(), "INTERNAL ERROR: must be my component");
+			using Component_t = std::remove_pointer_t<decltype(ptr)>;
+			static_assert(isComponent<Component_t>(), "INTERNAL ERROR: must be a component");
 
-            constexpr size_t ID = getMyComponentID<Component_t>();
+			constexpr size_t ID = getComponentID<Component_t>();
 
-            ret[ID] = true;
+			ret[ID] = true;
 		});
 
 		return ret;
-    }
+	}
 
-    template<typename... T>
-    using TupleOfEntityPtrs = std::tuple<Entity<T>*...>;
+	template<typename Signature>
+	static MyRuntimeSignature_t generateMyRuntimeSignature()
+	{
+		static_assert(isSignature<Signature>(), "Must be a signature");
 
-    template<typename... T>
-    using TupleOfPtrs = std::tuple<T*...>;
+		MyRuntimeSignature_t ret;
+
+		using OnlyMineSig = IsolateMyComponents_t<Signature>;
+
+		for_each_no_construct_ptr<OnlyMineSig>(
+			[&ret](auto ptr)
+		{
+
+			using Component_t = std::remove_pointer_t<decltype(ptr)>;
+			static_assert(isMyComponent<Component_t>(), "INTERNAL ERROR: must be my component");
+
+			constexpr size_t ID = getMyComponentID<Component_t>();
+
+			ret[ID] = true;
+		});
+
+		return ret;
+	}
+
+	template<typename... T>
+	using TupleOfEntityPtrs = std::tuple<Entity<T>*...>;
+
+	template<typename... T>
+	using TupleOfPtrs = std::tuple<T*...>;
 
 	template<typename Signature>
 	auto newEntity(const ExpandSequenceToVaraidic_t<IsolateStorageComponents_t<Signature>, TupleOfConstRefs_t>& components
-			= decltype(components){} /*tuple of the components*/)
-        -> Entity<FindMostBaseManagerForSignature_t<Signature>>*
+		= decltype(components){} /*tuple of the components*/)
+		-> Entity<FindMostBaseManagerForSignature_t<Signature>>*
 	{
 		static_assert(isSignature<Signature>(), "Must be a signature");
-        static_assert(boost::mpl::size<Signature>::value > 0, "There is literally no point in an empty entity. Rethink your life.");
+		static_assert(boost::mpl::size<Signature>::value > 0, "There is literally no point in an empty entity. Rethink your life.");
 
 		using StorageComponents = IsolateStorageComponents_t<Signature>;
 		using TagComponents = IsolateTagComponents_t<Signature>;
 
-        // get managers for the entity
-        using MostBaseManager = FindMostBaseManagerForSignature_t<Signature>;
-        using Managers_DUP = typename boost::mpl::transform<Signature, GetBaseManager_STRUCT<boost::mpl::placeholders::_1>>::type;
-        using ManagersForSignature = Unduplicate_t<typename boost::mpl::push_back<Managers_DUP, MostBaseManager>::type>;
+		// get managers for the entity
+		using MostBaseManager = FindMostBaseManagerForSignature_t<Signature>;
+		using Managers_DUP = typename boost::mpl::transform<Signature, GetBaseManager_STRUCT<boost::mpl::placeholders::_1>>::type;
+		using ManagersForSignature = Unduplicate_t<typename boost::mpl::push_back<Managers_DUP, MostBaseManager>::type>;
 
 
-        // construct the components
-        ExpandSequenceToVaraidic_t<ManagersForSignature, TupleOfEntityPtrs> entities;
+		// construct the components
+		ExpandSequenceToVaraidic_t<ManagersForSignature, TupleOfEntityPtrs> entities;
 
 		// construct the entities
 		boost::fusion::for_each(entities,
@@ -393,24 +393,24 @@ public:
 			entPtr = new std::decay_t<decltype(*entPtr)>{};
 		});
 
-        std::array<size_t, boost::mpl::size<StorageComponents>::value> IDs;
-        ExpandSequenceToVaraidic_t<StorageComponents, TupleOfPtrs> componentPtrs;
+		std::array<size_t, boost::mpl::size<StorageComponents>::value> IDs;
+		ExpandSequenceToVaraidic_t<StorageComponents, TupleOfPtrs> componentPtrs;
 
-        tuple_for_each_with_index(componentPtrs,
-        [this, &IDs, &componentPtrs, &components, &entities](auto& ptr, auto ID_t)
-        {
-            using ComponentType = std::remove_pointer_t<std::decay_t<decltype(ptr)>>;
-            constexpr size_t ID = decltype(ID_t)::value;
+		tuple_for_each_with_index(componentPtrs,
+			[this, &IDs, &componentPtrs, &components, &entities](auto& ptr, auto ID_t)
+		{
+			using ComponentType = std::remove_pointer_t<std::decay_t<decltype(ptr)>>;
+			constexpr size_t ID = decltype(ID_t)::value;
 
-            using ManagerType = GetManagerFromComponent_t<ComponentType>;
+			using ManagerType = GetManagerFromComponent_t<ComponentType>;
 
-            auto&& compStorage = this->template getRefToManager<ManagerType>().template getComponentStorage<ComponentType>();
+			auto&& compStorage = this->template getRefToManager<ManagerType>().template getComponentStorage<ComponentType>();
 
-            compStorage.emplace_back(std::move(std::get<ID>(components)));
+			compStorage.emplace_back(std::move(std::get<ID>(components)));
 
-            size_t compID = compStorage.size() - 1;
-            std::get<ID>(componentPtrs) = &compStorage[compID];
-            IDs[ID] = compID;
+			size_t compID = compStorage.size() - 1;
+			std::get<ID>(componentPtrs) = &compStorage[compID];
+			IDs[ID] = compID;
 
 			// assign the entity
 			auto&& entityStorage = this->template getRefToManager<ManagerType>()
@@ -424,36 +424,36 @@ public:
 			// assign it
 			entityStorage.emplace_back(ptrToEntity);
 
-        });
+		});
 
-        // assign bases
-        boost::fusion::for_each(entities,
+		// assign bases
+		boost::fusion::for_each(entities,
 			[&entities](auto& entity)
 		{
-            using EntityType = std::decay_t<decltype(*entity)>;
-            using ManagerType = typename EntityType::ManagerType;
-            using Bases = typename Manager::MyBases;
+			using EntityType = std::decay_t<decltype(*entity)>;
+			using ManagerType = typename EntityType::ManagerType;
+			using Bases = typename Manager::MyBases;
 
-            boost::fusion::for_each(entity->bases,
+			boost::fusion::for_each(entity->bases,
 				[&entities](auto basePtr)
 			{
-                using Entity_t = std::decay_t<decltype(*basePtr)>;
-                using BaseManager_t = typename Entity_t::ManagerType;
+				using Entity_t = std::decay_t<decltype(*basePtr)>;
+				using BaseManager_t = typename Entity_t::ManagerType;
 
-                detail::AssignBasePointer_t<ManagersForSignature, BaseManager_t>::apply(basePtr, entities);
+				detail::AssignBasePointer_t<ManagersForSignature, BaseManager_t>::apply(basePtr, entities);
 
 			});
 		});
 
 
-        boost::fusion::for_each(entities,
+		boost::fusion::for_each(entities,
 			[&IDs](auto& ptr)
 		{
-            using EntityType = std::decay_t<decltype(*ptr)>;
-            using ManagerType = typename EntityType::ManagerType;
+			using EntityType = std::decay_t<decltype(*ptr)>;
+			using ManagerType = typename EntityType::ManagerType;
 
-            using SignatureForManager = typename ManagerType::template IsolateComponentsFromThisManager_t<Signature>;
-            static_assert(ManagerType::template isSignature<SignatureForManager>(), "Error, some components aren't valid.");
+			using SignatureForManager = typename ManagerType::template IsolateComponentsFromThisManager_t<Signature>;
+			static_assert(ManagerType::template isSignature<SignatureForManager>(), "Error, some components aren't valid.");
 			using StorageComponents = IsolateStorageComponents_t<SignatureForManager>;
 
 			ptr->signature = ManagerType::template generateMyRuntimeSignature<SignatureForManager>();
@@ -469,11 +469,11 @@ public:
 				size_t ID = std::get<boost::mpl::distance<typename boost::mpl::begin<StorageComponents>::type,
 					typename boost::mpl::find<StorageComponents, ComponentType>::type>::type::value>(IDs);
 
-                comps[ManagerType::template getMyComponentID<ComponentType>()] = ID;
+				comps[ManagerType::template getMyComponentID<ComponentType>()] = ID;
 			});
 		});
 
-        return std::get<boost::mpl::distance<typename boost::mpl::begin<ManagersForSignature>::type,
+		return std::get<boost::mpl::distance<typename boost::mpl::begin<ManagersForSignature>::type,
 			typename boost::mpl::find<ManagersForSignature, MostBaseManager>::type>::type::value>(entities);
 
 	}
@@ -498,69 +498,78 @@ public:
 	template<typename Component>
 	Component& getStorageComponent(Entity<ThisType>* handle)
 	{
-        static_assert(isStorageComponent<Component>(), "Must be a storage component");
-        constexpr size_t compID = getComponentID<Component>();
+		static_assert(isStorageComponent<Component>(), "Must be a storage component");
+		constexpr size_t compID = getComponentID<Component>();
 
-        using Manager_t = GetManagerFromComponent_t<Component>;
+		using Manager_t = GetManagerFromComponent_t<Component>;
 
-        assert(handle->signature[compID]);
+		assert(handle->signature[compID]);
 		// TODO: better error handling
 
-        auto&& sig = handle->signature;
+		auto&& sig = handle->signature;
 
-        // TODO: optimize
-        size_t ID = ~0;
-        {
-            size_t count = 0;
+		// TODO: optimize
+		size_t ID = ~0;
+		{
+			size_t count = 0;
 
-            size_t index = 0;
+			size_t index = 0;
 
-            while(index != compID)
-            {
-                count += sig[index];
-            }
-            ID = count;
-        }
+			while (index != compID)
+			{
+				count += sig[index];
+			}
+			ID = count;
+		}
 
-        return getRefToManager<Manager_t>().template getComponentStorage<Component>()[handle->components[ID]];
+		return getRefToManager<Manager_t>().template getComponentStorage<Component>()[handle->components[ID]];
 
 	}
 
 	template<typename Component>
 	bool hasComponent(Entity<ThisType>* entity)
 	{
-        using NextBaseManager = GetBaseManagerWithComponent_t<ThisType, Component>;
-        static_assert(isManager<NextBaseManager>(), "Must be a manager");
+		using NextBaseManager = GetBaseManagerWithComponent_t<Component>;
+		static_assert(isManager<NextBaseManager>(), "Must be a manager");
 
-        return NextBaseManager::template HasComponent_t<Component, ThisType>::apply(*this, entity);
+		return NextBaseManager::template HasComponent_IMPL<Component>::apply(entity);
 
 	}
 
-    template<typename Component, typename Manager>
-    struct HasComponent_t
-    {
-		static bool apply(Manager& manager, Entity<Manager>* entity)
+	template<typename Component, bool = isMyComponent<Component>()>
+	struct HasComponent_IMPL
+	{
+		template<typename Manager_t>
+		static bool apply(Entity<Manager_t>* entChild)
 		{
-			static_assert(isMyComponent<Component>(), "INTERNAL ERROR, this should be my component");
+			static_assert(Manager_t::isBase<ThisType>(), "INTERNAL ERROR: must be base");
 
+			Entity<ThisType>* ent = std::get<Manager_t::getBaseID<ThisType>()>(entChild->bases);
 
+			return ent->signature[getMyComponentID<Component>()];
 		}
-    };
 
-    template<typename Component>
-    struct HasComponent_t<Component, ThisType>
-    {
-		static_assert(std::is_same<Manager, ThisType>::value, "INTERNAL ERROR");
-
-		static bool apply(Manager& manager, Entity<Manager>* entity)
+		static bool apply(Entity<ThisType>* ent)
 		{
-			static_assert(isMyComponent<Component>(), "INTERNAL ERROR, this should be my component");
-
-            return entity->signature[ThisType::template getMyComponentID<Component>];
+			return ent->signature[getMyComponentID<Component>()];
 		}
-    };
+	};
 
+	template<typename Component>
+	struct HasComponent_IMPL<Component, false>
+	{
+		template<typename Manager_t>
+		static bool apply(Entity<Manager_t>* entChild)
+		{
+			static_assert(Manager_t::isBase<ThisType>(), "INTERNAL ERROR: must be my base");
 
+			// get this entity
+			Entity<ThisType>* ent = std::get<Manager_t::getBaseID<ThisType>()>(entChild->bases);
+
+			using NextManager = GetBaseManagerWithComponent_t<Component>;
+			return NextManager::template HasComponent_IMPL<Component>::apply(ent);
+		}
+	};
 
 
 	template<typename ManagerToGet>
