@@ -18,7 +18,7 @@ struct Entity
     template<typename ... Args>
     using TupleOfEntityPointers = std::tuple<Entity<Args>*...>;
 
-	ExpandSequenceToVaraidic_t<typename ManagerType::MyBases, TupleOfEntityPointers> bases;
+	ExpandSequenceToVaraidic_t<typename ManagerType::AllManagersButThis, TupleOfEntityPointers> bases;
 
     typename ManagerType::MyRuntimeSignature_t signature;
 

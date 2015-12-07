@@ -435,7 +435,7 @@ public:
 			using Bases = typename Manager::MyBases;
 
 			boost::fusion::for_each(entity->bases,
-				[&entities](auto basePtr)
+				[&entities](auto& basePtr)
 			{
 				using Entity_t = std::decay_t<decltype(*basePtr)>;
 				using BaseManager_t = typename Entity_t::ManagerType;
@@ -541,57 +541,13 @@ public:
 		static_assert(isManager<ManagerToGet>(), "Must be a manager");
 		assert(ent);
 
-        using Manager_t = GetBaseManagerWithBase_t<ManagerToGet>;
-
-		return Manager_t::template GetEntityPtr_IMPL<ManagerToGet>::apply(ent);
+		return std::get<getManagerExceptThisID<ManagerToGet>()>(ent->bases);
 	}
-
-	template<typename ManagerTypeToGet, bool = std::is_same<ManagerTypeToGet, ThisType>::value>
-	struct GetEntityPtr_IMPL
+	template<>
+	static Entity<ThisType>* getEntityPtr<ThisType>(Entity<ThisType>* ent)
 	{
-		template<typename Manager_t>
-		static Entity<ManagerTypeToGet>* apply(Entity<Manager_t>* entChild)
-		{
-			static_assert(Manager_t::template isBase<ThisType>(), "INTERNAL ERROR: must be base");
-
-			if(!entChild)
-			{
-                std::cout << "DAMMIT NULLPTR";
-			}
-			 // TODO: remove for optimization
-
-			return std::get<Manager_t::template getBaseID<ThisType>()>(entChild->bases);
-
-		}
-
-        static Entity<ManagerTypeToGet>* apply(Entity<ManagerTypeToGet>* ent)
-        {
-			assert(ent); // TODO: remove for optimziation
-            return ent;
-        }
-	};
-
-	template<typename ManagerTypeToGet>
-	struct GetEntityPtr_IMPL<ManagerTypeToGet, false>
-	{
-		template<typename Manager_t>
-		static Entity<ManagerTypeToGet>* apply(Entity<Manager_t>* entChild)
-		{
-			// TODO: remove
-            if(!entChild)
-            {
-				std::cout << "NULLPTR DAMMIT";
-            }
-			static_assert(Manager_t::template isBase<ThisType>(), "INTERNAL ERROR: must be my base");
-
-			// get this entity
-			Entity<ThisType>* ent = std::get<Manager_t::template getBaseID<ThisType>()>(entChild->bases);
-
-            using NextManager = GetBaseManagerWithBase_t<ManagerTypeToGet>;
-
-			return NextManager::template GetEntityPtr_IMPL<ManagerTypeToGet>::apply(ent);
-		}
-	};
+		return ent;
+	}
 
 
 	template<typename ManagerToGet>

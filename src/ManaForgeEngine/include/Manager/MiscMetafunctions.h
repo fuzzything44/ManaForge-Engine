@@ -58,7 +58,7 @@ namespace detail
         using TupleOfEntityPointers = std::tuple<Entity<Args>*...>;
 
 
-        static void apply(Entity<ManagerToTest>* toApplyTo,  ExpandSequenceToVaraidic_t<Managers, TupleOfEntityPointers> bases)
+        static void apply(Entity<ManagerToTest>*& toApplyTo,  ExpandSequenceToVaraidic_t<Managers, TupleOfEntityPointers> bases)
         {
             constexpr size_t ID = boost::mpl::distance<typename boost::mpl::begin<Managers>::type,
 				typename boost::mpl::find<Managers, ManagerToTest>::type>::type::value;
