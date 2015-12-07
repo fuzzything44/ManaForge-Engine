@@ -311,7 +311,6 @@ public:
 	};
 
 	using RuntimeSignature_t = std::bitset<size_t(ThisType::getNumComponents())>;
-	using MyRuntimeSignature_t = std::bitset<size_t(ThisType::getNumComponents())>;
 
 	template<typename Signature>
 	static RuntimeSignature_t generateRuntimeSignature()
@@ -329,30 +328,6 @@ public:
 			static_assert(isComponent<Component_t>(), "INTERNAL ERROR: must be a component");
 
 			constexpr size_t ID = getComponentID<Component_t>();
-
-			ret[ID] = true;
-		});
-
-		return ret;
-	}
-
-	template<typename Signature>
-	static MyRuntimeSignature_t generateMyRuntimeSignature()
-	{
-		static_assert(isSignature<Signature>(), "Must be a signature");
-
-		MyRuntimeSignature_t ret;
-
-		using OnlyMineSig = IsolateMyComponents_t<Signature>;
-
-		for_each_no_construct_ptr<OnlyMineSig>(
-			[&ret](auto ptr)
-		{
-
-			using Component_t = std::remove_pointer_t<decltype(ptr)>;
-			static_assert(isMyComponent<Component_t>(), "INTERNAL ERROR: must be my component");
-
-			constexpr size_t ID = getMyComponentID<Component_t>();
 
 			ret[ID] = true;
 		});
@@ -393,11 +368,12 @@ public:
 			entPtr = new std::decay_t<decltype(*entPtr)>{};
 		});
 
-		std::array<size_t, boost::mpl::size<StorageComponents>::value> IDs;
+		std::array<size_t, boost::mpl::size<StorageComponents>::value> componentIDs;
 		ExpandSequenceToVaraidic_t<StorageComponents, TupleOfPtrs> componentPtrs;
 
+		// construct component
 		tuple_for_each_with_index(componentPtrs,
-			[this, &IDs, &componentPtrs, &components, &entities](auto& ptr, auto ID_t)
+			[this, &componentIDs, &componentPtrs, &components, &entities](auto& ptr, auto ID_t)
 		{
 			using ComponentType = std::remove_pointer_t<std::decay_t<decltype(ptr)>>;
 			constexpr size_t ID = decltype(ID_t)::value;
@@ -410,7 +386,7 @@ public:
 
 			size_t compID = compStorage.size() - 1;
 			std::get<ID>(componentPtrs) = &compStorage[compID];
-			IDs[ID] = compID;
+			componentIDs[ID] = compID;
 
 			// assign the entity
 			auto&& entityStorage = this->template getRefToManager<ManagerType>()
@@ -447,7 +423,7 @@ public:
 
 
 		boost::fusion::for_each(entities,
-			[&IDs](auto& entityPtr)
+			[&componentIDs](auto& entityPtr)
 		{
 			using EntityType = std::decay_t<decltype(*entityPtr)>;
 			using ManagerType = typename EntityType::ManagerType;
@@ -456,18 +432,18 @@ public:
 			static_assert(ManagerType::template isSignature<SignatureForManager>(), "Error, some components aren't valid.");
 			using StorageComponents = IsolateStorageComponents_t<SignatureForManager>;
 
-			entityPtr->signature = ManagerType::template generateMyRuntimeSignature<SignatureForManager>();
+			entityPtr->signature = ManagerType::template generateRuntimeSignature<SignatureForManager>();
 
 			// construct the components array
 			for_each_no_construct_ptr<StorageComponents>(
-				[&entityPtr, &IDs](auto storageComponentPtr)
+				[&entityPtr, &componentIDs](auto storageComponentPtr)
 			{
 				using ComponentType = std::remove_pointer_t<decltype(storageComponentPtr)>;
 				using ComponentManagerType = GetManagerFromComponent_t<ComponentType>;
 
 
 				size_t ID = std::get<boost::mpl::distance<typename boost::mpl::begin<StorageComponents>::type,
-					typename boost::mpl::find<StorageComponents, ComponentType>::type>::type::value>(IDs);
+					typename boost::mpl::find<StorageComponents, ComponentType>::type>::type::value>(componentIDs);
 
 				ManagerType::template getEntityPtr<ComponentManagerType>(entityPtr)->components
 					[ComponentManagerType::template getMyStorageComponentID<ComponentType>()] = ID;
@@ -500,39 +476,29 @@ public:
 	Component& getStorageComponent(Entity<ThisType>* handle)
 	{
 		static_assert(isStorageComponent<Component>(), "Must be a storage component");
-		constexpr size_t compID = getComponentID<Component>();
+		
+		using ManagerForComponent = GetManagerFromComponent_t<Component>;
 
-		using Manager_t = GetManagerFromComponent_t<Component>;
+		constexpr size_t staticID = ManagerForComponent::template getMyStorageComponentID<Component>();
 
-		assert(handle->signature[compID]);
-		// TODO: better error handling
+		auto* ent = getEntityPtr<ManagerForComponent>(handle);
 
-		auto&& sig = handle->signature;
+		size_t componentID = ent->components[staticID];
 
-		// TODO: optimize
-		size_t ID = ~0;
-		{
-			size_t count = 0;
+		return getComponentStorage<Component>()[componentID];
 
-			size_t index = 0;
-
-			while (index != compID)
-			{
-				count += sig[index];
-			}
-			ID = count;
-		}
-
-		return getRefToManager<Manager_t>().template getComponentStorage<Component>()[handle->components[ID]];
-
+		
 	}
 
 	template<typename Component>
 	bool hasComponent(Entity<ThisType>* entity)
 	{
-		//TODO: implement
+		static_assert(isComponent<Component>(), "Error: must be a component!");
+		using ManagerForComponent = GetManagerFromComponent_t<Component>;
 
-		return false;
+		auto ent = getEntityPtr<ManagerForComponent>(entity);
+
+		return ent->signature[ManagerForComponent::template getComponentID<Component>()];
 	}
 
 	template<typename ManagerToGet>
@@ -643,8 +609,7 @@ public:
 	template<typename SignatureToRun, typename F>
 	void runAllMatchingIMPL(F&& functor)
 	{
-        // TODO: make
-
+       // TODO: implement
 	}
 
 

@@ -29,6 +29,25 @@ void beginPlayManager<TestContentManager_t>(TestContentManager_t& manager)
     assert(manager.hasComponent<TPew>(ent1));
     assert(!manager.hasComponent<CVelocity>(ent1));
     assert(manager.getStorageComponent<CPosition>(ent1).value == vec2(.3f, 2.f));
+	
+	vec2 locs[] = 
+	{
+		{0.f, 0.f},
+		{0.f, 1.f},
+		{1.f, 0.f},
+		{1.f, 1.f}
+	};
+	uvec3 indicies[] =
+	{
+		{0, 1, 2},
+		{1, 2, 3}
+	};
+	OpenGLModelData modelData{ locs, locs, 4, indicies, 2 };
+	OpenGLMaterialSource matSource{ "boilerplate" };
+	auto mat = std::make_shared<OpenGLMaterialInstance>(matSource);
+	COpenGLModel model{ modelData, mat };
+	auto modelEnt = manager.newEntity<boost::mpl::vector2<CPosition, COpenGLModel>>(std::make_tuple(CPosition{ {0.f, 0.f} }, model));
+
 
 
 }

@@ -20,8 +20,8 @@ struct Entity
 
 	ExpandSequenceToVaraidic_t<typename ManagerType::AllManagersButThis, TupleOfEntityPointers> bases;
 
-    typename ManagerType::MyRuntimeSignature_t signature;
+    typename ManagerType::RuntimeSignature_t signature;
 
-    std::array<size_t, ManagerType::getNumMyStorageComponents()> components;
+	std::array<size_t, ManagerType::getNumMyStorageComponents()> components;
 
 };

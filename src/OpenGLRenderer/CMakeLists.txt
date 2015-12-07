@@ -18,6 +18,8 @@ endif()
 set(OPENGL_PRIVATE_FILES
 	"src/OpenGLRendererManager.cpp;"
 	"src/OpenGLRendererPCH.cpp;"
+	"src/OpenGLModelData.cpp"
+	"src/OpenGLMaterialSource.cpp"
 	"src/OpenGLRendererPCH.h;"
 	)
 

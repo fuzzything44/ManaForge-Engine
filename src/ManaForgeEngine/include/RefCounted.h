@@ -20,7 +20,6 @@ struct RefCounted
 	RefCounted(RefCounted<Derived>&& other)
 		:refCount{other.refCount}
 	{
-		static_cast<Derived&>(other).Derived::invalidate();
 		other.refCount = nullptr;
 	}
 
@@ -30,7 +29,6 @@ struct RefCounted
 
 		refCount = other.refCount;
 
-		static_cast<Derived&>(other).Derived::invalidate();
 		other.refCount = nullptr;
 
 		return *this;
