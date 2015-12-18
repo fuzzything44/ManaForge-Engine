@@ -500,22 +500,34 @@ public:
 
 		return ent->signature[ManagerForComponent::template getComponentID<Component>()];
 	}
+	
+	template<typename ManagerToGet, bool dummy = true /*just to avoid full sepcialization, which isn't standard complient*/>
+	struct GetEntityPtr_IMPL
+	{
+		static auto apply(Entity<ThisType>* ent)
+		{
+			static_assert(isManager<ManagerToGet>(), "Must be a manager");
+			assert(ent);
 
+			return std::get<getManagerExceptThisID<ManagerToGet>()>(ent->bases);
+
+		}
+	};
+	template<bool dummy>
+	struct GetEntityPtr_IMPL<ThisType, dummy>
+	{
+		static auto apply(Entity<ThisType>* ent)
+		{
+			return ent;
+		}
+	};
+	
 	template<typename ManagerToGet>
 	static Entity<ManagerToGet>* getEntityPtr(Entity<ThisType>* ent)
 	{
-		static_assert(isManager<ManagerToGet>(), "Must be a manager");
-		assert(ent);
-
-		return std::get<getManagerExceptThisID<ManagerToGet>()>(ent->bases);
+		GetEntityPtr_IMPL<ManagerToGet>::apply(ent);
 	}
-	template<>
-	static Entity<ThisType>* getEntityPtr<ThisType>(Entity<ThisType>* ent)
-	{
-		return ent;
-	}
-
-
+	
 	template<typename ManagerToGet>
 	ManagerToGet& getRefToManager()
 	{
