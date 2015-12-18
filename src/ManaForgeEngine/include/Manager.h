@@ -525,7 +525,7 @@ public:
 	template<typename ManagerToGet>
 	static Entity<ManagerToGet>* getEntityPtr(Entity<ThisType>* ent)
 	{
-		GetEntityPtr_IMPL<ManagerToGet>::apply(ent);
+		return GetEntityPtr_IMPL<ManagerToGet>::apply(ent);
 	}
 	
 	template<typename ManagerToGet>
