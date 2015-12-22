@@ -127,7 +127,7 @@ Makefile
 
 /*/cmake_install.cmake
 
-/build/
+build/
 
 .vscode/
 

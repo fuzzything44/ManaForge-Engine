@@ -1,58 +1,54 @@
+macro(__handledependencies TARGET_NAME DEPENDENCY_TO_CONFIGURE)
+		
+		foreach(MANAGER ${${DEPENDENCY_TO_CONFIGURE}_DEPENDENCIES})
+			__handledependencies(${TARGET_NAME} ${MANAGER})
+		endforeach()
+
+		if(DEFINED ${DEPENDENCY_TO_CONFIGURE}_COMPILE_DEFINITIONS)
+			target_compile_definitions(${TARGET_NAME} ${${DEPENDENCY_TO_CONFIGURE}_COMPILE_DEFINITIONS})
+		endif()
+		
+		if(DEFINED ${DEPENDENCY_TO_CONFIGURE}_COMPILE_FEATURES)
+			target_compile_features(${TARGET_NAME} PRIVATE ${${DEPENDENCY_TO_CONFIGURE}_COMPILE_FEATURES})
+		endif()
+		
+		if(DEFINED ${DEPENDENCY_TO_CONFIGURE}_INCLUDE_DIRECTORIES)
+			target_include_directories(${TARGET_NAME} PRIVATE ${${DEPENDENCY_TO_CONFIGURE}_INCLUDE_DIRECTORIES})
+		endif()
+		
+		if(DEFINED ${DEPENDENCY_TO_CONFIGURE}_LINK_LIBRARIES)
+			target_link_libraries(${TARGET_NAME} ${${DEPENDENCY_TO_CONFIGURE}_LINK_LIBRARIES} ${BASE_MANAGERS})
+		endif()
+		
+		add_dependencies(${TARGET_NAME} ${DEPENDENCY_TO_CONFIGURE})
+endmacro()
 
 
-macro(buildmodule MODULE_NAME MODULE_FILES)
+function(buildmodule MODULE_NAME MODULE_FILES BASE_MANAGERS)
+
+	set(${MODULE_NAME}_DEPENDENCIES ${BASE_MANAGERS} CACHE INTERNAL "DEPENDENCIES. DO NOT EDIT")
 
 	project(${MODULE_NAME})
-
-
-	include_directories("${Boost_INCLUDE_DIR}")
-	include_directories("${CMAKE_SOURCE_DIR}/src/ManaForgeEngine/include/")
-	include_directories("${CMAKE_SOURCE_DIR}/include/")
-	include_directories("${CMAKE_CURRENT_SOURCE_DIR}/include/")
-	include_directories("${CMAKE_SOURCE_DIR}/src/")
-
+	
 	add_library(${MODULE_NAME} SHARED ${MODULE_FILES})
+	
+	foreach(MANAGER ${BASE_MANAGERS} ${MODULE_NAME})
+		__handledependencies(${MODULE_NAME} ${MANAGER})
+	endforeach()
 
-	if(${UNIX})
-		target_link_libraries(${MODULE_NAME} "dl")
-	endif()
-
-	target_link_libraries(${MODULE_NAME} ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY})
-
-
-
-	add_definitions("-D${MODULE_NAME}_Source")
-	add_definitions("-DBOOST_ALL_NO_LIB")
-
+	
 	set_target_properties(${MODULE_NAME}
 		PROPERTIES
-
-		ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin
-		LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin
-		RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin
-
+		ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
+		LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
+		RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
 	)
+	
+	target_link_libraries(${MODULE_NAME} Qt5::Widgets Qt5::Gui) 
 
-	# will make sure we have a proper C++11 compiler
-	target_compile_features(${MODULE_NAME} PRIVATE
-		cxx_constexpr
-		cxx_alias_templates
-		cxx_decltype
-		cxx_lambdas
-		cxx_lambda_init_captures
-		cxx_nullptr
-		cxx_override
-		cxx_range_for
-		cxx_right_angle_brackets
-		cxx_static_assert
-		cxx_strong_enums
-		cxx_variadic_macros
-		cxx_variadic_templates
-		cxx_template_template_parameters
-
-		 )
-
-
-endmacro(buildmodule)
+	
+	
+	
+endfunction(buildmodule)
 
 

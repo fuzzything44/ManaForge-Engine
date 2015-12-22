@@ -1,6 +1,8 @@
 #pragma once
 #define ENGINE_VERSION 0.1f
 
+#include "Config.h"
+
 // setup dllexport and import for cross-platform
 #if defined __GNUC__
 #define DLLEXPORT __attribute__ ((visibility ("default")))

@@ -15,8 +15,12 @@ set(BOX2D_PHYSICS_SYSTEM_PUBLIC_FILES
 	"include/CBox2DCollision.h;"
 	)
 
-buildmodule(Box2DPhysicsSystem "${BOX2D_PHYSICS_SYSTEM_PRIVATE_FILES}${BOX2D_PHYSICS_SYSTEM_PUBLIC_FILES}")
+
+set(Box2DPhysicsSystem_LINK_LIBRARIES "Box2D" CACHE INTERNAL "")
+set(Box2DPhysicsSystem_INCLUDE_DIRECTORIES "${CMAKE_CURRENT_SOURCE_DIR}/include;" CACHE INTERNAL "")
 
 
-add_dependencies(Box2DPhysicsSystem ManaForgeEngine Box2D)
-target_link_libraries(Box2DPhysicsSystem ManaForgeEngine Box2D)
+buildmodule(Box2DPhysicsSystem "${BOX2D_PHYSICS_SYSTEM_PRIVATE_FILES}${BOX2D_PHYSICS_SYSTEM_PUBLIC_FILES}" "ManaForgeEngine")
+
+
+add_dependencies(Box2DPhysicsSystem Box2D)

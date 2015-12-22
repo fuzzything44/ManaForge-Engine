@@ -5,16 +5,18 @@
 
 #include <RefCounted.h>
 
-#include <GL/glew.h>
+class QOpenGLFunctions_3_3_Core;
 
 struct OpenGLMaterialSource : RefCounted<OpenGLMaterialSource>
 {
-	OpenGLRenderer_API OpenGLMaterialSource(const path_t& path);
+	OpenGLRenderer_API OpenGLMaterialSource(QOpenGLFunctions_3_3_Core& funs_, const path_t& path);
 
 	OpenGLRenderer_API void destroy();
 
 	int32 startTexUniform;
 	int32 MVPUniformLocation;
 
-	GLuint program;
+	uint32 program;
+	
+	QOpenGLFunctions_3_3_Core& funs;
 };

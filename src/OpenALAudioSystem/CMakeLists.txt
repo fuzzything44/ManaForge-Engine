@@ -17,15 +17,17 @@ set(OPENAL_AUDIO_PUBLIC_FILES
 	"include/OpenALSoundSystemConfig.h;"
 	)
 
-buildmodule(OpenALAudioSystem "${OPENAL_AUDIO_PRIVATE_FILES}${OPENAL_AUDIO_PUBLIC_FILES}")
+set(OpenALAudioSystem_INCLUDE_DIRECTORIES "${CMAKE_CURRENT_SOURCE_DIR}/include;" CACHE INTERNAL "")
 
-add_dependencies(OpenALAudioSystem ManaForgeEngine alut)
-target_link_libraries(OpenALAudioSystem ManaForgeEngine alut)
+buildmodule(OpenALAudioSystem "${OPENAL_AUDIO_PRIVATE_FILES}${OPENAL_AUDIO_PUBLIC_FILES}" "ManaForgeEngine")
+
+
 
 if(WIN32)
-	add_dependencies(OpenALAudioSystem OpenAL32)
-	target_link_libraries(OpenALAudioSystem OpenAL32)
+	add_dependencies(OpenALAudioSystem OpenAL32 alut_static)
+	target_link_libraries(OpenALAudioSystem OpenAL32 alut_static)
 else()
-	add_dependencies(OpenALAudioSystem openal)
-	target_link_libraries(OpenALAudioSystem openal)
+#	add_dependencies(OpenALAudioSystem openal alut_static)
+	target_link_libraries(OpenALAudioSystem openal alut_static)
 endif()
+	

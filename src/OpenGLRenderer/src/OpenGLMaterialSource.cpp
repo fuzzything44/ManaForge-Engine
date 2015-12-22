@@ -3,7 +3,10 @@
 #include <boost/filesystem.hpp>
 #include <Helper.h>
 
-OpenGLMaterialSource::OpenGLMaterialSource(const path_t& path)
+#include <QOpenGLFunctions_3_3_Core>
+
+OpenGLMaterialSource::OpenGLMaterialSource(QOpenGLFunctions_3_3_Core& funs_, const path_t& path)
+	:funs{funs_}
 {
 	path_t vertexPath = L"shaders\\" + path.wstring() + L"vert.glsl";
 	path_t fragPath = L"shaders\\" + path.wstring() + L"frag.glsl";
@@ -11,8 +14,8 @@ OpenGLMaterialSource::OpenGLMaterialSource(const path_t& path)
 	assert(boost::filesystem::exists(fragPath));
 
 	// Create the shaders
-	GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+	GLuint vertexShader = funs.glCreateShader(GL_VERTEX_SHADER);
+	GLuint fragmentShader = funs.glCreateShader(GL_FRAGMENT_SHADER);
 
 	// Read the Vertex Shader code from the file
 	std::string&& VertexShaderCode = loadFileToStr(vertexPath);
@@ -27,15 +30,15 @@ OpenGLMaterialSource::OpenGLMaterialSource(const path_t& path)
 	MFLOG(Trace) << "Compiling vertex Shader " << vertexPath;
 
 	const char* VertexSourcePointer = VertexShaderCode.c_str();
-	glShaderSource(vertexShader, 1, &VertexSourcePointer, nullptr);
-	glCompileShader(vertexShader);
+	funs.glShaderSource(vertexShader, 1, &VertexSourcePointer, nullptr);
+	funs.glCompileShader(vertexShader);
 
 	// Check Vertex Shader
-	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &Result);
-	glGetShaderiv(vertexShader, GL_INFO_LOG_LENGTH, &InfoLogLength);
+	funs.glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &Result);
+	funs.glGetShaderiv(vertexShader, GL_INFO_LOG_LENGTH, &InfoLogLength);
 	if (InfoLogLength > 1) {
 		auto VertexShaderErrorMessage = std::vector<char>(InfoLogLength + 1);
-		glGetShaderInfoLog(vertexShader, InfoLogLength, nullptr, VertexShaderErrorMessage.data());
+		funs.glGetShaderInfoLog(vertexShader, InfoLogLength, nullptr, VertexShaderErrorMessage.data());
 		MFLOG(Error) << VertexShaderErrorMessage.data();
 	}
 	else
@@ -46,15 +49,15 @@ OpenGLMaterialSource::OpenGLMaterialSource(const path_t& path)
 	// Compile Fragment Shader
 	MFLOG(Trace) << "\tCompiling fragment Shader " << fragPath;
 	const char* FragmentSourcePointer = FragmentShaderCode.c_str();
-	glShaderSource(fragmentShader, 1, &FragmentSourcePointer, nullptr);
-	glCompileShader(fragmentShader);
+	funs.glShaderSource(fragmentShader, 1, &FragmentSourcePointer, nullptr);
+	funs.glCompileShader(fragmentShader);
 
 	// Check Fragment Shader
-	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &Result);
-	glGetShaderiv(fragmentShader, GL_INFO_LOG_LENGTH, &InfoLogLength);
+	funs.glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &Result);
+	funs.glGetShaderiv(fragmentShader, GL_INFO_LOG_LENGTH, &InfoLogLength);
 	if (InfoLogLength > 1) {
 		auto FragmentShaderErrorMessage = std::vector<char>(InfoLogLength + 1);
-		glGetShaderInfoLog(fragmentShader, InfoLogLength, nullptr, FragmentShaderErrorMessage.data());
+		funs.glGetShaderInfoLog(fragmentShader, InfoLogLength, nullptr, FragmentShaderErrorMessage.data());
 		MFLOG(Error) << FragmentShaderErrorMessage.data();
 	}
 	else
@@ -64,29 +67,29 @@ OpenGLMaterialSource::OpenGLMaterialSource(const path_t& path)
 
 	// Link the program
 	MFLOG(Trace) << "\tLinking program " << path;
-	program = glCreateProgram();
-	glAttachShader(program, vertexShader);
-	glAttachShader(program, fragmentShader);
-	glLinkProgram(program);
+	program = funs.glCreateProgram();
+	funs.glAttachShader(program, vertexShader);
+	funs.glAttachShader(program, fragmentShader);
+	funs.glLinkProgram(program);
 
 	// Check the program
-	glGetProgramiv(program, GL_LINK_STATUS, &Result);
-	glGetProgramiv(program, GL_INFO_LOG_LENGTH, &InfoLogLength);
+	funs.glGetProgramiv(program, GL_LINK_STATUS, &Result);
+	funs.glGetProgramiv(program, GL_INFO_LOG_LENGTH, &InfoLogLength);
 	if (InfoLogLength > 1) {
 		auto ProgramErrorMessage = std::vector<char>(InfoLogLength + 1);
-		glGetProgramInfoLog(program, InfoLogLength, nullptr, ProgramErrorMessage.data());
+		funs.glGetProgramInfoLog(program, InfoLogLength, nullptr, ProgramErrorMessage.data());
 		MFLOG(Error) << ProgramErrorMessage.data();
 	}
 
-	glDeleteShader(vertexShader);
-	glDeleteShader(fragmentShader);
+	funs.glDeleteShader(vertexShader);
+	funs.glDeleteShader(fragmentShader);
 
-	startTexUniform = glGetUniformLocation(program, "textures");
+	startTexUniform = funs.glGetUniformLocation(program, "textures");
 	if (startTexUniform == -1) {
 		MFLOG(Warning) << "Could not find startTexUniform in program: " << path;
 	}
 
-	MVPUniformLocation = glGetUniformLocation(program, "MVPmat");
+	MVPUniformLocation = funs.glGetUniformLocation(program, "MVPmat");
 	if (MVPUniformLocation == -1) {
 		MFLOG(Warning) << "Could not find MVPUniformLocation in program: " << path;
 	}
@@ -96,5 +99,5 @@ OpenGLMaterialSource::OpenGLMaterialSource(const path_t& path)
 
 void OpenGLMaterialSource::destroy()
 {
-	glDeleteProgram(program);
+	funs.glDeleteProgram(program);
 }

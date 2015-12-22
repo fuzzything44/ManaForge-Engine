@@ -26,7 +26,7 @@ set(OPERATING_SYSTEM "${CMAKE_SYSTEM_NAME}")
 include_directories(${Alut_SOURCE_DIR}/include)
 
 # What to build?
-option(BUILD_STATIC "build static library too" OFF)
+option(BUILD_STATIC "build static library too" ON)
 
 # How to build it?
 option(BUILD_PROFILE "enable profile" OFF)

@@ -7,7 +7,7 @@ int main(int argc, char** argv)
 	try
 	{
 
-		Runtime runtime;
+		Runtime runtime{argc, argv};
 
 		//run the runtime. consumes the thread until it returns
 		runtime.run();

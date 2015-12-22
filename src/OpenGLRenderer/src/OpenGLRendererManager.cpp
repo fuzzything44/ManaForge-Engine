@@ -1,6 +1,6 @@
 #include "OpenGLRendererPCH.h"
 
-#include "OpenGLRenderer/include/OpenGLRendererManager.h"
+#include "OpenGLRendererManager.h"
 
 DLLEXPORT OpenGLRendererManager_t* openGLRendererManager = nullptr;
 

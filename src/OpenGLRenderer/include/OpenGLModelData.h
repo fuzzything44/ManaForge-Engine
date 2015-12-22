@@ -4,21 +4,27 @@
 
 #include <RefCounted.h>
 
-#include <GL/glew.h>
+#include <QOpenGLVertexArrayObject>
+#include <QOpenGLBuffer>
+
+class QOpenGLFunctions_3_3_Core;
 
 struct OpenGLModelData : RefCounted<OpenGLModelData>
 {
-	OpenGLRenderer_API OpenGLModelData(const vec2* locations = nullptr, const vec2* UVs = nullptr, size_t numVerts = 0, 
+	OpenGLRenderer_API OpenGLModelData(QOpenGLFunctions_3_3_Core& funs_, const vec2* locations = nullptr, const vec2* UVs = nullptr, size_t numVerts = 0, 
 		const uvec3* triangleIndicies = nullptr, size_t numTriangles = 0);
 
 	OpenGLRenderer_API void destroy();
 
 
-	GLsizei numTriangles;
+	size_t numTriangles;
 
-	GLuint vertexArray;
+	uint32 vertexArray;
 
-	GLuint locBuffer;
-	GLuint UVbuffer;
-	GLuint indexBuffer;
+	
+	uint32 locBuffer;
+	uint32 UVbuffer;
+	uint32 indexBuffer;
+	
+	QOpenGLFunctions_3_3_Core& funs;
 };

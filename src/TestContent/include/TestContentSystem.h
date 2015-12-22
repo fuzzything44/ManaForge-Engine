@@ -2,9 +2,11 @@
 
 #include <CoreManager.h>
 #include <TestContentConfig.h>
-#include <OpenALAudioSystem/include/OpenALAudioSystem.h>
-#include <Box2DPhysicsSystem/include/Box2DPhysicsManager.h>
-#include <OpenGLRenderer/include/OpenGLRendererManager.h>
+#include <OpenALAudioSystem.h>
+#include <Box2DPhysicsManager.h>
+#include <OpenGLRendererManager.h>
+
+#include <QOpenGLFunctions_3_3_Core>
 
 struct TPew{};
 
@@ -42,8 +44,11 @@ void beginPlayManager<TestContentManager_t>(TestContentManager_t& manager)
 		{0, 1, 2},
 		{1, 2, 3}
 	};
-	OpenGLModelData modelData{ locs, locs, 4, indicies, 2 };
-	OpenGLMaterialSource matSource{ "boilerplate" };
+	
+	auto&& funs = manager.getRefToManager<OpenGLRendererManager_t>().getManagerData().getFuncs();
+	
+	OpenGLModelData modelData{ funs, locs, locs, 4, indicies, 2 };
+	OpenGLMaterialSource matSource{ funs, "boilerplate" };
 	auto mat = std::make_shared<OpenGLMaterialInstance>(matSource);
 	COpenGLModel model{ modelData, mat };
 	auto modelEnt = manager.newEntity<boost::mpl::vector2<CPosition, COpenGLModel>>(std::make_tuple(CPosition{ {0.f, 0.f} }, model));

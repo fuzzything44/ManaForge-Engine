@@ -24,9 +24,9 @@ target_link_libraries(Game ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY} M
 set_target_properties(Game
 	PROPERTIES
 
-	ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin/"
-	LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin/"
-	RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin/"
+	ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/"
+	LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/"
+	RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/"
 
 )
 
@@ -51,4 +51,6 @@ target_compile_features(Game PRIVATE
 	cxx_template_template_parameters
 
 		)
+		
+target_link_libraries(Game Qt5::Widgets Qt5::Gui) 
 

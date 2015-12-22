@@ -744,7 +744,6 @@ public:
 private:
 
 	Manager(const MyBasePtrStorage_t& bases)
-		:myManagerData{}
 	{
 		auto thisptr = this; // funky workaround
 		tuple_for_each_with_index(bases, [thisptr](auto& ptr, auto)

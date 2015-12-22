@@ -7,17 +7,23 @@ cmake_minimum_required (VERSION 3.0)
 
 project(ManaForgeEngine)
 
+set(CMAKE_AUTOMOC ON)
 
+set(ManaForgeEngine_RESOURCE_DIR "\"${CMAKE_CURRENT_SOURCE_DIR}/Resource\"")
 
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/src/CMakeConfig.in
+	${CMAKE_BINARY_DIR}/Config.h)
+
+include_directories(${CMAKE_BINARY_DIR})
+	
 if(${UNIX})
-	SET(CMAKE_CXX_FLAGS "-stdlib=libc++ -O0 -UNDEBUG -DDEBUG -D_DEBUG -fsanitize=address")
-    SET(CMAKE_C_FLAGS "-O0 -UNDEBUG -DDEBUG -D_DEBUG")
+	SET(CMAKE_CXX_FLAGS "-stdlib=libc++ -fsanitize=address -lc++abi")
 endif()
 
 # find boost
 find_package(Boost 1.59.0 REQUIRED filesystem system)
-
-SET(MF_BIN_DIR ${CMAKE_SOURCE_DIR}/bin)
+find_package(Qt5Widgets REQUIRED)
+find_package(Qt5Gui REQUIRED)
 
 # for now just compile the engine
 add_subdirectory("src/ManaForgeEngine/")

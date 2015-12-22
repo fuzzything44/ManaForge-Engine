@@ -14,12 +14,10 @@ set(TESTCONTENT_PUBLIC_FILES
 	)
 
 
-include_directories("${CMAKE_SOURCE_DIR}/src/OpenALAudioSystem/include")
-include_directories("${CMAKE_SOURCE_DIR}/src/Box2DPhysicsSystem/include")
-include_directories("${CMAKE_SOURCE_DIR}/src/OpenGLRenderer/include")
+set(TestContent_INCLUDE_DIRECTORIES "${CMAKE_CURRENT_SOURCE_DIR}/include;" CACHE INTERNAL "")
 
-buildmodule(TestContent "${TESTCONTENT_PRIVATE_FILES}${TESTCONTENT_PUBLIC_FILES}")  
 
-add_dependencies(TestContent ManaForgeEngine OpenALAudioSystem OpenGLRenderer Box2DPhysicsSystem)
-target_link_libraries(TestContent ManaForgeEngine OpenALAudioSystem OpenGLRenderer Box2DPhysicsSystem)
+buildmodule(TestContent "${TESTCONTENT_PRIVATE_FILES};${TESTCONTENT_PUBLIC_FILES}" 
+	"ManaForgeEngine;OpenALAudioSystem;OpenGLRenderer;Box2DPhysicsSystem")  
+
 

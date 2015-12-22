@@ -8,17 +8,16 @@
 class COpenGLModel 
 {
 public:
-	COpenGLModel(const OpenGLModelData& data = {}, const std::shared_ptr<OpenGLMaterialInstance>& mat = {})
+	
+	// NOTE: uses the OpenGLModelData QOpenGLFunctions
+	COpenGLModel(const OpenGLModelData& data, const std::shared_ptr<OpenGLMaterialInstance>& mat = {})
 		: modelData{ data }
 		, material(mat)
 	{}
-
-
-
-	friend class OpenGLRenderer;
 	
 	uint8 renderOrder;
 	
 	OpenGLModelData modelData;
 	std::shared_ptr<OpenGLMaterialInstance> material;
+	
 };

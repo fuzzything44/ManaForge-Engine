@@ -1,33 +1,38 @@
 #include "OpenGLModelData.h"
 
-OpenGLModelData::OpenGLModelData(const vec2* locations, const vec2* UVs, size_t numVerts, 
+#include <QOpenGLFunctions_3_3_Core>
+
+#include <GL/gl.h>
+
+OpenGLModelData::OpenGLModelData(QOpenGLFunctions_3_3_Core& funs_, const vec2* locations, const vec2* UVs, size_t numVerts, 
 		const uvec3* triangleIndicies, size_t numTriangles)
-	:numTriangles((GLsizei)numTriangles)
+	:numTriangles(numTriangles)
+	,funs{funs_}
 {
-	glGenVertexArrays(1, &vertexArray);
-	glBindVertexArray(vertexArray);
+	funs.glGenVertexArrays(1, &vertexArray);
+	funs.glBindVertexArray(vertexArray);
 
 	// init location buffer
-	glGenBuffers(1, &locBuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, locBuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vec2) * numVerts, locations, GL_STATIC_DRAW);
+	funs.glGenBuffers(1, &locBuffer);
+	funs.glBindBuffer(GL_ARRAY_BUFFER, locBuffer);
+	funs.glBufferData(GL_ARRAY_BUFFER, sizeof(vec2) * numVerts, locations, GL_STATIC_DRAW);
 
 	// init UV buffer
-	glGenBuffers(1, &UVbuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, UVbuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vec2) * numVerts, UVs, GL_STATIC_DRAW);
+	funs.glGenBuffers(1, &UVbuffer);
+	funs.glBindBuffer(GL_ARRAY_BUFFER, UVbuffer);
+	funs.glBufferData(GL_ARRAY_BUFFER, sizeof(vec2) * numVerts, UVs, GL_STATIC_DRAW);
 
 	// init elem buffer
-	glGenBuffers(1, &indexBuffer);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uvec3) * numTriangles, triangleIndicies, GL_STATIC_DRAW);
+	funs.glGenBuffers(1, &indexBuffer);
+	funs.glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
+	funs.glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uvec3) * numTriangles, triangleIndicies, GL_STATIC_DRAW);
 }
 
 void OpenGLModelData::destroy()
 {
-	glDeleteBuffers(1, &vertexArray);
-	glDeleteBuffers(1, &locBuffer);
-	glDeleteBuffers(1, &indexBuffer);
+	funs.glDeleteBuffers(1, &vertexArray);
+	funs.glDeleteBuffers(1, &locBuffer);
+	funs.glDeleteBuffers(1, &indexBuffer);
 
-	glDeleteVertexArrays(1, &vertexArray);
+	funs.glDeleteVertexArrays(1, &vertexArray);
 }

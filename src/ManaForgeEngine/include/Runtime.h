@@ -7,12 +7,17 @@
 #include "TimerManager.h"
 #include "ModuleHandler.h"
 
-class Runtime
-{
-public:
+#include <QApplication>
+#include <QTimer>
 
-	ENGINE_API Runtime();
-	ENGINE_API void run();
+class Runtime : public QObject
+{
+	Q_OBJECT
+	
+public:
+	
+	ENGINE_API Runtime(int argc, char** argv);
+	ENGINE_API int run();
 
 	ENGINE_API ~Runtime();
 
@@ -35,6 +40,10 @@ public:
 	}
 
 private:
+	
+	QApplication application;
+	QTimer timer;
+	
 	ENGINE_API static Runtime* runtimeObj;
 
 
