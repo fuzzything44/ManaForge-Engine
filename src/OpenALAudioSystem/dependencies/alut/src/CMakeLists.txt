@@ -35,8 +35,10 @@ set(ALUT_INTERNAL_HEADERS
 	alutInternal.h)
 source_group(InternalHeader FILES ${ALUT_INTERNAL_HEADERS})
 
+include_directories(../../OpenAL/include)
+
 set(ALUT_HEADERS
-	../../../include/AL/alut.h)
+	../include/AL/alut.h)
 source_group(APIHeader FILES ${ALUT_HEADERS})
 
 

@@ -17,7 +17,7 @@ set(OPENAL_AUDIO_PUBLIC_FILES
 	"include/OpenALSoundSystemConfig.h;"
 	)
 
-set(OpenALAudioSystem_INCLUDE_DIRECTORIES "${CMAKE_CURRENT_SOURCE_DIR}/include;" CACHE INTERNAL "")
+set(OpenALAudioSystem_INCLUDE_DIRECTORIES "${CMAKE_CURRENT_SOURCE_DIR}/include;${CMAKE_CURRENT_SOURCE_DIR}/dependencies/alut/include;${CMAKE_CURRENT_SOURCE_DIR}/dependencies/OpenAL/include;" CACHE INTERNAL "")
 
 buildmodule(OpenALAudioSystem "${OPENAL_AUDIO_PRIVATE_FILES}${OPENAL_AUDIO_PUBLIC_FILES}" "ManaForgeEngine")
 
