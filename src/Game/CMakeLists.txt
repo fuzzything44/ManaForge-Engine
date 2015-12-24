@@ -17,7 +17,7 @@ if(${UNIX})
 	target_link_libraries(Game "dl")
 endif()
 
-add_dependencies(Game ManaForgeEngine OpenALAudioSystem OpenGLRenderer TestContent Box2DPhysicsSystem)
+add_dependencies(Game ManaForgeEngine  OpenGLRenderer  )
 
 target_link_libraries(Game ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY} ManaForgeEngine)
 

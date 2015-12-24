@@ -23,7 +23,7 @@ DLLEXPORT Runtime::Runtime(int argc, char** argv)
 
 	coreManager = CoreManager_t::factory();
 
-	moduleHandler.init({ "OpenALAudioSystem", "Box2DPhysicsSystem", "OpenGLRenderer", "TestContent" });
+	moduleHandler.init(std::vector<path_t>{ path_t{"OpenGLRenderer"} });
 	
 }
 
@@ -39,13 +39,16 @@ DLLEXPORT int Runtime::run()
 {
 	
 	
-	coreManager->beginPlay();
 	
 	std::chrono::system_clock::time_point lastTick = std::chrono::system_clock::now();
 	
 	connect(&timer, &QTimer::timeout, 
 		[&lastTick, this]
 		{
+			static bool b = false;
+			if(!b) coreManager->beginPlay();
+			b = true;
+			
 			// calculate tick time
 			std::chrono::system_clock::time_point currentTick = std::chrono::system_clock::now();
 			std::chrono::duration<float> delta_duration = currentTick - lastTick;
@@ -58,6 +61,7 @@ DLLEXPORT int Runtime::run()
 			coreManager->update();
 			
 		});
-		
+	timer.start(0);
+	
 	return application.exec();
 }
