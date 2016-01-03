@@ -15,6 +15,7 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/src/CMakeConfig.in
 	${CMAKE_BINARY_DIR}/Config.h)
 
 include_directories(${CMAKE_BINARY_DIR})
+include_directories(/home/russellg/hana-master/include/)
 	
 if(${UNIX})
 	SET(CMAKE_CXX_FLAGS "-stdlib=libc++ -fsanitize=address -lc++abi")

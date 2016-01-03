@@ -2,26 +2,8 @@
 
 #include "Engine.h"
 
-#include <boost/mpl/size.hpp>
-#include <boost/mpl/find.hpp>
-#include <boost/mpl/for_each.hpp>
-#include <boost/mpl/vector.hpp>
-#include <boost/mpl/begin.hpp>
-#include <boost/mpl/at.hpp>
-#include <boost/mpl/back_inserter.hpp>
-#include <boost/mpl/contains.hpp>
-#include <boost/mpl/fold.hpp>
-#include <boost/mpl/joint_view.hpp>
-#include <boost/mpl/equal_to.hpp>
-#include <boost/mpl/erase.hpp>
-#include <boost/mpl/copy.hpp>
-#include <boost/mpl/set.hpp>
-#include <boost/mpl/count.hpp>
-#include <boost/mpl/transform.hpp>
-#include <boost/mpl/pop_front.hpp>
-#include <boost/mpl/find_if.hpp>
-#include <boost/mpl/copy_if.hpp>
-#include <boost/mpl/remove.hpp>
+#include <boost/hana.hpp>
+
 
 #include <call_from_tuple.h>
 
@@ -53,49 +35,41 @@
 
 struct ManagerBase{};
 
-template <typename Components_, typename Bases_ = boost::mpl::vector0<> >
+template <typename Components_, typename Bases_ = boost::hana::set<> >
 struct Manager : ManagerBase
 {
-	static_assert(boost::mpl::is_sequence<Components_>::value, "Components must be a sequence");
-	static_assert(boost::mpl::is_sequence<Bases_>::value, "Bases must be a sequence");
-
 	// GLOBAL TYPEDEFS
-	using MyComponents = Components_;
-	using MyBases = Bases_;
-	using ThisType = Manager<MyComponents, MyBases>;
+	static constexpr auto myComponents = boost::hana::make<Components_>();
+	static constexpr auto myBases = boost::hana::make<Bases_>();
+	using This_t = Manager<Components_, Bases_>;
+	
+	static constexpr auto allManagers = myBases;//TODO: fix typename detail::FindManagers<boost::mpl::vector<This_t>>::type;
+	
+	static constexpr auto allManagersExceptThis = myBases;//TODO: fix typename boost::mpl::remove<AllManagers, This_t>::type;
+	
+	static constexpr auto allComponents = myComponents;//TODO: fix CatSequences_t<MyComponents, Unduplicate_t<ExpandSequenceToVaraidic_t<AllManagersButThis, CatComponents_t>>>;
 
-	using AllManagers = typename detail::FindManagers<boost::mpl::vector<ThisType>>::type;
-	static_assert(boost::mpl::is_sequence<AllManagers>::value, "AllManagers needs to be a sequence.");
+	static constexpr auto myStorageComponents = boost::hana::fold(myComponents, boost::hana::make_set(), [](auto set, auto newElement)
+		{
+			return boost::hana::if_(std::is_empty<typename decltype(newElement)::type>::value, set, boost::hana::append(set, newElement));
+		}
+	);
+	static constexpr auto myTagComponents = boost::hana::fold(myComponents, boost::hana::make_set(), [](auto set, auto newElement)
+		{
+			return boost::hana::if_(std::is_empty<typename decltype(newElement)::type>::value, boost::hana::append(set, newElement), set);
+		}
+	);
 
-	using AllManagersButThis = typename boost::mpl::remove<AllManagers, ThisType>::type;
-	static_assert(boost::mpl::is_sequence<AllManagersButThis>::value, "AllManagers needs to be a sequence.");
-
-private:
-	template<typename... Args>
-	using CatComponents_t = CatSequences_t<typename Args::AllComponents...>;
-public:
-	using AllComponents = CatSequences_t<MyComponents, Unduplicate_t<ExpandSequenceToVaraidic_t<AllManagersButThis, CatComponents_t>>>;
-
-private:
-	template<typename Component>
-	struct IsSizeOne
-	{
-		static constexpr const bool value = std::is_empty<Component>::value;
-	};
-
-	template<typename Component>
-	struct IsSizeGreaterThanOne
-	{
-		static constexpr const bool value = !std::is_empty<Component>::value;
-	};
-public:
-	using MyStorageComponents = typename boost::mpl::copy_if<MyComponents, IsSizeGreaterThanOne<boost::mpl::placeholders::_1>>::type;
-	using MyTagComponents = typename boost::mpl::copy_if<MyComponents, IsSizeOne<boost::mpl::placeholders::_1>>::type;
-
-
-	using AllStorageComponents = typename boost::mpl::copy_if<AllComponents, IsSizeGreaterThanOne<boost::mpl::placeholders::_1>>::type;
-	using AllTagComponents = typename boost::mpl::copy_if<AllComponents, IsSizeOne<boost::mpl::placeholders::_1>>::type;
-
+	static constexpr auto allStorageComponents = boost::hana::fold(allComponents, boost::hana::make_set(), [](auto set, auto newElement)
+		{
+			return boost::hana::if_(std::is_empty<typename decltype(newElement)::type>::value, set, boost::hana::append(set, newElement));
+		}
+	);
+	static constexpr auto allTagComponents = boost::hana::fold(allComponents, boost::hana::make_set(), [](auto set, auto newElement)
+		{
+			return boost::hana::if_(std::is_empty<typename decltype(newElement)::type>::value, boost::hana::append(set, newElement), set);
+		}
+	);
 
 	template<typename... Args>
 	using TupleOfPtrs = std::tuple<Args*...>;
@@ -103,253 +77,181 @@ public:
 	// CONSTEXPR FUNCTIONS/TESTS
 
 
-	static constexpr size_t getNumComponents()
+	static constexpr auto numComponents = boost::hana::size(allComponents);
+	
+	static constexpr auto numMyComponents = boost::hana::size(myComponents);
+	
+	template<typename T> 
+	static constexpr auto isComponent(T componentToTest)
 	{
-		return boost::mpl::size<AllComponents>::value;
+		return boost::hana::contains(allComponents, componentToTest);
 	}
-	static constexpr size_t getNumMyComponents()
+	template<typename T> 
+	static constexpr auto isMyComponent(T componentToTest)
 	{
-		return boost::mpl::size<MyComponents>::value;
+		return boost::hana::contains(myComponents, componentToTest);
 	}
-	template<typename Test> static constexpr bool isComponent()
+	template <typename T> 
+	static constexpr auto getComponentID(T component)
 	{
-		return boost::mpl::contains<AllComponents, Test>::value;
+		BOOST_HANA_CONSTANT_CHECK(isComponent(component));
+		
+		return get_index_of_first_matching(allComponents, component);
 	}
-	template<typename Test> static constexpr bool isMyComponent()
+	template <typename T> 
+	static constexpr auto getMyComponentID(T component)
 	{
-		return boost::mpl::contains<MyComponents, Test>::value;
-	}
-	template <typename Comp> static constexpr size_t getComponentID()
-	{
-		static_assert(isComponent<Comp>(), "Must be component");
-
-		return boost::mpl::distance<
-			typename boost::mpl::begin<AllComponents>::type
-			, typename boost::mpl::find<AllComponents, Comp>::type
-		>::type::value;
-	}
-	template <typename Comp> static constexpr size_t getMyComponentID()
-	{
-		static_assert(isMyComponent<Comp>(), "Must be component");
-
-		return boost::mpl::distance<
-			typename boost::mpl::begin<MyComponents>::type
-			, typename boost::mpl::find<MyComponents, Comp>::type
-		>::type::value;
+		BOOST_HANA_CONSTANT_CHECK(isComponent(component));
+		
+		return get_index_of_first_matching(myComponents, component);
 	}
 
-	static constexpr size_t getNumStorageComponents()
+	static constexpr auto numStorageComponents = boost::hana::size(allStorageComponents);
+	static constexpr auto numMyStorageComponents = boost::hana::size(allStorageComponents);
+	
+	template<typename T> 
+	static constexpr auto isStorageComponent(T componentToTest)
 	{
-		return boost::mpl::size<AllStorageComponents>::value;
+		return boost::hana::contains(allStorageComponents, componentToTest);
 	}
-	static constexpr size_t getNumMyStorageComponents()
+	template<typename T> 
+	static constexpr auto isMyStorageComponent(T componentToTest)
 	{
-		return boost::mpl::size<MyStorageComponents>::value;
+		return boost::hana::contains(myStorageComponents, componentToTest);
 	}
-	template<typename Test> static constexpr bool isStorageComponent()
+	template <typename T> 
+	static constexpr auto getStorageComponentID(T component)
 	{
-		return boost::mpl::contains<AllStorageComponents, Test>::value;
+		BOOST_HANA_CONSTANT_CHECK(isStorageComponent(component));
+		
+		return get_index_of_first_matching(allStorageComponents, component);
 	}
-	template<typename Test> static constexpr bool isMyStorageComponent()
+	
+	template<typename T> 
+	static constexpr auto isTagComponent(T componentToTest)
 	{
-		return boost::mpl::contains<MyStorageComponents, Test>::value;
+		return boost::hana::contains(allTagComponents, componentToTest);
 	}
-	template <typename Comp> static constexpr size_t getMyStorageComponentID()
+	template<typename T> 
+	static constexpr auto isMyTagComponent(T componentToTest)
 	{
-		static_assert(isMyStorageComponent<Comp>(), "Must be a storage component");
+		return boost::hana::contains(myTagComponents, componentToTest);
+	}
+	template <typename T> 
+	static constexpr auto getTagComponentID(T component)
+	{
+		BOOST_HANA_CONSTANT_CHECK(isTagComponent(component));
+		
+		return get_index_of_first_matching(allTagComponents, component);
+	}
+	
+	static constexpr auto numManagers = boost::hana::size(allManagers);
+	
+	template <typename T> 
+	static constexpr auto getManagerID(T manager)
+	{
+		BOOST_HANA_CONSTANT_CHECK(isManager(manager));
+		
+		return get_index_of_first_matching(allManagers, manager);
+	}
+	template<typename T> 
+	static constexpr auto getManagerExceptThisID(T manager)
+	{
+		BOOST_HANA_CONSTANT_CHECK(isExceptThisManager(manager));
 
-		return boost::mpl::distance<
-			typename boost::mpl::begin<MyStorageComponents>::type
-			, typename boost::mpl::find<MyStorageComponents, Comp>::type
-		>::type::value;
-	}
-
-	static constexpr size_t getNumTagComponents()
-	{
-		return boost::mpl::size<AllTagComponents>::value;
-	}
-	static constexpr size_t getNumMyTagComponents()
-	{
-		return boost::mpl::size<MyTagComponents>::value;
-	}
-	template<typename Test> static constexpr bool isTagComponent()
-	{
-		return boost::mpl::contains<AllTagComponents, Test>::type::value;
-	}
-	template<typename Test> static constexpr bool isMyTagComponent()
-	{
-		return boost::mpl::contains<MyTagComponents, Test>::value;
-	}
-	template <typename Tag> static constexpr size_t getMyTagComponentID()
-	{
-		static_assert(isTagComponent<Tag>(), "Must be tag");
-
-		return boost::mpl::distance<
-			typename boost::mpl::begin<MyTagComponents>::type
-			, typename boost::mpl::find<MyTagComponents, Tag>::type
-		>::type::value;
-	}
-	static constexpr size_t getNumManagers()
-	{
-		return boost::mpl::size<AllManagers>::value;
-	}
-	template <typename Comp> static constexpr size_t getManagerID()
-	{
-		static_assert(isManager<Comp>(), "Must be a Manager");
-
-		return boost::mpl::distance<
-			typename boost::mpl::begin<AllManagers>::type,
-			typename boost::mpl::find<AllManagers, Comp>::type
-		>::type::value;
-	}
-	template<typename Mana> static constexpr size_t getManagerExceptThisID()
-	{
-		static_assert(isManager<Mana>(), "Must be a Manager");
-
-		return boost::mpl::distance<
-			typename boost::mpl::begin<AllManagersButThis>::type,
-			typename boost::mpl::find<AllManagersButThis, Mana>::type
-		>::type::value;
-	}
-	template<typename Test> static constexpr bool isManager()
-	{
-		return boost::mpl::contains<AllManagers, Test>::value;
-	}
-	template<size_t ID>
-	using ManagerFromID = typename boost::mpl::at_c<AllManagers, ID>::type;
-
-	template<size_t at> using ComponentByID =
-		typename boost::mpl::at_c<AllComponents, at>::type;
-
-
-	template<typename ToTest> static constexpr bool isBase()
-	{
-		return boost::mpl::contains<MyBases, ToTest>::type::value;
+		return get_index_of_first_matching(allManagersExceptThis, manager);
 	}
 
-	static constexpr size_t getNumBases()
+	template<typename T> 
+	static constexpr auto isBase(T baseToTest)
 	{
-		return boost::mpl::size<MyBases>::value;
-	}
-	template <typename Comp> static constexpr size_t getBaseID()
-	{
-		static_assert(isBase<Comp>(), "Must be a Base");
-
-		return boost::mpl::distance<
-			typename boost::mpl::begin<MyBases>::type,
-			typename boost::mpl::find<MyBases, Comp>::type
-		>::type::value;
-	}
-	template<size_t ID>
-	using BaseFromID = typename boost::mpl::at_c<MyBases, ID>::type;
-
-
-
-private:
-	// turns a signature into a vector of interal_c if it is a valid component
-	template<typename... T>
-	using isSignature_IMPL = boost::mpl::vector_c<bool, isComponent<T>()...>;
-public:
-	template<typename SignatureToCheck>
-	static constexpr bool isSignature()
-	{
-		static_assert(boost::mpl::is_sequence<SignatureToCheck>::value, "Must be a sequence");
-
-		// make a new sequence -- each element is if (the element is a component)
-		using Transformed = ExpandSequenceToVaraidic_t<SignatureToCheck, isSignature_IMPL>;
-
-		// if there are no false types, then it is a signature
-		return !boost::mpl::contains<Transformed, boost::mpl::integral_c<bool, false>>::type::value;
+		return boost::hana::contains(myBases, baseToTest);
 	}
 
-	template<typename Component>
-	using GetManagerFromComponent_t =
-		typename detail::GetManagerFromComponent
-		<
-		ThisType
-		, Component
-		, typename boost::mpl::begin<AllManagers>::type
-		, typename boost::mpl::end<AllManagers>::type
-		>::type
-		;
+	static constexpr auto numBases = boost::hana::size(myBases);
+	
+	template <typename T> 
+	static constexpr auto getBaseID(T base)
+	{
+		BOOST_HANA_CONSTANT_CHECK(isBase(base));
+		
+		return get_index_of_first_matching(myBases, base);
+	}
+	
+	template<typename T>
+	static constexpr auto isSignature(T signature)
+	{
+		return boost::hana::all_of(signature, isComponent);
+	}
 
-	template<typename Sequence>
-	using IsolateStorageComponents_t = typename detail::IsolateStorageComponents<ThisType, Sequence>::type;
-
-	template<typename Sequence>
-	using IsolateTagComponents_t = typename detail::IsolateTagComponents<ThisType, Sequence>::type;
-
-	template<typename Sequence>
-	using IsolateComponentsFromThisManager_t =
-		typename detail::IsolateComponentsFromThisManager < ThisType, typename boost::mpl::begin<Sequence>::type,
-		typename boost::mpl::end<Sequence>::type, boost::mpl::vector0 < >> ::type;
-
-	template<typename Sequence>
-	using IsolateMyComponents_t =
-		typename detail::IsolateMyComponents < ThisType, typename boost::mpl::begin<Sequence>::type,
-		typename boost::mpl::end<Sequence>::type, boost::mpl::vector0 < >> ::type;
-
-
-	template<typename ManagerToFind>
-	using GetBaseManagerWithBase_t =
-		typename detail::GetBaseManagerWithBase<ThisType, typename boost::mpl::begin<MyBases>::type,
-		typename boost::mpl::end<MyBases>::type, ManagerToFind>::type;
-
-	template<typename... Types>
-	using TupleOfConstRefs_t = std::tuple<Types...>;
-
-
-	template<typename SequenceToFind>
-	using FindMostBaseManagerForSignature_t =
-		typename detail::FindMostBaseManagerForSignature<ThisType, SequenceToFind, true>::type;
+	template<typename T>
+	static constexpr auto getManagerFromComponent(T component)
+	{
+		return boost::hana::fold(allManagers, boost::mpl::void_, [component](auto toTest, auto last)
+			{
+				return boost::hana::if_(decltype(toTest)::type::isComponent(component), toTest, last);
+			}
+		);
+	}
 
 
 	template<typename T>
-	struct GetBaseManager_STRUCT
+	static constexpr auto isolateStorageComponents(T toIsolate)
 	{
-		using type = ThisType::template GetManagerFromComponent_t<T>;
-	};
+		return boost::hana::fold(toIsolate, boost::hana::make_set(), [](auto toTest, auto currentSet)
+			{
+				return boost::hana::if_(isStorageComponent(toTest), boost::hana::append(currentSet, toTest), currentSet);
+			}
+		);
+	}
+	template<typename T>
+	static constexpr auto isolateTagComponents(T toIsolate)
+	{
+		return boost::hana::fold(toIsolate, boost::hana::make_set(), [](auto toTest, auto currentSet)
+			{
+				return boost::hana::if_(isTagComponent(toTest), boost::hana::append(currentSet, toTest), currentSet);
+			}
+		);
+	}
+	template<typename T>
+	static constexpr auto isolateMyComponents(T toIsolate)
+	{
+		return boost::hana::fold(toIsolate, boost::hana::make_set(), [](auto toTest, auto currentSet)
+			{
+				return boost::hana::if_(isMyComponent(toTest), boost::hana::append(currentSet, toTest), currentSet);
+			}
+		);
+	}
+	
+	using RuntimeSignature_t = std::bitset<This_t::numComponents>;
 
-	using RuntimeSignature_t = std::bitset<size_t(ThisType::getNumComponents())>;
-
-	template<typename Signature>
-	static RuntimeSignature_t generateRuntimeSignature()
+	template<typename T>
+	static RuntimeSignature_t generateRuntimeSignature(T signature)
 	{
 
-		static_assert(isSignature<Signature>(), "Must be a signature");
+		BOOST_HANA_CONSTANT_CHECK(isSignature(signature));
 
 		RuntimeSignature_t ret;
 
-		for_each_no_construct_ptr<Signature>(
-			[&ret](auto ptr)
-		{
-
-			using Component_t = std::remove_pointer_t<decltype(ptr)>;
-			static_assert(isComponent<Component_t>(), "INTERNAL ERROR: must be a component");
-
-			constexpr size_t ID = getComponentID<Component_t>();
-
-			ret[ID] = true;
-		});
+		boost::hana::for_each(signature, [&ret](auto type)
+			{
+				ret[decltype(getComponentID(type))::value] = true;
+			}
+		);
 
 		return ret;
 	}
 
-	template<typename... T>
-	using TupleOfEntityPtrs = std::tuple<Entity<T>*...>;
-
-	template<typename... T>
-	using TupleOfPtrs = std::tuple<T*...>;
-
-	template<typename Signature>
-	auto newEntity(const ExpandSequenceToVaraidic_t<IsolateStorageComponents_t<Signature>, TupleOfConstRefs_t>& components
+	template<typename T, typename Components>
+	auto newEntity(T signature, const Components& components
 		= decltype(components){} /*tuple of the components*/)
-		-> Entity<FindMostBaseManagerForSignature_t<Signature>>*
 	{
-		static_assert(isSignature<Signature>(), "Must be a signature");
-		static_assert(boost::mpl::size<Signature>::value > 0, "There is literally no point in an empty entity. Rethink your life.");
+		using namespace boost::hana::literals;
+		
+		BOOST_HANA_CONSTANT_CHECK(isSignature(signature));
+		BOOST_HANA_CONSTANT_CHECK(boost::hana::size(signature) > 0_c);
 
-		using StorageComponents = IsolateStorageComponents_t<Signature>;
+		static constexpr auto StorageComponents = isolateStorageComponents(signature);
 		using TagComponents = IsolateTagComponents_t<Signature>;
 
 		// get managers for the entity
@@ -457,41 +359,38 @@ public:
 
 	template<typename...Args>
 	using TupleOfVectorRefrences = std::tuple<std::vector<Args>&...>;
-
-
+	
 	// returns the elements created [first, last)
-	template<typename Signature>
-	std::pair<size_t, size_t> createEntityBatch(
-		ExpandSequenceToVaraidic_t<IsolateStorageComponents_t<Signature>, TupleOfVectorRefrences> components,
-		size_t numToConstruct)
+	template<typename T, typename Components>
+	std::pair<size_t, size_t> createEntityBatch(T signature, Components components, size_t numToConstruct)
 	{
 		// TODO: implement
 	}
-	void destroyEntity(Entity<ThisType>* handle)
+	void destroyEntity(Entity<This_t>* handle)
 	{
 
 	}
 
-	template<typename Component>
-	Component& getStorageComponent(Entity<ThisType>* handle)
+	template<typename T>
+	auto getStorageComponent(T component, Entity<This_t>* handle) -> typename decltype(component)::type&
 	{
-		static_assert(isStorageComponent<Component>(), "Must be a storage component");
+		BOOST_HANA_CONSTANT_CHECK(isStorageComponent(component));
 		
-		using ManagerForComponent = GetManagerFromComponent_t<Component>;
+		constexpr auto managerForComponent = getManagerFromComponent(Component);
 
-		constexpr size_t staticID = ManagerForComponent::template getMyStorageComponentID<Component>();
+		constexpr auto staticID = decltype(managerForComponent)::type::template getMyStorageComponentID(component);
 
-		auto* ent = getEntityPtr<ManagerForComponent>(handle);
+		auto* ent = getEntityPtr(managerForComponent, handle);
 
 		size_t componentID = ent->components[staticID];
 
-		return getComponentStorage<Component>()[componentID];
+		return getComponentStorage(component)[componentID];
 
 		
 	}
 
 	template<typename Component>
-	bool hasComponent(Entity<ThisType>* entity)
+	bool hasComponent(Entity<This_t>* entity)
 	{
 		static_assert(isComponent<Component>(), "Error: must be a component!");
 		using ManagerForComponent = GetManagerFromComponent_t<Component>;
@@ -504,9 +403,9 @@ public:
 	template<typename ManagerToGet, bool dummy = true /*just to avoid full sepcialization, which isn't standard complient*/>
 	struct GetEntityPtr_IMPL
 	{
-		static auto apply(Entity<ThisType>* ent)
+		static auto apply(Entity<This_t>* ent)
 		{
-			static_assert(isManager<ManagerToGet>(), "Must be a manager");
+			BOOST_HANA_CONSTANT_CHECK(isManager(boost::hana::type_c<ManagerToGet>{}));
 			assert(ent);
 
 			return std::get<getManagerExceptThisID<ManagerToGet>()>(ent->bases);
@@ -514,16 +413,16 @@ public:
 		}
 	};
 	template<bool dummy>
-	struct GetEntityPtr_IMPL<ThisType, dummy>
+	struct GetEntityPtr_IMPL<This_t, dummy>
 	{
-		static auto apply(Entity<ThisType>* ent)
+		static auto apply(Entity<This_t>* ent)
 		{
 			return ent;
 		}
 	};
 	
 	template<typename ManagerToGet>
-	static Entity<ManagerToGet>* getEntityPtr(Entity<ThisType>* ent)
+	static Entity<ManagerToGet>* getEntityPtr(Entity<This_t>* ent)
 	{
 		return GetEntityPtr_IMPL<ManagerToGet>::apply(ent);
 	}
@@ -533,18 +432,18 @@ public:
 	{
 		static_assert(isManager<ManagerToGet>(), "ManagerToGet must be a manager");
 
-		return detail::GetRefToManager<ThisType, ManagerToGet>::apply(*this);
+		return detail::GetRefToManager<This_t, ManagerToGet>::apply(*this);
 	}
 
 	template<typename CurrentIter, typename EndIter>
 	struct CallFunctionWighSigParamsIMPL
 	{
 		template<typename F, typename...Args>
-		static void apply(ThisType& manager, Entity<ThisType>* ID, F&& func, Args&&...args)
+		static void apply(This_t& manager, Entity<This_t>* ID, F&& func, Args&&...args)
 		{
 			using NextIter = typename boost::mpl::next<CurrentIter>::type;
 			using ComponentType = typename boost::mpl::deref<CurrentIter>::type;
-			using ManagerType = typename ThisType::template GetManagerFromComponent_t<ComponentType>;
+			using ManagerType = typename This_t::template GetManagerFromComponent_t<ComponentType>;
 
 			CallFunctionWighSigParamsIMPL
 				<
@@ -564,7 +463,7 @@ public:
 	struct CallFunctionWighSigParamsIMPL<EndIter, EndIter>
 	{
 		template<typename F, typename...Args>
-		static void apply(ThisType& manager, Entity<ThisType>* ID, F&& func, Args&&...args)
+		static void apply(This_t& manager, Entity<This_t>* ID, F&& func, Args&&...args)
 		{
 			std::forward<F>(func)(std::forward<Args>(args)...);
 		}
@@ -586,7 +485,7 @@ public:
 
 
 	template<typename Component>
-	std::vector<Entity<ThisType>*>& getComponentEntityStorage()
+	std::vector<Entity<This_t>*>& getComponentEntityStorage()
 	{
 		static_assert(isComponent<Component>(), "Must be a component");
 
@@ -601,7 +500,7 @@ public:
 
 	// CALLING FUNCTIONS ON ENTITIES
 	template<typename SignatureToRun, typename F>
-	void callFunctionWithSigParams(Entity<ThisType>* ent, F&& func)
+	void callFunctionWithSigParams(Entity<This_t>* ent, F&& func)
 	{
 		CallFunctionWighSigParamsIMPL
 			<
@@ -651,7 +550,7 @@ public:
 
 public:// TODO:
 
-	ManagerData<ThisType> myManagerData;
+	ManagerData<This_t> myManagerData;
 
 	std::shared_ptr<size_t> nextIndex;
 
@@ -660,13 +559,13 @@ public:// TODO:
 	using StorageComponentStorage_t = std::tuple<std::vector<Args>...>;
 	ExpandSequenceToVaraidic_t<MyStorageComponents, StorageComponentStorage_t> storageComponentStorage;
 
-	std::array<std::vector<Entity<ThisType>*>, (ThisType::getNumMyComponents())> componentEntityStorage;
+	std::array<std::vector<Entity<This_t>*>, (This_t::getNumMyComponents())> componentEntityStorage;
 
 
 	using BasePtrStorage_t =
 		ExpandSequenceToVaraidic_t
 		<
-			AllManagersButThis // we dont' want to store the pointers for ThisType: it is just this!
+			AllManagersButThis // we dont' want to store the pointers for This_t: it is just this!
 			, TupleOfPtrs
 		>;
 	using MyBasePtrStorage_t = ExpandSequenceToVaraidic_t<MyBases, TupleOfPtrs>;
@@ -677,10 +576,10 @@ public:// TODO:
 	{
 
 		using Update_t =
-			void(*)(ManagerBase&, ThisType&);
+			void(*)(ManagerBase&, This_t&);
 
 		using BeginPlay_t =
-			void(*)(ManagerBase&, ThisType&);
+			void(*)(ManagerBase&, This_t&);
 
 		Update_t update;
 		BeginPlay_t beginPlay;
@@ -701,24 +600,24 @@ public:// TODO:
 
 public:
 
-	static ThisType* factory(const MyBasePtrStorage_t& bases = MyBasePtrStorage_t{})
+	static This_t* factory(const MyBasePtrStorage_t& bases = MyBasePtrStorage_t{})
 	{
 
-		auto ret = new ThisType{ bases };
-		initManager<ThisType>(*ret);
+		auto ret = new This_t{ bases };
+		initManager<This_t>(*ret);
 
 		boost::fusion::for_each(bases,
 			[ret](auto elem)
 		{
 			assert(elem);
 			using BaseType = std::decay_t<decltype(*elem)>;
-			static_assert(ThisType::template isManager<BaseType>(), "Error, not a manager");
+			static_assert(This_t::template isManager<BaseType>(), "Error, not a manager");
 
 			typename BaseType::FunctionPointerStorage::Update_t updatePtr =
-				&detail::Update_t<ThisType, BaseType>::update;
+				&detail::Update_t<This_t, BaseType>::update;
 
 			typename BaseType::FunctionPointerStorage::BeginPlay_t beginPlayPtr =
-				&detail::BeginPlay_t<ThisType, BaseType>::beginPlay;
+				&detail::BeginPlay_t<This_t, BaseType>::beginPlay;
 
 			elem->children.push_back(
 				std::make_pair(typename BaseType::FunctionPointerStorage{ updatePtr, beginPlayPtr }, ret)
@@ -736,7 +635,7 @@ public:
 	}
 
 
-	ManagerData<ThisType>& getManagerData()
+	ManagerData<This_t>& getManagerData()
 	{
 		return myManagerData;
 	}
@@ -749,20 +648,20 @@ private:
 		tuple_for_each_with_index(bases, [thisptr](auto& ptr, auto)
 		{
 			using BaseType = std::decay_t<decltype(*ptr)>;
-			static_assert(ThisType::template isManager<BaseType>(), "Must be a manager");
+			static_assert(This_t::template isManager<BaseType>(), "Must be a manager");
 
 
-			constexpr size_t managerID = ThisType::template getManagerID<BaseType>();
+			constexpr size_t managerID = This_t::template getManagerID<BaseType>();
 
 			std::get<managerID>(thisptr->basePtrStorage) = ptr;
 
 			tuple_for_each_with_index(ptr->basePtrStorage, [thisptr](auto ptrIndBase, auto)
 			{
 				using IndBaseType = std::decay_t<decltype(*ptrIndBase)>;
-				static_assert(ThisType::template isManager<IndBaseType>(), "Must be a manager");
+				static_assert(This_t::template isManager<IndBaseType>(), "Must be a manager");
 
 
-				constexpr size_t managerID = ThisType::template getManagerID<IndBaseType>();
+				constexpr size_t managerID = This_t::template getManagerID<IndBaseType>();
 
 				std::get<managerID>(thisptr->basePtrStorage) = ptrIndBase;
 			});
@@ -774,6 +673,6 @@ public:
 
 	~Manager()
 	{
-		exitManager<ThisType>(*this);
+		exitManager<This_t>(*this);
 	}
 };
