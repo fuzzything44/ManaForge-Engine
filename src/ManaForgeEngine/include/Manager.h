@@ -190,7 +190,7 @@ struct Manager : ManagerBase
 	template<typename T>
 	static constexpr auto isManager(T toTest)
 	{
-		static_assert(is_base_of<ManagerBase, typename T::type>, "Error, needs to be a manager");
+		static_assert(std::is_base_of<ManagerBase, typename decltype(toTest)::type>::value, "Error, needs to be a manager");
 		
 		return boost::hana::contains(allManagers, toTest);
 	}
