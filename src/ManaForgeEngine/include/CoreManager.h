@@ -21,8 +21,7 @@ struct CAcceleration
 using CoreManager_t =
 	Manager
 	<
-		boost::mpl::vector3<CPosition, CVelocity, CAcceleration>
-		, boost::mpl::vector0<>
+		decltype(make_type_tuple<CPosition, CVelocity, CAcceleration>)
 	>;
 
 ENGINE_API extern CoreManager_t* coreManager;

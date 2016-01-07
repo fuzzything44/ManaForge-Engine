@@ -6,7 +6,7 @@ DLLEXPORT OpenGLRendererManager_t* openGLRendererManager = nullptr;
 
 extern"C" DLLEXPORT void init(ModuleHandler&)
 {
-	openGLRendererManager = OpenGLRendererManager_t::factory(std::make_tuple(coreManager));
+	openGLRendererManager = new OpenGLRendererManager_t(boost::hana::make_tuple(coreManager));
 }
 
 extern"C" DLLEXPORT void cleanup(ModuleHandler& handler)

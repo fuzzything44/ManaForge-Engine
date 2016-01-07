@@ -7,7 +7,8 @@ DLLEXPORT Box2DPhysicsManager_t* box2DPhysicsManager = nullptr;
 
 extern "C" DLLEXPORT void init(ModuleHandler&)
 {
-	box2DPhysicsManager = Box2DPhysicsManager_t::factory(std::make_tuple(coreManager));
+	
+	box2DPhysicsManager = new Box2DPhysicsManager_t(boost::hana::make_tuple(coreManager));
 }
 
 

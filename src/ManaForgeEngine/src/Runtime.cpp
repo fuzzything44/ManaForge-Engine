@@ -21,7 +21,7 @@ DLLEXPORT Runtime::Runtime(int argc, char** argv)
 	
 	logdetail::log_base::init();
 
-	coreManager = CoreManager_t::factory();
+	coreManager = new CoreManager_t;
 
 	moduleHandler.init(std::vector<path_t>{ path_t{"OpenGLRenderer"} });
 	

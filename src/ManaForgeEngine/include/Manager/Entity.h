@@ -3,25 +3,36 @@
 #include <bitset>
 #include <array>
 
-#include <MPLHelp.h>
 
 #include <boost/mpl/size.hpp>
 
 #include <boost/fusion/algorithm.hpp>
 
+template<typename>
+struct Entity;
+
+namespace detail 
+{
+namespace lambdas 
+{
+
+auto removeTypeAddEntityPtr = [](auto manager)
+	{
+		return (Entity<typename decltype(manager)::type>*){};
+	};
+	
+}
+}
+
 template<typename ManagerType_>
 struct Entity
 {
-	using ManagerType = ManagerType_;
+	static constexpr auto managerType = boost::hana::type_c<ManagerType_>;
+	
+	decltype(boost::hana::transform(decltype(managerType)::type::allManagersExceptThis, detail::lambdas::removeTypeAddEntityPtr)) bases;
 
+    typename decltype(managerType)::type::RuntimeSignature_t signature;
 
-    template<typename ... Args>
-    using TupleOfEntityPointers = std::tuple<Entity<Args>*...>;
-
-	ExpandSequenceToVaraidic_t<typename ManagerType::AllManagersButThis, TupleOfEntityPointers> bases;
-
-    typename ManagerType::RuntimeSignature_t signature;
-
-	std::array<size_t, ManagerType::getNumMyStorageComponents()> components;
+	std::array<size_t, decltype(managerType)::type::numMyStorageComponents> components;
 
 };

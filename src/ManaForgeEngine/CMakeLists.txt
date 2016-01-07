@@ -25,7 +25,6 @@ set(MANAFORGE_ENGINE_PUBLIC_FILES
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/Manager.h;"
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/MeshActor.h;"
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/ModuleHandler.h;"
-	"${CMAKE_CURRENT_SOURCE_DIR}/include/MPLHelp.h;"
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/PropertyManager.h;"
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/QuadUVCoords.h;"
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/Quantity.h;"
@@ -39,7 +38,6 @@ set(MANAFORGE_ENGINE_PUBLIC_FILES
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/Transform.h;"
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/Manager/Callbacks.h;"
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/Manager/Entity.h;"
-	"${CMAKE_CURRENT_SOURCE_DIR}/include/Manager/FindAllManagers.h;"
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/Manager/GetRefToManager.h;"
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/Manager/MiscMetafunctions.h;"
 	)

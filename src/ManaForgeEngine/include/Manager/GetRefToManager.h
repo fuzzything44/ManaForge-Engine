@@ -2,6 +2,8 @@
 
 #include <tuple>
 
+#include <boost/hana.hpp>
+
 namespace detail
 {
 	template<typename ThisType, typename ManagerToGet>
@@ -9,11 +11,11 @@ namespace detail
 	{
 		static ManagerToGet& apply(ThisType& data)
 		{
-			static_assert(ThisType::template isManager<ManagerToGet>(), "ManagerToGet must be a manager");
+			BOOST_HANA_CONSTANT_CHECK(ThisType::template isManager(boost::hana::type_c<ManagerToGet>));
 
-			constexpr auto managerID = ThisType::template getManagerExceptThisID<ManagerToGet>();
+			constexpr auto managerID = ThisType::template getManagerExceptThisID(boost::hana::type_c<ManagerToGet>);
 
-			return *std::get<managerID>(data.basePtrStorage);
+			return *data.basePtrStorage[managerID];
 		}
 	};
 
@@ -22,8 +24,6 @@ namespace detail
 	{
 		static ThisType& apply(ThisType& data)
 		{
-			static_assert(ThisType::template isManager<ThisType>(), "ManagerToGet must be a manager");
-
 			return data;
 		}
 	};

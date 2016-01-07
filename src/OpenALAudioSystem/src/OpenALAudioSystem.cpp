@@ -6,7 +6,8 @@ OpenALAudioManager_t* openALAudioManager = nullptr;
 
 extern "C" DLLEXPORT void init(ModuleHandler&)
 {
-	openALAudioManager = OpenALAudioManager_t::factory(OpenALAudioManager_t::MyBasePtrStorage_t(coreManager));
+	
+	openALAudioManager = new OpenALAudioManager_t(boost::hana::make_tuple(coreManager));
 }
 
 extern"C" DLLEXPORT void cleanup(ModuleHandler& handler)

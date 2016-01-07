@@ -18,8 +18,8 @@
 using OpenGLRendererManager_t =
 	Manager
 	<
-		boost::mpl::vector1<COpenGLModel>
-		, boost::mpl::vector1<CoreManager_t>
+		decltype(boost::hana::make_tuple(boost::hana::type_c<COpenGLModel>))
+		, decltype(boost::hana::make_tuple(boost::hana::type_c<CoreManager_t>))
 	>;
 
 	

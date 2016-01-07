@@ -4,16 +4,18 @@
 
 TestContentManager_t* testContentManager = nullptr;
 
+
 extern"C" DLLEXPORT void init(ModuleHandler& handler)
 {
+	
 	// load dependent modules
 	handler.loadModule("OpenALAudioSystem");
 	handler.loadModule("OpenGLRenderer");
 	handler.loadModule("Box2DPhysicsSystem");
 
-	testContentManager = TestContentManager_t::factory
+	testContentManager = new TestContentManager_t
 		(
-			std::make_tuple(
+			boost::hana::make_tuple(
 				openALAudioManager
 				, box2DPhysicsManager
 				, openGLRendererManager

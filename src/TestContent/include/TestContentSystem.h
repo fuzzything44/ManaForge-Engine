@@ -14,8 +14,8 @@ struct TPew{};
 using TestContentManager_t =
 	Manager
 	<
-		boost::mpl::vector1<TPew>
-		, boost::mpl::vector3<OpenALAudioManager_t, Box2DPhysicsManager_t, OpenGLRendererManager_t>
+		decltype(make_type_tuple<TPew>)
+		, decltype(make_type_tuple<OpenALAudioManager_t, Box2DPhysicsManager_t, OpenGLRendererManager_t>)
 	>;
 
 template<typename... Args>
@@ -25,12 +25,12 @@ using TupleOfVectorRefrences = std::tuple<std::vector<Args>&...>;
 template<>
 void beginPlayManager<TestContentManager_t>(TestContentManager_t& manager)
 {
-	auto ent1 = manager.newEntity<boost::mpl::vector2<CPosition, TPew>>(std::make_tuple(CPosition{{.3f, 2.f}}));
+	auto ent1 = manager.newEntity(make_type_tuple<CPosition, TPew>, std::make_tuple(CPosition{{.3f, 2.f}}));
 
-    assert(manager.hasComponent<CPosition>(ent1));
-    assert(manager.hasComponent<TPew>(ent1));
-    assert(!manager.hasComponent<CVelocity>(ent1));
-    assert(manager.getStorageComponent<CPosition>(ent1).value == vec2(.3f, 2.f));
+    assert(manager.hasComponent(boost::hana::type_c<CPosition>, ent1));
+    assert(manager.hasComponent(boost::hana::type_c<TPew>, ent1));
+    assert(!manager.hasComponent(boost::hana::type_c<CVelocity>, ent1));
+    assert(manager.getStorageComponent(boost::hana::type_c<CPosition>, ent1).value == vec2(.3f, 2.f));
 	
 	vec2 locs[] = 
 	{
@@ -60,7 +60,7 @@ void beginPlayManager<TestContentManager_t>(TestContentManager_t& manager)
 template<>
 void updateManager<TestContentManager_t>(TestContentManager_t& manager)
 {
-	manager.runAllMatching<boost::mpl::vector<CPosition, TPew>>([](CPosition& pos)
+	manager.runAllMatching(make_type_tuple<CPosition, TPew>, [](CPosition& pos)
 	{
 
 	});

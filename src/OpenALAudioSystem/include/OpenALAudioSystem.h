@@ -9,8 +9,8 @@
 using OpenALAudioManager_t =
 	Manager
 	<
-		boost::mpl::vector1<COpenALSoundSource>
-		, boost::mpl::vector1<CoreManager_t>
+		decltype(make_type_tuple<COpenALSoundSource>)
+		, decltype(make_type_tuple<CoreManager_t>)
 	>;
 
 
@@ -25,14 +25,14 @@ void updateManager<OpenALAudioManager_t>(OpenALAudioManager_t& manager)
 	//auto&& cameraVel = camera.getOwner().getVelocity();
 	//alListener3f(AL_VELOCITY, cameraVel.x, cameraVel.y, 0.f);
 
-	manager.runAllMatching<boost::mpl::vector<COpenALSoundSource, CPosition>>([](COpenALSoundSource& src, CPosition& pos)
+	manager.runAllMatching(make_type_tuple<COpenALSoundSource, CPosition>, [](COpenALSoundSource& src, CPosition& pos)
 	{
 		// update runtime variables
 		alSource3f(src.sourceHandle, AL_POSITION, pos.value.x, pos.value.y, 0.f);
 
 	});
 
-	manager.runAllMatching<boost::mpl::vector<COpenALSoundSource, CVelocity>>([](COpenALSoundSource& src, CVelocity& vel)
+	manager.runAllMatching(make_type_tuple<COpenALSoundSource, CVelocity>, [](COpenALSoundSource& src, CVelocity& vel)
 	{
 		// update runtime variables
 		alSource3f(src.sourceHandle, AL_VELOCITY, vel.value.x, vel.value.y, 0.f);

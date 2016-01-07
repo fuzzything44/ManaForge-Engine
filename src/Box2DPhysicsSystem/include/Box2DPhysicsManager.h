@@ -12,8 +12,8 @@ class Box2DActorTransformController;
 using Box2DPhysicsManager_t = 
 	Manager
 	<
-		boost::mpl::vector1<CBox2DCollision>
-		, boost::mpl::vector1<CoreManager_t>
+		decltype(make_type_tuple<CBox2DCollision>)
+		,decltype(make_type_tuple<CoreManager_t>)	
 	>;
 
 template<>
