@@ -77,13 +77,13 @@ Module::Module(ModuleHandler& handler_, const path_t& name)
 	
 
 	if (handle == nullptr) {
-		MFLOGW(Error) << L"Failed to load library. Name: " << pathWithExt.c_str() << L" Error: " << dlerror();
+		MFLOG("Failed to load library. Name: " << pathWithExt.string() << " Error: " << dlerror());
 	}
 
 	InitFuncPtr_t addr = reinterpret_cast<InitFuncPtr_t>(dlsym(handle, "init"));
 
 	if (addr == nullptr) {
-		MFLOG(Error) << "Failed to get init function address!";
+		MFLOG("Failed to get init function address!");
 	}
 
 	addr(*handler);
@@ -99,7 +99,7 @@ Module::~Module()
 		InitFuncPtr_t addr = reinterpret_cast<InitFuncPtr_t>(dlsym(handle, "cleanup"));
 
 		if (addr == nullptr) {
-			MFLOG(Error) << "Failed to get cleanup function address!";
+			MFLOG("Failed to get cleanup function address!");
 		}
 	
 		addr(*handler);
@@ -107,7 +107,7 @@ Module::~Module()
 		
 		int result = dlclose(handle);
 		if (result != 0) {
-			MFLOG(Error) << "Could not unload dll.";
+			MFLOG("Could not unload dll.");
 		}
 	}
 	
@@ -116,3 +116,6 @@ Module::~Module()
 
 
 #endif
+
+
+ 

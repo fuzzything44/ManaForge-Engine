@@ -24,5 +24,5 @@ using CoreManager_t =
 		decltype(make_type_tuple<CPosition, CVelocity, CAcceleration>)
 	>;
 
-ENGINE_API extern CoreManager_t* coreManager;
+MF_API extern CoreManager_t* coreManager;
 

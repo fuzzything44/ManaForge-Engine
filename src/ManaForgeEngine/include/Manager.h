@@ -190,7 +190,7 @@ struct Manager : ManagerBase
 	template<typename T>
 	static constexpr auto isManager(T toTest)
 	{
-		static_assert(std::is_base_of<ManagerBase, typename decltype(toTest)::type>::value, "Error, needs to be a manager");
+	//	static_assert(std::is_base_of<ManagerBase, typename decltype(toTest)::type>::value, "Error, needs to be a manager");
 		
 		return boost::hana::contains(allManagers, toTest);
 	}
@@ -522,10 +522,12 @@ public:
 			
 			boost::hana::for_each(ptr->basePtrStorage, [this](auto indBase)
 			{
-				BOOST_HANA_CONSTANT_CHECK(isManager(indBase));
+				static constexpr auto indBaseType = boost::hana::type_c<std::remove_pointer_t<std::decay_t<decltype(indBase)>>>;
+				
+				BOOST_HANA_CONSTANT_CHECK(isManager(indBaseType));
 				
 				
-				constexpr auto managerID = getManagerID(indBase);
+				constexpr auto managerID = getManagerID(indBaseType);
 				
 				basePtrStorage[managerID] = nullptr; // TODO: fix
 			});

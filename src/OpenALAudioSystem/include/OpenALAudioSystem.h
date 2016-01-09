@@ -53,9 +53,9 @@ void initManager<OpenALAudioManager_t>(OpenALAudioManager_t& manager)
 	if (alutInit(nullptr, nullptr) == AL_FALSE) // catch errors
 	{
 		auto&& err = alutGetError();
-		MFLOG(Warning) << "Failed to initalize alut with error: " << alutGetErrorString(err)
+		MFLOG("Failed to initalize alut with error: " << alutGetErrorString(err)
 			<< " And error number: " << err
-			<< "\n If you recieve this error, you won't have sound.";
+			<< "\n If you recieve this error, you won't have sound.");
 	}
 
 	float orientation[] = {

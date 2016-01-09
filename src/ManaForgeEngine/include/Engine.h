@@ -12,10 +12,10 @@
 #define DLLIMPORT __declspec(dllimport)
 #endif
 
-#ifdef ManaForgeEngine_Source
-#define ENGINE_API DLLEXPORT
+#ifdef ManaForgeEngine_EXPORTS
+#define MF_API DLLEXPORT
 #else
-#define ENGINE_API DLLIMPORT
+#define MF_API DLLIMPORT
 #endif
 
 
@@ -45,8 +45,6 @@ struct hash<boost::filesystem::path>
 	}
 };
 }
-
-#include "Quantity.h"
 
 // worldwide aliases
 using path_t = boost::filesystem::path;
@@ -79,4 +77,4 @@ using mat4 = glm::mat4;
 
 using dvec2 = glm::dvec2;
 using dvec3 = glm::dvec3;
-using dvec4 = glm::dvec4;
+using dvec4 = glm::dvec4; 

@@ -32,7 +32,7 @@ function(buildmodule MODULE_NAME MODULE_FILES BASE_MANAGERS)
 	
 	add_library(${MODULE_NAME} SHARED ${MODULE_FILES})
 	
-	foreach(MANAGER ${BASE_MANAGERS} ${MODULE_NAME})
+	foreach(MANAGER "${BASE_MANAGERS};${MODULE_NAME}" ${MODULE_NAME})
 		__handledependencies(${MODULE_NAME} ${MANAGER})
 	endforeach()
 

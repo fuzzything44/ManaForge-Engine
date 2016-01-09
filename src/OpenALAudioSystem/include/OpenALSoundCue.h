@@ -23,13 +23,13 @@ struct OpenALSoundCue : RefCounted<OpenALSoundCue>
     {
         path_t path = "sounds/" + name.string() + ".wav";
 
-		if(!boost::filesystem::exists(path)) MFLOG(Error) << "Cannot find " << path.string();
+		if(!boost::filesystem::exists(path)) MFLOG("Cannot find " << path.string());
 
 		bufferHandle = alutCreateBufferFromFile(path.string().c_str());
 
         if(bufferHandle == AL_NONE)
         {
-            MFLOG(Error) << "Cannot create buffer from wav file " << path.string() << " with error string: " << alutGetErrorString(alutGetError());
+            MFLOG("Cannot create buffer from wav file " << path.string() << " with error string: " << alutGetErrorString(alutGetError()));
         }
 
 
@@ -37,7 +37,7 @@ struct OpenALSoundCue : RefCounted<OpenALSoundCue>
 		alGetBufferi(bufferHandle, AL_CHANNELS, &amtChannels);
 
 		if (amtChannels == 2) {
-			MFLOG(Info) << "using stereo buffer: " << name << ". The sound will not be location based";
+			MFLOG("using stereo buffer: " << name << ". The sound will not be location based");
 		}
     }
 

@@ -1,5 +1,3 @@
-#include <exception>
-
 #include <Runtime.h>
 
 int main(int argc, char** argv)
@@ -9,7 +7,7 @@ int main(int argc, char** argv)
 
 		Runtime runtime{argc, argv};
 
-		//run the runtime. consumes the thread until it returns
+		// run the runtime. consumes the thread until it returns
 		runtime.run();
 	}
 	catch (const std::exception& /*e*/)

@@ -1,7 +1,3 @@
-# cmake -DBoost_INCLUDE_DIR="/home/russellg/Documents/boost/boost_1_59_0/"
-#  -DBoost_LIBRARY_DIR="/home/russellg/Documents/boost/boost_1_59_0/lib/clang 3.6.2"
-#  -DCMAKE_C_COMPILER="clang" -DCMAKE_CXX_COMPILER="clang++" -DCMAKE_BUILD_TYPE="DEBUG" ..
-
 cmake_minimum_required (VERSION 3.0)
 
 
@@ -18,7 +14,7 @@ include_directories(${CMAKE_BINARY_DIR})
 include_directories(/home/russellg/hana-master/include/)
 	
 if(${UNIX})
-	SET(CMAKE_CXX_FLAGS "-stdlib=libc++ -fsanitize=address -lc++abi -ftemplate-backtrace-limit=0 -ferror-limit=1")
+	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address")
 endif()
 
 # find boost
@@ -29,7 +25,6 @@ find_package(Hana REQUIRED)
 
 include_directories(${Hana_INCLUDE_DIR})
 
-# for now just compile the engine
 add_subdirectory("src/ManaForgeEngine/")
 
 add_subdirectory("src/Box2DPhysicsSystem/")

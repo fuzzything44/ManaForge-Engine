@@ -22,14 +22,14 @@ struct OpenGLTexture : RefCounted<OpenGLTexture>
 		/* try to open the file */
 		fp = fopen(qualifiedPath.c_str(), "rb");
 		if (fp == NULL)
-			MFLOG(Error) << "File could not be opened: " << qualifiedPath;
+			MFLOG("File could not be opened: " << qualifiedPath);
 
 		/* verify the type of file */
 		char filecode[4];
 		fread(filecode, 1, 4, fp);
 		if (strncmp(filecode, "DDS ", 4) != 0) {
 			fclose(fp);
-			MFLOG(Error) << "Error loading DSS file: " << qualifiedPath << ".";
+			MFLOG("Error loading DSS file: " << qualifiedPath << ".");
 			
 		}
 
@@ -71,7 +71,7 @@ struct OpenGLTexture : RefCounted<OpenGLTexture>
 			break;
 		default:
 			free(buffer);
-			MFLOG(Error) << "Unrecognized format in DDS: " << fourCC;
+			MFLOG("Unrecognized format in DDS: " << fourCC);
 		}
 		
 		QOpenGLFunctions_3_3_Core funs;

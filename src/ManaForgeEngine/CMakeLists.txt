@@ -13,7 +13,6 @@ set(MANAFORGE_ENGINE_PRIVATE_FILES
 	)
 	
 set(MANAFORGE_ENGINE_PUBLIC_FILES
-	"${CMAKE_CURRENT_SOURCE_DIR}/include/Cacher.h;"
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/call_from_tuple.h;"
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/Color.h;"
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/CoreManager.h;"
@@ -27,15 +26,11 @@ set(MANAFORGE_ENGINE_PUBLIC_FILES
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/ModuleHandler.h;"
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/PropertyManager.h;"
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/QuadUVCoords.h;"
-	"${CMAKE_CURRENT_SOURCE_DIR}/include/Quantity.h;"
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/RefCounted.h;"
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/Runtime.h;"
-	"${CMAKE_CURRENT_SOURCE_DIR}/include/SaveData.h;"
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/SerializeGLM.h;"
-	"${CMAKE_CURRENT_SOURCE_DIR}/include/TextBoxWidget.h;"
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/TimerHandle.h;"
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/TimerManager.h;"
-	"${CMAKE_CURRENT_SOURCE_DIR}/include/Transform.h;"
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/Manager/Callbacks.h;"
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/Manager/Entity.h;"
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/Manager/GetRefToManager.h;"
@@ -57,7 +52,7 @@ set(ManaForgeEngine_COMPILE_FEATURES
 		"cxx_variadic_macros;"
 		"cxx_variadic_templates;"
 		"cxx_template_template_parameters;" CACHE INTERNAL "")
-set(ManaForgeEngine_LINK_LIBRARIES ${Boost_FILESYSTEM_LIBRARY};${Boost_SYSTEM_LIBRARY} CACHE INTERNAL "")
+set(ManaForgeEngine_LINK_LIBRARIES "${Boost_FILESYSTEM_LIBRARY};${Boost_SYSTEM_LIBRARY};" CACHE INTERNAL "")
 set(ManaForgeEngine_INCLUDE_DIRECTORIES "${CMAKE_CURRENT_SOURCE_DIR}/../../include/;${CMAKE_CURRENT_SOURCE_DIR}/include;" CACHE INTERNAL "")
 
 buildmodule(ManaForgeEngine "${MANAFORGE_ENGINE_PRIVATE_FILES}${MANAFORGE_ENGINE_PUBLIC_FILES}" "")  

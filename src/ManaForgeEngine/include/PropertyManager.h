@@ -8,8 +8,8 @@ class PropertyManager
 {
 
 public:
-	ENGINE_API explicit PropertyManager(const path_t& location = "");
-	ENGINE_API void init(const path_t& location);
+	MF_API explicit PropertyManager(const path_t& location = "");
+	MF_API void init(const path_t& location);
 
 	template <typename T>
 	inline boost::optional<T> queryValue(const std::string& key);
@@ -30,7 +30,7 @@ inline boost::optional<T> PropertyManager::queryValue(const std::string& key)
 	}
 	catch (std::exception& e)
 	{
-		MFLOG(Warning) << e.what();
+		MFLOG(e.what());
 	}
 	return boost::optional<T>();
 }

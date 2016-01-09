@@ -10,16 +10,14 @@
 #include <QApplication>
 #include <QTimer>
 
-class Runtime : public QObject
-{
-	Q_OBJECT
-	
+class Runtime 
+{	
 public:
 	
-	ENGINE_API Runtime(int argc, char** argv);
-	ENGINE_API int run();
+	MF_API Runtime(int& argc, char**& argv);
+	MF_API int run();
 
-	ENGINE_API ~Runtime();
+	MF_API ~Runtime();
 
 	TimerManager timerManager;
 	ModuleHandler moduleHandler;
@@ -44,11 +42,11 @@ private:
 	QApplication application;
 	QTimer timer;
 	
-	ENGINE_API static Runtime* runtimeObj;
+	MF_API static Runtime* runtimeObj;
 
 
 	bool shouldContinue = true;
 
 	float deltaTime;
 
-};
+}; 

@@ -2,10 +2,10 @@
 
 #include "Logging.h"
 
+#include <string>
+
 namespace logdetail
 {
-
-ENGINE_API boost::iostreams::stream<sink_t>* log_base::str = nullptr;
-
-ENGINE_API std::wofstream* sink_t::file = nullptr;
+using namespace std::string_literals;
+DLLEXPORT std::ofstream outFile = std::ofstream{MF_RESOURCE_DIR + "/ENGLOG.log"s};
 }

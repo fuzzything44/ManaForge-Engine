@@ -17,9 +17,8 @@ if(${UNIX})
 	target_link_libraries(Game "dl")
 endif()
 
-add_dependencies(Game ManaForgeEngine  OpenGLRenderer  )
 
-target_link_libraries(Game ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY} ManaForgeEngine)
+target_link_libraries(Game ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY} ManaForgeEngine Qt5::Widgets Qt5::Gui stdc++)
 
 set_target_properties(Game
 	PROPERTIES
@@ -30,8 +29,7 @@ set_target_properties(Game
 
 )
 
-add_definitions("-DGame_Source")
-add_definitions("-DBOOST_ALL_NO_LIB")
+#add_definitions("-DBOOST_ALL_NO_LIB")
 
 # will make sure we have a proper C++11 compiler
 target_compile_features(Game PRIVATE
@@ -52,5 +50,4 @@ target_compile_features(Game PRIVATE
 
 		)
 		
-target_link_libraries(Game Qt5::Widgets Qt5::Gui) 
 

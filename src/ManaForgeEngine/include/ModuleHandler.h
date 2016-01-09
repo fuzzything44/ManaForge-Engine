@@ -25,7 +25,7 @@ class Module
 #endif
 public:
 	Module() = default;
-	ENGINE_API Module(ModuleHandler& handler, const path_t& name);
+	MF_API Module(ModuleHandler& handler, const path_t& name);
 
 	// make it move only
 	Module(const Module&) = delete;
@@ -51,7 +51,7 @@ public:
 		return *this;
 	}
 
-	ENGINE_API ~Module();
+	MF_API ~Module();
 
 	const path_t& getName() const { return name; }
 
