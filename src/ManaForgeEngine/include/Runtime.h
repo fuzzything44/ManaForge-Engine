@@ -19,8 +19,6 @@ public:
 
 	MF_API ~Runtime();
 
-	TimerManager timerManager;
-	ModuleHandler moduleHandler;
 
 	void requestExit()
 	{
@@ -48,5 +46,10 @@ private:
 	bool shouldContinue = true;
 
 	float deltaTime;
+	
+public:
+	
+	TimerManager timerManager;
+	ModuleHandler moduleHandler;
 
 }; 

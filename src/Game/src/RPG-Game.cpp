@@ -8,11 +8,9 @@ int main(int argc, char** argv)
 		Runtime runtime{argc, argv};
 
 		// run the runtime. consumes the thread until it returns
-		runtime.run();
+		return runtime.run();
 	}
 	catch (const std::exception& /*e*/)
 	{
-	}
-
-	return 0;
+	} 
 }

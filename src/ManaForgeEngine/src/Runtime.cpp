@@ -29,7 +29,7 @@ DLLEXPORT Runtime::Runtime(int& argc, char**& argv)
 
 DLLEXPORT Runtime::~Runtime()
 {
-
+	
 	delete coreManager;
 }
 

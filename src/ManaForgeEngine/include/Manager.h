@@ -415,7 +415,7 @@ public:
 	{
 		static constexpr auto manager = decltype(findMostBaseManagerForSignature(signature)){};
 
-		getRefToManager(manager).runAllMatching(signature, std::forward<F>(functor));
+		getRefToManager(manager).runAllMatchingIMPL(signature, std::forward<F>(functor));
 	}
 
 	template<typename T, typename F>
@@ -497,43 +497,25 @@ public:
 
 	Manager(const decltype(boost::hana::transform(myBases, detail::lambdas::removeTypeAddPtr))& bases = decltype(bases){})
 	{
+		assert(boost::hana::all_of(bases, [](auto ptr){ return ptr != 0; }));
 		
-		boost::hana::for_each(bases, [this](auto& basePtr)
-		{	
-			
-			assert(basePtr);
-			
-			static constexpr auto baseType = boost::hana::type_c<std::remove_pointer_t<std::decay_t<decltype(basePtr)>>>;
-			BOOST_HANA_CONSTANT_CHECK(isManager(baseType)); 
-
-			typename decltype(baseType)::type::FunctionPointerStorage::Update_t updatePtr =
-				&detail::Update_t<This_t, typename decltype(baseType)::type>::update;
-			
-			typename decltype(baseType)::type::FunctionPointerStorage::BeginPlay_t beginPlayPtr =
-				&detail::BeginPlay_t<This_t, typename decltype(baseType)::type>::beginPlay;
-			
-			basePtr->children.push_back(
-				std::make_pair(typename decltype(baseType)::type::FunctionPointerStorage{ updatePtr, beginPlayPtr }, this)
-				);
-			
-			constexpr auto managerID = getManagerID(baseType);
-			
-			auto ptr = basePtrStorage[managerID];
-			
-			boost::hana::for_each(ptr->basePtrStorage, [this](auto indBase)
+		boost::hana::for_each(basePtrStorage, [&bases](auto& baseToSet)
 			{
-				static constexpr auto indBaseType = boost::hana::type_c<std::remove_pointer_t<std::decay_t<decltype(indBase)>>>;
 				
-				BOOST_HANA_CONSTANT_CHECK(isManager(indBaseType));
+				auto constexpr managerType = boost::hana::type_c<std::remove_pointer_t<std::decay_t<decltype(baseToSet)>>>;
+				BOOST_HANA_CONSTANT_CHECK(isManager(managerType));
 				
+				auto hasBase = [&managerType](auto typeToCheck)
+				{
+					return decltype(typeToCheck)::type::isManager(managerType);
+				};
 				
-				constexpr auto managerID = getManagerID(indBaseType);
+				constexpr auto directBaseThatHasPtr = boost::hana::find_if(myBases, hasBase);
+				BOOST_HANA_CONSTANT_CHECK(boost::hana::is_just(directBaseThatHasPtr));
 				
-				basePtrStorage[managerID] = nullptr; // TODO: fix
+				baseToSet = &bases[getBaseID(*directBaseThatHasPtr)]->getRefToManager(managerType);
+				return directBaseThatHasPtr;
 			});
-			
-		});
-		
 		
 		initManager<This_t>(*this);
 	}

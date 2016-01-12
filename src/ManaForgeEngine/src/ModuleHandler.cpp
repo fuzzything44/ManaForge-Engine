@@ -19,7 +19,7 @@ Module::Module(ModuleHandler& handler_, const path_t& name)
 	handle = LoadLibraryW(pathWithExt.c_str());
 
 	if (handle == nullptr) {
-		MFLOGW(Error) << L"Failed to load library. Name: " << name.c_str() << L" Error: " << GetLastError();
+		MFLOGW(L"Failed to load library. Name: " << name.c_str() << L" Error: " << GetLastError());
 	}
 
 	// FARPROC is a generic fucntion pointer
@@ -27,7 +27,7 @@ Module::Module(ModuleHandler& handler_, const path_t& name)
 	InitFuncPtr_t addr = reinterpret_cast<InitFuncPtr_t>(GetProcAddress(handle, "init"));
 
 	if (addr == nullptr) {
-		MFLOG(Error) << "Failed to get init function address!";
+		MFLOG("Failed to get init function address!");
 	}
 
 	addr(*handler);
@@ -73,14 +73,14 @@ Module::Module(ModuleHandler& handler_, const path_t& name)
 	
 	path_t pathWithExt = "lib" + name.string() + ".so";
 
-	handle = dlopen(pathWithExt.string().c_str(), RTLD_NOW); // TODO: do more research here
+	handle = dlopen(pathWithExt.string().c_str(), RTLD_NOW);
 	
 
 	if (handle == nullptr) {
 		MFLOG("Failed to load library. Name: " << pathWithExt.string() << " Error: " << dlerror());
 	}
 
-	InitFuncPtr_t addr = reinterpret_cast<InitFuncPtr_t>(dlsym(handle, "init"));
+	InitFuncPtr_t addr = reinterpret_cast<InitFuncPtr_t>(dlsym(handle, "init_module"));
 
 	if (addr == nullptr) {
 		MFLOG("Failed to get init function address!");
@@ -96,7 +96,7 @@ Module::~Module()
 	
 	if (handle)
 	{
-		InitFuncPtr_t addr = reinterpret_cast<InitFuncPtr_t>(dlsym(handle, "cleanup"));
+		InitFuncPtr_t addr = reinterpret_cast<InitFuncPtr_t>(dlsym(handle, "cleanup_module"));
 
 		if (addr == nullptr) {
 			MFLOG("Failed to get cleanup function address!");

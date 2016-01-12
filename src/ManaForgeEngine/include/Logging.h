@@ -11,4 +11,4 @@ namespace logdetail
 
 
 #define MFLOG(msg) \
-	(::std::cout << msg) && (::logdetail::outFile << msg)
+	[&](){ ::std::cout << msg; ::logdetail::outFile << msg; ::logdetail::outFile.flush(); }()

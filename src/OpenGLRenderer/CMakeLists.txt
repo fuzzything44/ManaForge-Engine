@@ -5,11 +5,9 @@ set(CMAKE_AUTOMOC ON)
 
 set(OPENGL_PRIVATE_FILES
 	"src/OpenGLRendererManager.cpp;"
-	"src/OpenGLRendererPCH.cpp;"
 	"src/OpenGLModelData.cpp;"
 	"src/OpenGLMaterialSource.cpp;"
 	"src/OpenGLMaterialInstance.cpp;"
-	"src/OpenGLRendererPCH.h;"
 	)
 
 set(OPENGL_PUBLIC_FILES

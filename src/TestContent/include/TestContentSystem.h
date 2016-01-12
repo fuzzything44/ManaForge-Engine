@@ -45,13 +45,13 @@ void beginPlayManager<TestContentManager_t>(TestContentManager_t& manager)
 		{1, 2, 3}
 	};
 	
-	//auto&& funs = manager.getRefToManager<OpenGLRendererManager_t>().getManagerData().getFuncs();
+	auto&& funs = manager.getRefToManager(boost::hana::type_c<OpenGLRendererManager_t>).getManagerData().getFuncs();
 	
-	//OpenGLModelData modelData{ funs, locs, locs, 4, indicies, 2 };
-	//OpenGLMaterialSource matSource{ funs, "boilerplate" };
-	//auto mat = std::make_shared<OpenGLMaterialInstance>(matSource);
-	//COpenGLModel model{ modelData, mat };
-	//auto modelEnt = manager.newEntity<boost::mpl::vector2<CPosition, COpenGLModel>>(std::make_tuple(CPosition{ {0.f, 0.f} }, model));
+	OpenGLModelData modelData{ funs, locs, locs, 4, indicies, 2 };
+	OpenGLMaterialSource matSource{ funs, "boilerplate" };
+	auto mat = std::make_shared<OpenGLMaterialInstance>(matSource);
+	COpenGLModel model{ modelData, mat };
+	auto modelEnt = manager.newEntity(make_type_tuple<CPosition, COpenGLModel>, std::make_tuple(CPosition{ {0.f, 0.f} }, model));
 
 
 
