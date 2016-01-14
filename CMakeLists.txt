@@ -14,16 +14,16 @@ include_directories(${CMAKE_BINARY_DIR})
 include_directories(/home/russellg/hana-master/include/)
 	
 if(${UNIX})
-	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address")
+	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0")
 endif()
 
 # find boost
 find_package(Boost 1.59.0 REQUIRED filesystem system)
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5Gui REQUIRED)
-find_package(Hana REQUIRED)
+#find_package(Hana REQUIRED)
 
-include_directories(${Hana_INCLUDE_DIR})
+#include_directories(${Hana_INCLUDE_DIR})
 
 add_subdirectory("src/ManaForgeEngine/")
 

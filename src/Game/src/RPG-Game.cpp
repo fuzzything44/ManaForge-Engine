@@ -10,7 +10,9 @@ int main(int argc, char** argv)
 		// run the runtime. consumes the thread until it returns
 		return runtime.run();
 	}
-	catch (const std::exception& /*e*/)
+	catch (const std::exception& e)
 	{
+		MFLOG(e.what());
+		exit(-1);
 	} 
 }

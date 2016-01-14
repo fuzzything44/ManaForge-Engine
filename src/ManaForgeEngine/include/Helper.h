@@ -20,8 +20,7 @@ inline std::string loadFileToStr(const path_t& filename)
 
 	// if the steam if bad then return
 	if (!stream.is_open()) {
-		MFLOG("file doens't exist: " << filename);
-		return std::string();
+		throw("file doens't exist: " + filename.string());
 	}
 	// define strings for each line and the final string
 	std::string ret, build;

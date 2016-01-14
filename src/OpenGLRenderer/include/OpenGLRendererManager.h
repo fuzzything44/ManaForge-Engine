@@ -60,16 +60,14 @@ public:
 	explicit ManagerData< OpenGLRendererManager_t >(QWidget* parent = 0, Qt::WindowFlags flags = 0)
 		:QMainWindow(parent, flags)
 	{
-		//setCentralWidget(&GL);
+		setCentralWidget(&GL);
 	}
 	
-	//CentralWidget GL;
+	CentralWidget GL;
 	
 	auto& getFuncs()
 	{
-		auto a = QOpenGLFunctions_3_3_Core{};
-	
-		return a;
+		return GL;
 	}
 	
 	

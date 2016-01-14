@@ -72,20 +72,20 @@ Module::Module(ModuleHandler& handler_, const path_t& name)
 {
 	
 	path_t pathWithExt = "lib" + name.string() + ".so";
-
+	
 	handle = dlopen(pathWithExt.string().c_str(), RTLD_NOW);
 	
-
+	
 	if (handle == nullptr) {
-		MFLOG("Failed to load library. Name: " << pathWithExt.string() << " Error: " << dlerror());
+		throw std::runtime_error("Failed to load library. Name: " + pathWithExt.string() + " Error: " + dlerror());
 	}
-
+	
 	InitFuncPtr_t addr = reinterpret_cast<InitFuncPtr_t>(dlsym(handle, "init_module"));
-
+	
 	if (addr == nullptr) {
-		MFLOG("Failed to get init function address!");
+		throw std::runtime_error("Failed to get init_module function address in module: " + pathWithExt.string());
 	}
-
+	
 	addr(*handler);
 	
 }
@@ -99,7 +99,7 @@ Module::~Module()
 		InitFuncPtr_t addr = reinterpret_cast<InitFuncPtr_t>(dlsym(handle, "cleanup_module"));
 
 		if (addr == nullptr) {
-			MFLOG("Failed to get cleanup function address!");
+			throw std::runtime_error("Failed to get cleanup function address!");
 		}
 	
 		addr(*handler);
@@ -107,7 +107,7 @@ Module::~Module()
 		
 		int result = dlclose(handle);
 		if (result != 0) {
-			MFLOG("Could not unload dll.");
+			throw std::runtime_error("Could not unload dll.");
 		}
 	}
 	
