@@ -24,7 +24,6 @@
 
 
 #include "Manager/Callbacks.h"
-#include "Manager/GetRefToManager.h"
 #include "Manager/MiscMetafunctions.h"
 #include "Manager/Entity.h"
 
@@ -91,10 +90,8 @@ struct Manager : ManagerBase
 	static constexpr auto myBases = boost::hana::make<Bases_>();
 	using This_t = Manager<Components_, Bases_>;
 	
-	static constexpr auto allManagersExceptThis = decltype(remove_dups(boost::hana::concat(boost::hana::fold(
-		boost::hana::transform(myBases, detail::lambdas::getAllManagers), boost::hana::make_tuple(), boost::hana::concat), myBases))){}; 
-	
-	static constexpr auto allManagers = boost::hana::append(allManagersExceptThis, boost::hana::type_c<This_t>);
+	static constexpr auto allManagers = decltype(boost::hana::append(remove_dups(boost::hana::concat(boost::hana::fold(
+		boost::hana::transform(myBases, detail::lambdas::getAllManagers), boost::hana::make_tuple(), boost::hana::concat), myBases)) , boost::hana::type_c<This_t>)){};
 
 	static constexpr auto allComponents = decltype(remove_dups(boost::hana::concat(boost::hana::fold(boost::hana::transform(myBases, detail::lambdas::getAllComponents), 
 		boost::hana::make_tuple(), boost::hana::concat), myComponents))){}; 
@@ -201,19 +198,6 @@ struct Manager : ManagerBase
 		
 		return get_index_of_first_matching(allManagers, manager);
 	}
-	template<typename T>
-	static constexpr auto isManagerExceptThis(T toTest)
-	{
-		return boost::hana::contains(allManagersExceptThis, toTest);
-	}
-	template<typename T> 
-	static constexpr auto getManagerExceptThisID(T manager)
-	{
-		BOOST_HANA_CONSTANT_CHECK(isManagerExceptThis(manager));
-
-		return get_index_of_first_matching(allManagersExceptThis, manager);
-	}
-
 	template<typename T> 
 	static constexpr auto isBase(T baseToTest)
 	{
@@ -233,7 +217,7 @@ struct Manager : ManagerBase
 	template<typename T>
 	static constexpr auto isSignature(T signature)
 	{
-		return boost::hana::all_of(signature, isComponent);
+		return boost::hana::all_of(signature, [](auto type){ return isComponent(type); });
 	}
 
 	template<typename T>
@@ -277,12 +261,35 @@ struct Manager : ManagerBase
 		);
 	}
 	
+	template<typename T>
+	static constexpr auto findDirectBaseManagerForSignature(T signature)
+	{		
+		
+#ifdef IN_KDEVELOP_PARSER
+	{ // TODO: update KDev... This is to work around a bug in Kdevelop's parser. For some reason it really wants a { here.
+#endif
+		
+		return boost::hana::fold(myBases, boost::hana::type_c<This_t>, [&signature](auto toTest, auto currentRet)
+			{
+				return boost::hana::if_(decltype(toTest)::type::isSignature(signature), toTest, currentRet);
+			}
+		);
+	}
 	
 	template<typename T>
 	static constexpr auto findMostBaseManagerForSignature(T signature)
 	{
-		// TODO: implement
-		return boost::hana::type_c<This_t>;
+		using namespace boost::hana::literals;
+		auto ret = boost::hana::while_([](auto pair){ return pair[0_c] != pair[1_c]; }, 
+			boost::hana::make_tuple(boost::hana::type_c<This_t>, findDirectBaseManagerForSignature(signature)), [&signature](auto tup)
+			{
+				return boost::hana::make_tuple(tup[1_c], decltype(tup[0_c])::type::findDirectBaseManagerForSignature(signature)); 
+			}
+		);
+		
+		BOOST_HANA_CONSTANT_CHECK(isManager(ret[0_c]));
+		return ret[0_c];
+		
 	}
 	
 	using RuntimeSignature_t = std::bitset<This_t::numComponents>;
@@ -363,17 +370,19 @@ struct Manager : ManagerBase
 	template<typename T>
 	static auto getEntityPtr(T managerToGet, Entity<This_t>* ent) -> Entity<typename decltype(managerToGet)::type>*
 	{
-		// TODO: implement
-		return nullptr;
+		BOOST_HANA_CONSTANT_CHECK(isManager(managerToGet));
+		
+		return ent->bases[getManagerID(managerToGet)];
 	}
 	
 	template<typename T>
 	auto getRefToManager(T manager) -> typename decltype(manager)::type&
 	{
-		BOOST_HANA_CONSTANT_CHECK(isManager(manager)); 
-
-		return detail::GetRefToManager<This_t, typename decltype(manager)::type>::apply(*this);
+		BOOST_HANA_CONSTANT_CHECK(isManager(manager));
+		
+		return *basePtrStorage[getManagerID(manager)];
 	}
+	
 	
 	template<typename T>
 	auto getComponentStorage(T component) -> std::vector<typename decltype(component)::type>&
@@ -408,11 +417,15 @@ public:
 	void callFunctionWithSigParams(Entity<This_t>* ent, T signature, F&& func)
 	{
 		//TODO: implement
+		
+		
 	}
 
 	template<typename T, typename F>
 	void runAllMatching(T signature, F&& functor)
 	{
+		BOOST_HANA_CONSTANT_CHECK(isSignature(signature));
+		
 		static constexpr auto manager = decltype(findMostBaseManagerForSignature(signature)){};
 
 		getRefToManager(manager).runAllMatchingIMPL(signature, std::forward<F>(functor));
@@ -459,7 +472,7 @@ public:
 
 	
 
-	decltype(boost::hana::transform(allManagersExceptThis, detail::lambdas::removeTypeAddPtr)) basePtrStorage;
+	decltype(boost::hana::transform(allManagers, detail::lambdas::removeTypeAddPtr)) basePtrStorage;
 
 
 	struct FunctionPointerStorage
@@ -497,9 +510,13 @@ public:
 
 	Manager(const decltype(boost::hana::transform(myBases, detail::lambdas::removeTypeAddPtr))& bases = decltype(bases){})
 	{
+		using namespace boost::hana::literals;
+		
 		assert(boost::hana::all_of(bases, [](auto ptr){ return ptr != 0; }));
 		
-		boost::hana::for_each(basePtrStorage, [&bases](auto& baseToSet)
+		auto tempBases = boost::hana::remove_at(basePtrStorage, boost::hana::size(basePtrStorage) - boost::hana::size_c<1>);
+		
+		boost::hana::for_each(tempBases, [&bases](auto& baseToSet)
 			{
 				
 				auto constexpr managerType = boost::hana::type_c<std::remove_pointer_t<std::decay_t<decltype(baseToSet)>>>;
@@ -517,7 +534,12 @@ public:
 				return directBaseThatHasPtr;
 			});
 		
+		
+		basePtrStorage = boost::hana::append(tempBases, this);
+		
 		initManager<This_t>(*this);
+		
+		
 	}
 
 	~Manager()

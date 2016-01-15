@@ -27,10 +27,10 @@ void beginPlayManager<TestContentManager_t>(TestContentManager_t& manager)
 {
 	auto ent1 = manager.newEntity(make_type_tuple<CPosition, TPew>, std::make_tuple(CPosition{{.3f, 2.f}}));
 
-    assert(manager.hasComponent(boost::hana::type_c<CPosition>, ent1));
-    assert(manager.hasComponent(boost::hana::type_c<TPew>, ent1));
-    assert(!manager.hasComponent(boost::hana::type_c<CVelocity>, ent1));
-    assert(manager.getStorageComponent(boost::hana::type_c<CPosition>, ent1).value == vec2(.3f, 2.f));
+	assert(manager.hasComponent(boost::hana::type_c<CPosition>, ent1));
+	assert(manager.hasComponent(boost::hana::type_c<TPew>, ent1));
+	assert(!manager.hasComponent(boost::hana::type_c<CVelocity>, ent1));
+	assert(manager.getStorageComponent(boost::hana::type_c<CPosition>, ent1).value == vec2(.3f, 2.f));
 	
 	vec2 locs[] = 
 	{

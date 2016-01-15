@@ -5,7 +5,7 @@
 TestContentManager_t* testContentManager = nullptr;
 
 
-extern"C" DLLEXPORT void init_module(ModuleHandler& handler)
+extern"C" DLLEXPORT void mf_init_module(ModuleHandler& handler)
 {
 	
 	// load dependent modules
@@ -23,7 +23,7 @@ extern"C" DLLEXPORT void init_module(ModuleHandler& handler)
 		);
 }
 
-extern"C" DLLEXPORT void cleanup_module(ModuleHandler& handler)
+extern"C" DLLEXPORT void mf_cleanup_module(ModuleHandler& handler)
 {
 	delete testContentManager;
 	testContentManager = nullptr;

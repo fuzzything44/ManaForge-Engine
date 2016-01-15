@@ -80,10 +80,11 @@ Module::Module(ModuleHandler& handler_, const path_t& name)
 		throw std::runtime_error("Failed to load library. Name: " + pathWithExt.string() + " Error: " + dlerror());
 	}
 	
-	InitFuncPtr_t addr = reinterpret_cast<InitFuncPtr_t>(dlsym(handle, "init_module"));
+	InitFuncPtr_t addr = nullptr;
+	addr = reinterpret_cast<InitFuncPtr_t>(dlsym(handle, "mf_init_module"));
 	
 	if (addr == nullptr) {
-		throw std::runtime_error("Failed to get init_module function address in module: " + pathWithExt.string());
+		throw std::runtime_error("Failed to get mf_init_module function address in module: " + pathWithExt.string());
 	}
 	
 	addr(*handler);
@@ -96,10 +97,10 @@ Module::~Module()
 	
 	if (handle)
 	{
-		InitFuncPtr_t addr = reinterpret_cast<InitFuncPtr_t>(dlsym(handle, "cleanup_module"));
+		InitFuncPtr_t addr = reinterpret_cast<InitFuncPtr_t>(dlsym(handle, "mf_cleanup_module"));
 
 		if (addr == nullptr) {
-			throw std::runtime_error("Failed to get cleanup function address!");
+			throw std::runtime_error("Failed to get mf_cleanup_module function address!");
 		}
 	
 		addr(*handler);
