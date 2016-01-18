@@ -19,6 +19,7 @@
 #include <bitset>
 #include <tuple>
 #include <type_traits>
+#include <deque>
 #include <cassert>
 #include <unordered_map>
 
@@ -60,6 +61,10 @@ auto allTagComponents_LAM = [](auto tuple, auto newElement)
 auto removeTypeAddVec = [](auto arg)
 	{
 		return std::vector<typename decltype(arg)::type>{};
+	};
+auto removeTypeAddUnorderedMap = [](auto arg)
+	{
+		return std::unordered_map<size_t, typename decltype(arg)::type>{};
 	};
 auto removeTypeAddPtr = [](auto arg)
 	{
@@ -312,12 +317,48 @@ struct Manager : ManagerBase
 	}
 
 	template<typename T, typename Components>
-	auto newEntity(T signature, const Components& components
+	auto& newEntity(T signature, Components&& components
 		= decltype(components){} /*tuple of the components*/)
 	{
-		//TODO: implement
+		using namespace boost::hana::literals;
 		
-		return new Entity<This_t>;
+		entityStorage.emplace_back();
+		const size_t newEntityIndex = entityStorage.size() - 1;
+		Entity<This_t>& newEntityRef = entityStorage[newEntityIndex];
+		newEntityRef.signature = generateRuntimeSignature(signature);
+		newEntityRef.ID = newEntityIndex;
+		newEntityRef.bases[boost::hana::size(newEntityRef.bases) - boost::hana::size_c<1>] = &newEntityRef;
+		
+		// construct the components
+		boost::hana::for_each(components, [this, newEntityIndex, &newEntityRef](auto& component) {
+			constexpr auto component_type = boost::hana::type_c<std::decay_t<decltype(component)>>;
+			BOOST_HANA_CONSTANT_CHECK(isStorageComponent(component_type));
+			
+			constexpr auto manager_for_component = decltype(getManagerFromComponent(component_type)){};
+			constexpr auto manager_id = getManagerID(manager_for_component);
+			auto& refToManagerForComponent = getRefToManager(manager_for_component);
+			
+			auto& ptrToEntity = newEntityRef.bases[manager_id];
+			if (ptrToEntity == nullptr)
+			{
+				refToManagerForComponent.entityStorage.emplace_back();
+				size_t baseEntityID = refToManagerForComponent.entityStorage.size() - 1;
+				auto& baseEntityRef = refToManagerForComponent.entityStorage[baseEntityID];
+				baseEntityRef.ID = baseEntityID;
+				baseEntityRef.bases[boost::hana::size(baseEntityRef.bases) - boost::hana::size_c<1>] = &baseEntityRef;
+				
+				ptrToEntity = &baseEntityRef;
+				
+			}
+			
+			constexpr auto my_component_id = decltype(manager_for_component)::type::getMyStorageComponentID(component_type);
+			constexpr auto all_component_id = decltype(manager_for_component)::type::getMyComponentID(component_type);
+			
+			refToManagerForComponent.storageComponentStorage[my_component_id][ptrToEntity->ID] = std::move(component);
+			refToManagerForComponent.componentEntityStorage[decltype(all_component_id)::value].push_back(ptrToEntity->ID);			
+		});
+		
+		return newEntityRef;
 		
 	}
 
@@ -466,15 +507,11 @@ public:
 
 	// storage for the actual components
 	decltype(boost::hana::transform(myStorageComponents, detail::lambdas::removeTypeAddVec)) storageComponentStorage;
-
-	std::array<std::vector<Entity<This_t>*>, This_t::numMyComponents> componentEntityStorage;
-
-
-	
-
+	std::array<std::vector<size_t>, This_t::numMyComponents> componentEntityStorage;
 	decltype(boost::hana::transform(allManagers, detail::lambdas::removeTypeAddPtr)) basePtrStorage;
-
-
+	std::vector<Entity<This_t>> entityStorage;
+	std::deque<size_t> freeEntitySlots;
+	
 	struct FunctionPointerStorage
 	{
 

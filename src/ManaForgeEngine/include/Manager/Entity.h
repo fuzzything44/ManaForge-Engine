@@ -30,9 +30,9 @@ struct Entity
 	static constexpr auto managerType = boost::hana::type_c<ManagerType_>;
 	
 	decltype(boost::hana::transform(decltype(managerType)::type::allManagers, detail::lambdas::removeTypeAddEntityPtr)) bases;
-
-    typename decltype(managerType)::type::RuntimeSignature_t signature;
-
-	std::array<size_t, decltype(managerType)::type::numMyStorageComponents> components;
+	
+	typename decltype(managerType)::type::RuntimeSignature_t signature;
+	
+	size_t ID;
 
 };

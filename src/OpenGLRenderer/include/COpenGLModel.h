@@ -14,6 +14,11 @@ public:
 		: modelData{ data }
 		, material(mat)
 	{}
+	COpenGLModel(const COpenGLModel&) = default;
+	COpenGLModel(COpenGLModel&&) = default;
+	
+	COpenGLModel& operator=(const COpenGLModel&) = default;
+	COpenGLModel& operator=(COpenGLModel&&) = default;
 	
 	uint8 renderOrder;
 	

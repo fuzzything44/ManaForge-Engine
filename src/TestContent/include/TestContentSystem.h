@@ -25,7 +25,7 @@ using TupleOfVectorRefrences = std::tuple<std::vector<Args>&...>;
 template<>
 void beginPlayManager<TestContentManager_t>(TestContentManager_t& manager)
 {
-	auto ent1 = manager.newEntity(make_type_tuple<CPosition, TPew>, std::make_tuple(CPosition{{.3f, 2.f}}));
+	auto ent1 = manager.newEntity(make_type_tuple<CPosition, TPew>, boost::hana::make_tuple(CPosition{{.3f, 2.f}}));
 
 	assert(manager.hasComponent(boost::hana::type_c<CPosition>, ent1));
 	assert(manager.hasComponent(boost::hana::type_c<TPew>, ent1));
@@ -47,11 +47,11 @@ void beginPlayManager<TestContentManager_t>(TestContentManager_t& manager)
 	
 	auto&& funs = manager.getRefToManager(boost::hana::type_c<OpenGLRendererManager_t>).getManagerData().getFuncs();
 	
-	OpenGLModelData modelData{ funs, locs, locs, 4, indicies, 2 };
+	OpenGLModelData modelData{ &funs, locs, locs, 4, indicies, 2 };
 	OpenGLMaterialSource matSource{ funs, "boilerplate" };
 	auto mat = std::make_shared<OpenGLMaterialInstance>(matSource);
 	COpenGLModel model{ modelData, mat };
-	auto modelEnt = manager.newEntity(make_type_tuple<CPosition, COpenGLModel>, std::make_tuple(CPosition{ {0.f, 0.f} }, model));
+	auto modelEnt = manager.newEntity(make_type_tuple<CPosition, COpenGLModel>, boost::hana::make_tuple(CPosition{ {0.f, 0.f} }, model));
 
 
 
