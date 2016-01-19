@@ -34,5 +34,7 @@ struct Entity
 	typename decltype(managerType)::type::RuntimeSignature_t signature;
 	
 	size_t ID;
+	
+	std::function<void()> destroy;
 
 };

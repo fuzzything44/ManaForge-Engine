@@ -10,7 +10,7 @@ class COpenGLModel
 public:
 	
 	// NOTE: uses the OpenGLModelData QOpenGLFunctions
-	COpenGLModel(const OpenGLModelData& data, const std::shared_ptr<OpenGLMaterialInstance>& mat = {})
+	COpenGLModel(const OpenGLModelData& data = OpenGLModelData{}, const std::shared_ptr<OpenGLMaterialInstance>& mat = {})
 		: modelData{ data }
 		, material(mat)
 	{}

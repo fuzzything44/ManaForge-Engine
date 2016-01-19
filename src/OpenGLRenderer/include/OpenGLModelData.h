@@ -11,7 +11,7 @@ class QOpenGLFunctions_3_3_Core;
 
 struct OpenGLModelData : RefCounted<OpenGLModelData>
 {
-	OpenGLRenderer_API OpenGLModelData(QOpenGLFunctions_3_3_Core* funs_, const vec2* locations = nullptr, const vec2* UVs = nullptr, size_t numVerts = 0, 
+	OpenGLRenderer_API OpenGLModelData(QOpenGLFunctions_3_3_Core* funs_ = nullptr, const vec2* locations = nullptr, const vec2* UVs = nullptr, size_t numVerts = 0, 
 		const uvec3* triangleIndicies = nullptr, size_t numTriangles = 0);
 
 	OpenGLModelData(const OpenGLModelData&) = default;

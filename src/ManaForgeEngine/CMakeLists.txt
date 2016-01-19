@@ -29,9 +29,6 @@ set(MANAFORGE_ENGINE_PUBLIC_FILES
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/RefCounted.h;"
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/Runtime.h;"
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/SerializeGLM.h;"
-	"${CMAKE_CURRENT_SOURCE_DIR}/include/TimerHandle.h;"
-	"${CMAKE_CURRENT_SOURCE_DIR}/include/TimerManager.h;"
-	"${CMAKE_CURRENT_SOURCE_DIR}/include/Manager/Callbacks.h;"
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/Manager/Entity.h;"
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/Manager/MiscMetafunctions.h;"
 	)

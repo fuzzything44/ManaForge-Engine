@@ -28,21 +28,16 @@ struct ManagerData<Box2DPhysicsManager_t>
 	b2World world;
 };
 
-template<>
-void initManager<Box2DPhysicsManager_t>(Box2DPhysicsManager_t& manager)
-{
-	 
-}
 
 
 
-template<>
-void updateManager<Box2DPhysicsManager_t>(Box2DPhysicsManager_t& manager)
-{
-	auto&& world = manager.getManagerData().world;
-	world.Step(0/*TODO: implemnt delta times*/, 8, 3); // step once
-
-}
+//template<>
+//void updateManager<Box2DPhysicsManager_t>(Box2DPhysicsManager_t& manager)
+//{
+//	auto&& world = manager.getManagerData().world;
+//	world.Step(0/*TODO: implemnt delta times*/, 8, 3); // step once
+//
+//}
 
 
 Box2DPhysicsSystem_API extern Box2DPhysicsManager_t* box2DPhysicsManager;

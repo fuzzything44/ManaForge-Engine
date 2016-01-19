@@ -17,19 +17,19 @@
 #include <vector>
 #include <utility>
 #include <bitset>
-#include <tuple>
 #include <type_traits>
 #include <deque>
 #include <cassert>
 #include <unordered_map>
 
-
-#include "Manager/Callbacks.h"
 #include "Manager/MiscMetafunctions.h"
 #include "Manager/Entity.h"
 
 
 #undef max
+
+template<typename T>
+struct ManagerData{};
 
 template<typename... T>
 constexpr auto make_type_tuple = boost::hana::make_tuple(boost::hana::type_c<T>...);
@@ -241,7 +241,7 @@ struct Manager : ManagerBase
 	template<typename T>
 	static constexpr auto isolateStorageComponents(T toIsolate)
 	{
-		return boost::hana::fold(toIsolate, boost::hana::make_set(), [](auto toTest, auto currentSet)
+		return boost::hana::fold(toIsolate, boost::hana::make_tuple(), [](auto currentSet, auto toTest)
 			{
 				return boost::hana::if_(isStorageComponent(toTest), boost::hana::append(currentSet, toTest), currentSet);
 			}
@@ -250,7 +250,7 @@ struct Manager : ManagerBase
 	template<typename T>
 	static constexpr auto isolateTagComponents(T toIsolate)
 	{
-		return boost::hana::fold(toIsolate, boost::hana::make_set(), [](auto toTest, auto currentSet)
+		return boost::hana::fold(toIsolate, boost::hana::make_tuple(), [](auto currentSet, auto toTest)
 			{
 				return boost::hana::if_(isTagComponent(toTest), boost::hana::append(currentSet, toTest), currentSet);
 			}
@@ -268,11 +268,7 @@ struct Manager : ManagerBase
 	
 	template<typename T>
 	static constexpr auto findDirectBaseManagerForSignature(T signature)
-	{		
-		
-#ifdef IN_KDEVELOP_PARSER
-	{ // TODO: update KDev... This is to work around a bug in Kdevelop's parser. For some reason it really wants a { here.
-#endif
+	{
 		
 		return boost::hana::fold(myBases, boost::hana::type_c<This_t>, [&signature](auto toTest, auto currentRet)
 			{
@@ -328,6 +324,23 @@ struct Manager : ManagerBase
 		newEntityRef.signature = generateRuntimeSignature(signature);
 		newEntityRef.ID = newEntityIndex;
 		newEntityRef.bases[boost::hana::size(newEntityRef.bases) - boost::hana::size_c<1>] = &newEntityRef;
+		newEntityRef.destroy = [this, ID = newEntityRef.ID, signature]() 
+			{
+				// delete components
+				boost::hana::for_each(isolateStorageComponents(signature), [this, ID](auto componentToDestroy)
+					{
+						getComponentStorage(componentToDestroy).erase(ID);
+					});
+				
+				// delete entities
+				boost::hana::for_each(entityStorage[ID].bases, [this, ID](auto basePtr)
+					{
+						constexpr auto baseType = std::remove_pointer_t<decltype(basePtr)>::managerType;
+						BOOST_HANA_CONSTANT_CHECK(isManager(baseType));
+						
+						getRefToManager(baseType).freeEntitySlots.push_back(ID);
+					});
+			};
 		
 		// construct the components
 		boost::hana::for_each(components, [this, newEntityIndex, &newEntityRef](auto& component) {
@@ -346,6 +359,7 @@ struct Manager : ManagerBase
 				auto& baseEntityRef = refToManagerForComponent.entityStorage[baseEntityID];
 				baseEntityRef.ID = baseEntityID;
 				baseEntityRef.bases[boost::hana::size(baseEntityRef.bases) - boost::hana::size_c<1>] = &baseEntityRef;
+				baseEntityRef.destroy = newEntityRef.destroy;
 				
 				ptrToEntity = &baseEntityRef;
 				
@@ -373,7 +387,7 @@ struct Manager : ManagerBase
 	}
 	void destroyEntity(Entity<This_t>* handle)
 	{
-		// TODO: implement
+		handle->destroy();
 	}
 
 	template<typename T>
@@ -385,12 +399,7 @@ struct Manager : ManagerBase
 
 		constexpr auto staticID = decltype(managerForComponent)::type::template getMyStorageComponentID(component);
 		
-		auto* ent = getEntityPtr(managerForComponent, handle);
-
-		size_t componentID = ent->components[staticID];
-
-		return getComponentStorage(component)[componentID];
-
+		return getRefToManager(managerForComponent).storageComponentStorage[staticID][handle->ID];
 		
 	}
 
@@ -426,16 +435,16 @@ struct Manager : ManagerBase
 	
 	
 	template<typename T>
-	auto getComponentStorage(T component) -> std::vector<typename decltype(component)::type>&
+	auto getComponentStorage(T component) -> std::unordered_map<size_t, typename decltype(component)::type>&
 	{
 		BOOST_HANA_CONSTANT_CHECK(isStorageComponent(component));
-
+		
 		constexpr auto manager = decltype(getManagerFromComponent(component)){};
-
+		
 		const constexpr auto ID = decltype(manager)::type::template getMyStorageComponentID(component);
-
+		
 		return getRefToManager(manager).storageComponentStorage[ID];
-
+		
 	}
 
 
@@ -457,9 +466,16 @@ public:
 	template<typename T, typename F>
 	void callFunctionWithSigParams(Entity<This_t>* ent, T signature, F&& func)
 	{
-		//TODO: implement
+		// get components and put them in a tuple
 		
+		auto components = boost::hana::fold(signature, boost::hana::make_tuple(), [this, ent](auto retTuple, auto nextType) -> decltype(auto)
+			{
+				BOOST_HANA_CONSTANT_CHECK(isStorageComponent(nextType));
+				return boost::hana::append(retTuple, getStorageComponent(nextType, ent));
+			});
 		
+		// expand
+		boost::hana::unpack(components, std::forward<F>(func));
 	}
 
 	template<typename T, typename F>
@@ -475,70 +491,40 @@ public:
 	template<typename T, typename F>
 	void runAllMatchingIMPL(T signature, F&& functor)
 	{
-       // TODO: implement
-	}
-
-
-
-	void update()
-	{
-		// increment the tick number so the updates are called.
-		++tickNumber;
-
-		updateManager(*this);
-
-		for (auto&& child : children)
+		using namespace boost::hana::literals;
+		
+		BOOST_HANA_CONSTANT_CHECK(isSignature(signature));
+		
+		// TODO: use shortest
+		
+		auto& entityVector = entityStorage;
+		
+		const auto runtimeSig = generateRuntimeSignature(signature);
+		constexpr auto sigStorageCompsOnly = decltype(isolateStorageComponents(signature)){};
+		
+		for(Entity<This_t>& entity : entityVector)
 		{
-			child.first.update(*child.second, *this);
-		}
-	}
-
-	void beginPlay()
-	{
-		beginPlayManager(*this);
-
-		for (auto&& child : children)
-		{
-			child.first.beginPlay(*child.second, *this);
+			if((runtimeSig & entity.signature) == runtimeSig) 
+			{
+				callFunctionWithSigParams(&entity, sigStorageCompsOnly, std::forward<F>(functor));
+			}
 		}
 	}
 
 	ManagerData<This_t> myManagerData;
 
 	// storage for the actual components
-	decltype(boost::hana::transform(myStorageComponents, detail::lambdas::removeTypeAddVec)) storageComponentStorage;
+	decltype(boost::hana::transform(myStorageComponents, detail::lambdas::removeTypeAddUnorderedMap)) storageComponentStorage;
 	std::array<std::vector<size_t>, This_t::numMyComponents> componentEntityStorage;
 	decltype(boost::hana::transform(allManagers, detail::lambdas::removeTypeAddPtr)) basePtrStorage;
 	std::vector<Entity<This_t>> entityStorage;
 	std::deque<size_t> freeEntitySlots;
 	
-	struct FunctionPointerStorage
-	{
-
-		using Update_t =
-			void(*)(ManagerBase&, This_t&);
-
-		using BeginPlay_t =
-			void(*)(ManagerBase&, This_t&);
-
-		Update_t update;
-		BeginPlay_t beginPlay;
-	};
 	bool hasBegunPlay = false;
 	bool hasBeenCleandUp = false;
-
+	
 	size_t tickNumber = 0;
-
-	std::vector
-		<
-		std::pair
-			<
-				FunctionPointerStorage
-				, ManagerBase*
-			>
-		> children;
-
-
+	
 	ManagerData<This_t>& getManagerData()
 	{
 		return myManagerData;
@@ -572,15 +558,12 @@ public:
 			});
 		
 		
-		basePtrStorage = boost::hana::append(tempBases, this);
-		
-		initManager<This_t>(*this);
-		
+		basePtrStorage = boost::hana::append(tempBases, this);		
 		
 	}
 
 	~Manager()
 	{
-		exitManager<This_t>(*this);
+		// TODO: add callbacks
 	}
 };

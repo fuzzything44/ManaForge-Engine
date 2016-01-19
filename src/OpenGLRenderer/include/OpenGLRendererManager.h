@@ -73,71 +73,71 @@ public:
 	
 };
 
-template<>
-void initManager<>(OpenGLRendererManager_t& manager)
-{
-	manager.getManagerData().show();
-}
-
-template<>
-void beginPlayManager<>(OpenGLRendererManager_t& manager)
-{
-}
-
-template<>
-void updateManager<>(OpenGLRendererManager_t& manager)
-{
-	auto& window = manager.getManagerData();
-	auto& funs = window.getFuncs();
-
-	
-	funs.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	funs.glClearColor(1.f, 0.f, 0.f, 1.f);
-	
-	// get aspect ratio
-	float aspectRatio = (float)window.width() / (float)window.height();
-
-	constexpr bool a = OpenGLRendererManager_t::isComponent(boost::hana::type_c<COpenGLModel>);
-
-	// draw the models
-	manager.runAllMatching(make_type_tuple<COpenGLModel, CPosition>,
-		[aspectRatio, &funs](COpenGLModel& model, CPosition& pos)
-	{
-		assert(model.modelData.indexBuffer);
-
-		mat3 MVPmat;
-		MVPmat = glm::ortho2d(-aspectRatio, aspectRatio, -1.f, 1.f);
-		//MVPmat = glm::translate(MVPmat, pos.value);
-		
-		auto&& material = *model.material;
-		auto&& modelData = model.modelData;
-
-		material.use(MVPmat);
-		funs.glBindBuffer(GL_ARRAY_BUFFER, modelData.locBuffer);
-		funs.glEnableVertexAttribArray(0);
-		funs.glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(vec2), nullptr);
-        
-        
-		funs.glBindBuffer(GL_ARRAY_BUFFER, modelData.UVbuffer);
-		funs.glEnableVertexAttribArray(1);
-		funs.glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(vec2), nullptr);
-        
-        
-		funs.glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, modelData.indexBuffer);
-		funs.glDrawElements(GL_TRIANGLES, modelData.numTriangles * 3, GL_UNSIGNED_INT, nullptr);
-        
-		funs.glDisableVertexAttribArray(0);
-		funs.glDisableVertexAttribArray(1);
-	});
-
-	// TODO: implement buffer swapping
-	
-}
-
-template<>
-void exitManager<>(OpenGLRendererManager_t& manager)
-{
-	manager.getManagerData().~ManagerData();
-}
+//template<>
+//void initManager<>(OpenGLRendererManager_t& manager)
+//{
+//	manager.getManagerData().show();
+//}
+//
+//template<>
+//void beginPlayManager<>(OpenGLRendererManager_t& manager)
+//{
+//}
+//
+//template<>
+//void updateManager<>(OpenGLRendererManager_t& manager)
+//{
+//	auto& window = manager.getManagerData();
+//	auto& funs = window.getFuncs();
+//
+//	
+//	funs.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+//	funs.glClearColor(1.f, 0.f, 0.f, 1.f);
+//	
+//	// get aspect ratio
+//	float aspectRatio = (float)window.width() / (float)window.height();
+//
+//	constexpr bool a = OpenGLRendererManager_t::isComponent(boost::hana::type_c<COpenGLModel>);
+//
+//	// draw the models
+//	manager.runAllMatching(make_type_tuple<COpenGLModel, CPosition>,
+//		[aspectRatio, &funs](COpenGLModel& model, CPosition& pos)
+//	{
+//		assert(model.modelData.indexBuffer);
+//
+//		mat3 MVPmat;
+//		MVPmat = glm::ortho2d(-aspectRatio, aspectRatio, -1.f, 1.f);
+//		//MVPmat = glm::translate(MVPmat, pos.value);
+//		
+//		auto&& material = *model.material;
+//		auto&& modelData = model.modelData;
+//
+//		material.use(MVPmat);
+//		funs.glBindBuffer(GL_ARRAY_BUFFER, modelData.locBuffer);
+//		funs.glEnableVertexAttribArray(0);
+//		funs.glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(vec2), nullptr);
+//        
+//        
+//		funs.glBindBuffer(GL_ARRAY_BUFFER, modelData.UVbuffer);
+//		funs.glEnableVertexAttribArray(1);
+//		funs.glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(vec2), nullptr);
+//        
+//        
+//		funs.glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, modelData.indexBuffer);
+//		funs.glDrawElements(GL_TRIANGLES, modelData.numTriangles * 3, GL_UNSIGNED_INT, nullptr);
+//        
+//		funs.glDisableVertexAttribArray(0);
+//		funs.glDisableVertexAttribArray(1);
+//	});
+//
+//	// TODO: implement buffer swapping
+//	
+//}
+//
+//template<>
+//void exitManager<>(OpenGLRendererManager_t& manager)
+//{
+//	manager.getManagerData().~ManagerData();
+//}
 
 OpenGLRenderer_API extern OpenGLRendererManager_t* openGLRendererManager;

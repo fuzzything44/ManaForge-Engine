@@ -23,7 +23,7 @@ DLLEXPORT Runtime::Runtime(int& argc, char**& argv)
 	
 	coreManager = new CoreManager_t;
 
-	moduleHandler.init(std::vector<path_t>{ path_t{"OpenGLRenderer"} });
+	moduleHandler.init(std::vector<path_t>{ path_t{"TestContent"} });
 	
 }
 
@@ -43,21 +43,13 @@ DLLEXPORT int Runtime::run()
 	
 	timer.connect(&timer, &QTimer::timeout, 
 		[&lastTick, this]
-		{
-			static bool b = false;
-			if(!b) coreManager->beginPlay();
-			b = true;
-			
+		{			
 			// calculate tick time
 			std::chrono::system_clock::time_point currentTick = std::chrono::system_clock::now();
 			std::chrono::duration<float> delta_duration = currentTick - lastTick;
 			deltaTime = delta_duration.count();
 			
 			lastTick = currentTick;
-			
-			timerManager.update();
-			
-			coreManager->update();
 			
 		});
 	timer.start(0);

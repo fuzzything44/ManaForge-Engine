@@ -4,7 +4,6 @@
 #include <memory>
 
 #include "CoreManager.h"
-#include "TimerManager.h"
 #include "ModuleHandler.h"
 
 #include <QApplication>
@@ -49,7 +48,6 @@ private:
 	
 public:
 	
-	TimerManager timerManager;
 	ModuleHandler moduleHandler;
 
 }; 
